@@ -129,7 +129,7 @@ test("/change-email --- full flow", async ({client, assert}) => {
 
 	const user = await User.find(2);
 
-	const oldEmail = "regular1@example.com";
+	const oldEmail = "jim@example.com";
 	const newEmail = "harry@example.com";
 
 	const payload = {

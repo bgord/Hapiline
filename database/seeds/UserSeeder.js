@@ -10,11 +10,19 @@ const userEntries = [
 		roleName: ROLE_NAMES.admin,
 	},
 	{
-		username: "regular1",
+		username: "jim",
 		roleName: ROLE_NAMES.regular,
 	},
 	{
-		username: "regular2",
+		username: "dwight",
+		roleName: ROLE_NAMES.regular,
+	},
+	{
+		username: "michael",
+		roleName: ROLE_NAMES.regular,
+	},
+	{
+		username: "pam",
 		roleName: ROLE_NAMES.regular,
 	},
 ];

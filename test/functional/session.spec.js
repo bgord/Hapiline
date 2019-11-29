@@ -75,7 +75,7 @@ test("/login --- validation", async ({client}) => {
 
 test("/login --- auth restrictions (guest only)", async ({client}) => {
 	const payload = {
-		email: "regular1@example.com",
+		email: "jim@example.com",
 		password: "yyyyyy",
 	};
 
@@ -92,7 +92,7 @@ test("/login --- auth restrictions (guest only)", async ({client}) => {
 test("/login --- auth restrictions (active/pending account status)", async ({
 	client,
 }) => {
-	const user = await User.findBy("email", "regular1@example.com");
+	const user = await User.findBy("email", "jim@example.com");
 
 	user.merge({
 		account_status: ACCOUNT_STATUSES.deleted,
@@ -166,7 +166,7 @@ test("/login --- user profile is returned after on a successful response", async
 	assert,
 }) => {
 	const payload = {
-		email: "regular1@example.com",
+		email: "jim@example.com",
 		password: "123456",
 	};
 

@@ -4,7 +4,7 @@ const LOGIN_URL = "/login";
 const DASHBOARD_URL = "/";
 
 const existingUser = {
-	email: "regular1@example.com",
+	email: "jim@example.com",
 	password: "123456",
 };
 
