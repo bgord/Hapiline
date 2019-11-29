@@ -59,10 +59,10 @@ $ ./npm.sh run frontend:css:watch
 **Start frontend app**
 
 ```bash
-$ ./npm.sh run frontend:watch
+$ ./npm.sh run frontend:build:dev
 ```
 
-The app should be already up and running at localhost:4444.
+The app should be already up and running at localhost:3333.
 
 ## Development
 
