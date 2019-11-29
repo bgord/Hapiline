@@ -1,0 +1,83 @@
+const Route = use("Route");
+const Helpers = use("Helpers");
+const Drive = use("Drive");
+const Env = use("Env");
+const execa = require("execa");
+
+Route.group(() => {
+	Route.post("/login", "SessionController.store")
+		.validator("StoreSession")
+		.middleware("reject-deleted-account");
+
+	Route.post("/register", "RegistrationIntentionController.store").validator(
+		"StoreRegistrationIntention",
+	);
+
+	Route.post("/verify-email", "EmailVerificationController.update").validator(
+		"UpdateEmailVerification",
+	);
+
+	Route.post(
+		"/forgot-password",
+		"ForgotPasswordIntentionController.store",
+	).validator("StoreForgotPasswordIntention");
+
+	Route.post("/new-password", "ForgottenPasswordController.update").validator(
+		"UpdateForgottenPassword",
+	);
+})
+	.prefix("api/v1")
+	.middleware("guest");
+
+Route.group(() => {
+	Route.post("/logout", "SessionController.destroy");
+
+	Route.get("/me", ({response, auth}) =>
+		response.send({user: {email: auth.user.email, id: auth.user.id}}),
+	);
+
+	Route.patch("/update-password", "PasswordController.update")
+		.validator("UpdatePassword")
+		.middleware("account-status:active");
+
+	Route.post("/change-email", "UserEmailController.update")
+		.validator("UpdateUserEmail")
+		.middleware(["password-auth", "account-status:active"]);
+})
+	.prefix("api/v1")
+	.middleware("auth");
+
+Route.get("/healthcheck", () => ({
+	greeting: "Hello world in JSON",
+}));
+
+Route.get("/app", async ({auth}) => {
+	const user = await auth.getUser();
+	return {message: `Hello from the inside, ${user.toJSON().email}.`};
+}).middleware("auth");
+
+Route.post("/test/db/seed", async ({response}) => {
+	const env = Env.get("NODE_ENV");
+	if (env !== "production") {
+		await execa("node", ["ace", "migration:refresh"]);
+		await execa("node", ["ace", "seed"]);
+	}
+	return response.send();
+});
+
+Route.get("*", async ({request, response}) => {
+	const resourcePath = request.url();
+	if (resourcePath === "/") {
+		return response.download(Helpers.publicPath("index.html"));
+	}
+	const pathSegments = resourcePath.split("/");
+	const filename = pathSegments[pathSegments.length - 1];
+
+	const resourcePathExists = await Drive.exists(`../public/${filename}`);
+
+	return response.download(
+		Helpers.publicPath(
+			resourcePathExists && filename !== "" ? filename : "index.html",
+		),
+	);
+});

@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+.field {
+	@apply border p-2 text-gray-900;
+}
+.field:focus {
+	@apply text-base bg-white border-blue-500;
+}
+
+.field-label {
+	@apply font-bold text-sm text-gray-900 mb-1;
+}
+.field:invalid {
+	@apply text-base bg-white border-red-500;
+}
+
+.field:placeholder-shown {
+	@apply border-gray-300;
+}
+
+.field:placeholder-shown.field:focus {
+	@apply border-blue-500;
+}
+
+.field:required {
+	@apply shadow-none;
+}
+
+.field-group {
+	@apply flex flex-col;
+}
+
+.btn {
+	@apply font-bold py-2 px-4 rounded;
+}
+.btn-blue {
+	@apply bg-blue-500 text-white;
+}
+.btn-blue:hover {
+	@apply bg-blue-700;
+}
+.btn:disabled {
+	@apply opacity-75 cursor-default;
+}
+
+.success-message {
+	@apply mt-8 p-2 bg-green-300 text-green-900 mx-auto w-full;
+}
+
+.link {
+	@apply block text-blue-500 text-sm underline;
+}
+
+@tailwind utilities;

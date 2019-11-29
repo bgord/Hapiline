@@ -1,0 +1,25 @@
+# Node modules
+node_modules
+
+# Adonis directory for storing tmp files
+tmp
+
+# Environment variables, never commit these file
+.env
+.env-docker
+.env-frontend
+
+# Frontend
+.awcache/
+frontend/css/index.css
+public/
+dist/
+
+# Other
+.importjs.js
+
+# Deployment articacts
+
+deployment/deploy-cache/*
+cypress/videos
+cypress/screenshots

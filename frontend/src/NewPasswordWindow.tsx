@@ -1,0 +1,103 @@
+import {useParams, Link} from "react-router-dom";
+import * as Async from "react-async";
+import React from "react";
+
+import {RequestErrorMessage} from "./Errors";
+import {api} from "./services/api";
+import {useRequestErrors} from "./hooks/useRequestErrors";
+
+const performNewPasswordRequest: Async.DeferFn<void> = async ([
+	token,
+	password,
+	passwordConfirmation,
+]: string[]) =>
+	api.post("/new-password", {
+		token: decodeURIComponent(token),
+		password,
+		password_confirmation: passwordConfirmation,
+	});
+
+export const NewPasswordWindow: React.FC = () => {
+	const {token} = useParams();
+	const [password, setPassword] = React.useState("");
+	const [passwordConfirmation, setPasswordConfirmation] = React.useState("");
+
+	const newPasswordRequestState = Async.useAsync({
+		deferFn: performNewPasswordRequest,
+	});
+	const requestError = useRequestErrors(newPasswordRequestState);
+
+	return (
+		<div className="bg-white rounded shadow-lg p-8 md:max-w-sm md:mx-auto ">
+			<form
+				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+					event.preventDefault();
+					newPasswordRequestState.run(token, password, passwordConfirmation);
+				}}
+				className="mb-4 md:flex md:flex-wrap md:justify-between"
+			>
+				<div className="field-group mb-6 md:w-full">
+					<label className="field-label" htmlFor="password">
+						Password
+					</label>
+					<input
+						className="field"
+						name="password"
+						id="password"
+						placeholder="********"
+						autoComplete="new-password"
+						title="Password should contain at least 6 characters."
+						value={password}
+						onChange={event => setPassword(event.target.value)}
+						type="password"
+						required
+						pattern=".{6,}"
+						disabled={newPasswordRequestState.isFulfilled}
+					/>
+				</div>
+				<div className="field-group mb-6 md:w-full">
+					<label className="field-label" htmlFor="password-confirmation">
+						Repeat password
+					</label>
+					<input
+						className="field"
+						type="password"
+						name="password-confirmation"
+						id="password-confirmation"
+						placeholder="********"
+						pattern={password}
+						title="Passwords have to be equal"
+						value={passwordConfirmation}
+						onChange={event => setPasswordConfirmation(event.target.value)}
+						required
+						disabled={newPasswordRequestState.isFulfilled}
+					/>
+				</div>
+				<div className="flex justify-end w-full">
+					<button
+						className="btn btn-blue"
+						type="submit"
+						data-testid="registration-submit"
+						disabled={newPasswordRequestState.isFulfilled}
+					>
+						{newPasswordRequestState.isPending
+							? "Loading..."
+							: "Change password"}
+					</button>
+				</div>
+				<Async.IfFulfilled state={newPasswordRequestState}>
+					<div className="success-message">Password has been changed!</div>
+					<div className="flex mt-4">
+						<span className="text-sm">You can </span>
+						<Link className="link ml-1" to="/login">
+							login now
+						</Link>
+					</div>
+				</Async.IfFulfilled>
+				<Async.IfRejected state={newPasswordRequestState}>
+					<RequestErrorMessage>{requestError.errorMessage}</RequestErrorMessage>
+				</Async.IfRejected>
+			</form>
+		</div>
+	);
+};
