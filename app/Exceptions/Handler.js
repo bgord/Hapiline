@@ -41,6 +41,13 @@ class ExceptionHandler extends BaseExceptionHandler {
 				argErrors: [],
 			});
 		}
+		if (error.name === "ForbiddenException") {
+			return response.status(error.status).send({
+				code: MAIN_ERROR_CODES.access_denied,
+				message: MAIN_ERROR_MESSAGES.access_denied,
+				argErrors: [],
+			});
+		}
 		console.log("=================");
 		console.log(`UNEXPECTED ERROR for URL ${url}`);
 		console.error(error);
