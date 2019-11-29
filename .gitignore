@@ -12,7 +12,8 @@ tmp
 # Frontend
 .awcache/
 frontend/css/index.css
-public/
+public/*
+!public/logo.png
 dist/
 
 # Other

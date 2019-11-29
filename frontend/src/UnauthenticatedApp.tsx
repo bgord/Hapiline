@@ -7,8 +7,9 @@ import {EmailVerificationWindow} from "./EmailVerificationWindow";
 import {ForgotPasswordWindow} from "./ForgotPasswordWindow";
 import {Home} from "./Home";
 import {LoginWindow} from "./LoginWindow";
-import {RegistrationWindow} from "./RegistrationWindow";
+import {Logo} from "./Logo";
 import {NewPasswordWindow} from "./NewPasswordWindow";
+import {RegistrationWindow} from "./RegistrationWindow";
 
 const unauthenticatedAppBrowserHistory = createBrowserHistory();
 
@@ -56,20 +57,12 @@ function UnauthenticatedNavbar() {
 				activeClassName="text-blue-400"
 				to="/"
 			>
-				LOGO
+				<Logo className="h-10" />
 			</NavLink>
-			<NavLink
-				className="px-4 py-2"
-				activeClassName="text-blue-400"
-				to="/register"
-			>
+			<NavLink className="p-4" activeClassName="text-blue-400" to="/register">
 				Register
 			</NavLink>
-			<NavLink
-				className="px-4 py-2"
-				activeClassName="text-blue-400"
-				to="/login"
-			>
+			<NavLink className="p-4" activeClassName="text-blue-400" to="/login">
 				Login
 			</NavLink>
 		</nav>

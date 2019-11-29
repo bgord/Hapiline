@@ -3,6 +3,7 @@ import * as React from "react";
 
 import {createBrowserHistory} from "history";
 
+import {Logo} from "./Logo";
 import {Logout} from "./Logout";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -34,18 +35,14 @@ function AuthenticatedNavbar() {
 	return (
 		<nav className="flex justify-end py-1 bg-white shadow-md mb-4">
 			<NavLink
-				className="ml-2 mr-auto px-4 py-2"
+				className="ml-2 mr-auto p-2"
 				exact
 				activeClassName="text-blue-400"
 				to="/dashboard"
 			>
-				LOGO
+				<Logo />
 			</NavLink>
-			<NavLink
-				className="px-4 py-2"
-				activeClassName="text-blue-400"
-				to="/logout"
-			>
+			<NavLink className="p-4" activeClassName="text-blue-400" to="/logout">
 				Logout
 			</NavLink>
 		</nav>
