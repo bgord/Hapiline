@@ -68,6 +68,7 @@ const aliases = {
 	MAIL_TEMPLATES: "App/Constants/MAIL_TEMPLATES",
 	MAIN_ERROR_CODES: "App/Constants/MAIN_ERROR_CODES",
 	MAIN_ERROR_MESSAGES: "App/Constants/MAIN_ERROR_MESSAGES",
+	HABIT_SCORE_TYPES: "App/Constants/HABIT_SCORE_TYPES",
 
 	// validators
 	BaseHttpValidator: "App/Validators/BaseHttpValidator",
