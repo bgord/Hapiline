@@ -1,0 +1,22 @@
+{
+	"admin": {
+		"id": 1,
+		"email": "admin@example.com"
+	},
+	"jim": {
+		"id": 2,
+		"email": "jim@example.com"
+	},
+	"dwight": {
+		"id": 3,
+		"email": "dwight@example.com"
+	},
+	"michael": {
+		"id": 4,
+		"email": "michael@example.com"
+	},
+	"pam": {
+		"id": 5,
+		"email": "pam@example.com"
+	}
+}
