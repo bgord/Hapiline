@@ -1,5 +1,6 @@
 const HabitScoreboardItem = use("HabitScoreboardItem");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const Database = use("Database");
 
 class HabitScoreboardItemController {
 	async store({request, response}) {
@@ -25,8 +26,12 @@ class HabitScoreboardItemController {
 		}
 	}
 
-	async index({response}) {
-		return response.send();
+	async index({response, auth}) {
+		const result = await Database.table("habit_scoreboard_items").where(
+			"user_id",
+			auth.user.id,
+		);
+		return response.send(result);
 	}
 }
 

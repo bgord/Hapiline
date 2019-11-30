@@ -51,3 +51,16 @@ test("account-status:(active)", async ({client}) => {
 		.end();
 	assertAccessDenied(response);
 });
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(GET_HABIT_SCOREBOARD_ITEM_URL)
+		.loginVia(jim)
+		.end();
+
+	response.assertStatus(200);
+	assert.lengthOf(response.body, 5);
+	assert.ok(response.body.every(item => item.user_id === jim.id));
+});
