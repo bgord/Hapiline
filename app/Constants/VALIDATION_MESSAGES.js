@@ -12,6 +12,7 @@ const VALIDATION_MESSAGES = {
 	integer: field => `Field ${field} must be an integer.`,
 	string: field => `Field ${field} must be a string.`,
 	above: (field, number) => `Field ${field} must be above ${number}.`,
+	unique_habitscoreboard_item: `Item with given name already exists.`,
 };
 
 module.exports = VALIDATION_MESSAGES;

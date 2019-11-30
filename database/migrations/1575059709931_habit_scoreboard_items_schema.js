@@ -16,6 +16,8 @@ class HabitScoreboardItemsSchema extends Schema {
 				.unsigned()
 				.notNullable();
 			table.timestamps();
+
+			table.unique(["name", "user_id"]);
 		});
 	}
 

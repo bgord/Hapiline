@@ -158,3 +158,40 @@ test("full flow", async ({client, assert}) => {
 	assert.equal(response.body.score, payload.score);
 	assert.equal(response.body.user_id, payload.user_id);
 });
+
+test("cannot insert two identical records", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		name: "Wake up",
+		score: HABIT_SCORE_TYPES.neutral,
+		user_id: users.jim.id,
+	};
+
+	const firstResponse = await client
+		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	firstResponse.assertStatus(201);
+	assert.equal(firstResponse.body.name, payload.name);
+	assert.equal(firstResponse.body.score, payload.score);
+	assert.equal(firstResponse.body.user_id, payload.user_id);
+
+	const secondResponse = await client
+		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+	assertValidationError({
+		response: secondResponse,
+		argErrors: [
+			{
+				message: VALIDATION_MESSAGES.unique_habitscoreboard_item,
+				field: "name",
+				validation: "unique",
+			},
+		],
+	});
+});
