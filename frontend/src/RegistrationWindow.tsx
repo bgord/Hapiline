@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {RequestErrorMessage, ValidationErrorMessage} from "./Errors";
+import {RequestErrorMessage, ErrorMessage} from "./Errors";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
@@ -55,9 +55,9 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 					/>
 					<Async.IfRejected state={registrationRequestState}>
-						<ValidationErrorMessage>
+						<ErrorMessage>
 							{emailInlineError && emailInlineError.message}
-						</ValidationErrorMessage>
+						</ErrorMessage>
 					</Async.IfRejected>
 				</div>
 				<div className="field-group mb-6 md:w-full">

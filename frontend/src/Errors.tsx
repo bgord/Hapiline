@@ -1,9 +1,15 @@
 import React from "react";
 
-export const RequestErrorMessage: React.FC = ({children}) => (
-	<div className="w-full text-center text-red-700 mt-4">{children}</div>
+export const ErrorMessage: React.FC<React.HTMLProps<HTMLDivElement>> = ({
+	children,
+	className = "",
+	...props
+}) => (
+	<div className={`w-full text-red-700 mt-1 ${className}`} {...props}>
+		{children}
+	</div>
 );
 
-export const ValidationErrorMessage: React.FC = ({children}) => (
-	<div className="w-full text-red-700 mt-1">{children}</div>
+export const RequestErrorMessage: React.FC = ({children}) => (
+	<ErrorMessage className="text-center mt-4">{children}</ErrorMessage>
 );
