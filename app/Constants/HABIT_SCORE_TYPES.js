@@ -4,4 +4,4 @@ const HABIT_SCORE_TYPES = {
 	negative: "negative",
 };
 
-module.exports = {HABIT_SCORE_TYPES};
+module.exports = HABIT_SCORE_TYPES;

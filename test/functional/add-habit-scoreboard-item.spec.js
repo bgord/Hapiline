@@ -11,6 +11,7 @@ const {
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -117,4 +118,22 @@ test("validation", async ({client}) => {
 			.end();
 		assertValidationError({response, argErrors});
 	}
+});
+
+test("user can only add their own habit scoreboard items", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		name: "Wake up",
+		score: HABIT_SCORE_TYPES.neutral,
+		user_id: users.pam.id,
+	};
+
+	const response = await client
+		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
 });
