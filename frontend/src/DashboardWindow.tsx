@@ -24,22 +24,34 @@ const performAddHabitScoreboardItemRequest: Async.DeferFn<
 		})
 		.then(response => response.data);
 
+const performGetHabitScoreboardItemsRequest: Async.PromiseFn<
+	HabitScoreboardItem[]
+> = () =>
+	api
+		.get<HabitScoreboardItem[]>("/habit-scoreboard-items")
+		.then(response => response.data);
+
 export const Dashboard = () => {
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
 	const [profile] = useUserProfile();
+
+	const getHabitScoreboardItemsRequestState = Async.useAsync({
+		promiseFn: performGetHabitScoreboardItemsRequest,
+	});
 
 	const addHabitScoreboardItemRequestState = Async.useAsync({
 		deferFn: performAddHabitScoreboardItemRequest,
 		onResolve: function clearForm() {
 			setName("");
 			setScore("neutral");
+
+			getHabitScoreboardItemsRequestState.reload();
 		},
 	});
 	const {getArgError, errorMessage} = useRequestErrors(
 		addHabitScoreboardItemRequestState,
 	);
-
 	const nameInlineError = getArgError("name");
 
 	return (
@@ -99,13 +111,21 @@ export const Dashboard = () => {
 						Habit successfully addedd!
 					</CloseableSuccessMessage>
 				</Async.IfFulfilled>
-
 				<Async.IfRejected state={addHabitScoreboardItemRequestState}>
 					<ErrorMessage className="mt-4">
 						{(nameInlineError && nameInlineError.message) || errorMessage}
 					</ErrorMessage>
 				</Async.IfRejected>
 			</div>
+			<ul>
+				{getHabitScoreboardItemsRequestState &&
+					getHabitScoreboardItemsRequestState.data &&
+					getHabitScoreboardItemsRequestState.data.map(item => (
+						<li key={item.id}>
+							{item.score} | {item.name}
+						</li>
+					))}
+			</ul>
 		</section>
 	);
 };
