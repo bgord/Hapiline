@@ -16,6 +16,7 @@ function getInvalidSessionExceptionMessage(url, originalErrorMessage) {
 		"/api/v1/change-email": MAIN_ERROR_MESSAGES.invalid_session,
 		"/api/v1/me": MAIN_ERROR_MESSAGES.invalid_session,
 		"/api/v1/habit-scoreboard-item": MAIN_ERROR_MESSAGES.invalid_session,
+		"/api/v1/habit-scoreboard-items": MAIN_ERROR_MESSAGES.invalid_session,
 	};
 	return urlToMessage[url] || originalErrorMessage;
 }

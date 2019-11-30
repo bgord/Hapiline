@@ -24,6 +24,10 @@ class HabitScoreboardItemController {
 			throw e;
 		}
 	}
+
+	async index({response}) {
+		return response.send();
+	}
 }
 
 module.exports = HabitScoreboardItemController;

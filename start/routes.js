@@ -73,6 +73,11 @@ Route.post(
 	.validator("StoreHabitScoreboardItem")
 	.middleware("match-auth-user-id:user_id");
 
+Route.get(
+	"/api/v1/habit-scoreboard-items",
+	"HabitScoreboardItemController.index",
+).middleware(["auth", `is:(regular)`, `account-status:active`]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
