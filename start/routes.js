@@ -68,7 +68,9 @@ Route.post("/test/db/seed", async ({response}) => {
 Route.post(
 	"/api/v1/habit-scoreboard-item",
 	"HabitScoreboardItemController.store",
-).middleware(["auth", `is:(regular)`, `account-status:active`]);
+)
+	.middleware(["auth", `is:(regular)`, `account-status:active`])
+	.validator("StoreHabitScoreboardItem");
 
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();

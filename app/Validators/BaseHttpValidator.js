@@ -12,8 +12,8 @@ class BaseHttpValidator {
 		const engineExceptionPresent = errorMessages.find(
 			error => error.validation === "ENGINE_EXCEPTION",
 		);
-		console.log(engineExceptionPresent);
 		if (engineExceptionPresent) {
+			console.log(engineExceptionPresent);
 			return this.ctx.response.internalSeverError({
 				message: "Unexpected error, try again later.",
 			});

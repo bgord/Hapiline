@@ -6,9 +6,11 @@ const User = use("User");
 const {
 	assertInvalidSession,
 	assertAccessDenied,
+	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -39,7 +41,7 @@ test("is:(regular)", async ({client}) => {
 });
 
 test("account-status:(active)", async ({client}) => {
-	const jim = await User.find(users.admin.id);
+	const jim = await User.find(users.jim.id);
 	jim.merge({
 		account_status: ACCOUNT_STATUSES.pending,
 	});
@@ -50,4 +52,69 @@ test("account-status:(active)", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
+});
+
+test("validation", async ({client}) => {
+	const pam = await User.find(users.pam.id);
+
+	const cases = [
+		[
+			{},
+			[
+				{
+					message: VALIDATION_MESSAGES.required("name"),
+					field: "name",
+					validation: "required",
+				},
+				{
+					message: VALIDATION_MESSAGES.required("score"),
+					field: "score",
+					validation: "required",
+				},
+				{
+					message: VALIDATION_MESSAGES.required("user_id"),
+					field: "user_id",
+					validation: "required",
+				},
+			],
+		],
+		[
+			{
+				name: "x".repeat(256),
+				score: "xxx",
+				user_id: "xxxx",
+			},
+			[
+				{
+					message: VALIDATION_MESSAGES.max("name", 255),
+					field: "name",
+					validation: "max",
+				},
+				{
+					message: VALIDATION_MESSAGES.invalid_score,
+					field: "score",
+					validation: "in",
+				},
+				{
+					message: VALIDATION_MESSAGES.integer("user_id"),
+					field: "user_id",
+					validation: "integer",
+				},
+				{
+					message: VALIDATION_MESSAGES.above("user_id", 0),
+					field: "user_id",
+					validation: "above",
+				},
+			],
+		],
+	];
+
+	for (let [payload, argErrors] of cases) {
+		const response = await client
+			.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+			.send(payload)
+			.loginVia(pam)
+			.end();
+		assertValidationError({response, argErrors});
+	}
 });
