@@ -1,4 +1,4 @@
-class PasswordAuth {
+class MatchAuthUserId {
 	async handle({auth, request, response}, next, args) {
 		const [field] = args;
 		const {[field]: providedUserId} = request.only([field]);
@@ -11,4 +11,4 @@ class PasswordAuth {
 	}
 }
 
-module.exports = PasswordAuth;
+module.exports = MatchAuthUserId;

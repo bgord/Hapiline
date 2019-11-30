@@ -9,11 +9,11 @@ class BaseHttpValidator {
 	async fails(errorMessages) {
 		// In case some of the validators throws a db related error
 		// it's safer to just return a 500 than expose query details.
-		const engineExceptionPresent = errorMessages.find(
+		const engineException = errorMessages.find(
 			error => error.validation === "ENGINE_EXCEPTION",
 		);
-		if (engineExceptionPresent) {
-			console.log(engineExceptionPresent);
+		if (engineException) {
+			console.log(engineException);
 			return this.ctx.response.internalSeverError({
 				message: "Unexpected error, try again later.",
 			});
