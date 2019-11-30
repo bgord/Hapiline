@@ -2,7 +2,8 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {RequestErrorMessage, ValidationErrorMessage} from "./Errors";
+import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
+import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
@@ -55,9 +56,9 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 					/>
 					<Async.IfRejected state={registrationRequestState}>
-						<ValidationErrorMessage>
+						<ErrorMessage>
 							{emailInlineError && emailInlineError.message}
-						</ValidationErrorMessage>
+						</ErrorMessage>
 					</Async.IfRejected>
 				</div>
 				<div className="field-group mb-6 md:w-full">
@@ -108,9 +109,9 @@ export const RegistrationWindow: React.FC = () => {
 					</button>
 				</div>
 				<Async.IfFulfilled state={registrationRequestState}>
-					<div className="success-message">
+					<SuccessMessage>
 						Account confirmation email has been sent!
-					</div>
+					</SuccessMessage>
 					<div className="flex mt-4">
 						<span className="text-sm">You can </span>
 						<Link className="link ml-1" to="/login">

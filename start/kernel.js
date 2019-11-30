@@ -41,6 +41,7 @@ const namedMiddleware = {
 	"password-auth": "App/Middleware/PasswordAuth",
 	"account-status": "App/Middleware/AccountStatus",
 	"reject-deleted-account": "App/Middleware/RejectDeletedAccount",
+	"match-auth-user-id": "App/Middleware/MatchAuthUserId",
 };
 
 /*

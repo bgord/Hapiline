@@ -3,8 +3,10 @@ import * as React from "react";
 
 import {createBrowserHistory} from "history";
 
+import {Dashboard} from "./DashboardWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
+import {useUserProfile} from "./contexts/auth-context";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
 
@@ -19,10 +21,10 @@ function AuthenticatedApp() {
 							<Logout />
 						</Route>
 						<Route exact path="/dashboard">
-							<div>Welcome to dashboard</div>
+							<Dashboard />
 						</Route>
 						<Redirect to="/dashboard" />
-					</Switch>{" "}
+					</Switch>
 				</section>
 			</main>
 		</Router>
@@ -32,6 +34,8 @@ function AuthenticatedApp() {
 export default AuthenticatedApp;
 
 function AuthenticatedNavbar() {
+	const [profile] = useUserProfile();
+	const email = profile && profile.email;
 	return (
 		<nav className="flex justify-end py-1 bg-white shadow-md mb-4">
 			<NavLink
@@ -42,6 +46,7 @@ function AuthenticatedNavbar() {
 			>
 				<Logo />
 			</NavLink>
+			<h3 className="font-semibold mr-4 p-4">{email}</h3>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/logout">
 				Logout
 			</NavLink>

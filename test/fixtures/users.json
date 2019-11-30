@@ -1,0 +1,27 @@
+{
+	"admin": {
+		"id": 1,
+		"email": "admin@example.com",
+		"password": "123456"
+	},
+	"jim": {
+		"id": 2,
+		"email": "jim@example.com",
+		"password": "123456"
+	},
+	"dwight": {
+		"id": 3,
+		"email": "dwight@example.com",
+		"password": "123456"
+	},
+	"michael": {
+		"id": 4,
+		"email": "michael@example.com",
+		"password": "123456"
+	},
+	"pam": {
+		"id": 5,
+		"email": "pam@example.com",
+		"password": "123456"
+	}
+}

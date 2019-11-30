@@ -24,3 +24,20 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 import "@testing-library/cypress/add-commands";
+
+import users from "../../test/fixtures/users.json";
+import assert from "assert";
+
+Cypress.Commands.add("login", username => {
+	const usernames = Object.keys(users);
+	assert.ok(usernames.includes(username));
+
+	cy.request({
+		url: "api/v1/login",
+		method: "post",
+		body: {
+			email: users[username].email,
+			password: users[username].password,
+		},
+	});
+});

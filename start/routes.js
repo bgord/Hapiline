@@ -33,7 +33,7 @@ Route.group(() => {
 	Route.post("/logout", "SessionController.destroy");
 
 	Route.get("/me", ({response, auth}) =>
-		response.send({user: {email: auth.user.email, id: auth.user.id}}),
+		response.send({email: auth.user.email, id: auth.user.id}),
 	);
 
 	Route.patch("/update-password", "PasswordController.update")
@@ -64,6 +64,14 @@ Route.post("/test/db/seed", async ({response}) => {
 	}
 	return response.send();
 });
+
+Route.post(
+	"/api/v1/habit-scoreboard-item",
+	"HabitScoreboardItemController.store",
+)
+	.middleware(["auth", `is:(regular)`, `account-status:active`])
+	.validator("StoreHabitScoreboardItem")
+	.middleware("match-auth-user-id:user_id");
 
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();

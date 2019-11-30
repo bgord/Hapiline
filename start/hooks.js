@@ -2,11 +2,10 @@ const {hooks} = require("@adonisjs/ignitor");
 
 hooks.after.providersBooted(() => {
 	const Response = use("Adonis/Src/Response");
-
 	const MAIN_ERROR_MESSAGES = use("App/Constants/MAIN_ERROR_MESSAGES");
-
 	const MAIN_ERROR_CODES = use("App/Constants/MAIN_ERROR_CODES");
 
+	// RESPONSE MACROS
 	Response.macro("accessDenied", function() {
 		this.status(403).send({
 			code: MAIN_ERROR_CODES.access_denied,

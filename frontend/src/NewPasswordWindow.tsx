@@ -2,7 +2,8 @@ import {useParams, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {RequestErrorMessage} from "./Errors";
+import {RequestErrorMessage} from "./ErrorMessages";
+import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
@@ -86,7 +87,7 @@ export const NewPasswordWindow: React.FC = () => {
 					</button>
 				</div>
 				<Async.IfFulfilled state={newPasswordRequestState}>
-					<div className="success-message">Password has been changed!</div>
+					<SuccessMessage>Password has been changed!</SuccessMessage>
 					<div className="flex mt-4">
 						<span className="text-sm">You can </span>
 						<Link className="link ml-1" to="/login">

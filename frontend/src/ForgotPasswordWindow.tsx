@@ -1,6 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
+import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 
 const performForgotPasswordRequest: Async.DeferFn<void> = ([email]: string[]) =>
@@ -50,9 +51,9 @@ export const ForgotPasswordWindow: React.FC = () => {
 					</button>
 				</div>
 				<Async.IfFulfilled state={forgotPasswordRequestState}>
-					<div className="success-message">
+					<SuccessMessage className="w-full">
 						Email sent if an account exists.
-					</div>
+					</SuccessMessage>
 				</Async.IfFulfilled>
 			</form>
 		</div>
