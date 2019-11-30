@@ -1,13 +1,11 @@
-const Database = use("Database");
+const HabitScoreboardItem = use("HabitScoreboardItem");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 class HabitScoreboardItemController {
 	async store({request, response}) {
 		const payload = request.only(["name", "score", "user_id"]);
 		try {
-			const [result] = await Database.table("habit_scoreboard_items")
-				.insert(payload)
-				.returning("*");
+			const result = await HabitScoreboardItem.create(payload);
 			return response.status(201).send(result);
 		} catch (e) {
 			if (
