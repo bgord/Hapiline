@@ -31,9 +31,7 @@ test("/me --- full flow", async ({client}) => {
 		.end();
 	response.assertStatus(200);
 	response.assertJSON({
-		user: {
-			email: user.email,
-			id: user.id,
-		},
+		email: user.email,
+		id: user.id,
 	});
 });

@@ -33,7 +33,7 @@ Route.group(() => {
 	Route.post("/logout", "SessionController.destroy");
 
 	Route.get("/me", ({response, auth}) =>
-		response.send({user: {email: auth.user.email, id: auth.user.id}}),
+		response.send({email: auth.user.email, id: auth.user.id}),
 	);
 
 	Route.patch("/update-password", "PasswordController.update")
