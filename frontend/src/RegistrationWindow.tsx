@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {RequestErrorMessage, ErrorMessage} from "./Errors";
+import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
