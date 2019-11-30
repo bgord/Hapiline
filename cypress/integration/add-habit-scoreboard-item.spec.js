@@ -34,4 +34,28 @@ describe("Add habit scoreboard item", () => {
 		cy.findByText("Habit successfully addedd!");
 		cy.findByText("x").click();
 	});
+
+	it("500", () => {
+		const errorMessage = "Unexpected error, try again later.";
+		cy.server();
+		cy.route({
+			method: "POST",
+			url: "/api/v1/habit-scoreboard-item",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
+		cy.findByLabelText("Score").select("positive");
+		cy.findByText("Add habit").click();
+
+		cy.findByText(errorMessage);
+	});
 });
