@@ -3,6 +3,7 @@ import * as React from "react";
 
 import {createBrowserHistory} from "history";
 
+import {Dashboard} from "./DashboardWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
 
@@ -19,10 +20,10 @@ function AuthenticatedApp() {
 							<Logout />
 						</Route>
 						<Route exact path="/dashboard">
-							<div>Welcome to dashboard</div>
+							<Dashboard />
 						</Route>
 						<Redirect to="/dashboard" />
-					</Switch>{" "}
+					</Switch>
 				</section>
 			</main>
 		</Router>
