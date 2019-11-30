@@ -55,6 +55,7 @@
     "chalk": "^3.0.0",
     "dotenv-webpack": "^1.7.0",
     "execa": "^3.3.0",
+    "faker": "^4.1.0",
     "fs-extra": "^8.1.0",
     "pg": "^7.12.1",
     "postcss-cli": "^6.1.3",
