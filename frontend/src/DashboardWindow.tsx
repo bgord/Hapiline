@@ -13,9 +13,11 @@ interface HabitScoreboardItem {
 	score: "positive" | "neutral" | "negative";
 }
 
-const performAddHabitScoreboardItemRequest: Async.DeferFn<
-	HabitScoreboardItem
-> = ([name, score, user_id]: string[]) =>
+const performAddHabitScoreboardItemRequest: Async.DeferFn<HabitScoreboardItem> = ([
+	name,
+	score,
+	user_id,
+]: string[]) =>
 	api
 		.post<HabitScoreboardItem>("/habit-scoreboard-item", {
 			name,
@@ -24,9 +26,7 @@ const performAddHabitScoreboardItemRequest: Async.DeferFn<
 		})
 		.then(response => response.data);
 
-const performGetHabitScoreboardItemsRequest: Async.PromiseFn<
-	HabitScoreboardItem[]
-> = () =>
+const performGetHabitScoreboardItemsRequest: Async.PromiseFn<HabitScoreboardItem[]> = () =>
 	api
 		.get<HabitScoreboardItem[]>("/habit-scoreboard-items")
 		.then(response => response.data);
@@ -117,15 +117,31 @@ export const Dashboard = () => {
 					</ErrorMessage>
 				</Async.IfRejected>
 			</div>
-			<ul>
+			<div
+				className="mt-12 bg-white p-4"
+				style={{
+					display: "grid",
+					gridTemplateColumns: "100px 440px",
+					gridTemplateRows: "auto",
+					gridRowGap: "30px",
+				}}
+			>
 				{getHabitScoreboardItemsRequestState &&
 					getHabitScoreboardItemsRequestState.data &&
 					getHabitScoreboardItemsRequestState.data.map(item => (
-						<li key={item.id}>
-							{item.score} | {item.name}
-						</li>
+						<>
+							<span
+								style={{
+									placeSelf: "center",
+								}}
+								className="bg-gray-300 w-full text-center"
+							>
+								{item.score}
+							</span>
+							<span className="pl-4 10px">{item.name}</span>
+						</>
 					))}
-			</ul>
+			</div>
 		</section>
 	);
 };
