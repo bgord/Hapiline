@@ -35,7 +35,7 @@ export default AuthenticatedApp;
 
 function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
-	const email = profile && profile.email;
+	const email = profile?.email;
 	return (
 		<nav className="flex justify-end py-1 bg-white shadow-md mb-4">
 			<NavLink

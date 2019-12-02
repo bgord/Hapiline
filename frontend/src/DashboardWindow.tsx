@@ -60,11 +60,7 @@ export const Dashboard = () => {
 				<form
 					onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 						event.preventDefault();
-						addHabitScoreboardItemRequestState.run(
-							name,
-							score,
-							profile && profile.id,
-						);
+						addHabitScoreboardItemRequestState.run(name, score, profile?.id);
 					}}
 					className="flex items-end"
 				>
@@ -113,7 +109,7 @@ export const Dashboard = () => {
 				</Async.IfFulfilled>
 				<Async.IfRejected state={addHabitScoreboardItemRequestState}>
 					<ErrorMessage className="mt-4">
-						{(nameInlineError && nameInlineError.message) || errorMessage}
+						{nameInlineError?.message || errorMessage}
 					</ErrorMessage>
 				</Async.IfRejected>
 			</div>
@@ -126,21 +122,19 @@ export const Dashboard = () => {
 					gridRowGap: "30px",
 				}}
 			>
-				{getHabitScoreboardItemsRequestState &&
-					getHabitScoreboardItemsRequestState.data &&
-					getHabitScoreboardItemsRequestState.data.map(item => (
-						<>
-							<span
-								style={{
-									placeSelf: "center",
-								}}
-								className="bg-gray-300 w-full text-center"
-							>
-								{item.score}
-							</span>
-							<span className="pl-4 10px">{item.name}</span>
-						</>
-					))}
+				{getHabitScoreboardItemsRequestState?.data?.map(item => (
+					<>
+						<span
+							style={{
+								placeSelf: "center",
+							}}
+							className="bg-gray-300 w-full text-center"
+						>
+							{item.score}
+						</span>
+						<span className="pl-4 10px">{item.name}</span>
+					</>
+				))}
 			</div>
 		</section>
 	);
