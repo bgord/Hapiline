@@ -55,7 +55,7 @@ export const Dashboard = () => {
 	const nameInlineError = getArgError("name");
 
 	return (
-		<section className="flex items-center mt-4 flex-col">
+		<section className="flex flex-col items-center py-8">
 			<div>
 				<form
 					onSubmit={(event: React.FormEvent<HTMLFormElement>) => {

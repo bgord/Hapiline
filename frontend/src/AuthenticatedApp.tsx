@@ -33,7 +33,7 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 	const email = profile?.email;
 	return (
-		<nav className="flex justify-end py-1 bg-white shadow-md mb-4">
+		<nav className="flex justify-end py-1 bg-white shadow-md">
 			<NavLink
 				className="ml-2 mr-auto p-2"
 				exact
