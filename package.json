@@ -105,7 +105,8 @@
     "rules": {
       "ramda/prefer-ramda-boolean": 0,
       "jest/valid-expect": 0,
-      "sonarjs/no-duplicate-string": 0
+      "sonarjs/no-duplicate-string": 0,
+      "@typescript-eslint/no-empty-function": 0
     }
   }
 }
