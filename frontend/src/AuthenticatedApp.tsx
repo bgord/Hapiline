@@ -13,7 +13,7 @@ const authenticatedAppBrowserHistory = createBrowserHistory();
 function AuthenticatedApp() {
 	return (
 		<Router history={authenticatedAppBrowserHistory}>
-			<main className="flex flex-col h-screen w-full bg-gray-200">
+			<main className="flex flex-col h-screen w-full bg-gray-200 overflow-hidden">
 				<AuthenticatedNavbar />
 				<section className="mx-4">
 					<Switch>
