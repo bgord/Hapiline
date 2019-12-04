@@ -13,18 +13,16 @@ const authenticatedAppBrowserHistory = createBrowserHistory();
 function AuthenticatedApp() {
 	return (
 		<Router history={authenticatedAppBrowserHistory}>
-			<main className="flex flex-col h-screen w-full bg-gray-200 overflow-hidden">
-				<AuthenticatedNavbar />
-				<Switch>
-					<Route exact path="/logout">
-						<Logout />
-					</Route>
-					<Route exact path="/dashboard">
-						<Dashboard />
-					</Route>
-					<Redirect to="/dashboard" />
-				</Switch>
-			</main>
+			<AuthenticatedNavbar />
+			<Switch>
+				<Route exact path="/logout">
+					<Logout />
+				</Route>
+				<Route exact path="/dashboard">
+					<Dashboard />
+				</Route>
+				<Redirect to="/dashboard" />
+			</Switch>
 		</Router>
 	);
 }
