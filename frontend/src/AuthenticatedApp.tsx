@@ -15,17 +15,15 @@ function AuthenticatedApp() {
 		<Router history={authenticatedAppBrowserHistory}>
 			<main className="flex flex-col h-screen w-full bg-gray-200 overflow-hidden">
 				<AuthenticatedNavbar />
-				<section className="mx-4">
-					<Switch>
-						<Route exact path="/logout">
-							<Logout />
-						</Route>
-						<Route exact path="/dashboard">
-							<Dashboard />
-						</Route>
-						<Redirect to="/dashboard" />
-					</Switch>
-				</section>
+				<Switch>
+					<Route exact path="/logout">
+						<Logout />
+					</Route>
+					<Route exact path="/dashboard">
+						<Dashboard />
+					</Route>
+					<Redirect to="/dashboard" />
+				</Switch>
 			</main>
 		</Router>
 	);

@@ -18,29 +18,27 @@ function UnauthenticatedApp() {
 		<Router history={unauthenticatedAppBrowserHistory}>
 			<main className="flex flex-col h-screen w-full bg-gray-200">
 				<UnauthenticatedNavbar />
-				<section className="mx-4">
-					<Switch>
-						<Route exact path="/login">
-							<LoginWindow />
-						</Route>
-						<Route exact path="/register">
-							<RegistrationWindow />
-						</Route>
-						<Route exact path="/verify-email/:token">
-							<EmailVerificationWindow />
-						</Route>
-						<Route exact path="/forgot-password">
-							<ForgotPasswordWindow />
-						</Route>
-						<Route exact path="/new-password/:token">
-							<NewPasswordWindow />
-						</Route>
-						<Route exact path="/">
-							<Home />
-						</Route>
-						<Redirect to="/" />
-					</Switch>
-				</section>
+				<Switch>
+					<Route exact path="/login">
+						<LoginWindow />
+					</Route>
+					<Route exact path="/register">
+						<RegistrationWindow />
+					</Route>
+					<Route exact path="/verify-email/:token">
+						<EmailVerificationWindow />
+					</Route>
+					<Route exact path="/forgot-password">
+						<ForgotPasswordWindow />
+					</Route>
+					<Route exact path="/new-password/:token">
+						<NewPasswordWindow />
+					</Route>
+					<Route exact path="/">
+						<Home />
+					</Route>
+					<Redirect to="/" />
+				</Switch>
 			</main>
 		</Router>
 	);
