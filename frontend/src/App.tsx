@@ -13,10 +13,8 @@ const UnauthenticatedApp = React.lazy(() =>
 export function App() {
 	const isLoggedIn = useIsLoggedIn();
 	return (
-		<div className="content-center">
-			<React.Suspense fallback={<Loader />}>
-				{isLoggedIn ? <AuthenticatedApp /> : <UnauthenticatedApp />}
-			</React.Suspense>
-		</div>
+		<React.Suspense fallback={<Loader />}>
+			{isLoggedIn ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+		</React.Suspense>
 	);
 }
