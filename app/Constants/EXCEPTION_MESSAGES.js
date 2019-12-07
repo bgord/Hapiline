@@ -8,17 +8,8 @@ function getInvalidTokenExceptionMessage(url, originalErrorMessage) {
 	return urlToMessage[url] || originalErrorMessage;
 }
 
-function getInvalidSessionExceptionMessage(url, originalErrorMessage) {
-	const urlToMessage = {
-		"/app": MAIN_ERROR_MESSAGES.invalid_session,
-		"/api/v1/update-password": MAIN_ERROR_MESSAGES.invalid_session,
-		"/api/v1/logout": MAIN_ERROR_MESSAGES.invalid_session,
-		"/api/v1/change-email": MAIN_ERROR_MESSAGES.invalid_session,
-		"/api/v1/me": MAIN_ERROR_MESSAGES.invalid_session,
-		"/api/v1/habit-scoreboard-item": MAIN_ERROR_MESSAGES.invalid_session,
-		"/api/v1/habit-scoreboard-items": MAIN_ERROR_MESSAGES.invalid_session,
-	};
-	return urlToMessage[url] || originalErrorMessage;
+function getInvalidSessionExceptionMessage() {
+	return MAIN_ERROR_MESSAGES.invalid_session;
 }
 
 function getHttpExceptionMessage(url, originalErrorMessage) {

@@ -33,6 +33,26 @@ class HabitScoreboardItemController {
 		);
 		return response.send(result);
 	}
+
+	async delete({params, response, auth}) {
+		const {id} = params;
+		const loggedInUserId = auth.user.id;
+
+		try {
+			const deletedItemsCounter = await Database.table("habit_scoreboard_items")
+				.where({
+					id,
+					user_id: loggedInUserId,
+				})
+				.delete();
+
+			if (!deletedItemsCounter) throw error;
+
+			return response.send();
+		} catch (error) {
+			return response.accessDenied();
+		}
+	}
 }
 
 module.exports = HabitScoreboardItemController;
