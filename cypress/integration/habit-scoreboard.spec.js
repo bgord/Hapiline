@@ -33,6 +33,8 @@ describe("Habit scoreboard", () => {
 		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
 		cy.findByText("x").click();
+
+		cy.findByText("Go to sleep at 9:30PAM");
 	});
 
 	it("500 while adding an item", () => {
