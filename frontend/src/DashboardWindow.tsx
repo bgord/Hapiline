@@ -4,7 +4,6 @@ import React from "react";
 import {AddHabitScoreboardItemForm} from "./AddHabitScoreboardItemForm";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitScoreboardItem} from "./interfaces/HabitScoreboardItem";
-import {Loader} from "./Loader";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
@@ -13,11 +12,29 @@ const performGetHabitScoreboardItemsRequest: Async.PromiseFn<HabitScoreboardItem
 		.get<HabitScoreboardItem[]>("/habit-scoreboard-items")
 		.then(response => response.data);
 
+const performDeleteHabitScoreboardItemsRequest: Async.DeferFn<void> = ([
+	id,
+]: number[]) =>
+	api.delete(`/habit-scoreboard-item/${id}`).then(response => response.data);
+
 export const Dashboard = () => {
+	const [
+		idOfItemBeingCurrentlyDeleted,
+		setIdOfItemBeingCurrentlyDeleted,
+	] = React.useState<number | null>(null);
+
 	const getHabitScoreboardItemsRequestState = Async.useAsync({
 		promiseFn: performGetHabitScoreboardItemsRequest,
 	});
 	const {errorMessage} = useRequestErrors(getHabitScoreboardItemsRequestState);
+
+	const deleteHabitScoreboardItemsRequestState = Async.useAsync({
+		deferFn: performDeleteHabitScoreboardItemsRequest,
+		onResolve: () => {
+			getHabitScoreboardItemsRequestState.reload();
+			setIdOfItemBeingCurrentlyDeleted(null);
+		},
+	});
 
 	return (
 		<section className="flex flex-col items-center py-8">
@@ -26,24 +43,22 @@ export const Dashboard = () => {
 					getHabitScoreboardItemsRequestState.reload
 				}
 			/>
-			<Async.IfPending state={getHabitScoreboardItemsRequestState}>
-				<Loader />
-			</Async.IfPending>
 
 			<Async.IfRejected state={getHabitScoreboardItemsRequestState}>
 				<ErrorMessage className="mt-4">{errorMessage}</ErrorMessage>
 			</Async.IfRejected>
 
-			<Async.IfFulfilled state={getHabitScoreboardItemsRequestState}>
-				<div
-					className="mt-12 bg-white p-4"
-					style={{
-						display: "grid",
-						gridTemplateColumns: "100px 440px",
-						gridTemplateRows: "auto",
-						gridRowGap: "30px",
-					}}
-				>
+			<div
+				className="mt-12 bg-white p-4"
+				style={{
+					display: "grid",
+					gridTemplateColumns: "100px 440px 100px",
+					gridTemplateRows: "auto",
+					gridRowGap: "30px",
+					minHeight: "80px",
+				}}
+			>
+				<Async.IfFulfilled state={getHabitScoreboardItemsRequestState}>
 					{!getHabitScoreboardItemsRequestState?.data?.length && (
 						<div className="text-center" style={{gridColumn: "span 2"}}>
 							Seems you haven't added any habits yet.
@@ -59,11 +74,25 @@ export const Dashboard = () => {
 							>
 								{item.score}
 							</span>
-							<span className="pl-4 10px">{item.name}</span>
+							<span className="pl-4 break-words pr-4">{item.name}</span>
+							<button
+								onClick={() => {
+									setIdOfItemBeingCurrentlyDeleted(item.id);
+									deleteHabitScoreboardItemsRequestState.run(item.id);
+								}}
+								type="button"
+								className={`uppercase px-4 text-sm font-semibold text-red-500 inline`}
+								disabled={deleteHabitScoreboardItemsRequestState.isPending}
+							>
+								{deleteHabitScoreboardItemsRequestState.isPending &&
+								idOfItemBeingCurrentlyDeleted === item.id
+									? "Loading"
+									: "Delete"}
+							</button>
 						</>
 					))}
-				</div>
-			</Async.IfFulfilled>
+				</Async.IfFulfilled>
+			</div>
 		</section>
 	);
 };
