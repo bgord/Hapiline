@@ -55,6 +55,10 @@ export const Dashboard = () => {
 	);
 	const nameInlineError = getArgError("name");
 
+	const {errorMessage: getErrorMessage} = useRequestErrors(
+		getHabitScoreboardItemsRequestState,
+	);
+
 	return (
 		<section className="flex flex-col items-center py-8">
 			<div>
@@ -117,6 +121,11 @@ export const Dashboard = () => {
 			<Async.IfPending state={getHabitScoreboardItemsRequestState}>
 				<Loader />
 			</Async.IfPending>
+
+			<Async.IfRejected state={getHabitScoreboardItemsRequestState}>
+				<ErrorMessage className="mt-4">{getErrorMessage}</ErrorMessage>
+			</Async.IfRejected>
+
 			<Async.IfFulfilled state={getHabitScoreboardItemsRequestState}>
 				<div
 					className="mt-12 bg-white p-4"

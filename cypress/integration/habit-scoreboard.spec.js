@@ -1,11 +1,11 @@
 const DASHBOARD_URL = "/dashboard";
 
-describe("Add habit scoreboard item", () => {
+describe("Habit scoreboard", () => {
 	before(() => {
 		cy.request("POST", "/test/db/seed");
 	});
 
-	it("basic flow", () => {
+	it("Add an item", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -35,7 +35,7 @@ describe("Add habit scoreboard item", () => {
 		cy.findByText("x").click();
 	});
 
-	it("500", () => {
+	it("500 while adding an item", () => {
 		const errorMessage = "Unexpected error, try again later.";
 		cy.server();
 		cy.route({
@@ -55,6 +55,78 @@ describe("Add habit scoreboard item", () => {
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 		cy.findByLabelText("Score").select("positive");
 		cy.findByText("Add habit").click();
+
+		cy.findByText(errorMessage);
+	});
+
+	it("empty list of items", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit-scoreboard-items",
+			status: 200,
+			response: [],
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("Seems you haven't added any habits yet.");
+	});
+
+	it("renders returned items", () => {
+		const response = [
+			{
+				id: 1,
+				name: "Watch The Office",
+				score: "positive",
+			},
+			{
+				id: 2,
+				name: "Go to sleep",
+				score: "neutral",
+			},
+			{
+				id: 3,
+				name: "Wake up",
+				score: "negative",
+			},
+		];
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit-scoreboard-items",
+			status: 200,
+			response,
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		response.forEach(item => {
+			cy.findByText(item.name);
+			cy.findByText(item.score);
+		});
+	});
+
+	it("error while getting items", () => {
+		const errorMessage = "Error while getting the list.";
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit-scoreboard-items",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
 
 		cy.findByText(errorMessage);
 	});
