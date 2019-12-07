@@ -26,7 +26,9 @@ export const Dashboard = () => {
 	const getHabitScoreboardItemsRequestState = Async.useAsync({
 		promiseFn: performGetHabitScoreboardItemsRequest,
 	});
-	const {errorMessage} = useRequestErrors(getHabitScoreboardItemsRequestState);
+	const {errorMessage: getListErrorMessage} = useRequestErrors(
+		getHabitScoreboardItemsRequestState,
+	);
 
 	const deleteHabitScoreboardItemsRequestState = Async.useAsync({
 		deferFn: performDeleteHabitScoreboardItemsRequest,
@@ -35,6 +37,9 @@ export const Dashboard = () => {
 			setIdOfItemBeingCurrentlyDeleted(null);
 		},
 	});
+	const {errorMessage: deleteItemErrorMessage} = useRequestErrors(
+		deleteHabitScoreboardItemsRequestState,
+	);
 
 	return (
 		<section className="flex flex-col items-center py-8">
@@ -45,7 +50,15 @@ export const Dashboard = () => {
 			/>
 
 			<Async.IfRejected state={getHabitScoreboardItemsRequestState}>
-				<ErrorMessage className="mt-4">{errorMessage}</ErrorMessage>
+				<ErrorMessage className="mt-4 text-center">
+					{getListErrorMessage}
+				</ErrorMessage>
+			</Async.IfRejected>
+
+			<Async.IfRejected state={deleteHabitScoreboardItemsRequestState}>
+				<ErrorMessage className="mt-4 text-center">
+					{deleteItemErrorMessage}
+				</ErrorMessage>
 			</Async.IfRejected>
 
 			<div
@@ -55,7 +68,6 @@ export const Dashboard = () => {
 					gridTemplateColumns: "100px 440px 100px",
 					gridTemplateRows: "auto",
 					gridRowGap: "30px",
-					minHeight: "80px",
 				}}
 			>
 				<Async.IfFulfilled state={getHabitScoreboardItemsRequestState}>

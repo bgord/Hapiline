@@ -1,6 +1,5 @@
 const User = use("User");
 const HabitScoreboardItem = use("HabitScoreboardItem");
-const faker = require("faker");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 
 class HabitScoreboardItemsSeeder {
@@ -12,7 +11,7 @@ class HabitScoreboardItemsSeeder {
 			const payload = Array.from({length: howManyHabitScoreboardItems}).map(
 				(_, index) => ({
 					user_id: user.id,
-					name: faker.lorem.words(3),
+					name: `${index} ${"lorem".repeat((index % 3) + 1)}`,
 					score: Object.keys(HABIT_SCORE_TYPES)[index % 3],
 				}),
 			);

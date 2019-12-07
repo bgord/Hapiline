@@ -1,7 +1,7 @@
 const DASHBOARD_URL = "/dashboard";
 
 describe("Habit scoreboard", () => {
-	before(() => {
+	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
 	});
 
@@ -130,6 +130,47 @@ describe("Habit scoreboard", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
+		cy.findByText(errorMessage);
+	});
+
+	it("deleting items", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("0 lorem");
+
+		cy.findAllByText("Delete")
+			.first()
+			.click();
+
+		cy.findByText("0 lorem").should("not.exist");
+	});
+
+	it("deleting items error", () => {
+		const errorMessage = "Problem while deleting the item.";
+
+		cy.server();
+		cy.route({
+			method: "DELETE",
+			url: "/api/v1/habit-scoreboard-item/6",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("0 lorem");
+
+		cy.findAllByText("Delete")
+			.first()
+			.click();
+
+		cy.findByText("0 lorem");
 		cy.findByText(errorMessage);
 	});
 });
