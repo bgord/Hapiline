@@ -91,12 +91,14 @@ Route.delete(
 Route.patch(
 	"/api/v1/habit-scoreboard-item/:id",
 	"HabitScoreboardItemController.update",
-).middleware([
-	"auth",
-	"is:(regular)",
-	"account-status:active",
-	"params-resource-exists:habit_scoreboard_items,id",
-]);
+)
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:habit_scoreboard_items,id",
+	])
+	.validator("UpdateHabit");
 
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();

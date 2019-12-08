@@ -7,10 +7,12 @@ const {
 	assertInvalidSession,
 	assertAccessDenied,
 	assertUnprocessableEntity,
+	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const Database = use("Database");
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -106,4 +108,36 @@ test("user cannot update not their own habit", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
+});
+
+test("validation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const cases = [
+		[
+			{score: "xxx", name: "x".repeat(256)},
+			[
+				{
+					message: VALIDATION_MESSAGES.max("name", 255),
+					field: "name",
+					validation: "max",
+				},
+				{
+					message: VALIDATION_MESSAGES.invalid_score,
+					field: "score",
+					validation: "in",
+				},
+			],
+		],
+	];
+
+	for (let [payload, argErrors] of cases) {
+		const response = await client
+			.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/1`)
+			.send(payload)
+			.loginVia(jim)
+			.end();
+
+		assertValidationError({response, argErrors});
+	}
 });
