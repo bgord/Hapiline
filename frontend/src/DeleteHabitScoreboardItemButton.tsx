@@ -22,11 +22,15 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({
 		deferFn: performDeleteHabitScoreboardItemsRequest,
 		onResolve: refreshList,
 	});
+	const textColor = deleteHabitScoreboardItemsRequestState.isPending
+		? "text-gray-900"
+		: "text-red-500";
+
 	return (
 		<button
 			onClick={() => deleteHabitScoreboardItemsRequestState.run(id)}
 			type="button"
-			className="uppercase px-4 text-sm font-semibold text-red-500 inline"
+			className={`uppercase px-4 text-sm font-semibold  inline ${textColor}`}
 			disabled={deleteHabitScoreboardItemsRequestState.isPending}
 		>
 			{deleteHabitScoreboardItemsRequestState.isPending ? "Loading" : "Delete"}

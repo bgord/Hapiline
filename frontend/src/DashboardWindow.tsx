@@ -17,9 +17,7 @@ export const Dashboard = () => {
 	const getHabitScoreboardItemsRequestState = Async.useAsync({
 		promiseFn: performGetHabitScoreboardItemsRequest,
 	});
-	const {errorMessage: getListErrorMessage} = useRequestErrors(
-		getHabitScoreboardItemsRequestState,
-	);
+	const {errorMessage} = useRequestErrors(getHabitScoreboardItemsRequestState);
 
 	return (
 		<section className="flex flex-col items-center py-8">
@@ -30,9 +28,7 @@ export const Dashboard = () => {
 			/>
 
 			<Async.IfRejected state={getHabitScoreboardItemsRequestState}>
-				<ErrorMessage className="mt-4 text-center">
-					{getListErrorMessage}
-				</ErrorMessage>
+				<ErrorMessage className="mt-4 text-center">{errorMessage}</ErrorMessage>
 			</Async.IfRejected>
 
 			<div
