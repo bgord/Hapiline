@@ -33,6 +33,14 @@ hooks.after.providersBooted(() => {
 		});
 	});
 
+	Response.macro("unprocessableEntity", function() {
+		this.status(422).send({
+			code: MAIN_ERROR_CODES.unprocessable_entity,
+			message: MAIN_ERROR_MESSAGES.unprocessable_entity,
+			argErrors: [],
+		});
+	});
+
 	Response.macro("internalSeverError", function({message}) {
 		this.status(500).send({
 			code: MAIN_ERROR_CODES.internal_sever_error,

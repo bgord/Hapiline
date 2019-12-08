@@ -81,7 +81,12 @@ Route.get(
 Route.delete(
 	"/api/v1/habit-scoreboard-item/:id",
 	"HabitScoreboardItemController.delete",
-).middleware(["auth", `is:(regular)`, `account-status:active`]);
+).middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+	"params-resource-exists:habit_scoreboard_items,id",
+]);
 
 Route.patch(
 	"/api/v1/habit-scoreboard-item/:id",

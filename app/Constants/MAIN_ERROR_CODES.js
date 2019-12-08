@@ -5,6 +5,7 @@ const MAIN_ERROR_CODES = {
 	invalid_request: "E_VALIDATION_FAILED",
 	invalid_credentials: "E_INVALID_CREDENTIALS",
 	internal_sever_error: "E_INTERNAL_SERVER_ERROR",
+	unprocessable_entity: "E_UNPROCESSABLE_ENTITY",
 };
 
 module.exports = MAIN_ERROR_CODES;

@@ -6,6 +6,7 @@ const User = use("User");
 const {
 	assertInvalidSession,
 	assertAccessDenied,
+	assertUnprocessableEntity,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
@@ -75,8 +76,7 @@ test("user cannot delete unexistent scoreboard items", async ({client}) => {
 		.delete(`${DELETE_HABIT_SCOREBOARD_ITEM_URL}/6666xxx`)
 		.loginVia(jim)
 		.end();
-
-	assertAccessDenied(response);
+	assertUnprocessableEntity(response);
 });
 
 test("full flow", async ({client, assert}) => {
