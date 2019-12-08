@@ -27,10 +27,9 @@ class HabitScoreboardItemController {
 	}
 
 	async index({response, auth}) {
-		const result = await Database.table("habit_scoreboard_items").where(
-			"user_id",
-			auth.user.id,
-		);
+		const result = await Database.table("habit_scoreboard_items")
+			.where("user_id", auth.user.id)
+			.orderBy("id");
 		return response.send(result);
 	}
 

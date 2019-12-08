@@ -56,6 +56,7 @@ export const Dashboard = () => {
 								{item.score}
 							</span>
 							<EditableHabitNameInput
+								id={item.id}
 								name={item.name}
 								isHabitCurrentlyEdited={currentlyditedHabitId === item.id}
 								setHabitAsCurrentlyEdited={() =>
