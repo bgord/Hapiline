@@ -3,45 +3,43 @@ import React from "react";
 
 import {CloseableSuccessMessage} from "./SuccessMessages";
 import {ErrorMessage} from "./ErrorMessages";
-import {HabitScoreboardItem} from "./interfaces/HabitScoreboardItem";
+import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
-const performAddHabitScoreboardItemRequest: Async.DeferFn<HabitScoreboardItem> = ([
+const addHabitRequest: Async.DeferFn<IHabit> = ([
 	name,
 	score,
 	user_id,
 ]: string[]) =>
 	api
-		.post<HabitScoreboardItem>("/habit-scoreboard-item", {
+		.post<IHabit>("/habit-scoreboard-item", {
 			name,
 			score,
 			user_id,
 		})
 		.then(response => response.data);
 
-export const AddHabitScoreboardItemForm: React.FC<{
-	refreshHabitScoreboardItemList: VoidFunction;
-}> = ({refreshHabitScoreboardItemList}) => {
+export const AddHabitForm: React.FC<{
+	refreshHabitList: VoidFunction;
+}> = ({refreshHabitList}) => {
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
 
 	const [profile] = useUserProfile();
 
-	const addHabitScoreboardItemRequestState = Async.useAsync({
-		deferFn: performAddHabitScoreboardItemRequest,
+	const addHabitRequestState = Async.useAsync({
+		deferFn: addHabitRequest,
 		onResolve: function clearForm() {
 			setName("");
 			setScore("neutral");
 
-			refreshHabitScoreboardItemList();
+			refreshHabitList();
 		},
 	});
 
-	const {getArgError, errorMessage} = useRequestErrors(
-		addHabitScoreboardItemRequestState,
-	);
+	const {getArgError, errorMessage} = useRequestErrors(addHabitRequestState);
 	const nameInlineError = getArgError("name");
 
 	return (
@@ -49,7 +47,7 @@ export const AddHabitScoreboardItemForm: React.FC<{
 			<form
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					addHabitScoreboardItemRequestState.run(name, score, profile?.id);
+					addHabitRequestState.run(name, score, profile?.id);
 				}}
 				className="flex items-end"
 			>
@@ -91,12 +89,12 @@ export const AddHabitScoreboardItemForm: React.FC<{
 					Add habit
 				</button>
 			</form>
-			<Async.IfFulfilled state={addHabitScoreboardItemRequestState}>
+			<Async.IfFulfilled state={addHabitRequestState}>
 				<CloseableSuccessMessage>
 					Habit successfully addedd!
 				</CloseableSuccessMessage>
 			</Async.IfFulfilled>
-			<Async.IfRejected state={addHabitScoreboardItemRequestState}>
+			<Async.IfRejected state={addHabitRequestState}>
 				<ErrorMessage className="mt-4">
 					{nameInlineError?.message || errorMessage}
 				</ErrorMessage>
