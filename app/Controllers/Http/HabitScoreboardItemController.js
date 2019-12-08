@@ -53,6 +53,10 @@ class HabitScoreboardItemController {
 			return response.accessDenied();
 		}
 	}
+
+	async update({response}) {
+		return response.send();
+	}
 }
 
 module.exports = HabitScoreboardItemController;

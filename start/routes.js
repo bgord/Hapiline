@@ -83,6 +83,16 @@ Route.delete(
 	"HabitScoreboardItemController.delete",
 ).middleware(["auth", `is:(regular)`, `account-status:active`]);
 
+Route.patch(
+	"/api/v1/habit-scoreboard-item/:id",
+	"HabitScoreboardItemController.update",
+).middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+	"params-resource-exists:habit_scoreboard_items,id",
+]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
