@@ -2,6 +2,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {AddHabitScoreboardItemForm} from "./AddHabitScoreboardItemForm";
+import {DeleteButton} from "./DeleteHabitScoreboardItemButton";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitScoreboardItem} from "./interfaces/HabitScoreboardItem";
 import {api} from "./services/api";
@@ -12,33 +13,12 @@ const performGetHabitScoreboardItemsRequest: Async.PromiseFn<HabitScoreboardItem
 		.get<HabitScoreboardItem[]>("/habit-scoreboard-items")
 		.then(response => response.data);
 
-const performDeleteHabitScoreboardItemsRequest: Async.DeferFn<void> = ([
-	id,
-]: number[]) =>
-	api.delete(`/habit-scoreboard-item/${id}`).then(response => response.data);
-
 export const Dashboard = () => {
-	const [
-		idOfItemBeingCurrentlyDeleted,
-		setIdOfItemBeingCurrentlyDeleted,
-	] = React.useState<number | null>(null);
-
 	const getHabitScoreboardItemsRequestState = Async.useAsync({
 		promiseFn: performGetHabitScoreboardItemsRequest,
 	});
 	const {errorMessage: getListErrorMessage} = useRequestErrors(
 		getHabitScoreboardItemsRequestState,
-	);
-
-	const deleteHabitScoreboardItemsRequestState = Async.useAsync({
-		deferFn: performDeleteHabitScoreboardItemsRequest,
-		onResolve: () => {
-			getHabitScoreboardItemsRequestState.reload();
-			setIdOfItemBeingCurrentlyDeleted(null);
-		},
-	});
-	const {errorMessage: deleteItemErrorMessage} = useRequestErrors(
-		deleteHabitScoreboardItemsRequestState,
 	);
 
 	return (
@@ -52,12 +32,6 @@ export const Dashboard = () => {
 			<Async.IfRejected state={getHabitScoreboardItemsRequestState}>
 				<ErrorMessage className="mt-4 text-center">
 					{getListErrorMessage}
-				</ErrorMessage>
-			</Async.IfRejected>
-
-			<Async.IfRejected state={deleteHabitScoreboardItemsRequestState}>
-				<ErrorMessage className="mt-4 text-center">
-					{deleteItemErrorMessage}
 				</ErrorMessage>
 			</Async.IfRejected>
 
@@ -87,20 +61,10 @@ export const Dashboard = () => {
 								{item.score}
 							</span>
 							<span className="pl-4 break-words pr-4">{item.name}</span>
-							<button
-								onClick={() => {
-									setIdOfItemBeingCurrentlyDeleted(item.id);
-									deleteHabitScoreboardItemsRequestState.run(item.id);
-								}}
-								type="button"
-								className={`uppercase px-4 text-sm font-semibold text-red-500 inline`}
-								disabled={deleteHabitScoreboardItemsRequestState.isPending}
-							>
-								{deleteHabitScoreboardItemsRequestState.isPending &&
-								idOfItemBeingCurrentlyDeleted === item.id
-									? "Loading"
-									: "Delete"}
-							</button>
+							<DeleteButton
+								refreshList={getHabitScoreboardItemsRequestState.reload}
+								id={item.id}
+							/>
 						</>
 					))}
 				</Async.IfFulfilled>

@@ -146,31 +146,31 @@ describe("Habit scoreboard", () => {
 		cy.findByText("0 lorem").should("not.exist");
 	});
 
-	it("deleting items error", () => {
-		const errorMessage = "Problem while deleting the item.";
+	// it("deleting items error", () => {
+	// 	const errorMessage = "Problem while deleting the item.";
 
-		cy.server();
-		cy.route({
-			method: "DELETE",
-			url: "/api/v1/habit-scoreboard-item/6",
-			status: 500,
-			response: {
-				code: "E_INTERNAL_SERVER_ERROR",
-				message: errorMessage,
-				argErrors: [],
-			},
-		});
+	// 	cy.server();
+	// 	cy.route({
+	// 		method: "DELETE",
+	// 		url: "/api/v1/habit-scoreboard-item/6",
+	// 		status: 500,
+	// 		response: {
+	// 			code: "E_INTERNAL_SERVER_ERROR",
+	// 			message: errorMessage,
+	// 			argErrors: [],
+	// 		},
+	// 	});
 
-		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+	// 	cy.login("dwight");
+	// 	cy.visit(DASHBOARD_URL);
 
-		cy.findByText("0 lorem");
+	// 	cy.findByText("0 lorem");
 
-		cy.findAllByText("Delete")
-			.first()
-			.click();
+	// 	cy.findAllByText("Delete")
+	// 		.first()
+	// 		.click();
 
-		cy.findByText("0 lorem");
-		cy.findByText(errorMessage);
-	});
+	// 	cy.findByText("0 lorem");
+	// 	cy.findByText(errorMessage);
+	// });
 });
