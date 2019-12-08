@@ -11,6 +11,9 @@ interface EditableHabitNameProps {
 	isHabitCurrentlyEdited: boolean;
 	setHabitAsCurrentlyEdited: VoidFunction;
 	clearCurrentlyEditedHabit: VoidFunction;
+	newName: IHabit["name"] | undefined;
+	setNewName: (name: IHabit["name"]) => void;
+	refreshList: VoidFunction;
 }
 
 const editHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
@@ -24,9 +27,10 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameProps> = ({
 	isHabitCurrentlyEdited,
 	setHabitAsCurrentlyEdited,
 	clearCurrentlyEditedHabit,
+	newName,
+	setNewName,
+	refreshList,
 }) => {
-	const [newName, setNewName] = React.useState(name);
-
 	const editHabitRequestState = Async.useAsync({
 		deferFn: editHabitRequest,
 		onResolve: clearCurrentlyEditedHabit,
@@ -37,9 +41,10 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameProps> = ({
 	return (
 		<div className="flex  justify-between items-center">
 			<HabitNameInput
+				defaultValue={name}
 				onFocus={setHabitAsCurrentlyEdited}
 				className={`mx-4 p-1 break-words pr-4 flex-grow focus:bg-gray-100 ${backgroundColor}`}
-				value={newName}
+				value={isHabitCurrentlyEdited ? newName : name}
 				onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
 					setNewName(event.target.value)
 				}
@@ -49,6 +54,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameProps> = ({
 					<button
 						onClick={() => {
 							editHabitRequestState.run(id, {name: newName});
+							refreshList();
 						}}
 						className="uppercase mr-4"
 						type="button"

@@ -17,6 +17,8 @@ export const Dashboard = () => {
 		IHabit["id"]
 	>();
 
+	const [newName, setNewName] = React.useState<IHabit["name"]>();
+
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: getHabitsRequest,
 	});
@@ -58,13 +60,18 @@ export const Dashboard = () => {
 							<EditableHabitNameInput
 								id={item.id}
 								name={item.name}
+								newName={newName}
+								setNewName={setNewName}
 								isHabitCurrentlyEdited={currentlyditedHabitId === item.id}
-								setHabitAsCurrentlyEdited={() =>
-									setCurrentlyEditedHabitId(item.id)
-								}
-								clearCurrentlyEditedHabit={() =>
-									setCurrentlyEditedHabitId(undefined)
-								}
+								setHabitAsCurrentlyEdited={() => {
+									setCurrentlyEditedHabitId(item.id);
+									setNewName(undefined);
+								}}
+								clearCurrentlyEditedHabit={() => {
+									setCurrentlyEditedHabitId(undefined);
+									setNewName(undefined);
+								}}
+								refreshList={getHabitsRequestState.reload}
 							/>
 							<DeleteHabitButton
 								refreshList={getHabitsRequestState.reload}
