@@ -3,6 +3,7 @@ import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
 import {DeleteHabitButton} from "./DeleteHabitButton";
+import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
@@ -12,6 +13,10 @@ const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
 	api.get<IHabit[]>("/habit-scoreboard-items").then(response => response.data);
 
 export const Dashboard = () => {
+	const [currentlyditedHabitId, setCurrentlyEditedHabitId] = React.useState<
+		IHabit["id"]
+	>();
+
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: getHabitsRequest,
 	});
@@ -29,7 +34,7 @@ export const Dashboard = () => {
 				className="mt-12 bg-white p-4"
 				style={{
 					display: "grid",
-					gridTemplateColumns: "100px 440px 100px",
+					gridTemplateColumns: "100px 640px 100px",
 					gridTemplateRows: "auto",
 					gridRowGap: "30px",
 				}}
@@ -50,7 +55,16 @@ export const Dashboard = () => {
 							>
 								{item.score}
 							</span>
-							<span className="pl-4 break-words pr-4">{item.name}</span>
+							<EditableHabitNameInput
+								name={item.name}
+								isHabitCurrentlyEdited={currentlyditedHabitId === item.id}
+								setHabitAsCurrentlyEdited={() =>
+									setCurrentlyEditedHabitId(item.id)
+								}
+								clearCurrentlyEditedHabit={() =>
+									setCurrentlyEditedHabitId(undefined)
+								}
+							/>
 							<DeleteHabitButton
 								refreshList={getHabitsRequestState.reload}
 								id={item.id}

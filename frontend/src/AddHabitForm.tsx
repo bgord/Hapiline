@@ -3,6 +3,7 @@ import React from "react";
 
 import {CloseableSuccessMessage} from "./SuccessMessages";
 import {ErrorMessage} from "./ErrorMessages";
+import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
@@ -55,17 +56,12 @@ export const AddHabitForm: React.FC<{
 					<label className="field-label" htmlFor="name">
 						Habit
 					</label>
-					<input
-						required
-						pattern=".{1,255}"
-						title="Please, try to fit habit in 255 characters."
-						className="field w-64"
-						id="name"
-						name="name"
+					<HabitNameInput
 						value={name}
-						type="text"
-						onChange={event => setName(event.target.value)}
-						placeholder="Wake up at 7:30 AM"
+						onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+							setName(event.target.value)
+						}
+						className="field w-64"
 					/>
 				</div>
 				<div className="flex flex-col ml-8">
