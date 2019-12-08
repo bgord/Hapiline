@@ -54,7 +54,18 @@ class HabitScoreboardItemController {
 		}
 	}
 
-	async update({response}) {
+	async update({request, response, params, auth}) {
+		const {id} = params;
+		const payload = request.only(["name", "score"]);
+
+		const habitScoreboardItem = await HabitScoreboardItem.find(id);
+		if (habitScoreboardItem.user_id !== auth.user.id) {
+			return response.accessDenied();
+		}
+
+		await habitScoreboardItem.merge(payload);
+		await habitScoreboardItem.save();
+
 		return response.send();
 	}
 }
