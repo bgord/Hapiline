@@ -1,8 +1,6 @@
 import React from "react";
 
-export const HabitNameInput: React.FC<React.HTMLProps<
-	HTMLInputElement
->> = props => (
+export const HabitNameInput: React.FC<JSX.IntrinsicElements["input"]> = props => (
 	<input
 		required
 		pattern=".{1,255}"

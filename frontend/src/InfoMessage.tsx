@@ -1,6 +1,6 @@
 import React from "react";
 
-export const InfoMessage: React.FC<React.HTMLProps<HTMLDivElement>> = ({
+export const InfoMessage: React.FC<JSX.IntrinsicElements["div"]> = ({
 	className = "",
 	...props
 }) => {

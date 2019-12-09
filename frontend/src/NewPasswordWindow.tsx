@@ -26,7 +26,7 @@ export const NewPasswordWindow: React.FC = () => {
 	const newPasswordRequestState = Async.useAsync({
 		deferFn: performNewPasswordRequest,
 	});
-	const requestError = useRequestErrors(newPasswordRequestState);
+	const {errorMessage} = useRequestErrors(newPasswordRequestState);
 
 	return (
 		<div className="bg-white rounded shadow-lg p-8 md:max-w-sm md:mx-auto ">
@@ -96,7 +96,7 @@ export const NewPasswordWindow: React.FC = () => {
 					</div>
 				</Async.IfFulfilled>
 				<Async.IfRejected state={newPasswordRequestState}>
-					<RequestErrorMessage>{requestError.errorMessage}</RequestErrorMessage>
+					<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 				</Async.IfRejected>
 			</form>
 		</div>

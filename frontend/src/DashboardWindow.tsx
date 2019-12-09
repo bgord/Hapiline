@@ -25,7 +25,7 @@ export const Dashboard = () => {
 
 	return (
 		<section className="flex flex-col items-center py-8">
-			<AddHabitForm refreshHabitList={getHabitsRequestState.reload} />
+			<AddHabitForm refreshList={getHabitsRequestState.reload} />
 
 			<Async.IfRejected state={getHabitsRequestState}>
 				<ErrorMessage className="mt-4 text-center">{errorMessage}</ErrorMessage>

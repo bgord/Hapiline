@@ -4,8 +4,7 @@ import React from "react";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 
-interface DeleteButtonProps {
-	id: IHabit["id"];
+interface DeleteButtonProps extends IHabit {
 	refreshList: VoidFunction;
 }
 

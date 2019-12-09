@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Logo: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({
+export const Logo: React.FC<JSX.IntrinsicElements["img"]> = ({
 	className = "",
 	...props
 }) => (

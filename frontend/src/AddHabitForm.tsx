@@ -23,8 +23,8 @@ const addHabitRequest: Async.DeferFn<IHabit> = ([
 		.then(response => response.data);
 
 export const AddHabitForm: React.FC<{
-	refreshHabitList: VoidFunction;
-}> = ({refreshHabitList}) => {
+	refreshList: VoidFunction;
+}> = ({refreshList}) => {
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
 
@@ -35,8 +35,7 @@ export const AddHabitForm: React.FC<{
 		onResolve: function clearForm() {
 			setName("");
 			setScore("neutral");
-
-			refreshHabitList();
+			refreshList();
 		},
 	});
 
@@ -46,7 +45,7 @@ export const AddHabitForm: React.FC<{
 	return (
 		<div>
 			<form
-				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+				onSubmit={event => {
 					event.preventDefault();
 					addHabitRequestState.run(name, score, profile?.id);
 				}}
@@ -58,9 +57,7 @@ export const AddHabitForm: React.FC<{
 					</label>
 					<HabitNameInput
 						value={name}
-						onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-							setName(event.target.value)
-						}
+						onChange={event => setName(event.target.value)}
 						className="field w-64"
 					/>
 				</div>
