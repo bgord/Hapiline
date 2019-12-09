@@ -4,36 +4,24 @@ import React from "react";
 import {AddHabitForm} from "./AddHabitForm";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {ErrorMessage} from "./ErrorMessages";
-import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
+import {EditableHabitNameInput} from "./EditableHabitNameInput";
 
 const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
 	api.get<IHabit[]>("/habit-scoreboard-items").then(response => response.data);
-
-const editHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
-	api
-		.patch<IHabit>(`/habit-scoreboard-item/${id}`, payload)
-		.then(response => response.data);
 
 export const Dashboard = () => {
 	const [currentlyditedHabitId, setCurrentlyEditedHabitId] = React.useState<
 		IHabit["id"]
 	>();
 
-	const [newName, setNewName] = React.useState<IHabit["name"]>();
-
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: getHabitsRequest,
 	});
 	const {errorMessage} = useRequestErrors(getHabitsRequestState);
-
-	const editHabitRequestState = Async.useAsync({
-		deferFn: editHabitRequest,
-		onResolve: () => setCurrentlyEditedHabitId(undefined),
-	});
 
 	return (
 		<section className="flex flex-col items-center py-8">
@@ -57,46 +45,11 @@ export const Dashboard = () => {
 							</div>
 							<div className="flex justify-between w-full">
 								<div className="flex justify-between items-center w-full">
-									<HabitNameInput
-										onFocus={() => {
-											setCurrentlyEditedHabitId(item.id);
-											setNewName(undefined);
-										}}
-										className={`mx-4 p-1 break-words pr-4 flex-grow focus:bg-gray-100 ${
-											currentlyditedHabitId === item.id ? "bg-gray-100" : ""
-										}`}
-										value={
-											currentlyditedHabitId === item.id ? newName : item.name
-										}
-										onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-											setNewName(event.target.value)
-										}
+									<EditableHabitNameInput
+										{...item}
+										currentlyditedHabitId={currentlyditedHabitId}
+										setCurrentlyEditedHabitId={setCurrentlyEditedHabitId}
 									/>
-									{currentlyditedHabitId === item.id && (
-										<div>
-											<button
-												onClick={() => {
-													editHabitRequestState.run(item.id, {name: newName});
-													getHabitsRequestState.reload();
-												}}
-												className="uppercase mr-4"
-												type="button"
-											>
-												Save
-											</button>
-											<button
-												onClick={() => {
-													setNewName(name);
-													setCurrentlyEditedHabitId(undefined);
-													setNewName(undefined);
-												}}
-												className="uppercase"
-												type="button"
-											>
-												Reset
-											</button>
-										</div>
-									)}
 								</div>
 								<DeleteHabitButton
 									refreshList={getHabitsRequestState.reload}
