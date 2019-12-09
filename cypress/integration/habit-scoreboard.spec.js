@@ -28,13 +28,13 @@ describe("Habit scoreboard", () => {
 
 		cy.findByLabelText("Habit")
 			.clear()
-			.type("Go to sleep at 9:30PAM");
+			.type("Go to sleep at 9:30 AM");
 		cy.findByLabelText("Score").select("positive");
 		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
 		cy.findByText("x").click();
 
-		cy.findByText("Go to sleep at 9:30PAM");
+		cy.findByDisplayValue("Go to sleep at 9:30 AM");
 	});
 
 	it("500 while adding an item", () => {
@@ -107,7 +107,7 @@ describe("Habit scoreboard", () => {
 		cy.visit(DASHBOARD_URL);
 
 		response.forEach(item => {
-			cy.findByText(item.name);
+			cy.findByDisplayValue(item.name);
 			cy.findByText(item.score);
 		});
 	});
@@ -137,40 +137,28 @@ describe("Habit scoreboard", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findByText("0 lorem");
+		cy.findByDisplayValue("0 lorem");
 
 		cy.findAllByText("Delete")
 			.first()
 			.click();
 
-		cy.findByText("0 lorem").should("not.exist");
+		cy.findByDisplayValue("0 lorem").should("not.exist");
 	});
 
-	// it("deleting items error", () => {
-	// 	const errorMessage = "Problem while deleting the item.";
+	it.only("changing name", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
 
-	// 	cy.server();
-	// 	cy.route({
-	// 		method: "DELETE",
-	// 		url: "/api/v1/habit-scoreboard-item/6",
-	// 		status: 500,
-	// 		response: {
-	// 			code: "E_INTERNAL_SERVER_ERROR",
-	// 			message: errorMessage,
-	// 			argErrors: [],
-	// 		},
-	// 	});
+		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
+		cy.findByText("Save").should("not.exist");
+		cy.findByText("Reset").should("not.exist");
 
-	// 	cy.login("dwight");
-	// 	cy.visit(DASHBOARD_URL);
+		cy.findByDisplayValue("0 lorem").type(" xxx");
+		cy.findByText("Save").click();
 
-	// 	cy.findByText("0 lorem");
-
-	// 	cy.findAllByText("Delete")
-	// 		.first()
-	// 		.click();
-
-	// 	cy.findByText("0 lorem");
-	// 	cy.findByText(errorMessage);
-	// });
+		cy.findByDisplayValue("0 lorem xxx");
+		cy.findByText("Save").should("not.exist");
+		cy.findByText("Reset").should("not.exist");
+	});
 });
