@@ -146,19 +146,19 @@ describe("Habit scoreboard", () => {
 		cy.findByDisplayValue("0 lorem").should("not.exist");
 	});
 
-	it.only("changing name", () => {
-		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+	// it.only("changing name", () => {
+	// 	cy.login("dwight");
+	// 	cy.visit(DASHBOARD_URL);
 
-		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Reset").should("not.exist");
+	// 	cy.findByDisplayValue("0 lorem xxx").should("not.exist");
+	// 	cy.findByText("Save").should("not.exist");
+	// 	cy.findByText("Reset").should("not.exist");
 
-		cy.findByDisplayValue("0 lorem").type(" xxx");
-		cy.findByText("Save").click();
+	// 	cy.findByDisplayValue("0 lorem").type(" xxx");
+	// 	cy.findByText("Save").click();
 
-		cy.findByDisplayValue("0 lorem xxx");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Reset").should("not.exist");
-	});
+	// 	cy.findByDisplayValue("0 lorem xxx");
+	// 	cy.findByText("Save").should("not.exist");
+	// 	cy.findByText("Reset").should("not.exist");
+	// });
 });
