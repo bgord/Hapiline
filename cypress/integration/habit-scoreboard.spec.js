@@ -150,6 +150,7 @@ describe("Habit scoreboard", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
+		// "Save" flow
 		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
 		cy.findByText("Save").should("not.exist");
 		cy.findByText("Reset").should("not.exist");
@@ -158,6 +159,21 @@ describe("Habit scoreboard", () => {
 		cy.findByText("Save").click();
 
 		cy.findByDisplayValue("0 lorem xxx");
+
+		cy.findByDisplayValue("0 lorem").should("not.exist");
+		cy.findByText("Save").should("not.exist");
+		cy.findByText("Reset").should("not.exist");
+
+		// Enter flow
+		cy.findByDisplayValue("1 loremlorem yyy").should("not.exist");
+		cy.findByText("Save").should("not.exist");
+		cy.findByText("Reset").should("not.exist");
+
+		cy.findByDisplayValue("1 loremlorem").type(" yyy{enter}");
+
+		cy.findByDisplayValue("1 loremlorem yyy");
+
+		cy.findByDisplayValue("1 loremlorem").should("not.exist");
 		cy.findByText("Save").should("not.exist");
 		cy.findByText("Reset").should("not.exist");
 	});

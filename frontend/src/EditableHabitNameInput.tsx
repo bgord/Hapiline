@@ -44,6 +44,11 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	return (
 		<div className="flex justify-between items-center w-full">
 			<HabitNameInput
+				onKeyDown={event => {
+					if (event.keyCode === 13) {
+						editHabitRequestState.run(id, {name: newHabitName});
+					}
+				}}
 				onFocus={() => setCurrentlyEditedHabitId(id)}
 				className={`mx-4 p-1 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor}`}
 				value={newHabitName}

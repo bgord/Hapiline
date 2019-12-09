@@ -24,7 +24,7 @@ class StoreHabitScoreboardItem extends BaseHttpValidator {
 
 	get sanitizationRules() {
 		return {
-			name: "trim|escape",
+			name: "trim",
 			user_id: "toInt",
 		};
 	}
