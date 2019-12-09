@@ -32,7 +32,7 @@ export const Dashboard = () => {
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: editHabitRequest,
-		// onResolve: clearCurrentlyEditedHabit,
+		onResolve: () => setCurrentlyEditedHabitId(undefined),
 	});
 
 	return (
@@ -58,7 +58,6 @@ export const Dashboard = () => {
 							<div className="flex justify-between w-full">
 								<div className="flex justify-between items-center w-full">
 									<HabitNameInput
-										defaultValue={item.name}
 										onFocus={() => {
 											setCurrentlyEditedHabitId(item.id);
 											setNewName(undefined);
