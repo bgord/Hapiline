@@ -39,7 +39,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameProps> = ({
 	const backgroundColor = isHabitCurrentlyEdited ? "bg-gray-100" : "";
 
 	return (
-		<div className="flex  justify-between items-center">
+		<div className="flex justify-between items-center w-full">
 			<HabitNameInput
 				defaultValue={name}
 				onFocus={setHabitAsCurrentlyEdited}

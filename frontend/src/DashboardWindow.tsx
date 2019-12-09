@@ -32,15 +32,7 @@ export const Dashboard = () => {
 				<ErrorMessage className="mt-4 text-center">{errorMessage}</ErrorMessage>
 			</Async.IfRejected>
 
-			<div
-				className="mt-12 bg-white p-4"
-				style={{
-					display: "grid",
-					gridTemplateColumns: "100px 640px 100px",
-					gridTemplateRows: "auto",
-					gridRowGap: "30px",
-				}}
-			>
+			<ul className="flex flex-col mt-12 bg-white p-4 max-w-2xl w-full">
 				<Async.IfFulfilled state={getHabitsRequestState}>
 					{!getHabitsRequestState?.data?.length && (
 						<div className="text-center" style={{gridColumn: "span 2"}}>
@@ -48,39 +40,36 @@ export const Dashboard = () => {
 						</div>
 					)}
 					{getHabitsRequestState?.data?.map(item => (
-						<>
-							<span
-								style={{
-									placeSelf: "center",
-								}}
-								className="bg-gray-300 w-full text-center"
-							>
+						<li className="flex align-baseline mb-4" key={item.id}>
+							<div className="bg-gray-300 w-20 flex justify-center items-center">
 								{item.score}
-							</span>
-							<EditableHabitNameInput
-								id={item.id}
-								name={item.name}
-								newName={newName}
-								setNewName={setNewName}
-								isHabitCurrentlyEdited={currentlyditedHabitId === item.id}
-								setHabitAsCurrentlyEdited={() => {
-									setCurrentlyEditedHabitId(item.id);
-									setNewName(undefined);
-								}}
-								clearCurrentlyEditedHabit={() => {
-									setCurrentlyEditedHabitId(undefined);
-									setNewName(undefined);
-								}}
-								refreshList={getHabitsRequestState.reload}
-							/>
-							<DeleteHabitButton
-								refreshList={getHabitsRequestState.reload}
-								id={item.id}
-							/>
-						</>
+							</div>
+							<div className="flex justify-between w-full">
+								<EditableHabitNameInput
+									id={item.id}
+									name={item.name}
+									newName={newName}
+									setNewName={setNewName}
+									isHabitCurrentlyEdited={currentlyditedHabitId === item.id}
+									setHabitAsCurrentlyEdited={() => {
+										setCurrentlyEditedHabitId(item.id);
+										setNewName(undefined);
+									}}
+									clearCurrentlyEditedHabit={() => {
+										setCurrentlyEditedHabitId(undefined);
+										setNewName(undefined);
+									}}
+									refreshList={getHabitsRequestState.reload}
+								/>
+								<DeleteHabitButton
+									refreshList={getHabitsRequestState.reload}
+									id={item.id}
+								/>
+							</div>
+						</li>
 					))}
 				</Async.IfFulfilled>
-			</div>
+			</ul>
 		</section>
 	);
 };
