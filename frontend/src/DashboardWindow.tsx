@@ -14,7 +14,7 @@ const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
 	api.get<IHabit[]>("/habit-scoreboard-items").then(response => response.data);
 
 export const Dashboard = () => {
-	const [currentlyditedHabitId, setCurrentlyEditedHabitId] = React.useState<
+	const [currentlyEditedHabitId, setCurrentlyEditedHabitId] = React.useState<
 		IHabit["id"]
 	>();
 
@@ -44,16 +44,15 @@ export const Dashboard = () => {
 								{item.score}
 							</div>
 							<div className="flex justify-between w-full">
-								<div className="flex justify-between items-center w-full">
-									<EditableHabitNameInput
-										{...item}
-										currentlyditedHabitId={currentlyditedHabitId}
-										setCurrentlyEditedHabitId={setCurrentlyEditedHabitId}
-									/>
-								</div>
-								<DeleteHabitButton
+								<EditableHabitNameInput
+									{...item}
+									currentlyEditedHabitId={currentlyEditedHabitId}
+									setCurrentlyEditedHabitId={setCurrentlyEditedHabitId}
 									refreshList={getHabitsRequestState.reload}
-									id={item.id}
+								/>
+								<DeleteHabitButton
+									{...item}
+									refreshList={getHabitsRequestState.reload}
 								/>
 							</div>
 						</li>

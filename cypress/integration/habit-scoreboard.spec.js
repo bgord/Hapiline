@@ -146,7 +146,7 @@ describe("Habit scoreboard", () => {
 		cy.findByDisplayValue("0 lorem").should("not.exist");
 	});
 
-	it.only("changing name", () => {
+	it("changing name", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -160,5 +160,19 @@ describe("Habit scoreboard", () => {
 		cy.findByDisplayValue("0 lorem xxx");
 		cy.findByText("Save").should("not.exist");
 		cy.findByText("Reset").should("not.exist");
+	});
+
+	it("clicking through the inputs", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByDisplayValue("0 lorem")
+			.click()
+			.type(" xxx");
+
+		cy.findByDisplayValue("0 lorem xxx");
+
+		cy.findByDisplayValue("1 loremlorem").click();
+		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
 	});
 });

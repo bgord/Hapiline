@@ -6,8 +6,9 @@ import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 
 interface EditableHabitNameInputProps extends IHabit {
-	currentlyditedHabitId?: IHabit["id"];
+	currentlyEditedHabitId?: IHabit["id"];
 	setCurrentlyEditedHabitId: (id?: IHabit["id"]) => void;
+	refreshList: VoidFunction;
 }
 
 const editHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
@@ -18,43 +19,47 @@ const editHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
 export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	name,
 	id,
-	currentlyditedHabitId,
+	currentlyEditedHabitId,
 	setCurrentlyEditedHabitId,
+	refreshList,
 }) => {
-	const [habitName, setHabitName] = React.useState(() => name);
+	const [newHabitName, setNewHabitName] = React.useState(() => name);
 	const editHabitRequestState = Async.useAsync({
 		deferFn: editHabitRequest,
-		onResolve: () => setCurrentlyEditedHabitId(),
+		onResolve: () => {
+			setCurrentlyEditedHabitId();
+			refreshList();
+		},
 	});
+
+	const isThisHabitNameCurrentlyEdited = currentlyEditedHabitId === id;
+	const inputBgColor = isThisHabitNameCurrentlyEdited ? "bg-gray-100" : "";
+
+	React.useEffect(() => {
+		if (!isThisHabitNameCurrentlyEdited) {
+			setNewHabitName(name);
+		}
+	}, [currentlyEditedHabitId]);
+
 	return (
-		<>
+		<div className="flex justify-between items-center w-full">
 			<HabitNameInput
-				onFocus={() => {
-					setCurrentlyEditedHabitId(id);
-				}}
-				className={`mx-4 p-1 break-words pr-4 flex-grow focus:bg-gray-100 ${
-					currentlyditedHabitId === id ? "bg-gray-100" : ""
-				}`}
-				value={habitName}
-				onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-					setHabitName(event.target.value);
-				}}
+				onFocus={() => setCurrentlyEditedHabitId(id)}
+				className={`mx-4 p-1 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor}`}
+				value={newHabitName}
+				onChange={event => setNewHabitName(event.target.value)}
 			/>
-			{currentlyditedHabitId === id && (
+			{isThisHabitNameCurrentlyEdited && (
 				<div>
 					<button
-						onClick={() => {
-							editHabitRequestState.run(id, {name: habitName});
-						}}
+						onClick={() => editHabitRequestState.run(id, {name: newHabitName})}
 						className="uppercase mr-4"
 						type="button"
 					>
 						Save
 					</button>
 					<button
-						onClick={() => {
-							setCurrentlyEditedHabitId();
-						}}
+						onClick={() => setCurrentlyEditedHabitId()}
 						className="uppercase"
 						type="button"
 					>
@@ -62,6 +67,6 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 					</button>
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
