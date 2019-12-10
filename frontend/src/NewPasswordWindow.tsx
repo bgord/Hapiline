@@ -7,24 +7,13 @@ import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
-const performNewPasswordRequest: Async.DeferFn<void> = async ([
-	token,
-	password,
-	passwordConfirmation,
-]: string[]) =>
-	api.post("/new-password", {
-		token: decodeURIComponent(token),
-		password,
-		password_confirmation: passwordConfirmation,
-	});
-
 export const NewPasswordWindow: React.FC = () => {
 	const {token} = useParams();
 	const [password, setPassword] = React.useState("");
 	const [passwordConfirmation, setPasswordConfirmation] = React.useState("");
 
 	const newPasswordRequestState = Async.useAsync({
-		deferFn: performNewPasswordRequest,
+		deferFn: api.auth.newPassword,
 	});
 	const {errorMessage} = useRequestErrors(newPasswordRequestState);
 

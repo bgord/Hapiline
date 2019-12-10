@@ -10,18 +10,13 @@ interface EditableHabitScoreSelectInterface extends IHabit {
 	refreshList: VoidFunction;
 }
 
-const editHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
-	api
-		.patch<IHabit>(`/habit-scoreboard-item/${id}`, payload)
-		.then(response => response.data);
-
 export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectInterface> = ({
 	id,
 	score,
 	refreshList,
 }) => {
 	const editHabitRequestState = Async.useAsync({
-		deferFn: editHabitRequest,
+		deferFn: api.habit.patch,
 		onResolve: refreshList,
 	});
 

@@ -11,16 +11,13 @@ import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
-const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
-	api.get<IHabit[]>("/habit-scoreboard-items").then(response => response.data);
-
 export const Dashboard = () => {
 	const [currentlyEditedHabitId, setCurrentlyEditedHabitId] = React.useState<
 		IHabit["id"]
 	>();
 
 	const getHabitsRequestState = Async.useAsync({
-		promiseFn: getHabitsRequest,
+		promiseFn: api.habit.get,
 	});
 	const {errorMessage} = useRequestErrors(getHabitsRequestState);
 

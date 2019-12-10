@@ -3,24 +3,9 @@ import * as Async from "react-async";
 import React from "react";
 
 import {RequestErrorMessage} from "./ErrorMessages";
-import {UserProfileInterface, useUserProfile} from "./contexts/auth-context";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
-
-const performLoginRequest: Async.DeferFn<UserProfileInterface> = (
-	[email, password]: string[],
-	{history, setUserProfile},
-) =>
-	api
-		.post<UserProfileInterface>("/login", {
-			email,
-			password,
-		})
-		.then(response => {
-			setUserProfile(response.data);
-			history.push("/dashboard");
-			return response.data;
-		});
+import {useUserProfile} from "./contexts/auth-context";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -30,7 +15,7 @@ export const LoginWindow: React.FC = () => {
 	const [password, setPassword] = React.useState("");
 
 	const loginRequestState = Async.useAsync({
-		deferFn: performLoginRequest,
+		deferFn: api.auth.login,
 		history,
 		setUserProfile,
 	});

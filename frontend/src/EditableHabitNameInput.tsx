@@ -1,5 +1,5 @@
-import React from "react";
 import * as Async from "react-async";
+import React from "react";
 
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
@@ -11,11 +11,6 @@ interface EditableHabitNameInputProps extends IHabit {
 	refreshList: VoidFunction;
 }
 
-const editHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
-	api
-		.patch<IHabit>(`/habit-scoreboard-item/${id}`, payload)
-		.then(response => response.data);
-
 export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	name,
 	id,
@@ -25,7 +20,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 }) => {
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
 	const editHabitRequestState = Async.useAsync({
-		deferFn: editHabitRequest,
+		deferFn: api.habit.patch,
 		onResolve: () => {
 			setCurrentlyEditedHabitId();
 			refreshList();

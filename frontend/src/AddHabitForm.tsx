@@ -4,23 +4,9 @@ import React from "react";
 import {CloseableSuccessMessage} from "./SuccessMessages";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
-import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-
-const addHabitRequest: Async.DeferFn<IHabit> = ([
-	name,
-	score,
-	user_id,
-]: string[]) =>
-	api
-		.post<IHabit>("/habit-scoreboard-item", {
-			name,
-			score,
-			user_id,
-		})
-		.then(response => response.data);
 
 export const AddHabitForm: React.FC<{
 	refreshList: VoidFunction;
@@ -31,7 +17,7 @@ export const AddHabitForm: React.FC<{
 	const [profile] = useUserProfile();
 
 	const addHabitRequestState = Async.useAsync({
-		deferFn: addHabitRequest,
+		deferFn: api.habit.post,
 		onResolve: function clearForm() {
 			setName("");
 			setScore("neutral");

@@ -8,15 +8,12 @@ interface DeleteButtonProps extends IHabit {
 	refreshList: VoidFunction;
 }
 
-const deleteHabitRequest: Async.DeferFn<void> = ([id]: number[]) =>
-	api.delete(`/habit-scoreboard-item/${id}`).then(response => response.data);
-
 export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 	id,
 	refreshList,
 }) => {
 	const deleteHabitRequestState = Async.useAsync({
-		deferFn: deleteHabitRequest,
+		deferFn: api.habit.delete,
 		onResolve: refreshList,
 	});
 	const textColor = deleteHabitRequestState.isPending

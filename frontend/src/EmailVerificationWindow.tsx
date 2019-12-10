@@ -1,18 +1,14 @@
-import * as Async from "react-async";
 import {useParams, Link} from "react-router-dom";
+import * as Async from "react-async";
 import React from "react";
 
 import {api} from "./services/api";
-
-const performEmailVerificationRequest: Async.PromiseFn<void> = async ({
-	token,
-}) => api.post("/verify-email", {token: decodeURIComponent(token)});
 
 export const EmailVerificationWindow = () => {
 	const {token} = useParams();
 
 	const emailVerificationRequestState = Async.useAsync({
-		promiseFn: performEmailVerificationRequest,
+		promiseFn: api.auth.verifyEmail,
 		token,
 	});
 
