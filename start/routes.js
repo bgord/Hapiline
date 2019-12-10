@@ -73,6 +73,33 @@ Route.post(
 	.validator("StoreHabitScoreboardItem")
 	.middleware("match-auth-user-id:user_id");
 
+Route.get(
+	"/api/v1/habit-scoreboard-items",
+	"HabitScoreboardItemController.index",
+).middleware(["auth", `is:(regular)`, `account-status:active`]);
+
+Route.delete(
+	"/api/v1/habit-scoreboard-item/:id",
+	"HabitScoreboardItemController.delete",
+).middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+	"params-resource-exists:habit_scoreboard_items,id",
+]);
+
+Route.patch(
+	"/api/v1/habit-scoreboard-item/:id",
+	"HabitScoreboardItemController.update",
+)
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:habit_scoreboard_items,id",
+	])
+	.validator("UpdateHabit");
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {

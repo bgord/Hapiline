@@ -56,9 +56,7 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 					/>
 					<Async.IfRejected state={registrationRequestState}>
-						<ErrorMessage>
-							{emailInlineError && emailInlineError.message}
-						</ErrorMessage>
+						<ErrorMessage>{emailInlineError?.message}</ErrorMessage>
 					</Async.IfRejected>
 				</div>
 				<div className="field-group mb-6 md:w-full">

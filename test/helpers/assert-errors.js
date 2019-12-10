@@ -55,6 +55,15 @@ function assertValidationError({response, argErrors}) {
 	});
 }
 
+function assertUnprocessableEntity(response) {
+	response.assertStatus(422);
+	response.assertJSON({
+		code: MAIN_ERROR_CODES.unprocessable_entity,
+		message: MAIN_ERROR_MESSAGES.unprocessable_entity,
+		argErrors: [],
+	});
+}
+
 module.exports = {
 	assertInvalidSession,
 	assertAccessDenied,
@@ -62,4 +71,5 @@ module.exports = {
 	assertInvalidToken,
 	assertValidationError,
 	assertInvalidCredentials,
+	assertUnprocessableEntity,
 };

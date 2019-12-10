@@ -1,7 +1,6 @@
 import React from "react";
 
-export const SuccessMessage: React.FC<React.HTMLProps<HTMLDivElement>> = ({
-	children,
+export const SuccessMessage: React.FC<JSX.IntrinsicElements["div"]> = ({
 	className = "",
 	...props
 }) => {
@@ -9,15 +8,14 @@ export const SuccessMessage: React.FC<React.HTMLProps<HTMLDivElement>> = ({
 		<div
 			className={`success-message w-auto flex justify-between mt-4 ${className}`}
 			{...props}
-		>
-			{children}
-		</div>
+		/>
 	);
 };
 
-export const CloseableSuccessMessage: React.FC<
-	React.HTMLProps<HTMLDivElement>
-> = ({children, ...props}) => {
+export const CloseableSuccessMessage: React.FC<JSX.IntrinsicElements["div"]> = ({
+	children,
+	...props
+}) => {
 	const [on, setOn] = React.useState(true);
 	const close = () => setOn(false);
 	return (

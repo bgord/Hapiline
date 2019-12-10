@@ -1,111 +1,66 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {CloseableSuccessMessage} from "./SuccessMessages";
+import {AddHabitForm} from "./AddHabitForm";
+import {DeleteHabitButton} from "./DeleteHabitButton";
+import {EditableHabitNameInput} from "./EditableHabitNameInput";
+import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {ErrorMessage} from "./ErrorMessages";
+import {IHabit} from "./interfaces/IHabit";
+import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
-import {useUserProfile} from "./contexts/auth-context";
 
-interface HabitScoreboardItem {
-	id: number;
-	name: string;
-	score: "positive" | "neutral" | "negative";
-}
-
-const performAddHabitScoreboardItemRequest: Async.DeferFn<
-	HabitScoreboardItem
-> = ([name, score, user_id]: string[]) =>
-	api
-		.post<HabitScoreboardItem>("/habit-scoreboard-item", {
-			name,
-			score,
-			user_id,
-		})
-		.then(response => response.data);
+const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
+	api.get<IHabit[]>("/habit-scoreboard-items").then(response => response.data);
 
 export const Dashboard = () => {
-	const [name, setName] = React.useState("");
-	const [score, setScore] = React.useState("neutral");
-	const [profile] = useUserProfile();
+	const [currentlyEditedHabitId, setCurrentlyEditedHabitId] = React.useState<
+		IHabit["id"]
+	>();
 
-	const addHabitScoreboardItemRequestState = Async.useAsync({
-		deferFn: performAddHabitScoreboardItemRequest,
-		onResolve: function clearForm() {
-			setName("");
-			setScore("neutral");
-		},
+	const getHabitsRequestState = Async.useAsync({
+		promiseFn: getHabitsRequest,
 	});
-	const {getArgError, errorMessage} = useRequestErrors(
-		addHabitScoreboardItemRequestState,
-	);
-
-	const nameInlineError = getArgError("name");
+	const {errorMessage} = useRequestErrors(getHabitsRequestState);
 
 	return (
-		<section className="flex items-center mt-4 flex-col">
-			<div>
-				<form
-					onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-						event.preventDefault();
-						addHabitScoreboardItemRequestState.run(
-							name,
-							score,
-							profile && profile.id,
-						);
-					}}
-					className="flex items-end"
-				>
-					<div className="flex flex-col">
-						<label className="field-label" htmlFor="name">
-							Habit
-						</label>
-						<input
-							required
-							pattern=".{1,255}"
-							title="Please, try to fit habit in 255 characters."
-							className="field w-64"
-							id="name"
-							name="name"
-							value={name}
-							type="text"
-							onChange={event => setName(event.target.value)}
-							placeholder="Wake up at 7:30 AM"
-						/>
-					</div>
-					<div className="flex flex-col ml-8">
-						<label className="field-label" htmlFor="score">
-							Score
-						</label>
-						<select
-							id="score"
-							name="score"
-							required
-							value={score}
-							onChange={event => setScore(event.target.value)}
-							className="field bg-white"
-						>
-							<option value="neutral">Neutral</option>
-							<option value="positive">Positive</option>
-							<option value="negative">Negative</option>
-						</select>
-					</div>
-					<button className="btn btn-blue ml-8 h-10" type="submit">
-						Add habit
-					</button>
-				</form>
-				<Async.IfFulfilled state={addHabitScoreboardItemRequestState}>
-					<CloseableSuccessMessage>
-						Habit successfully addedd!
-					</CloseableSuccessMessage>
-				</Async.IfFulfilled>
+		<section className="flex flex-col items-center py-8">
+			<AddHabitForm refreshList={getHabitsRequestState.reload} />
 
-				<Async.IfRejected state={addHabitScoreboardItemRequestState}>
-					<ErrorMessage className="mt-4">
-						{(nameInlineError && nameInlineError.message) || errorMessage}
-					</ErrorMessage>
-				</Async.IfRejected>
-			</div>
+			<Async.IfRejected state={getHabitsRequestState}>
+				<ErrorMessage className="mt-4 text-center">{errorMessage}</ErrorMessage>
+			</Async.IfRejected>
+
+			<ul className="flex flex-col mt-12 bg-white p-4 pb-0 max-w-2xl w-full">
+				<Async.IfFulfilled state={getHabitsRequestState}>
+					{!getHabitsRequestState?.data?.length && (
+						<InfoMessage className="pb-4">
+							Seems you haven't added any habits yet.
+						</InfoMessage>
+					)}
+					{getHabitsRequestState?.data?.map(item => (
+						<li className="flex align-baseline mb-4" key={item.id}>
+							<EditableHabitScoreSelect
+								{...item}
+								refreshList={getHabitsRequestState.reload}
+							/>
+							<div className="flex justify-between w-full">
+								<EditableHabitNameInput
+									{...item}
+									currentlyEditedHabitId={currentlyEditedHabitId}
+									setCurrentlyEditedHabitId={setCurrentlyEditedHabitId}
+									refreshList={getHabitsRequestState.reload}
+								/>
+								<DeleteHabitButton
+									{...item}
+									refreshList={getHabitsRequestState.reload}
+								/>
+							</div>
+						</li>
+					))}
+				</Async.IfFulfilled>
+			</ul>
 		</section>
 	);
 };

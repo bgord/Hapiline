@@ -13,20 +13,16 @@ const authenticatedAppBrowserHistory = createBrowserHistory();
 function AuthenticatedApp() {
 	return (
 		<Router history={authenticatedAppBrowserHistory}>
-			<main className="flex flex-col h-screen w-full bg-gray-200">
-				<AuthenticatedNavbar />
-				<section className="mx-4">
-					<Switch>
-						<Route exact path="/logout">
-							<Logout />
-						</Route>
-						<Route exact path="/dashboard">
-							<Dashboard />
-						</Route>
-						<Redirect to="/dashboard" />
-					</Switch>
-				</section>
-			</main>
+			<AuthenticatedNavbar />
+			<Switch>
+				<Route exact path="/logout">
+					<Logout />
+				</Route>
+				<Route exact path="/dashboard">
+					<Dashboard />
+				</Route>
+				<Redirect to="/dashboard" />
+			</Switch>
 		</Router>
 	);
 }
@@ -35,9 +31,8 @@ export default AuthenticatedApp;
 
 function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
-	const email = profile && profile.email;
 	return (
-		<nav className="flex justify-end py-1 bg-white shadow-md mb-4">
+		<nav className="flex justify-end py-1 bg-white shadow-md">
 			<NavLink
 				className="ml-2 mr-auto p-2"
 				exact
@@ -46,7 +41,7 @@ function AuthenticatedNavbar() {
 			>
 				<Logo />
 			</NavLink>
-			<h3 className="font-semibold mr-4 p-4">{email}</h3>
+			<h3 className="font-semibold mr-4 p-4">{profile?.email}</h3>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/logout">
 				Logout
 			</NavLink>

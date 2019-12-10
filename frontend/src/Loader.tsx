@@ -1,5 +1,6 @@
 import React from "react";
 
-export function Loader() {
-	return <div>Loading...</div>;
-}
+export const Loader: React.FC<JSX.IntrinsicElements["div"]> = ({
+	children = "Loading...",
+	...props
+}) => <div {...props}>{children}</div>;
