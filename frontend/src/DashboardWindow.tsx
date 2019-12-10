@@ -41,7 +41,10 @@ export const Dashboard = () => {
 					)}
 					{getHabitsRequestState?.data?.map(item => (
 						<li className="flex align-baseline mb-4" key={item.id}>
-							<EditableHabitScoreSelect {...item} />
+							<EditableHabitScoreSelect
+								{...item}
+								refreshList={getHabitsRequestState.reload}
+							/>
 							<div className="flex justify-between w-full">
 								<EditableHabitNameInput
 									{...item}
