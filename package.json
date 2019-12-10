@@ -12,13 +12,13 @@
     "api:start": "adonis serve --dev --polling",
     "api:test": "adonis test --bail",
     "api:test:specific": "adonis test --grep",
-    "frontend:build:dev": "webpack --mode development",
-    "frontend:build:prod": "webpack --mode production",
+    "frontend:dev": "webpack --mode development",
+    "frontend:prod": "webpack --mode production",
     "frontend:test": "jest --passWithNoTests",
     "frontend:test:watch": "jest --watch",
-    "frontend:css:build:dev": "postcss frontend/css/tailwind.css -o frontend/css/index.css",
-    "frontend:css:build:prod": "NODE_ENV=production postcss frontend/css/tailwind.css -o frontend/css/index.css",
-    "frontend:css:watch": "postcss frontend/css/tailwind.css -w -o frontend/css/index.css",
+    "css:build:dev": "postcss frontend/css/tailwind.css -o frontend/css/index.css",
+    "css:build:prod": "NODE_ENV=production postcss frontend/css/tailwind.css -o frontend/css/index.css",
+    "css:watch": "postcss frontend/css/tailwind.css -w -o frontend/css/index.css",
     "e2e:test": "./node_modules/.bin/cypress open"
   },
   "keywords": [
