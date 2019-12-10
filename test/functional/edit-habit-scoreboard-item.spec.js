@@ -11,8 +11,8 @@ const {
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
-const Database = use("Database");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const HabitScoreboardItem = use("HabitScoreboardItem");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -69,37 +69,6 @@ test("checks if entity can be processed", async ({client}) => {
 	assertUnprocessableEntity(response);
 });
 
-test("full flow", async ({client, assert}) => {
-	const jim = await User.find(users.jim.id);
-
-	const habitBeforeUpdate = await Database.table("habit_scoreboard_items")
-		.where({
-			user_id: jim.id,
-			name: "0 lorem",
-		})
-		.first();
-	assert.equal(habitBeforeUpdate.name, "0 lorem");
-
-	const payload = {
-		name: "xxx",
-	};
-
-	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/${habitBeforeUpdate.id}`)
-		.send(payload)
-		.loginVia(jim)
-		.end();
-
-	response.assertStatus(200);
-
-	const habitAfterUpdate = await Database.table("habit_scoreboard_items")
-		.where({
-			id: habitBeforeUpdate.id,
-		})
-		.first();
-	assert.equal(habitAfterUpdate.name, payload.name);
-});
-
 test("user cannot update not their own habit", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
@@ -140,4 +109,29 @@ test("validation", async ({client}) => {
 
 		assertValidationError({response, argErrors});
 	}
+});
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const habitScoreboardItemBeforeUpdate = await HabitScoreboardItem.find(1);
+	assert.equal(habitScoreboardItemBeforeUpdate.name, "0 lorem");
+	assert.equal(habitScoreboardItemBeforeUpdate.score, "positive");
+
+	const payload = {
+		score: "negative",
+		name: "Prison Mike",
+	};
+
+	const response = await client
+		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/1`)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	response.assertStatus(200);
+
+	const habitScoreboardItemAfterUpdate = await HabitScoreboardItem.find(1);
+	assert.equal(habitScoreboardItemAfterUpdate.name, payload.name);
+	assert.equal(habitScoreboardItemAfterUpdate.score, payload.score);
 });
