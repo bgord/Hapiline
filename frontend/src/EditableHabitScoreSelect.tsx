@@ -27,7 +27,7 @@ export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectInterfac
 
 	return (
 		<select
-			className="bg-gray-300 w-20 appearance-none cursor-pointer"
+			className="bg-gray-300 w-20 pl-1 appearance-none cursor-pointer"
 			value={score}
 			disabled={editHabitRequestState.isPending}
 			onChange={event => {

@@ -191,4 +191,22 @@ describe("Habit scoreboard", () => {
 		cy.findByDisplayValue("1 loremlorem").click();
 		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
 	});
+
+	it("changing score names", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByDisplayValue("Positive").should("have.length", 4);
+			cy.findAllByDisplayValue("Neutral").should("have.length", 3);
+			cy.findAllByDisplayValue("Negative").should("have.length", 3);
+
+			cy.findAllByDisplayValue("Neutral")
+				.first()
+				.select("positive");
+			cy.findAllByDisplayValue("Positive").should("have.length", 5);
+			cy.findAllByDisplayValue("Neutral").should("have.length", 2);
+			cy.findAllByDisplayValue("Negative").should("have.length", 3);
+		});
+	});
 });
