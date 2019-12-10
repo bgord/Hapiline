@@ -3,12 +3,13 @@ import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
 import {DeleteHabitButton} from "./DeleteHabitButton";
+import {EditableHabitNameInput} from "./EditableHabitNameInput";
+import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
-import {EditableHabitNameInput} from "./EditableHabitNameInput";
 
 const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
 	api.get<IHabit[]>("/habit-scoreboard-items").then(response => response.data);
@@ -40,9 +41,7 @@ export const Dashboard = () => {
 					)}
 					{getHabitsRequestState?.data?.map(item => (
 						<li className="flex align-baseline mb-4" key={item.id}>
-							<div className="bg-gray-300 w-20 flex justify-center items-center">
-								{item.score}
-							</div>
+							<EditableHabitScoreSelect {...item} />
 							<div className="flex justify-between w-full">
 								<EditableHabitNameInput
 									{...item}
