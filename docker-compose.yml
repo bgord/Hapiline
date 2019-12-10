@@ -10,14 +10,6 @@ services:
       - "4444:4444"
     volumes:
       - .:/usr/src/app
-  mailhog:
-    container_name: "hapiline_mailhog"
-    build:
-      context: .
-      dockerfile: Dockerfile-mailhog
-    ports:
-      - 1025:1025
-      - 8025:8025
   db:
     container_name: "hapiline_db"
     restart: always

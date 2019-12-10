@@ -8,7 +8,7 @@
 $ cp .env.example .env
 ```
 
-Fill missing values for the following keys: `APP_KEY` and `DB_PASSWORD` in `.env`.
+Fill missing values for the following keys: `APP_KEY`, `SMTP_HOST`, `SMTP_PORT`, and `DB_PASSWORD` in `.env`.
 
 **Create `.env-frontend` file**
 
