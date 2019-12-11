@@ -6,6 +6,10 @@ import {createBrowserHistory} from "history";
 import {Dashboard} from "./DashboardWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
+import {
+	useNotificationActions,
+	useNotifications,
+} from "./contexts/notifications-context";
 import {useUserProfile} from "./contexts/auth-context";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -14,6 +18,7 @@ function AuthenticatedApp() {
 	return (
 		<Router history={authenticatedAppBrowserHistory}>
 			<AuthenticatedNavbar />
+			<Notifications />
 			<Switch>
 				<Route exact path="/logout">
 					<Logout />
@@ -46,5 +51,46 @@ function AuthenticatedNavbar() {
 				Logout
 			</NavLink>
 		</nav>
+	);
+}
+
+import Alert from "@reach/alert";
+
+function Notifications() {
+	const notifications = useNotifications();
+	const dispatch = useNotificationActions();
+
+	const typeToBgColor = {
+		success: "green",
+		info: "blue",
+		error: "red",
+	};
+
+	return (
+		<div className="absolute bottom-0 right-0 m-2">
+			{notifications.map(notification => (
+				<Alert
+					style={{
+						minWidth: "350px",
+					}}
+					className={`flex justify-between bg-${
+						typeToBgColor[notification.type]
+					}-300 p-4 mt-4`}
+					key={notification.id}
+				>
+					<div>{notification.message}</div>
+					<button
+						onClick={() =>
+							dispatch({
+								type: "remove",
+								id: notification.id,
+							})
+						}
+					>
+						x
+					</button>
+				</Alert>
+			))}
+		</div>
 	);
 }
