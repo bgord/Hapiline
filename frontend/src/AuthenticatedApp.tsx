@@ -6,10 +6,7 @@ import {createBrowserHistory} from "history";
 import {Dashboard} from "./DashboardWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
-import {
-	useNotificationActions,
-	useNotifications,
-} from "./contexts/notifications-context";
+import {useNotificationState} from "./contexts/notifications-context";
 import {useUserProfile} from "./contexts/auth-context";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -57,8 +54,7 @@ function AuthenticatedNavbar() {
 import Alert from "@reach/alert";
 
 function Notifications() {
-	const notifications = useNotifications();
-	const dispatch = useNotificationActions();
+	const notifications = useNotificationState();
 
 	const typeToBgColor = {
 		success: "green",
@@ -67,7 +63,7 @@ function Notifications() {
 	};
 
 	return (
-		<div className="absolute bottom-0 right-0 m-2">
+		<div className="fixed bottom-0 right-0 m-2">
 			{notifications.map(notification => (
 				<Alert
 					style={{
@@ -78,17 +74,7 @@ function Notifications() {
 					}-300 p-4 mt-4`}
 					key={notification.id}
 				>
-					<div>{notification.message}</div>
-					<button
-						onClick={() =>
-							dispatch({
-								type: "remove",
-								id: notification.id,
-							})
-						}
-					>
-						x
-					</button>
+					{notification.message}
 				</Alert>
 			))}
 		</div>

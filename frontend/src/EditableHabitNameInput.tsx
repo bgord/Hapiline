@@ -4,6 +4,7 @@ import React from "react";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
 
 interface EditableHabitNameInputProps extends IHabit {
 	currentlyEditedHabitId?: IHabit["id"];
@@ -19,12 +20,22 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	refreshList,
 }) => {
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
+	const [triggerSuccessNotification] = useNotification({
+		type: "success",
+		message: "Name updated successfully!",
+	});
+	const [triggerErrorNotification] = useNotification({
+		type: "error",
+		message: "Error while chaning name.",
+	});
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: () => {
 			setCurrentlyEditedHabitId();
 			refreshList();
+			triggerSuccessNotification();
 		},
+		onReject: triggerErrorNotification,
 	});
 
 	const isThisHabitNameCurrentlyEdited = currentlyEditedHabitId === id;

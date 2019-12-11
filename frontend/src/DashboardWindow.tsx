@@ -9,6 +9,7 @@ import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
 export const Dashboard = () => {
@@ -16,8 +17,14 @@ export const Dashboard = () => {
 		IHabit["id"]
 	>();
 
+	const [triggerErrorNotification] = useNotification({
+		type: "error",
+		message: "Couldn't fetch habit list.",
+	});
+
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: api.habit.get,
+		onReject: triggerErrorNotification,
 	});
 	const {errorMessage} = useRequestErrors(getHabitsRequestState);
 

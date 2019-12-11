@@ -54,22 +54,44 @@ export const NotificationsProvider: React.FC = ({children}) => {
 	);
 };
 
-export function useNotifications() {
-	const context = React.useContext(NotificationsStateContext);
-	if (context === undefined) {
+export function useNotificationState() {
+	const state = React.useContext(NotificationsStateContext);
+	if (state === undefined) {
 		throw new Error(
 			`useNotificationsState must be used within the NotificationProvider`,
 		);
 	}
-	return context;
+	return state;
 }
 
-export function useNotificationActions() {
-	const context = React.useContext(NotificationsDispatchContext);
-	if (context === undefined) {
+export function useNotification(
+	notification: Omit<Notification, "id">,
+	timeout: number = 5000,
+) {
+	const dispatch = React.useContext(NotificationsDispatchContext);
+	if (dispatch === undefined) {
 		throw new Error(
 			`useNotificationsDispatch must be used within the NotificationProvider`,
 		);
 	}
-	return context;
+
+	const triggerNotification = (): void => {
+		const id = Date.now();
+
+		dispatch({
+			type: "add",
+			notification: {
+				id,
+				...notification,
+			},
+		});
+		setTimeout(() => {
+			dispatch({
+				type: "remove",
+				id,
+			});
+		}, timeout);
+	};
+
+	return [triggerNotification];
 }

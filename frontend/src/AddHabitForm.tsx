@@ -1,27 +1,45 @@
+import {ApiError} from "./services/api";
+
 import * as Async from "react-async";
 import React from "react";
 
-import {CloseableSuccessMessage} from "./SuccessMessages";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
 export const AddHabitForm: React.FC<{
 	refreshList: VoidFunction;
 }> = ({refreshList}) => {
+	const [profile] = useUserProfile();
+
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
 
-	const [profile] = useUserProfile();
+	const [triggerSuccessNotification] = useNotification({
+		type: "success",
+		message: "Habit successfully addedd!",
+	});
+	const [triggerUnexpectedErrorNotification] = useNotification({
+		type: "error",
+		message: "Habit couldn't be added.",
+	});
 
 	const addHabitRequestState = Async.useAsync({
 		deferFn: api.habit.post,
-		onResolve: function clearForm() {
+		onResolve: () => {
 			setName("");
 			setScore("neutral");
 			refreshList();
+			triggerSuccessNotification();
+		},
+		onReject: _error => {
+			const error = _error as ApiError;
+			if (error.response?.status === 500) {
+				triggerUnexpectedErrorNotification();
+			}
 		},
 	});
 
@@ -68,11 +86,6 @@ export const AddHabitForm: React.FC<{
 					Add habit
 				</button>
 			</form>
-			<Async.IfFulfilled state={addHabitRequestState}>
-				<CloseableSuccessMessage>
-					Habit successfully addedd!
-				</CloseableSuccessMessage>
-			</Async.IfFulfilled>
 			<Async.IfRejected state={addHabitRequestState}>
 				<ErrorMessage className="mt-4">
 					{nameInlineError?.message || errorMessage}
