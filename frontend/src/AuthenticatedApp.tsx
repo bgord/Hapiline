@@ -6,7 +6,7 @@ import {createBrowserHistory} from "history";
 import {Dashboard} from "./DashboardWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
-import {useNotificationState} from "./contexts/notifications-context";
+import {Notifications} from "./Notifications";
 import {useUserProfile} from "./contexts/auth-context";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -48,35 +48,5 @@ function AuthenticatedNavbar() {
 				Logout
 			</NavLink>
 		</nav>
-	);
-}
-
-import Alert from "@reach/alert";
-
-function Notifications() {
-	const notifications = useNotificationState();
-
-	const typeToBgColor = {
-		success: "green",
-		info: "blue",
-		error: "red",
-	};
-
-	return (
-		<div className="fixed bottom-0 right-0 m-2">
-			{notifications.map(notification => (
-				<Alert
-					style={{
-						minWidth: "350px",
-					}}
-					className={`flex justify-between bg-${
-						typeToBgColor[notification.type]
-					}-300 p-4 mt-4`}
-					key={notification.id}
-				>
-					{notification.message}
-				</Alert>
-			))}
-		</div>
 	);
 }

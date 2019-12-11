@@ -1,6 +1,6 @@
 import React from "react";
 
-interface Notification {
+export interface Notification {
 	id: number;
 	type: "success" | "error" | "info";
 	message: string;
