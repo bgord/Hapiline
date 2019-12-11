@@ -40,7 +40,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 		<div className="flex justify-between items-center w-full">
 			<HabitNameInput
 				onKeyDown={event => {
-					if (event.keyCode === 13) {
+					if (event.keyCode === 13 && newHabitName !== name) {
 						editHabitRequestState.run(id, {name: newHabitName});
 					}
 				}}
@@ -52,7 +52,11 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 			{isThisHabitNameCurrentlyEdited && (
 				<div>
 					<button
-						onClick={() => editHabitRequestState.run(id, {name: newHabitName})}
+						onClick={() => {
+							if (newHabitName === name) {
+								setCurrentlyEditedHabitId();
+							} else editHabitRequestState.run(id, {name: newHabitName});
+						}}
 						className="uppercase mr-4"
 						type="button"
 					>
