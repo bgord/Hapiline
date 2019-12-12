@@ -10,9 +10,9 @@ import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
-export const AddHabitForm: React.FC<{
-	refreshList: VoidFunction;
-}> = ({refreshList}) => {
+export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
+	refreshList,
+}) => {
 	const [profile] = useUserProfile();
 
 	const [name, setName] = React.useState("");
