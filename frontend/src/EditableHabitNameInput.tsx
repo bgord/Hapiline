@@ -1,20 +1,16 @@
-import React from "react";
 import * as Async from "react-async";
+import React from "react";
 
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
 
 interface EditableHabitNameInputProps extends IHabit {
 	currentlyEditedHabitId?: IHabit["id"];
 	setCurrentlyEditedHabitId: (id?: IHabit["id"]) => void;
 	refreshList: VoidFunction;
 }
-
-const editHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
-	api
-		.patch<IHabit>(`/habit-scoreboard-item/${id}`, payload)
-		.then(response => response.data);
 
 export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	name,
@@ -24,12 +20,22 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	refreshList,
 }) => {
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
+	const [triggerSuccessNotification] = useNotification({
+		type: "success",
+		message: "Name updated successfully!",
+	});
+	const [triggerErrorNotification] = useNotification({
+		type: "error",
+		message: "Error while chaning name.",
+	});
 	const editHabitRequestState = Async.useAsync({
-		deferFn: editHabitRequest,
+		deferFn: api.habit.patch,
 		onResolve: () => {
 			setCurrentlyEditedHabitId();
 			refreshList();
+			triggerSuccessNotification();
 		},
+		onReject: triggerErrorNotification,
 	});
 
 	const isThisHabitNameCurrentlyEdited = currentlyEditedHabitId === id;
@@ -45,7 +51,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 		<div className="flex justify-between items-center w-full">
 			<HabitNameInput
 				onKeyDown={event => {
-					if (event.keyCode === 13) {
+					if (event.keyCode === 13 && newHabitName !== name) {
 						editHabitRequestState.run(id, {name: newHabitName});
 					}
 				}}
@@ -57,7 +63,11 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 			{isThisHabitNameCurrentlyEdited && (
 				<div>
 					<button
-						onClick={() => editHabitRequestState.run(id, {name: newHabitName})}
+						onClick={() => {
+							if (newHabitName === name) {
+								setCurrentlyEditedHabitId();
+							} else editHabitRequestState.run(id, {name: newHabitName});
+						}}
 						className="uppercase mr-4"
 						type="button"
 					>

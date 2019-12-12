@@ -9,18 +9,22 @@ import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
-
-const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
-	api.get<IHabit[]>("/habit-scoreboard-items").then(response => response.data);
 
 export const Dashboard = () => {
 	const [currentlyEditedHabitId, setCurrentlyEditedHabitId] = React.useState<
 		IHabit["id"]
 	>();
 
+	const [triggerErrorNotification] = useNotification({
+		type: "error",
+		message: "Couldn't fetch habit list.",
+	});
+
 	const getHabitsRequestState = Async.useAsync({
-		promiseFn: getHabitsRequest,
+		promiseFn: api.habit.get,
+		onReject: triggerErrorNotification,
 	});
 	const {errorMessage} = useRequestErrors(getHabitsRequestState);
 

@@ -1,4 +1,4 @@
-import {useAsync, PromiseFn} from "react-async";
+import * as Async from "react-async";
 import React from "react";
 
 import {Loader} from "../Loader";
@@ -16,11 +16,6 @@ type UserProfileContext = [
 
 const AuthContext = React.createContext<UserProfileContext>([null]);
 
-const performIsLoggedInRequest: PromiseFn<UserProfileInterface> = async () => {
-	const response = await api.get("/me");
-	return response.data;
-};
-
 export const AuthProvider: React.FC = props => {
 	const [
 		userProfile,
@@ -30,8 +25,8 @@ export const AuthProvider: React.FC = props => {
 		boolean
 	>(false);
 
-	const {isSettled, data, isPending, isRejected} = useAsync({
-		promiseFn: performIsLoggedInRequest,
+	const {isSettled, data, isPending, isRejected} = Async.useAsync({
+		promiseFn: api.auth.isLoggedIn,
 	});
 
 	React.useLayoutEffect(() => {

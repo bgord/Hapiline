@@ -3,21 +3,31 @@ import React from "react";
 
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
 
 interface DeleteButtonProps extends IHabit {
 	refreshList: VoidFunction;
 }
 
-const deleteHabitRequest: Async.DeferFn<void> = ([id]: number[]) =>
-	api.delete(`/habit-scoreboard-item/${id}`).then(response => response.data);
-
 export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 	id,
 	refreshList,
 }) => {
+	const [triggerSuccessNotification] = useNotification({
+		type: "success",
+		message: "Habit successfully deleted!",
+	});
+	const [triggerErrorNotification] = useNotification({
+		type: "error",
+		message: "Couldn't delete habit.",
+	});
 	const deleteHabitRequestState = Async.useAsync({
-		deferFn: deleteHabitRequest,
-		onResolve: refreshList,
+		deferFn: api.habit.delete,
+		onResolve: () => {
+			refreshList();
+			triggerSuccessNotification();
+		},
+		onReject: triggerErrorNotification,
 	});
 	const textColor = deleteHabitRequestState.isPending
 		? "text-gray-900"

@@ -6,6 +6,7 @@ import {createBrowserHistory} from "history";
 import {Dashboard} from "./DashboardWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
+import {Notifications} from "./Notifications";
 import {useUserProfile} from "./contexts/auth-context";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -14,6 +15,7 @@ function AuthenticatedApp() {
 	return (
 		<Router history={authenticatedAppBrowserHistory}>
 			<AuthenticatedNavbar />
+			<Notifications />
 			<Switch>
 				<Route exact path="/logout">
 					<Logout />

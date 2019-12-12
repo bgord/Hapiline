@@ -1,15 +1,26 @@
-import {AxiosError} from "axios";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
+
+import {
+	addHabitRequest,
+	deleteHabitRequest,
+	getHabitsRequest,
+	patchHabitRequest,
+} from "./habit";
+import {
+	forgotPasswordRequest,
+	isLoggedInRequest,
+	loginRequest,
+	logoutRequest,
+	newPasswordRequest,
+	registrationRequest,
+	verifyEmailRequest,
+} from "./auth";
 
 declare var process: {
 	env: {
 		API_URL: string;
 	};
 };
-
-export const api = axios.create({
-	baseURL: process.env.API_URL,
-});
 
 export interface ArgError {
 	field: string;
@@ -24,3 +35,25 @@ export interface ApiErrorInterface {
 }
 
 export type ApiError = AxiosError<ApiErrorInterface>;
+
+export const _internal_api = axios.create({
+	baseURL: process.env.API_URL,
+});
+
+export const api = {
+	habit: {
+		get: getHabitsRequest,
+		post: addHabitRequest,
+		delete: deleteHabitRequest,
+		patch: patchHabitRequest,
+	},
+	auth: {
+		login: loginRequest,
+		verifyEmail: verifyEmailRequest,
+		forgotPassword: forgotPasswordRequest,
+		logout: logoutRequest,
+		newPassword: newPasswordRequest,
+		register: registrationRequest,
+		isLoggedIn: isLoggedInRequest,
+	},
+};

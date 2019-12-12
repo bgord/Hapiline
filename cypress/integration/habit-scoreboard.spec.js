@@ -6,6 +6,8 @@ describe("Habit scoreboard", () => {
 	});
 
 	it("Add an item", () => {
+		cy.clock();
+
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -15,7 +17,8 @@ describe("Habit scoreboard", () => {
 
 		cy.findByText("Habit successfully addedd!");
 
-		cy.findByText("x").click();
+		cy.tick(6000);
+
 		cy.findByText("Habit successfully addedd!").should("not.exist");
 
 		cy.findByLabelText("Habit").should("have.value", "");
@@ -32,7 +35,6 @@ describe("Habit scoreboard", () => {
 		cy.findByLabelText("Score").select("positive");
 		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
-		cy.findByText("x").click();
 
 		cy.findByDisplayValue("Go to sleep at 9:30 AM");
 	});
@@ -59,6 +61,7 @@ describe("Habit scoreboard", () => {
 		cy.findByText("Add habit").click();
 
 		cy.findByText(errorMessage);
+		cy.findByText("Habit couldn't be added.");
 	});
 
 	it("empty list of items", () => {
@@ -108,7 +111,7 @@ describe("Habit scoreboard", () => {
 
 		response.forEach(item => {
 			cy.findByDisplayValue(item.name);
-			cy.findByText(item.score);
+			cy.findByDisplayValue(item.score);
 		});
 	});
 
@@ -131,6 +134,7 @@ describe("Habit scoreboard", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText(errorMessage);
+		cy.findByText("Couldn't fetch habit list.");
 	});
 
 	it("deleting items", () => {
@@ -144,6 +148,34 @@ describe("Habit scoreboard", () => {
 			.click();
 
 		cy.findByDisplayValue("0 lorem").should("not.exist");
+		cy.findByText("Habit successfully deleted!");
+	});
+
+	it("deleting items error", () => {
+		const errorMessage = "Couldn't delete habit.";
+
+		cy.server();
+		cy.route({
+			method: "DELETE",
+			url: "/api/v1/habit-scoreboard-item/6",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByDisplayValue("0 lorem");
+
+		cy.findAllByText("Delete")
+			.first()
+			.click();
+
+		cy.findByDisplayValue("0 lorem").should("exist");
+		cy.findByText(errorMessage);
 	});
 
 	it("changing name", () => {
@@ -157,6 +189,7 @@ describe("Habit scoreboard", () => {
 
 		cy.findByDisplayValue("0 lorem").type(" xxx");
 		cy.findByText("Save").click();
+		cy.findByText("Name updated successfully!");
 
 		cy.findByDisplayValue("0 lorem xxx");
 
@@ -170,12 +203,45 @@ describe("Habit scoreboard", () => {
 		cy.findByText("Reset").should("not.exist");
 
 		cy.findByDisplayValue("1 loremlorem").type(" yyy{enter}");
+		cy.findAllByText("Name updated successfully!");
 
 		cy.findByDisplayValue("1 loremlorem yyy");
 
 		cy.findByDisplayValue("1 loremlorem").should("not.exist");
 		cy.findByText("Save").should("not.exist");
 		cy.findByText("Reset").should("not.exist");
+	});
+
+	it("changing name error", () => {
+		const errorMessage = "Error while chaning name.";
+
+		cy.server();
+		cy.route({
+			method: "PATCH",
+			url: "/api/v1/habit-scoreboard-item/6",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		// "Save" flow
+		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
+		cy.findByText("Save").should("not.exist");
+		cy.findByText("Reset").should("not.exist");
+
+		cy.findByDisplayValue("0 lorem").type(" xxx");
+		cy.findByText("Save").click();
+		cy.findByText(errorMessage);
+
+		cy.findByDisplayValue("0 lorem xxx");
+		cy.findByText("Save");
+		cy.findByText("Reset");
 	});
 
 	it("clicking through the inputs", () => {
@@ -197,16 +263,50 @@ describe("Habit scoreboard", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.get("ul").within(() => {
-			cy.findAllByDisplayValue("Positive").should("have.length", 4);
-			cy.findAllByDisplayValue("Neutral").should("have.length", 3);
-			cy.findAllByDisplayValue("Negative").should("have.length", 3);
+			cy.findAllByDisplayValue("positive").should("have.length", 4);
+			cy.findAllByDisplayValue("neutral").should("have.length", 3);
+			cy.findAllByDisplayValue("negative").should("have.length", 3);
 
-			cy.findAllByDisplayValue("Neutral")
+			cy.findAllByDisplayValue("neutral")
 				.first()
 				.select("positive");
-			cy.findAllByDisplayValue("Positive").should("have.length", 5);
-			cy.findAllByDisplayValue("Neutral").should("have.length", 2);
-			cy.findAllByDisplayValue("Negative").should("have.length", 3);
+
+			cy.findAllByDisplayValue("positive").should("have.length", 5);
+			cy.findAllByDisplayValue("neutral").should("have.length", 2);
+			cy.findAllByDisplayValue("negative").should("have.length", 3);
+		});
+	});
+
+	it("changing score names error", () => {
+		const errorMessage = "Error while chaning name.";
+
+		cy.server();
+		cy.route({
+			method: "PATCH",
+			url: "/api/v1/habit-scoreboard-item/7",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByDisplayValue("positive").should("have.length", 4);
+			cy.findAllByDisplayValue("neutral").should("have.length", 3);
+			cy.findAllByDisplayValue("negative").should("have.length", 3);
+
+			cy.findAllByDisplayValue("neutral")
+				.first()
+				.select("positive");
+
+			cy.findAllByDisplayValue("positive").should("have.length", 4);
+			cy.findAllByDisplayValue("neutral").should("have.length", 3);
+			cy.findAllByDisplayValue("negative").should("have.length", 3);
 		});
 	});
 });

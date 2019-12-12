@@ -4,16 +4,11 @@ import React from "react";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 
-const performForgotPasswordRequest: Async.DeferFn<void> = ([email]: string[]) =>
-	api.post("/forgot-password", {
-		email,
-	});
-
 export const ForgotPasswordWindow: React.FC = () => {
 	const [email, setEmail] = React.useState("");
 
 	const forgotPasswordRequestState = Async.useAsync({
-		deferFn: performForgotPasswordRequest,
+		deferFn: api.auth.forgotPassword,
 		onResolve: () => setEmail(""),
 	});
 

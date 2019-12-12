@@ -7,24 +7,13 @@ import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
-const performRegistrationRequest: Async.DeferFn<void> = ([
-	email,
-	password,
-	passwordConfirmation,
-]: string[]) =>
-	api.post("/register", {
-		email,
-		password,
-		password_confirmation: passwordConfirmation,
-	});
-
 export const RegistrationWindow: React.FC = () => {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [passwordConfirmation, setPasswordConfirmation] = React.useState("");
 
 	const registrationRequestState = Async.useAsync({
-		deferFn: performRegistrationRequest,
+		deferFn: api.auth.register,
 	});
 	const {responseStatus, errorMessage, getArgError} = useRequestErrors(
 		registrationRequestState,
