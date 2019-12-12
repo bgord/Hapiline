@@ -17,7 +17,7 @@ describe("Habit scoreboard", () => {
 
 		cy.findByText("Habit successfully addedd!");
 
-		cy.tick(6000);
+		cy.tick(10000);
 
 		cy.findByText("Habit successfully addedd!").should("not.exist");
 
