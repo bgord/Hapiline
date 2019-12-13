@@ -6,7 +6,10 @@ import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 
-export const EditableHabitNameInput: React.FC<IHabit> = ({name, id}) => {
+export const EditableHabitNameInput: React.FC<Partial<IHabit>> = ({
+	name,
+	id,
+}) => {
 	const [isFocused, setIsFocused] = React.useState(false);
 	const blurInput = () => setIsFocused(false);
 	const focusInput = () => setIsFocused(true);

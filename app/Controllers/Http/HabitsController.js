@@ -35,7 +35,8 @@ class HabitsController {
 	async show({params, response, auth}) {
 		const result = await Database.table("habits")
 			.where("user_id", auth.user.id)
-			.where("id", params.id);
+			.where("id", params.id)
+			.first();
 		return response.send(result);
 	}
 

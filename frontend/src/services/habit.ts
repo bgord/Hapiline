@@ -6,6 +6,9 @@ import {_internal_api} from "./api";
 export const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
 	_internal_api.get<IHabit[]>("/habits").then(response => response.data);
 
+export const getHabitRequest: Async.PromiseFn<IHabit> = ({id}) =>
+	_internal_api.get<IHabit>(`/habit/${id}`).then(response => response.data);
+
 export const addHabitRequest: Async.DeferFn<IHabit> = ([
 	name,
 	score,

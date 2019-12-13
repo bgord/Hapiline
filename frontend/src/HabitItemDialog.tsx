@@ -1,3 +1,6 @@
+import * as Async from "react-async";
+import {api} from "./services/api";
+
 import {Dialog} from "@reach/dialog";
 import {format} from "date-fns";
 import React from "react";
@@ -14,6 +17,11 @@ interface Props {
 }
 
 export const HabitItemDialog: React.FC<Props> = ({refreshList, habit}) => {
+	const singleItemRequestState = Async.useAsync({
+		promiseFn: api.habit.show,
+		id: habit.id,
+	});
+
 	return (
 		<Dialog
 			style={{
@@ -37,8 +45,8 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habit}) => {
 				</button>
 			</div>
 			<div className="flex items-end">
-				<EditableHabitScoreSelect {...habit} />
-				<EditableHabitNameInput {...habit} />
+				<EditableHabitScoreSelect {...singleItemRequestState?.data} />
+				<EditableHabitNameInput {...singleItemRequestState?.data} />
 			</div>
 			<dl className="flex items-baseline mt-4 ml-20 pl-2">
 				<dt className="text-gray-600 uppercase text-sm font-bold">

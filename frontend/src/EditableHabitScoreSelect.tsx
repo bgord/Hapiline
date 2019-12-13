@@ -7,10 +7,13 @@ import {useNotification} from "./contexts/notifications-context";
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
 
-export const EditableHabitScoreSelect: React.FC<IHabit> = ({id, score}) => {
-	const [newHabitScore, setNewHabitScore] = React.useState<IHabit["score"]>(
-		score,
-	);
+export const EditableHabitScoreSelect: React.FC<Partial<IHabit>> = ({
+	id,
+	score,
+}) => {
+	const [newHabitScore, setNewHabitScore] = React.useState<
+		IHabit["score"] | undefined
+	>(score);
 
 	const [triggerSuccessNotification] = useNotification({
 		type: "success",
