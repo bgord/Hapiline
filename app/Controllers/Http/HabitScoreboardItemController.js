@@ -22,7 +22,6 @@ class HabitScoreboardItemController {
 					],
 				});
 			}
-			throw e;
 		}
 	}
 
@@ -62,10 +61,25 @@ class HabitScoreboardItemController {
 			return response.accessDenied();
 		}
 
-		await habitScoreboardItem.merge(payload);
-		await habitScoreboardItem.save();
-
-		return response.send();
+		try {
+			await habitScoreboardItem.merge(payload);
+			await habitScoreboardItem.save();
+			return response.send(habitScoreboardItem);
+		} catch (e) {
+			if (
+				e.message.includes("duplicate key value violates unique constraint")
+			) {
+				return response.validationError({
+					argErrors: [
+						{
+							message: VALIDATION_MESSAGES.unique_habitscoreboard_item,
+							field: "name",
+							validation: "unique",
+						},
+					],
+				});
+			}
+		}
 	}
 }
 

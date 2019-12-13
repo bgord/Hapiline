@@ -135,3 +135,37 @@ test("full flow", async ({client, assert}) => {
 	assert.equal(habitScoreboardItemAfterUpdate.name, payload.name);
 	assert.equal(habitScoreboardItemAfterUpdate.score, payload.score);
 });
+
+test("identical habit name error", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const firstHabit = await HabitScoreboardItem.find(1);
+	assert.equal(firstHabit.name, "0 lorem");
+	assert.equal(firstHabit.score, "positive");
+
+	const secondHabit = await HabitScoreboardItem.find(2);
+	assert.equal(secondHabit.name, "1 loremlorem");
+	assert.equal(secondHabit.score, "neutral");
+
+	const payload = {
+		score: "negative",
+		name: "0 lorem",
+	};
+
+	const response = await client
+		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/2`)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertValidationError({
+		response,
+		argErrors: [
+			{
+				message: VALIDATION_MESSAGES.unique_habitscoreboard_item,
+				field: "name",
+				validation: "unique",
+			},
+		],
+	});
+});
