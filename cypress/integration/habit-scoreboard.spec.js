@@ -36,7 +36,7 @@ describe("Habit", () => {
 		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
 
-		cy.findByDisplayValue("Go to sleep at 9:30 AM");
+		cy.findByText("Go to sleep at 9:30 AM");
 	});
 
 	it("500 while adding an item", () => {
@@ -110,8 +110,8 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		response.forEach(item => {
-			cy.findByDisplayValue(item.name);
-			cy.findByDisplayValue(item.score);
+			cy.findByText(item.name);
+			cy.findByText(item.score);
 		});
 	});
 
@@ -141,17 +141,17 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findByDisplayValue("0 lorem");
+		cy.findByText("0 lorem");
 
 		cy.findAllByText("Delete")
 			.first()
 			.click();
 
-		cy.findByDisplayValue("0 lorem").should("not.exist");
+		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
 	});
 
-	it("deleting items error", () => {
+	it("deleting habit error", () => {
 		const errorMessage = "Couldn't delete habit.";
 
 		cy.server();
@@ -168,14 +168,64 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findByDisplayValue("0 lorem");
+		cy.findByText("0 lorem");
 
 		cy.findAllByText("Delete")
 			.first()
 			.click();
 
-		cy.findByDisplayValue("0 lorem").should("exist");
+		cy.findByText("0 lorem").should("exist");
 		cy.findByText(errorMessage);
+	});
+
+	it("inspecting habit details in modal", () => {
+		const response = [
+			{
+				id: 1,
+				name: "Watch The Office",
+				score: "positive",
+				created_at: "2019/01/01",
+				updated_at: "2019/02/01",
+			},
+			{
+				id: 2,
+				name: "Go to sleep",
+				score: "neutral",
+				created_at: "2019/01/01",
+				updated_at: "2019/02/01",
+			},
+		];
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response,
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findAllByText("more")
+			.first()
+			.click();
+
+		cy.findByDisplayValue("positive");
+		cy.findByDisplayValue("Watch The Office");
+		cy.findByText("2019/01/01 00:00");
+		cy.findByText("2019/02/01 00:00");
+		cy.findByText("×").click();
+
+		cy.findAllByText("more")
+			.eq(1)
+			.click();
+
+		cy.findByDisplayValue("neutral");
+		cy.findByDisplayValue("Go to sleep");
+		cy.findByText("2019/01/01 00:00");
+		cy.findByText("2019/02/01 00:00");
+		cy.findByText("×").click();
 	});
 
 	it("changing name", () => {
@@ -183,33 +233,34 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		// "Save" flow
-		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Reset").should("not.exist");
+		cy.findByText("0 lorem xxx").should("not.exist");
+		cy.findAllByText("more")
+			.first()
+			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" xxx");
+		cy.findByText("Cancel");
 		cy.findByText("Save").click();
 		cy.findByText("Name updated successfully!");
+		cy.findByText("×").click();
 
-		cy.findByDisplayValue("0 lorem xxx");
+		cy.findByText("0 lorem xxx");
+		cy.findByText("0 lorem").should("not.exist");
 
-		cy.findByDisplayValue("0 lorem").should("not.exist");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Reset").should("not.exist");
-
-		// Enter flow
-		cy.findByDisplayValue("1 loremlorem yyy").should("not.exist");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Reset").should("not.exist");
+		// // Enter flow
+		cy.findByText("1 loremlorem yyy").should("not.exist");
+		cy.findAllByText("more")
+			.eq(1)
+			.click();
 
 		cy.findByDisplayValue("1 loremlorem").type(" yyy{enter}");
-		cy.findAllByText("Name updated successfully!");
-
-		cy.findByDisplayValue("1 loremlorem yyy");
-
-		cy.findByDisplayValue("1 loremlorem").should("not.exist");
 		cy.findByText("Save").should("not.exist");
-		cy.findByText("Reset").should("not.exist");
+		cy.findByText("Cancel").should("not.exist");
+		cy.findAllByText("Name updated successfully!");
+		cy.findByText("×").click();
+
+		cy.findByText("1 loremlorem yyy");
+		cy.findByText("1 loremlorem").should("not.exist");
 	});
 
 	it("changing name error", () => {
@@ -230,31 +281,18 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		// "Save" flow
-		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Reset").should("not.exist");
+		cy.findAllByText("more")
+			.first()
+			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" xxx");
 		cy.findByText("Save").click();
+		cy.findByText("Save");
+		cy.findByText("Cancel");
 		cy.findByText(errorMessage);
 
-		cy.findByDisplayValue("0 lorem xxx");
-		cy.findByText("Save");
-		cy.findByText("Reset");
-	});
+		cy.findByText("×").click();
 
-	it("clicking through the inputs", () => {
-		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
-
-		cy.findByDisplayValue("0 lorem")
-			.click()
-			.type(" xxx");
-
-		cy.findByDisplayValue("0 lorem xxx");
-
-		cy.findByDisplayValue("1 loremlorem").click();
 		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
 	});
 
@@ -263,17 +301,23 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.get("ul").within(() => {
-			cy.findAllByDisplayValue("positive").should("have.length", 4);
-			cy.findAllByDisplayValue("neutral").should("have.length", 3);
-			cy.findAllByDisplayValue("negative").should("have.length", 3);
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
 
-			cy.findAllByDisplayValue("neutral")
-				.first()
-				.select("positive");
+			cy.findAllByText("more")
+				.eq(1)
+				.click();
+		});
 
-			cy.findAllByDisplayValue("positive").should("have.length", 5);
-			cy.findAllByDisplayValue("neutral").should("have.length", 2);
-			cy.findAllByDisplayValue("negative").should("have.length", 3);
+		cy.findByDisplayValue("neutral").select("positive");
+		cy.findAllByText("Habit score changed successfully!");
+		cy.findByText("×").click();
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("positive").should("have.length", 5);
+			cy.findAllByText("neutral").should("have.length", 2);
+			cy.findAllByText("negative").should("have.length", 3);
 		});
 	});
 
@@ -296,17 +340,23 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.get("ul").within(() => {
-			cy.findAllByDisplayValue("positive").should("have.length", 4);
-			cy.findAllByDisplayValue("neutral").should("have.length", 3);
-			cy.findAllByDisplayValue("negative").should("have.length", 3);
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
 
-			cy.findAllByDisplayValue("neutral")
-				.first()
-				.select("positive");
+			cy.findAllByText("more")
+				.eq(1)
+				.click();
+		});
 
-			cy.findAllByDisplayValue("positive").should("have.length", 4);
-			cy.findAllByDisplayValue("neutral").should("have.length", 3);
-			cy.findAllByDisplayValue("negative").should("have.length", 3);
+		cy.findByDisplayValue("neutral").select("positive");
+		cy.findAllByText("Habit score couldn't be changed.");
+		cy.findByText("×").click();
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
 		});
 	});
 });
