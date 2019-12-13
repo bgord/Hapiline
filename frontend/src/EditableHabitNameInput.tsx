@@ -6,19 +6,11 @@ import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 
-interface EditableHabitNameInputProps extends IHabit {
-	currentlyEditedHabitId?: IHabit["id"];
-	setCurrentlyEditedHabitId: (id?: IHabit["id"]) => void;
-	refreshList: VoidFunction;
-}
+export const EditableHabitNameInput: React.FC<IHabit> = ({name, id}) => {
+	const [isFocused, setIsFocused] = React.useState(false);
+	const blurInput = () => setIsFocused(false);
+	const focusInput = () => setIsFocused(true);
 
-export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
-	name,
-	id,
-	currentlyEditedHabitId,
-	setCurrentlyEditedHabitId,
-	refreshList,
-}) => {
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
 	const [triggerSuccessNotification] = useNotification({
 		type: "success",
@@ -31,54 +23,46 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: () => {
-			setCurrentlyEditedHabitId();
-			refreshList();
+			blurInput();
 			triggerSuccessNotification();
 		},
 		onReject: triggerErrorNotification,
 	});
 
-	const isThisHabitNameCurrentlyEdited = currentlyEditedHabitId === id;
-	const inputBgColor = isThisHabitNameCurrentlyEdited ? "bg-gray-100" : "";
-
-	React.useEffect(() => {
-		if (!isThisHabitNameCurrentlyEdited) {
-			setNewHabitName(name);
-		}
-	}, [currentlyEditedHabitId]);
+	const inputBgColor = isFocused ? "bg-gray-100" : "";
 
 	return (
-		<div className="flex justify-between items-center w-full">
-			<HabitNameInput
-				onKeyDown={event => {
-					if (event.keyCode === 13 && newHabitName !== name) {
-						editHabitRequestState.run(id, {name: newHabitName});
-					}
-				}}
-				onFocus={() => setCurrentlyEditedHabitId(id)}
-				className={`mx-4 p-1 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor}`}
-				value={newHabitName}
-				onChange={event => setNewHabitName(event.target.value)}
-			/>
-			{isThisHabitNameCurrentlyEdited && (
-				<div>
+		<div className="flex justify-between items-end w-full">
+			<div className="field-group w-full">
+				<label className="field-label" htmlFor="email">
+					Name
+				</label>
+				<HabitNameInput
+					onKeyDown={event => {
+						if (event.keyCode === 13 && newHabitName !== name) {
+							editHabitRequestState.run(id, {name: newHabitName});
+						}
+					}}
+					onFocus={focusInput}
+					className={`mr-4 p-1 pl-2 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor} border`}
+					value={newHabitName}
+					onChange={event => setNewHabitName(event.target.value)}
+				/>
+			</div>
+			{isFocused && (
+				<div className="flex">
 					<button
 						onClick={() => {
-							if (newHabitName === name) {
-								setCurrentlyEditedHabitId();
-							} else editHabitRequestState.run(id, {name: newHabitName});
+							if (newHabitName === name) blurInput();
+							else editHabitRequestState.run(id, {name: newHabitName});
 						}}
 						className="uppercase mr-4"
 						type="button"
 					>
 						Save
 					</button>
-					<button
-						onClick={() => setCurrentlyEditedHabitId()}
-						className="uppercase"
-						type="button"
-					>
-						Reset
+					<button onClick={blurInput} className="uppercase" type="button">
+						Cancel
 					</button>
 				</div>
 			)}

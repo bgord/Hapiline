@@ -1,3 +1,4 @@
+import "@reach/dialog/styles.css";
 import "../css/index.css";
 
 import * as React from "react";

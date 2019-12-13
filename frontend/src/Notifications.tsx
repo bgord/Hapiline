@@ -41,7 +41,7 @@ export const Notifications = () => {
 	);
 
 	return (
-		<div className="fixed bottom-0 right-0 m-2">
+		<div className="fixed bottom-0 right-0 m-2 z-50">
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
 					<NotificationItem {...item}>{item.message}</NotificationItem>
