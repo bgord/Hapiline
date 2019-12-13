@@ -2,7 +2,7 @@ const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const BaseHttpValidator = use("BaseHttpValidator");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 
-class UpdateHabitScoreboardItem extends BaseHttpValidator {
+class UpdateHabit extends BaseHttpValidator {
 	get rules() {
 		return {
 			name: "string|max:255",
@@ -25,4 +25,4 @@ class UpdateHabitScoreboardItem extends BaseHttpValidator {
 	}
 }
 
-module.exports = UpdateHabitScoreboardItem;
+module.exports = UpdateHabit;

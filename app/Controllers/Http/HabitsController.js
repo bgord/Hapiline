@@ -1,12 +1,12 @@
-const HabitScoreboardItem = use("HabitScoreboardItem");
+const Habit = use("Habit");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const Database = use("Database");
 
-class HabitScoreboardItemController {
+class HabitsController {
 	async store({request, response}) {
 		const payload = request.only(["name", "score", "user_id"]);
 		try {
-			const result = await HabitScoreboardItem.create(payload);
+			const result = await Habit.create(payload);
 			return response.status(201).send(result);
 		} catch (e) {
 			if (
@@ -15,7 +15,7 @@ class HabitScoreboardItemController {
 				return response.validationError({
 					argErrors: [
 						{
-							message: VALIDATION_MESSAGES.unique_habitscoreboard_item,
+							message: VALIDATION_MESSAGES.unique_habit,
 							field: "name",
 							validation: "unique",
 						},
@@ -26,7 +26,7 @@ class HabitScoreboardItemController {
 	}
 
 	async index({response, auth}) {
-		const result = await Database.table("habit_scoreboard_items")
+		const result = await Database.table("habits")
 			.where("user_id", auth.user.id)
 			.orderBy("id");
 		return response.send(result);
@@ -37,7 +37,7 @@ class HabitScoreboardItemController {
 		const loggedInUserId = auth.user.id;
 
 		try {
-			const deletedItemsCounter = await Database.table("habit_scoreboard_items")
+			const deletedItemsCounter = await Database.table("habits")
 				.where({
 					id,
 					user_id: loggedInUserId,
@@ -56,15 +56,15 @@ class HabitScoreboardItemController {
 		const {id} = params;
 		const payload = request.only(["name", "score"]);
 
-		const habitScoreboardItem = await HabitScoreboardItem.find(id);
-		if (habitScoreboardItem.user_id !== auth.user.id) {
+		const habit = await Habit.find(id);
+		if (habit.user_id !== auth.user.id) {
 			return response.accessDenied();
 		}
 
 		try {
-			await habitScoreboardItem.merge(payload);
-			await habitScoreboardItem.save();
-			return response.send(habitScoreboardItem);
+			await habit.merge(payload);
+			await habit.save();
+			return response.send(habit);
 		} catch (e) {
 			if (
 				e.message.includes("duplicate key value violates unique constraint")
@@ -72,7 +72,7 @@ class HabitScoreboardItemController {
 				return response.validationError({
 					argErrors: [
 						{
-							message: VALIDATION_MESSAGES.unique_habitscoreboard_item,
+							message: VALIDATION_MESSAGES.unique_habit,
 							field: "name",
 							validation: "unique",
 						},
@@ -83,4 +83,4 @@ class HabitScoreboardItemController {
 	}
 }
 
-module.exports = HabitScoreboardItemController;
+module.exports = HabitsController;

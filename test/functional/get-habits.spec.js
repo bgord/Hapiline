@@ -1,6 +1,4 @@
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Get habit scoreboard items",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Get habits");
 const ace = require("@adonisjs/ace");
 const User = use("User");
 const {
@@ -22,17 +20,17 @@ afterEach(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
-const GET_HABIT_SCOREBOARD_ITEM_URL = "/api/v1/habit-scoreboard-items";
+const GET_HABIT_URL = "/api/v1/habits";
 
 test("auth", async ({client}) => {
-	const response = await client.get(GET_HABIT_SCOREBOARD_ITEM_URL).end();
+	const response = await client.get(GET_HABIT_URL).end();
 	assertInvalidSession(response);
 });
 
 test("is:(regular)", async ({client}) => {
 	const admin = await User.find(users.admin.id);
 	const response = await client
-		.get(GET_HABIT_SCOREBOARD_ITEM_URL)
+		.get(GET_HABIT_URL)
 		.loginVia(admin)
 		.end();
 	assertAccessDenied(response);
@@ -46,7 +44,7 @@ test("account-status:(active)", async ({client}) => {
 	await jim.save();
 
 	const response = await client
-		.get(GET_HABIT_SCOREBOARD_ITEM_URL)
+		.get(GET_HABIT_URL)
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
@@ -56,7 +54,7 @@ test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.get(GET_HABIT_SCOREBOARD_ITEM_URL)
+		.get(GET_HABIT_URL)
 		.loginVia(jim)
 		.end();
 

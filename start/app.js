@@ -57,7 +57,7 @@ const aliases = {
 	Token: "App/Models/Token",
 	Role: "Adonis/Acl/Role",
 	Permission: "Adonis/Acl/Permission",
-	HabitScoreboardItem: "App/Models/HabitScoreboardItem",
+	Habit: "App/Models/Habit",
 
 	// constants
 	ROLE_NAMES: "App/Constants/ROLE_NAMES",

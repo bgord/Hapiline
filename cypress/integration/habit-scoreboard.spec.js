@@ -1,6 +1,6 @@
 const DASHBOARD_URL = "/dashboard";
 
-describe("Habit scoreboard", () => {
+describe("Habit", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
 	});
@@ -44,7 +44,7 @@ describe("Habit scoreboard", () => {
 		cy.server();
 		cy.route({
 			method: "POST",
-			url: "/api/v1/habit-scoreboard-item",
+			url: "/api/v1/habit",
 			status: 500,
 			response: {
 				code: "E_INTERNAL_SERVER_ERROR",
@@ -68,7 +68,7 @@ describe("Habit scoreboard", () => {
 		cy.server();
 		cy.route({
 			method: "GET",
-			url: "/api/v1/habit-scoreboard-items",
+			url: "/api/v1/habits",
 			status: 200,
 			response: [],
 		});
@@ -101,7 +101,7 @@ describe("Habit scoreboard", () => {
 		cy.server();
 		cy.route({
 			method: "GET",
-			url: "/api/v1/habit-scoreboard-items",
+			url: "/api/v1/habits",
 			status: 200,
 			response,
 		});
@@ -121,7 +121,7 @@ describe("Habit scoreboard", () => {
 		cy.server();
 		cy.route({
 			method: "GET",
-			url: "/api/v1/habit-scoreboard-items",
+			url: "/api/v1/habits",
 			status: 500,
 			response: {
 				code: "E_INTERNAL_SERVER_ERROR",
@@ -157,7 +157,7 @@ describe("Habit scoreboard", () => {
 		cy.server();
 		cy.route({
 			method: "DELETE",
-			url: "/api/v1/habit-scoreboard-item/6",
+			url: "/api/v1/habit/6",
 			status: 500,
 			response: {
 				code: "E_INTERNAL_SERVER_ERROR",
@@ -218,7 +218,7 @@ describe("Habit scoreboard", () => {
 		cy.server();
 		cy.route({
 			method: "PATCH",
-			url: "/api/v1/habit-scoreboard-item/6",
+			url: "/api/v1/habit/6",
 			status: 500,
 			response: {
 				code: "E_INTERNAL_SERVER_ERROR",
@@ -283,7 +283,7 @@ describe("Habit scoreboard", () => {
 		cy.server();
 		cy.route({
 			method: "PATCH",
-			url: "/api/v1/habit-scoreboard-item/7",
+			url: "/api/v1/habit/7",
 			status: 500,
 			response: {
 				code: "E_INTERNAL_SERVER_ERROR",

@@ -1,6 +1,4 @@
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Edit habit scoreboard item",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Edit habit");
 const ace = require("@adonisjs/ace");
 const User = use("User");
 const {
@@ -12,7 +10,7 @@ const {
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
-const HabitScoreboardItem = use("HabitScoreboardItem");
+const Habit = use("Habit");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -26,19 +24,17 @@ afterEach(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
-const EDIT_HABIT_SCOREBOARD_ITEM_URL = "/api/v1/habit-scoreboard-item";
+const EDIT_HABIT_URL = "/api/v1/habit";
 
 test("auth", async ({client}) => {
-	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/1`)
-		.end();
+	const response = await client.patch(`${EDIT_HABIT_URL}/1`).end();
 	assertInvalidSession(response);
 });
 
 test("is:(regular)", async ({client}) => {
 	const admin = await User.find(users.admin.id);
 	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/1`)
+		.patch(`${EDIT_HABIT_URL}/1`)
 		.loginVia(admin)
 		.end();
 	assertAccessDenied(response);
@@ -52,7 +48,7 @@ test("account-status:(active)", async ({client}) => {
 	await jim.save();
 
 	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/1`)
+		.patch(`${EDIT_HABIT_URL}/1`)
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
@@ -62,7 +58,7 @@ test("checks if entity can be processed", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/111`)
+		.patch(`${EDIT_HABIT_URL}/111`)
 		.loginVia(jim)
 		.end();
 
@@ -73,7 +69,7 @@ test("user cannot update not their own habit", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/10`)
+		.patch(`${EDIT_HABIT_URL}/10`)
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
@@ -102,7 +98,7 @@ test("validation", async ({client}) => {
 
 	for (let [payload, argErrors] of cases) {
 		const response = await client
-			.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/1`)
+			.patch(`${EDIT_HABIT_URL}/1`)
 			.send(payload)
 			.loginVia(jim)
 			.end();
@@ -114,9 +110,9 @@ test("validation", async ({client}) => {
 test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
-	const habitScoreboardItemBeforeUpdate = await HabitScoreboardItem.find(1);
-	assert.equal(habitScoreboardItemBeforeUpdate.name, "0 lorem");
-	assert.equal(habitScoreboardItemBeforeUpdate.score, "positive");
+	const habitBeforeUpdate = await Habit.find(1);
+	assert.equal(habitBeforeUpdate.name, "0 lorem");
+	assert.equal(habitBeforeUpdate.score, "positive");
 
 	const payload = {
 		score: "negative",
@@ -124,26 +120,26 @@ test("full flow", async ({client, assert}) => {
 	};
 
 	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/1`)
+		.patch(`${EDIT_HABIT_URL}/1`)
 		.send(payload)
 		.loginVia(jim)
 		.end();
 
 	response.assertStatus(200);
 
-	const habitScoreboardItemAfterUpdate = await HabitScoreboardItem.find(1);
-	assert.equal(habitScoreboardItemAfterUpdate.name, payload.name);
-	assert.equal(habitScoreboardItemAfterUpdate.score, payload.score);
+	const habitAfterUpdate = await Habit.find(1);
+	assert.equal(habitAfterUpdate.name, payload.name);
+	assert.equal(habitAfterUpdate.score, payload.score);
 });
 
 test("identical habit name error", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
-	const firstHabit = await HabitScoreboardItem.find(1);
+	const firstHabit = await Habit.find(1);
 	assert.equal(firstHabit.name, "0 lorem");
 	assert.equal(firstHabit.score, "positive");
 
-	const secondHabit = await HabitScoreboardItem.find(2);
+	const secondHabit = await Habit.find(2);
 	assert.equal(secondHabit.name, "1 loremlorem");
 	assert.equal(secondHabit.score, "neutral");
 
@@ -153,7 +149,7 @@ test("identical habit name error", async ({client, assert}) => {
 	};
 
 	const response = await client
-		.patch(`${EDIT_HABIT_SCOREBOARD_ITEM_URL}/2`)
+		.patch(`${EDIT_HABIT_URL}/2`)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -162,7 +158,7 @@ test("identical habit name error", async ({client, assert}) => {
 		response,
 		argErrors: [
 			{
-				message: VALIDATION_MESSAGES.unique_habitscoreboard_item,
+				message: VALIDATION_MESSAGES.unique_habit,
 				field: "name",
 				validation: "unique",
 			},
