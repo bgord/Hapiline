@@ -32,6 +32,13 @@ class HabitsController {
 		return response.send(result);
 	}
 
+	async show({params, response, auth}) {
+		const result = await Database.table("habits")
+			.where("user_id", auth.user.id)
+			.where("id", params.id);
+		return response.send(result);
+	}
+
 	async delete({params, response, auth}) {
 		const {id} = params;
 		const loggedInUserId = auth.user.id;

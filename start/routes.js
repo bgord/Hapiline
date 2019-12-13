@@ -92,6 +92,13 @@ Route.patch("/api/v1/habit/:id", "HabitsController.update")
 	])
 	.validator("UpdateHabit");
 
+Route.get("/api/v1/habit/:id", "HabitsController.show").middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+	"params-resource-exists:habits,id",
+]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
