@@ -1,6 +1,7 @@
 import {Dialog} from "@reach/dialog";
 import React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
+import {format} from "date-fns";
 
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
@@ -60,6 +61,20 @@ export const HabitList: React.FC<Props> = ({habits, refreshList}) => {
 									<EditableHabitScoreSelect {...habit} />
 									<EditableHabitNameInput {...habit} />
 								</div>
+								<dl className="flex items-baseline mt-4 ml-20 pl-2">
+									<dt className="text-gray-600 uppercase text-sm font-bold">
+										Created at:
+									</dt>
+									<dd className="text-sm ml-1 font-mono">
+										{format(new Date(habit.created_at), "yyyy/MM/dd HH:mm")}
+									</dd>
+									<dt className="text-gray-600 uppercase text-sm font-bold ml-4">
+										Updated at:
+									</dt>
+									<dd className="text-sm ml-1 font-mono">
+										{format(new Date(habit.updated_at), "yyyy/MM/dd HH:mm")}
+									</dd>
+								</dl>
 							</Dialog>
 						)}
 					</li>
