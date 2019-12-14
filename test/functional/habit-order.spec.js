@@ -9,6 +9,7 @@ const {
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const Database = use("Database");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -123,4 +124,22 @@ test("validation", async ({client}) => {
 
 		assertValidationError({response, argErrors});
 	}
+});
+
+test("check if every habit id belongs to the user", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const notJimsHabit = await Database.table("habits")
+		.where("user_id", "<>", jim.id)
+		.first();
+
+	const payload = {habits: [{index: 1, id: notJimsHabit.id}]};
+
+	const response = await client
+		.patch(REORDER_HABITS_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
 });

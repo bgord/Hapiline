@@ -43,6 +43,7 @@ const namedMiddleware = {
 	"reject-deleted-account": "App/Middleware/RejectDeletedAccount",
 	"match-auth-user-id": "App/Middleware/MatchAuthUserId",
 	"params-resource-exists": "App/Middleware/ParamsResourceExists",
+	"check-habit-ids": "App/Middleware/CheckHabitIds",
 };
 
 /*
