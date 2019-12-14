@@ -1,5 +1,10 @@
 import React from "react";
-import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd";
+import {
+	DragDropContext,
+	Droppable,
+	Draggable,
+	DropResult,
+} from "react-beautiful-dnd";
 
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
@@ -14,11 +19,26 @@ export const scoreToBgColor: {[key in IHabit["score"]]: string} = {
 interface Props {
 	habits: IHabit[];
 	refreshList: VoidFunction;
+	setHabitList: (habits: IHabit[]) => void;
 }
 
-export const HabitList: React.FC<Props> = ({habits, refreshList}) => {
+export const HabitList: React.FC<Props> = ({
+	habits,
+	refreshList,
+	setHabitList,
+}) => {
+	function onDragEnd(result: DropResult) {
+		if (!result.destination) return;
+
+		const fromIndex = result.source.index;
+		const toIndex = result.destination.index;
+
+		if (fromIndex === toIndex) return;
+
+		setHabitList(reorder(habits, fromIndex, toIndex));
+	}
 	return (
-		<DragDropContext onDragEnd={() => console.log("drag'n'drop'd")}>
+		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="habits">
 				{provided => (
 					<ul
@@ -86,3 +106,14 @@ export const HabitList: React.FC<Props> = ({habits, refreshList}) => {
 		</DragDropContext>
 	);
 };
+
+function reorder(
+	habits: IHabit[],
+	fromIndex: number,
+	toIndex: number,
+): IHabit[] {
+	const result = Array.from(habits);
+	const [removed] = result.splice(fromIndex, 1);
+	result.splice(toIndex, 0, removed);
+	return result;
+}
