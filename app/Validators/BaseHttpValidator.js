@@ -13,6 +13,7 @@ class BaseHttpValidator {
 			error => error.validation === "ENGINE_EXCEPTION",
 		);
 		if (engineException) {
+			/* eslint-disable no-console */
 			console.log(engineException);
 			return this.ctx.response.internalSeverError({
 				message: "Unexpected error, try again later.",

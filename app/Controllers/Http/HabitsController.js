@@ -8,9 +8,9 @@ class HabitsController {
 		try {
 			const result = await Habit.create(payload);
 			return response.status(201).send(result);
-		} catch (e) {
+		} catch (error) {
 			if (
-				e.message.includes("duplicate key value violates unique constraint")
+				error.message.includes("duplicate key value violates unique constraint")
 			) {
 				return response.validationError({
 					argErrors: [
@@ -22,6 +22,7 @@ class HabitsController {
 					],
 				});
 			}
+			throw error;
 		}
 	}
 
@@ -75,9 +76,9 @@ class HabitsController {
 			await habit.merge(payload);
 			await habit.save();
 			return response.send(habit);
-		} catch (e) {
+		} catch (error) {
 			if (
-				e.message.includes("duplicate key value violates unique constraint")
+				error.message.includes("duplicate key value violates unique constraint")
 			) {
 				return response.validationError({
 					argErrors: [
@@ -89,6 +90,7 @@ class HabitsController {
 					],
 				});
 			}
+			throw error;
 		}
 	}
 }

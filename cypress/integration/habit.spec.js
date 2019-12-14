@@ -1,3 +1,5 @@
+/* eslint-disable sonarjs/no-identical-functions */
+
 const DASHBOARD_URL = "/dashboard";
 
 describe("Habit", () => {
