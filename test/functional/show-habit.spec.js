@@ -4,6 +4,7 @@ const User = use("User");
 const {
 	assertInvalidSession,
 	assertAccessDenied,
+	assertNotFoundError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
@@ -50,15 +51,37 @@ test("account-status:(active)", async ({client}) => {
 	assertAccessDenied(response);
 });
 
-// test("full flow", async ({client, assert}) => {
-// 	const jim = await User.find(users.jim.id);
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
 
-// 	const response = await client
-// 		.get(SHOW_HABIT_URL)
-// 		.loginVia(jim)
-// 		.end();
+	const response = await client
+		.get(`${SHOW_HABIT_URL}/1`)
+		.loginVia(jim)
+		.end();
 
-// 	response.assertStatus(200);
-// 	assert.lengthOf(response.body, 5);
-// 	assert.ok(response.body.every(item => item.user_id === jim.id));
-// });
+	response.assertStatus(200);
+	assert.equal(response.body.id, 1);
+	assert.equal(response.body.user_id, jim.id);
+});
+
+test("user cannot access non-existent resource", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(`${SHOW_HABIT_URL}/1111111`)
+		.loginVia(jim)
+		.end();
+
+	assertNotFoundError(response);
+});
+
+test("user cannot access other users' resources", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(`${SHOW_HABIT_URL}/12`)
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
+});
