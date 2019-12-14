@@ -277,6 +277,26 @@ describe("Habit", () => {
 		cy.findByText("1 loremlorem").should("not.exist");
 	});
 
+	it("changing name unique error", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("0 lorem xxx").should("not.exist");
+		cy.findAllByText("more")
+			.first()
+			.click();
+
+		cy.findByDisplayValue("0 lorem")
+			.clear()
+			.type("9 lorem{enter}");
+
+		cy.findByText("Given habit already exists.");
+		cy.findByText("Error while chaning name.");
+
+		cy.findByText("Save");
+		cy.findByText("Cancel");
+	});
+
 	it("changing name error", () => {
 		const errorMessage = "Error while chaning name.";
 
