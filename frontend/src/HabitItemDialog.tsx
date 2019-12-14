@@ -12,12 +12,12 @@ import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 
 interface Props {
-	habit: IHabit;
+	habitId: IHabit["id"];
 	refreshList: VoidFunction;
 	close: VoidFunction;
 }
 
-export const HabitItemDialog: React.FC<Props> = ({refreshList, habit}) => {
+export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId}) => {
 	const [triggerErrorNotification] = useNotification({
 		type: "error",
 		message: "Fetching task details failed.",
@@ -25,7 +25,7 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habit}) => {
 
 	const singleItemRequestState = Async.useAsync({
 		promiseFn: api.habit.show,
-		id: habit.id,
+		id: habitId,
 		onReject: triggerErrorNotification,
 	});
 
@@ -70,13 +70,19 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habit}) => {
 							Created at:
 						</dt>
 						<dd className="text-sm ml-1 font-mono">
-							{format(new Date(habit.created_at), "yyyy/MM/dd HH:mm")}
+							{format(
+								new Date(singleItemRequestState?.data?.created_at),
+								"yyyy/MM/dd HH:mm",
+							)}
 						</dd>
 						<dt className="text-gray-600 uppercase text-sm font-bold ml-4">
 							Updated at:
 						</dt>
 						<dd className="text-sm ml-1 font-mono">
-							{format(new Date(habit.updated_at), "yyyy/MM/dd HH:mm")}
+							{format(
+								new Date(singleItemRequestState?.data?.updated_at),
+								"yyyy/MM/dd HH:mm",
+							)}
 						</dd>
 					</dl>
 				</>
