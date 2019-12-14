@@ -144,11 +144,16 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("0 lorem");
+		cy.findAllByText("Delete")
+			.first()
+			.click();
+		cy.findByText("Nevermind, don't delete").click();
+		cy.findByText("0 lorem");
 
 		cy.findAllByText("Delete")
 			.first()
 			.click();
-
+		cy.findByText("Yes, delete").click();
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
 	});
@@ -175,6 +180,8 @@ describe("Habit", () => {
 		cy.findAllByText("Delete")
 			.first()
 			.click();
+
+		cy.findByText("Yes, delete").click();
 
 		cy.findByText("0 lorem").should("exist");
 		cy.findByText(errorMessage);

@@ -1,3 +1,4 @@
+import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import * as Async from "react-async";
 import React from "react";
 
@@ -11,8 +12,14 @@ interface DeleteButtonProps extends IHabit {
 
 export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 	id,
+	name,
 	refreshList,
 }) => {
+	const [showDialog, setShowDialog] = React.useState(false);
+	const cancelRef = React.useRef<HTMLButtonElement>();
+	const openAlertDialog = () => setShowDialog(true);
+	const closeAlertDialog = () => setShowDialog(false);
+
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerErrorNotification] = useNotification();
 
@@ -36,13 +43,43 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 		: "text-red-500";
 
 	return (
-		<button
-			onClick={() => deleteHabitRequestState.run(id)}
-			type="button"
-			className={`uppercase px-4 text-sm font-semibold  inline ${textColor}`}
-			disabled={deleteHabitRequestState.isPending}
-		>
-			{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
-		</button>
+		<>
+			<button
+				onClick={openAlertDialog}
+				type="button"
+				className={`uppercase px-4 text-sm font-semibold  inline ${textColor}`}
+				disabled={deleteHabitRequestState.isPending}
+			>
+				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
+			</button>
+			{showDialog && (
+				<AlertDialog
+					className="w-1/3"
+					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
+				>
+					<AlertDialogLabel>
+						Do you want to delete the{" "}
+						<span className="italic">{`"${name}"`}</span> habit?
+					</AlertDialogLabel>
+
+					<div className="mt-12 flex justify-around w-full">
+						<button
+							onClick={() => {
+								closeAlertDialog();
+								deleteHabitRequestState.run(id);
+							}}
+						>
+							Yes, delete
+						</button>
+						<button
+							ref={cancelRef as React.RefObject<HTMLButtonElement>}
+							onClick={closeAlertDialog}
+						>
+							Nevermind, don't delete
+						</button>
+					</div>
+				</AlertDialog>
+			)}
+		</>
 	);
 };
