@@ -37,7 +37,7 @@ class HabitsController {
 	async index({response, auth}) {
 		const result = await Database.table("habits")
 			.where("user_id", auth.user.id)
-			.orderBy("id");
+			.orderBy("order");
 		return response.send(result);
 	}
 
