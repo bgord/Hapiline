@@ -7,6 +7,7 @@ const MAIN_ERROR_MESSAGES = {
 	invalid_credentials: "Invalid email or password.",
 	unprocessable_entity: "Resource doesn't exist",
 	not_found: "Resource not found.",
+	not_all_habit_ids_supplied: "You have to supply all habit ids.",
 };
 
 module.exports = MAIN_ERROR_MESSAGES;

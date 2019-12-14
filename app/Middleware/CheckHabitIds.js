@@ -1,4 +1,5 @@
 const Database = use("Database");
+const MAIN_ERROR_MESSAGES = use("MAIN_ERROR_MESSAGES");
 
 class CheckHabitIds {
 	async handle({auth, request, response}, next) {
@@ -15,7 +16,18 @@ class CheckHabitIds {
 		);
 
 		if (!doesEveryHabitIdBelongToUser) return response.accessDenied();
-		else return next();
+
+		const areArraysIdentical =
+			doesEveryHabitIdBelongToUser &&
+			allUserHabitIds.every(userHabitId => habitIds.includes(userHabitId));
+
+		if (!areArraysIdentical) {
+			return response.validationError({
+				message: MAIN_ERROR_MESSAGES.not_all_habit_ids_supplied,
+			});
+		}
+
+		return next();
 	}
 }
 

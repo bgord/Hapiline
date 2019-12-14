@@ -10,6 +10,7 @@ const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const Database = use("Database");
+const MAIN_ERROR_MESSAGES = use("MAIN_ERROR_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -142,4 +143,31 @@ test("check if every habit id belongs to the user", async ({client}) => {
 		.end();
 
 	assertAccessDenied(response);
+});
+
+test("check if every habitId is supplied", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const [, ...restOfTheJimsHabitIds] = await Database.table("habits")
+		.where("user_id", jim.id)
+		.select("id")
+		.map(entry => entry.id);
+
+	const payload = {
+		habits: restOfTheJimsHabitIds.map((habitId, index) => ({
+			id: habitId,
+			index: index + 1,
+		})),
+	};
+
+	const response = await client
+		.patch(REORDER_HABITS_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertValidationError({
+		response,
+		message: MAIN_ERROR_MESSAGES.not_all_habit_ids_supplied,
+	});
 });
