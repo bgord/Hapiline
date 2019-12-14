@@ -65,40 +65,38 @@ Route.post("/test/db/seed", async ({response}) => {
 	return response.send();
 });
 
-Route.post(
-	"/api/v1/habit-scoreboard-item",
-	"HabitScoreboardItemController.store",
-)
+Route.post("/api/v1/habit", "HabitsController.store")
 	.middleware(["auth", `is:(regular)`, `account-status:active`])
-	.validator("StoreHabitScoreboardItem")
+	.validator("StoreHabit")
 	.middleware("match-auth-user-id:user_id");
 
-Route.get(
-	"/api/v1/habit-scoreboard-items",
-	"HabitScoreboardItemController.index",
-).middleware(["auth", `is:(regular)`, `account-status:active`]);
+Route.get("/api/v1/habits", "HabitsController.index").middleware([
+	"auth",
+	`is:(regular)`,
+	`account-status:active`,
+]);
 
-Route.delete(
-	"/api/v1/habit-scoreboard-item/:id",
-	"HabitScoreboardItemController.delete",
-).middleware([
+Route.delete("/api/v1/habit/:id", "HabitsController.delete").middleware([
 	"auth",
 	"is:(regular)",
 	"account-status:active",
-	"params-resource-exists:habit_scoreboard_items,id",
+	"params-resource-exists:habits,id",
 ]);
 
-Route.patch(
-	"/api/v1/habit-scoreboard-item/:id",
-	"HabitScoreboardItemController.update",
-)
+Route.patch("/api/v1/habit/:id", "HabitsController.update")
 	.middleware([
 		"auth",
 		"is:(regular)",
 		"account-status:active",
-		"params-resource-exists:habit_scoreboard_items,id",
+		"params-resource-exists:habits,id",
 	])
 	.validator("UpdateHabit");
+
+Route.get("/api/v1/habit/:id", "HabitsController.show").middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+]);
 
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();

@@ -6,6 +6,7 @@ const MAIN_ERROR_MESSAGES = {
 	guest_only: "Guest only.",
 	invalid_credentials: "Invalid email or password.",
 	unprocessable_entity: "Resource doesn't exist",
+	not_found: "Resource not found.",
 };
 
 module.exports = MAIN_ERROR_MESSAGES;

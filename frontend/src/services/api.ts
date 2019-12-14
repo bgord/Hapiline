@@ -5,6 +5,7 @@ import {
 	deleteHabitRequest,
 	getHabitsRequest,
 	patchHabitRequest,
+	getHabitRequest,
 } from "./habit";
 import {
 	forgotPasswordRequest,
@@ -46,6 +47,7 @@ export const api = {
 		post: addHabitRequest,
 		delete: deleteHabitRequest,
 		patch: patchHabitRequest,
+		show: getHabitRequest,
 	},
 	auth: {
 		login: loginRequest,

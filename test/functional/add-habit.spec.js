@@ -1,6 +1,4 @@
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Add habit scoreboard item",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add habit");
 const ace = require("@adonisjs/ace");
 const User = use("User");
 const {
@@ -25,17 +23,17 @@ afterEach(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
-const ADD_HABIT_SCOREBOARD_ITEM_URL = "/api/v1/habit-scoreboard-item";
+const ADD_HABIT_URL = "/api/v1/habit";
 
 test("auth", async ({client}) => {
-	const response = await client.post(ADD_HABIT_SCOREBOARD_ITEM_URL).end();
+	const response = await client.post(ADD_HABIT_URL).end();
 	assertInvalidSession(response);
 });
 
 test("is:(regular)", async ({client}) => {
 	const admin = await User.find(users.admin.id);
 	const response = await client
-		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.post(ADD_HABIT_URL)
 		.loginVia(admin)
 		.end();
 	assertAccessDenied(response);
@@ -49,7 +47,7 @@ test("account-status:(active)", async ({client}) => {
 	await jim.save();
 
 	const response = await client
-		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.post(ADD_HABIT_URL)
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
@@ -112,7 +110,7 @@ test("validation", async ({client}) => {
 
 	for (let [payload, argErrors] of cases) {
 		const response = await client
-			.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+			.post(ADD_HABIT_URL)
 			.send(payload)
 			.loginVia(pam)
 			.end();
@@ -120,7 +118,7 @@ test("validation", async ({client}) => {
 	}
 });
 
-test("user can only add their own habit scoreboard items", async ({client}) => {
+test("user can only add their own habit", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const payload = {
@@ -130,7 +128,7 @@ test("user can only add their own habit scoreboard items", async ({client}) => {
 	};
 
 	const response = await client
-		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.post(ADD_HABIT_URL)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -148,7 +146,7 @@ test("full flow", async ({client, assert}) => {
 	};
 
 	const response = await client
-		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.post(ADD_HABIT_URL)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -169,7 +167,7 @@ test("cannot insert two identical records", async ({client, assert}) => {
 	};
 
 	const firstResponse = await client
-		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.post(ADD_HABIT_URL)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -180,7 +178,7 @@ test("cannot insert two identical records", async ({client, assert}) => {
 	assert.equal(firstResponse.body.user_id, payload.user_id);
 
 	const secondResponse = await client
-		.post(ADD_HABIT_SCOREBOARD_ITEM_URL)
+		.post(ADD_HABIT_URL)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -188,7 +186,7 @@ test("cannot insert two identical records", async ({client, assert}) => {
 		response: secondResponse,
 		argErrors: [
 			{
-				message: VALIDATION_MESSAGES.unique_habitscoreboard_item,
+				message: VALIDATION_MESSAGES.unique_habit,
 				field: "name",
 				validation: "unique",
 			},

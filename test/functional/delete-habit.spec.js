@@ -1,6 +1,4 @@
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Delete habit scoreboard item",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Delete habit");
 const ace = require("@adonisjs/ace");
 const User = use("User");
 const {
@@ -24,19 +22,17 @@ afterEach(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
-const DELETE_HABIT_SCOREBOARD_ITEM_URL = "/api/v1/habit-scoreboard-item";
+const DELETE_HABIT_URL = "/api/v1/habit";
 
 test("auth", async ({client}) => {
-	const response = await client
-		.delete(`${DELETE_HABIT_SCOREBOARD_ITEM_URL}/1`)
-		.end();
+	const response = await client.delete(`${DELETE_HABIT_URL}/1`).end();
 	assertInvalidSession(response);
 });
 
 test("is:(regular)", async ({client}) => {
 	const admin = await User.find(users.admin.id);
 	const response = await client
-		.delete(`${DELETE_HABIT_SCOREBOARD_ITEM_URL}/1`)
+		.delete(`${DELETE_HABIT_URL}/1`)
 		.loginVia(admin)
 		.end();
 	assertAccessDenied(response);
@@ -50,30 +46,28 @@ test("account-status:(active)", async ({client}) => {
 	await jim.save();
 
 	const response = await client
-		.delete(`${DELETE_HABIT_SCOREBOARD_ITEM_URL}/1`)
+		.delete(`${DELETE_HABIT_URL}/1`)
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
 });
 
-test("user can only delete their own habit scoreboard items", async ({
-	client,
-}) => {
+test("user can only delete their own habit", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.delete(`${DELETE_HABIT_SCOREBOARD_ITEM_URL}/6`)
+		.delete(`${DELETE_HABIT_URL}/6`)
 		.loginVia(jim)
 		.end();
 
 	assertAccessDenied(response);
 });
 
-test("user cannot delete unexistent scoreboard items", async ({client}) => {
+test("user cannot delete unexistent habits", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.delete(`${DELETE_HABIT_SCOREBOARD_ITEM_URL}/6666xxx`)
+		.delete(`${DELETE_HABIT_URL}/6666xxx`)
 		.loginVia(jim)
 		.end();
 	assertUnprocessableEntity(response);
@@ -82,7 +76,7 @@ test("user cannot delete unexistent scoreboard items", async ({client}) => {
 test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
-	const resourceBefore = await Database.table("habit_scoreboard_items")
+	const resourceBefore = await Database.table("habits")
 		.where({
 			id: 1,
 		})
@@ -91,13 +85,13 @@ test("full flow", async ({client, assert}) => {
 	assert.equal(resourceBefore.user_id, 2);
 
 	const response = await client
-		.delete(`${DELETE_HABIT_SCOREBOARD_ITEM_URL}/1`)
+		.delete(`${DELETE_HABIT_URL}/1`)
 		.loginVia(jim)
 		.end();
 
 	response.assertStatus(200);
 
-	const resourceAfter = await Database.table("habit_scoreboard_items")
+	const resourceAfter = await Database.table("habits")
 		.where({
 			id: 1,
 		})

@@ -18,7 +18,7 @@ class ParamsResourceExists {
 			}
 			throw new Error();
 		} catch (error) {
-			response.unprocessableEntity();
+			return response.unprocessableEntity();
 		}
 	}
 }

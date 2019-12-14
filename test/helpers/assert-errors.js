@@ -64,6 +64,15 @@ function assertUnprocessableEntity(response) {
 	});
 }
 
+function assertNotFoundError(response) {
+	response.assertStatus(404);
+	response.assertJSON({
+		code: MAIN_ERROR_CODES.not_found,
+		message: MAIN_ERROR_MESSAGES.not_found,
+		argErrors: [],
+	});
+}
+
 module.exports = {
 	assertInvalidSession,
 	assertAccessDenied,
@@ -72,4 +81,5 @@ module.exports = {
 	assertValidationError,
 	assertInvalidCredentials,
 	assertUnprocessableEntity,
+	assertNotFoundError,
 };

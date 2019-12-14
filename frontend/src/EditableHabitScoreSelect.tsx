@@ -3,45 +3,53 @@ import React from "react";
 
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {scoreToBgColor} from "./HabitList";
 import {useNotification} from "./contexts/notifications-context";
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
 
-interface EditableHabitScoreSelectInterface extends IHabit {
-	refreshList: VoidFunction;
-}
+type Props = IHabit & {
+	setHabitItem: (habit: IHabit) => void;
+};
 
-export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectInterface> = ({
+export const EditableHabitScoreSelect: React.FC<Props> = ({
 	id,
 	score,
-	refreshList,
+	setHabitItem,
 }) => {
-	const [triggerSuccessNotification] = useNotification({
-		type: "success",
-		message: "Habit score changed successfully!",
-	});
-	const [triggerErrorNotification] = useNotification({
-		type: "error",
-		message: "Habit score couldn't be changed.",
-	});
+	const [newHabitScore, setNewHabitScore] = React.useState<
+		IHabit["score"] | undefined
+	>(score);
+
+	const [triggerSuccessNotification] = useNotification();
+	const [triggerErrorNotification] = useNotification();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
-		onResolve: () => {
-			triggerSuccessNotification();
-			refreshList();
+		onResolve: habit => {
+			triggerSuccessNotification({
+				type: "success",
+				message: "Habit score changed successfully!",
+			});
+			setHabitItem(habit);
 		},
-		onReject: triggerErrorNotification,
+		onReject: () =>
+			triggerErrorNotification({
+				type: "error",
+				message: "Habit score couldn't be changed.",
+			}),
 	});
 
 	return (
 		<select
-			className="bg-gray-300 w-20 pl-1 appearance-none cursor-pointer"
-			value={score}
+			className={`${scoreToBgColor[score]} w-20 appearance-none cursor-pointer text-center p-1`}
+			style={{alignSelf: "end", justifySelf: "center"}}
+			value={newHabitScore}
 			disabled={editHabitRequestState.isPending}
 			onChange={event => {
 				const {value} = event.target;
 				if (isHabitScore(value) && value !== score) {
+					setNewHabitScore(value);
 					editHabitRequestState.run(id, {score: value});
 				}
 			}}

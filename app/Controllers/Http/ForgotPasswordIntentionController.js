@@ -1,3 +1,5 @@
+/* eslint-disable no-unsafe-finally, no-console */
+
 const Persona = use("Persona");
 
 class ForgotPasswordIntentionController {
@@ -5,8 +7,8 @@ class ForgotPasswordIntentionController {
 		const payload = request.only(["email"]);
 		try {
 			await Persona.forgotPassword(payload.email);
-		} catch (e) {
-			console.error(e);
+		} catch (error) {
+			console.error(error);
 		} finally {
 			return response.status(204).send();
 		}

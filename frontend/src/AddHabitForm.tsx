@@ -10,22 +10,16 @@ import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
-export const AddHabitForm: React.FC<{
-	refreshList: VoidFunction;
-}> = ({refreshList}) => {
+export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
+	refreshList,
+}) => {
 	const [profile] = useUserProfile();
 
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
 
-	const [triggerSuccessNotification] = useNotification({
-		type: "success",
-		message: "Habit successfully addedd!",
-	});
-	const [triggerUnexpectedErrorNotification] = useNotification({
-		type: "error",
-		message: "Habit couldn't be added.",
-	});
+	const [triggerSuccessNotification] = useNotification();
+	const [triggerUnexpectedErrorNotification] = useNotification();
 
 	const addHabitRequestState = Async.useAsync({
 		deferFn: api.habit.post,
@@ -33,12 +27,18 @@ export const AddHabitForm: React.FC<{
 			setName("");
 			setScore("neutral");
 			refreshList();
-			triggerSuccessNotification();
+			triggerSuccessNotification({
+				type: "success",
+				message: "Habit successfully addedd!",
+			});
 		},
 		onReject: _error => {
 			const error = _error as ApiError;
 			if (error.response?.status === 500) {
-				triggerUnexpectedErrorNotification();
+				triggerUnexpectedErrorNotification({
+					type: "error",
+					message: "Habit couldn't be added.",
+				});
 			}
 		},
 	});

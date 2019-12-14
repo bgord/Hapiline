@@ -10,7 +10,7 @@ class SessionController {
 			});
 			await auth.login(user);
 			return response.send(user);
-		} catch (err) {
+		} catch (error) {
 			return response.invalidCredentials();
 		}
 	}
