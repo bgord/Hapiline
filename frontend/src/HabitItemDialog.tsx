@@ -33,6 +33,12 @@ export const HabitItemDialog: React.FC<Props> = ({
 		onReject: triggerErrorNotification,
 	});
 
+	const habitDialogGrid: React.CSSProperties = {
+		display: "grid",
+		gridTemplateColumns: "100px auto 100px",
+		gridTemplateRows: "50px 100px 50px",
+	};
+
 	return (
 		<Dialog
 			style={{
@@ -52,33 +58,36 @@ export const HabitItemDialog: React.FC<Props> = ({
 				</RequestErrorMessage>
 			</Async.IfRejected>
 			{singleItemRequestState?.data?.id && (
-				<>
-					<div className="flex justify-between items-center mb-8">
-						<h2 className="font-bold">Habit preview</h2>
-						<button
-							className="p-2"
-							onClick={() => {
-								closeDialog();
-								refreshList();
-							}}
-						>
-							<VisuallyHidden>Close</VisuallyHidden>
-							<span aria-hidden>×</span>
-						</button>
-					</div>
-					<div className="flex items-end">
-						<EditableHabitScoreSelect
-							{...singleItemRequestState?.data}
-							setHabitItem={singleItemRequestState.setData}
-							key={singleItemRequestState?.data?.score}
-						/>
-						<EditableHabitNameInput
-							{...singleItemRequestState?.data}
-							setHabitItem={singleItemRequestState.setData}
-							key={singleItemRequestState?.data?.name}
-						/>
-					</div>
-					<dl className="flex items-baseline mt-4 ml-20 pl-2">
+				<div style={habitDialogGrid}>
+					<h2
+						className="font-bold"
+						style={{gridColumn: "span 2", alignSelf: "center"}}
+					>
+						Habit preview
+					</h2>
+					<button
+						onClick={() => {
+							closeDialog();
+							refreshList();
+						}}
+					>
+						<VisuallyHidden>Close</VisuallyHidden>
+						<span aria-hidden>×</span>
+					</button>
+					<EditableHabitScoreSelect
+						{...singleItemRequestState?.data}
+						setHabitItem={singleItemRequestState.setData}
+						key={singleItemRequestState?.data?.score}
+					/>
+					<EditableHabitNameInput
+						{...singleItemRequestState?.data}
+						setHabitItem={singleItemRequestState.setData}
+						key={singleItemRequestState?.data?.name}
+					/>
+					<dl
+						style={{gridColumn: 2, gridRow: 3, alignSelf: "center"}}
+						className="flex items-baseline ml-4 mt-8"
+					>
 						<dt className="text-gray-600 uppercase text-sm font-bold">
 							Created at:
 						</dt>
@@ -98,7 +107,7 @@ export const HabitItemDialog: React.FC<Props> = ({
 							)}
 						</dd>
 					</dl>
-				</>
+				</div>
 			)}
 		</Dialog>
 	);

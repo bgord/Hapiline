@@ -1,12 +1,10 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
-import {useRequestErrors} from "./hooks/useRequestErrors";
 
 type Props = Partial<IHabit> & {
 	setHabitItem: (habit: IHabit) => void;
@@ -39,13 +37,11 @@ export const EditableHabitNameInput: React.FC<Props> = ({
 		},
 		onReject: triggerErrorNotification,
 	});
-	const {getArgError} = useRequestErrors(editHabitRequestState);
-	const inlineNameError = getArgError("name");
 
 	const inputBgColor = isFocused ? "bg-gray-100" : "";
 
 	return (
-		<div className="flex justify-between items-end w-full">
+		<div className="flex justify-between items-end w-full ml-4">
 			<div className="field-group w-full">
 				<label className="field-label" htmlFor="email">
 					Name
@@ -61,9 +57,6 @@ export const EditableHabitNameInput: React.FC<Props> = ({
 					value={newHabitName}
 					onChange={event => setNewHabitName(event.target.value)}
 				/>
-				<Async.IfRejected state={editHabitRequestState}>
-					<ErrorMessage>{inlineNameError?.message}</ErrorMessage>
-				</Async.IfRejected>
 			</div>
 			{isFocused && (
 				<div className="flex">
