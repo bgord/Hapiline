@@ -6,7 +6,7 @@ import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {useNotification} from "./contexts/notifications-context";
 
-type Props = Partial<IHabit> & {
+type Props = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
@@ -80,7 +80,14 @@ export const EditableHabitNameInput: React.FC<Props> = ({
 					>
 						Save
 					</button>
-					<button onClick={blurInput} className="uppercase" type="button">
+					<button
+						onClick={() => {
+							blurInput();
+							setNewHabitName(name);
+						}}
+						className="uppercase"
+						type="button"
+					>
 						Cancel
 					</button>
 				</div>

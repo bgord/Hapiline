@@ -7,7 +7,7 @@ import {useNotification} from "./contexts/notifications-context";
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
 
-type Props = Partial<IHabit> & {
+type Props = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 

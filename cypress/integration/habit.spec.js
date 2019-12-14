@@ -277,6 +277,28 @@ describe("Habit", () => {
 		cy.findByText("1 loremlorem").should("not.exist");
 	});
 
+	it("cancel changing name", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findAllByText("more")
+			.first()
+			.click();
+
+		cy.findByDisplayValue("0 lorem").type(" nono");
+		cy.findByText("Cancel").click();
+		cy.findByDisplayValue("0 lorem");
+
+		cy.findByDisplayValue("0 lorem")
+			.clear()
+			.type("6 lorem");
+		cy.findByText("Save").click();
+		cy.findByText("Given habit already exists.");
+
+		cy.findByText("Cancel").click();
+		cy.findByDisplayValue("0 lorem");
+	});
+
 	it("changing name unique error", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
