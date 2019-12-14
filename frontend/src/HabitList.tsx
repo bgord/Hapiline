@@ -4,6 +4,12 @@ import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit} from "./interfaces/IHabit";
 
+export const scoreToBgColor: {[key in IHabit["score"]]: string} = {
+	positive: "bg-green-300",
+	neutral: "bg-gray-300",
+	negative: "bg-red-300",
+};
+
 interface Props {
 	habits: IHabit[];
 	refreshList: VoidFunction;
@@ -19,7 +25,11 @@ export const HabitList: React.FC<Props> = ({habits, refreshList}) => (
 
 			return (
 				<li className="flex items-baseline mb-4" key={habit.id}>
-					<div className="bg-gray-300 w-20 pl-1 p-2 text-center">
+					<div
+						className={`${
+							scoreToBgColor[habit.score]
+						} w-20 pl-1 p-2 text-center`}
+					>
 						{habit.score}
 					</div>
 					<div className="flex justify-between w-full">

@@ -3,6 +3,7 @@ import React from "react";
 
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {scoreToBgColor} from "./HabitList";
 import {useNotification} from "./contexts/notifications-context";
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
@@ -41,7 +42,7 @@ export const EditableHabitScoreSelect: React.FC<Props> = ({
 
 	return (
 		<select
-			className="bg-gray-300 w-20 appearance-none cursor-pointer text-center"
+			className={`${scoreToBgColor[score]} w-20 appearance-none cursor-pointer text-center p-1`}
 			style={{alignSelf: "end", justifySelf: "center"}}
 			value={newHabitScore}
 			disabled={editHabitRequestState.isPending}
