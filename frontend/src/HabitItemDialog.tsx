@@ -14,10 +14,14 @@ import {useNotification} from "./contexts/notifications-context";
 interface Props {
 	habitId: IHabit["id"];
 	refreshList: VoidFunction;
-	close: VoidFunction;
+	closeDialog: VoidFunction;
 }
 
-export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId}) => {
+export const HabitItemDialog: React.FC<Props> = ({
+	refreshList,
+	habitId,
+	closeDialog,
+}) => {
 	const [triggerErrorNotification] = useNotification({
 		type: "error",
 		message: "Fetching task details failed.",
@@ -37,6 +41,7 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId}) => {
 			}}
 			className="w-full h-full"
 			onDismiss={refreshList}
+			aria-label="Show habit preview"
 		>
 			<Async.IfPending state={singleItemRequestState}>
 				Loading details...
@@ -53,7 +58,7 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId}) => {
 						<button
 							className="p-2"
 							onClick={() => {
-								close();
+								closeDialog();
 								refreshList();
 							}}
 						>
@@ -62,8 +67,16 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId}) => {
 						</button>
 					</div>
 					<div className="flex items-end">
-						<EditableHabitScoreSelect {...singleItemRequestState?.data} />
-						<EditableHabitNameInput {...singleItemRequestState?.data} />
+						<EditableHabitScoreSelect
+							{...singleItemRequestState?.data}
+							setHabitItem={singleItemRequestState.setData}
+							key={singleItemRequestState?.data?.score}
+						/>
+						<EditableHabitNameInput
+							{...singleItemRequestState?.data}
+							setHabitItem={singleItemRequestState.setData}
+							key={singleItemRequestState?.data?.name}
+						/>
 					</div>
 					<dl className="flex items-baseline mt-4 ml-20 pl-2">
 						<dt className="text-gray-600 uppercase text-sm font-bold">

@@ -6,9 +6,14 @@ import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 
-export const EditableHabitNameInput: React.FC<Partial<IHabit>> = ({
+type Props = Partial<IHabit> & {
+	setHabitItem: (habit: IHabit) => void;
+};
+
+export const EditableHabitNameInput: React.FC<Props> = ({
 	name,
 	id,
+	setHabitItem,
 }) => {
 	const [isFocused, setIsFocused] = React.useState(false);
 	const blurInput = () => setIsFocused(false);
@@ -25,9 +30,10 @@ export const EditableHabitNameInput: React.FC<Partial<IHabit>> = ({
 	});
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
-		onResolve: () => {
+		onResolve: habit => {
 			blurInput();
 			triggerSuccessNotification();
+			setHabitItem(habit);
 		},
 		onReject: triggerErrorNotification,
 	});

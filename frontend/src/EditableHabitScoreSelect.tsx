@@ -7,9 +7,14 @@ import {useNotification} from "./contexts/notifications-context";
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
 
-export const EditableHabitScoreSelect: React.FC<Partial<IHabit>> = ({
+type Props = Partial<IHabit> & {
+	setHabitItem: (habit: IHabit) => void;
+};
+
+export const EditableHabitScoreSelect: React.FC<Props> = ({
 	id,
 	score,
+	setHabitItem,
 }) => {
 	const [newHabitScore, setNewHabitScore] = React.useState<
 		IHabit["score"] | undefined
@@ -26,7 +31,10 @@ export const EditableHabitScoreSelect: React.FC<Partial<IHabit>> = ({
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
-		onResolve: triggerSuccessNotification,
+		onResolve: habit => {
+			triggerSuccessNotification();
+			setHabitItem(habit);
+		},
 		onReject: triggerErrorNotification,
 	});
 
