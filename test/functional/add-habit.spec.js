@@ -163,7 +163,7 @@ test("cannot insert two identical records", async ({client, assert}) => {
 	const payload = {
 		name: "Wake up",
 		score: HABIT_SCORE_TYPES.neutral,
-		user_id: users.jim.id,
+		user_id: jim.id,
 	};
 
 	const firstResponse = await client

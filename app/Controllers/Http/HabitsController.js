@@ -3,10 +3,18 @@ const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const Database = use("Database");
 
 class HabitsController {
-	async store({request, response}) {
+	async store({request, response, auth}) {
 		const payload = request.only(["name", "score", "user_id"]);
 		try {
-			const result = await Habit.create(payload);
+			const {maxOrderValue} = await Database.table("habits")
+				.max("order as maxOrderValue")
+				.where("user_id", auth.user.id)
+				.first();
+
+			const result = await Habit.create({
+				...payload,
+				order: maxOrderValue + 1,
+			});
 			return response.status(201).send(result);
 		} catch (error) {
 			if (
