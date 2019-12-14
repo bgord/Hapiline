@@ -6,6 +6,7 @@ const MAIN_ERROR_CODES = {
 	invalid_credentials: "E_INVALID_CREDENTIALS",
 	internal_sever_error: "E_INTERNAL_SERVER_ERROR",
 	unprocessable_entity: "E_UNPROCESSABLE_ENTITY",
+	not_found: "E_NOT_FOUND",
 };
 
 module.exports = MAIN_ERROR_CODES;

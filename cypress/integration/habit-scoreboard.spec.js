@@ -203,6 +203,18 @@ describe("Habit", () => {
 			status: 200,
 			response,
 		});
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit/1",
+			status: 200,
+			response: response[0],
+		});
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit/2",
+			status: 200,
+			response: response[1],
+		});
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);

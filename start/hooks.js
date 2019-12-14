@@ -33,6 +33,14 @@ hooks.after.providersBooted(() => {
 		});
 	});
 
+	Response.macro("notFound", function() {
+		this.status(404).send({
+			code: MAIN_ERROR_CODES.not_found,
+			message: MAIN_ERROR_MESSAGES.not_found,
+			argErrors: [],
+		});
+	});
+
 	Response.macro("unprocessableEntity", function() {
 		this.status(422).send({
 			code: MAIN_ERROR_CODES.unprocessable_entity,

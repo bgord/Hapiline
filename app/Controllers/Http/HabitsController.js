@@ -34,9 +34,11 @@ class HabitsController {
 
 	async show({params, response, auth}) {
 		const result = await Database.table("habits")
-			.where("user_id", auth.user.id)
 			.where("id", params.id)
 			.first();
+
+		if (!result) return response.notFound();
+		if (result.user_id !== auth.user.id) return response.accessDenied();
 		return response.send(result);
 	}
 
