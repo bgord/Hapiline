@@ -13,21 +13,23 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 	id,
 	refreshList,
 }) => {
-	const [triggerSuccessNotification] = useNotification({
-		type: "success",
-		message: "Habit successfully deleted!",
-	});
-	const [triggerErrorNotification] = useNotification({
-		type: "error",
-		message: "Couldn't delete habit.",
-	});
+	const [triggerSuccessNotification] = useNotification();
+	const [triggerErrorNotification] = useNotification();
+
 	const deleteHabitRequestState = Async.useAsync({
 		deferFn: api.habit.delete,
 		onResolve: () => {
 			refreshList();
-			triggerSuccessNotification();
+			triggerSuccessNotification({
+				type: "success",
+				message: "Habit successfully deleted!",
+			});
 		},
-		onReject: triggerErrorNotification,
+		onReject: () =>
+			triggerErrorNotification({
+				type: "error",
+				message: "Couldn't delete habit.",
+			}),
 	});
 	const textColor = deleteHabitRequestState.isPending
 		? "text-gray-900"

@@ -64,10 +64,7 @@ export function useNotificationState() {
 	return state;
 }
 
-export function useNotification(
-	notification: Omit<Notification, "id">,
-	timeout: number = 5000,
-) {
+export function useNotification(timeout: number = 5000) {
 	const dispatch = React.useContext(NotificationsDispatchContext);
 	if (dispatch === undefined) {
 		throw new Error(
@@ -75,7 +72,9 @@ export function useNotification(
 		);
 	}
 
-	const triggerNotification = (): void => {
+	const triggerNotification = (
+		notification: Omit<Notification, "id">,
+	): void => {
 		const id = Date.now();
 
 		dispatch({

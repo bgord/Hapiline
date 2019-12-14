@@ -291,7 +291,6 @@ describe("Habit", () => {
 			.type("9 lorem{enter}");
 
 		cy.findByText("Given habit already exists.");
-		cy.findByText("Error while chaning name.");
 
 		cy.findByText("Save");
 		cy.findByText("Cancel");

@@ -1,9 +1,9 @@
 import * as Async from "react-async";
 import React from "react";
 
+import {ApiError, api} from "./services/api";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
-import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 
 type Props = Partial<IHabit> & {
@@ -20,22 +20,32 @@ export const EditableHabitNameInput: React.FC<Props> = ({
 	const focusInput = () => setIsFocused(true);
 
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
-	const [triggerSuccessNotification] = useNotification({
-		type: "success",
-		message: "Name updated successfully!",
-	});
-	const [triggerErrorNotification] = useNotification({
-		type: "error",
-		message: "Error while chaning name.",
-	});
+
+	const [triggerSuccessNotification] = useNotification();
+	const [triggerErrorNotification] = useNotification();
+
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
 			blurInput();
-			triggerSuccessNotification();
+			triggerSuccessNotification({
+				type: "success",
+				message: "Name updated successfully!",
+			});
 			setHabitItem(habit);
 		},
-		onReject: triggerErrorNotification,
+		onReject: _error => {
+			const error = _error as ApiError;
+
+			const inlineNameError = error?.response?.data.argErrors.find(
+				argError => argError.field === "name",
+			)?.message;
+
+			triggerErrorNotification({
+				type: "error",
+				message: inlineNameError || "Error while chaning name.",
+			});
+		},
 	});
 
 	const inputBgColor = isFocused ? "bg-gray-100" : "";

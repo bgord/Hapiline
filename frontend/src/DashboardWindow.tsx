@@ -10,14 +10,15 @@ import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
 export const Dashboard = () => {
-	const [triggerErrorNotification] = useNotification({
-		type: "error",
-		message: "Couldn't fetch habit list.",
-	});
+	const [triggerErrorNotification] = useNotification();
 
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: api.habit.get,
-		onReject: triggerErrorNotification,
+		onReject: () =>
+			triggerErrorNotification({
+				type: "error",
+				message: "Couldn't fetch habit list.",
+			}),
 	});
 	const {errorMessage} = useRequestErrors(getHabitsRequestState);
 

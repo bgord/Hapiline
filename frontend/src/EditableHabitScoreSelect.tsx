@@ -20,22 +20,23 @@ export const EditableHabitScoreSelect: React.FC<Props> = ({
 		IHabit["score"] | undefined
 	>(score);
 
-	const [triggerSuccessNotification] = useNotification({
-		type: "success",
-		message: "Habit score changed successfully!",
-	});
-	const [triggerErrorNotification] = useNotification({
-		type: "error",
-		message: "Habit score couldn't be changed.",
-	});
+	const [triggerSuccessNotification] = useNotification();
+	const [triggerErrorNotification] = useNotification();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
-			triggerSuccessNotification();
+			triggerSuccessNotification({
+				type: "success",
+				message: "Habit score changed successfully!",
+			});
 			setHabitItem(habit);
 		},
-		onReject: triggerErrorNotification,
+		onReject: () =>
+			triggerErrorNotification({
+				type: "error",
+				message: "Habit score couldn't be changed.",
+			}),
 	});
 
 	return (

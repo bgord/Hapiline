@@ -22,15 +22,16 @@ export const HabitItemDialog: React.FC<Props> = ({
 	habitId,
 	closeDialog,
 }) => {
-	const [triggerErrorNotification] = useNotification({
-		type: "error",
-		message: "Fetching task details failed.",
-	});
+	const [triggerErrorNotification] = useNotification();
 
 	const singleItemRequestState = Async.useAsync({
 		promiseFn: api.habit.show,
 		id: habitId,
-		onReject: triggerErrorNotification,
+		onReject: () =>
+			triggerErrorNotification({
+				type: "error",
+				message: "Fetching task details failed.",
+			}),
 	});
 
 	const habitDialogGrid: React.CSSProperties = {
