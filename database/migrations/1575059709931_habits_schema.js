@@ -10,6 +10,10 @@ class HabitsSchema extends Schema {
 			table.string("name", 255).notNullable();
 			table.enum("score", scores).notNullable();
 			table
+				.integer("order")
+				.unsigned()
+				.notNullable();
+			table
 				.integer("user_id")
 				.references("id")
 				.inTable("users")
@@ -18,6 +22,7 @@ class HabitsSchema extends Schema {
 			table.timestamps();
 
 			table.unique(["name", "user_id"]);
+			table.unique(["order", "user_id"]);
 		});
 	}
 
