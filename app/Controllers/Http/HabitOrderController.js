@@ -1,16 +1,30 @@
-class HabitsController {
-	async update({response}) {
-		return response.send();
-	}
-}
+const Database = use("Database");
+const Habit = use("Habit");
+const MAIN_ERROR_MESSAGES = use("MAIN_ERROR_MESSAGES");
 
-function calculateOrder(after) {
-	return after.reduce((acc, curr) => {
-		return {
-			...acc,
-			[curr.id]: {order: curr.index + 1},
-		};
-	}, {});
+class HabitsController {
+	async update({request, response}) {
+		const {habits} = request.only(["habits"]);
+
+		const trx = await Database.beginTransaction();
+
+		try {
+			for (let {id, index} of habits) {
+				const habit = await Habit.find(id, trx);
+				habit.merge({
+					order: index,
+				});
+				await habit.save();
+			}
+
+			return response.send();
+		} catch (e) {
+			trx.rollback();
+			return response.internalSeverError({
+				message: MAIN_ERROR_MESSAGES.cannot_reorder_habits,
+			});
+		}
+	}
 }
 
 module.exports = HabitsController;

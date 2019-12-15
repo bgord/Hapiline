@@ -22,7 +22,6 @@ class HabitsSchema extends Schema {
 			table.timestamps();
 
 			table.unique(["name", "user_id"]);
-			table.unique(["order", "user_id"]);
 		});
 	}
 

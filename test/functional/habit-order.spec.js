@@ -198,3 +198,65 @@ test("check indexes order", async ({client}) => {
 		message: MAIN_ERROR_MESSAGES.indexes_out_of_order,
 	});
 });
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const jimsHabitsBeforeUpdate = await Database.table("habits").where(
+		"user_id",
+		jim.id,
+	);
+
+	const idToOrderBeforeUpdate = {
+		1: 2,
+		2: 3,
+		3: 4,
+		4: 5,
+		5: 6,
+	};
+
+	for (let jimHabitBeforeUpdate of jimsHabitsBeforeUpdate) {
+		assert.equal(
+			jimHabitBeforeUpdate.order,
+			idToOrderBeforeUpdate[jimHabitBeforeUpdate.id],
+		);
+	}
+
+	const payload = {
+		habits: [...jimsHabitsBeforeUpdate]
+			.map(habit => habit.id)
+			.reverse()
+			.map((habitId, index) => ({
+				id: habitId,
+				index: index + 1,
+			})),
+	};
+
+	const response = await client
+		.patch(REORDER_HABITS_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	response.assertStatus(200);
+
+	const jimsHabitsAfterUpdate = await Database.table("habits").where(
+		"user_id",
+		jim.id,
+	);
+
+	const idToOrderAfterUpdate = {
+		1: 5,
+		2: 4,
+		3: 3,
+		4: 2,
+		5: 1,
+	};
+
+	for (let jimHabitAfterUpdate of jimsHabitsAfterUpdate) {
+		assert.equal(
+			jimHabitAfterUpdate.order,
+			idToOrderAfterUpdate[jimHabitAfterUpdate.id],
+		);
+	}
+});

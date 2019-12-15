@@ -8,7 +8,8 @@ const MAIN_ERROR_MESSAGES = {
 	unprocessable_entity: "Resource doesn't exist",
 	not_found: "Resource not found.",
 	not_all_habit_ids_supplied: "You have to supply all habit ids.",
-	indexes_out_of_order: "Invalid indexes order",
+	indexes_out_of_order: "Invalid indexes order.",
+	cannot_reorder_habits: "Cannot reorder habits.",
 };
 
 module.exports = MAIN_ERROR_MESSAGES;
