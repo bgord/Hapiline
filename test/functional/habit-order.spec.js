@@ -98,17 +98,19 @@ test("validation", async ({client}) => {
 			{habits: [{id: "nys", index: -22}]},
 			[
 				{
-					message: VALIDATION_MESSAGES.positive_integer("habits.*.id"),
+					message: VALIDATION_MESSAGES.positive_integer_or_zero("habits.*.id"),
 					field: "habits.0.id",
 					validation: "integer",
 				},
 				{
-					message: VALIDATION_MESSAGES.positive_integer("habits.*.id"),
+					message: VALIDATION_MESSAGES.positive_integer_or_zero("habits.*.id"),
 					field: "habits.0.id",
 					validation: "above",
 				},
 				{
-					message: VALIDATION_MESSAGES.positive_integer("habits.*.index"),
+					message: VALIDATION_MESSAGES.positive_integer_or_zero(
+						"habits.*.index",
+					),
 					field: "habits.0.index",
 					validation: "above",
 				},
@@ -134,7 +136,7 @@ test("check if every habit id belongs to the user", async ({client}) => {
 		.where("user_id", "<>", jim.id)
 		.first();
 
-	const payload = {habits: [{index: 1, id: notJimsHabit.id}]};
+	const payload = {habits: [{index: 0, id: notJimsHabit.id}]};
 
 	const response = await client
 		.patch(REORDER_HABITS_URL)
@@ -156,7 +158,7 @@ test("check if every habitId is supplied", async ({client}) => {
 	const payload = {
 		habits: restOfTheJimsHabitIds.map((habitId, index) => ({
 			id: habitId,
-			index: index + 1,
+			index,
 		})),
 	};
 
@@ -183,7 +185,7 @@ test("check indexes order", async ({client}) => {
 	const payload = {
 		habits: jimsHabitIds.map((habitId, index) => ({
 			id: habitId,
-			index: (index + 1) * 2,
+			index: index * 2,
 		})),
 	};
 
@@ -208,11 +210,11 @@ test("full flow", async ({client, assert}) => {
 	);
 
 	const idToOrderBeforeUpdate = {
-		1: 1,
-		2: 2,
-		3: 3,
-		4: 4,
-		5: 5,
+		1: 0,
+		2: 1,
+		3: 2,
+		4: 3,
+		5: 4,
 	};
 
 	for (let jimHabitBeforeUpdate of jimsHabitsBeforeUpdate) {
@@ -228,7 +230,7 @@ test("full flow", async ({client, assert}) => {
 			.reverse()
 			.map((habitId, index) => ({
 				id: habitId,
-				index: index + 1,
+				index,
 			})),
 	};
 
@@ -246,11 +248,11 @@ test("full flow", async ({client, assert}) => {
 	);
 
 	const idToOrderAfterUpdate = {
-		1: 5,
-		2: 4,
-		3: 3,
-		4: 2,
-		5: 1,
+		1: 4,
+		2: 3,
+		3: 2,
+		4: 1,
+		5: 0,
 	};
 
 	for (let jimHabitAfterUpdate of jimsHabitsAfterUpdate) {

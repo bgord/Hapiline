@@ -5,8 +5,8 @@ class StoreHabit extends BaseHttpValidator {
 	get rules() {
 		return {
 			habits: "required|array",
-			"habits.*.id": "required|integer|above:0",
-			"habits.*.index": "required|integer|above:0",
+			"habits.*.id": "required|integer|above:-1",
+			"habits.*.index": "required|integer|above:-1",
 		};
 	}
 
@@ -14,8 +14,8 @@ class StoreHabit extends BaseHttpValidator {
 		return {
 			required: VALIDATION_MESSAGES.required,
 			"habits.array": VALIDATION_MESSAGES.array,
-			integer: VALIDATION_MESSAGES.positive_integer,
-			above: VALIDATION_MESSAGES.positive_integer,
+			integer: VALIDATION_MESSAGES.positive_integer_or_zero,
+			above: VALIDATION_MESSAGES.positive_integer_or_zero,
 		};
 	}
 

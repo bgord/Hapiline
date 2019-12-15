@@ -16,7 +16,7 @@ const VALIDATION_MESSAGES = {
 	above: (field, number) => `Field ${field} must be above ${number}.`,
 	unique_habit: `Given habit already exists.`,
 	array: field => `${field} must be an array.`,
-	positive_integer: field => `${field} must be positive integer.`,
+	positive_integer_or_zero: field => `${field} must be positive integer or 0.`,
 };
 
 module.exports = VALIDATION_MESSAGES;

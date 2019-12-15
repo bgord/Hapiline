@@ -14,7 +14,7 @@ class HabitsSeeder {
 					user_id: user.id,
 					name: `${index} ${"lorem".repeat((index % 3) + 1)}`,
 					score: Object.keys(HABIT_SCORE_TYPES)[index % 3],
-					order: index + 1,
+					order: index,
 				};
 			});
 
