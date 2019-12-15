@@ -44,6 +44,7 @@ const namedMiddleware = {
 	"match-auth-user-id": "App/Middleware/MatchAuthUserId",
 	"params-resource-exists": "App/Middleware/ParamsResourceExists",
 	"check-habit-ids": "App/Middleware/CheckHabitIds",
+	"validate-indexes-order": "App/Middleware/ValidateIndexesOrder",
 };
 
 /*
