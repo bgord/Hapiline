@@ -21,13 +21,11 @@ class CheckHabitIds {
 			doesEveryHabitIdBelongToUser &&
 			allUserHabitIds.every(userHabitId => habitIds.includes(userHabitId));
 
-		if (!areArraysIdentical) {
-			return response.validationError({
-				message: MAIN_ERROR_MESSAGES.not_all_habit_ids_supplied,
-			});
-		}
+		if (areArraysIdentical) return next();
 
-		return next();
+		return response.validationError({
+			message: MAIN_ERROR_MESSAGES.not_all_habit_ids_supplied,
+		});
 	}
 }
 

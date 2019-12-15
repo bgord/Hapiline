@@ -171,3 +171,30 @@ test("check if every habitId is supplied", async ({client}) => {
 		message: MAIN_ERROR_MESSAGES.not_all_habit_ids_supplied,
 	});
 });
+
+test("check indexes order", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const jimsHabitIds = await Database.table("habits")
+		.where("user_id", jim.id)
+		.select("id")
+		.map(entry => entry.id);
+
+	const payload = {
+		habits: jimsHabitIds.map((habitId, index) => ({
+			id: habitId,
+			index: (index + 1) * 2,
+		})),
+	};
+
+	const response = await client
+		.patch(REORDER_HABITS_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertValidationError({
+		response,
+		message: MAIN_ERROR_MESSAGES.indexes_out_of_order,
+	});
+});
