@@ -29,3 +29,10 @@ export const patchHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
 	_internal_api
 		.patch<IHabit>(`/habit/${id}`, payload)
 		.then(response => response.data);
+
+export const reorderHabitsRequest: Async.DeferFn<void> = ([
+	reorderHabitsPayload,
+]) =>
+	_internal_api
+		.patch("/reorder-habits", reorderHabitsPayload)
+		.then(response => response.data);

@@ -1,14 +1,17 @@
-import React from "react";
 import {
 	DragDropContext,
 	Droppable,
 	Draggable,
 	DropResult,
 } from "react-beautiful-dnd";
+import * as Async from "react-async";
+import React from "react";
 
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit} from "./interfaces/IHabit";
+import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
 
 export const scoreToBgColor: {[key in IHabit["score"]]: string} = {
 	positive: "bg-green-300",
@@ -27,6 +30,25 @@ export const HabitList: React.FC<Props> = ({
 	refreshList,
 	setHabitList,
 }) => {
+	const [triggerSuccessNotification] = useNotification();
+	const [triggerErrorNotification] = useNotification();
+
+	const reorderHabitsRequestState = Async.useAsync({
+		deferFn: api.habit.reorder,
+		onResolve: () => {
+			triggerSuccessNotification({
+				type: "success",
+				message: "Habits reordered successfully!",
+			});
+		},
+		onReject: () => {
+			triggerErrorNotification({
+				type: "error",
+				message: "Error while changing order.",
+			});
+		},
+	});
+
 	function onDragEnd(result: DropResult) {
 		if (!result.destination) return;
 
@@ -35,7 +57,15 @@ export const HabitList: React.FC<Props> = ({
 
 		if (fromIndex === toIndex) return;
 
-		setHabitList(reorder(habits, fromIndex, toIndex));
+		const reorderedHabits = reorder(habits, fromIndex, toIndex);
+
+		const reorderHabitsPayload = reorderedHabits.map((habit, index) => ({
+			id: habit.id,
+			index,
+		}));
+
+		reorderHabitsRequestState.run({habits: reorderHabitsPayload});
+		setHabitList(reorderedHabits);
 	}
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
