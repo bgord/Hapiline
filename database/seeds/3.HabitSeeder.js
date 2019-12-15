@@ -6,15 +6,17 @@ class HabitsSeeder {
 	async run() {
 		const users = await User.all();
 
-		for (let [i, user] of users.toJSON().entries()) {
+		for (let user of users.toJSON()) {
 			const howManyHabits = (user.id - 1) * 5;
 
-			const payload = Array.from({length: howManyHabits}).map((_, j) => ({
-				user_id: user.id,
-				name: `${j} ${"lorem".repeat((j % 3) + 1)}`,
-				score: Object.keys(HABIT_SCORE_TYPES)[j % 3],
-				order: i + j + 1,
-			}));
+			const payload = Array.from({length: howManyHabits}).map((_, index) => {
+				return {
+					user_id: user.id,
+					name: `${index} ${"lorem".repeat((index % 3) + 1)}`,
+					score: Object.keys(HABIT_SCORE_TYPES)[index % 3],
+					order: index + 1,
+				};
+			});
 
 			await Habit.createMany(payload);
 		}
