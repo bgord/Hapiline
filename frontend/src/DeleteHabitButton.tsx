@@ -4,6 +4,7 @@ import React from "react";
 
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {useDialog} from "./hooks/useDialog";
 import {useNotification} from "./contexts/notifications-context";
 
 interface DeleteButtonProps extends IHabit {
@@ -15,10 +16,9 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 	name,
 	refreshList,
 }) => {
-	const [showDialog, setShowDialog] = React.useState(false);
+	const [showDialog, openDialog, closeDialog] = useDialog();
+
 	const cancelRef = React.useRef<HTMLButtonElement>();
-	const openAlertDialog = () => setShowDialog(true);
-	const closeAlertDialog = () => setShowDialog(false);
 
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerErrorNotification] = useNotification();
@@ -45,7 +45,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 	return (
 		<>
 			<button
-				onClick={openAlertDialog}
+				onClick={openDialog}
 				type="button"
 				className={`uppercase px-4 text-sm font-semibold  inline ${textColor}`}
 				disabled={deleteHabitRequestState.isPending}
@@ -65,7 +65,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 					<div className="mt-12 flex justify-around w-full">
 						<button
 							onClick={() => {
-								closeAlertDialog();
+								closeDialog();
 								deleteHabitRequestState.run(id);
 							}}
 						>
@@ -73,7 +73,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 						</button>
 						<button
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
-							onClick={closeAlertDialog}
+							onClick={closeDialog}
 						>
 							Nevermind, don't delete
 						</button>

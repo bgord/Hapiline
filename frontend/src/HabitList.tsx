@@ -11,6 +11,7 @@ import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {useDialog} from "./hooks/useDialog";
 import {useNotification} from "./contexts/notifications-context";
 
 export const scoreToBgColor: {[key in IHabit["score"]]: string} = {
@@ -77,10 +78,7 @@ export const HabitList: React.FC<Props> = ({
 						className="flex flex-col mt-12 bg-white p-4 pb-0 max-w-2xl w-full"
 					>
 						{habits.map((habit, index) => {
-							const [showDialog, setShowDialog] = React.useState(false);
-
-							const openDialog = () => setShowDialog(true);
-							const closeDialog = () => setShowDialog(false);
+							const [showDialog, openDialog, closeDialog] = useDialog();
 
 							return (
 								<Draggable
