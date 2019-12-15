@@ -92,6 +92,7 @@ export const HabitList: React.FC<Props> = ({
 											{...provided.draggableProps}
 											{...provided.dragHandleProps}
 											className="flex items-baseline mb-4"
+											data-testid="draggable-habit-item"
 											key={habit.id}
 										>
 											<div
