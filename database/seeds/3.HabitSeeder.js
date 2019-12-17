@@ -1,12 +1,12 @@
-const User = use("User");
+const Database = use("Database");
 const Habit = use("Habit");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 
 class HabitsSeeder {
 	async run() {
-		const users = await User.all();
+		const users = await Database.table("users");
 
-		for (let user of users.toJSON()) {
+		for (let user of users) {
 			const howManyHabits = (user.id - 1) * 5;
 
 			const payload = Array.from({length: howManyHabits}).map((_, index) => {

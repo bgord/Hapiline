@@ -16,7 +16,9 @@ const roleEntries = [
 
 class AclSeeder {
 	async run() {
-		await Promise.all(roleEntries.map(entry => Role.create(entry)));
+		for (let entry of roleEntries) {
+			await Role.create(entry);
+		}
 	}
 }
 
