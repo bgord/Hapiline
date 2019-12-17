@@ -2,7 +2,7 @@ const Database = use("Database");
 const Habit = use("Habit");
 const MAIN_ERROR_MESSAGES = use("MAIN_ERROR_MESSAGES");
 
-class HabitsController {
+class HabitOrderController {
 	async update({request, response}) {
 		const {habits} = request.only(["habits"]);
 
@@ -27,4 +27,4 @@ class HabitsController {
 	}
 }
 
-module.exports = HabitsController;
+module.exports = HabitOrderController;

@@ -13,7 +13,7 @@ class HabitsController {
 
 			const result = await Habit.create({
 				...payload,
-				order: maxOrderValue + 1,
+				order: Number(maxOrderValue) + 1,
 			});
 			return response.status(201).send(result);
 		} catch (error) {
@@ -35,9 +35,10 @@ class HabitsController {
 	}
 
 	async index({response, auth}) {
-		const result = await Database.table("habits")
-			.where("user_id", auth.user.id)
-			.orderBy("order");
+		const result = await auth.user
+			.habits()
+			.orderBy("order")
+			.fetch();
 		return response.send(result);
 	}
 
@@ -52,19 +53,13 @@ class HabitsController {
 	}
 
 	async delete({params, response, auth}) {
-		const {id} = params;
-		const loggedInUserId = auth.user.id;
-
 		try {
-			const deletedItemsCounter = await Database.table("habits")
-				.where({
-					id,
-					user_id: loggedInUserId,
-				})
+			const deletedItemsCounter = await auth.user
+				.habits()
+				.where({id: params.id})
 				.delete();
 
 			if (!deletedItemsCounter) throw error;
-
 			return response.send();
 		} catch (error) {
 			return response.accessDenied();
@@ -72,17 +67,16 @@ class HabitsController {
 	}
 
 	async update({request, response, params, auth}) {
-		const {id} = params;
 		const payload = request.only(["name", "score"]);
 
-		const habit = await Habit.find(id);
-		if (habit.user_id !== auth.user.id) {
-			return response.accessDenied();
-		}
+		const habit = await Habit.find(params.id);
+
+		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
 		try {
 			await habit.merge(payload);
 			await habit.save();
+
 			return response.send(habit);
 		} catch (error) {
 			if (
