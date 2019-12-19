@@ -84,7 +84,7 @@
     "@typescript-eslint/parser": "^2.11.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.3.0",
-    "cypress": "^3.7.0",
+    "cypress": "^3.8.0",
     "eslint": "^6.7.2",
     "eslint-config-bgord": "^2.1.2",
     "eslint-config-prettier": "^6.7.0",

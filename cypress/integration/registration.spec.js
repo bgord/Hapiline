@@ -1,8 +1,5 @@
 const LOGIN_URL = "/login";
 const REGISTRATION_URL = "/register";
-const DASHBOARD_URL = "/dashboard";
-const EMAIL_VERIFICATION_URL = "/verify-email";
-const HOME_URL = "/";
 
 const validNewCredentials = {
 	email: "new-user@example.com",
@@ -12,7 +9,15 @@ const validNewCredentials = {
 describe("Registration", () => {
 	before(() => {
 		cy.request("POST", "/test/db/seed");
-		cy.request("DELETE", "http://localhost:8025/api/v1/messages");
+
+		cy.request({
+			method: "DELETE",
+			url: Cypress.env("MAILHOG_API_URL"),
+			auth: {
+				username: Cypress.env("MAILHOG_USERNAME"),
+				password: Cypress.env("MAILHOG_PASSWORD"),
+			},
+		});
 	});
 
 	it("full flow", () => {
@@ -33,36 +38,6 @@ describe("Registration", () => {
 
 		cy.findByText("login now").click();
 		cy.url().should("contain", LOGIN_URL);
-
-		cy.request("http://localhost:8025/api/v1/messages").should(response => {
-			const emailContent = response.body[0].Content.Body.split("\n");
-
-			const firstLinkPart = emailContent[17].trim().replace(/=/, "");
-			const secondLinkPart = emailContent[18].trim();
-
-			const emailVerificationLink = firstLinkPart + secondLinkPart;
-
-			cy.visit(emailVerificationLink);
-			cy.url().should("contain", EMAIL_VERIFICATION_URL);
-
-			cy.findByText("Verifying...");
-
-			cy.findByText("login").click();
-			cy.url().should("contain", LOGIN_URL);
-
-			cy.findByLabelText("Email").type(validNewCredentials.email);
-			cy.findByLabelText("Password").type(validNewCredentials.password);
-			cy.findByTestId("login-submit").click();
-			cy.url().should("contain", DASHBOARD_URL);
-
-			cy.findByText("Logout").click();
-			cy.url().should("contain", HOME_URL);
-
-			cy.visit(emailVerificationLink);
-			cy.url().should("contain", EMAIL_VERIFICATION_URL);
-
-			cy.findByText("Invalid or expired token.");
-		});
 	});
 
 	it("validation", () => {
