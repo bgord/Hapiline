@@ -144,11 +144,16 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("0 lorem");
+		cy.findAllByText("Delete")
+			.first()
+			.click();
+		cy.findByText("Nevermind, don't delete").click();
+		cy.findByText("0 lorem");
 
 		cy.findAllByText("Delete")
 			.first()
 			.click();
-
+		cy.findByText("Yes, delete").click();
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
 	});
@@ -175,6 +180,8 @@ describe("Habit", () => {
 		cy.findAllByText("Delete")
 			.first()
 			.click();
+
+		cy.findByText("Yes, delete").click();
 
 		cy.findByText("0 lorem").should("exist");
 		cy.findByText(errorMessage);
@@ -412,6 +419,123 @@ describe("Habit", () => {
 			cy.findAllByText("positive").should("have.length", 4);
 			cy.findAllByText("neutral").should("have.length", 3);
 			cy.findAllByText("negative").should("have.length", 3);
+		});
+	});
+
+	it("reordering habits (keyboard)", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findAllByTestId("draggable-habit-item").should("have.length", 10);
+
+		const expectedOrderBeforeDragAndDrop = [
+			"0 lorem",
+			"1 loremlorem",
+			"2 loremloremlorem",
+			"3 lorem",
+			"4 loremlorem",
+			"5 loremloremlorem",
+			"6 lorem",
+			"7 loremlorem",
+			"8 loremloremlorem",
+			"9 lorem",
+		];
+		expectedOrderBeforeDragAndDrop.forEach((_, index) => {
+			cy.queryAllByTestId("draggable-habit-item")
+				.eq(index)
+				.should("contain.text", expectedOrderBeforeDragAndDrop[index]);
+		});
+
+		cy.get("ul").within(() => {
+			cy.get("li:nth-child(1)")
+				.focus()
+				.trigger("keydown", {keyCode: 32})
+				.trigger("keydown", {keyCode: 40, force: true})
+				.trigger("keydown", {keyCode: 40, force: true})
+				.trigger("keydown", {keyCode: 32, force: true});
+		});
+
+		cy.findByText("Habits reordered successfully!").click();
+
+		const expectedOrderAfterDragAndDrop = [
+			"1 loremlorem",
+			"2 loremloremlorem",
+			"0 lorem",
+			"3 lorem",
+			"4 loremlorem",
+			"5 loremloremlorem",
+			"6 lorem",
+			"7 loremlorem",
+			"8 loremloremlorem",
+			"9 lorem",
+		];
+		expectedOrderAfterDragAndDrop.forEach((_, index) => {
+			cy.queryAllByTestId("draggable-habit-item")
+				.eq(index)
+				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
+		});
+
+		cy.reload().wait(1000);
+
+		expectedOrderAfterDragAndDrop.forEach((_, index) => {
+			cy.queryAllByTestId("draggable-habit-item")
+				.eq(index)
+				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
+		});
+	});
+
+	it("reordering habits (mouse)", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findAllByTestId("draggable-habit-item").should("have.length", 10);
+
+		const expectedOrderBeforeDragAndDrop = [
+			"0 lorem",
+			"1 loremlorem",
+			"2 loremloremlorem",
+			"3 lorem",
+			"4 loremlorem",
+			"5 loremloremlorem",
+			"6 lorem",
+			"7 loremlorem",
+			"8 loremloremlorem",
+			"9 lorem",
+		];
+		expectedOrderBeforeDragAndDrop.forEach((_, index) => {
+			cy.queryAllByTestId("draggable-habit-item")
+				.eq(index)
+				.should("contain.text", expectedOrderBeforeDragAndDrop[index]);
+		});
+
+		cy.dragAndDrop("li:nth-child(1)", "li:nth-child(3)");
+
+		cy.findByText("Habits reordered successfully!").click();
+
+		const expectedOrderAfterDragAndDrop = [
+			"1 loremlorem",
+			"2 loremloremlorem",
+			"0 lorem",
+			"3 lorem",
+			"4 loremlorem",
+			"5 loremloremlorem",
+			"6 lorem",
+			"7 loremlorem",
+			"8 loremloremlorem",
+			"9 lorem",
+		];
+		expectedOrderAfterDragAndDrop.forEach((_, index) => {
+			cy.queryAllByTestId("draggable-habit-item")
+				.eq(index)
+				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
+		});
+
+		cy.reload().wait(1000);
+
+		expectedOrderAfterDragAndDrop.forEach((_, index) => {
+			cy.queryAllByTestId("draggable-habit-item")
+				.eq(index)
+				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
 		});
 	});
 });

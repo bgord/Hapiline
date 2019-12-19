@@ -39,6 +39,7 @@ export const Dashboard = () => {
 				<HabitList
 					habits={getHabitsRequestState?.data ?? []}
 					refreshList={getHabitsRequestState.reload}
+					setHabitList={getHabitsRequestState.setData}
 				/>
 			</Async.IfFulfilled>
 		</section>

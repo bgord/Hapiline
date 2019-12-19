@@ -46,11 +46,15 @@ function assertInvalidToken(response) {
 	});
 }
 
-function assertValidationError({response, argErrors}) {
+function assertValidationError({
+	response,
+	message = MAIN_ERROR_MESSAGES.invalid_request,
+	argErrors = [],
+}) {
 	response.assertStatus(400);
 	response.assertJSON({
 		code: MAIN_ERROR_CODES.invalid_request,
-		message: MAIN_ERROR_MESSAGES.invalid_request,
+		message,
 		argErrors,
 	});
 }

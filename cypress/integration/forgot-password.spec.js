@@ -11,7 +11,14 @@ const existingUser = {
 describe("Forgot password", () => {
 	before(() => {
 		cy.request("POST", "/test/db/seed");
-		cy.request("DELETE", "http://localhost:8025/api/v1/messages");
+		cy.request({
+			method: "DELETE",
+			url: Cypress.env("MAILHOG_API_URL"),
+			auth: {
+				username: Cypress.env("MAILHOG_USERNAME"),
+				password: Cypress.env("MAILHOG_PASSWORD"),
+			},
+		});
 	});
 
 	it("full flow", () => {
@@ -24,7 +31,16 @@ describe("Forgot password", () => {
 		cy.findByText("Send email").click();
 		cy.findByText("Email sent if an account exists.");
 
-		cy.request("http://localhost:8025/api/v1/messages").should(response => {
+		cy.wait(1000);
+
+		cy.request({
+			method: "GET",
+			url: Cypress.env("MAILHOG_API_URL"),
+			auth: {
+				username: Cypress.env("MAILHOG_USERNAME"),
+				password: Cypress.env("MAILHOG_PASSWORD"),
+			},
+		}).should(response => {
 			const emailContent = response.body[0].Content.Body.split("\n");
 
 			const firstLinkPart = emailContent[17].trim().replace(/=/, "");

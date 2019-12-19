@@ -98,6 +98,11 @@ Route.get("/api/v1/habit/:id", "HabitsController.show").middleware([
 	"account-status:active",
 ]);
 
+Route.patch("/api/v1/reorder-habits", "HabitOrderController.update")
+	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.validator("ReorderHabits")
+	.middleware(["check-habit-ids", "validate-indexes-order"]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {

@@ -3,9 +3,10 @@ import axios, {AxiosError} from "axios";
 import {
 	addHabitRequest,
 	deleteHabitRequest,
+	getHabitRequest,
 	getHabitsRequest,
 	patchHabitRequest,
-	getHabitRequest,
+	reorderHabitsRequest,
 } from "./habit";
 import {
 	forgotPasswordRequest,
@@ -48,6 +49,7 @@ export const api = {
 		delete: deleteHabitRequest,
 		patch: patchHabitRequest,
 		show: getHabitRequest,
+		reorder: reorderHabitsRequest,
 	},
 	auth: {
 		login: loginRequest,
