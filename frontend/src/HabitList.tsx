@@ -9,16 +9,10 @@ import React from "react";
 
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
-import {IHabit} from "./interfaces/IHabit";
+import {IHabit, scoreToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
 import {useNotification} from "./contexts/notifications-context";
-
-export const scoreToBgColor: {[key in IHabit["score"]]: string} = {
-	positive: "bg-green-300",
-	neutral: "bg-gray-300",
-	negative: "bg-red-300",
-};
 
 interface Props {
 	habits: IHabit[];
