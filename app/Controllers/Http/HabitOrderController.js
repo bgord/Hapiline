@@ -11,12 +11,16 @@ class HabitOrderController {
 		try {
 			for (let {id, index} of habits) {
 				const habit = await Habit.find(id, trx);
-				habit.merge({
-					order: index,
-				});
-				await habit.save();
+				habit.merge(
+					{
+						order: index,
+					},
+					trx,
+				);
+				await habit.save(trx);
 			}
 
+			trx.commit();
 			return response.send();
 		} catch (e) {
 			trx.rollback();
