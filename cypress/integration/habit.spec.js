@@ -79,6 +79,12 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("Seems you haven't added any habits yet.");
+
+		cy.findByText("Positive: 0").should("not.exist");
+		cy.findByText("Neutral: 0").should("not.exist");
+		cy.findByText("Negative: 0").should("not.exist");
+
+		cy.findByText("Total: 0").should("not.exist");
 	});
 
 	it("renders returned items", () => {
@@ -115,6 +121,12 @@ describe("Habit", () => {
 			cy.findByText(item.name);
 			cy.findByText(item.score);
 		});
+
+		cy.findByText("Positive: 1");
+		cy.findByText("Neutral: 1");
+		cy.findByText("Negative: 1");
+
+		cy.findByText("Total: 3");
 	});
 
 	it("error while getting items", () => {

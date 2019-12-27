@@ -94,6 +94,7 @@ const HabitListItem: React.FC<{
 	refreshList: VoidFunction;
 }> = ({habit, index, refreshList}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
+	const bgColor = scoreToBgColor[habit.score];
 
 	return (
 		<Draggable key={habit.id} draggableId={habit.id.toString()} index={index}>
@@ -105,11 +106,7 @@ const HabitListItem: React.FC<{
 					className="flex items-baseline mb-4"
 					data-testid="draggable-habit-item"
 				>
-					<div
-						className={`${
-							scoreToBgColor[habit.score]
-						} w-20 pl-1 p-2 text-center`}
-					>
+					<div className={`${bgColor} w-20 pl-1 p-2 text-center`}>
 						{habit.score}
 					</div>
 					<div className="flex justify-between w-full">
