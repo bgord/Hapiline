@@ -8,6 +8,7 @@ import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
+import {HabitsSummary} from "./HabitsSummary";
 
 export const Dashboard = () => {
 	const [triggerErrorNotification] = useNotification();
@@ -36,6 +37,7 @@ export const Dashboard = () => {
 						Seems you haven't added any habits yet.
 					</InfoMessage>
 				)}
+				<HabitsSummary habits={getHabitsRequestState?.data ?? []} />
 				<HabitList
 					habits={getHabitsRequestState?.data ?? []}
 					refreshList={getHabitsRequestState.reload}

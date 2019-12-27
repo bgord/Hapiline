@@ -68,6 +68,7 @@ export const HabitList: React.FC<Props> = ({
 		reorderHabitsRequestState.run({habits: reorderHabitsPayload});
 		setHabitList(reorderedHabits);
 	}
+
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="habits">
@@ -75,7 +76,7 @@ export const HabitList: React.FC<Props> = ({
 					<ul
 						ref={provided.innerRef}
 						{...provided.droppableProps}
-						className="flex flex-col mt-12 bg-white p-4 pb-0 max-w-2xl w-full"
+						className="flex flex-col bg-white p-4 pb-0 max-w-2xl w-full"
 					>
 						{habits.map((habit, index) => {
 							const [showDialog, openDialog, closeDialog] = useDialog();

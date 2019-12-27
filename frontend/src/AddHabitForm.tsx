@@ -47,7 +47,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 	const nameInlineError = getArgError("name");
 
 	return (
-		<div>
+		<>
 			<form
 				onSubmit={event => {
 					event.preventDefault();
@@ -91,6 +91,6 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 					{nameInlineError?.message || errorMessage}
 				</ErrorMessage>
 			</Async.IfRejected>
-		</div>
+		</>
 	);
 };
