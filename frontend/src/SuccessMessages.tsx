@@ -23,7 +23,7 @@ export const CloseableSuccessMessage: React.FC<JSX.IntrinsicElements["div"]> = (
 			{on && (
 				<SuccessMessage {...props}>
 					{children}
-					<button className="px-2" onClick={close}>
+					<button type="button" className="px-2" onClick={close}>
 						x
 					</button>
 				</SuccessMessage>

@@ -67,6 +67,7 @@ export const HabitItemDialog: React.FC<Props> = ({
 						Habit preview
 					</h2>
 					<button
+						type="button"
 						onClick={() => {
 							closeDialog();
 							refreshList();

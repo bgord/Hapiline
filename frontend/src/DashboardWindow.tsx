@@ -8,6 +8,7 @@ import {InfoMessage} from "./InfoMessage";
 import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
+import {HabitsSummary} from "./HabitsSummary";
 
 export const Dashboard = () => {
 	const [triggerErrorNotification] = useNotification();
@@ -22,6 +23,8 @@ export const Dashboard = () => {
 	});
 	const {errorMessage} = useRequestErrors(getHabitsRequestState);
 
+	const habits = getHabitsRequestState?.data ?? [];
+
 	return (
 		<section className="flex flex-col items-center py-8">
 			<AddHabitForm refreshList={getHabitsRequestState.reload} />
@@ -31,13 +34,14 @@ export const Dashboard = () => {
 			</Async.IfRejected>
 
 			<Async.IfFulfilled state={getHabitsRequestState}>
-				{!getHabitsRequestState?.data?.length && (
+				{!habits.length && (
 					<InfoMessage className="pb-4">
 						Seems you haven't added any habits yet.
 					</InfoMessage>
 				)}
+				{habits.length ? <HabitsSummary habits={habits} /> : null}
 				<HabitList
-					habits={getHabitsRequestState?.data ?? []}
+					habits={habits}
 					refreshList={getHabitsRequestState.reload}
 					setHabitList={getHabitsRequestState.setData}
 				/>

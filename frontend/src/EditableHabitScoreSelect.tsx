@@ -1,9 +1,8 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {IHabit} from "./interfaces/IHabit";
+import {IHabit, scoreToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {scoreToBgColor} from "./HabitList";
 import {useNotification} from "./contexts/notifications-context";
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
@@ -17,9 +16,9 @@ export const EditableHabitScoreSelect: React.FC<Props> = ({
 	score,
 	setHabitItem,
 }) => {
-	const [newHabitScore, setNewHabitScore] = React.useState<
-		IHabit["score"] | undefined
-	>(score);
+	const [newHabitScore, setNewHabitScore] = React.useState<IHabit["score"]>(
+		score,
+	);
 
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerErrorNotification] = useNotification();
@@ -40,9 +39,11 @@ export const EditableHabitScoreSelect: React.FC<Props> = ({
 			}),
 	});
 
+	const bgColor = scoreToBgColor[score];
+
 	return (
 		<select
-			className={`${scoreToBgColor[score]} w-20 appearance-none cursor-pointer text-center p-1`}
+			className={`${bgColor} w-20 appearance-none cursor-pointer text-center p-1`}
 			style={{alignSelf: "end", justifySelf: "center"}}
 			value={newHabitScore}
 			disabled={editHabitRequestState.isPending}

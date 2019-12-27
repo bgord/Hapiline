@@ -5,7 +5,7 @@
   "description": "Adonisjs boilerplate for API server with pre-configured JWT",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --ext .js,.tsx,.ts --ignore-pattern node_modules/",
     "lint:fix": "eslint . --fix",
     "prettify": "pretty-quick",
     "prettify:staged": "pretty-quick --staged",
@@ -115,7 +115,9 @@
       "jest/valid-expect": 0,
       "sonarjs/no-duplicate-string": 0,
       "@typescript-eslint/no-empty-function": 0,
-      "sonarjs/no-identical-functions": 1
+      "sonarjs/no-identical-functions": 1,
+      "react/no-multi-comp": 0,
+      "jsx-a11y/no-onchange": 1
     }
   }
 }

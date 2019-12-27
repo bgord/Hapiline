@@ -24,15 +24,14 @@ type Dispatch = (action: Action) => void;
 
 function reducer(state: State, action: Action): State {
 	switch (action.type) {
-		case "add": {
+		case "add":
 			return [...state, action.notification];
-		}
-		case "remove": {
+		case "remove":
 			return state.filter(notification => notification.id !== action.id);
-		}
-		case "clear": {
+		case "clear":
 			return [];
-		}
+		default:
+			return state;
 	}
 }
 
@@ -64,7 +63,7 @@ export function useNotificationState() {
 	return state;
 }
 
-export function useNotification(timeout: number = 5000) {
+export function useNotification(timeout = 5000) {
 	const dispatch = React.useContext(NotificationsDispatchContext);
 	if (dispatch === undefined) {
 		throw new Error(
