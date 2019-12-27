@@ -5,14 +5,14 @@ import {ApiError, ApiErrorInterface, ArgError} from "../services/api";
 
 type getArgErrorType = (path: string) => ArgError | undefined;
 
-interface _ResponseError {
+interface BasicResponseError {
 	responseStatus: AxiosResponse["status"];
 	errorCode: ApiErrorInterface["code"];
 	errorMessage: ApiErrorInterface["message"];
 	argErrors: ApiErrorInterface["argErrors"];
 }
 
-interface ResponseError extends Partial<_ResponseError> {
+interface ResponseError extends Partial<BasicResponseError> {
 	getArgError: getArgErrorType;
 }
 

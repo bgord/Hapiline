@@ -18,7 +18,7 @@ import {
 	verifyEmailRequest,
 } from "./auth";
 
-declare var process: {
+declare const process: {
 	env: {
 		API_URL: string;
 	};

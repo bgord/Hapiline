@@ -72,62 +72,65 @@ export const HabitList: React.FC<Props> = ({
 						{...provided.droppableProps}
 						className="flex flex-col bg-white p-4 pb-0 max-w-2xl w-full"
 					>
-						{habits.map((habit, index) => {
-							const [showDialog, openDialog, closeDialog] = useDialog();
-
-							return (
-								<Draggable
-									key={habit.id}
-									draggableId={habit.id.toString()}
-									index={index}
-								>
-									{provided => (
-										<li
-											ref={provided.innerRef}
-											{...provided.draggableProps}
-											{...provided.dragHandleProps}
-											className="flex items-baseline mb-4"
-											data-testid="draggable-habit-item"
-											key={habit.id}
-										>
-											<div
-												className={`${
-													scoreToBgColor[habit.score]
-												} w-20 pl-1 p-2 text-center`}
-											>
-												{habit.score}
-											</div>
-											<div className="flex justify-between w-full">
-												<div className="p-2 bg-gray-100 ml-2 w-full">
-													{habit.name}
-												</div>
-												<div className="flex ml-4">
-													<button className="uppercase" onClick={openDialog}>
-														more
-													</button>
-													<DeleteHabitButton
-														{...habit}
-														refreshList={refreshList}
-													/>
-												</div>
-											</div>
-											{showDialog && (
-												<HabitItemDialog
-													habitId={habit.id}
-													closeDialog={closeDialog}
-													refreshList={refreshList}
-												/>
-											)}
-										</li>
-									)}
-								</Draggable>
-							);
-						})}
+						{habits.map((habit, index) => (
+							<HabitListItem
+								key={habit.id}
+								habit={habit}
+								index={index}
+								refreshList={refreshList}
+							/>
+						))}
 						{provided.placeholder}
 					</ul>
 				)}
 			</Droppable>
 		</DragDropContext>
+	);
+};
+
+const HabitListItem: React.FC<{
+	habit: IHabit;
+	index: number;
+	refreshList: VoidFunction;
+}> = ({habit, index, refreshList}) => {
+	const [showDialog, openDialog, closeDialog] = useDialog();
+
+	return (
+		<Draggable key={habit.id} draggableId={habit.id.toString()} index={index}>
+			{provided => (
+				<li
+					ref={provided.innerRef}
+					{...provided.draggableProps}
+					{...provided.dragHandleProps}
+					className="flex items-baseline mb-4"
+					data-testid="draggable-habit-item"
+				>
+					<div
+						className={`${
+							scoreToBgColor[habit.score]
+						} w-20 pl-1 p-2 text-center`}
+					>
+						{habit.score}
+					</div>
+					<div className="flex justify-between w-full">
+						<div className="p-2 bg-gray-100 ml-2 w-full">{habit.name}</div>
+						<div className="flex ml-4">
+							<button type="button" className="uppercase" onClick={openDialog}>
+								more
+							</button>
+							<DeleteHabitButton {...habit} refreshList={refreshList} />
+						</div>
+					</div>
+					{showDialog && (
+						<HabitItemDialog
+							habitId={habit.id}
+							closeDialog={closeDialog}
+							refreshList={refreshList}
+						/>
+					)}
+				</li>
+			)}
+		</Draggable>
 	);
 };
 

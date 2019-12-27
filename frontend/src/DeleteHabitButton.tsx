@@ -64,6 +64,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 
 					<div className="mt-12 flex justify-around w-full">
 						<button
+							type="button"
 							onClick={() => {
 								closeDialog();
 								deleteHabitRequestState.run(id);
@@ -72,6 +73,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 							Yes, delete
 						</button>
 						<button
+							type="button"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={closeDialog}
 						>

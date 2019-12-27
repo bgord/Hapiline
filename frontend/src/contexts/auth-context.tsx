@@ -34,7 +34,7 @@ export const AuthProvider: React.FC = props => {
 			setFirstAttemptFinished(true);
 			setUserProfile(data || null);
 		}
-	}, [isSettled]);
+	}, [isSettled, data]);
 
 	if (!firstAttemptFinished && isPending) {
 		return <Loader />;

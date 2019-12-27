@@ -1,7 +1,7 @@
 import React from "react";
 
 export const useDialog = (
-	defaultValue: boolean = false,
+	defaultValue = false,
 ): [boolean, VoidFunction, VoidFunction] => {
 	const [showDialog, setShowDialog] = React.useState(defaultValue);
 

@@ -1,11 +1,10 @@
-import {ApiError} from "./services/api";
+import {api, ApiError} from "./services/api";
 
 import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
-import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
