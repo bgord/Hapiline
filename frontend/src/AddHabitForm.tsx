@@ -16,6 +16,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
+	const [strength, setStrength] = React.useState("established");
 
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerUnexpectedErrorNotification] = useNotification();
@@ -25,6 +26,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 		onResolve: () => {
 			setName("");
 			setScore("neutral");
+			setStrength("established");
 			refreshList();
 			triggerSuccessNotification({
 				type: "success",
@@ -50,7 +52,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 			<form
 				onSubmit={event => {
 					event.preventDefault();
-					addHabitRequestState.run(name, score, profile?.id);
+					addHabitRequestState.run(name, score, strength, profile?.id);
 				}}
 				className="flex items-end"
 			>
@@ -79,6 +81,23 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 						<option value="neutral">Neutral</option>
 						<option value="positive">Positive</option>
 						<option value="negative">Negative</option>
+					</select>
+				</div>
+				<div className="flex flex-col ml-8">
+					<label className="field-label" htmlFor="strength">
+						Strength
+					</label>
+					<select
+						id="strength"
+						name="strength"
+						required
+						value={strength}
+						onChange={event => setStrength(event.target.value)}
+						className="field bg-white"
+					>
+						<option value="established">Established</option>
+						<option value="fragile">Fragile</option>
+						<option value="Developing">Developing</option>
 					</select>
 				</div>
 				<button className="btn btn-blue ml-8 h-10" type="submit">

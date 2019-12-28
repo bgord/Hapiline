@@ -15,8 +15,9 @@ describe("Habit", () => {
 
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 		cy.findByLabelText("Score").select("positive");
-		cy.findByText("Add habit").click();
+		cy.findByLabelText("Strength").select("fragile");
 
+		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
 
 		cy.tick(10000);
@@ -25,9 +26,12 @@ describe("Habit", () => {
 
 		cy.findByLabelText("Habit").should("have.value", "");
 		cy.findByLabelText("Score").should("have.value", "neutral");
+		cy.findByLabelText("Strength").should("have.value", "established");
 
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 		cy.findByLabelText("Score").select("positive");
+		cy.findByLabelText("Strength").select("fragile");
+
 		cy.findByText("Add habit").click();
 		cy.findByText("Given habit already exists.");
 
@@ -35,6 +39,8 @@ describe("Habit", () => {
 			.clear()
 			.type("Go to sleep at 9:30 AM");
 		cy.findByLabelText("Score").select("positive");
+		cy.findByLabelText("Strength").select("fragile");
+
 		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
 
