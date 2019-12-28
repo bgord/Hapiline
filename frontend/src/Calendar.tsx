@@ -7,13 +7,14 @@ export const Calendar: React.FC = () => {
 
 	const habitDialogGrid: React.CSSProperties = {
 		display: "grid",
-		gridTemplateColumns: "repeat(7, 100px)",
-		gridTemplateRows: "repeat(6, 100px)",
+		gridTemplateColumns: "repeat(7, 200px)",
+		gridTemplateRows: "repeat(6, 120px)",
+		gridGap: "3px",
 	};
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto">
-			<div className="flex mb-24">
+			<div className="flex mb-16">
 				<button
 					className="px-2"
 					type="button"
@@ -28,8 +29,12 @@ export const Calendar: React.FC = () => {
 			</div>
 			<ul style={habitDialogGrid}>
 				{widget.givenMonthDays.map(({day, styles}) => (
-					<li className="bg-blue-100" key={day.toString()} style={styles}>
-						{day}
+					<li
+						className="flex flex-col bg-green-100 hover:bg-green-200"
+						key={day.toString()}
+						style={styles}
+					>
+						<span className="text-center w-full pt-2">{day}</span>
 					</li>
 				))}
 			</ul>
