@@ -26,7 +26,7 @@ export const Dashboard = () => {
 	const habits = getHabitsRequestState?.data ?? [];
 
 	return (
-		<section className="flex flex-col items-center py-8">
+		<section className="flex flex-col items-center p-8 mx-auto max-w-4xl">
 			<AddHabitForm refreshList={getHabitsRequestState.reload} />
 
 			<Async.IfRejected state={getHabitsRequestState}>

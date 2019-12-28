@@ -11,17 +11,19 @@ export const HabitsSummary: React.FC<{habits: IHabit[]}> = ({habits}) => {
 	const totalHabitsCount = habits.length;
 
 	return (
-		<div className="flex justify-end mt-12 mb-3">
-			<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.positive}`}>
-				positive: {positiveHabitsCount}
+		<div className="flex justify-end self-start flex-col mt-12 mb-6">
+			<div className="mr-1 mb-2">total: {totalHabitsCount}</div>
+			<div className="flex">
+				<div className={`mr-1 px-1 ${scoreToBgColor.positive}`}>
+					positive: {positiveHabitsCount}
+				</div>
+				<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.neutral}`}>
+					neutral: {neutralHabitsCount}
+				</div>
+				<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.negative}`}>
+					negative: {negativeHabitsCount}
+				</div>
 			</div>
-			<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.neutral}`}>
-				neutral: {neutralHabitsCount}
-			</div>
-			<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.negative}`}>
-				negative: {negativeHabitsCount}
-			</div>
-			<div className="mr-1 ml-2">total: {totalHabitsCount}</div>
 		</div>
 	);
 };

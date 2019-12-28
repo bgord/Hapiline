@@ -54,16 +54,16 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 					event.preventDefault();
 					addHabitRequestState.run(name, score, strength, profile?.id);
 				}}
-				className="flex items-end"
+				className="flex items-end w-full"
 			>
-				<div className="flex flex-col">
+				<div className="flex flex-col flex-grow">
 					<label className="field-label" htmlFor="name">
 						Habit
 					</label>
 					<HabitNameInput
 						value={name}
 						onChange={event => setName(event.target.value)}
-						className="field w-64"
+						className="field w-full"
 					/>
 				</div>
 				<div className="flex flex-col ml-8">
