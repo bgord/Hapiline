@@ -99,16 +99,19 @@ describe("Habit", () => {
 				id: 1,
 				name: "Watch The Office",
 				score: "positive",
+				strength: "established",
 			},
 			{
 				id: 2,
 				name: "Go to sleep",
 				score: "neutral",
+				strength: "fragile",
 			},
 			{
 				id: 3,
 				name: "Wake up",
 				score: "negative",
+				strength: "developing",
 			},
 		];
 
@@ -133,6 +136,9 @@ describe("Habit", () => {
 		cy.findByText("positive: 1");
 		cy.findByText("neutral: 1");
 		cy.findByText("negative: 1");
+		cy.findByText("established: 1");
+		cy.findByText("fragile: 1");
+		cy.findByText("developing: 1");
 		cy.findByText("total: 3");
 	});
 
