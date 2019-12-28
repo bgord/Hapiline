@@ -10,6 +10,7 @@ const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
+const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -71,6 +72,11 @@ test("validation", async ({client}) => {
 					validation: "required",
 				},
 				{
+					message: VALIDATION_MESSAGES.required("strength"),
+					field: "strength",
+					validation: "required",
+				},
+				{
 					message: VALIDATION_MESSAGES.required("user_id"),
 					field: "user_id",
 					validation: "required",
@@ -81,6 +87,7 @@ test("validation", async ({client}) => {
 			{
 				name: "x".repeat(256),
 				score: "xxx",
+				strength: "xxx",
 				user_id: "xxxx",
 			},
 			[
@@ -92,6 +99,11 @@ test("validation", async ({client}) => {
 				{
 					message: VALIDATION_MESSAGES.invalid_score,
 					field: "score",
+					validation: "in",
+				},
+				{
+					message: VALIDATION_MESSAGES.invalid_strength,
+					field: "strength",
 					validation: "in",
 				},
 				{
@@ -124,6 +136,7 @@ test("user can only add their own habit", async ({client}) => {
 	const payload = {
 		name: "Wake up",
 		score: HABIT_SCORE_TYPES.neutral,
+		strength: HABIT_STRENGTH_TYPES.fragile,
 		user_id: users.pam.id,
 	};
 
@@ -142,6 +155,7 @@ test("full flow", async ({client, assert}) => {
 	const payload = {
 		name: "Wake up",
 		score: HABIT_SCORE_TYPES.neutral,
+		strength: HABIT_STRENGTH_TYPES.fragile,
 		user_id: users.jim.id,
 	};
 
@@ -163,6 +177,7 @@ test("cannot insert two identical records", async ({client, assert}) => {
 	const payload = {
 		name: "Wake up",
 		score: HABIT_SCORE_TYPES.neutral,
+		strength: HABIT_STRENGTH_TYPES.fragile,
 		user_id: jim.id,
 	};
 
