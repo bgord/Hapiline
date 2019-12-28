@@ -1,0 +1,66 @@
+import * as Async from "react-async";
+import React from "react";
+
+import {IHabit, strengthToBgColor} from "./interfaces/IHabit";
+import {api} from "./services/api";
+import {useNotification} from "./contexts/notifications-context";
+
+type Props = IHabit & {
+	setHabitItem: (habit: IHabit) => void;
+};
+
+export const EditableHabitStrengthSelect: React.FC<Props> = ({
+	id,
+	strength,
+	setHabitItem,
+}) => {
+	const [newHabitStrength, setNewHabitStrength] = React.useState<
+		IHabit["strength"]
+	>(strength);
+
+	const [triggerSuccessNotification] = useNotification();
+	const [triggerErrorNotification] = useNotification();
+
+	const editHabitRequestState = Async.useAsync({
+		deferFn: api.habit.patch,
+		onResolve: habit => {
+			triggerSuccessNotification({
+				type: "success",
+				message: "Habit strength changed successfully!",
+			});
+			setHabitItem(habit);
+		},
+		onReject: () =>
+			triggerErrorNotification({
+				type: "error",
+				message: "Habit strength couldn't be changed.",
+			}),
+	});
+
+	const bgColor = strengthToBgColor[strength];
+
+	return (
+		<select
+			className={`${bgColor} w-32 appearance-none cursor-pointer text-center p-1`}
+			style={{alignSelf: "end", justifySelf: "center"}}
+			value={newHabitStrength}
+			disabled={editHabitRequestState.isPending}
+			onChange={event => {
+				const {value} = event.target;
+				if (isHabitStrength(value) && value !== strength) {
+					setNewHabitStrength(value);
+					editHabitRequestState.run(id, {strength: value});
+				}
+			}}
+		>
+			<option value="established">established</option>
+			<option value="fragile">fragile</option>
+			<option value="developing">developing</option>
+		</select>
+	);
+};
+
+function isHabitStrength(value: string): value is IHabit["strength"] {
+	const HABIT_SCORE_STRENGTHS = ["established", "fragile", "developing"];
+	return HABIT_SCORE_STRENGTHS.includes(value);
+}

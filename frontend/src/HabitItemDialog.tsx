@@ -6,6 +6,7 @@ import VisuallyHidden from "@reach/visually-hidden";
 
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
+import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
@@ -36,7 +37,7 @@ export const HabitItemDialog: React.FC<Props> = ({
 
 	const habitDialogGrid: React.CSSProperties = {
 		display: "grid",
-		gridTemplateColumns: "100px auto 100px",
+		gridTemplateColumns: "100px 125px auto 100px",
 		gridTemplateRows: "50px 100px 50px",
 	};
 
@@ -62,7 +63,7 @@ export const HabitItemDialog: React.FC<Props> = ({
 				<div style={habitDialogGrid}>
 					<h2
 						className="font-bold"
-						style={{gridColumn: "span 2", alignSelf: "center"}}
+						style={{gridColumn: "span 3", alignSelf: "center"}}
 					>
 						Habit preview
 					</h2>
@@ -81,13 +82,18 @@ export const HabitItemDialog: React.FC<Props> = ({
 						setHabitItem={singleItemRequestState.setData}
 						key={singleItemRequestState?.data?.score}
 					/>
+					<EditableHabitStrengthSelect
+						{...singleItemRequestState?.data}
+						setHabitItem={singleItemRequestState.setData}
+						key={singleItemRequestState?.data?.strength}
+					/>
 					<EditableHabitNameInput
 						{...singleItemRequestState?.data}
 						setHabitItem={singleItemRequestState.setData}
 						key={singleItemRequestState?.data?.name}
 					/>
 					<dl
-						style={{gridColumn: 2, gridRow: 3, alignSelf: "center"}}
+						style={{gridColumn: 3, gridRow: 3, alignSelf: "center"}}
 						className="flex items-baseline ml-4 mt-8"
 					>
 						<dt className="text-gray-600 uppercase text-sm font-bold">

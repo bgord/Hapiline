@@ -556,4 +556,29 @@ describe("Habit", () => {
 				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
 		});
 	});
+
+	it("changing strengths", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("established").should("have.length", 4);
+			cy.findAllByText("fragile").should("have.length", 3);
+			cy.findAllByText("developing").should("have.length", 3);
+
+			cy.findAllByText("more")
+				.eq(1)
+				.click();
+		});
+
+		cy.findByDisplayValue("fragile").select("established");
+		cy.findAllByText("Habit strength changed successfully!");
+		cy.findByText("×").click();
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("established").should("have.length", 5);
+			cy.findAllByText("fragile").should("have.length", 2);
+			cy.findAllByText("developing").should("have.length", 3);
+		});
+	});
 });
