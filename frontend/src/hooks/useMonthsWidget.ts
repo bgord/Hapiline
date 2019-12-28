@@ -7,19 +7,21 @@ import {
 } from "date-fns";
 import React from "react";
 
-type monthsWidget = [
+export type MonthDayProps = {
+	day: string;
+	styles: {gridColumnStart: number | undefined};
+};
+
+export type MonthsWidgetProps = [
 	{
-		givenMonthDays: {
-			day: string;
-			styles: {gridColumnStart: number | undefined};
-		}[];
+		givenMonthDays: MonthDayProps[];
 		setPreviousMonth: VoidFunction;
 		setNextMonth: VoidFunction;
 	},
 	string,
 ];
 
-export const useMonthsWidget = (): monthsWidget => {
+export const useMonthsWidget = (): MonthsWidgetProps => {
 	const [monthOffset, setMonthOffset] = React.useState(0);
 
 	const setPreviousMonth = () => setMonthOffset(x => x + 1);

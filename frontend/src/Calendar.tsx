@@ -1,6 +1,6 @@
 import React from "react";
 
-import {useMonthsWidget} from "./hooks/useMonthsWidget";
+import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
 
 export const Calendar: React.FC = () => {
 	const [widget, date] = useMonthsWidget();
@@ -28,16 +28,22 @@ export const Calendar: React.FC = () => {
 				</button>
 			</div>
 			<ul style={habitDialogGrid}>
-				{widget.givenMonthDays.map(({day, styles}) => (
-					<li
-						className="flex flex-col bg-green-100 hover:bg-green-200"
-						key={day.toString()}
-						style={styles}
-					>
-						<span className="text-center w-full pt-2">{day}</span>
-					</li>
+				{widget.givenMonthDays.map(props => (
+					<Day {...props} />
 				))}
 			</ul>
 		</section>
+	);
+};
+
+const Day: React.FC<MonthDayProps> = ({day, styles}) => {
+	return (
+		<li
+			className="flex flex-col bg-green-100 hover:bg-green-200"
+			key={day.toString()}
+			style={styles}
+		>
+			<span className="text-center w-full pt-2">{day}</span>
+		</li>
 	);
 };
