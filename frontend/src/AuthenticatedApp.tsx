@@ -3,6 +3,7 @@ import * as React from "react";
 
 import {createBrowserHistory} from "history";
 
+import {Calendar} from "./Calendar";
 import {Dashboard} from "./DashboardWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
@@ -23,6 +24,9 @@ function AuthenticatedApp() {
 				<Route exact path="/dashboard">
 					<Dashboard />
 				</Route>
+				<Route exact path="/calendar">
+					<Calendar />
+				</Route>
 				<Redirect to="/dashboard" />
 			</Switch>
 		</Router>
@@ -42,6 +46,9 @@ function AuthenticatedNavbar() {
 				to="/dashboard"
 			>
 				<Logo />
+			</NavLink>
+			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">
+				Calendar
 			</NavLink>
 			<h3 className="font-semibold mr-4 p-4">{profile?.email}</h3>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/logout">
