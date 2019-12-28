@@ -136,7 +136,7 @@ test("user can only add their own habit", async ({client}) => {
 	const payload = {
 		name: "Wake up",
 		score: HABIT_SCORE_TYPES.neutral,
-		strength: HABIT_STRENGTH_TYPES.fragile,
+		strength: HABIT_STRENGTH_TYPES.fresh,
 		user_id: users.pam.id,
 	};
 
@@ -155,7 +155,7 @@ test("full flow", async ({client, assert}) => {
 	const payload = {
 		name: "Wake up",
 		score: HABIT_SCORE_TYPES.neutral,
-		strength: HABIT_STRENGTH_TYPES.fragile,
+		strength: HABIT_STRENGTH_TYPES.fresh,
 		user_id: users.jim.id,
 	};
 
@@ -177,7 +177,7 @@ test("cannot insert two identical records", async ({client, assert}) => {
 	const payload = {
 		name: "Wake up",
 		score: HABIT_SCORE_TYPES.neutral,
-		strength: HABIT_STRENGTH_TYPES.fragile,
+		strength: HABIT_STRENGTH_TYPES.fresh,
 		user_id: jim.id,
 	};
 

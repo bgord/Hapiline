@@ -2,7 +2,7 @@ export interface IHabit {
 	id: number;
 	name: string;
 	score: "positive" | "neutral" | "negative";
-	strength: "established" | "fragile" | "developing";
+	strength: "established" | "developing" | "fresh";
 	created_at: string;
 	updated_at: string;
 	order: number;
@@ -16,6 +16,6 @@ export const scoreToBgColor: {[key in IHabit["score"]]: string} = {
 
 export const strengthToBgColor: {[key in IHabit["strength"]]: string} = {
 	established: "bg-blue-300",
-	fragile: "bg-blue-200",
-	developing: "bg-blue-100",
+	developing: "bg-blue-200",
+	fresh: "bg-blue-100",
 };

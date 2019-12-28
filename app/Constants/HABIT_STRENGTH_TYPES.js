@@ -1,7 +1,7 @@
 const HABIT_STRENGTH_TYPES = {
 	established: "established",
-	fragile: "fragile",
 	developing: "developing",
+	fresh: "fresh",
 };
 
 module.exports = HABIT_STRENGTH_TYPES;

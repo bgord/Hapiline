@@ -54,13 +54,13 @@ export const EditableHabitStrengthSelect: React.FC<Props> = ({
 			}}
 		>
 			<option value="established">established</option>
-			<option value="fragile">fragile</option>
 			<option value="developing">developing</option>
+			<option value="fresh">fresh</option>
 		</select>
 	);
 };
 
 function isHabitStrength(value: string): value is IHabit["strength"] {
-	const HABIT_SCORE_STRENGTHS = ["established", "fragile", "developing"];
+	const HABIT_SCORE_STRENGTHS = ["established", "developing", "fresh"];
 	return HABIT_SCORE_STRENGTHS.includes(value);
 }

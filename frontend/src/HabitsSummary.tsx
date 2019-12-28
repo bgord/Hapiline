@@ -12,17 +12,16 @@ export const HabitsSummary: React.FC<{habits: IHabit[]}> = ({habits}) => {
 	const establishedHabitsCount = habits.filter(
 		habit => habit.strength === "established",
 	).length;
-	const fragileHabitsCount = habits.filter(
-		habit => habit.strength === "fragile",
-	).length;
 	const developingHabitsCount = habits.filter(
 		habit => habit.strength === "developing",
 	).length;
+	const freshHabitsCount = habits.filter(habit => habit.strength === "fresh")
+		.length;
 
 	const totalHabitsCount = habits.length;
 
 	return (
-		<div className="flex justify-baseline self-start mt-16 mb-6">
+		<div className="flex justify-baseline self-start mt-16 mb-6 ml-4">
 			<div className={`mr-1 px-1 ${scoreToBgColor.positive}`}>
 				positive: {positiveHabitsCount}
 			</div>
@@ -36,11 +35,11 @@ export const HabitsSummary: React.FC<{habits: IHabit[]}> = ({habits}) => {
 			<div className={`mr-1 px-1 ${strengthToBgColor.established}`}>
 				established: {establishedHabitsCount}
 			</div>
-			<div className={`ml-2 mr-1 px-1 ${strengthToBgColor.fragile}`}>
-				fragile: {fragileHabitsCount}
-			</div>
 			<div className={`ml-2 mr-1 px-1 ${strengthToBgColor.developing}`}>
 				developing: {developingHabitsCount}
+			</div>
+			<div className={`ml-2 mr-1 px-1 ${strengthToBgColor.fresh}`}>
+				fresh: {freshHabitsCount}
 			</div>
 
 			<span className="mx-4">|</span>

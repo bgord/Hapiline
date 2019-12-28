@@ -15,7 +15,7 @@ describe("Habit", () => {
 
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 		cy.findByLabelText("Score").select("positive");
-		cy.findByLabelText("Strength").select("fragile");
+		cy.findByLabelText("Strength").select("fresh");
 
 		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
@@ -30,7 +30,7 @@ describe("Habit", () => {
 
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 		cy.findByLabelText("Score").select("positive");
-		cy.findByLabelText("Strength").select("fragile");
+		cy.findByLabelText("Strength").select("fresh");
 
 		cy.findByText("Add habit").click();
 		cy.findByText("Given habit already exists.");
@@ -39,7 +39,7 @@ describe("Habit", () => {
 			.clear()
 			.type("Go to sleep at 9:30 AM");
 		cy.findByLabelText("Score").select("positive");
-		cy.findByLabelText("Strength").select("fragile");
+		cy.findByLabelText("Strength").select("fresh");
 
 		cy.findByText("Add habit").click();
 		cy.findByText("Habit successfully addedd!");
@@ -105,7 +105,7 @@ describe("Habit", () => {
 				id: 2,
 				name: "Go to sleep",
 				score: "neutral",
-				strength: "fragile",
+				strength: "fresh",
 			},
 			{
 				id: 3,
@@ -137,7 +137,7 @@ describe("Habit", () => {
 		cy.findByText("neutral: 1");
 		cy.findByText("negative: 1");
 		cy.findByText("established: 1");
-		cy.findByText("fragile: 1");
+		cy.findByText("fresh: 1");
 		cy.findByText("developing: 1");
 		cy.findByText("total: 3");
 	});
@@ -228,7 +228,7 @@ describe("Habit", () => {
 				id: 1,
 				name: "Watch The Office",
 				score: "positive",
-				strength: "fragile",
+				strength: "fresh",
 				created_at: "2019/01/01",
 				updated_at: "2019/02/01",
 			},
@@ -271,7 +271,7 @@ describe("Habit", () => {
 
 		cy.get(".h-full").within(() => {
 			cy.findByDisplayValue("positive");
-			cy.findByDisplayValue("fragile");
+			cy.findByDisplayValue("fresh");
 			cy.findByDisplayValue("Watch The Office");
 			cy.findByText("2019/01/01 00:00");
 			cy.findByText("2019/02/01 00:00");
@@ -594,7 +594,7 @@ describe("Habit", () => {
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("established").should("have.length", 4);
-			cy.findAllByText("fragile").should("have.length", 3);
+			cy.findAllByText("fresh").should("have.length", 3);
 			cy.findAllByText("developing").should("have.length", 3);
 
 			cy.findAllByText("more")
@@ -602,14 +602,14 @@ describe("Habit", () => {
 				.click();
 		});
 
-		cy.findByDisplayValue("fragile").select("established");
+		cy.findByDisplayValue("developing").select("established");
 		cy.findAllByText("Habit strength changed successfully!");
 		cy.findByText("×").click();
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("established").should("have.length", 5);
-			cy.findAllByText("fragile").should("have.length", 2);
-			cy.findAllByText("developing").should("have.length", 3);
+			cy.findAllByText("fresh").should("have.length", 3);
+			cy.findAllByText("developing").should("have.length", 2);
 		});
 	});
 });
