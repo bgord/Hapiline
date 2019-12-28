@@ -1,4 +1,5 @@
 import {Dialog} from "@reach/dialog";
+import {isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
@@ -44,6 +45,8 @@ const Day: React.FC<MonthDayProps> = ({day, styles}) => {
 	const [isHovering, ref] = useHover();
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
+	const isGivenDayToday = isToday(new Date(day));
+
 	return (
 		<>
 			<li
@@ -51,7 +54,12 @@ const Day: React.FC<MonthDayProps> = ({day, styles}) => {
 				style={styles}
 				ref={ref as React.Ref<HTMLLIElement>}
 			>
-				<span className="text-center w-full pt-2">{day}</span>
+				<span
+					className={`text-center w-full pt-2 ${isGivenDayToday &&
+						"font-bold"}`}
+				>
+					{day}
+				</span>
 				{isHovering && (
 					<button
 						type="button"
