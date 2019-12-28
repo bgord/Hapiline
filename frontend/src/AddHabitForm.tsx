@@ -97,7 +97,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 					>
 						<option value="established">Established</option>
 						<option value="fragile">Fragile</option>
-						<option value="Developing">Developing</option>
+						<option value="developing">Developing</option>
 					</select>
 				</div>
 				<button className="btn btn-blue ml-8 h-10" type="submit">

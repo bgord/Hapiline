@@ -376,7 +376,7 @@ describe("Habit", () => {
 		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
 	});
 
-	it("changing score names", () => {
+	it("changing scores", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -401,7 +401,7 @@ describe("Habit", () => {
 		});
 	});
 
-	it("changing score names error", () => {
+	it("changing scores error", () => {
 		const errorMessage = "Error while chaning name.";
 
 		cy.server();
