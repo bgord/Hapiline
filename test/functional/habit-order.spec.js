@@ -1,4 +1,6 @@
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Edit habit");
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
+	"Reorder habits",
+);
 const ace = require("@adonisjs/ace");
 const User = use("User");
 const {
@@ -240,7 +242,12 @@ test("full flow", async ({client, assert}) => {
 		.loginVia(jim)
 		.end();
 
+	// These two await sleep(1000) are a hack to overcome the transaction issue.
+	await sleep(1000);
+
 	response.assertStatus(200);
+
+	await sleep(1000);
 
 	const jimsHabitsAfterUpdate = await Database.table("habits").where(
 		"user_id",
@@ -261,4 +268,8 @@ test("full flow", async ({client, assert}) => {
 			idToOrderAfterUpdate[jimHabitAfterUpdate.id],
 		);
 	}
-});
+}).timeout(10000);
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}

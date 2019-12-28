@@ -12,12 +12,14 @@ export const getHabitRequest: Async.PromiseFn<IHabit> = ({id}) =>
 export const addHabitRequest: Async.DeferFn<IHabit> = ([
 	name,
 	score,
+	strength,
 	user_id,
 ]: string[]) =>
 	_internal_api
 		.post<IHabit>("/habit", {
 			name,
 			score,
+			strength,
 			user_id,
 		})
 		.then(response => response.data);

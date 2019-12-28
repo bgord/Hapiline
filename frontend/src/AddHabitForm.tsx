@@ -16,6 +16,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
+	const [strength, setStrength] = React.useState("established");
 
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerUnexpectedErrorNotification] = useNotification();
@@ -25,6 +26,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 		onResolve: () => {
 			setName("");
 			setScore("neutral");
+			setStrength("established");
 			refreshList();
 			triggerSuccessNotification({
 				type: "success",
@@ -50,18 +52,18 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 			<form
 				onSubmit={event => {
 					event.preventDefault();
-					addHabitRequestState.run(name, score, profile?.id);
+					addHabitRequestState.run(name, score, strength, profile?.id);
 				}}
-				className="flex items-end"
+				className="flex items-end w-full"
 			>
-				<div className="flex flex-col">
+				<div className="flex flex-col flex-grow">
 					<label className="field-label" htmlFor="name">
 						Habit
 					</label>
 					<HabitNameInput
 						value={name}
 						onChange={event => setName(event.target.value)}
-						className="field w-64"
+						className="field w-full"
 					/>
 				</div>
 				<div className="flex flex-col ml-8">
@@ -76,9 +78,26 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 						onChange={event => setScore(event.target.value)}
 						className="field bg-white"
 					>
-						<option value="neutral">Neutral</option>
-						<option value="positive">Positive</option>
-						<option value="negative">Negative</option>
+						<option value="neutral">neutral</option>
+						<option value="positive">positive</option>
+						<option value="negative">negative</option>
+					</select>
+				</div>
+				<div className="flex flex-col ml-8">
+					<label className="field-label" htmlFor="strength">
+						Strength
+					</label>
+					<select
+						id="strength"
+						name="strength"
+						required
+						value={strength}
+						onChange={event => setStrength(event.target.value)}
+						className="field bg-white"
+					>
+						<option value="established">established</option>
+						<option value="developing">developing</option>
+						<option value="fresh">fresh</option>
 					</select>
 				</div>
 				<button className="btn btn-blue ml-8 h-10" type="submit">

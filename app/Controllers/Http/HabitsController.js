@@ -4,7 +4,7 @@ const Database = use("Database");
 
 class HabitsController {
 	async store({request, response, auth}) {
-		const payload = request.only(["name", "score", "user_id"]);
+		const payload = request.only(["name", "score", "strength", "user_id"]);
 		try {
 			const {maxOrderValue} = await Database.table("habits")
 				.max("order as maxOrderValue")
@@ -67,7 +67,7 @@ class HabitsController {
 	}
 
 	async update({request, response, params, auth}) {
-		const payload = request.only(["name", "score"]);
+		const payload = request.only(["name", "score", "strength"]);
 
 		const habit = await Habit.find(params.id);
 
