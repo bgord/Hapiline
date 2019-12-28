@@ -1,34 +1,9 @@
-import {
-	eachDayOfInterval,
-	endOfMonth,
-	format,
-	startOfMonth,
-	subMonths,
-} from "date-fns";
 import React from "react";
 
+import {useMonthsWidget} from "./hooks/useMonthsWidget";
+
 export const Calendar: React.FC = () => {
-	const [monthOffset, setMonthOffset] = React.useState(0);
-
-	const setPreviousMonth = () => setMonthOffset(x => x - 1);
-	const setNextMonth = () => setMonthOffset(x => x + 1);
-
-	const today = Date.now();
-
-	const date = subMonths(today, monthOffset);
-
-	const startOfCurrentMonth = startOfMonth(date);
-	const endOfCurrentMonth = endOfMonth(date);
-
-	// 0 - Sunday, 1 - Monday, ... , 6 - Saturday
-	const startOfCurrentMonthDay = startOfCurrentMonth.getDay();
-
-	const offset = startOfCurrentMonthDay === 0 ? 7 : startOfCurrentMonthDay;
-
-	const currentMonthDays = eachDayOfInterval({
-		start: startOfCurrentMonth,
-		end: endOfCurrentMonth,
-	});
+	const [widget, date] = useMonthsWidget();
 
 	const habitDialogGrid: React.CSSProperties = {
 		display: "grid",
@@ -37,26 +12,27 @@ export const Calendar: React.FC = () => {
 	};
 
 	return (
-		<>
-			<div className="flex">
-				<button type="button" onClick={setNextMonth}>
+		<section className="flex flex-col items-center p-8 mx-auto">
+			<div className="flex mb-24">
+				<button
+					className="px-2"
+					type="button"
+					onClick={widget.setPreviousMonth}
+				>
 					Previous
 				</button>
-				<div className="mx-8">{format(date, "MMMM yyyy")}</div>
-				<button type="button" onClick={setPreviousMonth}>
+				<div className="mx-8 w-32">{date}</div>
+				<button className="px-2" type="button" onClick={widget.setNextMonth}>
 					Next
 				</button>
 			</div>
 			<ul style={habitDialogGrid}>
-				{currentMonthDays.map((day, index) => (
-					<li
-						key={day.toString()}
-						style={{gridColumnStart: index === 0 ? offset : undefined}}
-					>
-						{format(day, "yyyy-MM-dd")}
+				{widget.givenMonthDays.map(({day, styles}) => (
+					<li className="bg-blue-100" key={day.toString()} style={styles}>
+						{day}
 					</li>
 				))}
 			</ul>
-		</>
+		</section>
 	);
 };
