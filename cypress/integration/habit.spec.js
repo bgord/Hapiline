@@ -123,16 +123,17 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		response.forEach(item => {
-			cy.findByText(item.name);
-			cy.findByText(item.score);
+		cy.get("ul").within(() => {
+			response.forEach(item => {
+				cy.findByText(item.name);
+				cy.findByText(item.score);
+			});
 		});
 
-		cy.findByText("Positive: 1");
-		cy.findByText("Neutral: 1");
-		cy.findByText("Negative: 1");
-
-		cy.findByText("Total: 3");
+		cy.findByText("positive: 1");
+		cy.findByText("neutral: 1");
+		cy.findByText("negative: 1");
+		cy.findByText("total: 3");
 	});
 
 	it("error while getting items", () => {
@@ -168,12 +169,22 @@ describe("Habit", () => {
 		cy.findByText("Nevermind, don't delete").click();
 		cy.findByText("0 lorem");
 
+		cy.findByText("positive: 4");
+		cy.findByText("neutral: 3");
+		cy.findByText("negative: 3");
+		cy.findByText("total: 10");
+
 		cy.findAllByText("Delete")
 			.first()
 			.click();
 		cy.findByText("Yes, delete").click();
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
+
+		cy.findByText("positive: 3");
+		cy.findByText("neutral: 3");
+		cy.findByText("negative: 3");
+		cy.findByText("total: 9");
 	});
 
 	it("deleting habit error", () => {
@@ -211,6 +222,7 @@ describe("Habit", () => {
 				id: 1,
 				name: "Watch The Office",
 				score: "positive",
+				strength: "fragile",
 				created_at: "2019/01/01",
 				updated_at: "2019/02/01",
 			},
@@ -218,6 +230,7 @@ describe("Habit", () => {
 				id: 2,
 				name: "Go to sleep",
 				score: "neutral",
+				strength: "developing",
 				created_at: "2019/01/01",
 				updated_at: "2019/02/01",
 			},
@@ -250,21 +263,27 @@ describe("Habit", () => {
 			.first()
 			.click();
 
-		cy.findByDisplayValue("positive");
-		cy.findByDisplayValue("Watch The Office");
-		cy.findByText("2019/01/01 00:00");
-		cy.findByText("2019/02/01 00:00");
-		cy.findByText("×").click();
+		cy.get(".h-full").within(() => {
+			cy.findByDisplayValue("positive");
+			cy.findByDisplayValue("fragile");
+			cy.findByDisplayValue("Watch The Office");
+			cy.findByText("2019/01/01 00:00");
+			cy.findByText("2019/02/01 00:00");
+			cy.findByText("×").click();
+		});
 
 		cy.findAllByText("more")
 			.eq(1)
 			.click();
 
-		cy.findByDisplayValue("neutral");
-		cy.findByDisplayValue("Go to sleep");
-		cy.findByText("2019/01/01 00:00");
-		cy.findByText("2019/02/01 00:00");
-		cy.findByText("×").click();
+		cy.get(".h-full").within(() => {
+			cy.findByDisplayValue("neutral");
+			cy.findByDisplayValue("developing");
+			cy.findByDisplayValue("Go to sleep");
+			cy.findByText("2019/01/01 00:00");
+			cy.findByText("2019/02/01 00:00");
+			cy.findByText("×").click();
+		});
 	});
 
 	it("changing name", () => {
@@ -390,9 +409,12 @@ describe("Habit", () => {
 				.click();
 		});
 
-		cy.findByDisplayValue("neutral").select("positive");
+		cy.get(".h-full").within(() => {
+			cy.findByDisplayValue("neutral").select("positive");
+			cy.findByText("×").click();
+		});
+
 		cy.findAllByText("Habit score changed successfully!");
-		cy.findByText("×").click();
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("positive").should("have.length", 5);
@@ -429,9 +451,12 @@ describe("Habit", () => {
 				.click();
 		});
 
-		cy.findByDisplayValue("neutral").select("positive");
+		cy.get(".h-full").within(() => {
+			cy.findByDisplayValue("neutral").select("positive");
+			cy.findByText("×").click();
+		});
+
 		cy.findAllByText("Habit score couldn't be changed.");
-		cy.findByText("×").click();
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("positive").should("have.length", 4);

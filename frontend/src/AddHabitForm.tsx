@@ -78,9 +78,9 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 						onChange={event => setScore(event.target.value)}
 						className="field bg-white"
 					>
-						<option value="neutral">Neutral</option>
-						<option value="positive">Positive</option>
-						<option value="negative">Negative</option>
+						<option value="neutral">neutral</option>
+						<option value="positive">positive</option>
+						<option value="negative">negative</option>
 					</select>
 				</div>
 				<div className="flex flex-col ml-8">
@@ -95,9 +95,9 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 						onChange={event => setStrength(event.target.value)}
 						className="field bg-white"
 					>
-						<option value="established">Established</option>
-						<option value="fragile">Fragile</option>
-						<option value="developing">Developing</option>
+						<option value="established">established</option>
+						<option value="fragile">fragile</option>
+						<option value="developing">developing</option>
 					</select>
 				</div>
 				<button className="btn btn-blue ml-8 h-10" type="submit">

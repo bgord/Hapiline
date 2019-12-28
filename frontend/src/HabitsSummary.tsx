@@ -13,15 +13,15 @@ export const HabitsSummary: React.FC<{habits: IHabit[]}> = ({habits}) => {
 	return (
 		<div className="flex justify-end mt-12 mb-3">
 			<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.positive}`}>
-				Positive: {positiveHabitsCount}
+				positive: {positiveHabitsCount}
 			</div>
 			<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.neutral}`}>
-				Neutral: {neutralHabitsCount}
+				neutral: {neutralHabitsCount}
 			</div>
 			<div className={`ml-2 mr-1 px-1 ${scoreToBgColor.negative}`}>
-				Negative: {negativeHabitsCount}
+				negative: {negativeHabitsCount}
 			</div>
-			<div className="mr-1 ml-2">Total: {totalHabitsCount}</div>
+			<div className="mr-1 ml-2">total: {totalHabitsCount}</div>
 		</div>
 	);
 };
