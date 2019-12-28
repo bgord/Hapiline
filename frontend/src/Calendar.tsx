@@ -1,7 +1,10 @@
+import {Dialog} from "@reach/dialog";
 import React from "react";
-
-import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
 import useHover from "@react-hook/hover";
+
+import {CloseButton} from "./CloseButton";
+import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
+import {useDialog} from "./hooks/useDialog";
 
 export const Calendar: React.FC = () => {
 	const [widget, date] = useMonthsWidget();
@@ -39,19 +42,34 @@ export const Calendar: React.FC = () => {
 
 const Day: React.FC<MonthDayProps> = ({day, styles}) => {
 	const [isHovering, ref] = useHover();
+	const [showDialog, openDialog, closeDialog] = useDialog();
 
 	return (
-		<li
-			className="flex flex-col align-center bg-green-100 hover:bg-green-200"
-			style={styles}
-			ref={ref as React.Ref<HTMLLIElement>}
-		>
-			<span className="text-center w-full pt-2">{day}</span>
-			{isHovering && (
-				<button type="button" className="mt-2 py-1">
-					Show day
-				</button>
+		<>
+			<li
+				className="flex flex-col align-center bg-green-100 hover:bg-green-200"
+				style={styles}
+				ref={ref as React.Ref<HTMLLIElement>}
+			>
+				<span className="text-center w-full pt-2">{day}</span>
+				{isHovering && (
+					<button
+						type="button"
+						className="mt-2 py-1 uppercase"
+						onClick={openDialog}
+					>
+						show day
+					</button>
+				)}
+			</li>
+			{showDialog && (
+				<Dialog aria-label="Show day preview">
+					<div className="flex justify-between items-baseline">
+						<strong>{day}</strong>
+						<CloseButton onClick={closeDialog} />
+					</div>
+				</Dialog>
 			)}
-		</li>
+		</>
 	);
 };
