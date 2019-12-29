@@ -2,8 +2,8 @@ import {Dialog} from "@reach/dialog";
 import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
+import {CloseButton} from "./CloseButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
@@ -67,16 +67,12 @@ export const HabitItemDialog: React.FC<Props> = ({
 					>
 						Habit preview
 					</h2>
-					<button
-						type="button"
+					<CloseButton
 						onClick={() => {
 							closeDialog();
 							refreshList();
 						}}
-					>
-						<VisuallyHidden>Close</VisuallyHidden>
-						<span aria-hidden>×</span>
-					</button>
+					/>
 					<EditableHabitScoreSelect
 						{...singleItemRequestState?.data}
 						setHabitItem={singleItemRequestState.setData}
