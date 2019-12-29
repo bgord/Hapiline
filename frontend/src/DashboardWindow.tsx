@@ -35,9 +35,7 @@ export const Dashboard = () => {
 
 			<Async.IfFulfilled state={getHabitsRequestState}>
 				{!habits.length && (
-					<InfoMessage className="pb-4">
-						Seems you haven't added any habits yet.
-					</InfoMessage>
+					<InfoMessage className="pb-4">Seems you haven't added any habits yet.</InfoMessage>
 				)}
 				{habits.length ? <HabitsSummary habits={habits} /> : null}
 				<HabitList

@@ -35,12 +35,8 @@ function reducer(state: State, action: Action): State {
 	}
 }
 
-const NotificationsStateContext = React.createContext<State | undefined>(
-	undefined,
-);
-const NotificationsDispatchContext = React.createContext<Dispatch | undefined>(
-	undefined,
-);
+const NotificationsStateContext = React.createContext<State | undefined>(undefined);
+const NotificationsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 
 export const NotificationsProvider: React.FC = ({children}) => {
 	const [state, dispatch] = React.useReducer(reducer, []);
@@ -56,9 +52,7 @@ export const NotificationsProvider: React.FC = ({children}) => {
 export function useNotificationState() {
 	const state = React.useContext(NotificationsStateContext);
 	if (state === undefined) {
-		throw new Error(
-			`useNotificationsState must be used within the NotificationProvider`,
-		);
+		throw new Error(`useNotificationsState must be used within the NotificationProvider`);
 	}
 	return state;
 }
@@ -66,14 +60,10 @@ export function useNotificationState() {
 export function useNotification(timeout = 5000) {
 	const dispatch = React.useContext(NotificationsDispatchContext);
 	if (dispatch === undefined) {
-		throw new Error(
-			`useNotificationsDispatch must be used within the NotificationProvider`,
-		);
+		throw new Error(`useNotificationsDispatch must be used within the NotificationProvider`);
 	}
 
-	const triggerNotification = (
-		notification: Omit<Notification, "id">,
-	): void => {
+	const triggerNotification = (notification: Omit<Notification, "id">): void => {
 		const id = Date.now();
 
 		dispatch({

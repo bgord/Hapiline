@@ -7,9 +7,7 @@ const {
 	assertInvalidCredentials,
 } = require("../helpers/assert-errors");
 
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Forgot password",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Forgot password");
 const Env = use("Env");
 const MAIL_TEMPLATES = use("MAIL_TEMPLATES");
 const Mail = use("Mail");
@@ -101,15 +99,9 @@ test("/forgot-password --- send an email", async ({client, assert}) => {
 
 	const email = Mail.pullRecent();
 
-	assert.deepEqual(
-		email.message.subject,
-		MAIL_TEMPLATES.forgotPassword.subject,
-	);
+	assert.deepEqual(email.message.subject, MAIL_TEMPLATES.forgotPassword.subject);
 
-	assert.deepEqual(
-		email.message.subject,
-		MAIL_TEMPLATES.forgotPassword.subject,
-	);
+	assert.deepEqual(email.message.subject, MAIL_TEMPLATES.forgotPassword.subject);
 
 	assert.deepEqual(email.message.to[0].address, payload.email);
 	assert.deepEqual(email.message.from.address, Env.get("MAIL_FROM"));

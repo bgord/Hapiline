@@ -45,9 +45,7 @@ async function main() {
 			"deployment",
 		];
 
-		const excludePattern = filesAndDirsToExclude
-			.map(pattern => `--exclude ${pattern}`)
-			.join(" ");
+		const excludePattern = filesAndDirsToExclude.map(pattern => `--exclude ${pattern}`).join(" ");
 
 		await exec(`tar ${excludePattern} -cf ${outputFilePath} .`);
 

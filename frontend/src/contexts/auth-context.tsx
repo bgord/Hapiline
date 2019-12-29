@@ -17,13 +17,8 @@ type UserProfileContext = [
 const AuthContext = React.createContext<UserProfileContext>([null]);
 
 export const AuthProvider: React.FC = props => {
-	const [
-		userProfile,
-		setUserProfile,
-	] = React.useState<UserProfileInterface | null>(null);
-	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState<
-		boolean
-	>(false);
+	const [userProfile, setUserProfile] = React.useState<UserProfileInterface | null>(null);
+	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState<boolean>(false);
 
 	const {isSettled, data, isPending, isRejected} = Async.useAsync({
 		promiseFn: api.auth.isLoggedIn,
@@ -44,9 +39,7 @@ export const AuthProvider: React.FC = props => {
 		return <div>Something went wrong</div>;
 	}
 
-	return (
-		<AuthContext.Provider value={[userProfile, setUserProfile]} {...props} />
-	);
+	return <AuthContext.Provider value={[userProfile, setUserProfile]} {...props} />;
 };
 
 export function useUserProfile() {

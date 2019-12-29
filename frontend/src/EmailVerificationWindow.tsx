@@ -14,9 +14,7 @@ export const EmailVerificationWindow = () => {
 
 	return (
 		<>
-			<Async.IfPending state={emailVerificationRequestState}>
-				Verifying...
-			</Async.IfPending>
+			<Async.IfPending state={emailVerificationRequestState}>Verifying...</Async.IfPending>
 			<Async.IfFulfilled state={emailVerificationRequestState}>
 				<div className="flex">
 					<span>Success! You can </span>

@@ -9,14 +9,8 @@ type Props = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitStrengthSelect: React.FC<Props> = ({
-	id,
-	strength,
-	setHabitItem,
-}) => {
-	const [newHabitStrength, setNewHabitStrength] = React.useState<
-		IHabit["strength"]
-	>(strength);
+export const EditableHabitStrengthSelect: React.FC<Props> = ({id, strength, setHabitItem}) => {
+	const [newHabitStrength, setNewHabitStrength] = React.useState<IHabit["strength"]>(strength);
 
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerErrorNotification] = useNotification();

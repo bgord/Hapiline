@@ -29,9 +29,7 @@ const GET_MONTH_URL = "/api/v1/month";
 const thisMonth = 0;
 
 test("auth", async ({client}) => {
-	const response = await client
-		.get(`${GET_MONTH_URL}?monthOffset=${thisMonth}`)
-		.end();
+	const response = await client.get(`${GET_MONTH_URL}?monthOffset=${thisMonth}`).end();
 	assertInvalidSession(response);
 });
 
@@ -127,15 +125,9 @@ test("full flow", async ({client, assert}) => {
 
 	const today = datefns.format(now, "yyyy-MM-dd");
 
-	const yesterday = datefns.format(
-		datefns.subDays(new Date(today), 1),
-		"yyyy-MM-dd",
-	);
+	const yesterday = datefns.format(datefns.subDays(new Date(today), 1), "yyyy-MM-dd");
 
-	const theDayBeforeYesterday = datefns.format(
-		datefns.subDays(new Date(today), 2),
-		"yyyy-MM-dd",
-	);
+	const theDayBeforeYesterday = datefns.format(datefns.subDays(new Date(today), 2), "yyyy-MM-dd");
 
 	assert.deepEqual(response.body, [
 		{day: theDayBeforeYesterday, count: 6},

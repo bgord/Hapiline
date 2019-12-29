@@ -10,11 +10,7 @@ type Props = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitNameInput: React.FC<Props> = ({
-	name,
-	id,
-	setHabitItem,
-}) => {
+export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}) => {
 	const [isFocused, setIsFocused] = React.useState(false);
 	const blurInput = () => setIsFocused(false);
 	const focusInput = () => setIsFocused(true);

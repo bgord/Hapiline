@@ -11,14 +11,8 @@ type Props = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitScoreSelect: React.FC<Props> = ({
-	id,
-	score,
-	setHabitItem,
-}) => {
-	const [newHabitScore, setNewHabitScore] = React.useState<IHabit["score"]>(
-		score,
-	);
+export const EditableHabitScoreSelect: React.FC<Props> = ({id, score, setHabitItem}) => {
+	const [newHabitScore, setNewHabitScore] = React.useState<IHabit["score"]>(score);
 
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerErrorNotification] = useNotification();

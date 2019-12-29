@@ -59,9 +59,7 @@ class ExceptionHandler extends BaseExceptionHandler {
 		});
 		console.log("=================\n\n");
 		return response.internalSeverError({
-			message:
-				URL_TO_INTERNAL_SERVER_ERROR[url] ||
-				"Unexpected error, try again later.",
+			message: URL_TO_INTERNAL_SERVER_ERROR[url] || "Unexpected error, try again later.",
 		});
 	}
 

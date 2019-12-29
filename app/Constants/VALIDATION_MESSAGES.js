@@ -9,12 +9,8 @@ const VALIDATION_MESSAGES = {
 	min: (field, min) => `Field ${field} must be at least ${min} chars long.`,
 	max: (field, max) => `Field ${field} must be at most ${max} chars long.`,
 	old_password: `Old password cannot be the same as the new password.`,
-	invalid_score: `Score must be one of ${Object.keys(HABIT_SCORE_TYPES).join(
-		", ",
-	)}.`,
-	invalid_strength: `Strength must be one of ${Object.keys(
-		HABIT_STRENGTH_TYPES,
-	).join(", ")}.`,
+	invalid_score: `Score must be one of ${Object.keys(HABIT_SCORE_TYPES).join(", ")}.`,
+	invalid_strength: `Strength must be one of ${Object.keys(HABIT_STRENGTH_TYPES).join(", ")}.`,
 	integer: field => `Field ${field} must be an integer.`,
 	string: field => `Field ${field} must be a string.`,
 	above: (field, number) => `Field ${field} must be above ${number}.`,

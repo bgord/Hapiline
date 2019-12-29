@@ -18,10 +18,7 @@ class UpdatePassword extends BaseHttpValidator {
 			"old_password.different": VALIDATION_MESSAGES.old_password,
 			"password.min": VALIDATION_MESSAGES.min("password", 6),
 			"old_password.min": VALIDATION_MESSAGES.min("old_password", 6),
-			"password_confirmation.min": VALIDATION_MESSAGES.min(
-				"password_confirmation",
-				6,
-			),
+			"password_confirmation.min": VALIDATION_MESSAGES.min("password_confirmation", 6),
 		};
 	}
 }

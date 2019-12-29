@@ -17,10 +17,7 @@ class UpdateForgotPasswordIntention extends BaseHttpValidator {
 			required: VALIDATION_MESSAGES.required,
 			"token.max": VALIDATION_MESSAGES.max("token", 255),
 			"password.min": VALIDATION_MESSAGES.min("password", 6),
-			"password_confirmation.min": VALIDATION_MESSAGES.min(
-				"password_confirmation",
-				6,
-			),
+			"password_confirmation.min": VALIDATION_MESSAGES.min("password_confirmation", 6),
 			"password_confirmation.same": VALIDATION_MESSAGES.password_confirmation,
 		};
 	}

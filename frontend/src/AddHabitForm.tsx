@@ -9,9 +9,7 @@ import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
-export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
-	refreshList,
-}) => {
+export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({refreshList}) => {
 	const [profile] = useUserProfile();
 
 	const [name, setName] = React.useState("");
@@ -105,9 +103,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({
 				</button>
 			</form>
 			<Async.IfRejected state={addHabitRequestState}>
-				<ErrorMessage className="mt-4">
-					{nameInlineError?.message || errorMessage}
-				</ErrorMessage>
+				<ErrorMessage className="mt-4">{nameInlineError?.message || errorMessage}</ErrorMessage>
 			</Async.IfRejected>
 		</>
 	);

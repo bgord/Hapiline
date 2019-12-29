@@ -19,10 +19,7 @@ class StoreRegistrationIntention extends BaseHttpValidator {
 			"password_confirmation.same": VALIDATION_MESSAGES.password_confirmation,
 			"email.unique": VALIDATION_MESSAGES.unique_email,
 			"password.min": VALIDATION_MESSAGES.min("password", 6),
-			"password_confirmation.min": VALIDATION_MESSAGES.min(
-				"password_confirmation",
-				6,
-			),
+			"password_confirmation.min": VALIDATION_MESSAGES.min("password_confirmation", 6),
 		};
 	}
 

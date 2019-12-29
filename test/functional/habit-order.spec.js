@@ -1,6 +1,4 @@
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Reorder habits",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Reorder habits");
 const ace = require("@adonisjs/ace");
 const User = use("User");
 const {
@@ -110,9 +108,7 @@ test("validation", async ({client}) => {
 					validation: "above",
 				},
 				{
-					message: VALIDATION_MESSAGES.positive_integer_or_zero(
-						"habits.*.index",
-					),
+					message: VALIDATION_MESSAGES.positive_integer_or_zero("habits.*.index"),
 					field: "habits.0.index",
 					validation: "above",
 				},
@@ -206,10 +202,7 @@ test("check indexes order", async ({client}) => {
 test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
-	const jimsHabitsBeforeUpdate = await Database.table("habits").where(
-		"user_id",
-		jim.id,
-	);
+	const jimsHabitsBeforeUpdate = await Database.table("habits").where("user_id", jim.id);
 
 	const idToOrderBeforeUpdate = {
 		1: 0,
@@ -220,10 +213,7 @@ test("full flow", async ({client, assert}) => {
 	};
 
 	for (let jimHabitBeforeUpdate of jimsHabitsBeforeUpdate) {
-		assert.equal(
-			jimHabitBeforeUpdate.order,
-			idToOrderBeforeUpdate[jimHabitBeforeUpdate.id],
-		);
+		assert.equal(jimHabitBeforeUpdate.order, idToOrderBeforeUpdate[jimHabitBeforeUpdate.id]);
 	}
 
 	const payload = {
@@ -249,10 +239,7 @@ test("full flow", async ({client, assert}) => {
 
 	await sleep(1000);
 
-	const jimsHabitsAfterUpdate = await Database.table("habits").where(
-		"user_id",
-		jim.id,
-	);
+	const jimsHabitsAfterUpdate = await Database.table("habits").where("user_id", jim.id);
 
 	const idToOrderAfterUpdate = {
 		1: 4,
@@ -263,10 +250,7 @@ test("full flow", async ({client, assert}) => {
 	};
 
 	for (let jimHabitAfterUpdate of jimsHabitsAfterUpdate) {
-		assert.equal(
-			jimHabitAfterUpdate.order,
-			idToOrderAfterUpdate[jimHabitAfterUpdate.id],
-		);
+		assert.equal(jimHabitAfterUpdate.order, idToOrderAfterUpdate[jimHabitAfterUpdate.id]);
 	}
 }).timeout(10000);
 

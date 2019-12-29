@@ -7,9 +7,7 @@ class ValidateIndexesOrder {
 
 		const sortedIndexes = [...indexes].sort((a, b) => a > b);
 
-		const areIndexesInValidOrder = sortedIndexes.every(
-			(sortedIndex, i) => sortedIndex === i,
-		);
+		const areIndexesInValidOrder = sortedIndexes.every((sortedIndex, i) => sortedIndex === i);
 
 		if (areIndexesInValidOrder) return next();
 

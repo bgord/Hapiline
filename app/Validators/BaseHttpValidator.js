@@ -9,9 +9,7 @@ class BaseHttpValidator {
 	async fails(errorMessages) {
 		// In case some of the validators throws a db related error
 		// it's safer to just return a 500 than expose query details.
-		const engineException = errorMessages.find(
-			error => error.validation === "ENGINE_EXCEPTION",
-		);
+		const engineException = errorMessages.find(error => error.validation === "ENGINE_EXCEPTION");
 		if (engineException) {
 			/* eslint-disable no-console */
 			console.log(engineException);

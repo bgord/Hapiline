@@ -7,9 +7,7 @@ const {
 	assertInvalidCredentials,
 } = require("../helpers/assert-errors");
 
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Update password",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Update password");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");

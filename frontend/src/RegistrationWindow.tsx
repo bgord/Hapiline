@@ -15,9 +15,7 @@ export const RegistrationWindow: React.FC = () => {
 	const registrationRequestState = Async.useAsync({
 		deferFn: api.auth.register,
 	});
-	const {responseStatus, errorMessage, getArgError} = useRequestErrors(
-		registrationRequestState,
-	);
+	const {responseStatus, errorMessage, getArgError} = useRequestErrors(registrationRequestState);
 	const emailInlineError = getArgError("email");
 
 	return (
@@ -96,23 +94,16 @@ export const RegistrationWindow: React.FC = () => {
 					</button>
 				</div>
 				<Async.IfFulfilled state={registrationRequestState}>
-					<SuccessMessage>
-						Account confirmation email has been sent!
-					</SuccessMessage>
+					<SuccessMessage>Account confirmation email has been sent!</SuccessMessage>
 					<div className="flex mt-4">
 						<span className="text-sm">You can </span>
-						<Link
-							className="link ml-1"
-							to={`/login?registrationEmail=${email}`}
-						>
+						<Link className="link ml-1" to={`/login?registrationEmail=${email}`}>
 							login now
 						</Link>
 					</div>
 				</Async.IfFulfilled>
 				<Async.IfRejected state={registrationRequestState}>
-					<RequestErrorMessage>
-						{responseStatus === 500 && errorMessage}
-					</RequestErrorMessage>
+					<RequestErrorMessage>{responseStatus === 500 && errorMessage}</RequestErrorMessage>
 				</Async.IfRejected>
 			</form>
 		</div>

@@ -39,20 +39,10 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 	return (
 		<nav className="flex justify-end py-1 bg-white shadow-md">
-			<NavLink
-				className="ml-2 mr-auto p-2"
-				exact
-				activeClassName="text-blue-400"
-				to="/dashboard"
-			>
+			<NavLink className="ml-2 mr-auto p-2" exact activeClassName="text-blue-400" to="/dashboard">
 				<Logo />
 			</NavLink>
-			<NavLink
-				exact
-				className="p-4"
-				activeClassName="text-blue-400"
-				to="/dashboard"
-			>
+			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/dashboard">
 				Habit Scoreboard
 			</NavLink>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">

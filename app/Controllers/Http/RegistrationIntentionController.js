@@ -4,11 +4,7 @@ const ROLE_NAMES = use("ROLE_NAMES");
 
 class RegistrationIntentionController {
 	async store({request, response}) {
-		const payload = request.only([
-			"email",
-			"password",
-			"password_confirmation",
-		]);
+		const payload = request.only(["email", "password", "password_confirmation"]);
 
 		const user = await Persona.register(payload);
 
