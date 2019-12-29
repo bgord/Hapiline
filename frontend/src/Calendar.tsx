@@ -10,11 +10,11 @@ import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
 
 export const Calendar: React.FC = () => {
-	const [widget, date, _rawDate] = useMonthsWidget();
+	const [widget, date, monthOffset] = useMonthsWidget();
 
 	const getMonthRequestState = Async.useAsync({
 		promiseFn: api.calendar.getMonth,
-		date: _rawDate,
+		monthOffset,
 	});
 
 	const habitDialogGrid: React.CSSProperties = {

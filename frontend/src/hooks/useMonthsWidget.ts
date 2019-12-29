@@ -19,7 +19,7 @@ export type MonthsWidgetProps = [
 		setNextMonth: VoidFunction;
 	},
 	string,
-	Date,
+	number,
 ];
 
 export const useMonthsWidget = (): MonthsWidgetProps => {
@@ -55,6 +55,6 @@ export const useMonthsWidget = (): MonthsWidgetProps => {
 			setNextMonth,
 		},
 		format(date, "MMMM yyyy"),
-		date,
+		monthOffset,
 	];
 };
