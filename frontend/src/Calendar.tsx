@@ -105,6 +105,13 @@ const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
 		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
 	});
 
+	const habitsAddedAtGivenDay = habits.filter(habit => {
+		const createdAtDate = new Date(habit.created_at);
+		const dayDate = new Date(day);
+
+		return isSameDay(createdAtDate, dayDate);
+	});
+
 	const areHabitsAvailable = habitsAvailableAtGivenDay.length === 0;
 
 	return (
@@ -135,7 +142,19 @@ const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
 					</li>
 				))}
 			</ul>
-			<div className="flex p-2 pl-0 text-sm">{count && <span>NEW: {count}</span>}</div>
+			<div className="flex p-2 pl-0 text-sm">
+				{count && (
+					<details className="mt-8">
+						<summary title={`${count} habit(s) added this day`}>NEW: {count}</summary>
+						<p>Habit(s) added this day:</p>
+						<ul className="mt-2">
+							{habitsAddedAtGivenDay.map(habit => (
+								<li key={habit.id}>{habit.name}</li>
+							))}
+						</ul>
+					</details>
+				)}
+			</div>
 		</Dialog>
 	);
 };
