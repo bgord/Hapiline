@@ -1,7 +1,10 @@
+const datefns = require("date-fns");
+
 const Database = use("Database");
-const Habit = use("Habit");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
+
+const today = Date.now();
 
 class HabitsSeeder {
 	async run() {
@@ -11,16 +14,21 @@ class HabitsSeeder {
 			const howManyHabits = (user.id - 1) * 5;
 
 			const payload = Array.from({length: howManyHabits}).map((_, index) => {
+				const ts = datefns.subDays(today, index % 3).setHours(index & 3);
+				const date = new Date(ts);
+
 				return {
 					user_id: user.id,
 					name: `${index} ${"lorem".repeat((index % 3) + 1)}`,
 					score: Object.keys(HABIT_SCORE_TYPES)[index % 3],
 					strength: Object.keys(HABIT_STRENGTH_TYPES)[index % 3],
 					order: index,
+					created_at: date,
+					updated_at: date,
 				};
 			});
 
-			await Habit.createMany(payload);
+			await Database.table("habits").insert(payload);
 		}
 	}
 }

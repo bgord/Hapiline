@@ -8,6 +8,7 @@ class ShowMonth extends BaseHttpValidator {
 			monthOffset: "required|number|above:-1",
 		};
 	}
+
 	get messages() {
 		return {
 			required: VALIDATION_MESSAGES.required,

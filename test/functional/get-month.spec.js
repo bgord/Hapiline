@@ -10,6 +10,7 @@ const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const qs = require("qs");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const datefns = require("date-fns");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -108,4 +109,52 @@ test("validation", async ({client}) => {
 
 		assertValidationError({response, argErrors});
 	}
+});
+
+test("full flow", async ({client, assert}) => {
+	const pam = await User.find(users.pam.id);
+
+	const payload = {monthOffset: 0};
+
+	const queryString = qs.stringify(payload);
+
+	const response = await client
+		.get(`${GET_MONTH_URL}?${queryString}`)
+		.loginVia(pam)
+		.end();
+
+	const now = Date.now();
+
+	const today = datefns.format(now, "yyyy-MM-dd");
+
+	const yesterday = datefns.format(
+		datefns.subDays(new Date(today), 1),
+		"yyyy-MM-dd",
+	);
+
+	const theDayBeforeYesterday = datefns.format(
+		datefns.subDays(new Date(today), 2),
+		"yyyy-MM-dd",
+	);
+
+	assert.deepEqual(response.body, [
+		{day: theDayBeforeYesterday, count: 6},
+		{day: yesterday, count: 7},
+		{day: today, count: 7},
+	]);
+});
+
+test("month with no entries", async ({client, assert}) => {
+	const pam = await User.find(users.pam.id);
+
+	const payload = {monthOffset: 1};
+
+	const queryString = qs.stringify(payload);
+
+	const response = await client
+		.get(`${GET_MONTH_URL}?${queryString}`)
+		.loginVia(pam)
+		.end();
+
+	assert.deepEqual(response.body, []);
 });
