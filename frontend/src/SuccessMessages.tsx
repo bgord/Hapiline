@@ -5,10 +5,7 @@ export const SuccessMessage: React.FC<JSX.IntrinsicElements["div"]> = ({
 	...props
 }) => {
 	return (
-		<div
-			className={`success-message w-auto flex justify-between mt-4 ${className}`}
-			{...props}
-		/>
+		<div className={`success-message w-auto flex justify-between mt-4 ${className}`} {...props} />
 	);
 };
 

@@ -18,11 +18,7 @@ interface Props {
 	closeDialog: VoidFunction;
 }
 
-export const HabitItemDialog: React.FC<Props> = ({
-	refreshList,
-	habitId,
-	closeDialog,
-}) => {
+export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId, closeDialog}) => {
 	const [triggerErrorNotification] = useNotification();
 
 	const singleItemRequestState = Async.useAsync({
@@ -51,20 +47,13 @@ export const HabitItemDialog: React.FC<Props> = ({
 			onDismiss={refreshList}
 			aria-label="Show habit preview"
 		>
-			<Async.IfPending state={singleItemRequestState}>
-				Loading details...
-			</Async.IfPending>
+			<Async.IfPending state={singleItemRequestState}>Loading details...</Async.IfPending>
 			<Async.IfRejected state={singleItemRequestState}>
-				<RequestErrorMessage>
-					Couldn't fetch task details, please try again.
-				</RequestErrorMessage>
+				<RequestErrorMessage>Couldn't fetch task details, please try again.</RequestErrorMessage>
 			</Async.IfRejected>
 			{singleItemRequestState?.data?.id && (
 				<div style={habitDialogGrid}>
-					<h2
-						className="font-bold"
-						style={{gridColumn: "span 3", alignSelf: "center"}}
-					>
+					<h2 className="font-bold" style={{gridColumn: "span 3", alignSelf: "center"}}>
 						Habit preview
 					</h2>
 					<CloseButton
@@ -92,23 +81,13 @@ export const HabitItemDialog: React.FC<Props> = ({
 						style={{gridColumn: 3, gridRow: 3, alignSelf: "center"}}
 						className="flex items-baseline ml-4 mt-8"
 					>
-						<dt className="text-gray-600 uppercase text-sm font-bold">
-							Created at:
-						</dt>
+						<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
 						<dd className="text-sm ml-1 font-mono">
-							{format(
-								new Date(singleItemRequestState?.data?.created_at),
-								"yyyy/MM/dd HH:mm",
-							)}
+							{format(new Date(singleItemRequestState?.data?.created_at), "yyyy/MM/dd HH:mm")}
 						</dd>
-						<dt className="text-gray-600 uppercase text-sm font-bold ml-4">
-							Updated at:
-						</dt>
+						<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
 						<dd className="text-sm ml-1 font-mono">
-							{format(
-								new Date(singleItemRequestState?.data?.updated_at),
-								"yyyy/MM/dd HH:mm",
-							)}
+							{format(new Date(singleItemRequestState?.data?.updated_at), "yyyy/MM/dd HH:mm")}
 						</dd>
 					</dl>
 				</div>

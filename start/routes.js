@@ -17,10 +17,9 @@ Route.group(() => {
 		"UpdateEmailVerification",
 	);
 
-	Route.post(
-		"/forgot-password",
-		"ForgotPasswordIntentionController.store",
-	).validator("StoreForgotPasswordIntention");
+	Route.post("/forgot-password", "ForgotPasswordIntentionController.store").validator(
+		"StoreForgotPasswordIntention",
+	);
 
 	Route.post("/new-password", "ForgottenPasswordController.update").validator(
 		"UpdateForgottenPassword",
@@ -32,9 +31,7 @@ Route.group(() => {
 Route.group(() => {
 	Route.post("/logout", "SessionController.destroy");
 
-	Route.get("/me", ({response, auth}) =>
-		response.send({email: auth.user.email, id: auth.user.id}),
-	);
+	Route.get("/me", ({response, auth}) => response.send({email: auth.user.email, id: auth.user.id}));
 
 	Route.patch("/update-password", "PasswordController.update")
 		.validator("UpdatePassword")
@@ -84,12 +81,7 @@ Route.delete("/api/v1/habit/:id", "HabitsController.delete").middleware([
 ]);
 
 Route.patch("/api/v1/habit/:id", "HabitsController.update")
-	.middleware([
-		"auth",
-		"is:(regular)",
-		"account-status:active",
-		"params-resource-exists:habits,id",
-	])
+	.middleware(["auth", "is:(regular)", "account-status:active", "params-resource-exists:habits,id"])
 	.validator("UpdateHabit");
 
 Route.get("/api/v1/habit/:id", "HabitsController.show").middleware([
@@ -118,8 +110,6 @@ Route.get("*", async ({request, response}) => {
 	const resourcePathExists = await Drive.exists(`../public/${filename}`);
 
 	return response.download(
-		Helpers.publicPath(
-			resourcePathExists && filename !== "" ? filename : "index.html",
-		),
+		Helpers.publicPath(resourcePathExists && filename !== "" ? filename : "index.html"),
 	);
 });

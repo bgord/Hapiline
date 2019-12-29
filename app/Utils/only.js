@@ -1,7 +1,5 @@
 function only(keysToKeep, object) {
-	const filteredEntries = Object.entries(object).filter(([key]) =>
-		keysToKeep.includes(key),
-	);
+	const filteredEntries = Object.entries(object).filter(([key]) => keysToKeep.includes(key));
 
 	return Object.fromEntries(filteredEntries);
 }

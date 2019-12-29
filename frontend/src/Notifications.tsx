@@ -3,10 +3,7 @@ import React from "react";
 import Alert from "@reach/alert";
 import {useTransition, animated} from "react-spring";
 
-import {
-	useNotificationState,
-	Notification,
-} from "./contexts/notifications-context";
+import {useNotificationState, Notification} from "./contexts/notifications-context";
 
 const NotificationItem: React.FC<Notification> = ({type, message}) => {
 	const typeToBgColor = {
@@ -30,15 +27,11 @@ const NotificationItem: React.FC<Notification> = ({type, message}) => {
 export const Notifications = () => {
 	const notifications = useNotificationState();
 
-	const transitions = useTransition(
-		notifications,
-		notification => notification.id,
-		{
-			from: {opacity: 0, right: -50, position: "relative"},
-			enter: {opacity: 1, right: 0},
-			leave: {opacity: 0, right: -50},
-		},
-	);
+	const transitions = useTransition(notifications, notification => notification.id, {
+		from: {opacity: 0, right: -50, position: "relative"},
+		enter: {opacity: 1, right: 0},
+		leave: {opacity: 0, right: -50},
+	});
 
 	return (
 		<div className="fixed bottom-0 right-0 m-2 z-50">

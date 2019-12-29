@@ -1,10 +1,4 @@
-import {
-	eachDayOfInterval,
-	endOfMonth,
-	format,
-	startOfMonth,
-	subMonths,
-} from "date-fns";
+import {eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths} from "date-fns";
 import React from "react";
 
 export type MonthDayProps = {

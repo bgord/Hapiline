@@ -17,9 +17,7 @@ class HabitsController {
 			});
 			return response.status(201).send(result);
 		} catch (error) {
-			if (
-				error.message.includes("duplicate key value violates unique constraint")
-			) {
+			if (error.message.includes("duplicate key value violates unique constraint")) {
 				return response.validationError({
 					argErrors: [
 						{
@@ -79,9 +77,7 @@ class HabitsController {
 
 			return response.send(habit);
 		} catch (error) {
-			if (
-				error.message.includes("duplicate key value violates unique constraint")
-			) {
+			if (error.message.includes("duplicate key value violates unique constraint")) {
 				return response.validationError({
 					argErrors: [
 						{

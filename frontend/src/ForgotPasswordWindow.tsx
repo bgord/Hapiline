@@ -46,9 +46,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 					</button>
 				</div>
 				<Async.IfFulfilled state={forgotPasswordRequestState}>
-					<SuccessMessage className="w-full">
-						Email sent if an account exists.
-					</SuccessMessage>
+					<SuccessMessage className="w-full">Email sent if an account exists.</SuccessMessage>
 				</Async.IfFulfilled>
 			</form>
 		</div>

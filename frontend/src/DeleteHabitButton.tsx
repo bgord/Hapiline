@@ -11,11 +11,7 @@ interface DeleteButtonProps extends IHabit {
 	refreshList: VoidFunction;
 }
 
-export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
-	id,
-	name,
-	refreshList,
-}) => {
+export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({id, name, refreshList}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
@@ -38,9 +34,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 				message: "Couldn't delete habit.",
 			}),
 	});
-	const textColor = deleteHabitRequestState.isPending
-		? "text-gray-900"
-		: "text-red-500";
+	const textColor = deleteHabitRequestState.isPending ? "text-gray-900" : "text-red-500";
 
 	return (
 		<>
@@ -58,8 +52,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
 					<AlertDialogLabel>
-						Do you want to delete the{" "}
-						<span className="italic">{`"${name}"`}</span> habit?
+						Do you want to delete the <span className="italic">{`"${name}"`}</span> habit?
 					</AlertDialogLabel>
 
 					<div className="mt-12 flex justify-around w-full">

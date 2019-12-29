@@ -1,9 +1,4 @@
-import {
-	DragDropContext,
-	Droppable,
-	Draggable,
-	DropResult,
-} from "react-beautiful-dnd";
+import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
@@ -20,11 +15,7 @@ interface HabitListProps {
 	setHabitList: (habits: IHabit[]) => void;
 }
 
-export const HabitList: React.FC<HabitListProps> = ({
-	habits,
-	refreshList,
-	setHabitList,
-}) => {
+export const HabitList: React.FC<HabitListProps> = ({habits, refreshList, setHabitList}) => {
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerErrorNotification] = useNotification();
 
@@ -73,12 +64,7 @@ export const HabitList: React.FC<HabitListProps> = ({
 						className="flex flex-col bg-white p-4 pb-0 w-full"
 					>
 						{habits.map((habit, index) => (
-							<HabitListItem
-								key={habit.id}
-								habit={habit}
-								index={index}
-								refreshList={refreshList}
-							/>
+							<HabitListItem key={habit.id} habit={habit} index={index} refreshList={refreshList} />
 						))}
 						{provided.placeholder}
 					</ul>
@@ -94,11 +80,7 @@ interface HabitListItemProps {
 	refreshList: VoidFunction;
 }
 
-const HabitListItem: React.FC<HabitListItemProps> = ({
-	habit,
-	index,
-	refreshList,
-}) => {
+const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, refreshList}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
 	const scoreBgColor = scoreToBgColor[habit.score];
@@ -114,9 +96,7 @@ const HabitListItem: React.FC<HabitListItemProps> = ({
 					className="flex items-baseline mb-4"
 					data-testid="draggable-habit-item"
 				>
-					<div className={`${scoreBgColor} w-24 pl-1 p-2 text-center`}>
-						{habit.score}
-					</div>
+					<div className={`${scoreBgColor} w-24 pl-1 p-2 text-center`}>{habit.score}</div>
 					<div className={`${strengthBgColor} w-32 ml-2 pl-1 p-2 text-center`}>
 						{habit.strength}
 					</div>
@@ -142,11 +122,7 @@ const HabitListItem: React.FC<HabitListItemProps> = ({
 	);
 };
 
-function reorder(
-	habits: IHabit[],
-	fromIndex: number,
-	toIndex: number,
-): IHabit[] {
+function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[] {
 	const result = Array.from(habits);
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);

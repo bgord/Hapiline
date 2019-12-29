@@ -89,9 +89,7 @@ test("/login --- auth restrictions (guest only)", async ({client}) => {
 	assertGuestOnly(response);
 });
 
-test("/login --- auth restrictions (active/pending account status)", async ({
-	client,
-}) => {
+test("/login --- auth restrictions (active/pending account status)", async ({client}) => {
 	const user = await User.findBy("email", "jim@example.com");
 
 	user.merge({

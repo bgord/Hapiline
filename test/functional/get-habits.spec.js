@@ -1,10 +1,7 @@
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Get habits");
 const ace = require("@adonisjs/ace");
 const User = use("User");
-const {
-	assertInvalidSession,
-	assertAccessDenied,
-} = require("../helpers/assert-errors");
+const {assertInvalidSession, assertAccessDenied} = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 

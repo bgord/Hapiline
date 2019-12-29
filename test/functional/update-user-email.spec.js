@@ -6,9 +6,7 @@ const {
 	assertValidationError,
 } = require("../helpers/assert-errors");
 
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")(
-	"Update User Email",
-);
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Update User Email");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const Env = use("Env");
 const MAIL_TEMPLATES = use("MAIL_TEMPLATES");
@@ -153,10 +151,7 @@ test("/change-email --- full flow", async ({client, assert}) => {
 
 	const {message} = Mail.pullRecent();
 
-	assert.deepEqual(
-		message.subject,
-		MAIL_TEMPLATES.newEmailAddressVerification.subject,
-	);
+	assert.deepEqual(message.subject, MAIL_TEMPLATES.newEmailAddressVerification.subject);
 
 	assert.include(message.html, "Confirm new email");
 

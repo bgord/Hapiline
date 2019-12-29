@@ -70,9 +70,7 @@ export const NewPasswordWindow: React.FC = () => {
 						data-testid="registration-submit"
 						disabled={newPasswordRequestState.isFulfilled}
 					>
-						{newPasswordRequestState.isPending
-							? "Loading..."
-							: "Change password"}
+						{newPasswordRequestState.isPending ? "Loading..." : "Change password"}
 					</button>
 				</div>
 				<Async.IfFulfilled state={newPasswordRequestState}>

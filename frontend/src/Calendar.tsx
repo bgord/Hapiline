@@ -24,8 +24,7 @@ export const Calendar: React.FC = () => {
 
 	const days = widget.givenMonthDays.map(entry => ({
 		...entry,
-		count: getMonthRequestState.data?.find(item => item.day === entry.day)
-			?.count,
+		count: getMonthRequestState.data?.find(item => item.day === entry.day)?.count,
 	}));
 
 	const habitDialogGrid: React.CSSProperties = {
@@ -81,23 +80,11 @@ const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
 				style={styles}
 				ref={ref as React.Ref<HTMLLIElement>}
 			>
-				<span
-					className={`text-center w-full pt-2 ${isGivenDayToday &&
-						"font-bold"}`}
-				>
-					{day}
-				</span>
-				<button
-					hidden={!isHovering}
-					type="button"
-					className="py-1 uppercase"
-					onClick={openDialog}
-				>
+				<span className={`text-center w-full pt-2 ${isGivenDayToday && "font-bold"}`}>{day}</span>
+				<button hidden={!isHovering} type="button" className="py-1 uppercase" onClick={openDialog}>
 					show day
 				</button>
-				<div className="flex p-2 text-sm">
-					{count && <span>NEW: {count}</span>}
-				</div>
+				<div className="flex p-2 text-sm">{count && <span>NEW: {count}</span>}</div>
 			</li>
 			{showDialog && (
 				<Dialog aria-label="Show day preview">
@@ -105,9 +92,7 @@ const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
 						<strong>{day}</strong>
 						<CloseButton onClick={closeDialog} />
 					</div>
-					<div className="flex p-2 pl-0 text-sm">
-						{count && <span>NEW: {count}</span>}
-					</div>
+					<div className="flex p-2 pl-0 text-sm">{count && <span>NEW: {count}</span>}</div>
 				</Dialog>
 			)}
 		</>
