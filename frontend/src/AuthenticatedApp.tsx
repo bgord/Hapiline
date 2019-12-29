@@ -47,6 +47,14 @@ function AuthenticatedNavbar() {
 			>
 				<Logo />
 			</NavLink>
+			<NavLink
+				exact
+				className="p-4"
+				activeClassName="text-blue-400"
+				to="/dashboard"
+			>
+				Habit Scoreboard
+			</NavLink>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">
 				Calendar
 			</NavLink>

@@ -116,7 +116,8 @@
       "@typescript-eslint/no-empty-function": 0,
       "sonarjs/no-identical-functions": 1,
       "react/no-multi-comp": 0,
-      "jsx-a11y/no-onchange": 1
+      "jsx-a11y/no-onchange": 1,
+      "no-bitwise": 0
     }
   }
 }

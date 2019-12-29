@@ -17,6 +17,12 @@ export const Calendar: React.FC = () => {
 		monthOffset,
 	});
 
+	const days = widget.givenMonthDays.map(entry => ({
+		...entry,
+		count: getMonthRequestState.data?.find(item => item.day === entry.day)
+			?.count,
+	}));
+
 	const habitDialogGrid: React.CSSProperties = {
 		display: "grid",
 		gridTemplateColumns: "repeat(7, 200px)",
@@ -40,7 +46,7 @@ export const Calendar: React.FC = () => {
 				</button>
 			</div>
 			<ul style={habitDialogGrid}>
-				{widget.givenMonthDays.map(props => (
+				{days.map(props => (
 					<Day key={props.day.toString()} {...props} />
 				))}
 			</ul>
@@ -48,7 +54,7 @@ export const Calendar: React.FC = () => {
 	);
 };
 
-const Day: React.FC<MonthDayProps> = ({day, styles}) => {
+const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
 	const [isHovering, ref] = useHover();
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
@@ -57,7 +63,7 @@ const Day: React.FC<MonthDayProps> = ({day, styles}) => {
 	return (
 		<>
 			<li
-				className="flex flex-col align-center bg-green-100 hover:bg-green-200"
+				className="flex flex-col justify-between align-center bg-green-100 hover:bg-green-200"
 				style={styles}
 				ref={ref as React.Ref<HTMLLIElement>}
 			>
@@ -68,20 +74,22 @@ const Day: React.FC<MonthDayProps> = ({day, styles}) => {
 					{day}
 				</span>
 				{isHovering && (
-					<button
-						type="button"
-						className="mt-2 py-1 uppercase"
-						onClick={openDialog}
-					>
+					<button type="button" className="py-1 uppercase" onClick={openDialog}>
 						show day
 					</button>
 				)}
+				<div className="flex p-2 text-sm">
+					{count && <span>NEW: {count}</span>}
+				</div>
 			</li>
 			{showDialog && (
 				<Dialog aria-label="Show day preview">
 					<div className="flex justify-between items-baseline">
 						<strong>{day}</strong>
 						<CloseButton onClick={closeDialog} />
+					</div>
+					<div className="flex p-2 pl-0 text-sm">
+						{count && <span>NEW: {count}</span>}
 					</div>
 				</Dialog>
 			)}

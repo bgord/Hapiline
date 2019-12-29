@@ -10,6 +10,7 @@ import React from "react";
 export type MonthDayProps = {
 	day: string;
 	styles: {gridColumnStart: number | undefined};
+	count?: number;
 };
 
 export type MonthsWidgetProps = [
