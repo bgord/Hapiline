@@ -6,6 +6,7 @@ const {
 	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
+const datefns = require("date-fns");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add vote");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
@@ -66,26 +67,40 @@ test("validation", async ({client}) => {
 					field: "habit_id",
 					validation: "required",
 				},
+				{
+					message: VALIDATION_MESSAGES.required("day"),
+					field: "day",
+					validation: "required",
+				},
 			],
 		],
 		[
-			{habit_id: "xxx", vote: null},
+			{habit_id: "xxx", vote: null, day: "xxx"},
 			[
 				{
 					message: VALIDATION_MESSAGES.integer("habit_id"),
 					field: "habit_id",
 					validation: "integer",
 				},
-
 				{
 					message: VALIDATION_MESSAGES.above("habit_id", 0),
 					field: "habit_id",
 					validation: "above",
 				},
+				{
+					message: VALIDATION_MESSAGES.date("day"),
+					field: "day",
+					validation: "date",
+				},
+				{
+					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
+					field: "day",
+					validation: "before",
+				},
 			],
 		],
 		[
-			{habit_id: -2, vote: "xxx"},
+			{habit_id: -2, vote: "xxx", day: datefns.addDays(new Date(), 5)},
 			[
 				{
 					message: VALIDATION_MESSAGES.above("habit_id", 0),
@@ -96,6 +111,11 @@ test("validation", async ({client}) => {
 					message: VALIDATION_MESSAGES.invalid_vote,
 					field: "vote",
 					validation: "in",
+				},
+				{
+					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
+					field: "day",
+					validation: "before",
 				},
 			],
 		],
@@ -114,9 +134,11 @@ test("validation", async ({client}) => {
 
 test("user cannot add vote to non-existant habits", async ({client}) => {
 	const jim = await User.find(users.jim.id);
+	const today = new Date();
 
 	const payload = {
 		habit_id: 555,
+		day: today,
 	};
 
 	const response = await client
@@ -142,6 +164,7 @@ test("users can add vote to their habits only", async ({client}) => {
 
 	const payload = {
 		habit_id: 6,
+		day: new Date(),
 	};
 
 	const response = await client

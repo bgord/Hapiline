@@ -14,7 +14,10 @@ class HabitVotesSchema extends Schema {
 				.unsigned()
 				.notNullable();
 			table.enum("vote", votes);
+			table.date("day").notNullable();
 			table.timestamps();
+
+			table.unique(["habit_id", "day"]);
 		});
 	}
 
