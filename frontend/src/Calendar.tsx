@@ -25,7 +25,7 @@ export const Calendar: React.FC = () => {
 
 	const days = widget.givenMonthDays.map(entry => ({
 		...entry,
-		count: getMonthRequestState.data?.find(item => item.day === entry.day)?.count,
+		count: getMonthRequestState.data?.find(item => item.day === entry.day)?.createdHabitsCount,
 	}));
 
 	const habitDialogGrid: React.CSSProperties = {

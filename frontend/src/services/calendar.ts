@@ -2,10 +2,16 @@ import * as Async from "react-async";
 
 import {_internal_api} from "./api";
 
-export const getMonthRequest: Async.PromiseFn<{
+interface MonthStats {
 	day: string;
-	count: number;
-}[]> = ({monthOffset}) =>
+	createdHabitsCount: number;
+	progressVotesCountStats: number;
+	plateauVotesCountStats: number;
+	regressVotesCountStats: number;
+	nullVotesCountStats: number;
+}
+
+export const getMonthRequest: Async.PromiseFn<MonthStats[]> = ({monthOffset}) =>
 	_internal_api
-		.get<{day: string; count: number}[]>(`/month?monthOffset=${monthOffset}`)
+		.get<MonthStats[]>(`/month?monthOffset=${monthOffset}`)
 		.then(response => response.data);
