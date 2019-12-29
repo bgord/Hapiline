@@ -15,6 +15,7 @@ export const Calendar: React.FC = () => {
 	const getMonthRequestState = Async.useAsync({
 		promiseFn: api.calendar.getMonth,
 		monthOffset,
+		watch: monthOffset,
 	});
 
 	const days = widget.givenMonthDays.map(entry => ({
