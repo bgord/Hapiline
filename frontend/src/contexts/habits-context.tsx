@@ -14,7 +14,6 @@ export const HabitsProvider: React.FC = props => {
 
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: api.habit.get,
-		onResolve: () => console.log("running", Date.now()),
 		onReject: () =>
 			triggerErrorNotification({
 				type: "error",

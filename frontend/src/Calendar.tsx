@@ -1,5 +1,5 @@
 import {Dialog} from "@reach/dialog";
-import {isToday} from "date-fns";
+import {isBefore, isSameDay, isToday} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 import useHover from "@react-hook/hover";
@@ -9,6 +9,7 @@ import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useHabits} from "./contexts/habits-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
 export const Calendar: React.FC = () => {
@@ -86,15 +87,39 @@ const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
 				</button>
 				<div className="flex p-2 text-sm">{count && <span>NEW: {count}</span>}</div>
 			</li>
-			{showDialog && (
-				<Dialog aria-label="Show day preview">
-					<div className="flex justify-between items-baseline">
-						<strong>{day}</strong>
-						<CloseButton onClick={closeDialog} />
-					</div>
-					<div className="flex p-2 pl-0 text-sm">{count && <span>NEW: {count}</span>}</div>
-				</Dialog>
-			)}
+			{showDialog && <DayDialog day={day} count={count} closeDialog={closeDialog} />}
 		</>
+	);
+};
+
+type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
+
+const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
+	const getHabitsRequestState = useHabits();
+	const habits = getHabitsRequestState?.data ?? [];
+
+	const habitsAvailableAtGivenDay = habits.filter(habit => {
+		const createdAtDate = new Date(habit.created_at);
+		const dayDate = new Date(day);
+
+		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
+	});
+
+	const areHabitsAvailable = habitsAvailableAtGivenDay.length === 0;
+
+	return (
+		<Dialog aria-label="Show day preview">
+			<div className="flex justify-between items-baseline">
+				<strong>{day}</strong>
+				<CloseButton onClick={closeDialog} />
+			</div>
+			{areHabitsAvailable && <div>No habits available this day.</div>}
+			<ul>
+				{habitsAvailableAtGivenDay.map(habit => (
+					<li key={habit.id}>{habit.name}</li>
+				))}
+			</ul>
+			<div className="flex p-2 pl-0 text-sm">{count && <span>NEW: {count}</span>}</div>
+		</Dialog>
 	);
 };

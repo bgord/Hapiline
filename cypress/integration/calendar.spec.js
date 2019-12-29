@@ -96,6 +96,10 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.get("ul").within(() => {
+				cy.get("li").should("have.length", 10);
+			});
+
 			cy.findByText("NEW: 4");
 			cy.findByText("×").click();
 		});
@@ -112,6 +116,10 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.get("ul").within(() => {
+				cy.get("li").should("have.length", 6);
+			});
+
 			cy.findByText("NEW: 3");
 			cy.findByText("×").click();
 		});
