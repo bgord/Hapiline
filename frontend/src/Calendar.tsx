@@ -116,7 +116,23 @@ const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
 			{areHabitsAvailable && <div>No habits available this day.</div>}
 			<ul>
 				{habitsAvailableAtGivenDay.map(habit => (
-					<li key={habit.id}>{habit.name}</li>
+					<li
+						key={habit.id}
+						className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4"
+					>
+						<div>{habit.name}</div>
+						<div>
+							<button className="py-2 px-4 bg-white" type="button">
+								+
+							</button>
+							<button className="py-2 px-4 ml-2 bg-white" type="button">
+								=
+							</button>
+							<button className="py-2 px-4 ml-2 bg-white" type="button">
+								-
+							</button>
+						</div>
+					</li>
 				))}
 			</ul>
 			<div className="flex p-2 pl-0 text-sm">{count && <span>NEW: {count}</span>}</div>
