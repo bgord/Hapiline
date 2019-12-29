@@ -4,5 +4,5 @@ import {_internal_api} from "./api";
 
 export const getMonthRequest: Async.PromiseFn<void> = ({monthOffset}) =>
 	_internal_api
-		.get<void>(`/months/${monthOffset}`)
+		.get<void>(`/months?monthOffset=${monthOffset}`)
 		.then(response => response.data);

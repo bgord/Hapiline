@@ -103,11 +103,9 @@ Route.patch("/api/v1/reorder-habits", "HabitOrderController.update")
 	.validator("ReorderHabits")
 	.middleware(["check-habit-ids", "validate-indexes-order"]);
 
-Route.get("/api/v1/month/:monthDate", "MonthsController.show").middleware([
-	"auth",
-	"is:(regular)",
-	"account-status:active",
-]);
+Route.get("/api/v1/month", "MonthController.show")
+	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.validator("ShowMonth");
 
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
