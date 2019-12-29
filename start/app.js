@@ -71,6 +71,7 @@ const aliases = {
 	MAIN_ERROR_MESSAGES: "App/Constants/MAIN_ERROR_MESSAGES",
 	HABIT_SCORE_TYPES: "App/Constants/HABIT_SCORE_TYPES",
 	HABIT_STRENGTH_TYPES: "App/Constants/HABIT_STRENGTH_TYPES",
+	HABIT_VOTE_TYPES: "App/Constants/HABIT_VOTE_TYPES",
 
 	// validators
 	BaseHttpValidator: "App/Validators/BaseHttpValidator",
