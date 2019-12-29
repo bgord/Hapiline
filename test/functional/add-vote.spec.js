@@ -12,6 +12,7 @@ const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add vote");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -219,4 +220,24 @@ test("full flow for non-existant habit vote", async ({client, assert}) => {
 	assert.equal(response.body.habit_id, payload.habit_id);
 	assert.ok(datefns.isEqual(new Date(response.body.day), payload.day));
 	assert.equal(response.body.vote, null);
+});
+
+test("full flow for existing habit vote", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		habit_id: 4,
+		day: new Date(),
+		vote: HABIT_VOTE_TYPES.regress,
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assert.equal(response.body.habit_id, payload.habit_id);
+	assert.ok(datefns.isSameDay(new Date(response.body.day), payload.day));
+	assert.equal(response.body.vote, payload.vote);
 });

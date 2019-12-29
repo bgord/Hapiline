@@ -28,7 +28,7 @@ class VoteController {
 				],
 			});
 
-		const habitVoteForGivenDate = await HabitVote.findBy("habit_id", habit_id);
+		const habitVoteForGivenDate = await HabitVote.findBy({habit_id, day});
 
 		if (habitVoteForGivenDate === null) {
 			const habitVote = await HabitVote.create({
@@ -40,7 +40,12 @@ class VoteController {
 			return response.send(habitVote);
 		}
 
-		return response.send();
+		await habitVoteForGivenDate.merge({
+			vote,
+		});
+		await habitVoteForGivenDate.save();
+
+		return response.send(habitVoteForGivenDate);
 	}
 }
 
