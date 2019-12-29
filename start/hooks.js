@@ -1,9 +1,11 @@
 const {hooks} = require("@adonisjs/ignitor");
 
 hooks.after.providersBooted(() => {
+	const Database = use("Database");
 	const Response = use("Adonis/Src/Response");
 	const MAIN_ERROR_MESSAGES = use("App/Constants/MAIN_ERROR_MESSAGES");
 	const MAIN_ERROR_CODES = use("App/Constants/MAIN_ERROR_CODES");
+	const Validator = use("Validator");
 
 	// RESPONSE MACROS
 	Response.macro("accessDenied", function() {
@@ -55,5 +57,25 @@ hooks.after.providersBooted(() => {
 			message,
 			argErrors: [],
 		});
+	});
+
+	Validator.extend("exists", async (data, field, message, args, get) => {
+		const value = get(data, field);
+		if (!value || !Number.isInteger(value) || value <= 0) {
+			/**
+			 * Skip validation if value is not defined, `required` rule should take care of it.
+			 * Skip validation if value is not an integer, `integer` rule should take care of it.
+			 */
+			return;
+		}
+
+		const [table, column] = args;
+		const row = await Database.table(table)
+			.where(column, value)
+			.first();
+
+		if (!row) {
+			throw message;
+		}
 	});
 });

@@ -111,3 +111,28 @@ test("validation", async ({client}) => {
 		assertValidationError({response, argErrors});
 	}
 });
+
+test("user cannot add vote to non-existant habits", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		habit_id: 555,
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertValidationError({
+		response,
+		argErrors: [
+			{
+				message: VALIDATION_MESSAGES.non_existent_resource("habit_id"),
+				field: "habit_id",
+				validation: "exists",
+			},
+		],
+	});
+});
