@@ -28,6 +28,18 @@ class VoteController {
 				],
 			});
 
+		const habitVoteForGivenDate = await HabitVote.findBy("habit_id", habit_id);
+
+		if (habitVoteForGivenDate === null) {
+			const habitVote = await HabitVote.create({
+				habit_id,
+				day,
+				vote,
+			});
+
+			return response.send(habitVote);
+		}
+
 		return response.send();
 	}
 }

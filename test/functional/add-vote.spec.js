@@ -201,3 +201,22 @@ test("user cannot add votes to day before habit creation", async ({client}) => {
 		],
 	});
 });
+
+test("full flow for non-existant habit vote", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		habit_id: 5,
+		day: datefns.subDays(new Date(), 1),
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assert.equal(response.body.habit_id, payload.habit_id);
+	assert.ok(datefns.isEqual(new Date(response.body.day), payload.day));
+	assert.equal(response.body.vote, null);
+});
