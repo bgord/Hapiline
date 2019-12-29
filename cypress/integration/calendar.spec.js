@@ -58,6 +58,28 @@ describe("Calendar", () => {
 		});
 	});
 
+	it("get month error", () => {
+		const errorMessage = "Unexpected error, try again later.";
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/month?monthOffset=0",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.findByText(currentMonthString);
+		cy.findByText(errorMessage);
+	});
+
 	it("dialog", () => {
 		cy.viewport(2000, 2000);
 		cy.login("dwight");

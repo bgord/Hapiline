@@ -6,8 +6,10 @@ import useHover from "@react-hook/hover";
 
 import {CloseButton} from "./CloseButton";
 import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
+import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useRequestErrors} from "./hooks/useRequestErrors";
 
 export const Calendar: React.FC = () => {
 	const [widget, date, monthOffset] = useMonthsWidget();
@@ -17,6 +19,8 @@ export const Calendar: React.FC = () => {
 		monthOffset,
 		watch: monthOffset,
 	});
+
+	const {errorMessage} = useRequestErrors(getMonthRequestState);
 
 	const days = widget.givenMonthDays.map(entry => ({
 		...entry,
@@ -38,14 +42,23 @@ export const Calendar: React.FC = () => {
 					className="px-2"
 					type="button"
 					onClick={widget.setPreviousMonth}
+					disabled={getMonthRequestState.isPending}
 				>
 					Previous
 				</button>
 				<div className="mx-8 w-32">{date}</div>
-				<button className="px-2" type="button" onClick={widget.setNextMonth}>
+				<button
+					className="px-2"
+					type="button"
+					onClick={widget.setNextMonth}
+					disabled={getMonthRequestState.isPending}
+				>
 					Next
 				</button>
 			</div>
+			<Async.IfRejected state={getMonthRequestState}>
+				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
+			</Async.IfRejected>
 			<ul style={habitDialogGrid}>
 				{days.map(props => (
 					<Day key={props.day.toString()} {...props} />
