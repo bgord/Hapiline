@@ -136,3 +136,19 @@ test("user cannot add vote to non-existant habits", async ({client}) => {
 		],
 	});
 });
+
+test("users can add vote to their habits only", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		habit_id: 6,
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
+});
