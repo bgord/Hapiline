@@ -1,4 +1,4 @@
-const Vote = use("Vote");
+const HabitVote = use("HabitVote");
 const Habit = use("Habit");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const datefns = require("date-fns");

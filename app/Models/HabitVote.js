@@ -1,9 +1,9 @@
 const Model = use("Model");
 
-class Vote extends Model {
+class HabitVote extends Model {
 	habit() {
 		return this.belongsTo("App/Models/Habit");
 	}
 }
 
-module.exports = Vote;
+module.exports = HabitVote;
