@@ -5,6 +5,7 @@ import {createBrowserHistory} from "history";
 
 import {Calendar} from "./Calendar";
 import {Dashboard} from "./DashboardWindow";
+import {HabitsProvider} from "./contexts/habits-context";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
 import {Notifications} from "./Notifications";
@@ -14,22 +15,24 @@ const authenticatedAppBrowserHistory = createBrowserHistory();
 
 function AuthenticatedApp() {
 	return (
-		<Router history={authenticatedAppBrowserHistory}>
-			<AuthenticatedNavbar />
-			<Notifications />
-			<Switch>
-				<Route exact path="/logout">
-					<Logout />
-				</Route>
-				<Route exact path="/dashboard">
-					<Dashboard />
-				</Route>
-				<Route exact path="/calendar">
-					<Calendar />
-				</Route>
-				<Redirect to="/dashboard" />
-			</Switch>
-		</Router>
+		<HabitsProvider>
+			<Router history={authenticatedAppBrowserHistory}>
+				<AuthenticatedNavbar />
+				<Notifications />
+				<Switch>
+					<Route exact path="/logout">
+						<Logout />
+					</Route>
+					<Route exact path="/dashboard">
+						<Dashboard />
+					</Route>
+					<Route exact path="/calendar">
+						<Calendar />
+					</Route>
+					<Redirect to="/dashboard" />
+				</Switch>
+			</Router>
+		</HabitsProvider>
 	);
 }
 

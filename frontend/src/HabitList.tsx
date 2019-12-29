@@ -7,15 +7,13 @@ import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useHabits} from "./contexts/habits-context";
 import {useNotification} from "./contexts/notifications-context";
 
-interface HabitListProps {
-	habits: IHabit[];
-	refreshList: VoidFunction;
-	setHabitList: (habits: IHabit[]) => void;
-}
+export const HabitList: React.FC = () => {
+	const getHabitsRequestState = useHabits();
+	const habits = getHabitsRequestState?.data ?? [];
 
-export const HabitList: React.FC<HabitListProps> = ({habits, refreshList, setHabitList}) => {
 	const [triggerSuccessNotification] = useNotification();
 	const [triggerErrorNotification] = useNotification();
 
@@ -51,7 +49,7 @@ export const HabitList: React.FC<HabitListProps> = ({habits, refreshList, setHab
 		}));
 
 		reorderHabitsRequestState.run({habits: reorderHabitsPayload});
-		setHabitList(reorderedHabits);
+		getHabitsRequestState.setData(reorderedHabits);
 	}
 
 	return (
@@ -64,7 +62,7 @@ export const HabitList: React.FC<HabitListProps> = ({habits, refreshList, setHab
 						className="flex flex-col bg-white p-4 pb-0 w-full"
 					>
 						{habits.map((habit, index) => (
-							<HabitListItem key={habit.id} habit={habit} index={index} refreshList={refreshList} />
+							<HabitListItem key={habit.id} habit={habit} index={index} />
 						))}
 						{provided.placeholder}
 					</ul>
@@ -77,10 +75,9 @@ export const HabitList: React.FC<HabitListProps> = ({habits, refreshList, setHab
 interface HabitListItemProps {
 	habit: IHabit;
 	index: number;
-	refreshList: VoidFunction;
 }
 
-const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, refreshList}) => {
+const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
 	const scoreBgColor = scoreToBgColor[habit.score];
@@ -106,16 +103,10 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, refreshList}
 							<button type="button" className="uppercase" onClick={openDialog}>
 								more
 							</button>
-							<DeleteHabitButton {...habit} refreshList={refreshList} />
+							<DeleteHabitButton {...habit} />
 						</div>
 					</div>
-					{showDialog && (
-						<HabitItemDialog
-							habitId={habit.id}
-							closeDialog={closeDialog}
-							refreshList={refreshList}
-						/>
-					)}
+					{showDialog && <HabitItemDialog habitId={habit.id} closeDialog={closeDialog} />}
 				</li>
 			)}
 		</Draggable>

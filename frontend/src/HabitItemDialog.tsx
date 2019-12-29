@@ -10,15 +10,17 @@ import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
+import {useHabits} from "./contexts/habits-context";
 import {useNotification} from "./contexts/notifications-context";
 
 interface Props {
 	habitId: IHabit["id"];
-	refreshList: VoidFunction;
 	closeDialog: VoidFunction;
 }
 
-export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId, closeDialog}) => {
+export const HabitItemDialog: React.FC<Props> = ({habitId, closeDialog}) => {
+	const getHabitsRequestState = useHabits();
+
 	const [triggerErrorNotification] = useNotification();
 
 	const singleItemRequestState = Async.useAsync({
@@ -44,7 +46,7 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId, closeDia
 				maxHeight: "500px",
 			}}
 			className="w-full h-full"
-			onDismiss={refreshList}
+			onDismiss={getHabitsRequestState.reload}
 			aria-label="Show habit preview"
 		>
 			<Async.IfPending state={singleItemRequestState}>Loading details...</Async.IfPending>
@@ -59,7 +61,7 @@ export const HabitItemDialog: React.FC<Props> = ({refreshList, habitId, closeDia
 					<CloseButton
 						onClick={() => {
 							closeDialog();
-							refreshList();
+							getHabitsRequestState.reload();
 						}}
 					/>
 					<EditableHabitScoreSelect

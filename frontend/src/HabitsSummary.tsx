@@ -1,7 +1,13 @@
 import React from "react";
-import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 
-export const HabitsSummary: React.FC<{habits: IHabit[]}> = ({habits}) => {
+import {scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
+import {useHabits} from "./contexts/habits-context";
+
+export const HabitsSummary: React.FC = () => {
+	const getHabitsRequestState = useHabits();
+
+	const habits = getHabitsRequestState?.data ?? [];
+
 	const positiveHabitsCount = habits.filter(habit => habit.score === "positive").length;
 	const negativeHabitsCount = habits.filter(habit => habit.score === "negative").length;
 	const neutralHabitsCount = habits.filter(habit => habit.score === "neutral").length;
