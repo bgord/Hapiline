@@ -175,3 +175,29 @@ test("users can add vote to their habits only", async ({client}) => {
 
 	assertAccessDenied(response);
 });
+
+test("user cannot add votes to day before habit creation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		habit_id: 5,
+		day: datefns.subDays(new Date(), 50),
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertValidationError({
+		response,
+		argErrors: [
+			{
+				message: VALIDATION_MESSAGES.before("day", "habit creation"),
+				field: "day",
+				validation: "before",
+			},
+		],
+	});
+});
