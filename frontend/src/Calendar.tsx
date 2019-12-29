@@ -74,11 +74,14 @@ const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
 				>
 					{day}
 				</span>
-				{isHovering && (
-					<button type="button" className="py-1 uppercase" onClick={openDialog}>
-						show day
-					</button>
-				)}
+				<button
+					hidden={!isHovering}
+					type="button"
+					className="py-1 uppercase"
+					onClick={openDialog}
+				>
+					show day
+				</button>
 				<div className="flex p-2 text-sm">
 					{count && <span>NEW: {count}</span>}
 				</div>
