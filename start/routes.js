@@ -99,11 +99,9 @@ Route.get("/api/v1/month", "MonthController.show")
 	.middleware(["auth", "is:(regular)", "account-status:active"])
 	.validator("ShowMonth");
 
-Route.post("/api/v1/vote", "VoteController.update").middleware([
-	"auth",
-	"is:(regular)",
-	"account-status:active",
-]);
+Route.post("/api/v1/vote", "VoteController.update")
+	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.validator("UpdateVote");
 
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();

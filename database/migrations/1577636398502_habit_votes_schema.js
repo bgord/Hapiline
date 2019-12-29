@@ -1,6 +1,5 @@
-const Schema = use("Schema");
-
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
+const Schema = use("Schema");
 
 const votes = Object.keys(HABIT_VOTE_TYPES);
 

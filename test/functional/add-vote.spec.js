@@ -1,11 +1,16 @@
 const ace = require("@adonisjs/ace");
 
-const {assertInvalidSession, assertAccessDenied} = require("../helpers/assert-errors");
+const {
+	assertInvalidSession,
+	assertAccessDenied,
+	assertValidationError,
+} = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add vote");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -47,4 +52,62 @@ test("account-status:(active)", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
+});
+
+test("validation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const cases = [
+		[
+			{},
+			[
+				{
+					message: VALIDATION_MESSAGES.required("habit_id"),
+					field: "habit_id",
+					validation: "required",
+				},
+			],
+		],
+		[
+			{habit_id: "xxx", vote: null},
+			[
+				{
+					message: VALIDATION_MESSAGES.integer("habit_id"),
+					field: "habit_id",
+					validation: "integer",
+				},
+
+				{
+					message: VALIDATION_MESSAGES.above("habit_id", 0),
+					field: "habit_id",
+					validation: "above",
+				},
+			],
+		],
+		[
+			{habit_id: -2, vote: "xxx"},
+			[
+				{
+					message: VALIDATION_MESSAGES.above("habit_id", 0),
+					field: "habit_id",
+					validation: "above",
+				},
+				{
+					message: VALIDATION_MESSAGES.invalid_vote,
+					field: "vote",
+					validation: "in",
+				},
+			],
+		],
+	];
+
+	for (const [payload, argErrors] of cases) {
+		const response = await client
+			.post(ADD_VOTE_URL)
+			.send(payload)
+			.loginVia(jim)
+			.end();
+
+		assertValidationError({response, argErrors});
+	}
 });

@@ -1,5 +1,6 @@
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
+const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 const VALIDATION_MESSAGES = {
 	invalid_email: "Invalid email address.",
@@ -17,6 +18,7 @@ const VALIDATION_MESSAGES = {
 	unique_habit: `Given habit already exists.`,
 	array: field => `${field} must be an array.`,
 	positive_integer_or_zero: field => `${field} must be positive integer or 0.`,
+	invalid_vote: `Vote must be one of ${Object.keys(HABIT_VOTE_TYPES).join(", ")} or null.`,
 };
 
 module.exports = VALIDATION_MESSAGES;
