@@ -1,14 +1,21 @@
 import {Dialog} from "@reach/dialog";
 import {isToday} from "date-fns";
+import * as Async from "react-async";
 import React from "react";
 import useHover from "@react-hook/hover";
 
 import {CloseButton} from "./CloseButton";
 import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
+import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
 
 export const Calendar: React.FC = () => {
-	const [widget, date] = useMonthsWidget();
+	const [widget, date, _rawDate] = useMonthsWidget();
+
+	const getMonthRequestState = Async.useAsync({
+		promiseFn: api.calendar.getMonth,
+		date: _rawDate,
+	});
 
 	const habitDialogGrid: React.CSSProperties = {
 		display: "grid",
