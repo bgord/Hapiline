@@ -4,6 +4,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {DialogCloseButton} from "./CloseButton";
+import {IHabit} from "./interfaces/IHabit";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
 import {Stat} from "./Stat";
 import {api} from "./services/api";
@@ -35,20 +36,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 	});
 	const dayVotes = getDayVotesRequestState.data ?? [];
 
-	const habitsAvailableAtThisDay = habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
+	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 
-		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
-	});
-
-	const habitsAddedAtThisDay = habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
-
-		return isSameDay(createdAtDate, dayDate);
-	});
-
+	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
 	return (
@@ -155,3 +145,21 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 		</Dialog>
 	);
 };
+
+function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
+	return habits.filter(habit => {
+		const createdAtDate = new Date(habit.created_at);
+		const dayDate = new Date(day);
+
+		return isSameDay(createdAtDate, dayDate);
+	});
+}
+
+function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
+	return habits.filter(habit => {
+		const createdAtDate = new Date(habit.created_at);
+		const dayDate = new Date(day);
+
+		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
+	});
+}

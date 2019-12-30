@@ -4,6 +4,7 @@ import useHover from "@react-hook/hover";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
+import {IHabit} from "./interfaces/IHabit";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
 import {Stat} from "./Stat";
 import {useDialog} from "./hooks/useDialog";
@@ -23,19 +24,9 @@ export const Day: React.FC<MonthDayProps & {refreshCalendar: VoidFunction}> = ({
 	const isThisDayToday = isToday(new Date(day));
 	const isThisDayInTheFuture = isFuture(thisDay);
 
-	const habitsAvailableAtThisDay = habits.filter(
-		habit =>
-			isBefore(new Date(habit.created_at), thisDay) ||
-			isSameDay(new Date(habit.created_at), thisDay),
-	).length;
-
-	const noVotesCountStats: number =
-		habitsAvailableAtThisDay -
-		(stats.progressVotesCountStats ?? 0) -
-		(stats.plateauVotesCountStats ?? 0) -
-		(stats.regressVotesCountStats ?? 0);
-
-	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDay > 0;
+	const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(habits, thisDay).length;
+	const noVotesCountStats = getNoVotesCountStats(habitsAvailableAtThisDayCount, stats);
+	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDayCount > 0;
 
 	return (
 		<>
@@ -74,3 +65,24 @@ export const Day: React.FC<MonthDayProps & {refreshCalendar: VoidFunction}> = ({
 		</>
 	);
 };
+
+function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
+	return habits.filter(habit => {
+		const createdAtDate = new Date(habit.created_at);
+		const dayDate = new Date(day);
+
+		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
+	});
+}
+
+function getNoVotesCountStats(
+	habitsAvailableAtThisDayCount: number,
+	stats: Omit<MonthDayProps, "day" | "styles">,
+): number {
+	return (
+		habitsAvailableAtThisDayCount -
+		(stats.progressVotesCountStats ?? 0) -
+		(stats.plateauVotesCountStats ?? 0) -
+		(stats.regressVotesCountStats ?? 0)
+	);
+}
