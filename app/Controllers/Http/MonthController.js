@@ -58,9 +58,6 @@ class MonthsController {
 			const regressVotesCountStats = voteTypesCountResult.find(
 				entry => entry.day === day && entry.voteType === HABIT_VOTE_TYPES.regress,
 			);
-			const nullVotesCountStats = voteTypesCountResult.find(
-				entry => entry.day === day && entry.voteType === null,
-			);
 
 			return {
 				day,
@@ -70,7 +67,6 @@ class MonthsController {
 					: 0,
 				plateauVotesCountStats: plateauVotesCountStats ? plateauVotesCountStats.voteTypeCount : 0,
 				regressVotesCountStats: regressVotesCountStats ? regressVotesCountStats.voteTypeCount : 0,
-				nullVotesCountStats: nullVotesCountStats ? nullVotesCountStats.voteTypeCount : 0,
 			};
 		});
 

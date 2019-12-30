@@ -136,7 +136,6 @@ test("full flow", async ({client, assert}) => {
 			progressVotesCountStats: 2,
 			plateauVotesCountStats: 0,
 			regressVotesCountStats: 1,
-			nullVotesCountStats: 0,
 		},
 		{
 			day: yesterday,
@@ -144,7 +143,6 @@ test("full flow", async ({client, assert}) => {
 			progressVotesCountStats: 0,
 			plateauVotesCountStats: 4,
 			regressVotesCountStats: 0,
-			nullVotesCountStats: 3,
 		},
 		{
 			day: today,
@@ -152,7 +150,6 @@ test("full flow", async ({client, assert}) => {
 			progressVotesCountStats: 3,
 			plateauVotesCountStats: 1,
 			regressVotesCountStats: 4,
-			nullVotesCountStats: 2,
 		},
 	]);
 });
