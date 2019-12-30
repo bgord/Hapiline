@@ -88,7 +88,7 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 		(stats.plateauVotesCountStats ?? 0) -
 		(stats.regressVotesCountStats ?? 0);
 
-	const shouldDayDialogBeAvailable = !isThisDayInTheFuture;
+	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDay > 0;
 
 	return (
 		<>
@@ -98,7 +98,7 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 				ref={ref as React.Ref<HTMLLIElement>}
 			>
 				<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
-				{shouldDayDialogBeAvailable && (
+				{isDayDialogBeAvailable && (
 					<>
 						<button
 							hidden={!isHovering}
@@ -108,8 +108,10 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 						>
 							show day
 						</button>
-						<div className="flex p-2 text-sm">
-							{stats.createdHabitsCount && <span>NEW: {stats.createdHabitsCount} |</span>}
+						<div className="flex justify-end p-2 text-sm">
+							{stats.createdHabitsCount && (
+								<span className="mr-auto">NEW: {stats.createdHabitsCount} |</span>
+							)}
 							{stats.progressVotesCountStats !== undefined && (
 								<span className="ml-2 bg-green-200">{`+${stats.progressVotesCountStats}`}</span>
 							)}
