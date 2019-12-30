@@ -25,7 +25,16 @@ export const Calendar: React.FC = () => {
 
 	const days = widget.givenMonthDays.map(entry => ({
 		...entry,
-		count: getMonthRequestState.data?.find(item => item.day === entry.day)?.createdHabitsCount,
+		createdHabitsCount: getMonthRequestState.data?.find(item => item.day === entry.day)
+			?.createdHabitsCount,
+		progressVotesCountStats: getMonthRequestState.data?.find(item => item.day === entry.day)
+			?.progressVotesCountStats,
+		plateauVotesCountStats: getMonthRequestState.data?.find(item => item.day === entry.day)
+			?.plateauVotesCountStats,
+		regressVotesCountStats: getMonthRequestState.data?.find(item => item.day === entry.day)
+			?.regressVotesCountStats,
+		nullVotesCountStats: getMonthRequestState.data?.find(item => item.day === entry.day)
+			?.nullVotesCountStats,
 	}));
 
 	const habitDialogGrid: React.CSSProperties = {
@@ -68,7 +77,15 @@ export const Calendar: React.FC = () => {
 	);
 };
 
-const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
+const Day: React.FC<MonthDayProps> = ({
+	day,
+	styles,
+	createdHabitsCount,
+	progressVotesCountStats,
+	plateauVotesCountStats,
+	regressVotesCountStats,
+	nullVotesCountStats,
+}) => {
 	const [isHovering, ref] = useHover();
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
@@ -85,16 +102,32 @@ const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
 				<button hidden={!isHovering} type="button" className="py-1 uppercase" onClick={openDialog}>
 					show day
 				</button>
-				<div className="flex p-2 text-sm">{count && <span>NEW: {count}</span>}</div>
+				<div className="flex p-2 text-sm">
+					{createdHabitsCount && <span>NEW: {createdHabitsCount} |</span>}
+					{progressVotesCountStats !== undefined && (
+						<span className="ml-2 bg-green-200">+ {progressVotesCountStats}</span>
+					)}
+					{plateauVotesCountStats !== undefined && (
+						<span className="ml-2 bg-green-200">= {plateauVotesCountStats}</span>
+					)}
+					{regressVotesCountStats !== undefined && (
+						<span className="ml-2 bg-green-200">- {regressVotesCountStats}</span>
+					)}
+					{nullVotesCountStats !== undefined && (
+						<span className="ml-2 bg-green-200">? {nullVotesCountStats}</span>
+					)}
+				</div>
 			</li>
-			{showDialog && <DayDialog day={day} count={count} closeDialog={closeDialog} />}
+			{showDialog && (
+				<DayDialog day={day} createdHabitsCount={createdHabitsCount} closeDialog={closeDialog} />
+			)}
 		</>
 	);
 };
 
 type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
 
-const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
+const DayDialog: React.FC<DayDialogProps> = ({day, createdHabitsCount, closeDialog}) => {
 	const getHabitsRequestState = useHabits();
 	const habits = getHabitsRequestState?.data ?? [];
 
@@ -112,7 +145,7 @@ const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
 		return isSameDay(createdAtDate, dayDate);
 	});
 
-	const areHabitsAvailable = habitsAvailableAtGivenDay.length === 0;
+	const areAnyHabitsAvailable = habitsAvailableAtGivenDay.length === 0;
 
 	return (
 		<Dialog aria-label="Show day preview">
@@ -120,7 +153,7 @@ const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
 				<strong>{day}</strong>
 				<CloseButton onClick={closeDialog} />
 			</div>
-			{areHabitsAvailable && <div>No habits available this day.</div>}
+			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul>
 				{habitsAvailableAtGivenDay.map(habit => (
 					<li
@@ -143,9 +176,11 @@ const DayDialog: React.FC<DayDialogProps> = ({day, count, closeDialog}) => {
 				))}
 			</ul>
 			<div className="flex p-2 pl-0 text-sm">
-				{count && (
+				{createdHabitsCount && (
 					<details className="mt-8">
-						<summary title={`${count} habit(s) added this day`}>NEW: {count}</summary>
+						<summary title={`${createdHabitsCount} habit(s) added this day`}>
+							NEW: {createdHabitsCount}
+						</summary>
 						<p>Habit(s) added this day:</p>
 						<ul className="mt-2">
 							{habitsAddedAtGivenDay.map(habit => (
