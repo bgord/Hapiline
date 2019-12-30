@@ -306,7 +306,7 @@ describe("Habit", () => {
 		cy.findByText("Cancel");
 		cy.findByText("Save").click();
 		cy.findByText("Name updated successfully!");
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.findByText("0 lorem xxx");
 		cy.findByText("0 lorem").should("not.exist");
@@ -321,7 +321,7 @@ describe("Habit", () => {
 		cy.findByText("Save").should("not.exist");
 		cy.findByText("Cancel").should("not.exist");
 		cy.findAllByText("Name updated successfully!");
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.findByText("1 loremlorem yyy");
 		cy.findByText("1 loremlorem").should("not.exist");
@@ -415,7 +415,7 @@ describe("Habit", () => {
 				.click();
 		});
 
-		cy.get(".h-full").within(() => {
+		cy.findByRole("dialog").within(() => {
 			cy.findByDisplayValue("neutral").select("positive");
 			cy.findByText("×").click();
 		});
@@ -457,7 +457,7 @@ describe("Habit", () => {
 				.click();
 		});
 
-		cy.get(".h-full").within(() => {
+		cy.findByRole("dialog").within(() => {
 			cy.findByDisplayValue("neutral").select("positive");
 			cy.findByText("×").click();
 		});
@@ -604,7 +604,7 @@ describe("Habit", () => {
 
 		cy.findByDisplayValue("developing").select("established");
 		cy.findAllByText("Habit strength changed successfully!");
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("established").should("have.length", 5);
