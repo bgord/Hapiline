@@ -13,6 +13,7 @@ const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add vote");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -108,4 +109,25 @@ test("validation", async ({client}) => {
 
 		assertValidationError({response, argErrors});
 	}
+});
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+	const today = new Date();
+
+	const payload = {day: today};
+
+	const queryString = qs.stringify(payload);
+
+	const response = await client
+		.get(`${GET_DAY_VOTES_URL}?${queryString}`)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assert.equal(response.body[0].habit_id, 2);
+	assert.equal(response.body[0].vote, HABIT_VOTE_TYPES.plateau);
+
+	assert.equal(response.body[1].habit_id, 4);
+	assert.equal(response.body[1].vote, HABIT_VOTE_TYPES.regress);
 });
