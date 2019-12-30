@@ -5,7 +5,7 @@ import React from "react";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
-import {useRequestErrors} from "./hooks/useRequestErrors";
+import {getRequestErrors} from "./selectors/getRequestErrors";
 
 export const RegistrationWindow: React.FC = () => {
 	const [email, setEmail] = React.useState("");
@@ -15,8 +15,10 @@ export const RegistrationWindow: React.FC = () => {
 	const registrationRequestState = Async.useAsync({
 		deferFn: api.auth.register,
 	});
-	const {responseStatus, errorMessage, getArgError} = useRequestErrors(registrationRequestState);
-	const emailInlineError = getArgError("email");
+	const {responseStatus, errorMessage, getArgErrorMessage} = getRequestErrors(
+		registrationRequestState,
+	);
+	const emailInlineErrorMessage = getArgErrorMessage("email");
 
 	return (
 		<div className="bg-white rounded shadow-lg p-8 md:max-w-sm md:mx-auto ">
@@ -43,7 +45,7 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 					/>
 					<Async.IfRejected state={registrationRequestState}>
-						<ErrorMessage>{emailInlineError?.message}</ErrorMessage>
+						<ErrorMessage>{emailInlineErrorMessage}</ErrorMessage>
 					</Async.IfRejected>
 				</div>
 				<div className="field-group mb-6 md:w-full">

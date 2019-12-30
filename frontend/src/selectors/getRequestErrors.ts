@@ -1,9 +1,9 @@
-import * as Async from "react-async";
 import {AxiosResponse} from "axios";
+import * as Async from "react-async";
 
 import {ApiError, ApiErrorInterface, ArgError} from "../services/api";
 
-type getArgErrorType = (path: string) => ArgError | undefined;
+type getArgErrorMessageType = (path: string) => ArgError["message"] | undefined;
 
 interface BasicResponseError {
 	responseStatus: AxiosResponse["status"];
@@ -13,25 +13,33 @@ interface BasicResponseError {
 }
 
 interface ResponseError extends Partial<BasicResponseError> {
-	getArgError: getArgErrorType;
+	getArgErrorMessage: getArgErrorMessageType;
 }
 
-export function useRequestErrors<T>(state: Async.AsyncState<T>): ResponseError {
-	const error = state.error as ApiError | undefined;
+export function extractRequestErrors(_error: Error | undefined): Partial<BasicResponseError> {
+	const error = _error as ApiError | undefined;
 
 	const responseStatus = error?.response?.status;
 	const errorCode = error?.response?.data?.code;
 	const errorMessage = error?.response?.data?.message;
 	const argErrors = error?.response?.data?.argErrors;
 
-	const getArgError: getArgErrorType = field =>
-		argErrors?.find(argError => argError.field === field);
-
 	return {
 		responseStatus,
 		errorCode,
 		errorMessage,
 		argErrors,
-		getArgError,
+	};
+}
+
+export function getRequestErrors<T>(state: Async.AsyncState<T>): ResponseError {
+	const basicResponseError = extractRequestErrors(state.error);
+
+	const getArgErrorMessage: getArgErrorMessageType = field =>
+		basicResponseError.argErrors?.find(argError => argError.field === field)?.message;
+
+	return {
+		...basicResponseError,
+		getArgErrorMessage,
 	};
 }

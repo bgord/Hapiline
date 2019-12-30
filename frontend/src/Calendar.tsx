@@ -5,8 +5,15 @@ import {BareButton} from "./BareButton";
 import {Day} from "./Day";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
+import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
-import {useRequestErrors} from "./hooks/useRequestErrors";
+
+const habitDialogGrid: React.CSSProperties = {
+	display: "grid",
+	gridTemplateColumns: "repeat(7, 200px)",
+	gridTemplateRows: "repeat(6, 120px)",
+	gridGap: "3px",
+};
 
 export const Calendar: React.FC = () => {
 	const [widget, date, monthOffset] = useMonthsWidget();
@@ -17,19 +24,12 @@ export const Calendar: React.FC = () => {
 		watch: monthOffset,
 	});
 
-	const {errorMessage} = useRequestErrors(getMonthRequestState);
+	const {errorMessage} = getRequestErrors(getMonthRequestState);
 
 	const days = widget.givenMonthDays.map(entry => ({
 		...entry,
 		...getMonthRequestState.data?.find(item => item.day === entry.day),
 	}));
-
-	const habitDialogGrid: React.CSSProperties = {
-		display: "grid",
-		gridTemplateColumns: "repeat(7, 200px)",
-		gridTemplateRows: "repeat(6, 120px)",
-		gridGap: "3px",
-	};
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto">
@@ -48,8 +48,8 @@ export const Calendar: React.FC = () => {
 			<ul style={habitDialogGrid}>
 				{days.map(props => (
 					<Day
-						refreshCalendar={getMonthRequestState.reload}
 						key={props.day.toString()}
+						refreshCalendar={getMonthRequestState.reload}
 						{...props}
 					/>
 				))}

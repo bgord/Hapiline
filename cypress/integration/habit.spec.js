@@ -396,7 +396,7 @@ describe("Habit", () => {
 		cy.findByText("Cancel");
 		cy.findByText(errorMessage);
 
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
 	});

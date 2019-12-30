@@ -3,10 +3,10 @@ import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
-import {api, ApiError} from "./services/api";
+import {api} from "./services/api";
+import {extractRequestErrors, getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
 export const AddHabitForm: React.FC = () => {
@@ -29,16 +29,16 @@ export const AddHabitForm: React.FC = () => {
 			getHabitsRequestState.reload();
 			triggerSuccessNotification("Habit successfully addedd!");
 		},
-		onReject: _error => {
-			const error = _error as ApiError;
-			if (error.response?.status === 500) {
+		onReject: error => {
+			const {responseStatus} = extractRequestErrors(error);
+			if (responseStatus === 500) {
 				triggerUnexpectedErrorNotification("Habit couldn't be added.");
 			}
 		},
 	});
 
-	const {getArgError, errorMessage} = useRequestErrors(addHabitRequestState);
-	const nameInlineError = getArgError("name");
+	const {getArgErrorMessage, errorMessage} = getRequestErrors(addHabitRequestState);
+	const nameInlineErrorMessage = getArgErrorMessage("name");
 
 	return (
 		<>
@@ -98,7 +98,7 @@ export const AddHabitForm: React.FC = () => {
 				</button>
 			</form>
 			<Async.IfRejected state={addHabitRequestState}>
-				<ErrorMessage className="mt-4">{nameInlineError?.message || errorMessage}</ErrorMessage>
+				<ErrorMessage className="mt-4">{nameInlineErrorMessage || errorMessage}</ErrorMessage>
 			</Async.IfRejected>
 		</>
 	);
