@@ -43,7 +43,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 				<CloseButton onClick={closeDialog} />
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
-			<ul>
+			<ul data-testid="day-dialog-habits">
 				{habitsAvailableAtGivenDay.map(habit => (
 					<li
 						key={habit.id}
