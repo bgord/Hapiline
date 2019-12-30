@@ -1,16 +1,31 @@
 import {Dialog} from "@reach/dialog";
 import {isBefore, isSameDay} from "date-fns";
+import * as Async from "react-async";
 import React from "react";
 
 import {DialogCloseButton} from "./CloseButton";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
 import {Stat} from "./Stat";
+import {api} from "./services/api";
 import {useHabits} from "./contexts/habits-context";
+import {useNotification} from "./contexts/notifications-context";
 
 type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}) => {
 	const habits = useHabits();
+	const [triggerErrorNotification] = useNotification();
+
+	const getDayVotesRequestState = Async.useAsync({
+		promiseFn: api.calendar.getDay,
+		day,
+		onReject: () =>
+			triggerErrorNotification({
+				type: "error",
+				message: "Couldn't fetch habit votes.",
+			}),
+	});
+	const dayVotes = getDayVotesRequestState.data ?? [];
 
 	const habitsAvailableAtThisDay = habits.filter(habit => {
 		const createdAtDate = new Date(habit.created_at);
@@ -36,25 +51,33 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
-				{habitsAvailableAtThisDay.map(habit => (
-					<li
-						key={habit.id}
-						className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4"
-					>
-						<div>{habit.name}</div>
-						<div>
-							<button className="py-2 px-4 bg-white" type="button">
-								+
-							</button>
-							<button className="py-2 px-4 ml-2 bg-white" type="button">
-								=
-							</button>
-							<button className="py-2 px-4 ml-2 bg-white" type="button">
-								-
-							</button>
-						</div>
-					</li>
-				))}
+				{habitsAvailableAtThisDay.map(habit => {
+					const habitVote = dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
+
+					const progressButtonBg = habitVote === "progress" ? "bg-green-300" : "bg-white";
+					const plateauButtonBg = habitVote === "plateau" ? "bg-gray-300" : "bg-white";
+					const regressButtonBg = habitVote === "regress" ? "bg-red-300" : "bg-white";
+
+					return (
+						<li
+							key={habit.id}
+							className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4"
+						>
+							<div>{habit.name}</div>
+							<div>
+								<button className={`py-2 px-4 ${progressButtonBg}`} type="button">
+									+
+								</button>
+								<button className={`py-2 px-4 ${plateauButtonBg}`} type="button">
+									=
+								</button>
+								<button className={`py-2 px-4 ${regressButtonBg}`} type="button">
+									-
+								</button>
+							</div>
+						</li>
+					);
+				})}
 			</ul>
 			<div className="flex flex-end pl-0 text-sm mt-8">
 				{stats.createdHabitsCount && (

@@ -17,7 +17,7 @@ import {
 	registrationRequest,
 	verifyEmailRequest,
 } from "./auth";
-import {getMonthRequest} from "./calendar";
+import {getDayRequest, getMonthRequest} from "./calendar";
 
 declare const process: {
 	env: {
@@ -63,5 +63,6 @@ export const api = {
 	},
 	calendar: {
 		getMonth: getMonthRequest,
+		getDay: getDayRequest,
 	},
 };
