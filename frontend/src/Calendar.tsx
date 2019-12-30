@@ -86,13 +86,13 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 				<div className="flex p-2 text-sm">
 					{stats.createdHabitsCount && <span>NEW: {stats.createdHabitsCount} |</span>}
 					{stats.progressVotesCountStats !== undefined && (
-						<span className="ml-2 bg-green-200">+ {stats.progressVotesCountStats}</span>
+						<span className="ml-2 bg-green-200">{`+${stats.progressVotesCountStats}`}</span>
 					)}
 					{stats.plateauVotesCountStats !== undefined && (
-						<span className="ml-2 bg-green-200">= {stats.plateauVotesCountStats}</span>
+						<span className="ml-2 bg-green-200">{`=${stats.plateauVotesCountStats}`}</span>
 					)}
 					{stats.regressVotesCountStats !== undefined && (
-						<span className="ml-2 bg-green-200">- {stats.regressVotesCountStats}</span>
+						<span className="ml-2 bg-green-200">{`-${stats.regressVotesCountStats}`}</span>
 					)}
 				</div>
 			</li>

@@ -31,7 +31,15 @@ describe("Calendar", () => {
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findByText("NEW: 4 |");
+
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("NEW: 4 |");
+					cy.findByText("+2");
+					cy.findByText("=1");
+					cy.findByText("-1");
+				});
 		});
 
 		cy.findByText("Previous").click();

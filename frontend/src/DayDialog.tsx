@@ -72,21 +72,17 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 				)}
 				{stats.progressVotesCountStats !== undefined && (
 					<span className="ml-2 bg-green-200 px-2 self-start">
-						+ {stats.progressVotesCountStats}
+						+{stats.progressVotesCountStats}
 					</span>
 				)}
 				{stats.plateauVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">
-						= {stats.plateauVotesCountStats}
-					</span>
+					<span className="ml-2 bg-green-200 px-2 self-start">={stats.plateauVotesCountStats}</span>
 				)}
 				{stats.regressVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">
-						- {stats.regressVotesCountStats}
-					</span>
+					<span className="ml-2 bg-green-200 px-2 self-start">-{stats.regressVotesCountStats}</span>
 				)}
 				{stats.nullVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">? {stats.nullVotesCountStats}</span>
+					<span className="ml-2 bg-green-200 px-2 self-start">?{stats.nullVotesCountStats}</span>
 				)}
 			</div>
 		</Dialog>
