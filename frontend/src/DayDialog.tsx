@@ -52,26 +52,67 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitsAvailableAtThisDay.map(habit => {
+					const [triggerSuccessNotification] = useNotification();
+					const [triggerErrorNotification] = useNotification();
+
+					const addHabitDayVoteRequestState = Async.useAsync({
+						deferFn: api.habit.addHabitDayVote,
+						onResolve: () => {
+							triggerSuccessNotification({
+								type: "success",
+								message: "Habit vote added successfully!",
+							});
+						},
+						onReject: () => {
+							triggerErrorNotification({
+								type: "error",
+								message: "Error while changing habit vote.",
+							});
+						},
+					});
 					const habitVote = dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
 
 					const progressButtonBg = habitVote === "progress" ? "bg-green-300" : "bg-white";
 					const plateauButtonBg = habitVote === "plateau" ? "bg-gray-300" : "bg-white";
 					const regressButtonBg = habitVote === "regress" ? "bg-red-300" : "bg-white";
 
+					const payload = {day: new Date(day), habit_id: habit.id};
+
 					return (
 						<li
 							key={habit.id}
 							className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4"
 						>
-							<div>{habit.name}</div>
+							<span>{habit.name}</span>
 							<div>
-								<button className={`py-2 px-4 ${progressButtonBg}`} type="button">
+								<button
+									onClick={() => {
+										const nextVote = habitVote === "progress" ? null : "progress";
+										addHabitDayVoteRequestState.run({...payload, vote: nextVote});
+									}}
+									className={`py-2 px-4 ${progressButtonBg}`}
+									type="button"
+								>
 									+
 								</button>
-								<button className={`py-2 px-4 ${plateauButtonBg}`} type="button">
+								<button
+									onClick={() => {
+										const nextVote = habitVote === "plateau" ? null : "plateau";
+										addHabitDayVoteRequestState.run({...payload, vote: nextVote});
+									}}
+									className={`py-2 px-4 ${plateauButtonBg}`}
+									type="button"
+								>
 									=
 								</button>
-								<button className={`py-2 px-4 ${regressButtonBg}`} type="button">
+								<button
+									onClick={() => {
+										const nextVote = habitVote === "regress" ? null : "regress";
+										addHabitDayVoteRequestState.run({...payload, vote: nextVote});
+									}}
+									className={`py-2 px-4 ${regressButtonBg}`}
+									type="button"
+								>
 									-
 								</button>
 							</div>

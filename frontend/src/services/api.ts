@@ -1,6 +1,7 @@
 import axios, {AxiosError} from "axios";
 
 import {
+	addHabitDayVoteRequest,
 	addHabitRequest,
 	deleteHabitRequest,
 	getHabitRequest,
@@ -51,6 +52,7 @@ export const api = {
 		patch: patchHabitRequest,
 		show: getHabitRequest,
 		reorder: reorderHabitsRequest,
+		addHabitDayVote: addHabitDayVoteRequest,
 	},
 	auth: {
 		login: loginRequest,

@@ -32,3 +32,6 @@ export const patchHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
 
 export const reorderHabitsRequest: Async.DeferFn<void> = ([reorderHabitsPayload]) =>
 	_internal_api.patch("/reorder-habits", reorderHabitsPayload).then(response => response.data);
+
+export const addHabitDayVoteRequest: Async.DeferFn<void> = ([habitDayVotePayload]) =>
+	_internal_api.post("/vote", habitDayVotePayload).then(response => response.data);
