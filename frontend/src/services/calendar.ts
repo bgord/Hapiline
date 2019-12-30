@@ -17,12 +17,12 @@ export const getMonthRequest: Async.PromiseFn<MonthStats[]> = ({monthOffset}) =>
 		.get<MonthStats[]>(`/month?monthOffset=${monthOffset}`)
 		.then(response => response.data);
 
-type Vote = "progress" | "plateau" | "regress" | null;
+export type Vote = "progress" | "plateau" | "regress" | null;
 
-export interface DayVotes {
+export interface DayVote {
 	habit_id: IHabit["id"];
 	vote: Vote;
 }
 
-export const getDayRequest: Async.PromiseFn<DayVotes[]> = ({day}) =>
-	_internal_api.get<DayVotes[]>(`/day-votes?day=${day}`).then(response => response.data);
+export const getDayRequest: Async.PromiseFn<DayVote[]> = ({day}) =>
+	_internal_api.get<DayVote[]>(`/day-votes?day=${day}`).then(response => response.data);

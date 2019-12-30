@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {DayVotes} from "./services/calendar";
+import {DayVote} from "./services/calendar";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useNotification} from "./contexts/notifications-context";
@@ -9,13 +9,13 @@ import {useNotification} from "./contexts/notifications-context";
 interface DayDialogHabitVoteListProps {
 	habit: IHabit;
 	day: string;
-	dayVotes: DayVotes[];
+	vote: DayVote["vote"] | undefined;
 	onResolve: VoidFunction;
 }
 
 export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> = ({
 	onResolve,
-	dayVotes,
+	vote,
 	habit,
 	day,
 }) => {
@@ -38,11 +38,9 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 			});
 		},
 	});
-	const habitVote = dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
-
-	const progressButtonBg = habitVote === "progress" ? "bg-green-300" : "bg-white";
-	const plateauButtonBg = habitVote === "plateau" ? "bg-gray-300" : "bg-white";
-	const regressButtonBg = habitVote === "regress" ? "bg-red-300" : "bg-white";
+	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
+	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
+	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
 
 	const payload = {day: new Date(day), habit_id: habit.id};
 
@@ -52,7 +50,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 			<div>
 				<button
 					onClick={() => {
-						const nextVote = habitVote === "progress" ? null : "progress";
+						const nextVote = vote === "progress" ? null : "progress";
 						addHabitDayVoteRequestState.run({...payload, vote: nextVote});
 					}}
 					className={`py-2 px-4 ${progressButtonBg}`}
@@ -63,7 +61,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 				</button>
 				<button
 					onClick={() => {
-						const nextVote = habitVote === "plateau" ? null : "plateau";
+						const nextVote = vote === "plateau" ? null : "plateau";
 						addHabitDayVoteRequestState.run({...payload, vote: nextVote});
 					}}
 					className={`py-2 px-4 ${plateauButtonBg}`}
@@ -74,7 +72,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 				</button>
 				<button
 					onClick={() => {
-						const nextVote = habitVote === "regress" ? null : "regress";
+						const nextVote = vote === "regress" ? null : "regress";
 						addHabitDayVoteRequestState.run({...payload, vote: nextVote});
 					}}
 					className={`py-2 px-4 ${regressButtonBg}`}

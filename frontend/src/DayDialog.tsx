@@ -4,6 +4,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
+import {DayVote, Vote} from "./services/calendar";
 import {DialogCloseButton} from "./CloseButton";
 import {IHabit} from "./interfaces/IHabit";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
@@ -35,10 +36,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 				message: "Couldn't fetch habit votes.",
 			}),
 	});
-	const dayVotes = getDayVotesRequestState.data ?? [];
 
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
-
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
@@ -54,7 +53,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 					<DayDialogHabitVoteListItem
 						habit={habit}
 						day={day}
-						dayVotes={dayVotes}
+						vote={getDayVoteForHabit(getDayVotesRequestState, habit)}
 						onResolve={() => {
 							refreshCalendar();
 							getDayVotesRequestState.reload();
@@ -101,4 +100,12 @@ function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHab
 
 		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
 	});
+}
+
+function getDayVoteForHabit(
+	getDayVotesRequestState: Async.AsyncState<DayVote[]>,
+	habit: IHabit,
+): Vote | undefined {
+	const dayVotes = getDayVotesRequestState.data ?? [];
+	return dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
 }
