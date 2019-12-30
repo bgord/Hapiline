@@ -8,15 +8,7 @@ import {useHabits} from "./contexts/habits-context";
 
 type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
 
-export const DayDialog: React.FC<DayDialogProps> = ({
-	day,
-	createdHabitsCount,
-	progressVotesCountStats,
-	plateauVotesCountStats,
-	regressVotesCountStats,
-	nullVotesCountStats,
-	closeDialog,
-}) => {
+export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}) => {
 	const getHabitsRequestState = useHabits();
 	const habits = getHabitsRequestState?.data ?? [];
 
@@ -65,10 +57,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 				))}
 			</ul>
 			<div className="flex pl-0 text-sm mt-8">
-				{createdHabitsCount && (
+				{stats.createdHabitsCount && (
 					<details>
-						<summary title={`${createdHabitsCount} habit(s) added this day`}>
-							NEW: {createdHabitsCount}
+						<summary title={`${stats.createdHabitsCount} habit(s) added this day`}>
+							NEW: {stats.createdHabitsCount}
 						</summary>
 						<p>Habit(s) added this day:</p>
 						<ul className="mt-2">
@@ -78,17 +70,23 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 						</ul>
 					</details>
 				)}
-				{progressVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2">+ {progressVotesCountStats}</span>
+				{stats.progressVotesCountStats !== undefined && (
+					<span className="ml-2 bg-green-200 px-2 self-start">
+						+ {stats.progressVotesCountStats}
+					</span>
 				)}
-				{plateauVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2">= {plateauVotesCountStats}</span>
+				{stats.plateauVotesCountStats !== undefined && (
+					<span className="ml-2 bg-green-200 px-2 self-start">
+						= {stats.plateauVotesCountStats}
+					</span>
 				)}
-				{regressVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2">- {regressVotesCountStats}</span>
+				{stats.regressVotesCountStats !== undefined && (
+					<span className="ml-2 bg-green-200 px-2 self-start">
+						- {stats.regressVotesCountStats}
+					</span>
 				)}
-				{nullVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2">? {nullVotesCountStats}</span>
+				{stats.nullVotesCountStats !== undefined && (
+					<span className="ml-2 bg-green-200 px-2 self-start">? {stats.nullVotesCountStats}</span>
 				)}
 			</div>
 		</Dialog>
