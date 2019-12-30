@@ -1,4 +1,4 @@
-import {isToday} from "date-fns";
+import {isBefore, isSameDay, isToday} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 import useHover from "@react-hook/hover";
@@ -8,6 +8,7 @@ import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useHabits} from "./contexts/habits-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
 export const Calendar: React.FC = () => {
@@ -67,10 +68,24 @@ export const Calendar: React.FC = () => {
 };
 
 const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
+	const habits = useHabits();
 	const [isHovering, ref] = useHover();
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
+	const thisDay = new Date(day);
 	const isGivenDayToday = isToday(new Date(day));
+
+	const habitsAvailableAtThisDay = habits.filter(
+		habit =>
+			isBefore(new Date(habit.created_at), thisDay) ||
+			isSameDay(new Date(habit.created_at), thisDay),
+	).length;
+
+	const noVotesCountStats: number =
+		habitsAvailableAtThisDay -
+		(stats.progressVotesCountStats ?? 0) -
+		(stats.plateauVotesCountStats ?? 0) -
+		(stats.regressVotesCountStats ?? 0);
 
 	return (
 		<>
@@ -94,6 +109,7 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 					{stats.regressVotesCountStats !== undefined && (
 						<span className="ml-2 bg-green-200">{`-${stats.regressVotesCountStats}`}</span>
 					)}
+					<span className="ml-2 bg-green-200">{`?${noVotesCountStats}`}</span>
 				</div>
 			</li>
 			{showDialog && <DayDialog day={day} closeDialog={closeDialog} {...stats} />}

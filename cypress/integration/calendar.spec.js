@@ -39,6 +39,7 @@ describe("Calendar", () => {
 					cy.findByText("+2");
 					cy.findByText("=1");
 					cy.findByText("-1");
+					cy.findByText("?6");
 				});
 		});
 
