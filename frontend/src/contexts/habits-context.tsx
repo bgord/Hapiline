@@ -23,10 +23,18 @@ export const HabitsProvider: React.FC = props => {
 	return <HabitsContext.Provider value={getHabitsRequestState} {...props} />;
 };
 
-export function useHabits() {
+export function useHabitsState() {
 	const context = React.useContext(HabitsContext);
 	if (context === undefined) {
 		throw new Error(`useHabits must be used within the HabitsContext`);
 	}
 	return context;
+}
+
+export function useHabits() {
+	const context = React.useContext(HabitsContext);
+	if (context === undefined) {
+		throw new Error(`useHabits must be used within the HabitsContext`);
+	}
+	return context?.data ?? [];
 }

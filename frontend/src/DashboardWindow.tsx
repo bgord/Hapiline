@@ -6,11 +6,11 @@ import {ErrorMessage} from "./ErrorMessages";
 import {HabitList} from "./HabitList";
 import {HabitsSummary} from "./HabitsSummary";
 import {InfoMessage} from "./InfoMessage";
-import {useHabits} from "./contexts/habits-context";
+import {useHabitsState} from "./contexts/habits-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 
 export const Dashboard = () => {
-	const getHabitsRequestState = useHabits();
+	const getHabitsRequestState = useHabitsState();
 	const {errorMessage} = useRequestErrors(getHabitsRequestState);
 	const habits = getHabitsRequestState?.data ?? [];
 

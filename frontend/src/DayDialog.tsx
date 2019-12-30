@@ -9,8 +9,7 @@ import {useHabits} from "./contexts/habits-context";
 type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}) => {
-	const getHabitsRequestState = useHabits();
-	const habits = getHabitsRequestState?.data ?? [];
+	const habits = useHabits();
 
 	const habitsAvailableAtGivenDay = habits.filter(habit => {
 		const createdAtDate = new Date(habit.created_at);

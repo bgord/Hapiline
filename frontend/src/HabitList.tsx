@@ -7,11 +7,11 @@ import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
-import {useHabits} from "./contexts/habits-context";
+import {useHabitsState} from "./contexts/habits-context";
 import {useNotification} from "./contexts/notifications-context";
 
 export const HabitList: React.FC = () => {
-	const getHabitsRequestState = useHabits();
+	const getHabitsRequestState = useHabitsState();
 	const habits = getHabitsRequestState?.data ?? [];
 
 	const [triggerSuccessNotification] = useNotification();

@@ -10,7 +10,7 @@ import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
-import {useHabits} from "./contexts/habits-context";
+import {useHabitsState} from "./contexts/habits-context";
 import {useNotification} from "./contexts/notifications-context";
 
 interface Props {
@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const HabitItemDialog: React.FC<Props> = ({habitId, closeDialog}) => {
-	const getHabitsRequestState = useHabits();
+	const getHabitsRequestState = useHabitsState();
 
 	const [triggerErrorNotification] = useNotification();
 
