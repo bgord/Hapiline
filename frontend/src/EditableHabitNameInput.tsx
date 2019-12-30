@@ -5,7 +5,7 @@ import {ApiError, api} from "./services/api";
 import {BareButton} from "./BareButton";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
-import {useNotification} from "./contexts/notifications-context";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
 type Props = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
@@ -18,30 +18,23 @@ export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}
 
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
 			blurInput();
-			triggerSuccessNotification({
-				type: "success",
-				message: "Name updated successfully!",
-			});
+			triggerSuccessNotification("Name updated successfully!");
 			setHabitItem(habit);
 		},
 		onReject: _error => {
 			const error = _error as ApiError;
-
 			const inlineNameError = error?.response?.data.argErrors.find(
 				argError => argError.field === "name",
 			)?.message;
 
-			triggerErrorNotification({
-				type: "error",
-				message: inlineNameError || "Error while chaning name.",
-			});
+			triggerErrorNotification(inlineNameError || "Error while chaning name.");
 		},
 	});
 

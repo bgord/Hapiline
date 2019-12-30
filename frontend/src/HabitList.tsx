@@ -8,30 +8,20 @@ import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useNotification} from "./contexts/notifications-context";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
 	const habits = getHabitsRequestState?.data ?? [];
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const reorderHabitsRequestState = Async.useAsync({
 		deferFn: api.habit.reorder,
-		onResolve: () => {
-			triggerSuccessNotification({
-				type: "success",
-				message: "Habits reordered successfully!",
-			});
-		},
-		onReject: () => {
-			triggerErrorNotification({
-				type: "error",
-				message: "Error while changing order.",
-			});
-		},
+		onResolve: () => triggerSuccessNotification("Habits reordered successfully!"),
+		onReject: () => triggerErrorNotification("Error while changing order."),
 	});
 
 	function onDragEnd(result: DropResult) {

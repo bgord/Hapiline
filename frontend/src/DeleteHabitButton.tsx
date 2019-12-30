@@ -6,8 +6,8 @@ import {BareButton} from "./BareButton";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useNotification} from "./contexts/notifications-context";
 
 export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
@@ -15,24 +15,18 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const deleteHabitRequestState = Async.useAsync({
 		deferFn: api.habit.delete,
 		onResolve: () => {
 			getHabitsRequestState.reload();
-			triggerSuccessNotification({
-				type: "success",
-				message: "Habit successfully deleted!",
-			});
+			triggerSuccessNotification("Habit successfully deleted!");
 		},
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Couldn't delete habit.",
-			}),
+		onReject: () => triggerErrorNotification("Couldn't delete habit."),
 	});
+
 	return (
 		<>
 			<BareButton onClick={openDialog} className="text-red-500">

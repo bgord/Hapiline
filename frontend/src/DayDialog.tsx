@@ -10,8 +10,8 @@ import {IHabit} from "./interfaces/IHabit";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
 import {Stat} from "./Stat";
 import {api} from "./services/api";
+import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits} from "./contexts/habits-context";
-import {useNotification} from "./contexts/notifications-context";
 
 type DayDialogProps = Omit<MonthDayProps, "styles"> & {
 	closeDialog: VoidFunction;
@@ -25,16 +25,12 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 	...stats
 }) => {
 	const habits = useHabits();
-	const [triggerErrorNotification] = useNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const getDayVotesRequestState = Async.useAsync({
 		promiseFn: api.calendar.getDay,
 		day,
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Couldn't fetch habit votes.",
-			}),
+		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
 
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);

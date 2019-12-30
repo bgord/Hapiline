@@ -3,22 +3,18 @@ import React from "react";
 
 import {IHabit} from "../interfaces/IHabit";
 import {api} from "../services/api";
-import {useNotification} from "./notifications-context";
+import {useErrorNotification} from "./notifications-context";
 
 type HabitsContext = Async.AsyncState<IHabit[]> | undefined;
 
 const HabitsContext = React.createContext<HabitsContext>(undefined);
 
 export const HabitsProvider: React.FC = props => {
-	const [triggerErrorNotification] = useNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: api.habit.get,
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Couldn't fetch habit list.",
-			}),
+		onReject: () => triggerErrorNotification("Couldn't fetch habit list."),
 	});
 	return <HabitsContext.Provider value={getHabitsRequestState} {...props} />;
 };

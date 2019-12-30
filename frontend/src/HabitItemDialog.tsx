@@ -10,8 +10,8 @@ import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
+import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useNotification} from "./contexts/notifications-context";
 
 interface Props {
 	habitId: IHabit["id"];
@@ -21,16 +21,12 @@ interface Props {
 export const HabitItemDialog: React.FC<Props> = ({habitId, closeDialog}) => {
 	const getHabitsRequestState = useHabitsState();
 
-	const [triggerErrorNotification] = useNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const singleItemRequestState = Async.useAsync({
 		promiseFn: api.habit.show,
 		id: habitId,
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Fetching task details failed.",
-			}),
+		onReject: () => triggerErrorNotification("Fetching task details failed."),
 	});
 
 	const habitDialogGrid: React.CSSProperties = {

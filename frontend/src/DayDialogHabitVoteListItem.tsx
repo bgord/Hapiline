@@ -4,7 +4,7 @@ import React from "react";
 import {DayVote} from "./services/calendar";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useNotification} from "./contexts/notifications-context";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
 interface DayDialogHabitVoteListProps {
 	habit: IHabit;
@@ -19,24 +19,16 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	habit,
 	day,
 }) => {
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const addHabitDayVoteRequestState = Async.useAsync({
 		deferFn: api.habit.addHabitDayVote,
 		onResolve: () => {
-			triggerSuccessNotification({
-				type: "success",
-				message: "Habit vote added successfully!",
-			});
+			triggerSuccessNotification("Habit vote added successfully!");
 			onResolve();
 		},
-		onReject: () => {
-			triggerErrorNotification({
-				type: "error",
-				message: "Error while changing habit vote.",
-			});
-		},
+		onReject: () => triggerErrorNotification("Error while changing habit vote."),
 	});
 	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
 	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";

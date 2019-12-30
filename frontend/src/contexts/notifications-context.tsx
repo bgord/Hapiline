@@ -83,3 +83,13 @@ export function useNotification(timeout = 5000) {
 
 	return [triggerNotification];
 }
+
+export function useSuccessNotification() {
+	const [triggerNotification] = useNotification();
+	return (message: Notification["message"]) => triggerNotification({type: "success", message});
+}
+
+export function useErrorNotification() {
+	const [triggerNotification] = useNotification();
+	return (message: Notification["message"]) => triggerNotification({type: "error", message});
+}
