@@ -1,11 +1,18 @@
 const ace = require("@adonisjs/ace");
+const datefns = require("date-fns");
+const qs = require("qs");
 
-const {assertInvalidSession, assertAccessDenied} = require("../helpers/assert-errors");
+const {
+	assertAccessDenied,
+	assertInvalidSession,
+	assertValidationError,
+} = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add vote");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -47,4 +54,58 @@ test("account-status:(active)", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
+});
+
+test("validation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const cases = [
+		[
+			{},
+			[
+				{
+					message: VALIDATION_MESSAGES.required("day"),
+					field: "day",
+					validation: "required",
+				},
+			],
+		],
+		[
+			{day: "xxx"},
+			[
+				{
+					message: VALIDATION_MESSAGES.date("day"),
+					field: "day",
+					validation: "date",
+				},
+				{
+					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
+					field: "day",
+					validation: "before",
+				},
+			],
+		],
+		[
+			{day: datefns.addDays(new Date(), 5)},
+			[
+				{
+					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
+					field: "day",
+					validation: "before",
+				},
+			],
+		],
+	];
+
+	for (const [payload, argErrors] of cases) {
+		const queryString = qs.stringify(payload);
+
+		const response = await client
+			.get(`${GET_DAY_VOTES_URL}?${queryString}`)
+			.send(payload)
+			.loginVia(jim)
+			.end();
+
+		assertValidationError({response, argErrors});
+	}
 });
