@@ -1,4 +1,4 @@
-import {isBefore, isSameDay, isToday} from "date-fns";
+import {isBefore, isFuture, isSameDay, isToday} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 import useHover from "@react-hook/hover";
@@ -73,7 +73,8 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
 
 	const thisDay = new Date(day);
-	const isGivenDayToday = isToday(new Date(day));
+	const isThisDayToday = isToday(new Date(day));
+	const isThisDayInTheFuture = isFuture(thisDay);
 
 	const habitsAvailableAtThisDay = habits.filter(
 		habit =>
@@ -87,6 +88,8 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 		(stats.plateauVotesCountStats ?? 0) -
 		(stats.regressVotesCountStats ?? 0);
 
+	const shouldDayDialogBeAvailable = !isThisDayInTheFuture;
+
 	return (
 		<>
 			<li
@@ -94,25 +97,34 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 				style={styles}
 				ref={ref as React.Ref<HTMLLIElement>}
 			>
-				<span className={`text-center w-full pt-2 ${isGivenDayToday && "font-bold"}`}>{day}</span>
-				<button hidden={!isHovering} type="button" className="py-1 uppercase" onClick={openDialog}>
-					show day
-				</button>
-				<div className="flex p-2 text-sm">
-					{stats.createdHabitsCount && <span>NEW: {stats.createdHabitsCount} |</span>}
-					{stats.progressVotesCountStats !== undefined && (
-						<span className="ml-2 bg-green-200">{`+${stats.progressVotesCountStats}`}</span>
-					)}
-					{stats.plateauVotesCountStats !== undefined && (
-						<span className="ml-2 bg-green-200">{`=${stats.plateauVotesCountStats}`}</span>
-					)}
-					{stats.regressVotesCountStats !== undefined && (
-						<span className="ml-2 bg-green-200">{`-${stats.regressVotesCountStats}`}</span>
-					)}
-					<span className="ml-2 bg-green-200">{`?${noVotesCountStats}`}</span>
-				</div>
+				<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
+				{shouldDayDialogBeAvailable && (
+					<>
+						<button
+							hidden={!isHovering}
+							type="button"
+							className="py-1 uppercase"
+							onClick={openDialog}
+						>
+							show day
+						</button>
+						<div className="flex p-2 text-sm">
+							{stats.createdHabitsCount && <span>NEW: {stats.createdHabitsCount} |</span>}
+							{stats.progressVotesCountStats !== undefined && (
+								<span className="ml-2 bg-green-200">{`+${stats.progressVotesCountStats}`}</span>
+							)}
+							{stats.plateauVotesCountStats !== undefined && (
+								<span className="ml-2 bg-green-200">{`=${stats.plateauVotesCountStats}`}</span>
+							)}
+							{stats.regressVotesCountStats !== undefined && (
+								<span className="ml-2 bg-green-200">{`-${stats.regressVotesCountStats}`}</span>
+							)}
+							<span className="ml-2 bg-green-200">{`?${noVotesCountStats}`}</span>
+						</div>
+						{showDialog && <DayDialog day={day} closeDialog={closeDialog} {...stats} />}
+					</>
+				)}
 			</li>
-			{showDialog && <DayDialog day={day} closeDialog={closeDialog} {...stats} />}
 		</>
 	);
 };
