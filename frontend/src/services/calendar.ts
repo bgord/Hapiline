@@ -19,7 +19,7 @@ export const getMonthRequest: Async.PromiseFn<MonthStats[]> = ({monthOffset}) =>
 
 type Vote = "progress" | "plateau" | "regress" | null;
 
-interface DayVotes {
+export interface DayVotes {
 	habit_id: IHabit["id"];
 	vote: Vote;
 }
