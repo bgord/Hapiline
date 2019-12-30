@@ -47,7 +47,11 @@ export const Calendar: React.FC = () => {
 			</Async.IfRejected>
 			<ul style={habitDialogGrid}>
 				{days.map(props => (
-					<Day key={props.day.toString()} {...props} />
+					<Day
+						refreshCalendar={getMonthRequestState.reload}
+						key={props.day.toString()}
+						{...props}
+					/>
 				))}
 			</ul>
 		</section>

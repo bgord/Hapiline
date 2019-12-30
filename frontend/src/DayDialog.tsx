@@ -10,9 +10,17 @@ import {api} from "./services/api";
 import {useHabits} from "./contexts/habits-context";
 import {useNotification} from "./contexts/notifications-context";
 
-type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
+type DayDialogProps = Omit<MonthDayProps, "styles"> & {
+	closeDialog: VoidFunction;
+	refreshCalendar: VoidFunction;
+};
 
-export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}) => {
+export const DayDialog: React.FC<DayDialogProps> = ({
+	day,
+	closeDialog,
+	refreshCalendar,
+	...stats
+}) => {
 	const habits = useHabits();
 	const [triggerErrorNotification] = useNotification();
 
@@ -62,6 +70,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 								type: "success",
 								message: "Habit vote added successfully!",
 							});
+							refreshCalendar();
+							getDayVotesRequestState.reload();
 						},
 						onReject: () => {
 							triggerErrorNotification({
@@ -92,6 +102,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 									}}
 									className={`py-2 px-4 ${progressButtonBg}`}
 									type="button"
+									disabled={addHabitDayVoteRequestState.isPending}
 								>
 									+
 								</button>
@@ -102,6 +113,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 									}}
 									className={`py-2 px-4 ${plateauButtonBg}`}
 									type="button"
+									disabled={addHabitDayVoteRequestState.isPending}
 								>
 									=
 								</button>
@@ -112,6 +124,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 									}}
 									className={`py-2 px-4 ${regressButtonBg}`}
 									type="button"
+									disabled={addHabitDayVoteRequestState.isPending}
 								>
 									-
 								</button>

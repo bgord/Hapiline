@@ -9,7 +9,12 @@ import {Stat} from "./Stat";
 import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
 
-export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
+export const Day: React.FC<MonthDayProps & {refreshCalendar: VoidFunction}> = ({
+	day,
+	styles,
+	refreshCalendar,
+	...stats
+}) => {
 	const habits = useHabits();
 	const [isHovering, ref] = useHover();
 	const [showDialog, openDialog, closeDialog] = useDialog();
@@ -59,6 +64,7 @@ export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 								day={day}
 								closeDialog={closeDialog}
 								noVotesCountStats={noVotesCountStats}
+								refreshCalendar={refreshCalendar}
 								{...stats}
 							/>
 						)}
