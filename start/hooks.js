@@ -1,3 +1,5 @@
+/* eslint-disable max-params */
+
 const {hooks} = require("@adonisjs/ignitor");
 
 hooks.after.providersBooted(() => {

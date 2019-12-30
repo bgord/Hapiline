@@ -1,3 +1,4 @@
+/* eslint-disable */
 const datefns = require("date-fns");
 
 const Database = use("Database");

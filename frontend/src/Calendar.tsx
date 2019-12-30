@@ -110,7 +110,7 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 						</button>
 						<div className="flex justify-end p-2 text-sm">
 							{stats.createdHabitsCount && (
-								<span className="mr-auto">NEW: {stats.createdHabitsCount} |</span>
+								<span className="mr-auto">NEW: {stats.createdHabitsCount}</span>
 							)}
 							{stats.progressVotesCountStats !== undefined && (
 								<span className="ml-2 bg-green-200">{`+${stats.progressVotesCountStats}`}</span>
@@ -123,7 +123,14 @@ const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 							)}
 							<span className="ml-2 bg-green-200">{`?${noVotesCountStats}`}</span>
 						</div>
-						{showDialog && <DayDialog day={day} closeDialog={closeDialog} {...stats} />}
+						{showDialog && (
+							<DayDialog
+								day={day}
+								closeDialog={closeDialog}
+								noVotesCountStats={noVotesCountStats}
+								{...stats}
+							/>
+						)}
 					</>
 				)}
 			</li>

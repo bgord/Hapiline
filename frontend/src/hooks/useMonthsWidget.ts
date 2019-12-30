@@ -8,7 +8,7 @@ export type MonthDayProps = {
 	progressVotesCountStats?: number;
 	plateauVotesCountStats?: number;
 	regressVotesCountStats?: number;
-	nullVotesCountStats?: number;
+	noVotesCountStats?: number;
 };
 
 export type MonthsWidgetProps = [

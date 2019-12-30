@@ -35,7 +35,7 @@ describe("Calendar", () => {
 			cy.get("li")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("NEW: 4 |");
+					cy.findByText("NEW: 4");
 					cy.findByText("+2");
 					cy.findByText("=1");
 					cy.findByText("-1");
@@ -55,14 +55,14 @@ describe("Calendar", () => {
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findByText("NEW: 4 |");
+			cy.findByText("NEW: 4");
 		});
 
 		cy.findByText("Next").click();
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findByText("NEW: 4 |");
+			cy.findByText("NEW: 4");
 		});
 	});
 
@@ -94,14 +94,11 @@ describe("Calendar", () => {
 		cy.visit(CALENDAR_URL);
 
 		cy.get("ul").within(() => {
-			cy.findAllByText("show day")
-				.should("have.length", daysInCurrentMonth)
-				.should("not.be.visible");
-
-			cy.findAllByText("show day")
-				// today
+			cy.get("li")
 				.eq(currentDate - 1)
-				.click({force: true});
+				.within(() => {
+					cy.findByText("show day").click({force: true});
+				});
 		});
 
 		cy.findByRole("dialog").within(() => {
