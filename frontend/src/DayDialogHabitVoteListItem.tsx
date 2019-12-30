@@ -30,6 +30,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		},
 		onReject: () => triggerErrorNotification("Error while changing habit vote."),
 	});
+
 	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
 	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
 	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
@@ -37,14 +38,16 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	const payload = {day: new Date(day), habit_id: habit.id};
 
 	return (
-		<li key={habit.id} className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4">
+		<li className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4">
 			<span>{habit.name}</span>
 			<div>
 				<button
-					onClick={() => {
-						const nextVote = vote === "progress" ? null : "progress";
-						addHabitDayVoteRequestState.run({...payload, vote: nextVote});
-					}}
+					onClick={() =>
+						addHabitDayVoteRequestState.run({
+							...payload,
+							vote: vote === "progress" ? null : "progress",
+						})
+					}
 					className={`py-2 px-4 ${progressButtonBg}`}
 					type="button"
 					disabled={addHabitDayVoteRequestState.isPending}
@@ -52,10 +55,12 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					+
 				</button>
 				<button
-					onClick={() => {
-						const nextVote = vote === "plateau" ? null : "plateau";
-						addHabitDayVoteRequestState.run({...payload, vote: nextVote});
-					}}
+					onClick={() =>
+						addHabitDayVoteRequestState.run({
+							...payload,
+							vote: vote === "plateau" ? null : "plateau",
+						})
+					}
 					className={`py-2 px-4 ${plateauButtonBg}`}
 					type="button"
 					disabled={addHabitDayVoteRequestState.isPending}
@@ -63,10 +68,12 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					=
 				</button>
 				<button
-					onClick={() => {
-						const nextVote = vote === "regress" ? null : "regress";
-						addHabitDayVoteRequestState.run({...payload, vote: nextVote});
-					}}
+					onClick={() =>
+						addHabitDayVoteRequestState.run({
+							...payload,
+							vote: vote === "regress" ? null : "regress",
+						})
+					}
 					className={`py-2 px-4 ${regressButtonBg}`}
 					type="button"
 					disabled={addHabitDayVoteRequestState.isPending}
