@@ -34,7 +34,7 @@ export const Calendar: React.FC = () => {
 		<section className="flex flex-col items-center p-8 mx-auto">
 			<div className="flex mb-16">
 				<button
-					className="px-2"
+					className="px-2 uppercase"
 					type="button"
 					onClick={widget.setPreviousMonth}
 					disabled={getMonthRequestState.isPending}
@@ -43,7 +43,7 @@ export const Calendar: React.FC = () => {
 				</button>
 				<div className="mx-8 w-32">{date}</div>
 				<button
-					className="px-2"
+					className="px-2 uppercase"
 					type="button"
 					onClick={widget.setNextMonth}
 					disabled={getMonthRequestState.isPending}

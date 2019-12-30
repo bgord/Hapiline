@@ -6,6 +6,7 @@ import {DayDialog} from "./DayDialog";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
 import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
+import {Stat} from "./Stat";
 
 export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 	const habits = useHabits();
@@ -49,19 +50,13 @@ export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 							show day
 						</button>
 						<div className="flex justify-end p-2 text-sm">
-							{stats.createdHabitsCount && (
-								<span className="mr-auto">NEW: {stats.createdHabitsCount}</span>
-							)}
-							{stats.progressVotesCountStats !== undefined && (
-								<span className="ml-2 bg-green-200">{`+${stats.progressVotesCountStats}`}</span>
-							)}
-							{stats.plateauVotesCountStats !== undefined && (
-								<span className="ml-2 bg-green-200">{`=${stats.plateauVotesCountStats}`}</span>
-							)}
-							{stats.regressVotesCountStats !== undefined && (
-								<span className="ml-2 bg-green-200">{`-${stats.regressVotesCountStats}`}</span>
-							)}
-							<span className="ml-2 bg-green-200">{`?${noVotesCountStats}`}</span>
+							<span hidden={!stats.createdHabitsCount} className="mr-auto">
+								NEW: {stats.createdHabitsCount}
+							</span>
+							<Stat count={stats.progressVotesCountStats} sign="+" />
+							<Stat count={stats.plateauVotesCountStats} sign="=" />
+							<Stat count={stats.regressVotesCountStats} sign="-" />
+							<Stat count={noVotesCountStats} sign="?" hidden={false} />
 						</div>
 						{showDialog && (
 							<DayDialog

@@ -2,8 +2,9 @@ import {Dialog} from "@reach/dialog";
 import {isBefore, isSameDay} from "date-fns";
 import React from "react";
 
-import {CloseButton} from "./CloseButton";
+import {DialogCloseButton} from "./CloseButton";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
+import {Stat} from "./Stat";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
@@ -31,7 +32,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 		<Dialog aria-label="Show day preview">
 			<div className="flex justify-between items-baseline">
 				<strong>{day}</strong>
-				<CloseButton onClick={closeDialog} />
+				<DialogCloseButton onClick={closeDialog} />
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
@@ -69,20 +70,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 						</ul>
 					</details>
 				)}
-				{stats.progressVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">
-						+{stats.progressVotesCountStats}
-					</span>
-				)}
-				{stats.plateauVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">={stats.plateauVotesCountStats}</span>
-				)}
-				{stats.regressVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">-{stats.regressVotesCountStats}</span>
-				)}
-				{stats.noVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">?{stats.noVotesCountStats}</span>
-				)}
+				<Stat count={stats.progressVotesCountStats} sign="+" />
+				<Stat count={stats.plateauVotesCountStats} sign="=" />
+				<Stat count={stats.regressVotesCountStats} sign="-" />
+				<Stat count={stats.noVotesCountStats} sign="?" />
 			</div>
 		</Dialog>
 	);
