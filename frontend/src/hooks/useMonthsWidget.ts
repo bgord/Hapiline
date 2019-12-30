@@ -4,7 +4,11 @@ import React from "react";
 export type MonthDayProps = {
 	day: string;
 	styles: {gridColumnStart: number | undefined};
-	count?: number;
+	createdHabitsCount?: number;
+	progressVotesCountStats?: number;
+	plateauVotesCountStats?: number;
+	regressVotesCountStats?: number;
+	noVotesCountStats?: number;
 };
 
 export type MonthsWidgetProps = [

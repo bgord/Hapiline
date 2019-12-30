@@ -1,15 +1,11 @@
-import {Dialog} from "@reach/dialog";
-import {isToday} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
-import useHover from "@react-hook/hover";
 
-import {CloseButton} from "./CloseButton";
-import {MonthDayProps, useMonthsWidget} from "./hooks/useMonthsWidget";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
-import {useDialog} from "./hooks/useDialog";
+import {useMonthsWidget} from "./hooks/useMonthsWidget";
 import {useRequestErrors} from "./hooks/useRequestErrors";
+import {Day} from "./Day";
 
 export const Calendar: React.FC = () => {
 	const [widget, date, monthOffset] = useMonthsWidget();
@@ -24,7 +20,7 @@ export const Calendar: React.FC = () => {
 
 	const days = widget.givenMonthDays.map(entry => ({
 		...entry,
-		count: getMonthRequestState.data?.find(item => item.day === entry.day)?.count,
+		...getMonthRequestState.data?.find(item => item.day === entry.day),
 	}));
 
 	const habitDialogGrid: React.CSSProperties = {
@@ -64,37 +60,5 @@ export const Calendar: React.FC = () => {
 				))}
 			</ul>
 		</section>
-	);
-};
-
-const Day: React.FC<MonthDayProps> = ({day, styles, count}) => {
-	const [isHovering, ref] = useHover();
-	const [showDialog, openDialog, closeDialog] = useDialog();
-
-	const isGivenDayToday = isToday(new Date(day));
-
-	return (
-		<>
-			<li
-				className="flex flex-col justify-between align-center bg-green-100 hover:bg-green-200"
-				style={styles}
-				ref={ref as React.Ref<HTMLLIElement>}
-			>
-				<span className={`text-center w-full pt-2 ${isGivenDayToday && "font-bold"}`}>{day}</span>
-				<button hidden={!isHovering} type="button" className="py-1 uppercase" onClick={openDialog}>
-					show day
-				</button>
-				<div className="flex p-2 text-sm">{count && <span>NEW: {count}</span>}</div>
-			</li>
-			{showDialog && (
-				<Dialog aria-label="Show day preview">
-					<div className="flex justify-between items-baseline">
-						<strong>{day}</strong>
-						<CloseButton onClick={closeDialog} />
-					</div>
-					<div className="flex p-2 pl-0 text-sm">{count && <span>NEW: {count}</span>}</div>
-				</Dialog>
-			)}
-		</>
 	);
 };

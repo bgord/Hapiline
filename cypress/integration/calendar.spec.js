@@ -20,6 +20,8 @@ describe("Calendar", () => {
 	});
 
 	it("navigating through months", () => {
+		cy.viewport(1700, 1700);
+
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -29,8 +31,16 @@ describe("Calendar", () => {
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findAllByText("NEW: 3").should("have.length", 2);
-			cy.findByText("NEW: 4");
+
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("NEW: 4");
+					cy.findByText("+2");
+					cy.findByText("=1");
+					cy.findByText("-1");
+					cy.findByText("?6");
+				});
 		});
 
 		cy.findByText("Previous").click();
@@ -45,7 +55,6 @@ describe("Calendar", () => {
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findAllByText("NEW: 3").should("have.length", 2);
 			cy.findByText("NEW: 4");
 		});
 
@@ -53,7 +62,6 @@ describe("Calendar", () => {
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findAllByText("NEW: 3").should("have.length", 2);
 			cy.findByText("NEW: 4");
 		});
 	});
@@ -86,33 +94,19 @@ describe("Calendar", () => {
 		cy.visit(CALENDAR_URL);
 
 		cy.get("ul").within(() => {
-			cy.findAllByText("show day")
-				.should("have.length", daysInCurrentMonth)
-				.should("not.be.visible");
-
-			cy.findAllByText("show day")
+			cy.get("li")
 				.eq(currentDate - 1)
-				.click({force: true});
+				.within(() => {
+					cy.findByText("show day").click({force: true});
+				});
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByTestId("day-dialog-habits").within(() => {
+				cy.get("li").should("have.length", 10);
+			});
+
 			cy.findByText("NEW: 4");
-			cy.findByText("×").click();
-		});
-		cy.findByRole("dialog").should("not.exist");
-
-		cy.get("ul").within(() => {
-			cy.findAllByText("show day")
-				.should("have.length", daysInCurrentMonth)
-				.should("not.be.visible");
-
-			cy.findAllByText("show day")
-				.eq(currentDate - 2)
-				.click({force: true});
-		});
-
-		cy.findByRole("dialog").within(() => {
-			cy.findByText("NEW: 3");
 			cy.findByText("×").click();
 		});
 		cy.findByRole("dialog").should("not.exist");

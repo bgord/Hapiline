@@ -130,9 +130,27 @@ test("full flow", async ({client, assert}) => {
 	const theDayBeforeYesterday = datefns.format(datefns.subDays(new Date(today), 2), "yyyy-MM-dd");
 
 	assert.deepEqual(response.body, [
-		{day: theDayBeforeYesterday, count: 6},
-		{day: yesterday, count: 7},
-		{day: today, count: 7},
+		{
+			day: theDayBeforeYesterday,
+			createdHabitsCount: 6,
+			progressVotesCountStats: 2,
+			plateauVotesCountStats: 0,
+			regressVotesCountStats: 1,
+		},
+		{
+			day: yesterday,
+			createdHabitsCount: 7,
+			progressVotesCountStats: 0,
+			plateauVotesCountStats: 4,
+			regressVotesCountStats: 0,
+		},
+		{
+			day: today,
+			createdHabitsCount: 7,
+			progressVotesCountStats: 3,
+			plateauVotesCountStats: 1,
+			regressVotesCountStats: 4,
+		},
 	]);
 });
 

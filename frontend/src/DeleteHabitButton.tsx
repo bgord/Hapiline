@@ -5,14 +5,12 @@ import React from "react";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useHabitsState} from "./contexts/habits-context";
 import {useNotification} from "./contexts/notifications-context";
 
-interface DeleteButtonProps extends IHabit {
-	refreshList: VoidFunction;
-}
-
-export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({id, name, refreshList}) => {
+export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
+	const getHabitsRequestState = useHabitsState();
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
@@ -22,7 +20,7 @@ export const DeleteHabitButton: React.FC<DeleteButtonProps> = ({id, name, refres
 	const deleteHabitRequestState = Async.useAsync({
 		deferFn: api.habit.delete,
 		onResolve: () => {
-			refreshList();
+			getHabitsRequestState.reload();
 			triggerSuccessNotification({
 				type: "success",
 				message: "Habit successfully deleted!",

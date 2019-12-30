@@ -58,6 +58,7 @@ const aliases = {
 	Role: "Adonis/Acl/Role",
 	Permission: "Adonis/Acl/Permission",
 	Habit: "App/Models/Habit",
+	HabitVote: "App/Models/HabitVote",
 
 	// constants
 	ROLE_NAMES: "App/Constants/ROLE_NAMES",
@@ -71,6 +72,7 @@ const aliases = {
 	MAIN_ERROR_MESSAGES: "App/Constants/MAIN_ERROR_MESSAGES",
 	HABIT_SCORE_TYPES: "App/Constants/HABIT_SCORE_TYPES",
 	HABIT_STRENGTH_TYPES: "App/Constants/HABIT_STRENGTH_TYPES",
+	HABIT_VOTE_TYPES: "App/Constants/HABIT_VOTE_TYPES",
 
 	// validators
 	BaseHttpValidator: "App/Validators/BaseHttpValidator",

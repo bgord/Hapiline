@@ -1,16 +1,17 @@
-import {api, ApiError} from "./services/api";
-
 import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
+import {api, ApiError} from "./services/api";
+import {useHabitsState} from "./contexts/habits-context";
 import {useNotification} from "./contexts/notifications-context";
 import {useRequestErrors} from "./hooks/useRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
-export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({refreshList}) => {
+export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
+	const getHabitsRequestState = useHabitsState();
 
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("neutral");
@@ -25,7 +26,7 @@ export const AddHabitForm: React.FC<{refreshList: VoidFunction}> = ({refreshList
 			setName("");
 			setScore("neutral");
 			setStrength("established");
-			refreshList();
+			getHabitsRequestState.reload();
 			triggerSuccessNotification({
 				type: "success",
 				message: "Habit successfully addedd!",
