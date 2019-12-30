@@ -2,11 +2,12 @@ import {isBefore, isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
+import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
+import {Stat} from "./Stat";
 import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
-import {Stat} from "./Stat";
 
 export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 	const habits = useHabits();
@@ -41,14 +42,9 @@ export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 				<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
 				{isDayDialogBeAvailable && (
 					<>
-						<button
-							hidden={!isHovering}
-							type="button"
-							className="py-1 uppercase"
-							onClick={openDialog}
-						>
-							show day
-						</button>
+						<BareButton hidden={!isHovering} onClick={openDialog}>
+							Show day
+						</BareButton>
 						<div className="flex justify-end p-2 text-sm">
 							<span hidden={!stats.createdHabitsCount} className="mr-auto">
 								NEW: {stats.createdHabitsCount}

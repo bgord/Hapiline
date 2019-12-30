@@ -2,6 +2,7 @@ import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {BareButton} from "./BareButton";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
@@ -32,18 +33,11 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 				message: "Couldn't delete habit.",
 			}),
 	});
-	const textColor = deleteHabitRequestState.isPending ? "text-gray-900" : "text-red-500";
-
 	return (
 		<>
-			<button
-				onClick={openDialog}
-				type="button"
-				className={`uppercase px-4 text-sm font-semibold  inline ${textColor}`}
-				disabled={deleteHabitRequestState.isPending}
-			>
+			<BareButton onClick={openDialog} className="text-red-500">
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
-			</button>
+			</BareButton>
 			{showDialog && (
 				<AlertDialog
 					className="w-1/3"

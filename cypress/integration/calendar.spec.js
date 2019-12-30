@@ -97,7 +97,7 @@ describe("Calendar", () => {
 			cy.get("li")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("show day").click({force: true});
+					cy.findByText("Show day").click({force: true});
 				});
 		});
 

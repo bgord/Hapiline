@@ -2,6 +2,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ApiError, api} from "./services/api";
+import {BareButton} from "./BareButton";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {useNotification} from "./contexts/notifications-context";
@@ -44,6 +45,15 @@ export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}
 		},
 	});
 
+	const onSave = () => {
+		if (newHabitName === name) blurInput();
+		else editHabitRequestState.run(id, {name: newHabitName});
+	};
+	const onCancel = () => {
+		blurInput();
+		setNewHabitName(name);
+	};
+
 	const inputBgColor = isFocused ? "bg-gray-100" : "";
 
 	return (
@@ -66,26 +76,8 @@ export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}
 			</div>
 			{isFocused && (
 				<div className="flex">
-					<button
-						onClick={() => {
-							if (newHabitName === name) blurInput();
-							else editHabitRequestState.run(id, {name: newHabitName});
-						}}
-						className="uppercase mr-4"
-						type="button"
-					>
-						Save
-					</button>
-					<button
-						onClick={() => {
-							blurInput();
-							setNewHabitName(name);
-						}}
-						className="uppercase"
-						type="button"
-					>
-						Cancel
-					</button>
+					<BareButton onClick={onSave}>Save</BareButton>
+					<BareButton onClick={onCancel}>Cancel</BareButton>
 				</div>
 			)}
 		</div>

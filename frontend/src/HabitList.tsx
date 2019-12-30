@@ -2,6 +2,7 @@ import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful
 import * as Async from "react-async";
 import React from "react";
 
+import {BareButton} from "./BareButton";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
@@ -100,9 +101,7 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 					<div className="flex justify-between w-full">
 						<div className="p-2 bg-gray-100 ml-2 w-full">{habit.name}</div>
 						<div className="flex ml-4">
-							<button type="button" className="uppercase" onClick={openDialog}>
-								more
-							</button>
+							<BareButton onClick={openDialog}>More</BareButton>
 							<DeleteHabitButton {...habit} />
 						</div>
 					</div>

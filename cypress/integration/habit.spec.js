@@ -164,7 +164,7 @@ describe("Habit", () => {
 		cy.findByText("Couldn't fetch habit list.");
 	});
 
-	it("deleting items", () => {
+	it.only("deleting items", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -265,7 +265,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -278,7 +278,7 @@ describe("Habit", () => {
 			cy.findByText("×").click();
 		});
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.eq(1)
 			.click();
 
@@ -298,7 +298,7 @@ describe("Habit", () => {
 
 		// "Save" flow
 		cy.findByText("0 lorem xxx").should("not.exist");
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -313,7 +313,7 @@ describe("Habit", () => {
 
 		// // Enter flow
 		cy.findByText("1 loremlorem yyy").should("not.exist");
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.eq(1)
 			.click();
 
@@ -331,7 +331,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -354,7 +354,7 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("0 lorem xxx").should("not.exist");
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -386,7 +386,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -410,7 +410,7 @@ describe("Habit", () => {
 			cy.findAllByText("neutral").should("have.length", 3);
 			cy.findAllByText("negative").should("have.length", 3);
 
-			cy.findAllByText("more")
+			cy.findAllByText("More")
 				.eq(1)
 				.click();
 		});
@@ -452,7 +452,7 @@ describe("Habit", () => {
 			cy.findAllByText("neutral").should("have.length", 3);
 			cy.findAllByText("negative").should("have.length", 3);
 
-			cy.findAllByText("more")
+			cy.findAllByText("More")
 				.eq(1)
 				.click();
 		});
@@ -597,7 +597,7 @@ describe("Habit", () => {
 			cy.findAllByText("fresh").should("have.length", 3);
 			cy.findAllByText("developing").should("have.length", 3);
 
-			cy.findAllByText("more")
+			cy.findAllByText("More")
 				.eq(1)
 				.click();
 		});
