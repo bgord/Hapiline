@@ -164,7 +164,7 @@ describe("Habit", () => {
 		cy.findByText("Couldn't fetch habit list.");
 	});
 
-	it.only("deleting items", () => {
+	it("deleting items", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 

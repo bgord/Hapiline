@@ -12,7 +12,8 @@ class HabitVotesSchema extends Schema {
 				.references("id")
 				.inTable("habits")
 				.unsigned()
-				.notNullable();
+				.notNullable()
+				.onDelete("cascade");
 			table.enum("vote", votes);
 			table.date("day").notNullable();
 			table.timestamps();
