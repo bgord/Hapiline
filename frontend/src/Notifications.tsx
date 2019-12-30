@@ -1,25 +1,34 @@
+import {useTransition, animated} from "react-spring";
+import Alert from "@reach/alert";
 import React from "react";
 
-import Alert from "@reach/alert";
-import {useTransition, animated} from "react-spring";
+import {CloseButton} from "./CloseButton";
+import {
+	Notification,
+	useNotificationDispatch,
+	useNotificationState,
+} from "./contexts/notifications-context";
 
-import {useNotificationState, Notification} from "./contexts/notifications-context";
+const NotificationItem: React.FC<Notification> = ({id, type, message}) => {
+	const dispatch = useNotificationDispatch();
 
-const NotificationItem: React.FC<Notification> = ({type, message}) => {
 	const typeToBgColor = {
 		success: "green",
 		info: "blue",
 		error: "red",
 	};
 
+	const removeNotification = () => dispatch({type: "remove", id});
+
 	return (
 		<Alert
 			style={{
 				minWidth: "350px",
 			}}
-			className={`relative flex justify-between bg-${typeToBgColor[type]}-300 p-4 mt-4`}
+			className={`relative flex justify-between items-center bg-${typeToBgColor[type]}-300 p-3 mt-4`}
 		>
 			{message}
+			<CloseButton onClick={removeNotification} />
 		</Alert>
 	);
 };

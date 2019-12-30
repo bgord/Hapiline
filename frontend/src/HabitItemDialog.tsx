@@ -3,7 +3,7 @@ import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
-import {DialogCloseButton} from "./CloseButton";
+import {CloseButton} from "./CloseButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
@@ -52,7 +52,7 @@ export const HabitItemDialog: React.FC<Props> = ({habitId, closeDialog}) => {
 			{singleItemRequestState?.data?.id && (
 				<div style={habitDialogGrid}>
 					<strong style={{gridColumn: "span 3", alignSelf: "center"}}>Habit preview</strong>
-					<DialogCloseButton
+					<CloseButton
 						onClick={() => {
 							closeDialog();
 							getHabitsRequestState.reload();

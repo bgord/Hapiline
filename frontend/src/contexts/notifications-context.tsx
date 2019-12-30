@@ -57,11 +57,16 @@ export function useNotificationState() {
 	return state;
 }
 
-export function useNotification(timeout = 5000) {
+export function useNotificationDispatch() {
 	const dispatch = React.useContext(NotificationsDispatchContext);
 	if (dispatch === undefined) {
-		throw new Error(`useNotificationsDispatch must be used within the NotificationProvider`);
+		throw new Error(`useNotificationsState must be used within the NotificationProvider`);
 	}
+	return dispatch;
+}
+
+export function useNotification(timeout = 5000) {
+	const dispatch = useNotificationDispatch();
 
 	const triggerNotification = (notification: Omit<Notification, "id">): void => {
 		const id = Date.now();

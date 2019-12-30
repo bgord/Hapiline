@@ -5,7 +5,7 @@ import React from "react";
 
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DayVote, Vote} from "./services/calendar";
-import {DialogCloseButton} from "./CloseButton";
+import {CloseButton} from "./CloseButton";
 import {IHabit} from "./interfaces/IHabit";
 import {MonthDayProps} from "./hooks/useMonthsWidget";
 import {Stat} from "./Stat";
@@ -41,12 +41,13 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 		<Dialog aria-label="Show day preview">
 			<div className="flex justify-between items-baseline">
 				<strong>{day}</strong>
-				<DialogCloseButton onClick={closeDialog} />
+				<CloseButton onClick={closeDialog} />
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitsAvailableAtThisDay.map(habit => (
 					<DayDialogHabitVoteListItem
+						key={habit.id}
 						habit={habit}
 						day={day}
 						vote={getDayVoteForHabit(getDayVotesRequestState, habit)}
