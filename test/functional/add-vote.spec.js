@@ -1,4 +1,5 @@
 const ace = require("@adonisjs/ace");
+const datefns = require("date-fns");
 
 const {
 	assertInvalidSession,
@@ -6,13 +7,12 @@ const {
 	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
-const datefns = require("date-fns");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add vote");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
+const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
-const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -240,4 +240,22 @@ test("full flow for existing habit vote", async ({client, assert}) => {
 	assert.equal(response.body.habit_id, payload.habit_id);
 	assert.ok(datefns.isSameDay(new Date(response.body.day), payload.day));
 	assert.equal(response.body.vote, payload.vote);
+});
+
+test("full flow for habit created today", async ({client}) => {
+	const dwight = await User.find(users.dwight.id);
+
+	const payload = {
+		habit_id: 15,
+		day: new Date(datefns.format(new Date(), "yyyy-MM-dd")),
+		vote: HABIT_VOTE_TYPES.regress,
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(payload)
+		.loginVia(dwight)
+		.end();
+
+	response.assertStatus(200);
 });

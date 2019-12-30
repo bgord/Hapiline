@@ -17,7 +17,10 @@ class VoteController {
 		const habitCreationDate = new Date(habit.created_at);
 		const dayDate = new Date(day);
 
-		if (datefns.isEqual(habitCreationDate, dayDate) || datefns.isAfter(habitCreationDate, dayDate))
+		if (
+			datefns.isAfter(habitCreationDate, dayDate) &&
+			!datefns.isSameDay(habitCreationDate, dayDate)
+		) {
 			return response.validationError({
 				argErrors: [
 					{
@@ -27,6 +30,7 @@ class VoteController {
 					},
 				],
 			});
+		}
 
 		const habitVoteForGivenDate = await HabitVote.findBy({habit_id, day});
 
