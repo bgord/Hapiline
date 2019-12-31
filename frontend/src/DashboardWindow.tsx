@@ -6,13 +6,14 @@ import {ErrorMessage} from "./ErrorMessages";
 import {HabitList} from "./HabitList";
 import {HabitsSummary} from "./HabitsSummary";
 import {InfoMessage} from "./InfoMessage";
-import {useHabitsState} from "./contexts/habits-context";
-import {useRequestErrors} from "./hooks/useRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {useHabits, useHabitsState} from "./contexts/habits-context";
 
 export const Dashboard = () => {
+	const habits = useHabits();
 	const getHabitsRequestState = useHabitsState();
-	const {errorMessage} = useRequestErrors(getHabitsRequestState);
-	const habits = getHabitsRequestState?.data ?? [];
+
+	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto max-w-4xl">

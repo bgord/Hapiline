@@ -97,7 +97,7 @@ describe("Calendar", () => {
 			cy.get("li")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("show day").click({force: true});
+					cy.findByText("Show day").click({force: true});
 				});
 		});
 
@@ -107,8 +107,63 @@ describe("Calendar", () => {
 			});
 
 			cy.findByText("NEW: 4");
+			cy.findByText("+2");
+			cy.findByText("=1");
+			cy.findByText("-1");
+			cy.findByText("?6");
+
 			cy.findByText("×").click();
 		});
 		cy.findByRole("dialog").should("not.exist");
+	});
+
+	it("habit votes", () => {
+		cy.viewport(1700, 1700);
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.get("ul").within(() => {
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("Show day").click({force: true});
+				});
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("+2");
+			cy.findByText("=1");
+			cy.findByText("-1");
+			cy.findByText("?6");
+
+			cy.findAllByText("+")
+				.first()
+				.click();
+
+			cy.findByText("+3");
+			cy.findByText("=1");
+			cy.findByText("-1");
+			cy.findByText("?5");
+
+			cy.findAllByText("+")
+				.first()
+				.click();
+
+			cy.findByText("+2");
+			cy.findByText("=1");
+			cy.findByText("-1");
+			cy.findByText("?6");
+
+			cy.findAllByText("-")
+				.eq(2)
+				.click();
+
+			cy.findByText("+2");
+			cy.findByText("=1");
+			cy.findByText("-0");
+			cy.findByText("?7");
+		});
+
+		cy.findAllByText("Habit vote added successfully!");
 	});
 });

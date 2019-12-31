@@ -3,32 +3,29 @@ import React from "react";
 
 import {IHabit, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useNotification} from "./contexts/notifications-context";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
-type Props = IHabit & {
+type EditableHabitStrengthSelectProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitStrengthSelect: React.FC<Props> = ({id, strength, setHabitItem}) => {
+export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectProps> = ({
+	id,
+	strength,
+	setHabitItem,
+}) => {
 	const [newHabitStrength, setNewHabitStrength] = React.useState<IHabit["strength"]>(strength);
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
-			triggerSuccessNotification({
-				type: "success",
-				message: "Habit strength changed successfully!",
-			});
+			triggerSuccessNotification("Habit strength changed successfully!");
 			setHabitItem(habit);
 		},
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Habit strength couldn't be changed.",
-			}),
+		onReject: () => triggerErrorNotification("Habit strength couldn't be changed."),
 	});
 
 	const bgColor = strengthToBgColor[strength];

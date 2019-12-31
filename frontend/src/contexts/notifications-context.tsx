@@ -1,21 +1,17 @@
 import React from "react";
 
-export interface Notification {
-	id: number;
-	type: "success" | "error" | "info";
-	message: string;
-}
+import {INotification} from "../interfaces/INotification";
 
-type State = Notification[];
+type State = INotification[];
 
 type Action =
 	| {
 			type: "add";
-			notification: Notification;
+			notification: INotification;
 	  }
 	| {
 			type: "remove";
-			id: Notification["id"];
+			id: INotification["id"];
 	  }
 	| {
 			type: "clear";
@@ -57,13 +53,18 @@ export function useNotificationState() {
 	return state;
 }
 
-export function useNotification(timeout = 5000) {
+export function useNotificationDispatch() {
 	const dispatch = React.useContext(NotificationsDispatchContext);
 	if (dispatch === undefined) {
-		throw new Error(`useNotificationsDispatch must be used within the NotificationProvider`);
+		throw new Error(`useNotificationsState must be used within the NotificationProvider`);
 	}
+	return dispatch;
+}
 
-	const triggerNotification = (notification: Omit<Notification, "id">): void => {
+export function useNotification(timeout = 5000) {
+	const dispatch = useNotificationDispatch();
+
+	const triggerNotification = (notification: Omit<INotification, "id">): void => {
 		const id = Date.now();
 
 		dispatch({
@@ -82,4 +83,14 @@ export function useNotification(timeout = 5000) {
 	};
 
 	return [triggerNotification];
+}
+
+export function useSuccessNotification() {
+	const [triggerNotification] = useNotification();
+	return (message: INotification["message"]) => triggerNotification({type: "success", message});
+}
+
+export function useErrorNotification() {
+	const [triggerNotification] = useNotification();
+	return (message: INotification["message"]) => triggerNotification({type: "error", message});
 }

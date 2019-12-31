@@ -1,48 +1,53 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {ApiError, api} from "./services/api";
+import {BareButton} from "./BareButton";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
-import {useNotification} from "./contexts/notifications-context";
+import {api} from "./services/api";
+import {getRequestErrors} from "./selectors/getRequestErrors";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
-type Props = IHabit & {
+type EditableHabitNameInputProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}) => {
+export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
+	name,
+	id,
+	setHabitItem,
+}) => {
 	const [isFocused, setIsFocused] = React.useState(false);
 	const blurInput = () => setIsFocused(false);
 	const focusInput = () => setIsFocused(true);
 
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
 			blurInput();
-			triggerSuccessNotification({
-				type: "success",
-				message: "Name updated successfully!",
-			});
+			triggerSuccessNotification("Name updated successfully!");
 			setHabitItem(habit);
 		},
 		onReject: _error => {
-			const error = _error as ApiError;
-
-			const inlineNameError = error?.response?.data.argErrors.find(
-				argError => argError.field === "name",
-			)?.message;
-
-			triggerErrorNotification({
-				type: "error",
-				message: inlineNameError || "Error while chaning name.",
-			});
+			const {getArgErrorMessage} = getRequestErrors(_error);
+			const inlineNameErrorMessage = getArgErrorMessage("name");
+			triggerErrorNotification(inlineNameErrorMessage || "Error while chaning name.");
 		},
 	});
+
+	const onSave = () => {
+		if (newHabitName === name) blurInput();
+		else editHabitRequestState.run(id, {name: newHabitName});
+	};
+	const onCancel = () => {
+		blurInput();
+		setNewHabitName(name);
+	};
 
 	const inputBgColor = isFocused ? "bg-gray-100" : "";
 
@@ -66,26 +71,8 @@ export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}
 			</div>
 			{isFocused && (
 				<div className="flex">
-					<button
-						onClick={() => {
-							if (newHabitName === name) blurInput();
-							else editHabitRequestState.run(id, {name: newHabitName});
-						}}
-						className="uppercase mr-4"
-						type="button"
-					>
-						Save
-					</button>
-					<button
-						onClick={() => {
-							blurInput();
-							setNewHabitName(name);
-						}}
-						className="uppercase"
-						type="button"
-					>
-						Cancel
-					</button>
+					<BareButton onClick={onSave}>Save</BareButton>
+					<BareButton onClick={onCancel}>Cancel</BareButton>
 				</div>
 			)}
 		</div>

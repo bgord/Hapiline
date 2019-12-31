@@ -1,19 +1,11 @@
 import {eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths} from "date-fns";
 import React from "react";
 
-export type MonthDayProps = {
-	day: string;
-	styles: {gridColumnStart: number | undefined};
-	createdHabitsCount?: number;
-	progressVotesCountStats?: number;
-	plateauVotesCountStats?: number;
-	regressVotesCountStats?: number;
-	noVotesCountStats?: number;
-};
+import {IMonthDay} from "../interfaces/IMonthDay";
 
-export type MonthsWidgetProps = [
+type MonthsWidgetProps = [
 	{
-		givenMonthDays: MonthDayProps[];
+		givenMonthDays: IMonthDay[];
 		setPreviousMonth: VoidFunction;
 		setNextMonth: VoidFunction;
 	},

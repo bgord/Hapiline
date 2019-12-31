@@ -5,7 +5,7 @@ import React from "react";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
-import {useRequestErrors} from "./hooks/useRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
 export const NewPasswordWindow: React.FC = () => {
 	const {token} = useParams();
@@ -15,7 +15,7 @@ export const NewPasswordWindow: React.FC = () => {
 	const newPasswordRequestState = Async.useAsync({
 		deferFn: api.auth.newPassword,
 	});
-	const {errorMessage} = useRequestErrors(newPasswordRequestState);
+	const {errorMessage} = getRequestStateErrors(newPasswordRequestState);
 
 	return (
 		<div className="bg-white rounded shadow-lg p-8 md:max-w-sm md:mx-auto ">

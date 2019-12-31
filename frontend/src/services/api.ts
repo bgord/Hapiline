@@ -1,6 +1,7 @@
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 
 import {
+	addHabitDayVoteRequest,
 	addHabitRequest,
 	deleteHabitRequest,
 	getHabitRequest,
@@ -17,27 +18,13 @@ import {
 	registrationRequest,
 	verifyEmailRequest,
 } from "./auth";
-import {getMonthRequest} from "./calendar";
+import {getDayRequest, getMonthRequest} from "./calendar";
 
 declare const process: {
 	env: {
 		API_URL: string;
 	};
 };
-
-export interface ArgError {
-	field: string;
-	validation: string;
-	message: string;
-}
-
-export interface ApiErrorInterface {
-	code: string;
-	message: string;
-	argErrors: ArgError[];
-}
-
-export type ApiError = AxiosError<ApiErrorInterface>;
 
 export const _internal_api = axios.create({
 	baseURL: process.env.API_URL,
@@ -51,6 +38,7 @@ export const api = {
 		patch: patchHabitRequest,
 		show: getHabitRequest,
 		reorder: reorderHabitsRequest,
+		addHabitDayVote: addHabitDayVoteRequest,
 	},
 	auth: {
 		login: loginRequest,
@@ -63,5 +51,6 @@ export const api = {
 	},
 	calendar: {
 		getMonth: getMonthRequest,
+		getDay: getDayRequest,
 	},
 };

@@ -10,34 +10,30 @@ import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
+import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useNotification} from "./contexts/notifications-context";
 
-interface Props {
+const habitDialogGrid: React.CSSProperties = {
+	display: "grid",
+	gridTemplateColumns: "100px 125px auto 100px",
+	gridTemplateRows: "50px 100px 50px",
+};
+
+interface HabitItemDialogProps {
 	habitId: IHabit["id"];
 	closeDialog: VoidFunction;
 }
 
-export const HabitItemDialog: React.FC<Props> = ({habitId, closeDialog}) => {
+export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeDialog}) => {
 	const getHabitsRequestState = useHabitsState();
 
-	const [triggerErrorNotification] = useNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const singleItemRequestState = Async.useAsync({
 		promiseFn: api.habit.show,
 		id: habitId,
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Fetching task details failed.",
-			}),
+		onReject: () => triggerErrorNotification("Fetching task details failed."),
 	});
-
-	const habitDialogGrid: React.CSSProperties = {
-		display: "grid",
-		gridTemplateColumns: "100px 125px auto 100px",
-		gridTemplateRows: "50px 100px 50px",
-	};
 
 	return (
 		<Dialog
@@ -55,9 +51,7 @@ export const HabitItemDialog: React.FC<Props> = ({habitId, closeDialog}) => {
 			</Async.IfRejected>
 			{singleItemRequestState?.data?.id && (
 				<div style={habitDialogGrid}>
-					<h2 className="font-bold" style={{gridColumn: "span 3", alignSelf: "center"}}>
-						Habit preview
-					</h2>
+					<strong style={{gridColumn: "span 3", alignSelf: "center"}}>Habit preview</strong>
 					<CloseButton
 						onClick={() => {
 							closeDialog();

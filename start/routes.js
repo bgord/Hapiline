@@ -103,6 +103,10 @@ Route.post("/api/v1/vote", "VoteController.update")
 	.middleware(["auth", "is:(regular)", "account-status:active"])
 	.validator("UpdateVote");
 
+Route.get("/api/v1/day-votes", "DayVoteController.show")
+	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.validator("ShowDayVotes");
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {

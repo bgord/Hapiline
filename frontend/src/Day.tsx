@@ -1,13 +1,21 @@
-import {isBefore, isFuture, isSameDay, isToday} from "date-fns";
+import {isFuture, isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
+import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
-import {MonthDayProps} from "./hooks/useMonthsWidget";
+import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
+import {Stat} from "./Stat";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
 
-export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
+export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
+	day,
+	styles,
+	refreshCalendar,
+	...stats
+}) => {
 	const habits = useHabits();
 	const [isHovering, ref] = useHover();
 	const [showDialog, openDialog, closeDialog] = useDialog();
@@ -16,19 +24,8 @@ export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 	const isThisDayToday = isToday(new Date(day));
 	const isThisDayInTheFuture = isFuture(thisDay);
 
-	const habitsAvailableAtThisDay = habits.filter(
-		habit =>
-			isBefore(new Date(habit.created_at), thisDay) ||
-			isSameDay(new Date(habit.created_at), thisDay),
-	).length;
-
-	const noVotesCountStats: number =
-		habitsAvailableAtThisDay -
-		(stats.progressVotesCountStats ?? 0) -
-		(stats.plateauVotesCountStats ?? 0) -
-		(stats.regressVotesCountStats ?? 0);
-
-	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDay > 0;
+	const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(habits, thisDay).length;
+	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDayCount > 0;
 
 	return (
 		<>
@@ -40,34 +37,23 @@ export const Day: React.FC<MonthDayProps> = ({day, styles, ...stats}) => {
 				<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
 				{isDayDialogBeAvailable && (
 					<>
-						<button
-							hidden={!isHovering}
-							type="button"
-							className="py-1 uppercase"
-							onClick={openDialog}
-						>
-							show day
-						</button>
+						<BareButton hidden={!isHovering} onClick={openDialog}>
+							Show day
+						</BareButton>
 						<div className="flex justify-end p-2 text-sm">
-							{stats.createdHabitsCount && (
-								<span className="mr-auto">NEW: {stats.createdHabitsCount}</span>
-							)}
-							{stats.progressVotesCountStats !== undefined && (
-								<span className="ml-2 bg-green-200">{`+${stats.progressVotesCountStats}`}</span>
-							)}
-							{stats.plateauVotesCountStats !== undefined && (
-								<span className="ml-2 bg-green-200">{`=${stats.plateauVotesCountStats}`}</span>
-							)}
-							{stats.regressVotesCountStats !== undefined && (
-								<span className="ml-2 bg-green-200">{`-${stats.regressVotesCountStats}`}</span>
-							)}
-							<span className="ml-2 bg-green-200">{`?${noVotesCountStats}`}</span>
+							<span hidden={!stats.createdHabitsCount} className="mr-auto">
+								NEW: {stats.createdHabitsCount}
+							</span>
+							<Stat count={stats.progressVotesCountStats} sign="+" />
+							<Stat count={stats.plateauVotesCountStats} sign="=" />
+							<Stat count={stats.regressVotesCountStats} sign="-" />
+							<Stat count={stats.noVotesCountStats} sign="?" hidden={false} />
 						</div>
 						{showDialog && (
 							<DayDialog
 								day={day}
 								closeDialog={closeDialog}
-								noVotesCountStats={noVotesCountStats}
+								refreshCalendar={refreshCalendar}
 								{...stats}
 							/>
 						)}

@@ -3,34 +3,31 @@ import React from "react";
 
 import {IHabit, scoreToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useNotification} from "./contexts/notifications-context";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
 
-type Props = IHabit & {
+type EditableHabitScoreSelectProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitScoreSelect: React.FC<Props> = ({id, score, setHabitItem}) => {
+export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> = ({
+	id,
+	score,
+	setHabitItem,
+}) => {
 	const [newHabitScore, setNewHabitScore] = React.useState<IHabit["score"]>(score);
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
-			triggerSuccessNotification({
-				type: "success",
-				message: "Habit score changed successfully!",
-			});
+			triggerSuccessNotification("Habit score changed successfully!");
 			setHabitItem(habit);
 		},
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Habit score couldn't be changed.",
-			}),
+		onReject: () => triggerErrorNotification("Habit score couldn't be changed."),
 	});
 
 	const bgColor = scoreToBgColor[score];

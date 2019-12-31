@@ -2,12 +2,8 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Loader} from "../Loader";
+import {UserProfileInterface} from "../interfaces/IUserProfile";
 import {api} from "../services/api";
-
-export interface UserProfileInterface {
-	email: string;
-	id: string;
-}
 
 type UserProfileContext = [
 	UserProfileInterface | null,
@@ -18,7 +14,7 @@ const AuthContext = React.createContext<UserProfileContext>([null]);
 
 export const AuthProvider: React.FC = props => {
 	const [userProfile, setUserProfile] = React.useState<UserProfileInterface | null>(null);
-	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState<boolean>(false);
+	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
 
 	const {isSettled, data, isPending, isRejected} = Async.useAsync({
 		promiseFn: api.auth.isLoggedIn,

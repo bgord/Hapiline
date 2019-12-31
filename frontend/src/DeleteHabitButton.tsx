@@ -2,11 +2,12 @@ import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {BareButton} from "./BareButton";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useNotification} from "./contexts/notifications-context";
 
 export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 	const [showDialog, openDialog, closeDialog] = useDialog();
@@ -14,36 +15,28 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const deleteHabitRequestState = Async.useAsync({
 		deferFn: api.habit.delete,
 		onResolve: () => {
 			getHabitsRequestState.reload();
-			triggerSuccessNotification({
-				type: "success",
-				message: "Habit successfully deleted!",
-			});
+			triggerSuccessNotification("Habit successfully deleted!");
 		},
-		onReject: () =>
-			triggerErrorNotification({
-				type: "error",
-				message: "Couldn't delete habit.",
-			}),
+		onReject: () => triggerErrorNotification("Couldn't delete habit."),
 	});
-	const textColor = deleteHabitRequestState.isPending ? "text-gray-900" : "text-red-500";
+
+	function confirmDeletion() {
+		closeDialog();
+		deleteHabitRequestState.run(id);
+	}
 
 	return (
 		<>
-			<button
-				onClick={openDialog}
-				type="button"
-				className={`uppercase px-4 text-sm font-semibold  inline ${textColor}`}
-				disabled={deleteHabitRequestState.isPending}
-			>
+			<BareButton onClick={openDialog} className="text-red-500">
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
-			</button>
+			</BareButton>
 			{showDialog && (
 				<AlertDialog
 					className="w-1/3"
@@ -54,15 +47,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 					</AlertDialogLabel>
 
 					<div className="mt-12 flex justify-around w-full">
-						<button
-							type="button"
-							onClick={() => {
-								closeDialog();
-								deleteHabitRequestState.run(id);
-							}}
-						>
-							Yes, delete
-						</button>
+						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
 						<button
 							type="button"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}

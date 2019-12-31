@@ -1,29 +1,39 @@
 import {Dialog} from "@reach/dialog";
-import {isBefore, isSameDay} from "date-fns";
+import * as Async from "react-async";
 import React from "react";
 
 import {CloseButton} from "./CloseButton";
-import {MonthDayProps} from "./hooks/useMonthsWidget";
+import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
+import {DayDialogSummary} from "./DayDialogSummary";
+import {DayVoteStats} from "./interfaces/IMonthDay";
+import {IDayVote, Vote} from "./interfaces/IDayVote";
+import {IHabit} from "./interfaces/IHabit";
+import {api} from "./services/api";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
+import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits} from "./contexts/habits-context";
 
-type DayDialogProps = Omit<MonthDayProps, "styles"> & {closeDialog: VoidFunction};
+type DayDialogProps = DayVoteStats & {
+	closeDialog: VoidFunction;
+	refreshCalendar: VoidFunction;
+};
 
-export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}) => {
+export const DayDialog: React.FC<DayDialogProps> = ({
+	day,
+	closeDialog,
+	refreshCalendar,
+	...stats
+}) => {
 	const habits = useHabits();
+	const triggerErrorNotification = useErrorNotification();
 
-	const habitsAvailableAtThisDay = habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
-
-		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
+	const getDayVotesRequestState = Async.useAsync({
+		promiseFn: api.calendar.getDay,
+		day,
+		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
 
-	const habitsAddedAtThisDay = habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
-
-		return isSameDay(createdAtDate, dayDate);
-	});
+	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
@@ -36,54 +46,27 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, closeDialog, ...stats}
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitsAvailableAtThisDay.map(habit => (
-					<li
+					<DayDialogHabitVoteListItem
 						key={habit.id}
-						className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4"
-					>
-						<div>{habit.name}</div>
-						<div>
-							<button className="py-2 px-4 bg-white" type="button">
-								+
-							</button>
-							<button className="py-2 px-4 ml-2 bg-white" type="button">
-								=
-							</button>
-							<button className="py-2 px-4 ml-2 bg-white" type="button">
-								-
-							</button>
-						</div>
-					</li>
+						habit={habit}
+						day={day}
+						vote={getDayVoteForHabit(getDayVotesRequestState, habit)}
+						onResolve={() => {
+							refreshCalendar();
+							getDayVotesRequestState.reload();
+						}}
+					/>
 				))}
 			</ul>
-			<div className="flex flex-end pl-0 text-sm mt-8">
-				{stats.createdHabitsCount && (
-					<details className="mr-auto">
-						<summary title={`${stats.createdHabitsCount} habit(s) added this day`}>
-							NEW: {stats.createdHabitsCount}
-						</summary>
-						<p>Habit(s) added this day:</p>
-						<ul className="mt-2">
-							{habitsAddedAtThisDay.map(habit => (
-								<li key={habit.id}>{habit.name}</li>
-							))}
-						</ul>
-					</details>
-				)}
-				{stats.progressVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">
-						+{stats.progressVotesCountStats}
-					</span>
-				)}
-				{stats.plateauVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">={stats.plateauVotesCountStats}</span>
-				)}
-				{stats.regressVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">-{stats.regressVotesCountStats}</span>
-				)}
-				{stats.noVotesCountStats !== undefined && (
-					<span className="ml-2 bg-green-200 px-2 self-start">?{stats.noVotesCountStats}</span>
-				)}
-			</div>
+			<DayDialogSummary day={day} {...stats} />
 		</Dialog>
 	);
 };
+
+function getDayVoteForHabit(
+	getDayVotesRequestState: Async.AsyncState<IDayVote[]>,
+	habit: IHabit,
+): Vote | undefined {
+	const dayVotes = getDayVotesRequestState.data ?? [];
+	return dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
+}

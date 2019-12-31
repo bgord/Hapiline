@@ -74,26 +74,27 @@ test("user cannot delete unexistent habits", async ({client}) => {
 });
 
 test("full flow", async ({client, assert}) => {
-	const jim = await User.find(users.jim.id);
+	const dwight = await User.find(users.dwight.id);
+
+	const habitId = 6;
 
 	const resourceBefore = await Database.table("habits")
 		.where({
-			id: 1,
+			id: habitId,
 		})
 		.first();
-	assert.equal(resourceBefore.id, 1);
-	assert.equal(resourceBefore.user_id, 2);
+	assert.equal(resourceBefore.user_id, dwight.id);
 
 	const response = await client
-		.delete(`${DELETE_HABIT_URL}/1`)
-		.loginVia(jim)
+		.delete(`${DELETE_HABIT_URL}/${habitId}`)
+		.loginVia(dwight)
 		.end();
 
 	response.assertStatus(200);
 
 	const resourceAfter = await Database.table("habits")
 		.where({
-			id: 1,
+			id: habitId,
 		})
 		.first();
 

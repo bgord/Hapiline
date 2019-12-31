@@ -265,7 +265,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -278,7 +278,7 @@ describe("Habit", () => {
 			cy.findByText("×").click();
 		});
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.eq(1)
 			.click();
 
@@ -298,7 +298,7 @@ describe("Habit", () => {
 
 		// "Save" flow
 		cy.findByText("0 lorem xxx").should("not.exist");
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -306,14 +306,14 @@ describe("Habit", () => {
 		cy.findByText("Cancel");
 		cy.findByText("Save").click();
 		cy.findByText("Name updated successfully!");
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.findByText("0 lorem xxx");
 		cy.findByText("0 lorem").should("not.exist");
 
 		// // Enter flow
 		cy.findByText("1 loremlorem yyy").should("not.exist");
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.eq(1)
 			.click();
 
@@ -321,7 +321,7 @@ describe("Habit", () => {
 		cy.findByText("Save").should("not.exist");
 		cy.findByText("Cancel").should("not.exist");
 		cy.findAllByText("Name updated successfully!");
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.findByText("1 loremlorem yyy");
 		cy.findByText("1 loremlorem").should("not.exist");
@@ -331,7 +331,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -354,7 +354,7 @@ describe("Habit", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("0 lorem xxx").should("not.exist");
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -386,7 +386,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findAllByText("more")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
@@ -396,7 +396,7 @@ describe("Habit", () => {
 		cy.findByText("Cancel");
 		cy.findByText(errorMessage);
 
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.findByDisplayValue("0 lorem xxx").should("not.exist");
 	});
@@ -410,12 +410,12 @@ describe("Habit", () => {
 			cy.findAllByText("neutral").should("have.length", 3);
 			cy.findAllByText("negative").should("have.length", 3);
 
-			cy.findAllByText("more")
+			cy.findAllByText("More")
 				.eq(1)
 				.click();
 		});
 
-		cy.get(".h-full").within(() => {
+		cy.findByRole("dialog").within(() => {
 			cy.findByDisplayValue("neutral").select("positive");
 			cy.findByText("×").click();
 		});
@@ -452,12 +452,12 @@ describe("Habit", () => {
 			cy.findAllByText("neutral").should("have.length", 3);
 			cy.findAllByText("negative").should("have.length", 3);
 
-			cy.findAllByText("more")
+			cy.findAllByText("More")
 				.eq(1)
 				.click();
 		});
 
-		cy.get(".h-full").within(() => {
+		cy.findByRole("dialog").within(() => {
 			cy.findByDisplayValue("neutral").select("positive");
 			cy.findByText("×").click();
 		});
@@ -597,14 +597,14 @@ describe("Habit", () => {
 			cy.findAllByText("fresh").should("have.length", 3);
 			cy.findAllByText("developing").should("have.length", 3);
 
-			cy.findAllByText("more")
+			cy.findAllByText("More")
 				.eq(1)
 				.click();
 		});
 
 		cy.findByDisplayValue("developing").select("established");
 		cy.findAllByText("Habit strength changed successfully!");
-		cy.findByText("×").click();
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("established").should("have.length", 5);

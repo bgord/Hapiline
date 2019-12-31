@@ -2,35 +2,26 @@ import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful
 import * as Async from "react-async";
 import React from "react";
 
+import {BareButton} from "./BareButton";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
-import {useHabitsState} from "./contexts/habits-context";
-import {useNotification} from "./contexts/notifications-context";
+import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useHabits, useHabitsState} from "./contexts/habits-context";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
-	const habits = getHabitsRequestState?.data ?? [];
+	const habits = useHabits();
 
-	const [triggerSuccessNotification] = useNotification();
-	const [triggerErrorNotification] = useNotification();
+	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const reorderHabitsRequestState = Async.useAsync({
 		deferFn: api.habit.reorder,
-		onResolve: () => {
-			triggerSuccessNotification({
-				type: "success",
-				message: "Habits reordered successfully!",
-			});
-		},
-		onReject: () => {
-			triggerErrorNotification({
-				type: "error",
-				message: "Error while changing order.",
-			});
-		},
+		onResolve: () => triggerSuccessNotification("Habits reordered successfully!"),
+		onReject: () => triggerErrorNotification("Error while changing order."),
 	});
 
 	function onDragEnd(result: DropResult) {
@@ -100,9 +91,7 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 					<div className="flex justify-between w-full">
 						<div className="p-2 bg-gray-100 ml-2 w-full">{habit.name}</div>
 						<div className="flex ml-4">
-							<button type="button" className="uppercase" onClick={openDialog}>
-								more
-							</button>
+							<BareButton onClick={openDialog}>More</BareButton>
 							<DeleteHabitButton {...habit} />
 						</div>
 					</div>
