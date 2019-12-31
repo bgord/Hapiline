@@ -1,6 +1,6 @@
 import * as Async from "react-async";
 
-import {UserProfileInterface} from "../contexts/auth-context";
+import {UserProfileInterface} from "../interfaces/IUserProfile";
 import {_internal_api} from "./api";
 
 export const loginRequest: Async.DeferFn<UserProfileInterface> = (
