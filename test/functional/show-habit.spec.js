@@ -52,16 +52,20 @@ test("account-status:(active)", async ({client}) => {
 });
 
 test("full flow", async ({client, assert}) => {
-	const jim = await User.find(users.jim.id);
+	const pam = await User.find(users.pam.id);
+
+	const habitId = 50;
 
 	const response = await client
-		.get(`${SHOW_HABIT_URL}/1`)
-		.loginVia(jim)
+		.get(`${SHOW_HABIT_URL}/${habitId}`)
+		.loginVia(pam)
 		.end();
 
 	response.assertStatus(200);
-	assert.equal(response.body.id, 1);
-	assert.equal(response.body.user_id, jim.id);
+	assert.equal(response.body.id, habitId);
+	assert.equal(response.body.user_id, pam.id);
+	assert.equal(response.body.progress_streak, 1);
+	assert.equal(response.body.regress_streak, 0);
 });
 
 test("user cannot access non-existent resource", async ({client}) => {
