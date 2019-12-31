@@ -27,6 +27,11 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 		onReject: () => triggerErrorNotification("Couldn't delete habit."),
 	});
 
+	function confirmDeletion() {
+		closeDialog();
+		deleteHabitRequestState.run(id);
+	}
+
 	return (
 		<>
 			<BareButton onClick={openDialog} className="text-red-500">
@@ -42,15 +47,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 					</AlertDialogLabel>
 
 					<div className="mt-12 flex justify-around w-full">
-						<button
-							type="button"
-							onClick={() => {
-								closeDialog();
-								deleteHabitRequestState.run(id);
-							}}
-						>
-							Yes, delete
-						</button>
+						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
 						<button
 							type="button"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}

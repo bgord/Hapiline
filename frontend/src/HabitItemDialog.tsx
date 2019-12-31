@@ -13,6 +13,12 @@ import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
+const habitDialogGrid: React.CSSProperties = {
+	display: "grid",
+	gridTemplateColumns: "100px 125px auto 100px",
+	gridTemplateRows: "50px 100px 50px",
+};
+
 interface HabitItemDialogProps {
 	habitId: IHabit["id"];
 	closeDialog: VoidFunction;
@@ -28,12 +34,6 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 		id: habitId,
 		onReject: () => triggerErrorNotification("Fetching task details failed."),
 	});
-
-	const habitDialogGrid: React.CSSProperties = {
-		display: "grid",
-		gridTemplateColumns: "100px 125px auto 100px",
-		gridTemplateRows: "50px 100px 50px",
-	};
 
 	return (
 		<Dialog
