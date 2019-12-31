@@ -4,13 +4,13 @@ import useHover from "@react-hook/hover";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
+import {DayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
 import {IHabit} from "./interfaces/IHabit";
-import {IMonthDay} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
 import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
 
-export const Day: React.FC<IMonthDay & {refreshCalendar: VoidFunction}> = ({
+export const Day: React.FC<DayWithVoteStatsFromAPI & {refreshCalendar: VoidFunction}> = ({
 	day,
 	styles,
 	refreshCalendar,
@@ -77,7 +77,7 @@ function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHab
 
 function getNoVotesCountStats(
 	habitsAvailableAtThisDayCount: number,
-	stats: Omit<IMonthDay, "day" | "styles">,
+	stats: Omit<DayWithVoteStatsFromAPI, "day" | "styles">,
 ): number {
 	return (
 		habitsAvailableAtThisDayCount -

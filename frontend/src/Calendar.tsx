@@ -3,6 +3,7 @@ import React from "react";
 
 import {BareButton} from "./BareButton";
 import {Day} from "./Day";
+import {DayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -25,7 +26,7 @@ export const Calendar: React.FC = () => {
 	});
 	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
-	const days = widget.givenMonthDays.map(entry => ({
+	const days: DayWithVoteStatsFromAPI[] = widget.givenMonthDays.map(entry => ({
 		...entry,
 		...getMonthRequestState.data?.find(item => item.day === entry.day),
 	}));
