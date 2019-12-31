@@ -101,6 +101,13 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					>
 						Regress streak: {habit.regress_streak} days
 					</div>
+					<div
+						className="text-gray-600 uppercase text-sm font-bold ml-2"
+						style={{gridColumn: "span 2", gridRow: 3, alignSelf: "end"}}
+						hidden={Boolean(habit.regress_streak || habit.progress_streak)}
+					>
+						No streak today
+					</div>
 				</div>
 			)}
 		</Dialog>
