@@ -1,7 +1,9 @@
-import {AxiosResponse} from "axios";
+import {AxiosResponse, AxiosError} from "axios";
 import * as Async from "react-async";
 
-import {ApiError, ApiErrorInterface, ArgError} from "../services/api";
+import {ApiErrorInterface, ArgError} from "../services/api";
+
+type ApiError = AxiosError<ApiErrorInterface>;
 
 type getArgErrorMessageType = (path: string) => ArgError["message"] | undefined;
 

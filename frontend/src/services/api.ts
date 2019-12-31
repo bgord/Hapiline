@@ -1,4 +1,4 @@
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 
 import {
 	addHabitDayVoteRequest,
@@ -37,8 +37,6 @@ export interface ApiErrorInterface {
 	message: string;
 	argErrors: ArgError[];
 }
-
-export type ApiError = AxiosError<ApiErrorInterface>;
 
 export const _internal_api = axios.create({
 	baseURL: process.env.API_URL,

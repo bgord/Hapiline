@@ -1,10 +1,11 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {ApiError, api} from "./services/api";
 import {BareButton} from "./BareButton";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
+import {api} from "./services/api";
+import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
 type Props = IHabit & {
@@ -29,12 +30,9 @@ export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}
 			setHabitItem(habit);
 		},
 		onReject: _error => {
-			const error = _error as ApiError;
-			const inlineNameError = error?.response?.data.argErrors.find(
-				argError => argError.field === "name",
-			)?.message;
-
-			triggerErrorNotification(inlineNameError || "Error while chaning name.");
+			const {getArgErrorMessage} = getRequestErrors(_error);
+			const inlineNameErrorMessage = getArgErrorMessage("name");
+			triggerErrorNotification(inlineNameErrorMessage || "Error while chaning name.");
 		},
 	});
 
