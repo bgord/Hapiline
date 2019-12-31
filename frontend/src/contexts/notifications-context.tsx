@@ -1,17 +1,17 @@
 import React from "react";
 
-import {Notification} from "../interfaces/INotification";
+import {INotification} from "../interfaces/INotification";
 
-type State = Notification[];
+type State = INotification[];
 
 type Action =
 	| {
 			type: "add";
-			notification: Notification;
+			notification: INotification;
 	  }
 	| {
 			type: "remove";
-			id: Notification["id"];
+			id: INotification["id"];
 	  }
 	| {
 			type: "clear";
@@ -64,7 +64,7 @@ export function useNotificationDispatch() {
 export function useNotification(timeout = 5000) {
 	const dispatch = useNotificationDispatch();
 
-	const triggerNotification = (notification: Omit<Notification, "id">): void => {
+	const triggerNotification = (notification: Omit<INotification, "id">): void => {
 		const id = Date.now();
 
 		dispatch({
@@ -87,10 +87,10 @@ export function useNotification(timeout = 5000) {
 
 export function useSuccessNotification() {
 	const [triggerNotification] = useNotification();
-	return (message: Notification["message"]) => triggerNotification({type: "success", message});
+	return (message: INotification["message"]) => triggerNotification({type: "success", message});
 }
 
 export function useErrorNotification() {
 	const [triggerNotification] = useNotification();
-	return (message: Notification["message"]) => triggerNotification({type: "error", message});
+	return (message: INotification["message"]) => triggerNotification({type: "error", message});
 }

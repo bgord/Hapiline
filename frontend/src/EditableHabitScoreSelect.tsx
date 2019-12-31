@@ -7,11 +7,15 @@ import {useErrorNotification, useSuccessNotification} from "./contexts/notificat
 
 const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
 
-type Props = IHabit & {
+type EditableHabitScoreSelectProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitScoreSelect: React.FC<Props> = ({id, score, setHabitItem}) => {
+export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> = ({
+	id,
+	score,
+	setHabitItem,
+}) => {
 	const [newHabitScore, setNewHabitScore] = React.useState<IHabit["score"]>(score);
 
 	const triggerSuccessNotification = useSuccessNotification();

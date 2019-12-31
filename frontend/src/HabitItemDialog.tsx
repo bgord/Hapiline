@@ -13,12 +13,12 @@ import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
-interface Props {
+interface HabitItemDialogProps {
 	habitId: IHabit["id"];
 	closeDialog: VoidFunction;
 }
 
-export const HabitItemDialog: React.FC<Props> = ({habitId, closeDialog}) => {
+export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeDialog}) => {
 	const getHabitsRequestState = useHabitsState();
 
 	const triggerErrorNotification = useErrorNotification();

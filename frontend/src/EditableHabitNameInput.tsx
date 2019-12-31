@@ -8,11 +8,15 @@ import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
-type Props = IHabit & {
+type EditableHabitNameInputProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitNameInput: React.FC<Props> = ({name, id, setHabitItem}) => {
+export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
+	name,
+	id,
+	setHabitItem,
+}) => {
 	const [isFocused, setIsFocused] = React.useState(false);
 	const blurInput = () => setIsFocused(false);
 	const focusInput = () => setIsFocused(true);

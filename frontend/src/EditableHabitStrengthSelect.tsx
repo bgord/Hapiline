@@ -5,11 +5,15 @@ import {IHabit, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
-type Props = IHabit & {
+type EditableHabitStrengthSelectProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
 };
 
-export const EditableHabitStrengthSelect: React.FC<Props> = ({id, strength, setHabitItem}) => {
+export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectProps> = ({
+	id,
+	strength,
+	setHabitItem,
+}) => {
 	const [newHabitStrength, setNewHabitStrength] = React.useState<IHabit["strength"]>(strength);
 
 	const triggerSuccessNotification = useSuccessNotification();
