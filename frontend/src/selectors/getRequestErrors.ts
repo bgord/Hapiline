@@ -1,17 +1,27 @@
 import {AxiosResponse, AxiosError} from "axios";
 import * as Async from "react-async";
 
-import {ApiErrorInterface, ArgError} from "../services/api";
+type ApiError = AxiosError<IApiErrorInterface>;
 
-type ApiError = AxiosError<ApiErrorInterface>;
+type getArgErrorMessageType = (path: string) => IArgError["message"] | undefined;
 
-type getArgErrorMessageType = (path: string) => ArgError["message"] | undefined;
+interface IArgError {
+	field: string;
+	validation: string;
+	message: string;
+}
+
+interface IApiErrorInterface {
+	code: string;
+	message: string;
+	argErrors: IArgError[];
+}
 
 interface IBasicResponseError {
 	responseStatus: AxiosResponse["status"];
-	errorCode: ApiErrorInterface["code"];
-	errorMessage: ApiErrorInterface["message"];
-	argErrors: ApiErrorInterface["argErrors"];
+	errorCode: IApiErrorInterface["code"];
+	errorMessage: IApiErrorInterface["message"];
+	argErrors: IApiErrorInterface["argErrors"];
 }
 
 interface IResponseError extends Partial<IBasicResponseError> {

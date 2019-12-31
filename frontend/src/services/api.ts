@@ -26,18 +26,6 @@ declare const process: {
 	};
 };
 
-export interface ArgError {
-	field: string;
-	validation: string;
-	message: string;
-}
-
-export interface ApiErrorInterface {
-	code: string;
-	message: string;
-	argErrors: ArgError[];
-}
-
 export const _internal_api = axios.create({
 	baseURL: process.env.API_URL,
 });
