@@ -107,7 +107,36 @@ class HabitsController {
 			await habit.merge(payload);
 			await habit.save();
 
-			return response.send(habit);
+			const habitVotes = await Database.select("vote", "day")
+				.from("habit_votes")
+				.where({
+					habit_id: habit.id,
+				})
+				.orderBy("day");
+
+			const days = datefns
+				.eachDayOfInterval({
+					start: new Date(habit.created_at),
+					end: new Date(),
+				})
+				.map(day => {
+					const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
+					return {
+						day,
+						vote: dayVote ? dayVote.vote : null,
+					};
+				});
+
+			const votes = [...days].reverse().map(day => day.vote);
+
+			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, votes);
+			const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, votes);
+
+			return response.send({
+				...habit.toJSON(),
+				progress_streak,
+				regress_streak,
+			});
 		} catch (error) {
 			if (error.message.includes("duplicate key value violates unique constraint")) {
 				return response.validationError({
@@ -131,7 +160,7 @@ function getVoteTypeStreak(type, votes) {
 	for (const [index, vote] of votes.entries()) {
 		if (index === 0 && vote !== HABIT_VOTE_TYPES[type]) {
 			break;
-		} else if (vote === HABIT_VOTE_TYPES.progress) {
+		} else if (vote === HABIT_VOTE_TYPES[type]) {
 			streak++;
 		} else break;
 	}
