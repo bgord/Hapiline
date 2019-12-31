@@ -1,6 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
+import {BareButton} from "./BareButton";
 import {IHabit} from "./interfaces/IHabit";
 import {Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -35,51 +36,39 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
 	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
 
-	const payload = {day: new Date(day), habit_id: habit.id};
+	function changeVote(type: NonNullable<Vote>) {
+		addHabitDayVoteRequestState.run({
+			day: new Date(day),
+			habit_id: habit.id,
+			vote: vote === type ? null : type,
+		});
+	}
 
 	return (
 		<li className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4">
 			<span>{habit.name}</span>
 			<div>
-				<button
-					onClick={() =>
-						addHabitDayVoteRequestState.run({
-							...payload,
-							vote: vote === "progress" ? null : "progress",
-						})
-					}
-					className={`py-2 px-4 ${progressButtonBg}`}
-					type="button"
+				<BareButton
+					onClick={() => changeVote("progress")}
+					className={progressButtonBg}
 					disabled={addHabitDayVoteRequestState.isPending}
 				>
 					+
-				</button>
-				<button
-					onClick={() =>
-						addHabitDayVoteRequestState.run({
-							...payload,
-							vote: vote === "plateau" ? null : "plateau",
-						})
-					}
-					className={`py-2 px-4 ${plateauButtonBg}`}
-					type="button"
+				</BareButton>
+				<BareButton
+					onClick={() => changeVote("plateau")}
+					className={plateauButtonBg}
 					disabled={addHabitDayVoteRequestState.isPending}
 				>
 					=
-				</button>
-				<button
-					onClick={() =>
-						addHabitDayVoteRequestState.run({
-							...payload,
-							vote: vote === "regress" ? null : "regress",
-						})
-					}
-					className={`py-2 px-4 ${regressButtonBg}`}
-					type="button"
+				</BareButton>
+				<BareButton
+					onClick={() => changeVote("regress")}
 					disabled={addHabitDayVoteRequestState.isPending}
+					className={regressButtonBg}
 				>
 					-
-				</button>
+				</BareButton>
 			</div>
 		</li>
 	);
