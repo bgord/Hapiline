@@ -16,7 +16,7 @@ import {useHabitsState} from "./contexts/habits-context";
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
 	gridTemplateColumns: "100px 125px auto 100px",
-	gridTemplateRows: "50px 100px 50px",
+	gridTemplateRows: "50px 100px 50px 50px",
 };
 
 interface HabitItemDialogProps {
@@ -87,6 +87,20 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							{format(new Date(habit?.updated_at), "yyyy/MM/dd HH:mm")}
 						</dd>
 					</dl>
+					<div
+						className="text-green-600 uppercase text-sm font-bold ml-2"
+						style={{gridColumn: "span 2", gridRow: 3, alignSelf: "end"}}
+						hidden={!habit.progress_streak}
+					>
+						Progress streak: {habit.progress_streak} days
+					</div>
+					<div
+						className="text-red-600 uppercase text-sm font-bold ml-2"
+						style={{gridColumn: "span 2", gridRow: 3, alignSelf: "end"}}
+						hidden={!habit.regress_streak}
+					>
+						Regress streak: {habit.regress_streak} days
+					</div>
 				</div>
 			)}
 		</Dialog>
