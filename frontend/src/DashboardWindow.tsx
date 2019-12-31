@@ -7,12 +7,13 @@ import {HabitList} from "./HabitList";
 import {HabitsSummary} from "./HabitsSummary";
 import {InfoMessage} from "./InfoMessage";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useHabitsState} from "./contexts/habits-context";
+import {useHabits, useHabitsState} from "./contexts/habits-context";
 
 export const Dashboard = () => {
+	const habits = useHabits();
 	const getHabitsRequestState = useHabitsState();
+
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
-	const habits = getHabitsRequestState?.data ?? [];
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto max-w-4xl">

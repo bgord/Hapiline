@@ -23,7 +23,6 @@ export const Calendar: React.FC = () => {
 		monthOffset,
 		watch: monthOffset,
 	});
-
 	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
 	const days = widget.givenMonthDays.map(entry => ({

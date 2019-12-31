@@ -9,11 +9,11 @@ import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useDialog} from "./hooks/useDialog";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
-import {useHabitsState} from "./contexts/habits-context";
+import {useHabits, useHabitsState} from "./contexts/habits-context";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
-	const habits = getHabitsRequestState?.data ?? [];
+	const habits = useHabits();
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
