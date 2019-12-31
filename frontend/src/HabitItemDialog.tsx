@@ -29,11 +29,12 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 	const triggerErrorNotification = useErrorNotification();
 
-	const singleItemRequestState = Async.useAsync({
+	const habitRequestState = Async.useAsync({
 		promiseFn: api.habit.show,
 		id: habitId,
 		onReject: () => triggerErrorNotification("Fetching task details failed."),
 	});
+	const habit = habitRequestState?.data as IHabit;
 
 	return (
 		<Dialog
@@ -45,11 +46,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			onDismiss={getHabitsRequestState.reload}
 			aria-label="Show habit preview"
 		>
-			<Async.IfPending state={singleItemRequestState}>Loading details...</Async.IfPending>
-			<Async.IfRejected state={singleItemRequestState}>
+			<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
+			<Async.IfRejected state={habitRequestState}>
 				<RequestErrorMessage>Couldn't fetch task details, please try again.</RequestErrorMessage>
 			</Async.IfRejected>
-			{singleItemRequestState?.data?.id && (
+			{habit?.id && (
 				<div style={habitDialogGrid}>
 					<strong style={{gridColumn: "span 3", alignSelf: "center"}}>Habit preview</strong>
 					<CloseButton
@@ -59,19 +60,19 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						}}
 					/>
 					<EditableHabitScoreSelect
-						{...singleItemRequestState?.data}
-						setHabitItem={singleItemRequestState.setData}
-						key={singleItemRequestState?.data?.score}
+						{...habit}
+						setHabitItem={habitRequestState.setData}
+						key={habit?.score}
 					/>
 					<EditableHabitStrengthSelect
-						{...singleItemRequestState?.data}
-						setHabitItem={singleItemRequestState.setData}
-						key={singleItemRequestState?.data?.strength}
+						{...habit}
+						setHabitItem={habitRequestState.setData}
+						key={habit?.strength}
 					/>
 					<EditableHabitNameInput
-						{...singleItemRequestState?.data}
-						setHabitItem={singleItemRequestState.setData}
-						key={singleItemRequestState?.data?.name}
+						{...habit}
+						setHabitItem={habitRequestState.setData}
+						key={habit?.name}
 					/>
 					<dl
 						style={{gridColumn: 3, gridRow: 3, alignSelf: "center"}}
@@ -79,11 +80,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					>
 						<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
 						<dd className="text-sm ml-1 font-mono">
-							{format(new Date(singleItemRequestState?.data?.created_at), "yyyy/MM/dd HH:mm")}
+							{format(new Date(habit?.created_at), "yyyy/MM/dd HH:mm")}
 						</dd>
 						<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
 						<dd className="text-sm ml-1 font-mono">
-							{format(new Date(singleItemRequestState?.data?.updated_at), "yyyy/MM/dd HH:mm")}
+							{format(new Date(habit?.updated_at), "yyyy/MM/dd HH:mm")}
 						</dd>
 					</dl>
 				</div>
