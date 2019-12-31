@@ -1,12 +1,12 @@
-import {isBefore, isFuture, isSameDay, isToday} from "date-fns";
+import {isFuture, isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
-import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
 
@@ -63,12 +63,3 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 		</>
 	);
 };
-
-function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
-	return habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
-
-		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
-	});
-}

@@ -1,13 +1,12 @@
-import {isBefore, isSameDay} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
-import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useHabits} from "./contexts/habits-context";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
@@ -76,15 +75,6 @@ export const Calendar: React.FC = () => {
 		</section>
 	);
 };
-
-function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
-	return habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
-
-		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
-	});
-}
 
 function getNoVotesCountStats(
 	habitsAvailableAtGivenDayCount: number,

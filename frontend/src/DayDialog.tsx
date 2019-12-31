@@ -1,5 +1,5 @@
 import {Dialog} from "@reach/dialog";
-import {isBefore, isSameDay} from "date-fns";
+import {isSameDay} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
@@ -10,6 +10,7 @@ import {IDayVote, Vote} from "./interfaces/IDayVote";
 import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
 import {api} from "./services/api";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits} from "./contexts/habits-context";
 
@@ -88,15 +89,6 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 		const dayDate = new Date(day);
 
 		return isSameDay(createdAtDate, dayDate);
-	});
-}
-
-function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
-	return habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
-
-		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
 	});
 }
 
