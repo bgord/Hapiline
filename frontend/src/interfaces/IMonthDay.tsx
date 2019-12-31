@@ -12,8 +12,13 @@ export interface IDayVoteStatsFromAPI {
 	nullVotesCountStats: number;
 }
 
-export type DayWithVoteStatsFromAPI = IMonthDay & Partial<IDayVoteStatsFromAPI>;
+export type FullDayWithVoteStatsFromAPI = IMonthDay & Partial<IDayVoteStatsFromAPI>;
 
-export type FullDayVoteStats = Omit<DayWithVoteStatsFromAPI, "styles"> & {
+export type FullDayWithVoteStats = IMonthDay &
+	Partial<IDayVoteStatsFromAPI> & {
+		noVotesCountStats: number;
+	};
+
+export type DayVoteStats = Omit<FullDayWithVoteStatsFromAPI, "styles"> & {
 	noVotesCountStats: number;
 };

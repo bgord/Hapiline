@@ -5,7 +5,7 @@ import React from "react";
 
 import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
-import {FullDayVoteStats} from "./interfaces/IMonthDay";
+import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IDayVote, Vote} from "./interfaces/IDayVote";
 import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
@@ -13,7 +13,7 @@ import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits} from "./contexts/habits-context";
 
-type DayDialogProps = FullDayVoteStats & {
+type DayDialogProps = DayVoteStats & {
 	closeDialog: VoidFunction;
 	refreshCalendar: VoidFunction;
 };
@@ -35,6 +35,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
+
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
 	return (

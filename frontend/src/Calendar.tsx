@@ -1,12 +1,15 @@
+import {isBefore, isSameDay} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
 import {Day} from "./Day";
-import {DayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
+import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
+import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {useHabits} from "./contexts/habits-context";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
 
 const habitDialogGrid: React.CSSProperties = {
@@ -18,6 +21,7 @@ const habitDialogGrid: React.CSSProperties = {
 
 export const Calendar: React.FC = () => {
 	const [widget, date, monthOffset] = useMonthsWidget();
+	const habits = useHabits();
 
 	const getMonthRequestState = Async.useAsync({
 		promiseFn: api.calendar.getMonth,
@@ -26,10 +30,25 @@ export const Calendar: React.FC = () => {
 	});
 	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
-	const days: DayWithVoteStatsFromAPI[] = widget.givenMonthDays.map(entry => ({
-		...entry,
-		...getMonthRequestState.data?.find(item => item.day === entry.day),
-	}));
+	const days: FullDayWithVoteStats[] = widget.givenMonthDays.map(entry => {
+		const givenDay = new Date(entry.day);
+
+		const fullDayWithVoteStatsFromAPI: FullDayWithVoteStatsFromAPI = {
+			...entry,
+			...getMonthRequestState.data?.find(item => item.day === entry.day),
+		};
+
+		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(habits, givenDay).length;
+		const noVotesCountStats = getNoVotesCountStats(
+			habitsAvailableAtThisDayCount,
+			fullDayWithVoteStatsFromAPI,
+		);
+
+		return {
+			...fullDayWithVoteStatsFromAPI,
+			noVotesCountStats,
+		};
+	});
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto">
@@ -57,3 +76,24 @@ export const Calendar: React.FC = () => {
 		</section>
 	);
 };
+
+function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
+	return habits.filter(habit => {
+		const createdAtDate = new Date(habit.created_at);
+		const dayDate = new Date(day);
+
+		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
+	});
+}
+
+function getNoVotesCountStats(
+	habitsAvailableAtGivenDayCount: number,
+	stats: Omit<FullDayWithVoteStatsFromAPI, "day" | "styles">,
+): number {
+	return (
+		habitsAvailableAtGivenDayCount -
+		(stats.progressVotesCountStats ?? 0) -
+		(stats.plateauVotesCountStats ?? 0) -
+		(stats.regressVotesCountStats ?? 0)
+	);
+}

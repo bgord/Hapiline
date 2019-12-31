@@ -4,13 +4,13 @@ import useHover from "@react-hook/hover";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
-import {DayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
+import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
 import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
 import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
 
-export const Day: React.FC<DayWithVoteStatsFromAPI & {refreshCalendar: VoidFunction}> = ({
+export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
 	day,
 	styles,
 	refreshCalendar,
@@ -25,7 +25,6 @@ export const Day: React.FC<DayWithVoteStatsFromAPI & {refreshCalendar: VoidFunct
 	const isThisDayInTheFuture = isFuture(thisDay);
 
 	const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(habits, thisDay).length;
-	const noVotesCountStats = getNoVotesCountStats(habitsAvailableAtThisDayCount, stats);
 	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDayCount > 0;
 
 	return (
@@ -48,13 +47,12 @@ export const Day: React.FC<DayWithVoteStatsFromAPI & {refreshCalendar: VoidFunct
 							<Stat count={stats.progressVotesCountStats} sign="+" />
 							<Stat count={stats.plateauVotesCountStats} sign="=" />
 							<Stat count={stats.regressVotesCountStats} sign="-" />
-							<Stat count={noVotesCountStats} sign="?" hidden={false} />
+							<Stat count={stats.noVotesCountStats} sign="?" hidden={false} />
 						</div>
 						{showDialog && (
 							<DayDialog
 								day={day}
 								closeDialog={closeDialog}
-								noVotesCountStats={noVotesCountStats}
 								refreshCalendar={refreshCalendar}
 								{...stats}
 							/>
@@ -73,16 +71,4 @@ function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHab
 
 		return isSameDay(createdAtDate, dayDate) || isBefore(createdAtDate, dayDate);
 	});
-}
-
-function getNoVotesCountStats(
-	habitsAvailableAtThisDayCount: number,
-	stats: Omit<DayWithVoteStatsFromAPI, "day" | "styles">,
-): number {
-	return (
-		habitsAvailableAtThisDayCount -
-		(stats.progressVotesCountStats ?? 0) -
-		(stats.plateauVotesCountStats ?? 0) -
-		(stats.regressVotesCountStats ?? 0)
-	);
 }
