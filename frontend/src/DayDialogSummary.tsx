@@ -13,21 +13,20 @@ type DayDialogSummaryProps = DayVoteStats & {
 export const DayDialogSummary: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
 	const habits = useHabits();
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
+
+	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
+
 	return (
 		<div className="flex justify-end pl-0 text-sm mt-8">
-			{stats.createdHabitsCount && (
-				<details className="mr-auto">
-					<summary title={`${stats.createdHabitsCount} habit(s) added this day`}>
-						NEW: {stats.createdHabitsCount}
-					</summary>
-					<p>Habit(s) added this day:</p>
-					<ul className="mt-2">
-						{habitsAddedAtThisDay.map(habit => (
-							<li key={habit.id}>{habit.name}</li>
-						))}
-					</ul>
-				</details>
-			)}
+			<details className="mr-auto" hidden={!stats.createdHabitsCount}>
+				<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
+				<p>Habit(s) added this day:</p>
+				<ul className="mt-2">
+					{habitsAddedAtThisDay.map(habit => (
+						<li key={habit.id}>{habit.name}</li>
+					))}
+				</ul>
+			</details>
 			<Stat count={stats.progressVotesCountStats} sign="+" />
 			<Stat count={stats.plateauVotesCountStats} sign="=" />
 			<Stat count={stats.regressVotesCountStats} sign="-" />
