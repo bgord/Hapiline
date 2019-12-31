@@ -62,10 +62,13 @@ class HabitsController {
 				start: new Date(habit.created_at),
 				end: new Date(),
 			})
-			.map(day => ({
-				day,
-				vote: habitVotes.find(vote => datefns.isSameDay(vote.day, day)).vote,
-			}));
+			.map(day => {
+				const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
+				return {
+					day,
+					vote: dayVote ? dayVote.vote : null,
+				};
+			});
 
 		const votes = [...days].reverse().map(day => day.vote);
 

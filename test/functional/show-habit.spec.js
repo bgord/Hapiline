@@ -68,6 +68,23 @@ test("full flow", async ({client, assert}) => {
 	assert.equal(response.body.regress_streak, 0);
 });
 
+test("full flow for a habit with no votes", async ({client, assert}) => {
+	const pam = await User.find(users.pam.id);
+
+	const habitId = 31;
+
+	const response = await client
+		.get(`${SHOW_HABIT_URL}/${habitId}`)
+		.loginVia(pam)
+		.end();
+
+	response.assertStatus(200);
+	assert.equal(response.body.id, habitId);
+	assert.equal(response.body.user_id, pam.id);
+	assert.equal(response.body.progress_streak, 0);
+	assert.equal(response.body.regress_streak, 0);
+});
+
 test("user cannot access non-existent resource", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
