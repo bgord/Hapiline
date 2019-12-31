@@ -3,17 +3,17 @@ import {isBefore, isSameDay} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
+import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DayVote, Vote} from "./services/calendar";
-import {CloseButton} from "./CloseButton";
 import {IHabit} from "./interfaces/IHabit";
-import {MonthDayProps} from "./hooks/useMonthsWidget";
+import {IMonthDay} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits} from "./contexts/habits-context";
 
-type DayDialogProps = Omit<MonthDayProps, "styles"> & {
+type DayDialogProps = Omit<IMonthDay, "styles"> & {
 	closeDialog: VoidFunction;
 	refreshCalendar: VoidFunction;
 };
