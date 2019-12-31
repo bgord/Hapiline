@@ -1,6 +1,6 @@
 import * as Async from "react-async";
 
-import {IHabit} from "../interfaces/IHabit";
+import {IDayVote} from "../interfaces/IDayVote";
 import {_internal_api} from "./api";
 
 interface MonthStats {
@@ -17,12 +17,5 @@ export const getMonthRequest: Async.PromiseFn<MonthStats[]> = ({monthOffset}) =>
 		.get<MonthStats[]>(`/month?monthOffset=${monthOffset}`)
 		.then(response => response.data);
 
-export type Vote = "progress" | "plateau" | "regress" | null;
-
-export interface DayVote {
-	habit_id: IHabit["id"];
-	vote: Vote;
-}
-
-export const getDayRequest: Async.PromiseFn<DayVote[]> = ({day}) =>
-	_internal_api.get<DayVote[]>(`/day-votes?day=${day}`).then(response => response.data);
+export const getDayRequest: Async.PromiseFn<IDayVote[]> = ({day}) =>
+	_internal_api.get<IDayVote[]>(`/day-votes?day=${day}`).then(response => response.data);

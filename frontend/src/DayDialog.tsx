@@ -5,7 +5,7 @@ import React from "react";
 
 import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
-import {DayVote, Vote} from "./services/calendar";
+import {IDayVote, Vote} from "./interfaces/IDayVote";
 import {IHabit} from "./interfaces/IHabit";
 import {IMonthDay} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
@@ -100,7 +100,7 @@ function getHabitsAvailableAtThisDay(habits: IHabit[], day: string | Date): IHab
 }
 
 function getDayVoteForHabit(
-	getDayVotesRequestState: Async.AsyncState<DayVote[]>,
+	getDayVotesRequestState: Async.AsyncState<IDayVote[]>,
 	habit: IHabit,
 ): Vote | undefined {
 	const dayVotes = getDayVotesRequestState.data ?? [];

@@ -1,15 +1,15 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {DayVote} from "./services/calendar";
 import {IHabit} from "./interfaces/IHabit";
+import {Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
 interface DayDialogHabitVoteListProps {
 	habit: IHabit;
 	day: string;
-	vote: DayVote["vote"] | undefined;
+	vote: Vote | undefined;
 	onResolve: VoidFunction;
 }
 
