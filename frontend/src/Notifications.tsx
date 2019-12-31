@@ -3,16 +3,13 @@ import Alert from "@reach/alert";
 import React from "react";
 
 import {CloseButton} from "./CloseButton";
-import {
-	Notification,
-	useNotificationDispatch,
-	useNotificationState,
-} from "./contexts/notifications-context";
+import {Notification, NotificationType} from "./interfaces/INotification";
+import {useNotificationDispatch, useNotificationState} from "./contexts/notifications-context";
 
 const NotificationItem: React.FC<Notification> = ({id, type, message}) => {
 	const dispatch = useNotificationDispatch();
 
-	const typeToBgColor = {
+	const typeToBgColor: {[key in NotificationType]: string} = {
 		success: "green",
 		info: "blue",
 		error: "red",

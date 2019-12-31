@@ -1,10 +1,6 @@
 import React from "react";
 
-export interface Notification {
-	id: number;
-	type: "success" | "error" | "info";
-	message: string;
-}
+import {Notification} from "../interfaces/INotification";
 
 type State = Notification[];
 
