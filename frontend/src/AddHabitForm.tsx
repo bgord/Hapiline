@@ -4,7 +4,7 @@ import React from "react";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
-import {extractRequestErrors, getRequestErrors} from "./selectors/getRequestErrors";
+import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useUserProfile} from "./contexts/auth-context";
@@ -30,14 +30,14 @@ export const AddHabitForm: React.FC = () => {
 			triggerSuccessNotification("Habit successfully addedd!");
 		},
 		onReject: error => {
-			const {responseStatus} = extractRequestErrors(error);
+			const {responseStatus} = getRequestErrors(error);
 			if (responseStatus === 500) {
 				triggerUnexpectedErrorNotification("Habit couldn't be added.");
 			}
 		},
 	});
 
-	const {getArgErrorMessage, errorMessage} = getRequestErrors(addHabitRequestState);
+	const {getArgErrorMessage, errorMessage} = getRequestStateErrors(addHabitRequestState);
 	const nameInlineErrorMessage = getArgErrorMessage("name");
 
 	return (

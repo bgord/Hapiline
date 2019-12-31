@@ -5,7 +5,7 @@ import React from "react";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
-import {getRequestErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
 export const RegistrationWindow: React.FC = () => {
 	const [email, setEmail] = React.useState("");
@@ -15,7 +15,7 @@ export const RegistrationWindow: React.FC = () => {
 	const registrationRequestState = Async.useAsync({
 		deferFn: api.auth.register,
 	});
-	const {responseStatus, errorMessage, getArgErrorMessage} = getRequestErrors(
+	const {responseStatus, errorMessage, getArgErrorMessage} = getRequestStateErrors(
 		registrationRequestState,
 	);
 	const emailInlineErrorMessage = getArgErrorMessage("email");

@@ -6,12 +6,12 @@ import {ErrorMessage} from "./ErrorMessages";
 import {HabitList} from "./HabitList";
 import {HabitsSummary} from "./HabitsSummary";
 import {InfoMessage} from "./InfoMessage";
-import {getRequestErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useHabitsState} from "./contexts/habits-context";
 
 export const Dashboard = () => {
 	const getHabitsRequestState = useHabitsState();
-	const {errorMessage} = getRequestErrors(getHabitsRequestState);
+	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
 	const habits = getHabitsRequestState?.data ?? [];
 
 	return (

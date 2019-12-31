@@ -5,7 +5,7 @@ import {BareButton} from "./BareButton";
 import {Day} from "./Day";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
-import {getRequestErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
 
 const habitDialogGrid: React.CSSProperties = {
@@ -24,7 +24,7 @@ export const Calendar: React.FC = () => {
 		watch: monthOffset,
 	});
 
-	const {errorMessage} = getRequestErrors(getMonthRequestState);
+	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
 	const days = widget.givenMonthDays.map(entry => ({
 		...entry,

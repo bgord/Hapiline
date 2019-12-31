@@ -5,7 +5,7 @@ import qs from "qs";
 
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
-import {getRequestErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 
 function useQueryParam(param: string): string | undefined {
@@ -28,7 +28,7 @@ export const LoginWindow: React.FC = () => {
 		history,
 		setUserProfile,
 	});
-	const {errorMessage} = getRequestErrors(loginRequestState);
+	const {errorMessage} = getRequestStateErrors(loginRequestState);
 
 	return (
 		<div className="bg-white rounded shadow-lg p-8 sm:max-w-sm sm:mx-auto">
