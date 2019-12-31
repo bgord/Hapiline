@@ -1,14 +1,13 @@
 import {Dialog} from "@reach/dialog";
-import {isSameDay} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
 import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
+import {DayDialogSummary} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IDayVote, Vote} from "./interfaces/IDayVote";
 import {IHabit} from "./interfaces/IHabit";
-import {Stat} from "./Stat";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -34,7 +33,6 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
 
-	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
@@ -60,37 +58,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 					/>
 				))}
 			</ul>
-			<div className="flex flex-end pl-0 text-sm mt-8">
-				{stats.createdHabitsCount && (
-					<details className="mr-auto">
-						<summary title={`${stats.createdHabitsCount} habit(s) added this day`}>
-							NEW: {stats.createdHabitsCount}
-						</summary>
-						<p>Habit(s) added this day:</p>
-						<ul className="mt-2">
-							{habitsAddedAtThisDay.map(habit => (
-								<li key={habit.id}>{habit.name}</li>
-							))}
-						</ul>
-					</details>
-				)}
-				<Stat count={stats.progressVotesCountStats} sign="+" />
-				<Stat count={stats.plateauVotesCountStats} sign="=" />
-				<Stat count={stats.regressVotesCountStats} sign="-" />
-				<Stat count={stats.noVotesCountStats} sign="?" />
-			</div>
+			<DayDialogSummary day={day} {...stats} />
 		</Dialog>
 	);
 };
-
-function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
-	return habits.filter(habit => {
-		const createdAtDate = new Date(habit.created_at);
-		const dayDate = new Date(day);
-
-		return isSameDay(createdAtDate, dayDate);
-	});
-}
 
 function getDayVoteForHabit(
 	getDayVotesRequestState: Async.AsyncState<IDayVote[]>,
