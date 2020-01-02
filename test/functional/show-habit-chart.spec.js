@@ -4,12 +4,16 @@ const {
 	assertInvalidSession,
 	assertAccessDenied,
 	assertUnprocessableEntity,
+	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Show habit chart");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const qs = require("qs");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -73,4 +77,42 @@ test("user can only delete their own habit", async ({client}) => {
 		.end();
 
 	assertAccessDenied(response);
+});
+
+test("validation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const cases = [
+		[
+			{},
+			[
+				{
+					message: VALIDATION_MESSAGES.required("dateRange"),
+					field: "dateRange",
+					validation: "required",
+				},
+			],
+		],
+		[
+			{dateRange: "xxx"},
+			[
+				{
+					message: VALIDATION_MESSAGES.invalid_chart_date_range,
+					field: "dateRange",
+					validation: "in",
+				},
+			],
+		],
+	];
+
+	for (const [payload, argErrors] of cases) {
+		const queryString = qs.stringify(payload);
+
+		const response = await client
+			.get(`${SHOW_HABIT_CHART_URL}/5?${queryString}`)
+			.loginVia(jim)
+			.end();
+
+		assertValidationError({response, argErrors});
+	}
 });
