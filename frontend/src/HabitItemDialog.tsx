@@ -7,6 +7,7 @@ import {CloseButton} from "./CloseButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
+import {HabitCharts} from "./HabitCharts";
 import {IHabit} from "./interfaces/IHabit";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
@@ -16,7 +17,7 @@ import {useHabitsState} from "./contexts/habits-context";
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
 	gridTemplateColumns: "100px 125px auto 100px",
-	gridTemplateRows: "50px 100px 50px",
+	gridTemplateRows: "50px 100px 50px 200px",
 };
 
 interface HabitItemDialogProps {
@@ -108,6 +109,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					>
 						No streak today
 					</div>
+					<HabitCharts id={habit.id} />
 				</div>
 			)}
 		</Dialog>
