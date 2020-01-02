@@ -107,6 +107,12 @@ Route.get("/api/v1/day-votes", "DayVoteController.show")
 	.middleware(["auth", "is:(regular)", "account-status:active"])
 	.validator("ShowDayVotes");
 
+Route.get("/api/v1/habit-chart/:id", "HabitChartsController.show").middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
