@@ -40,8 +40,9 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				className="mt-6 flex items-center"
 				style={{gridColumn: "span 4", gridRow: 4, alignSelf: "start"}}
 			>
-				<label>Select date range:</label>
+				<label htmlFor="date_range">Select date range:</label>
 				<select
+					id="date_range"
 					className="field mx-2"
 					value={dateRange}
 					onChange={event => {

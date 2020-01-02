@@ -42,8 +42,6 @@ class MonthsController {
 			.groupBy("vote")
 			.orderBy("day");
 
-		console.log(voteTypesCountResult);
-
 		const daysSet = new Set([
 			...createdHabitsCountResult.map(entry => entry.day),
 			...voteTypesCountResult.map(entry => entry.day),
