@@ -5,6 +5,7 @@ import {
 	addHabitRequest,
 	deleteHabitRequest,
 	getHabitRequest,
+	getHabitVoteChartRequest,
 	getHabitsRequest,
 	patchHabitRequest,
 	reorderHabitsRequest,
@@ -39,6 +40,7 @@ export const api = {
 		show: getHabitRequest,
 		reorder: reorderHabitsRequest,
 		addHabitDayVote: addHabitDayVoteRequest,
+		getHabitVoteChart: getHabitVoteChartRequest,
 	},
 	auth: {
 		login: loginRequest,

@@ -30,8 +30,8 @@ class MonthsController {
 			"vote as voteType",
 		)
 			.from("habit_votes")
-			.whereRaw(`created_at::date >= ?`, [startOfGivenMonth])
-			.whereRaw(`created_at::date <= ?`, [endOfGivenMonth])
+			.whereRaw(`day::date >= ?`, [startOfGivenMonth])
+			.whereRaw(`day::date <= ?`, [endOfGivenMonth])
 			.whereIn(
 				"habit_id",
 				Database.select("id")

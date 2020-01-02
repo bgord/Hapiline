@@ -259,11 +259,55 @@ describe("Habit", () => {
 			status: 200,
 			response: response[0],
 		});
+
+		const chartResponse = [
+			{
+				day: "2019-01-01",
+				vote: "progress",
+			},
+			{
+				day: "2019-01-02",
+				vote: "regress",
+			},
+			{
+				day: "2019-01-03",
+				vote: "regress",
+			},
+			{
+				day: "2019-01-04",
+				vote: "progress",
+			},
+			{
+				day: "2019-01-05",
+				vote: "progress",
+			},
+			{
+				day: "2019-01-06",
+				vote: "progress",
+			},
+			{
+				day: "2019-01-07",
+				vote: "progress",
+			},
+		];
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit-chart/1?dateRange=last_week",
+			status: 200,
+			response: chartResponse,
+		});
+
 		cy.route({
 			method: "GET",
 			url: "/api/v1/habit/2",
 			status: 200,
 			response: response[1],
+		});
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit-chart/2?dateRange=last_week",
+			status: 500,
+			response: [],
 		});
 
 		cy.login("dwight");
@@ -280,6 +324,10 @@ describe("Habit", () => {
 			cy.findByText("2019/01/01 00:00");
 			cy.findByText("2019/02/01 00:00");
 			cy.findByText("Progress streak: 2 days");
+			cy.findByDisplayValue("Last week");
+			for (let {day, vote} of chartResponse) {
+				cy.findByTitle(`${day} - ${vote}`);
+			}
 			cy.findByText("×").click();
 		});
 
@@ -294,8 +342,11 @@ describe("Habit", () => {
 			cy.findByText("2019/01/01 00:00");
 			cy.findByText("2019/02/01 00:00");
 			cy.findByText("Regress streak: 1 days");
-			cy.findByText("×").click();
+			cy.findByDisplayValue("Last week");
+			cy.findByText("Charts unavailable, please try again.");
 		});
+
+		cy.findByText("Fetching chart data failed.");
 	});
 
 	it("changing name", () => {

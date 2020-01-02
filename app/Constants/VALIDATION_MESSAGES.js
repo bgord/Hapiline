@@ -1,6 +1,7 @@
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
+const CHART_DATE_RANGES = use("CHART_DATE_RANGES");
 
 const VALIDATION_MESSAGES = {
 	invalid_email: "Invalid email address.",
@@ -22,6 +23,7 @@ const VALIDATION_MESSAGES = {
 	non_existent_resource: field => `Resource ${field} doesn't exist.`,
 	date: field => `Field ${field} must be a date.`,
 	before: (field, beforeDate) => `Field ${field} must be before ${beforeDate}.`,
+	invalid_chart_date_range: `dateRange must one of ${Object.keys(CHART_DATE_RANGES).join(", ")}.`,
 };
 
 module.exports = VALIDATION_MESSAGES;
