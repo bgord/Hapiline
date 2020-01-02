@@ -70,11 +70,11 @@ test("assures the habit exists", async ({client}) => {
 	assertUnprocessableEntity(response);
 });
 
-test("user can only delete their own habit", async ({client}) => {
+test("user can only access their own habit's chart", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.get(`${SHOW_HABIT_CHART_URL}/6`)
+		.get(`${SHOW_HABIT_CHART_URL}/6?dateRange=last_week`)
 		.loginVia(jim)
 		.end();
 
