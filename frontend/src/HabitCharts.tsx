@@ -56,14 +56,14 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				</select>
 			</div>
 			<div
-				className="flex w-full pt-8"
+				className="flex w-full mt-8 border-l-2 border-gray-500"
 				style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
 			>
 				{habitVoteChartRequestState.data?.map(item => (
 					<div
 						title={`${format(new Date(item.day), "yyyy-MM-dd")} - ${item.vote ?? "no vote"}`}
 						style={{
-							flexBasis: "calc(100% / 7)",
+							flexBasis: `calc(100% / ${habitVoteChartRequestState.data?.length})`,
 						}}
 						key={item.day}
 						className={`h-8 border-r-2 border-gray-500 ${voteToBgColor[item.vote ?? "plateau"]}`}
