@@ -111,6 +111,7 @@ Route.get("/api/v1/habit-chart/:id", "HabitChartsController.show").middleware([
 	"auth",
 	"is:(regular)",
 	"account-status:active",
+	"params-resource-exists:habits,id",
 ]);
 
 Route.get("*", async ({request, response}) => {

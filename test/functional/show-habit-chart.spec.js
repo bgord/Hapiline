@@ -1,6 +1,10 @@
 const ace = require("@adonisjs/ace");
 
-const {assertInvalidSession, assertAccessDenied} = require("../helpers/assert-errors");
+const {
+	assertInvalidSession,
+	assertAccessDenied,
+	assertUnprocessableEntity,
+} = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Show habit chart");
@@ -47,4 +51,15 @@ test("account-status:(active)", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
+});
+
+test("assures the habit exists", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(`${SHOW_HABIT_CHART_URL}/555`)
+		.loginVia(jim)
+		.end();
+
+	assertUnprocessableEntity(response);
 });
