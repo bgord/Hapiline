@@ -63,3 +63,14 @@ test("assures the habit exists", async ({client}) => {
 
 	assertUnprocessableEntity(response);
 });
+
+test("user can only delete their own habit", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(`${SHOW_HABIT_CHART_URL}/6`)
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
+});
