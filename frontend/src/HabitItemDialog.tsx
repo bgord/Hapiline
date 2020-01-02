@@ -17,7 +17,7 @@ import {useHabitsState} from "./contexts/habits-context";
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
 	gridTemplateColumns: "100px 125px auto 100px",
-	gridTemplateRows: "50px 100px 50px 200px",
+	gridTemplateRows: "50px 100px 50px 50px 100px",
 };
 
 interface HabitItemDialogProps {

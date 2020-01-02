@@ -33,33 +33,43 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 	});
 
 	return (
-		<div
-			className="mt-6 flex items-center"
-			style={{gridColumn: "span 4", gridRow: 4, alignSelf: "start"}}
-		>
-			<label>Select date range:</label>
-			<select
-				className="field mx-2"
-				value={dateRange}
-				onChange={event => {
-					const {value} = event.target;
-					if (isChartRange(value) && value !== dateRange) {
-						setChartRange(value);
-					}
-				}}
+		<>
+			<div
+				className="mt-6 flex items-center"
+				style={{gridColumn: "span 4", gridRow: 4, alignSelf: "start"}}
 			>
-				<option value="last_week">Last week</option>
-				<option value="last_month">Last month</option>
-				<option value="all_time">All time</option>
-			</select>
-			{habitVoteChartRequestState.data?.map(item => (
-				<div
-					title={`${format(new Date(item.day), "yyyy-MM-dd")} - ${item.vote ?? "no vote"}`}
-					key={item.day}
-					className={`w-20 h-8 border-r-2 border-gray-500 ${voteToBgColor[item.vote ?? "plateau"]}`}
-				/>
-			))}
-		</div>
+				<label>Select date range:</label>
+				<select
+					className="field mx-2"
+					value={dateRange}
+					onChange={event => {
+						const {value} = event.target;
+						if (isChartRange(value) && value !== dateRange) {
+							setChartRange(value);
+						}
+					}}
+				>
+					<option value="last_week">Last week</option>
+					<option value="last_month">Last month</option>
+					<option value="all_time">All time</option>
+				</select>
+			</div>
+			<div
+				className="flex w-full pt-8"
+				style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
+			>
+				{habitVoteChartRequestState.data?.map(item => (
+					<div
+						title={`${format(new Date(item.day), "yyyy-MM-dd")} - ${item.vote ?? "no vote"}`}
+						style={{
+							flexBasis: "calc(100% / 7)",
+						}}
+						key={item.day}
+						className={`h-8 border-r-2 border-gray-500 ${voteToBgColor[item.vote ?? "plateau"]}`}
+					/>
+				))}
+			</div>
+		</>
 	);
 };
 
