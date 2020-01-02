@@ -29,6 +29,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 		promiseFn: api.habit.getHabitVoteChart,
 		id,
 		dateRange,
+		watch: dateRange,
 		onReject: () => triggerErrorNotification("Fetching chart data failed."),
 	});
 
