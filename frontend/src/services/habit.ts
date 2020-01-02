@@ -1,6 +1,7 @@
 import * as Async from "react-async";
 
 import {IHabit} from "../interfaces/IHabit";
+import {IVoteChartItem} from "../interfaces/IDayVote";
 import {_internal_api} from "./api";
 
 export const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
@@ -35,3 +36,8 @@ export const reorderHabitsRequest: Async.DeferFn<void> = ([reorderHabitsPayload]
 
 export const addHabitDayVoteRequest: Async.DeferFn<void> = ([habitDayVotePayload]) =>
 	_internal_api.post("/vote", habitDayVotePayload).then(response => response.data);
+
+export const getHabitVoteChartRequest: Async.PromiseFn<IVoteChartItem[]> = ({id, dateRange}) =>
+	_internal_api
+		.get<IVoteChartItem[]>(`/habit-chart/${id}?dateRange=${dateRange}`)
+		.then(response => response.data);
