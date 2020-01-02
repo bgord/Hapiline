@@ -69,6 +69,7 @@ export const AddHabitForm: React.FC = () => {
 						required
 						value={score}
 						onChange={event => setScore(event.target.value)}
+						onBlur={event => setScore(event.target.value)}
 						className="field bg-white"
 					>
 						<option value="neutral">neutral</option>
@@ -86,6 +87,7 @@ export const AddHabitForm: React.FC = () => {
 						required
 						value={strength}
 						onChange={event => setStrength(event.target.value)}
+						onBlur={event => setStrength(event.target.value)}
 						className="field bg-white"
 					>
 						<option value="established">established</option>

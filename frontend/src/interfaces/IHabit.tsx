@@ -9,6 +9,8 @@ export interface IHabit {
 	created_at: string;
 	updated_at: string;
 	order: number;
+	progress_streak?: number;
+	regress_streak?: number;
 }
 
 export const scoreToBgColor: {[key in HabitScore]: string} = {

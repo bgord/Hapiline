@@ -127,9 +127,11 @@ test("full flow", async ({client, assert}) => {
 
 	response.assertStatus(200);
 
+	assert.equal(response.body.progress_streak, 0);
+	assert.equal(response.body.regress_streak, 0);
+
 	const habitAfterUpdate = await Habit.find(1);
 	assert.equal(habitAfterUpdate.name, payload.name);
-	assert.equal(habitAfterUpdate.score, payload.score);
 });
 
 test("identical habit name error", async ({client, assert}) => {

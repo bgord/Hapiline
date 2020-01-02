@@ -231,6 +231,8 @@ describe("Habit", () => {
 				strength: "fresh",
 				created_at: "2019/01/01",
 				updated_at: "2019/02/01",
+				progress_streak: 2,
+				regress_streak: 0,
 			},
 			{
 				id: 2,
@@ -239,6 +241,8 @@ describe("Habit", () => {
 				strength: "developing",
 				created_at: "2019/01/01",
 				updated_at: "2019/02/01",
+				progress_streak: 0,
+				regress_streak: 1,
 			},
 		];
 
@@ -269,12 +273,13 @@ describe("Habit", () => {
 			.first()
 			.click();
 
-		cy.get(".h-full").within(() => {
+		cy.findByRole("dialog").within(() => {
 			cy.findByDisplayValue("positive");
 			cy.findByDisplayValue("fresh");
 			cy.findByDisplayValue("Watch The Office");
 			cy.findByText("2019/01/01 00:00");
 			cy.findByText("2019/02/01 00:00");
+			cy.findByText("Progress streak: 2 days");
 			cy.findByText("×").click();
 		});
 
@@ -282,12 +287,13 @@ describe("Habit", () => {
 			.eq(1)
 			.click();
 
-		cy.get(".h-full").within(() => {
+		cy.findByRole("dialog").within(() => {
 			cy.findByDisplayValue("neutral");
 			cy.findByDisplayValue("developing");
 			cy.findByDisplayValue("Go to sleep");
 			cy.findByText("2019/01/01 00:00");
 			cy.findByText("2019/02/01 00:00");
+			cy.findByText("Regress streak: 1 days");
 			cy.findByText("×").click();
 		});
 	});
