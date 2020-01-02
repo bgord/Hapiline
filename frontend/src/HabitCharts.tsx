@@ -2,6 +2,7 @@ import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
+import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -55,21 +56,31 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 					<option value="all_time">All time</option>
 				</select>
 			</div>
-			<div
-				className="flex w-full mt-8 border-l-2 border-gray-500"
-				style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
-			>
-				{habitVoteChartRequestState.data?.map(item => (
-					<div
-						title={`${format(new Date(item.day), "yyyy-MM-dd")} - ${item.vote ?? "no vote"}`}
-						style={{
-							flexBasis: `calc(100% / ${habitVoteChartRequestState.data?.length})`,
-						}}
-						key={item.day}
-						className={`h-8 border-r-2 border-gray-500 ${voteToBgColor[item.vote ?? "plateau"]}`}
-					/>
-				))}
-			</div>
+			<Async.IfFulfilled state={habitVoteChartRequestState}>
+				<div
+					className="flex w-full mt-8 border-l-2 border-gray-500"
+					style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
+				>
+					{habitVoteChartRequestState.data?.map(item => (
+						<div
+							title={`${format(new Date(item.day), "yyyy-MM-dd")} - ${item.vote ?? "no vote"}`}
+							style={{
+								flexBasis: `calc(100% / ${habitVoteChartRequestState.data?.length})`,
+							}}
+							key={item.day}
+							className={`h-8 border-r-2 border-gray-500 ${voteToBgColor[item.vote ?? "plateau"]}`}
+						/>
+					))}
+				</div>
+			</Async.IfFulfilled>
+			<Async.IfRejected state={habitVoteChartRequestState}>
+				<ErrorMessage
+					className="mt-8"
+					style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
+				>
+					Charts unavailable, please try again.
+				</ErrorMessage>
+			</Async.IfRejected>
 		</>
 	);
 };
