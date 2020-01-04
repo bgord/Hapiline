@@ -1,13 +1,14 @@
 import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful-dnd";
+import {useLocation, useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
+import qs from "qs";
 
 import {BareButton} from "./BareButton";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useDialog} from "./hooks/useDialog";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 
@@ -69,10 +70,20 @@ interface HabitListItemProps {
 }
 
 const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
-	const [showDialog, openDialog, closeDialog] = useDialog();
+	const history = useHistory();
+	const previewHabitId = useQueryParam("previewHabitId");
+
+	const doesPreviewHabitIdMatch = previewHabitId && habit.id === Number(previewHabitId);
 
 	const scoreBgColor = scoreToBgColor[habit.score];
 	const strengthBgColor = strengthToBgColor[habit.strength];
+
+	function openPreviewDialog() {
+		history.push(`/dashboard?previewHabitId=${habit.id}`);
+	}
+	function closePreviewDialog() {
+		history.push("/dashboard");
+	}
 
 	return (
 		<Draggable key={habit.id} draggableId={habit.id.toString()} index={index}>
@@ -91,11 +102,13 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 					<div className="flex justify-between w-full">
 						<div className="p-2 bg-gray-100 ml-2 w-full">{habit.name}</div>
 						<div className="flex ml-4">
-							<BareButton onClick={openDialog}>More</BareButton>
+							<BareButton onClick={openPreviewDialog}>More</BareButton>
 							<DeleteHabitButton {...habit} />
 						</div>
 					</div>
-					{showDialog && <HabitItemDialog habitId={habit.id} closeDialog={closeDialog} />}
+					{doesPreviewHabitIdMatch && (
+						<HabitItemDialog habitId={habit.id} closeDialog={closePreviewDialog} />
+					)}
 				</li>
 			)}
 		</Draggable>
@@ -107,4 +120,10 @@ function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[]
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);
 	return result;
+}
+
+function useQueryParam(param: string): string | undefined {
+	const {search} = useLocation();
+	const result = qs.parse(search, {ignoreQueryPrefix: true});
+	return result[param];
 }
