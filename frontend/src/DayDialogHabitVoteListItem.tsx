@@ -58,7 +58,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					onClick={() => history.push(`/calendar?previewDay=${day}`)}
 					hidden={!isHabitHighlighted}
 				>
-					Unselect
+					Unmark
 				</BareButton>
 				<Link
 					to={`/dashboard?previewHabitId=${habit.id}`}
@@ -67,6 +67,11 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					{habit.name}
 				</Link>
 			</div>
+			{!vote && (
+				<div title="Vote for a habit" className="ml-auto text-red-600 mr-1 px-2 font-bold">
+					!
+				</div>
+			)}
 			<div>
 				<BareButton
 					onClick={() => changeVote("progress")}
