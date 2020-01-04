@@ -1,4 +1,5 @@
 import {Dialog} from "@reach/dialog";
+import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
@@ -14,16 +15,11 @@ import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogProps = DayVoteStats & {
-	closeDialog: VoidFunction;
 	refreshCalendar: VoidFunction;
 };
 
-export const DayDialog: React.FC<DayDialogProps> = ({
-	day,
-	closeDialog,
-	refreshCalendar,
-	...stats
-}) => {
+export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...stats}) => {
+	const history = useHistory();
 	const habits = useHabits();
 	const triggerErrorNotification = useErrorNotification();
 
@@ -37,11 +33,15 @@ export const DayDialog: React.FC<DayDialogProps> = ({
 
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
+	function dismissDialog() {
+		history.push("/calendar");
+	}
+
 	return (
-		<Dialog aria-label="Show day preview">
+		<Dialog aria-label="Show day preview" onDismiss={dismissDialog}>
 			<div className="flex justify-between items-baseline">
 				<strong>{day}</strong>
-				<CloseButton onClick={closeDialog} />
+				<CloseButton onClick={dismissDialog} />
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">

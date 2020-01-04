@@ -37,6 +37,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 	});
 	const habit = habitRequestState?.data as IHabit;
 
+	function dismissDialog() {
+		closeDialog();
+		getHabitsRequestState.reload();
+	}
+
 	return (
 		<Dialog
 			style={{
@@ -44,7 +49,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 				maxHeight: "500px",
 			}}
 			className="w-full h-full"
-			onDismiss={getHabitsRequestState.reload}
+			onDismiss={dismissDialog}
 			aria-label="Show habit preview"
 		>
 			<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
@@ -54,12 +59,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			{habit?.id && (
 				<div style={habitDialogGrid}>
 					<strong style={{gridColumn: "span 3", alignSelf: "center"}}>Habit preview</strong>
-					<CloseButton
-						onClick={() => {
-							closeDialog();
-							getHabitsRequestState.reload();
-						}}
-					/>
+					<CloseButton onClick={dismissDialog} />
 					<EditableHabitScoreSelect
 						{...habit}
 						setHabitItem={habitRequestState.setData}

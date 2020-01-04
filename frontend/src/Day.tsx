@@ -33,9 +33,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	function openDialog() {
 		history.push(`/calendar?previewDay=${day}`);
 	}
-	function closeDialog() {
-		history.push("/calendar");
-	}
 
 	return (
 		<>
@@ -60,12 +57,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 							<Stat count={stats.noVotesCountStats} sign="?" />
 						</div>
 						{previewDay && isSameDay(new Date(previewDay), thisDay) && (
-							<DayDialog
-								day={day}
-								closeDialog={closeDialog}
-								refreshCalendar={refreshCalendar}
-								{...stats}
-							/>
+							<DayDialog day={day} refreshCalendar={refreshCalendar} {...stats} />
 						)}
 					</>
 				)}
