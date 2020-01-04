@@ -1,8 +1,7 @@
 import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful-dnd";
-import {useLocation, useHistory} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
-import qs from "qs";
 
 import {BareButton} from "./BareButton";
 import {DeleteHabitButton} from "./DeleteHabitButton";
@@ -11,6 +10,7 @@ import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
+import {useQueryParam} from "./hooks/useQueryParam";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -120,10 +120,4 @@ function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[]
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);
 	return result;
-}
-
-function useQueryParam(param: string): string | undefined {
-	const {search} = useLocation();
-	const result = qs.parse(search, {ignoreQueryPrefix: true});
-	return result[param];
 }

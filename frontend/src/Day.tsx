@@ -1,7 +1,6 @@
 import {isFuture, isSameDay, isToday} from "date-fns";
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import React from "react";
-import qs from "qs";
 import useHover from "@react-hook/hover";
 
 import {BareButton} from "./BareButton";
@@ -10,6 +9,7 @@ import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
+import {useQueryParam} from "./hooks/useQueryParam";
 
 export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
 	day,
@@ -73,9 +73,3 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 		</>
 	);
 };
-
-function useQueryParam(param: string): string | undefined {
-	const {search} = useLocation();
-	const result = qs.parse(search, {ignoreQueryPrefix: true});
-	return result[param];
-}
