@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
@@ -22,6 +22,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	habit,
 	day,
 }) => {
+	const history = useHistory();
 	const highlightedHabitId = useQueryParam("highlightedHabitId");
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
@@ -51,12 +52,21 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<li className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4">
-			<Link
-				to={`/dashboard?previewHabitId=${habit.id}`}
-				className={isHabitHighlighted ? "text-blue-600" : ""}
-			>
-				{habit.name}
-			</Link>
+			<div>
+				<BareButton
+					className="mr-4"
+					onClick={() => history.push(`/calendar?previewDay=${day}`)}
+					hidden={!isHabitHighlighted}
+				>
+					Unselect
+				</BareButton>
+				<Link
+					to={`/dashboard?previewHabitId=${habit.id}`}
+					className={isHabitHighlighted ? "text-blue-600" : ""}
+				>
+					{habit.name}
+				</Link>
+			</div>
 			<div>
 				<BareButton
 					onClick={() => changeVote("progress")}
