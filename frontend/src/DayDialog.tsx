@@ -38,7 +38,15 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 	}
 
 	return (
-		<Dialog aria-label="Show day preview" onDismiss={dismissDialog}>
+		<Dialog
+			aria-label="Show day preview"
+			onDismiss={dismissDialog}
+			className="overflow-auto"
+			style={{
+				maxWidth: "1000px",
+				maxHeight: "700px",
+			}}
+		>
 			<div className="flex justify-between items-baseline">
 				<strong>{day}</strong>
 				<CloseButton onClick={dismissDialog} />
