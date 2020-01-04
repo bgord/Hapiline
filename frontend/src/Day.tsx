@@ -1,5 +1,7 @@
-import {isFuture, isToday} from "date-fns";
+import {isFuture, isSameDay, isToday} from "date-fns";
+import {useHistory, useLocation} from "react-router-dom";
 import React from "react";
+import qs from "qs";
 import useHover from "@react-hook/hover";
 
 import {BareButton} from "./BareButton";
@@ -7,7 +9,6 @@ import {DayDialog} from "./DayDialog";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
-import {useDialog} from "./hooks/useDialog";
 import {useHabits} from "./contexts/habits-context";
 
 export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
@@ -16,16 +17,25 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	refreshCalendar,
 	...stats
 }) => {
+	const history = useHistory();
 	const habits = useHabits();
 	const [isHovering, ref] = useHover();
-	const [showDialog, openDialog, closeDialog] = useDialog();
+	const previewDay = useQueryParam("previewDay");
 
 	const thisDay = new Date(day);
 	const isThisDayToday = isToday(new Date(day));
 	const isThisDayInTheFuture = isFuture(thisDay);
 
 	const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(habits, thisDay).length;
+
 	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDayCount > 0;
+
+	function openDialog() {
+		history.push(`/calendar?previewDay=${day}`);
+	}
+	function closeDialog() {
+		history.push("/calendar");
+	}
 
 	return (
 		<>
@@ -49,7 +59,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 							<Stat count={stats.regressVotesCountStats} sign="-" />
 							<Stat count={stats.noVotesCountStats} sign="?" />
 						</div>
-						{showDialog && (
+						{previewDay && isSameDay(new Date(previewDay), thisDay) && (
 							<DayDialog
 								day={day}
 								closeDialog={closeDialog}
@@ -63,3 +73,9 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 		</>
 	);
 };
+
+function useQueryParam(param: string): string | undefined {
+	const {search} = useLocation();
+	const result = qs.parse(search, {ignoreQueryPrefix: true});
+	return result[param];
+}
