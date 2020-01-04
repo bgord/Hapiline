@@ -67,6 +67,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				>
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
+							habitId={id}
 							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
 							{...item}
 						/>
@@ -85,13 +86,18 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 	);
 };
 
-const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps>> = ({day, vote, ...rest}) => {
+const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit["id"]}> = ({
+	day,
+	vote,
+	habitId,
+	...rest
+}) => {
 	const date = format(new Date(day), "yyyy-MM-dd");
 	const bgColor = voteToBgColor[vote ?? "plateau"];
 	const title = `${date} - ${vote ?? "no vote"}`;
 	return (
 		<Link
-			to={`/calendar?previewDay=${date}`}
+			to={`/calendar?previewDay=${date}&highlightedHabitId=${habitId}`}
 			title={title}
 			key={day}
 			className={`h-8 border-r-2 border-gray-500 ${bgColor}`}

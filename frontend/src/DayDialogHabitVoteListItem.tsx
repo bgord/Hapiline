@@ -1,12 +1,13 @@
+import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
-import {Link} from "react-router-dom";
 
 import {BareButton} from "./BareButton";
 import {IHabit} from "./interfaces/IHabit";
 import {Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useQueryParam} from "./hooks/useQueryParam";
 
 interface DayDialogHabitVoteListProps {
 	habit: IHabit;
@@ -21,6 +22,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	habit,
 	day,
 }) => {
+	const highlightedHabitId = useQueryParam("highlightedHabitId");
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
 
@@ -45,9 +47,16 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		});
 	}
 
+	const isHabitHighlighted = Number(highlightedHabitId) === habit.id;
+
 	return (
 		<li className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4">
-			<Link to={`/dashboard?previewHabitId=${habit.id}`}>{habit.name}</Link>
+			<Link
+				to={`/dashboard?previewHabitId=${habit.id}`}
+				className={isHabitHighlighted ? "text-blue-600" : ""}
+			>
+				{habit.name}
+			</Link>
 			<div>
 				<BareButton
 					onClick={() => changeVote("progress")}
