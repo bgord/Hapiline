@@ -67,6 +67,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				>
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
+							key={item.day}
 							habitId={id}
 							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
 							{...item}
