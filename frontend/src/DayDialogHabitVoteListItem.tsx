@@ -1,5 +1,6 @@
 import * as Async from "react-async";
 import React from "react";
+import {Link} from "react-router-dom";
 
 import {BareButton} from "./BareButton";
 import {IHabit} from "./interfaces/IHabit";
@@ -46,7 +47,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<li className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4">
-			<span>{habit.name}</span>
+			<Link to={`/dashboard?previewHabitId=${habit.id}`}>{habit.name}</Link>
 			<div>
 				<BareButton
 					onClick={() => changeVote("progress")}
