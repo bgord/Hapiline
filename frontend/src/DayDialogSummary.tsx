@@ -17,7 +17,7 @@ export const DayDialogSummary: React.FC<DayDialogSummaryProps> = ({day, ...stats
 	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
 
 	return (
-		<div className="flex justify-end pl-0 text-sm mt-8">
+		<div className="flex justify-end pl-0 text-sm my-8">
 			<details className="mr-auto" hidden={!stats.createdHabitsCount}>
 				<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
 				<p>Habit(s) added this day:</p>
