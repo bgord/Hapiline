@@ -26,42 +26,41 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const isThisDayToday = isToday(new Date(day));
 	const isThisDayInTheFuture = isFuture(thisDay);
 
-	const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(habits, thisDay).length;
+	const howManyHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, thisDay).length;
 
-	const isDayDialogBeAvailable = !isThisDayInTheFuture && habitsAvailableAtThisDayCount > 0;
+	const isDayDialogAvailable = !isThisDayInTheFuture && howManyHabitsAvailableAtThisDay > 0;
+	const isDayDialogVisible = previewDay && isSameDay(new Date(previewDay), thisDay);
 
 	function openDialog() {
 		history.push(`/calendar?previewDay=${day}`);
 	}
 
 	return (
-		<>
-			<li
-				className="flex flex-col justify-between align-center bg-green-100 hover:bg-green-200"
-				style={styles}
-				ref={ref as React.Ref<HTMLLIElement>}
-			>
-				<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
-				{isDayDialogBeAvailable && (
-					<>
-						<BareButton hidden={!isHovering} onClick={openDialog}>
-							Show day
-						</BareButton>
-						<div className="flex justify-end p-2 text-sm">
-							<span hidden={!stats.createdHabitsCount} className="mr-auto">
-								NEW: {stats.createdHabitsCount}
-							</span>
-							<Stat count={stats.progressVotesCountStats} sign="+" />
-							<Stat count={stats.plateauVotesCountStats} sign="=" />
-							<Stat count={stats.regressVotesCountStats} sign="-" />
-							<Stat count={stats.noVotesCountStats} sign="?" />
-						</div>
-						{previewDay && isSameDay(new Date(previewDay), thisDay) && (
-							<DayDialog day={day} refreshCalendar={refreshCalendar} {...stats} />
-						)}
-					</>
-				)}
-			</li>
-		</>
+		<li
+			className="flex flex-col justify-between align-center bg-green-100 hover:bg-green-200"
+			style={styles}
+			ref={ref as React.Ref<HTMLLIElement>}
+		>
+			<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
+			{isDayDialogAvailable && (
+				<>
+					<BareButton hidden={!isHovering} onClick={openDialog}>
+						Show day
+					</BareButton>
+					<div className="flex justify-end p-2 text-sm">
+						<span hidden={!stats.createdHabitsCount} className="mr-auto">
+							NEW: {stats.createdHabitsCount}
+						</span>
+						<Stat count={stats.progressVotesCountStats} sign="+" />
+						<Stat count={stats.plateauVotesCountStats} sign="=" />
+						<Stat count={stats.regressVotesCountStats} sign="-" />
+						<Stat count={stats.noVotesCountStats} sign="?" />
+					</div>
+					{isDayDialogVisible && (
+						<DayDialog day={day} refreshCalendar={refreshCalendar} {...stats} />
+					)}
+				</>
+			)}
+		</li>
 	);
 };
