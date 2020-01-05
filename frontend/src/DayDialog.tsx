@@ -96,22 +96,6 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 				<input
 					name="filter"
-					id="unvoted"
-					type="radio"
-					value="unvoted"
-					checked={filter === "unvoted"}
-					onChange={event => {
-						const {value} = event.target;
-						if (isFilter(value)) {
-							setFilter(value);
-						}
-					}}
-					className="mr-1 ml-8"
-				/>
-				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
-
-				<input
-					name="filter"
 					id="voted"
 					type="radio"
 					value="voted"
@@ -125,6 +109,22 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="voted">Show voted ({howManyVotedHabits})</label>
+
+				<input
+					name="filter"
+					id="unvoted"
+					type="radio"
+					value="unvoted"
+					checked={filter === "unvoted"}
+					onChange={event => {
+						const {value} = event.target;
+						if (isFilter(value)) {
+							setFilter(value);
+						}
+					}}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
