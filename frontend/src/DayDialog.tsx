@@ -47,19 +47,21 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
-	const habitVotes: HabitVote[] = habitsAvailableAtThisDay
-		.map(habit => ({
-			habit,
-			vote: getDayVoteForHabit(getDayVotesRequestState, habit),
-			day,
-		}))
-		.filter(filterToFunction[filter]);
+	const habitVotes: HabitVote[] = habitsAvailableAtThisDay.map(habit => ({
+		habit,
+		vote: getDayVoteForHabit(getDayVotesRequestState, habit),
+		day,
+	}));
 
 	function dismissDialog() {
 		history.push("/calendar");
 	}
 
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
+
+	const howManyHabitsAtAll = habitVotes.length;
+	const howManyUnvotedHabits = habitVotes.filter(({vote}) => !vote).length;
+	const howManyVotedHabits = habitVotes.filter(({vote}) => vote).length;
 
 	return (
 		<Dialog
@@ -90,7 +92,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					}}
 					className="mr-1"
 				/>
-				<label htmlFor="all">Show all</label>
+				<label htmlFor="all">Show all ({howManyHabitsAtAll})</label>
 
 				<input
 					name="filter"
@@ -106,7 +108,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					}}
 					className="mr-1 ml-8"
 				/>
-				<label htmlFor="unvoted">Show unvoted</label>
+				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
 
 				<input
 					name="filter"
@@ -122,11 +124,11 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					}}
 					className="mr-1 ml-8"
 				/>
-				<label htmlFor="voted">Show voted</label>
+				<label htmlFor="voted">Show voted ({howManyVotedHabits})</label>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
-				{habitVotes.map(entry => (
+				{habitVotes.filter(filterToFunction[filter]).map(entry => (
 					<DayDialogHabitVoteListItem
 						key={entry.habit.id}
 						onResolve={() => {
