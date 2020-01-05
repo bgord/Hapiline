@@ -1,4 +1,5 @@
 import {Dialog} from "@reach/dialog";
+
 import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
@@ -18,24 +19,46 @@ type DayDialogProps = DayVoteStats & {
 	refreshCalendar: VoidFunction;
 };
 
+type HabitVote = {
+	habit: IHabit;
+	vote: Vote | undefined;
+	day: string;
+};
+
+type FilterTypes = "all" | "unvoted";
+
+const filterToFunction: {[key in FilterTypes]: (habitVote: HabitVote) => boolean} = {
+	all: () => true,
+	unvoted: ({vote}) => !vote,
+};
+
 export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...stats}) => {
 	const history = useHistory();
 	const habits = useHabits();
 	const triggerErrorNotification = useErrorNotification();
-
 	const getDayVotesRequestState = Async.useAsync({
 		promiseFn: api.calendar.getDay,
 		day,
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
 
+	const [filter, setFilter] = React.useState<FilterTypes>("all");
+
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
-	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
+	const habitVotes: HabitVote[] = habitsAvailableAtThisDay
+		.map(habit => ({
+			habit,
+			vote: getDayVoteForHabit(getDayVotesRequestState, habit),
+			day,
+		}))
+		.filter(filterToFunction[filter]);
 
 	function dismissDialog() {
 		history.push("/calendar");
 	}
+
+	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
 	return (
 		<Dialog
@@ -51,18 +74,49 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<strong>{day}</strong>
 				<CloseButton onClick={dismissDialog} />
 			</div>
+			<div className="flex my-8">
+				<input
+					name="filter"
+					id="all"
+					type="radio"
+					value="all"
+					checked={filter === "all"}
+					onChange={event => {
+						const {value} = event.target;
+						if (isFilter(value)) {
+							setFilter(value);
+						}
+					}}
+					className="mr-1"
+				/>
+				<label htmlFor="all">Show all</label>
+
+				<input
+					name="filter"
+					id="unvoted"
+					type="radio"
+					value="unvoted"
+					checked={filter === "unvoted"}
+					onChange={event => {
+						const {value} = event.target;
+						if (isFilter(value)) {
+							setFilter(value);
+						}
+					}}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="unvoted">Show unvoted</label>
+			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
-				{habitsAvailableAtThisDay.map(habit => (
+				{habitVotes.map(entry => (
 					<DayDialogHabitVoteListItem
-						key={habit.id}
-						habit={habit}
-						day={day}
-						vote={getDayVoteForHabit(getDayVotesRequestState, habit)}
+						key={entry.habit.id}
 						onResolve={() => {
 							refreshCalendar();
 							getDayVotesRequestState.reload();
 						}}
+						{...entry}
 					/>
 				))}
 			</ul>
@@ -77,4 +131,9 @@ function getDayVoteForHabit(
 ): Vote | undefined {
 	const dayVotes = getDayVotesRequestState.data ?? [];
 	return dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
+}
+
+function isFilter(value: string): value is FilterTypes {
+	const FILTER_TYPES = ["all", "unvoted"];
+	return FILTER_TYPES.includes(value);
 }
