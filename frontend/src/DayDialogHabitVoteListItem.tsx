@@ -3,6 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
+import {HabitScore} from "./HabitScore";
 import {IHabit} from "./interfaces/IHabit";
 import {Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -24,9 +25,9 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 }) => {
 	const history = useHistory();
 	const highlightedHabitId = useQueryParam("highlightedHabitId");
+
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
-
 	const addHabitDayVoteRequestState = Async.useAsync({
 		deferFn: api.habit.addHabitDayVote,
 		onResolve: () => {
@@ -52,7 +53,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<li className="flex items-baseline justify-between bg-blue-100 my-2 p-2 mt-4">
-			<div>
+			<div className="flex items-center">
 				<BareButton
 					className="mr-4"
 					onClick={() => history.push(`/calendar?previewDay=${day}`)}
@@ -60,6 +61,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 				>
 					Unmark
 				</BareButton>
+				<HabitScore score={habit.score} className="mr-4 px-1 py-1" />
 				<Link
 					to={`/dashboard?previewHabitId=${habit.id}`}
 					className={isHabitHighlighted ? "text-blue-600" : ""}

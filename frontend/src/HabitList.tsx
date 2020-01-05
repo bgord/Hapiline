@@ -6,7 +6,8 @@ import React from "react";
 import {BareButton} from "./BareButton";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
-import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
+import {HabitScore} from "./HabitScore";
+import {IHabit, strengthToBgColor} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
@@ -75,7 +76,6 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 
 	const doesPreviewHabitIdMatch = previewHabitId && habit.id === Number(previewHabitId);
 
-	const scoreBgColor = scoreToBgColor[habit.score];
 	const strengthBgColor = strengthToBgColor[habit.strength];
 
 	function openPreviewDialog() {
@@ -95,7 +95,7 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 					className="flex items-baseline mb-4"
 					data-testid="draggable-habit-item"
 				>
-					<div className={`${scoreBgColor} w-24 pl-1 p-2 text-center`}>{habit.score}</div>
+					<HabitScore score={habit.score} />
 					<div className={`${strengthBgColor} w-32 ml-2 pl-1 p-2 text-center`}>
 						{habit.strength}
 					</div>
