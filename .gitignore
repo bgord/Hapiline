@@ -26,3 +26,5 @@ deployment/deploy-cache/*
 cypress/videos
 cypress/screenshots
 cypress.env.json
+
+data/
