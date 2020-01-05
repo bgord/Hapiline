@@ -25,11 +25,12 @@ type HabitVote = {
 	day: string;
 };
 
-type FilterTypes = "all" | "unvoted";
+type FilterTypes = "all" | "unvoted" | "voted";
 
 const filterToFunction: {[key in FilterTypes]: (habitVote: HabitVote) => boolean} = {
 	all: () => true,
 	unvoted: ({vote}) => !vote,
+	voted: ({vote}) => vote !== null && vote !== undefined,
 };
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...stats}) => {
@@ -106,6 +107,22 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="unvoted">Show unvoted</label>
+
+				<input
+					name="filter"
+					id="voted"
+					type="radio"
+					value="voted"
+					checked={filter === "voted"}
+					onChange={event => {
+						const {value} = event.target;
+						if (isFilter(value)) {
+							setFilter(value);
+						}
+					}}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="voted">Show voted</label>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
@@ -134,6 +151,6 @@ function getDayVoteForHabit(
 }
 
 function isFilter(value: string): value is FilterTypes {
-	const FILTER_TYPES = ["all", "unvoted"];
+	const FILTER_TYPES = ["all", "voted", "unvoted"];
 	return FILTER_TYPES.includes(value);
 }
