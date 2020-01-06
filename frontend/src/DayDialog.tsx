@@ -44,7 +44,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 	});
 
 	const [filter, setFilter] = React.useState<FilterTypes>("all");
-	const [search, setSearch] = React.useState("");
+	const [searchPhrase, setSearchPhrase] = React.useState<string>();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
@@ -114,19 +114,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					type="radio"
 					value="unvoted"
 					checked={filter === "unvoted"}
-					onChange={event => {
-						const {value} = event.target;
-						if (isFilter(value)) {
-							setFilter(value);
-						}
-					}}
+					onChange={onFilterChange}
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
 				<BareButton
 					onClick={() => {
 						setFilter("all");
-						setSearch("");
+						setSearchPhrase(undefined);
 					}}
 					className="ml-auto"
 				>
@@ -137,19 +132,19 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<input
 					className="field p-1 w-64"
 					type="search"
-					value={search}
-					onChange={event => setSearch(event.target.value)}
+					value={searchPhrase}
+					onChange={event => setSearchPhrase(event.target.value)}
 					placeholder="Search for habits..."
 				/>
-				<BareButton onClick={() => setSearch("")}>Clear</BareButton>
+				<BareButton onClick={() => setSearchPhrase(undefined)}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitVotes
 					.filter(filterToFunction[filter])
 					.filter(entry => {
-						if (search === "") return true;
-						return entry.habit.name.toLowerCase().includes(search);
+						if (!searchPhrase) return true;
+						return entry.habit.name.toLowerCase().includes(searchPhrase);
 					})
 					.map(entry => (
 						<DayDialogHabitVoteListItem
