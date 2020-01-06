@@ -126,6 +126,15 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
+				<BareButton
+					onClick={() => {
+						setFilter("all");
+						setSearch("");
+					}}
+					className="ml-auto"
+				>
+					Reset filters
+				</BareButton>
 			</div>
 			<div className="mb-6">
 				<input
