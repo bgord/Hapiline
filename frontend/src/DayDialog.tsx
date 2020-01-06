@@ -54,15 +54,22 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		day,
 	}));
 
-	function dismissDialog() {
-		history.push("/calendar");
-	}
-
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
 	const howManyHabitsAtAll = habitVotes.length;
 	const howManyUnvotedHabits = habitVotes.filter(({vote}) => !vote).length;
 	const howManyVotedHabits = habitVotes.filter(({vote}) => vote).length;
+
+	function dismissDialog() {
+		history.push("/calendar");
+	}
+
+	function onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
+		const {value} = event.target;
+		if (isFilter(value)) {
+			setFilter(value);
+		}
+	}
 
 	return (
 		<Dialog
@@ -85,12 +92,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					type="radio"
 					value="all"
 					checked={filter === "all"}
-					onChange={event => {
-						const {value} = event.target;
-						if (isFilter(value)) {
-							setFilter(value);
-						}
-					}}
+					onChange={onFilterChange}
 					className="mr-1"
 				/>
 				<label htmlFor="all">Show all ({howManyHabitsAtAll})</label>
@@ -101,12 +103,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					type="radio"
 					value="voted"
 					checked={filter === "voted"}
-					onChange={event => {
-						const {value} = event.target;
-						if (isFilter(value)) {
-							setFilter(value);
-						}
-					}}
+					onChange={onFilterChange}
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="voted">Show voted ({howManyVotedHabits})</label>
