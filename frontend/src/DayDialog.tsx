@@ -42,9 +42,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		day,
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
-
 	const [filter, setFilter] = React.useState<FilterTypes>("all");
-	const [searchPhrase, setSearchPhrase] = React.useState<string>();
+	const [searchPhrase, setSearchPhrase] = React.useState("");
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
@@ -121,7 +120,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<BareButton
 					onClick={() => {
 						setFilter("all");
-						setSearchPhrase(undefined);
+						setSearchPhrase("");
 					}}
 					className="ml-auto"
 				>
@@ -136,7 +135,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					onChange={event => setSearchPhrase(event.target.value)}
 					placeholder="Search for habits..."
 				/>
-				<BareButton onClick={() => setSearchPhrase(undefined)}>Clear</BareButton>
+				<BareButton onClick={() => setSearchPhrase("")}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
