@@ -10,6 +10,7 @@ import {DayDialogSummary} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IDayVote, Vote} from "./interfaces/IDayVote";
 import {IHabit} from "./interfaces/IHabit";
+import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -59,6 +60,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 	const howManyUnvotedHabits = habitVotes.filter(({vote}) => !vote).length;
 	const howManyVotedHabits = habitVotes.filter(({vote}) => vote).length;
 
+	const doesEveryHabitHasAVote = howManyUnvotedHabits === 0 && howManyHabitsAtAll > 0;
+
 	function dismissDialog() {
 		history.push("/calendar");
 	}
@@ -84,6 +87,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<strong>{day}</strong>
 				<CloseButton onClick={dismissDialog} />
 			</div>
+			{doesEveryHabitHasAVote && (
+				<SuccessMessage>
+					Congratulations! You've voted for every habit{" "}
+					<span role="img" aria-label="Party emoji">
+						🎉
+					</span>
+				</SuccessMessage>
+			)}
 			<div className="flex my-8">
 				<input
 					name="filter"
