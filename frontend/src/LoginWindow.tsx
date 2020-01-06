@@ -1,18 +1,12 @@
-import {useHistory, Link, useLocation} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
-import qs from "qs";
 
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-
-function useQueryParam(param: string): string | undefined {
-	const {search} = useLocation();
-	const result = qs.parse(search, {ignoreQueryPrefix: true});
-	return result[param];
-}
+import {useQueryParam} from "./hooks/useQueryParam";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();

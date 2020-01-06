@@ -1,15 +1,18 @@
 import {DragDropContext, Droppable, Draggable, DropResult} from "react-beautiful-dnd";
+import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
-import {IHabit, scoreToBgColor, strengthToBgColor} from "./interfaces/IHabit";
+import {HabitScore} from "./HabitScore";
+import {HabitStrength} from "./HabitStrength";
+import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useDialog} from "./hooks/useDialog";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
+import {useQueryParam} from "./hooks/useQueryParam";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -69,10 +72,17 @@ interface HabitListItemProps {
 }
 
 const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
-	const [showDialog, openDialog, closeDialog] = useDialog();
+	const history = useHistory();
+	const previewHabitId = useQueryParam("previewHabitId");
 
-	const scoreBgColor = scoreToBgColor[habit.score];
-	const strengthBgColor = strengthToBgColor[habit.strength];
+	const doesPreviewHabitIdMatch = previewHabitId && habit.id === Number(previewHabitId);
+
+	function openPreviewDialog() {
+		history.push(`/dashboard?previewHabitId=${habit.id}`);
+	}
+	function closePreviewDialog() {
+		history.push("/dashboard");
+	}
 
 	return (
 		<Draggable key={habit.id} draggableId={habit.id.toString()} index={index}>
@@ -84,18 +94,18 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 					className="flex items-baseline mb-4"
 					data-testid="draggable-habit-item"
 				>
-					<div className={`${scoreBgColor} w-24 pl-1 p-2 text-center`}>{habit.score}</div>
-					<div className={`${strengthBgColor} w-32 ml-2 pl-1 p-2 text-center`}>
-						{habit.strength}
-					</div>
+					<HabitScore score={habit.score} />
+					<HabitStrength strength={habit.strength} />
 					<div className="flex justify-between w-full">
 						<div className="p-2 bg-gray-100 ml-2 w-full">{habit.name}</div>
 						<div className="flex ml-4">
-							<BareButton onClick={openDialog}>More</BareButton>
+							<BareButton onClick={openPreviewDialog}>More</BareButton>
 							<DeleteHabitButton {...habit} />
 						</div>
 					</div>
-					{showDialog && <HabitItemDialog habitId={habit.id} closeDialog={closeDialog} />}
+					{doesPreviewHabitIdMatch && (
+						<HabitItemDialog habitId={habit.id} closeDialog={closePreviewDialog} />
+					)}
 				</li>
 			)}
 		</Draggable>

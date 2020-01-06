@@ -7,6 +7,7 @@ import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useHabitsState} from "./contexts/habits-context";
 
 type EditableHabitNameInputProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
@@ -17,6 +18,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	id,
 	setHabitItem,
 }) => {
+	const getHabitsRequestState = useHabitsState();
 	const [isFocused, setIsFocused] = React.useState(false);
 	const blurInput = () => setIsFocused(false);
 	const focusInput = () => setIsFocused(true);
@@ -32,6 +34,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 			blurInput();
 			triggerSuccessNotification("Name updated successfully!");
 			setHabitItem(habit);
+			getHabitsRequestState.reload();
 		},
 		onReject: _error => {
 			const {getArgErrorMessage} = getRequestErrors(_error);

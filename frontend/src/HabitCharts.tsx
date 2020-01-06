@@ -1,10 +1,11 @@
+import {Link, LinkProps} from "react-router-dom";
 import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
-import {Vote} from "./interfaces/IDayVote";
+import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 
@@ -33,6 +34,8 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 		watch: dateRange,
 		onReject: () => triggerErrorNotification("Fetching chart data failed."),
 	});
+
+	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length;
 
 	return (
 		<>
@@ -63,13 +66,11 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 					style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
 				>
 					{habitVoteChartRequestState.data?.map(item => (
-						<div
-							title={`${format(new Date(item.day), "yyyy-MM-dd")} - ${item.vote ?? "no vote"}`}
-							style={{
-								flexBasis: `calc(100% / ${habitVoteChartRequestState.data?.length})`,
-							}}
+						<ChartCell
 							key={item.day}
-							className={`h-8 border-r-2 border-gray-500 ${voteToBgColor[item.vote ?? "plateau"]}`}
+							habitId={id}
+							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
+							{...item}
 						/>
 					))}
 				</div>
@@ -83,6 +84,26 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				</ErrorMessage>
 			</Async.IfRejected>
 		</>
+	);
+};
+
+const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit["id"]}> = ({
+	day,
+	vote,
+	habitId,
+	...rest
+}) => {
+	const date = format(new Date(day), "yyyy-MM-dd");
+	const bgColor = voteToBgColor[vote ?? "plateau"];
+	const title = `${date} - ${vote ?? "no vote"}`;
+	return (
+		<Link
+			to={`/calendar?previewDay=${date}&highlightedHabitId=${habitId}`}
+			title={title}
+			key={day}
+			className={`h-8 border-r-2 border-gray-500 ${bgColor}`}
+			{...rest}
+		/>
 	);
 };
 
