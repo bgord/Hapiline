@@ -1,9 +1,9 @@
 import {Dialog} from "@reach/dialog";
-
 import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {BareButton} from "./BareButton";
 import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DayDialogSummary} from "./DayDialogSummary";
@@ -44,6 +44,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 	});
 
 	const [filter, setFilter] = React.useState<FilterTypes>("all");
+	const [search, setSearch] = React.useState("");
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
@@ -126,18 +127,34 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				/>
 				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
 			</div>
+			<div className="mb-6">
+				<input
+					className="field p-1 w-64"
+					type="search"
+					value={search}
+					onChange={event => setSearch(event.target.value)}
+					placeholder="Search for habits..."
+				/>
+				<BareButton onClick={() => setSearch("")}>Clear</BareButton>
+			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
-				{habitVotes.filter(filterToFunction[filter]).map(entry => (
-					<DayDialogHabitVoteListItem
-						key={entry.habit.id}
-						onResolve={() => {
-							refreshCalendar();
-							getDayVotesRequestState.reload();
-						}}
-						{...entry}
-					/>
-				))}
+				{habitVotes
+					.filter(filterToFunction[filter])
+					.filter(entry => {
+						if (search === "") return true;
+						return entry.habit.name.toLowerCase().includes(search);
+					})
+					.map(entry => (
+						<DayDialogHabitVoteListItem
+							key={entry.habit.id}
+							onResolve={() => {
+								refreshCalendar();
+								getDayVotesRequestState.reload();
+							}}
+							{...entry}
+						/>
+					))}
 			</ul>
 			<DayDialogSummary day={day} {...stats} />
 		</Dialog>
