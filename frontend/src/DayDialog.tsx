@@ -144,7 +144,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					.filter(filterToFunction[filter])
 					.filter(entry => {
 						if (!searchPhrase) return true;
-						return entry.habit.name.toLowerCase().includes(searchPhrase);
+						return entry.habit.name.toLowerCase().includes(searchPhrase.toLowerCase());
 					})
 					.map(entry => (
 						<DayDialogHabitVoteListItem
