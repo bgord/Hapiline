@@ -46,23 +46,77 @@ export const HabitList: React.FC = () => {
 		getHabitsRequestState.setData(reorderedHabits);
 	}
 
+	const positiveHabitsCount = habits.filter(habit => habit.score === "positive").length;
+	const negativeHabitsCount = habits.filter(habit => habit.score === "negative").length;
+	const neutralHabitsCount = habits.filter(habit => habit.score === "neutral").length;
+
+	const howManyHabitsAtAll = habits.length;
+
 	return (
-		<DragDropContext onDragEnd={onDragEnd}>
-			<Droppable droppableId="habits">
-				{provided => (
-					<ul
-						ref={provided.innerRef}
-						{...provided.droppableProps}
-						className="flex flex-col bg-white p-4 pb-0 w-full"
-					>
-						{habits.map((habit, index) => (
-							<HabitListItem key={habit.id} habit={habit} index={index} />
-						))}
-						{provided.placeholder}
-					</ul>
-				)}
-			</Droppable>
-		</DragDropContext>
+		<>
+			<div className="flex w-full mt-16 mb-6">
+				<input
+					name="filter"
+					id="voted"
+					type="radio"
+					value="voted"
+					// checked={filter === "voted"}
+					// onChange={onFilterChange}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="voted">Positive ({positiveHabitsCount})</label>
+
+				<input
+					name="filter"
+					id="unvoted"
+					type="radio"
+					value="unvoted"
+					// checked={filter === "unvoted"}
+					// onChange={onFilterChange}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="unvoted">Neutral ({neutralHabitsCount})</label>
+
+				<input
+					name="filter"
+					id="unvoted"
+					type="radio"
+					value="unvoted"
+					// checked={filter === "unvoted"}
+					// onChange={onFilterChange}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="unvoted">Negative ({negativeHabitsCount})</label>
+
+				<input
+					name="filter"
+					id="all"
+					type="radio"
+					value="all"
+					// checked={filter === "all"}
+					// onChange={onFilterChange}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="all">All scores ({howManyHabitsAtAll})</label>
+				<BareButton className="ml-auto">Reset filters</BareButton>
+			</div>
+			<DragDropContext onDragEnd={onDragEnd}>
+				<Droppable droppableId="habits">
+					{provided => (
+						<ul
+							ref={provided.innerRef}
+							{...provided.droppableProps}
+							className="flex flex-col bg-white p-4 pb-0 w-full"
+						>
+							{habits.map((habit, index) => (
+								<HabitListItem key={habit.id} habit={habit} index={index} />
+							))}
+							{provided.placeholder}
+						</ul>
+					)}
+				</Droppable>
+			</DragDropContext>
+		</>
 	);
 };
 
