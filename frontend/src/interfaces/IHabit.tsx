@@ -1,5 +1,5 @@
 export type HabitScore = "positive" | "neutral" | "negative";
-type HabitStrength = "established" | "developing" | "fresh";
+export type HabitStrength = "established" | "developing" | "fresh";
 
 export interface IHabit {
 	id: number;

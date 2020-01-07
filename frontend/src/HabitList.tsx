@@ -8,19 +8,31 @@ import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
-import {IHabit, HabitScore as HabitScoreType} from "./interfaces/IHabit";
+import {
+	IHabit,
+	HabitScore as HabitScoreType,
+	HabitStrength as HabitStrengthType,
+} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 
 type HabitScoreFilter = HabitScoreType | "all";
+type HabitStrengthFilter = HabitStrengthType | "all";
 
 const scoreFilterToFunction: {[key in HabitScoreFilter]: (habit: IHabit) => boolean} = {
 	all: () => true,
 	positive: habit => habit.score === "positive",
 	neutral: habit => habit.score === "neutral",
 	negative: habit => habit.score === "negative",
+};
+
+const strengthFilterToFunction: {[key in HabitStrengthFilter]: (habit: IHabit) => boolean} = {
+	all: () => true,
+	established: habit => habit.strength === "established",
+	developing: habit => habit.strength === "developing",
+	fresh: habit => habit.strength === "fresh",
 };
 
 export const HabitList: React.FC = () => {
@@ -37,6 +49,7 @@ export const HabitList: React.FC = () => {
 	});
 
 	const [scoreFilter, setScoreFilter] = React.useState<HabitScoreFilter>("all");
+	const [strengthFilter, setStrengthFilter] = React.useState<HabitStrengthFilter>("all");
 
 	function onDragEnd(result: DropResult) {
 		if (!result.destination) return;
@@ -61,6 +74,10 @@ export const HabitList: React.FC = () => {
 	const negativeHabitsCount = habits.filter(habit => habit.score === "negative").length;
 	const neutralHabitsCount = habits.filter(habit => habit.score === "neutral").length;
 
+	const establishedHabitsCount = habits.filter(habit => habit.strength === "established").length;
+	const developingHabitsCount = habits.filter(habit => habit.strength === "developing").length;
+	const freshHabitsCount = habits.filter(habit => habit.strength === "fresh").length;
+
 	const howManyHabitsAtAll = habits.length;
 
 	function onScoreFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -70,13 +87,20 @@ export const HabitList: React.FC = () => {
 		}
 	}
 
-	const isDragDisabled = scoreFilter !== "all";
+	function onStrengthFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
+		const {value} = event.target;
+		if (isHabitStrengthFilter(value)) {
+			setStrengthFilter(value);
+		}
+	}
+
+	const isDragDisabled = scoreFilter !== "all" || strengthFilter !== "all";
 
 	return (
 		<>
 			<div className="flex w-full mt-16 mb-6">
 				<input
-					name="filter"
+					name="scoreFilter"
 					id="positive"
 					type="radio"
 					value="positive"
@@ -87,19 +111,18 @@ export const HabitList: React.FC = () => {
 				<label htmlFor="positive">Positive ({positiveHabitsCount})</label>
 
 				<input
-					name="filter"
+					name="scoreFilter"
 					id="neutral"
 					type="radio"
 					value="neutral"
 					checked={scoreFilter === "neutral"}
 					onChange={onScoreFilterChange}
 					className="mr-1 ml-8"
-					disabled={neutralHabitsCount === 0}
 				/>
 				<label htmlFor="neutral">Neutral ({neutralHabitsCount})</label>
 
 				<input
-					name="filter"
+					name="scoreFilter"
 					id="negative"
 					type="radio"
 					value="negative"
@@ -110,18 +133,69 @@ export const HabitList: React.FC = () => {
 				<label htmlFor="negative">Negative ({negativeHabitsCount})</label>
 
 				<input
-					name="filter"
-					id="all"
+					name="scoreFilter"
+					id="allScores"
 					type="radio"
 					value="all"
 					checked={scoreFilter === "all"}
 					onChange={onScoreFilterChange}
 					className="mr-1 ml-8"
 				/>
-				<label htmlFor="all">All scores ({howManyHabitsAtAll})</label>
-				<BareButton onClick={() => setScoreFilter("all")} className="ml-auto">
+				<label htmlFor="allScores">All scores ({howManyHabitsAtAll})</label>
+				<BareButton
+					onClick={() => {
+						setScoreFilter("all");
+						setStrengthFilter("all");
+					}}
+					className="ml-auto"
+				>
 					Reset filters
 				</BareButton>
+			</div>
+			<div className="flex w-full mb-6">
+				<input
+					name="strengthFilter"
+					id="established"
+					type="radio"
+					value="established"
+					checked={strengthFilter === "established"}
+					onChange={onStrengthFilterChange}
+					className="mr-1 ml-3"
+				/>
+				<label htmlFor="established">Established ({establishedHabitsCount})</label>
+
+				<input
+					name="strengthFilter"
+					id="developing"
+					type="radio"
+					value="developing"
+					checked={strengthFilter === "developing"}
+					onChange={onStrengthFilterChange}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="developing">Developing ({developingHabitsCount})</label>
+
+				<input
+					name="strengthFilter"
+					id="fresh"
+					type="radio"
+					value="fresh"
+					checked={strengthFilter === "fresh"}
+					onChange={onStrengthFilterChange}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="fresh">Fresh ({freshHabitsCount})</label>
+
+				<input
+					name="strengthFilter"
+					id="allStrengths"
+					type="radio"
+					value="all"
+					checked={strengthFilter === "all"}
+					onChange={onStrengthFilterChange}
+					className="mr-1 ml-8"
+				/>
+				<label htmlFor="allStrengths">All strengths ({howManyHabitsAtAll})</label>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
@@ -131,14 +205,17 @@ export const HabitList: React.FC = () => {
 							{...provided.droppableProps}
 							className="flex flex-col bg-white p-4 pb-0 w-full"
 						>
-							{habits.filter(scoreFilterToFunction[scoreFilter]).map((habit, index) => (
-								<HabitListItem
-									isDragDisabled={isDragDisabled}
-									key={habit.id}
-									habit={habit}
-									index={index}
-								/>
-							))}
+							{habits
+								.filter(scoreFilterToFunction[scoreFilter])
+								.filter(strengthFilterToFunction[strengthFilter])
+								.map((habit, index) => (
+									<HabitListItem
+										isDragDisabled={isDragDisabled}
+										key={habit.id}
+										habit={habit}
+										index={index}
+									/>
+								))}
 							{provided.placeholder}
 						</ul>
 					)}
@@ -209,4 +286,8 @@ function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[]
 
 function isHabitScoreFilter(value: string): value is HabitScoreFilter {
 	return ["positive", "neutral", "negative", "all"].includes(value);
+}
+
+function isHabitStrengthFilter(value: string): value is HabitStrengthFilter {
+	return ["established", "developing", "fresh", "all"].includes(value);
 }
