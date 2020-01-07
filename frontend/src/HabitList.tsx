@@ -8,11 +8,20 @@ import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
-import {IHabit} from "./interfaces/IHabit";
+import {IHabit, HabitScore as HabitScoreType} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
+
+type HabitScoreFilter = HabitScoreType | "all";
+
+const scoreFilterToFunction: {[key in HabitScoreFilter]: (habit: IHabit) => boolean} = {
+	all: () => true,
+	positive: habit => habit.score === "positive",
+	neutral: habit => habit.score === "neutral",
+	negative: habit => habit.score === "negative",
+};
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -26,6 +35,8 @@ export const HabitList: React.FC = () => {
 		onResolve: () => triggerSuccessNotification("Habits reordered successfully!"),
 		onReject: () => triggerErrorNotification("Error while changing order."),
 	});
+
+	const [scoreFilter, setScoreFilter] = React.useState<HabitScoreFilter>("all");
 
 	function onDragEnd(result: DropResult) {
 		if (!result.destination) return;
@@ -52,53 +63,65 @@ export const HabitList: React.FC = () => {
 
 	const howManyHabitsAtAll = habits.length;
 
+	function onScoreFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
+		const {value} = event.target;
+		if (isHabitScoreFilter(value)) {
+			setScoreFilter(value);
+		}
+	}
+
+	const isDragDisabled = scoreFilter !== "all";
+
 	return (
 		<>
 			<div className="flex w-full mt-16 mb-6">
 				<input
 					name="filter"
-					id="voted"
+					id="positive"
 					type="radio"
-					value="voted"
-					// checked={filter === "voted"}
-					// onChange={onFilterChange}
-					className="mr-1 ml-8"
+					value="positive"
+					checked={scoreFilter === "positive"}
+					onChange={onScoreFilterChange}
+					className="mr-1 ml-3"
 				/>
-				<label htmlFor="voted">Positive ({positiveHabitsCount})</label>
+				<label htmlFor="positive">Positive ({positiveHabitsCount})</label>
 
 				<input
 					name="filter"
-					id="unvoted"
+					id="neutral"
 					type="radio"
-					value="unvoted"
-					// checked={filter === "unvoted"}
-					// onChange={onFilterChange}
+					value="neutral"
+					checked={scoreFilter === "neutral"}
+					onChange={onScoreFilterChange}
 					className="mr-1 ml-8"
+					disabled={neutralHabitsCount === 0}
 				/>
-				<label htmlFor="unvoted">Neutral ({neutralHabitsCount})</label>
+				<label htmlFor="neutral">Neutral ({neutralHabitsCount})</label>
 
 				<input
 					name="filter"
-					id="unvoted"
+					id="negative"
 					type="radio"
-					value="unvoted"
-					// checked={filter === "unvoted"}
-					// onChange={onFilterChange}
+					value="negative"
+					checked={scoreFilter === "negative"}
+					onChange={onScoreFilterChange}
 					className="mr-1 ml-8"
 				/>
-				<label htmlFor="unvoted">Negative ({negativeHabitsCount})</label>
+				<label htmlFor="negative">Negative ({negativeHabitsCount})</label>
 
 				<input
 					name="filter"
 					id="all"
 					type="radio"
 					value="all"
-					// checked={filter === "all"}
-					// onChange={onFilterChange}
+					checked={scoreFilter === "all"}
+					onChange={onScoreFilterChange}
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="all">All scores ({howManyHabitsAtAll})</label>
-				<BareButton className="ml-auto">Reset filters</BareButton>
+				<BareButton onClick={() => setScoreFilter("all")} className="ml-auto">
+					Reset filters
+				</BareButton>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
@@ -108,8 +131,13 @@ export const HabitList: React.FC = () => {
 							{...provided.droppableProps}
 							className="flex flex-col bg-white p-4 pb-0 w-full"
 						>
-							{habits.map((habit, index) => (
-								<HabitListItem key={habit.id} habit={habit} index={index} />
+							{habits.filter(scoreFilterToFunction[scoreFilter]).map((habit, index) => (
+								<HabitListItem
+									isDragDisabled={isDragDisabled}
+									key={habit.id}
+									habit={habit}
+									index={index}
+								/>
 							))}
 							{provided.placeholder}
 						</ul>
@@ -123,9 +151,10 @@ export const HabitList: React.FC = () => {
 interface HabitListItemProps {
 	habit: IHabit;
 	index: number;
+	isDragDisabled: boolean;
 }
 
-const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
+const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDragDisabled}) => {
 	const history = useHistory();
 	const previewHabitId = useQueryParam("previewHabitId");
 
@@ -139,7 +168,12 @@ const HabitListItem: React.FC<HabitListItemProps> = ({habit, index}) => {
 	}
 
 	return (
-		<Draggable key={habit.id} draggableId={habit.id.toString()} index={index}>
+		<Draggable
+			isDragDisabled={isDragDisabled}
+			key={habit.id}
+			draggableId={habit.id.toString()}
+			index={index}
+		>
 			{provided => (
 				<li
 					ref={provided.innerRef}
@@ -171,4 +205,8 @@ function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[]
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);
 	return result;
+}
+
+function isHabitScoreFilter(value: string): value is HabitScoreFilter {
+	return ["positive", "neutral", "negative", "all"].includes(value);
 }
