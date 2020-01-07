@@ -96,6 +96,12 @@ export const HabitList: React.FC = () => {
 
 	const isDragDisabled = scoreFilter !== "all" || strengthFilter !== "all";
 
+	const filteredHabits = habits
+		.filter(scoreFilterToFunction[scoreFilter])
+		.filter(strengthFilterToFunction[strengthFilter]);
+
+	const howManyResults = filteredHabits.length;
+
 	return (
 		<>
 			<div className="flex w-full mt-16 mb-6">
@@ -202,7 +208,9 @@ export const HabitList: React.FC = () => {
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="allStrengths">All strengths ({howManyHabitsAtAll})</label>
+				<div className="ml-auto">Results: {howManyResults}</div>
 			</div>
+
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
 					{provided => (
@@ -211,17 +219,14 @@ export const HabitList: React.FC = () => {
 							{...provided.droppableProps}
 							className="flex flex-col bg-white p-4 pb-0 w-full"
 						>
-							{habits
-								.filter(scoreFilterToFunction[scoreFilter])
-								.filter(strengthFilterToFunction[strengthFilter])
-								.map((habit, index) => (
-									<HabitListItem
-										isDragDisabled={isDragDisabled}
-										key={habit.id}
-										habit={habit}
-										index={index}
-									/>
-								))}
+							{filteredHabits.map((habit, index) => (
+								<HabitListItem
+									isDragDisabled={isDragDisabled}
+									key={habit.id}
+									habit={habit}
+									index={index}
+								/>
+							))}
 							{provided.placeholder}
 						</ul>
 					)}
