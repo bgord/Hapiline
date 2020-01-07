@@ -50,6 +50,7 @@ export const HabitList: React.FC = () => {
 
 	const [scoreFilter, setScoreFilter] = React.useState<HabitScoreFilter>("all");
 	const [strengthFilter, setStrengthFilter] = React.useState<HabitStrengthFilter>("all");
+	const [searchPhrase, setSearchPhrase] = React.useState("");
 
 	const positiveHabitsCount = habits.filter(habit => habit.score === "positive").length;
 	const negativeHabitsCount = habits.filter(habit => habit.score === "negative").length;
@@ -94,13 +95,17 @@ export const HabitList: React.FC = () => {
 		getHabitsRequestState.setData(reorderedHabits);
 	}
 
-	const isDragDisabled = scoreFilter !== "all" || strengthFilter !== "all";
-
 	const filteredHabits = habits
 		.filter(scoreFilterToFunction[scoreFilter])
-		.filter(strengthFilterToFunction[strengthFilter]);
+		.filter(strengthFilterToFunction[strengthFilter])
+		.filter(habit => {
+			if (!searchPhrase) return true;
+			return habit.name.toLowerCase().includes(searchPhrase.toLowerCase());
+		});
 
 	const howManyResults = filteredHabits.length;
+
+	const isDragDisabled = scoreFilter !== "all" || strengthFilter !== "all" || searchPhrase !== "";
 
 	return (
 		<>
@@ -155,6 +160,7 @@ export const HabitList: React.FC = () => {
 					onClick={() => {
 						setScoreFilter("all");
 						setStrengthFilter("all");
+						setSearchPhrase("");
 					}}
 					className="ml-auto"
 				>
@@ -210,7 +216,16 @@ export const HabitList: React.FC = () => {
 				<label htmlFor="allStrengths">All strengths ({howManyHabitsAtAll})</label>
 				<div className="ml-auto">Results: {howManyResults}</div>
 			</div>
-
+			<div className="mr-auto mb-6 ml-2">
+				<input
+					className="field p-1 w-64"
+					type="search"
+					value={searchPhrase}
+					onChange={event => setSearchPhrase(event.target.value)}
+					placeholder="Search for habits..."
+				/>
+				<BareButton onClick={() => setSearchPhrase("")}>Clear</BareButton>
+			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
 					{provided => (
