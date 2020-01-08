@@ -11,10 +11,13 @@ export const useHabitSearch = (defaultValue = "") => {
 	};
 
 	const clearHabitSearchPhrase = () => setHabitSearchPhrase(defaultValue);
+	const onHabitSearchPhraseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setHabitSearchPhrase(event.target.value);
+	};
 
 	return {
 		phrase: habitSearchPhrase,
-		setPhrase: setHabitSearchPhrase,
+		onChange: onHabitSearchPhraseChange,
 		filterFn: habitSearchFilterFn,
 		clearPhrase: clearHabitSearchPhrase,
 	};

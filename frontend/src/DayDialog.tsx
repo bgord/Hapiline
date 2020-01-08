@@ -144,7 +144,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					className="field p-1 w-64"
 					type="search"
 					value={habitSearch.phrase}
-					onChange={event => habitSearch.setPhrase(event.target.value)}
+					onChange={habitSearch.onChange}
 					placeholder="Search for habits..."
 				/>
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
