@@ -29,15 +29,13 @@ export const HabitList: React.FC = () => {
 	const habitScoreFilter = useHabitScoreFilter();
 	const habitSearch = useHabitSearch();
 
-	const positiveHabitsCount = habits.filter(habit => habit.score === "positive").length;
-	const negativeHabitsCount = habits.filter(habit => habit.score === "negative").length;
-	const neutralHabitsCount = habits.filter(habit => habit.score === "neutral").length;
+	const habitCounts = getHabitCounts(habits);
 
-	const establishedHabitsCount = habits.filter(habit => habit.strength === "established").length;
-	const developingHabitsCount = habits.filter(habit => habit.strength === "developing").length;
-	const freshHabitsCount = habits.filter(habit => habit.strength === "fresh").length;
-
-	const howManyHabitsAtAll = habits.length;
+	const filteredHabits = habits
+		.filter(habitScoreFilter.filterFunction)
+		.filter(habitStrengthFilter.filterFunction)
+		.filter(habitSearch.filterFn);
+	const howManyResults = filteredHabits.length;
 
 	function onDragEnd(result: DropResult) {
 		if (!result.destination) return;
@@ -58,13 +56,6 @@ export const HabitList: React.FC = () => {
 		getHabitsRequestState.setData(reorderedHabits);
 	}
 
-	const filteredHabits = habits
-		.filter(habitScoreFilter.filterFunction)
-		.filter(habitStrengthFilter.filterFunction)
-		.filter(habitSearch.filterFn);
-
-	const howManyResults = filteredHabits.length;
-
 	const isDragDisabled =
 		habitScoreFilter.current !== "all" ||
 		habitStrengthFilter.current !== "all" ||
@@ -81,9 +72,9 @@ export const HabitList: React.FC = () => {
 					checked={habitScoreFilter.current === "positive"}
 					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-3"
-					disabled={positiveHabitsCount === 0}
+					disabled={habitCounts.positive === 0}
 				/>
-				<label htmlFor="positive">Positive ({positiveHabitsCount})</label>
+				<label htmlFor="positive">Positive ({habitCounts.positive})</label>
 
 				<input
 					name="scoreFilter"
@@ -93,9 +84,9 @@ export const HabitList: React.FC = () => {
 					checked={habitScoreFilter.current === "neutral"}
 					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-8"
-					disabled={neutralHabitsCount === 0}
+					disabled={habitCounts.neutral === 0}
 				/>
-				<label htmlFor="neutral">Neutral ({neutralHabitsCount})</label>
+				<label htmlFor="neutral">Neutral ({habitCounts.neutral})</label>
 
 				<input
 					name="scoreFilter"
@@ -105,9 +96,9 @@ export const HabitList: React.FC = () => {
 					checked={habitScoreFilter.current === "negative"}
 					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-8"
-					disabled={negativeHabitsCount === 0}
+					disabled={habitCounts.negative === 0}
 				/>
-				<label htmlFor="negative">Negative ({negativeHabitsCount})</label>
+				<label htmlFor="negative">Negative ({habitCounts.negative})</label>
 
 				<input
 					name="scoreFilter"
@@ -118,7 +109,7 @@ export const HabitList: React.FC = () => {
 					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-8"
 				/>
-				<label htmlFor="allScores">All scores ({howManyHabitsAtAll})</label>
+				<label htmlFor="allScores">All scores ({habitCounts.all})</label>
 				<BareButton
 					onClick={() => {
 						habitScoreFilter.setNewValue("all");
@@ -139,9 +130,9 @@ export const HabitList: React.FC = () => {
 					checked={habitStrengthFilter.current === "established"}
 					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-3"
-					disabled={establishedHabitsCount === 0}
+					disabled={habitCounts.established === 0}
 				/>
-				<label htmlFor="established">Established ({establishedHabitsCount})</label>
+				<label htmlFor="established">Established ({habitCounts.established})</label>
 
 				<input
 					name="strengthFilter"
@@ -151,9 +142,9 @@ export const HabitList: React.FC = () => {
 					checked={habitStrengthFilter.current === "developing"}
 					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-8"
-					disabled={developingHabitsCount === 0}
+					disabled={habitCounts.developing === 0}
 				/>
-				<label htmlFor="developing">Developing ({developingHabitsCount})</label>
+				<label htmlFor="developing">Developing ({habitCounts.developing})</label>
 
 				<input
 					name="strengthFilter"
@@ -163,9 +154,9 @@ export const HabitList: React.FC = () => {
 					checked={habitStrengthFilter.current === "fresh"}
 					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-8"
-					disabled={freshHabitsCount === 0}
+					disabled={habitCounts.fresh === 0}
 				/>
-				<label htmlFor="fresh">Fresh ({freshHabitsCount})</label>
+				<label htmlFor="fresh">Fresh ({habitCounts.fresh})</label>
 
 				<input
 					name="strengthFilter"
@@ -176,7 +167,7 @@ export const HabitList: React.FC = () => {
 					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-8"
 				/>
-				<label htmlFor="allStrengths">All strengths ({howManyHabitsAtAll})</label>
+				<label htmlFor="allStrengths">All strengths ({habitCounts.all})</label>
 				<div className="ml-auto">Results: {howManyResults}</div>
 			</div>
 			<div className="mr-auto mb-6 ml-2">
@@ -219,4 +210,22 @@ function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[]
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);
 	return result;
+}
+
+function getHabitCounts(habits: IHabit[]) {
+	const countByScore = (score: IHabit["score"]): number =>
+		habits.filter(habit => habit.score === score).length;
+
+	const countByStrength = (strength: IHabit["strength"]): number =>
+		habits.filter(habit => habit.strength === strength).length;
+
+	return {
+		positive: countByScore("positive"),
+		neutral: countByScore("neutral"),
+		negative: countByScore("negative"),
+		established: countByStrength("established"),
+		developing: countByStrength("developing"),
+		fresh: countByStrength("fresh"),
+		all: habits.length,
+	};
 }
