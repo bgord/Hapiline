@@ -31,5 +31,5 @@ export const useHabitStrengthFilter = (defaultValue: HabitStrengthFilter = "all"
 };
 
 function isHabitStrengthFilter(value: string): value is HabitStrengthFilter {
-	return [Object.keys(HABIT_STRENGTHS), "all"].includes(value);
+	return [...Object.keys(HABIT_STRENGTHS), "all"].includes(value);
 }
