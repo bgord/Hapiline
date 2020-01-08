@@ -8,21 +8,13 @@ import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
-import {IHabit, HabitStrength as HabitStrengthType} from "./interfaces/IHabit";
+import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
+import {useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
-
-type HabitStrengthFilter = HabitStrengthType | "all";
-
-const strengthFilterToFunction: {[key in HabitStrengthFilter]: (habit: IHabit) => boolean} = {
-	all: () => true,
-	established: habit => habit.strength === "established",
-	developing: habit => habit.strength === "developing",
-	fresh: habit => habit.strength === "fresh",
-};
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -37,8 +29,8 @@ export const HabitList: React.FC = () => {
 		onReject: () => triggerErrorNotification("Error while changing order."),
 	});
 
+	const habitStrengthFilter = useHabitStrengthFilter();
 	const habitScoreFilter = useHabitScoreFilter();
-	const [strengthFilter, setStrengthFilter] = React.useState<HabitStrengthFilter>("all");
 	const [searchPhrase, setSearchPhrase] = React.useState("");
 
 	const positiveHabitsCount = habits.filter(habit => habit.score === "positive").length;
@@ -50,13 +42,6 @@ export const HabitList: React.FC = () => {
 	const freshHabitsCount = habits.filter(habit => habit.strength === "fresh").length;
 
 	const howManyHabitsAtAll = habits.length;
-
-	function onStrengthFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const {value} = event.target;
-		if (isHabitStrengthFilter(value)) {
-			setStrengthFilter(value);
-		}
-	}
 
 	function onDragEnd(result: DropResult) {
 		if (!result.destination) return;
@@ -79,7 +64,7 @@ export const HabitList: React.FC = () => {
 
 	const filteredHabits = habits
 		.filter(habitScoreFilter.filterFunction)
-		.filter(strengthFilterToFunction[strengthFilter])
+		.filter(habitStrengthFilter.filterFunction)
 		.filter(habit => {
 			if (!searchPhrase) return true;
 			return habit.name.toLowerCase().includes(searchPhrase.toLowerCase());
@@ -88,7 +73,9 @@ export const HabitList: React.FC = () => {
 	const howManyResults = filteredHabits.length;
 
 	const isDragDisabled =
-		habitScoreFilter.current !== "all" || strengthFilter !== "all" || searchPhrase !== "";
+		habitScoreFilter.current !== "all" ||
+		habitStrengthFilter.current !== "all" ||
+		searchPhrase !== "";
 
 	return (
 		<>
@@ -142,7 +129,7 @@ export const HabitList: React.FC = () => {
 				<BareButton
 					onClick={() => {
 						habitScoreFilter.setNewValue("all");
-						setStrengthFilter("all");
+						habitStrengthFilter.setNewValue("all");
 						setSearchPhrase("");
 					}}
 					className="ml-auto"
@@ -156,8 +143,8 @@ export const HabitList: React.FC = () => {
 					id="established"
 					type="radio"
 					value="established"
-					checked={strengthFilter === "established"}
-					onChange={onStrengthFilterChange}
+					checked={habitStrengthFilter.current === "established"}
+					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-3"
 					disabled={establishedHabitsCount === 0}
 				/>
@@ -168,8 +155,8 @@ export const HabitList: React.FC = () => {
 					id="developing"
 					type="radio"
 					value="developing"
-					checked={strengthFilter === "developing"}
-					onChange={onStrengthFilterChange}
+					checked={habitStrengthFilter.current === "developing"}
+					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-8"
 					disabled={developingHabitsCount === 0}
 				/>
@@ -180,8 +167,8 @@ export const HabitList: React.FC = () => {
 					id="fresh"
 					type="radio"
 					value="fresh"
-					checked={strengthFilter === "fresh"}
-					onChange={onStrengthFilterChange}
+					checked={habitStrengthFilter.current === "fresh"}
+					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-8"
 					disabled={freshHabitsCount === 0}
 				/>
@@ -192,8 +179,8 @@ export const HabitList: React.FC = () => {
 					id="allStrengths"
 					type="radio"
 					value="all"
-					checked={strengthFilter === "all"}
-					onChange={onStrengthFilterChange}
+					checked={habitStrengthFilter.current === "all"}
+					onChange={habitStrengthFilter.onChange}
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="allStrengths">All strengths ({howManyHabitsAtAll})</label>
@@ -291,8 +278,4 @@ function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[]
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);
 	return result;
-}
-
-function isHabitStrengthFilter(value: string): value is HabitStrengthFilter {
-	return ["established", "developing", "fresh", "all"].includes(value);
 }

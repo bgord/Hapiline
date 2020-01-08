@@ -11,10 +11,8 @@ const scoreFilterToFunction: {[key in HabitScoreFilter]: (habit: IHabit) => bool
 	negative: habit => habit.score === HABIT_SCORES.negative,
 };
 
-export const useHabitScoreFilter = (defaulHabitScoreFilter: HabitScoreFilter = "all") => {
-	const [habitScoreFilter, setHabitScoreFilter] = React.useState<HabitScoreFilter>(
-		defaulHabitScoreFilter,
-	);
+export const useHabitScoreFilter = (defaultValue: HabitScoreFilter = "all") => {
+	const [habitScoreFilter, setHabitScoreFilter] = React.useState<HabitScoreFilter>(defaultValue);
 
 	function onHabitScoreFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const {value} = event.target;

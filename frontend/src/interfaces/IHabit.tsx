@@ -1,5 +1,5 @@
 export type HabitScoreType = "positive" | "neutral" | "negative";
-export type HabitStrength = "established" | "developing" | "fresh";
+export type HabitStrengthType = "established" | "developing" | "fresh";
 
 export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {
 	positive: "positive",
@@ -7,11 +7,17 @@ export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {
 	negative: "negative",
 };
 
+export const HABIT_STRENGTHS: {[key in HabitStrengthType]: HabitStrengthType} = {
+	established: "established",
+	developing: "developing",
+	fresh: "fresh",
+};
+
 export interface IHabit {
 	id: number;
 	name: string;
 	score: HabitScoreType;
-	strength: HabitStrength;
+	strength: HabitStrengthType;
 	created_at: string;
 	updated_at: string;
 	order: number;
@@ -25,7 +31,7 @@ export const scoreToBgColor: {[key in HabitScoreType]: string} = {
 	negative: "bg-red-300",
 };
 
-export const strengthToBgColor: {[key in HabitStrength]: string} = {
+export const strengthToBgColor: {[key in HabitStrengthType]: string} = {
 	established: "bg-blue-300",
 	developing: "bg-blue-200",
 	fresh: "bg-blue-100",
