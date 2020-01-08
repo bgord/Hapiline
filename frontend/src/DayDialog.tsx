@@ -45,12 +45,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
 	const [filter, setFilter] = React.useState<FilterTypes>("all");
-	const {
-		clearHabitSearchPhrase,
-		habitSearchPhrase,
-		setHabitSearchPhrase,
-		habitSearchFilterFn,
-	} = useHabitSearch();
+	const habitSearch = useHabitSearch();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
@@ -137,7 +132,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<BareButton
 					onClick={() => {
 						setFilter("all");
-						clearHabitSearchPhrase();
+						habitSearch.clearPhrase();
 					}}
 					className="ml-auto"
 				>
@@ -148,17 +143,17 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<input
 					className="field p-1 w-64"
 					type="search"
-					value={habitSearchPhrase}
-					onChange={event => setHabitSearchPhrase(event.target.value)}
+					value={habitSearch.phrase}
+					onChange={event => habitSearch.setPhrase(event.target.value)}
 					placeholder="Search for habits..."
 				/>
-				<BareButton onClick={clearHabitSearchPhrase}>Clear</BareButton>
+				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitVotes
 					.filter(filterToFunction[filter])
-					.filter(entry => habitSearchFilterFn(entry.habit))
+					.filter(entry => habitSearch.filterFn(entry.habit))
 					.map(entry => (
 						<DayDialogHabitVoteListItem
 							key={entry.habit.id}

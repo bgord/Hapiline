@@ -27,12 +27,7 @@ export const HabitList: React.FC = () => {
 
 	const habitStrengthFilter = useHabitStrengthFilter();
 	const habitScoreFilter = useHabitScoreFilter();
-	const {
-		habitSearchPhrase,
-		setHabitSearchPhrase,
-		clearHabitSearchPhrase,
-		habitSearchFilterFn,
-	} = useHabitSearch();
+	const habitSearch = useHabitSearch();
 
 	const positiveHabitsCount = habits.filter(habit => habit.score === "positive").length;
 	const negativeHabitsCount = habits.filter(habit => habit.score === "negative").length;
@@ -66,14 +61,14 @@ export const HabitList: React.FC = () => {
 	const filteredHabits = habits
 		.filter(habitScoreFilter.filterFunction)
 		.filter(habitStrengthFilter.filterFunction)
-		.filter(habitSearchFilterFn);
+		.filter(habitSearch.filterFn);
 
 	const howManyResults = filteredHabits.length;
 
 	const isDragDisabled =
 		habitScoreFilter.current !== "all" ||
 		habitStrengthFilter.current !== "all" ||
-		habitSearchPhrase !== "";
+		habitSearch.phrase !== "";
 
 	return (
 		<>
@@ -128,7 +123,7 @@ export const HabitList: React.FC = () => {
 					onClick={() => {
 						habitScoreFilter.setNewValue("all");
 						habitStrengthFilter.setNewValue("all");
-						clearHabitSearchPhrase();
+						habitSearch.clearPhrase();
 					}}
 					className="ml-auto"
 				>
@@ -188,11 +183,11 @@ export const HabitList: React.FC = () => {
 				<input
 					className="field p-1 w-64"
 					type="search"
-					value={habitSearchPhrase}
-					onChange={event => setHabitSearchPhrase(event.target.value)}
+					value={habitSearch.phrase}
+					onChange={event => habitSearch.setPhrase(event.target.value)}
 					placeholder="Search for habits..."
 				/>
-				<BareButton onClick={clearHabitSearchPhrase}>Clear</BareButton>
+				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">

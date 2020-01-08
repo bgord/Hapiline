@@ -12,5 +12,10 @@ export const useHabitSearch = (defaultValue = "") => {
 
 	const clearHabitSearchPhrase = () => setHabitSearchPhrase(defaultValue);
 
-	return {habitSearchPhrase, setHabitSearchPhrase, habitSearchFilterFn, clearHabitSearchPhrase};
+	return {
+		phrase: habitSearchPhrase,
+		setPhrase: setHabitSearchPhrase,
+		filterFn: habitSearchFilterFn,
+		clearPhrase: clearHabitSearchPhrase,
+	};
 };
