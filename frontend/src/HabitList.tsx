@@ -3,13 +3,14 @@ import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
+import {HabitListItem} from "./HabitListItem";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
+import {useHabitSearch} from "./hooks/useHabitSearch";
 import {useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
-import {HabitListItem} from "./HabitListItem";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -26,7 +27,12 @@ export const HabitList: React.FC = () => {
 
 	const habitStrengthFilter = useHabitStrengthFilter();
 	const habitScoreFilter = useHabitScoreFilter();
-	const [searchPhrase, setSearchPhrase] = React.useState("");
+	const {
+		habitSearchPhrase,
+		setHabitSearchPhrase,
+		clearHabitSearchPhrase,
+		habitSearchFilterFn,
+	} = useHabitSearch();
 
 	const positiveHabitsCount = habits.filter(habit => habit.score === "positive").length;
 	const negativeHabitsCount = habits.filter(habit => habit.score === "negative").length;
@@ -60,17 +66,14 @@ export const HabitList: React.FC = () => {
 	const filteredHabits = habits
 		.filter(habitScoreFilter.filterFunction)
 		.filter(habitStrengthFilter.filterFunction)
-		.filter(habit => {
-			if (!searchPhrase) return true;
-			return habit.name.toLowerCase().includes(searchPhrase.toLowerCase());
-		});
+		.filter(habitSearchFilterFn);
 
 	const howManyResults = filteredHabits.length;
 
 	const isDragDisabled =
 		habitScoreFilter.current !== "all" ||
 		habitStrengthFilter.current !== "all" ||
-		searchPhrase !== "";
+		habitSearchPhrase !== "";
 
 	return (
 		<>
@@ -125,7 +128,7 @@ export const HabitList: React.FC = () => {
 					onClick={() => {
 						habitScoreFilter.setNewValue("all");
 						habitStrengthFilter.setNewValue("all");
-						setSearchPhrase("");
+						clearHabitSearchPhrase();
 					}}
 					className="ml-auto"
 				>
@@ -185,11 +188,11 @@ export const HabitList: React.FC = () => {
 				<input
 					className="field p-1 w-64"
 					type="search"
-					value={searchPhrase}
-					onChange={event => setSearchPhrase(event.target.value)}
+					value={habitSearchPhrase}
+					onChange={event => setHabitSearchPhrase(event.target.value)}
 					placeholder="Search for habits..."
 				/>
-				<BareButton onClick={() => setSearchPhrase("")}>Clear</BareButton>
+				<BareButton onClick={clearHabitSearchPhrase}>Clear</BareButton>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
