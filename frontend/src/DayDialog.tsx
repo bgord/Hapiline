@@ -14,6 +14,7 @@ import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
+import {useHabitSearch} from "./hooks/useHabitSearch";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogProps = DayVoteStats & {
@@ -44,7 +45,12 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
 	const [filter, setFilter] = React.useState<FilterTypes>("all");
-	const [searchPhrase, setSearchPhrase] = React.useState("");
+	const {
+		clearHabitSearchPhrase,
+		habitSearchPhrase,
+		setHabitSearchPhrase,
+		habitSearchFilterFn,
+	} = useHabitSearch();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
@@ -131,7 +137,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<BareButton
 					onClick={() => {
 						setFilter("all");
-						setSearchPhrase("");
+						clearHabitSearchPhrase();
 					}}
 					className="ml-auto"
 				>
@@ -142,20 +148,17 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<input
 					className="field p-1 w-64"
 					type="search"
-					value={searchPhrase}
-					onChange={event => setSearchPhrase(event.target.value)}
+					value={habitSearchPhrase}
+					onChange={event => setHabitSearchPhrase(event.target.value)}
 					placeholder="Search for habits..."
 				/>
-				<BareButton onClick={() => setSearchPhrase("")}>Clear</BareButton>
+				<BareButton onClick={clearHabitSearchPhrase}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitVotes
 					.filter(filterToFunction[filter])
-					.filter(entry => {
-						if (!searchPhrase) return true;
-						return entry.habit.name.toLowerCase().includes(searchPhrase.toLowerCase());
-					})
+					.filter(entry => habitSearchFilterFn(entry.habit))
 					.map(entry => (
 						<DayDialogHabitVoteListItem
 							key={entry.habit.id}
