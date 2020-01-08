@@ -8,25 +8,14 @@ import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
-import {
-	IHabit,
-	HabitScore as HabitScoreType,
-	HabitStrength as HabitStrengthType,
-} from "./interfaces/IHabit";
+import {IHabit, HabitStrength as HabitStrengthType} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 
-type HabitScoreFilter = HabitScoreType | "all";
 type HabitStrengthFilter = HabitStrengthType | "all";
-
-const scoreFilterToFunction: {[key in HabitScoreFilter]: (habit: IHabit) => boolean} = {
-	all: () => true,
-	positive: habit => habit.score === "positive",
-	neutral: habit => habit.score === "neutral",
-	negative: habit => habit.score === "negative",
-};
 
 const strengthFilterToFunction: {[key in HabitStrengthFilter]: (habit: IHabit) => boolean} = {
 	all: () => true,
@@ -48,7 +37,7 @@ export const HabitList: React.FC = () => {
 		onReject: () => triggerErrorNotification("Error while changing order."),
 	});
 
-	const [scoreFilter, setScoreFilter] = React.useState<HabitScoreFilter>("all");
+	const habitScoreFilter = useHabitScoreFilter();
 	const [strengthFilter, setStrengthFilter] = React.useState<HabitStrengthFilter>("all");
 	const [searchPhrase, setSearchPhrase] = React.useState("");
 
@@ -61,13 +50,6 @@ export const HabitList: React.FC = () => {
 	const freshHabitsCount = habits.filter(habit => habit.strength === "fresh").length;
 
 	const howManyHabitsAtAll = habits.length;
-
-	function onScoreFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const {value} = event.target;
-		if (isHabitScoreFilter(value)) {
-			setScoreFilter(value);
-		}
-	}
 
 	function onStrengthFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const {value} = event.target;
@@ -96,7 +78,7 @@ export const HabitList: React.FC = () => {
 	}
 
 	const filteredHabits = habits
-		.filter(scoreFilterToFunction[scoreFilter])
+		.filter(habitScoreFilter.filterFunction)
 		.filter(strengthFilterToFunction[strengthFilter])
 		.filter(habit => {
 			if (!searchPhrase) return true;
@@ -105,7 +87,8 @@ export const HabitList: React.FC = () => {
 
 	const howManyResults = filteredHabits.length;
 
-	const isDragDisabled = scoreFilter !== "all" || strengthFilter !== "all" || searchPhrase !== "";
+	const isDragDisabled =
+		habitScoreFilter.current !== "all" || strengthFilter !== "all" || searchPhrase !== "";
 
 	return (
 		<>
@@ -115,8 +98,8 @@ export const HabitList: React.FC = () => {
 					id="positive"
 					type="radio"
 					value="positive"
-					checked={scoreFilter === "positive"}
-					onChange={onScoreFilterChange}
+					checked={habitScoreFilter.current === "positive"}
+					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-3"
 					disabled={positiveHabitsCount === 0}
 				/>
@@ -127,8 +110,8 @@ export const HabitList: React.FC = () => {
 					id="neutral"
 					type="radio"
 					value="neutral"
-					checked={scoreFilter === "neutral"}
-					onChange={onScoreFilterChange}
+					checked={habitScoreFilter.current === "neutral"}
+					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-8"
 					disabled={neutralHabitsCount === 0}
 				/>
@@ -139,8 +122,8 @@ export const HabitList: React.FC = () => {
 					id="negative"
 					type="radio"
 					value="negative"
-					checked={scoreFilter === "negative"}
-					onChange={onScoreFilterChange}
+					checked={habitScoreFilter.current === "negative"}
+					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-8"
 					disabled={negativeHabitsCount === 0}
 				/>
@@ -151,14 +134,14 @@ export const HabitList: React.FC = () => {
 					id="allScores"
 					type="radio"
 					value="all"
-					checked={scoreFilter === "all"}
-					onChange={onScoreFilterChange}
+					checked={habitScoreFilter.current === "all"}
+					onChange={habitScoreFilter.onChange}
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="allScores">All scores ({howManyHabitsAtAll})</label>
 				<BareButton
 					onClick={() => {
-						setScoreFilter("all");
+						habitScoreFilter.setNewValue("all");
 						setStrengthFilter("all");
 						setSearchPhrase("");
 					}}
@@ -308,10 +291,6 @@ function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[]
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);
 	return result;
-}
-
-function isHabitScoreFilter(value: string): value is HabitScoreFilter {
-	return ["positive", "neutral", "negative", "all"].includes(value);
 }
 
 function isHabitStrengthFilter(value: string): value is HabitStrengthFilter {
