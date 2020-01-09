@@ -8,31 +8,18 @@ import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DayDialogSummary} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
+import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {IDayVote, Vote} from "./interfaces/IDayVote";
-import {IHabit} from "./interfaces/IHabit";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitSearch} from "./hooks/useHabitSearch";
+import {useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogProps = DayVoteStats & {
 	refreshCalendar: VoidFunction;
-};
-
-type HabitVote = {
-	habit: IHabit;
-	vote: Vote | undefined;
-	day: string;
-};
-
-type FilterTypes = "all" | "unvoted" | "voted";
-
-const filterToFunction: {[key in FilterTypes]: (habitVote: HabitVote) => boolean} = {
-	all: () => true,
-	unvoted: ({vote}) => !vote,
-	voted: ({vote}) => vote !== null && vote !== undefined,
 };
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...stats}) => {
@@ -44,8 +31,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		day,
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
-	const [filter, setFilter] = React.useState<FilterTypes>("all");
 	const habitSearch = useHabitSearch();
+	const habitVoteFilter = useHabitVoteFilter();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
@@ -65,13 +52,6 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 	function dismissDialog() {
 		history.push("/calendar");
-	}
-
-	function onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const {value} = event.target;
-		if (isFilter(value)) {
-			setFilter(value);
-		}
 	}
 
 	return (
@@ -102,8 +82,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					id="all"
 					type="radio"
 					value="all"
-					checked={filter === "all"}
-					onChange={onFilterChange}
+					checked={habitVoteFilter.current === "all"}
+					onChange={habitVoteFilter.onChange}
 					className="mr-1"
 				/>
 				<label htmlFor="all">Show all ({howManyHabitsAtAll})</label>
@@ -113,8 +93,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					id="voted"
 					type="radio"
 					value="voted"
-					checked={filter === "voted"}
-					onChange={onFilterChange}
+					checked={habitVoteFilter.current === "voted"}
+					onChange={habitVoteFilter.onChange}
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="voted">Show voted ({howManyVotedHabits})</label>
@@ -124,14 +104,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					id="unvoted"
 					type="radio"
 					value="unvoted"
-					checked={filter === "unvoted"}
-					onChange={onFilterChange}
+					checked={habitVoteFilter.current === "unvoted"}
+					onChange={habitVoteFilter.onChange}
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
 				<BareButton
 					onClick={() => {
-						setFilter("all");
+						habitVoteFilter.reset();
 						habitSearch.clearPhrase();
 					}}
 					className="ml-auto"
@@ -152,7 +132,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitVotes
-					.filter(filterToFunction[filter])
+					.filter(habitVoteFilter.filterFunction)
 					.filter(entry => habitSearch.filterFn(entry.habit))
 					.map(entry => (
 						<DayDialogHabitVoteListItem
@@ -176,9 +156,4 @@ function getDayVoteForHabit(
 ): Vote | undefined {
 	const dayVotes = getDayVotesRequestState.data ?? [];
 	return dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
-}
-
-function isFilter(value: string): value is FilterTypes {
-	const FILTER_TYPES = ["all", "voted", "unvoted"];
-	return FILTER_TYPES.includes(value);
 }

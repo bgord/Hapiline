@@ -1,5 +1,13 @@
+import {Vote} from "./IDayVote";
+
 export type HabitScoreType = "positive" | "neutral" | "negative";
 export type HabitStrengthType = "established" | "developing" | "fresh";
+
+export type HabitVote = {
+	habit: IHabit;
+	vote: Vote | undefined;
+	day: string;
+};
 
 export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {
 	positive: "positive",
