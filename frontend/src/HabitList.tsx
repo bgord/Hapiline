@@ -7,7 +7,7 @@ import {HabitListItem} from "./HabitListItem";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
-import {useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
+import {useHabitScoreFilter, HabitScoreFilters} from "./hooks/useHabitScoreFilter";
 import {useHabitSearch} from "./hooks/useHabitSearch";
 import {useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
@@ -64,52 +64,27 @@ export const HabitList: React.FC = () => {
 	return (
 		<>
 			<div className="flex w-full mt-16 mb-6">
-				<input
-					name="scoreFilter"
-					id="positive"
-					type="radio"
-					value="positive"
-					checked={habitScoreFilter.current === "positive"}
-					onChange={habitScoreFilter.onChange}
-					className="mr-1 ml-3"
+				<HabitScoreFilters.Positive.Input
 					disabled={habitCounts.positive === 0}
+					{...habitScoreFilter}
 				/>
-				<label htmlFor="positive">Positive ({habitCounts.positive})</label>
+				<HabitScoreFilters.Positive.Label>{habitCounts.positive}</HabitScoreFilters.Positive.Label>
 
-				<input
-					name="scoreFilter"
-					id="neutral"
-					type="radio"
-					value="neutral"
-					checked={habitScoreFilter.current === "neutral"}
-					onChange={habitScoreFilter.onChange}
-					className="mr-1 ml-8"
+				<HabitScoreFilters.Neutral.Input
 					disabled={habitCounts.neutral === 0}
+					{...habitScoreFilter}
 				/>
-				<label htmlFor="neutral">Neutral ({habitCounts.neutral})</label>
+				<HabitScoreFilters.Neutral.Label>{habitCounts.neutral}</HabitScoreFilters.Neutral.Label>
 
-				<input
-					name="scoreFilter"
-					id="negative"
-					type="radio"
-					value="negative"
-					checked={habitScoreFilter.current === "negative"}
-					onChange={habitScoreFilter.onChange}
-					className="mr-1 ml-8"
+				<HabitScoreFilters.Negative.Input
+					{...habitScoreFilter}
 					disabled={habitCounts.negative === 0}
 				/>
-				<label htmlFor="negative">Negative ({habitCounts.negative})</label>
+				<HabitScoreFilters.Negative.Label>{habitCounts.negative}</HabitScoreFilters.Negative.Label>
 
-				<input
-					name="scoreFilter"
-					id="allScores"
-					type="radio"
-					value="all"
-					checked={habitScoreFilter.current === "all"}
-					onChange={habitScoreFilter.onChange}
-					className="mr-1 ml-8"
-				/>
-				<label htmlFor="allScores">All scores ({habitCounts.all})</label>
+				<HabitScoreFilters.All.Input {...habitScoreFilter} />
+				<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
+
 				<BareButton
 					onClick={() => {
 						habitScoreFilter.reset();
