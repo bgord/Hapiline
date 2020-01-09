@@ -112,8 +112,8 @@ export const HabitList: React.FC = () => {
 				<label htmlFor="allScores">All scores ({habitCounts.all})</label>
 				<BareButton
 					onClick={() => {
-						habitScoreFilter.setNewValue("all");
-						habitStrengthFilter.setNewValue("all");
+						habitScoreFilter.reset();
+						habitStrengthFilter.reset();
 						habitSearch.clearPhrase();
 					}}
 					className="ml-auto"

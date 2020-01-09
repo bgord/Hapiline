@@ -25,7 +25,7 @@ export const useHabitScoreFilter = (defaultValue: HabitScoreFilter = "all") => {
 		current: habitScoreFilter,
 		onChange: onHabitScoreFilterChange,
 		filterFunction: scoreFilterToFunction[habitScoreFilter],
-		setNewValue: setHabitScoreFilter,
+		reset: () => setHabitScoreFilter(defaultValue),
 	};
 };
 

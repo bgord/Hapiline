@@ -26,7 +26,7 @@ export const useHabitStrengthFilter = (defaultValue: HabitStrengthFilter = "all"
 		current: habitStrengthFilter,
 		onChange: onHabitStrengthFilterChange,
 		filterFunction: strengthFilterToFunction[habitStrengthFilter],
-		setNewValue: setHabitStrengthFilter,
+		reset: () => setHabitStrengthFilter(defaultValue),
 	};
 };
 
