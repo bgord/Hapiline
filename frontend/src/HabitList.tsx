@@ -68,19 +68,25 @@ export const HabitList: React.FC = () => {
 					disabled={habitCounts.positive === 0}
 					{...habitScoreFilter}
 				/>
-				<HabitScoreFilters.Positive.Label>{habitCounts.positive}</HabitScoreFilters.Positive.Label>
+				<HabitScoreFilters.Positive.Label>
+					Positive ({habitCounts.positive})
+				</HabitScoreFilters.Positive.Label>
 
 				<HabitScoreFilters.Neutral.Input
 					disabled={habitCounts.neutral === 0}
 					{...habitScoreFilter}
 				/>
-				<HabitScoreFilters.Neutral.Label>{habitCounts.neutral}</HabitScoreFilters.Neutral.Label>
+				<HabitScoreFilters.Neutral.Label>
+					Neutral ({habitCounts.neutral})
+				</HabitScoreFilters.Neutral.Label>
 
 				<HabitScoreFilters.Negative.Input
 					{...habitScoreFilter}
 					disabled={habitCounts.negative === 0}
 				/>
-				<HabitScoreFilters.Negative.Label>{habitCounts.negative}</HabitScoreFilters.Negative.Label>
+				<HabitScoreFilters.Negative.Label>
+					Negative ({habitCounts.negative})
+				</HabitScoreFilters.Negative.Label>
 
 				<HabitScoreFilters.All.Input {...habitScoreFilter} />
 				<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
