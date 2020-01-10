@@ -2,20 +2,20 @@ import React from "react";
 
 import {HABIT_SCORES, HabitScoreType, IHabit} from "../interfaces/IHabit";
 
-type HabitScoreFilter = HabitScoreType | "all";
+type HabitScoreFilter = HabitScoreType | "all-scores";
 
 const scoreFilterToFunction: {[key in HabitScoreFilter]: (habit: IHabit) => boolean} = {
-	all: () => true,
+	"all-scores": () => true,
 	positive: habit => habit.score === HABIT_SCORES.positive,
 	neutral: habit => habit.score === HABIT_SCORES.neutral,
 	negative: habit => habit.score === HABIT_SCORES.negative,
 };
 
 function isHabitScoreFilter(value: string): value is HabitScoreFilter {
-	return [...Object.keys(HABIT_SCORES), "all"].includes(value);
+	return [...Object.keys(HABIT_SCORES), "all-scores"].includes(value);
 }
 
-export const useHabitScoreFilter = (defaultValue: HabitScoreFilter = "all") => {
+export const useHabitScoreFilter = (defaultValue: HabitScoreFilter = "all-scores") => {
 	const [habitScoreFilter, setHabitScoreFilter] = React.useState<HabitScoreFilter>(defaultValue);
 
 	function onHabitScoreFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -80,8 +80,8 @@ export const HabitScoreFilters = {
 	},
 	All: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter="all" {...props} />
+			<Input filter="all-scores" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="all" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="all-scores" {...props} />,
 	},
 };

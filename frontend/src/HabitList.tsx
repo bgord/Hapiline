@@ -57,8 +57,8 @@ export const HabitList: React.FC = () => {
 	}
 
 	const isDragDisabled =
-		habitScoreFilter.current !== "all" ||
-		habitStrengthFilter.current !== "all" ||
+		habitScoreFilter.current !== "all-scores" ||
+		habitStrengthFilter.current !== "all-strengths" ||
 		habitSearch.phrase !== "";
 
 	return (

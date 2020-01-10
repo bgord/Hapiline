@@ -2,16 +2,16 @@ import React from "react";
 
 import {HabitStrengthType, IHabit, HABIT_STRENGTHS} from "../interfaces/IHabit";
 
-type HabitStrengthFilter = HabitStrengthType | "all";
+type HabitStrengthFilter = HabitStrengthType | "all-strengths";
 
 const strengthFilterToFunction: {[key in HabitStrengthFilter]: (habit: IHabit) => boolean} = {
-	all: () => true,
+	"all-strengths": () => true,
 	established: habit => habit.strength === HABIT_STRENGTHS.established,
 	developing: habit => habit.strength === HABIT_STRENGTHS.developing,
 	fresh: habit => habit.strength === HABIT_STRENGTHS.fresh,
 };
 
-export const useHabitStrengthFilter = (defaultValue: HabitStrengthFilter = "all") => {
+export const useHabitStrengthFilter = (defaultValue: HabitStrengthFilter = "all-strengths") => {
 	const [habitStrengthFilter, setHabitStrengthFilter] = React.useState<HabitStrengthFilter>(
 		defaultValue,
 	);
@@ -31,7 +31,7 @@ export const useHabitStrengthFilter = (defaultValue: HabitStrengthFilter = "all"
 };
 
 function isHabitStrengthFilter(value: string): value is HabitStrengthFilter {
-	return [...Object.keys(HABIT_STRENGTHS), "all"].includes(value);
+	return [...Object.keys(HABIT_STRENGTHS), "all-strengths"].includes(value);
 }
 
 interface IInput {
@@ -79,8 +79,8 @@ export const HabitStrengthFilters = {
 	},
 	All: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter="all" {...props} />
+			<Input filter="all-strengths" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="all" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="all-strengths" {...props} />,
 	},
 };
