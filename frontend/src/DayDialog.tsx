@@ -15,7 +15,7 @@ import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitSearch} from "./hooks/useHabitSearch";
-import {useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
+import {useHabitVoteFilter, HabitVoteFilters} from "./hooks/useHabitVoteFilter";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogProps = DayVoteStats & {
@@ -77,38 +77,22 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</SuccessMessage>
 			)}
 			<div className="flex my-8">
-				<input
-					name="filter"
-					id="all"
-					type="radio"
-					value="all"
-					checked={habitVoteFilter.current === "all"}
-					onChange={habitVoteFilter.onChange}
-					className="mr-1"
-				/>
-				<label htmlFor="all">Show all ({howManyHabitsAtAll})</label>
+				<HabitVoteFilters.All.Input {...habitVoteFilter} disabled={howManyHabitsAtAll === 0} />
+				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
 
-				<input
-					name="filter"
-					id="voted"
-					type="radio"
-					value="voted"
-					checked={habitVoteFilter.current === "voted"}
-					onChange={habitVoteFilter.onChange}
-					className="mr-1 ml-8"
-				/>
-				<label htmlFor="voted">Show voted ({howManyVotedHabits})</label>
+				<HabitVoteFilters.Voted.Input {...habitVoteFilter} disabled={howManyVotedHabits === 0} />
+				<HabitVoteFilters.Voted.Label>
+					Show voted ({howManyVotedHabits})
+				</HabitVoteFilters.Voted.Label>
 
-				<input
-					name="filter"
-					id="unvoted"
-					type="radio"
-					value="unvoted"
-					checked={habitVoteFilter.current === "unvoted"}
-					onChange={habitVoteFilter.onChange}
-					className="mr-1 ml-8"
+				<HabitVoteFilters.Unvoted.Input
+					{...habitVoteFilter}
+					disabled={howManyUnvotedHabits === 0}
 				/>
-				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
+				<HabitVoteFilters.Unvoted.Label>
+					Show unvoted ({howManyUnvotedHabits})
+				</HabitVoteFilters.Unvoted.Label>
+
 				<BareButton
 					onClick={() => {
 						habitVoteFilter.reset();
