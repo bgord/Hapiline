@@ -36,15 +36,14 @@ interface IInput {
 	current: HabitVoteFilterTypes;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<IInput> = ({current, onChange, filter, ...props}) => {
+const Input: React.FC<IInput> = ({current, filter, ...props}) => {
 	return (
 		<input
-			name="habitVoteFilter"
+			name="habit-vote-filter"
 			id={filter}
 			type="radio"
 			value={filter}
 			checked={current === filter}
-			onChange={onChange}
 			className="mr-1 ml-3"
 			{...props}
 		/>

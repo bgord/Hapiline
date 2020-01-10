@@ -77,9 +77,6 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</SuccessMessage>
 			)}
 			<div className="flex my-8">
-				<HabitVoteFilters.All.Input {...habitVoteFilter} disabled={howManyHabitsAtAll === 0} />
-				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
-
 				<HabitVoteFilters.Voted.Input {...habitVoteFilter} disabled={howManyVotedHabits === 0} />
 				<HabitVoteFilters.Voted.Label>
 					Show voted ({howManyVotedHabits})
@@ -92,6 +89,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				<HabitVoteFilters.Unvoted.Label>
 					Show unvoted ({howManyUnvotedHabits})
 				</HabitVoteFilters.Unvoted.Label>
+
+				<HabitVoteFilters.All.Input {...habitVoteFilter} disabled={howManyHabitsAtAll === 0} />
+				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
 
 				<BareButton
 					onClick={() => {
