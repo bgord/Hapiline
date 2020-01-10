@@ -149,9 +149,8 @@ export const HabitList: React.FC = () => {
 					className="mr-1 ml-8"
 				/>
 				<label htmlFor="allStrengths">All strengths ({habitCounts.all})</label>
-				<div className="ml-auto">Results: {howManyResults}</div>
 			</div>
-			<div className="mr-auto mb-6 ml-2">
+			<div className="flex w-full items-center mr-auto mb-6 ml-2">
 				<input
 					className="field p-1 w-64"
 					type="search"
@@ -160,6 +159,7 @@ export const HabitList: React.FC = () => {
 					placeholder="Search for habits..."
 				/>
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
+				<div className="ml-auto mr-4">Results: {howManyResults}</div>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
