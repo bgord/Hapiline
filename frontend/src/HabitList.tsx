@@ -4,12 +4,12 @@ import React from "react";
 
 import {BareButton} from "./BareButton";
 import {HabitListItem} from "./HabitListItem";
+import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
-import {useHabitScoreFilter, HabitScoreFilters} from "./hooks/useHabitScoreFilter";
+import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
 import {useHabitSearch} from "./hooks/useHabitSearch";
-import {useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 
 export const HabitList: React.FC = () => {
@@ -103,52 +103,34 @@ export const HabitList: React.FC = () => {
 				</BareButton>
 			</div>
 			<div className="flex w-full mb-6">
-				<input
-					name="strengthFilter"
-					id="established"
-					type="radio"
-					value="established"
-					checked={habitStrengthFilter.current === "established"}
-					onChange={habitStrengthFilter.onChange}
-					className="mr-1 ml-3"
+				<HabitStrengthFilters.Established.Input
+					{...habitStrengthFilter}
 					disabled={habitCounts.established === 0}
 				/>
-				<label htmlFor="established">Established ({habitCounts.established})</label>
+				<HabitStrengthFilters.Established.Label>
+					Established ({habitCounts.established})
+				</HabitStrengthFilters.Established.Label>
 
-				<input
-					name="strengthFilter"
-					id="developing"
-					type="radio"
-					value="developing"
-					checked={habitStrengthFilter.current === "developing"}
-					onChange={habitStrengthFilter.onChange}
-					className="mr-1 ml-8"
+				<HabitStrengthFilters.Developing.Input
+					{...habitStrengthFilter}
 					disabled={habitCounts.developing === 0}
 				/>
-				<label htmlFor="developing">Developing ({habitCounts.developing})</label>
+				<HabitStrengthFilters.Developing.Label>
+					Developing ({habitCounts.developing})
+				</HabitStrengthFilters.Developing.Label>
 
-				<input
-					name="strengthFilter"
-					id="fresh"
-					type="radio"
-					value="fresh"
-					checked={habitStrengthFilter.current === "fresh"}
-					onChange={habitStrengthFilter.onChange}
-					className="mr-1 ml-8"
+				<HabitStrengthFilters.Fresh.Input
+					{...habitStrengthFilter}
 					disabled={habitCounts.fresh === 0}
 				/>
-				<label htmlFor="fresh">Fresh ({habitCounts.fresh})</label>
+				<HabitStrengthFilters.Fresh.Label>
+					Fresh ({habitCounts.fresh})
+				</HabitStrengthFilters.Fresh.Label>
 
-				<input
-					name="strengthFilter"
-					id="allStrengths"
-					type="radio"
-					value="all"
-					checked={habitStrengthFilter.current === "all"}
-					onChange={habitStrengthFilter.onChange}
-					className="mr-1 ml-8"
-				/>
-				<label htmlFor="allStrengths">All strengths ({habitCounts.all})</label>
+				<HabitStrengthFilters.All.Input {...habitStrengthFilter} />
+				<HabitStrengthFilters.All.Label>
+					All strengths ({habitCounts.all})
+				</HabitStrengthFilters.All.Label>
 			</div>
 			<div className="flex w-full items-center mr-auto mb-6 ml-2">
 				<input

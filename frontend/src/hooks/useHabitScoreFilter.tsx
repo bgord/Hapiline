@@ -38,7 +38,7 @@ interface IInput {
 	current: HabitScoreFilter;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<IInput> = ({current, onChange, filter}) => {
+const Input: React.FC<IInput> = ({current, onChange, filter, ...props}) => {
 	return (
 		<input
 			name="scoreFilter"
@@ -48,6 +48,7 @@ const Input: React.FC<IInput> = ({current, onChange, filter}) => {
 			checked={current === filter}
 			onChange={onChange}
 			className="mr-1 ml-3"
+			{...props}
 		/>
 	);
 };
