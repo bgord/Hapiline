@@ -14,7 +14,7 @@ import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {useHabitSearch} from "./hooks/useHabitSearch";
+import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabitVoteFilter, HabitVoteFilters} from "./hooks/useHabitVoteFilter";
 import {useHabits} from "./contexts/habits-context";
 
@@ -104,13 +104,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</BareButton>
 			</div>
 			<div className="mb-6">
-				<input
-					className="field p-1 w-64"
-					type="search"
-					value={habitSearch.phrase}
-					onChange={habitSearch.onChange}
-					placeholder="Search for habits..."
-				/>
+				<HabitSearchInput {...habitSearch} />
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}

@@ -16,9 +16,13 @@ export const useHabitSearch = (defaultValue = "") => {
 	};
 
 	return {
-		phrase: habitSearchPhrase,
+		value: habitSearchPhrase,
 		onChange: onHabitSearchPhraseChange,
 		filterFn: habitSearchFilterFn,
 		clearPhrase: clearHabitSearchPhrase,
 	};
 };
+
+export const HabitSearchInput: React.FC<JSX.IntrinsicElements["input"]> = props => (
+	<input className="field p-1 w-64" type="search" placeholder="Search for habits..." {...props} />
+);

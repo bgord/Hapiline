@@ -9,7 +9,7 @@ import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
-import {useHabitSearch} from "./hooks/useHabitSearch";
+import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 
 export const HabitList: React.FC = () => {
@@ -59,7 +59,7 @@ export const HabitList: React.FC = () => {
 	const isDragDisabled =
 		habitScoreFilter.current !== "all-scores" ||
 		habitStrengthFilter.current !== "all-strengths" ||
-		habitSearch.phrase !== "";
+		habitSearch.value !== "";
 
 	return (
 		<>
@@ -133,13 +133,7 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.All.Label>
 			</div>
 			<div className="flex w-full items-center mr-auto mb-6 ml-2">
-				<input
-					className="field p-1 w-64"
-					type="search"
-					value={habitSearch.phrase}
-					onChange={habitSearch.onChange}
-					placeholder="Search for habits..."
-				/>
+				<HabitSearchInput {...habitSearch} />
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 				<div className="ml-auto mr-4">Results: {howManyResults}</div>
 			</div>
