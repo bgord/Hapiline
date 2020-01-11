@@ -207,4 +207,22 @@ describe("Calendar", () => {
 
 		cy.findAllByText("Habit vote added successfully!");
 	});
+
+	it.only("vote comments", () => {
+		cy.viewport(1200, 1200);
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.get("ul").within(() => {
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("Show day").click({force: true});
+				});
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("⌄").should("have.length", 10);
+		});
+	});
 });

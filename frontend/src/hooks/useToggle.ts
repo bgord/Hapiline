@@ -7,7 +7,7 @@ export const useToggle = (defaultValue = false): useToggleType => {
 
 	const setOn = () => setIsOn(true);
 	const setOff = () => setIsOn(false);
-	const reset = () => setIsOn(defaultValue);
+	const toggleIsOn = () => setIsOn(v => !v);
 
-	return [isOn, setOn, setOff, reset];
+	return [isOn, setOn, setOff, toggleIsOn];
 };
