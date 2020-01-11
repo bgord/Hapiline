@@ -112,6 +112,47 @@ describe("Calendar", () => {
 			cy.findByText("-1");
 			cy.findByText("?6");
 
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
+
+			cy.findAllByText("established").should("have.length", 4);
+			cy.findAllByText("developing").should("have.length", 3);
+			cy.findAllByText("fresh").should("have.length", 3);
+
+			cy.findByLabelText("Show voted (4)").should("not.be.checked");
+			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
+			cy.findByLabelText("Show all (10)").should("be.checked");
+
+			cy.findByPlaceholderText("Search for habits...")
+				.should("have.value", "")
+				.type("0");
+			cy.findByTestId("day-dialog-habits").within(() => {
+				cy.get("li").should("have.length", 1);
+			});
+			cy.findByText("Clear").click();
+			cy.findByTestId("day-dialog-habits").within(() => {
+				cy.get("li").should("have.length", 10);
+			});
+
+			cy.findByLabelText("Show voted (4)").check();
+			cy.findByTestId("day-dialog-habits").within(() => {
+				cy.get("li").should("have.length", 4);
+			});
+
+			cy.findByLabelText("Show unvoted (6)").check();
+			cy.findByTestId("day-dialog-habits").within(() => {
+				cy.get("li").should("have.length", 6);
+			});
+
+			cy.findByPlaceholderText("Search for habits...").type("xxx");
+
+			cy.findByText("Reset filters").click();
+			cy.findByPlaceholderText("Search for habits...").should("have.value", "");
+			cy.findByLabelText("Show voted (4)").should("not.be.checked");
+			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
+			cy.findByLabelText("Show all (10)").should("be.checked");
+
 			cy.findByText("×").click();
 		});
 		cy.findByRole("dialog").should("not.exist");
