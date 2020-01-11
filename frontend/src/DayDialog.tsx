@@ -8,30 +8,18 @@ import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DayDialogSummary} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
+import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {IDayVote, Vote} from "./interfaces/IDayVote";
-import {IHabit} from "./interfaces/IHabit";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
+import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
+import {useHabitVoteFilter, HabitVoteFilters} from "./hooks/useHabitVoteFilter";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogProps = DayVoteStats & {
 	refreshCalendar: VoidFunction;
-};
-
-type HabitVote = {
-	habit: IHabit;
-	vote: Vote | undefined;
-	day: string;
-};
-
-type FilterTypes = "all" | "unvoted" | "voted";
-
-const filterToFunction: {[key in FilterTypes]: (habitVote: HabitVote) => boolean} = {
-	all: () => true,
-	unvoted: ({vote}) => !vote,
-	voted: ({vote}) => vote !== null && vote !== undefined,
 };
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...stats}) => {
@@ -43,8 +31,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		day,
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
-	const [filter, setFilter] = React.useState<FilterTypes>("all");
-	const [searchPhrase, setSearchPhrase] = React.useState("");
+	const habitSearch = useHabitSearch();
+	const habitVoteFilter = useHabitVoteFilter();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
@@ -64,13 +52,6 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 	function dismissDialog() {
 		history.push("/calendar");
-	}
-
-	function onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
-		const {value} = event.target;
-		if (isFilter(value)) {
-			setFilter(value);
-		}
 	}
 
 	return (
@@ -96,42 +77,26 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</SuccessMessage>
 			)}
 			<div className="flex my-8">
-				<input
-					name="filter"
-					id="all"
-					type="radio"
-					value="all"
-					checked={filter === "all"}
-					onChange={onFilterChange}
-					className="mr-1"
-				/>
-				<label htmlFor="all">Show all ({howManyHabitsAtAll})</label>
+				<HabitVoteFilters.Voted.Input {...habitVoteFilter} disabled={howManyVotedHabits === 0} />
+				<HabitVoteFilters.Voted.Label>
+					Show voted ({howManyVotedHabits})
+				</HabitVoteFilters.Voted.Label>
 
-				<input
-					name="filter"
-					id="voted"
-					type="radio"
-					value="voted"
-					checked={filter === "voted"}
-					onChange={onFilterChange}
-					className="mr-1 ml-8"
+				<HabitVoteFilters.Unvoted.Input
+					{...habitVoteFilter}
+					disabled={howManyUnvotedHabits === 0}
 				/>
-				<label htmlFor="voted">Show voted ({howManyVotedHabits})</label>
+				<HabitVoteFilters.Unvoted.Label>
+					Show unvoted ({howManyUnvotedHabits})
+				</HabitVoteFilters.Unvoted.Label>
 
-				<input
-					name="filter"
-					id="unvoted"
-					type="radio"
-					value="unvoted"
-					checked={filter === "unvoted"}
-					onChange={onFilterChange}
-					className="mr-1 ml-8"
-				/>
-				<label htmlFor="unvoted">Show unvoted ({howManyUnvotedHabits})</label>
+				<HabitVoteFilters.All.Input {...habitVoteFilter} disabled={howManyHabitsAtAll === 0} />
+				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
+
 				<BareButton
 					onClick={() => {
-						setFilter("all");
-						setSearchPhrase("");
+						habitVoteFilter.reset();
+						habitSearch.clearPhrase();
 					}}
 					className="ml-auto"
 				>
@@ -139,23 +104,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</BareButton>
 			</div>
 			<div className="mb-6">
-				<input
-					className="field p-1 w-64"
-					type="search"
-					value={searchPhrase}
-					onChange={event => setSearchPhrase(event.target.value)}
-					placeholder="Search for habits..."
-				/>
-				<BareButton onClick={() => setSearchPhrase("")}>Clear</BareButton>
+				<HabitSearchInput {...habitSearch} />
+				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">
 				{habitVotes
-					.filter(filterToFunction[filter])
-					.filter(entry => {
-						if (!searchPhrase) return true;
-						return entry.habit.name.toLowerCase().includes(searchPhrase.toLowerCase());
-					})
+					.filter(habitVoteFilter.filterFunction)
+					.filter(entry => habitSearch.filterFn(entry.habit))
 					.map(entry => (
 						<DayDialogHabitVoteListItem
 							key={entry.habit.id}
@@ -178,9 +134,4 @@ function getDayVoteForHabit(
 ): Vote | undefined {
 	const dayVotes = getDayVotesRequestState.data ?? [];
 	return dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
-}
-
-function isFilter(value: string): value is FilterTypes {
-	const FILTER_TYPES = ["all", "voted", "unvoted"];
-	return FILTER_TYPES.includes(value);
 }

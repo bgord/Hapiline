@@ -4,7 +4,6 @@ import React from "react";
 import {AddHabitForm} from "./AddHabitForm";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitList} from "./HabitList";
-import {HabitsSummary} from "./HabitsSummary";
 import {InfoMessage} from "./InfoMessage";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
@@ -25,7 +24,6 @@ export const Dashboard = () => {
 				{!habits.length && (
 					<InfoMessage className="pb-4">Seems you haven't added any habits yet.</InfoMessage>
 				)}
-				<HabitsSummary />
 				<HabitList />
 			</Async.IfFulfilled>
 		</section>

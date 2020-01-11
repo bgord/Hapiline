@@ -133,13 +133,52 @@ describe("Habit", () => {
 			});
 		});
 
-		cy.findByText("positive: 1");
-		cy.findByText("neutral: 1");
-		cy.findByText("negative: 1");
-		cy.findByText("established: 1");
-		cy.findByText("fresh: 1");
-		cy.findByText("developing: 1");
-		cy.findByText("total: 3");
+		cy.findByLabelText("Positive (1)").should("not.be.checked");
+		cy.findByLabelText("Neutral (1)").should("not.be.checked");
+		cy.findByLabelText("Negative (1)").should("not.be.checked");
+		cy.findByLabelText("Established (1)").should("not.be.checked");
+		cy.findByLabelText("Fresh (1)").should("not.be.checked");
+		cy.findByLabelText("Developing (1)").should("not.be.checked");
+		cy.findByLabelText("All scores (3)").should("be.checked");
+		cy.findByLabelText("All strengths (3)").should("be.checked");
+		cy.findByText("Results: 3");
+
+		cy.findByLabelText("Positive (1)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+		cy.findByText("Results: 1");
+
+		cy.findByLabelText("Neutral (1)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+		cy.findByText("Results: 1");
+
+		cy.findByLabelText("Negative (1)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+		cy.findByText("Results: 1");
+
+		cy.findByLabelText("All scores (3)").check();
+
+		cy.findByLabelText("Established (1)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+		cy.findByText("Results: 1");
+
+		cy.findByLabelText("Developing (1)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+		cy.findByText("Results: 1");
+
+		cy.findByLabelText("Fresh (1)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+		cy.findByText("Results: 1");
+
+		cy.findByLabelText("All strengths (3)").check();
+
+		cy.findByPlaceholderText("Search for habits...")
+			.should("have.value", "")
+			.type("the");
+		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+		cy.findByText("Results: 1");
+
+		cy.findByText("Clear").click();
+		cy.findByPlaceholderText("Search for habits...").should("have.value", "");
 	});
 
 	it("error while getting items", () => {
@@ -175,10 +214,10 @@ describe("Habit", () => {
 		cy.findByText("Nevermind, don't delete").click();
 		cy.findByText("0 lorem");
 
-		cy.findByText("positive: 4");
-		cy.findByText("neutral: 3");
-		cy.findByText("negative: 3");
-		cy.findByText("total: 10");
+		cy.findByText("Positive (4)");
+		cy.findByText("Neutral (3)");
+		cy.findByText("Negative (3)");
+		cy.findByText("All scores (10)");
 
 		cy.findAllByText("Delete")
 			.first()
@@ -187,10 +226,10 @@ describe("Habit", () => {
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
 
-		cy.findByText("positive: 3");
-		cy.findByText("neutral: 3");
-		cy.findByText("negative: 3");
-		cy.findByText("total: 9");
+		cy.findByText("Positive (3)");
+		cy.findByText("Neutral (3)");
+		cy.findByText("Negative (3)");
+		cy.findByText("All scores (9)");
 	});
 
 	it("deleting habit error", () => {
@@ -659,9 +698,12 @@ describe("Habit", () => {
 				.click();
 		});
 
-		cy.findByDisplayValue("developing").select("established");
+		cy.findByRole("dialog").within(() => {
+			cy.findByDisplayValue("developing").select("established");
+			cy.findByText("×").click();
+		});
+
 		cy.findAllByText("Habit strength changed successfully!");
-		cy.findByRole("dialog").within(() => cy.findByText("×").click());
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("established").should("have.length", 5);

@@ -14,7 +14,7 @@ export const AddHabitForm: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
 
 	const [name, setName] = React.useState("");
-	const [score, setScore] = React.useState("neutral");
+	const [score, setScore] = React.useState("positive");
 	const [strength, setStrength] = React.useState("established");
 
 	const triggerSuccessNotification = useSuccessNotification();
@@ -72,8 +72,8 @@ export const AddHabitForm: React.FC = () => {
 						onBlur={event => setScore(event.target.value)}
 						className="field bg-white"
 					>
-						<option value="neutral">neutral</option>
 						<option value="positive">positive</option>
+						<option value="neutral">neutral</option>
 						<option value="negative">negative</option>
 					</select>
 				</div>

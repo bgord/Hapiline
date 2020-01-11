@@ -1,11 +1,31 @@
-type HabitScore = "positive" | "neutral" | "negative";
-type HabitStrength = "established" | "developing" | "fresh";
+import {Vote} from "./IDayVote";
+
+export type HabitScoreType = "positive" | "neutral" | "negative";
+export type HabitStrengthType = "established" | "developing" | "fresh";
+
+export type HabitVote = {
+	habit: IHabit;
+	vote: Vote | undefined;
+	day: string;
+};
+
+export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {
+	positive: "positive",
+	neutral: "neutral",
+	negative: "negative",
+};
+
+export const HABIT_STRENGTHS: {[key in HabitStrengthType]: HabitStrengthType} = {
+	established: "established",
+	developing: "developing",
+	fresh: "fresh",
+};
 
 export interface IHabit {
 	id: number;
 	name: string;
-	score: HabitScore;
-	strength: HabitStrength;
+	score: HabitScoreType;
+	strength: HabitStrengthType;
 	created_at: string;
 	updated_at: string;
 	order: number;
@@ -13,13 +33,13 @@ export interface IHabit {
 	regress_streak?: number;
 }
 
-export const scoreToBgColor: {[key in HabitScore]: string} = {
+export const scoreToBgColor: {[key in HabitScoreType]: string} = {
 	positive: "bg-green-300",
 	neutral: "bg-gray-300",
 	negative: "bg-red-300",
 };
 
-export const strengthToBgColor: {[key in HabitStrength]: string} = {
+export const strengthToBgColor: {[key in HabitStrengthType]: string} = {
 	established: "bg-blue-300",
 	developing: "bg-blue-200",
 	fresh: "bg-blue-100",
