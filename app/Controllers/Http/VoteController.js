@@ -5,9 +5,9 @@ const datefns = require("date-fns");
 
 class VoteController {
 	async update({request, response, auth}) {
-		const payload = request.only(["habit_id", "vote", "day"]);
+		const payload = request.only(["habit_id", "vote", "day", "comment"]);
 
-		const {habit_id, day} = payload;
+		const {habit_id, day, comment} = payload;
 		const vote = payload.vote || null;
 
 		const habit = await Habit.find(habit_id);
@@ -39,6 +39,7 @@ class VoteController {
 				habit_id,
 				day,
 				vote,
+				comment,
 			});
 
 			return response.send(habitVote);

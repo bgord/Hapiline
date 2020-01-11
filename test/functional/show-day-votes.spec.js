@@ -127,7 +127,9 @@ test("full flow", async ({client, assert}) => {
 
 	assert.equal(response.body[0].habit_id, 2);
 	assert.equal(response.body[0].vote, HABIT_VOTE_TYPES.plateau);
+	assert.equal(response.body[0].comment, "lorem");
 
 	assert.equal(response.body[1].habit_id, 4);
 	assert.equal(response.body[1].vote, HABIT_VOTE_TYPES.regress);
+	assert.equal(response.body[1].comment, "loremloremlorem");
 });

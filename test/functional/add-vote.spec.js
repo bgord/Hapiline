@@ -166,6 +166,7 @@ test("users can add vote to their habits only", async ({client}) => {
 	const payload = {
 		habit_id: 6,
 		day: new Date(),
+		comment: null,
 	};
 
 	const response = await client
@@ -229,6 +230,7 @@ test("full flow for existing habit vote", async ({client, assert}) => {
 		habit_id: 4,
 		day: new Date(),
 		vote: HABIT_VOTE_TYPES.regress,
+		comment: "The worst thing about the prison was the Dementors",
 	};
 
 	const response = await client

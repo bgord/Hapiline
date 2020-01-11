@@ -26,6 +26,7 @@ class HabitVoteSeeder {
 						day,
 						habit_id: habit.id,
 						vote: [...Object.keys(HABIT_VOTE_TYPES), null][voteIndex],
+						comment: index % 3 === 0 ? null : "lorem".repeat(index),
 					};
 				});
 
