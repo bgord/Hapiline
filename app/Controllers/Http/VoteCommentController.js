@@ -9,9 +9,7 @@ class VoteCommentController {
 		const vote = await HabitVote.find(voteId);
 		const habit = await Habit.find(vote.habit_id);
 
-		if (auth.user.id !== habit.user_id) {
-			return response.accessDenied();
-		}
+		if (auth.user.id !== habit.user_id) return response.accessDenied();
 
 		await vote.merge({comment: comment || null});
 		await vote.save();

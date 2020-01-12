@@ -36,13 +36,16 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
-	const habitVotes: HabitVote[] = habitsAvailableAtThisDay.map(habit => ({
-		habit,
-		vote: getDayVoteForHabit(getDayVotesRequestState, habit)?.vote,
-		comment: getDayVoteForHabit(getDayVotesRequestState, habit)?.comment,
-		vote_id: getDayVoteForHabit(getDayVotesRequestState, habit)?.vote_id,
-		day,
-	}));
+	const habitVotes: HabitVote[] = habitsAvailableAtThisDay.map(habit => {
+		const voteForHabit = getDayVoteForHabit(getDayVotesRequestState, habit);
+		return {
+			habit,
+			day,
+			vote: voteForHabit?.vote,
+			comment: voteForHabit?.comment,
+			vote_id: voteForHabit?.vote_id,
+		};
+	});
 
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
