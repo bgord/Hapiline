@@ -115,7 +115,7 @@ Route.patch("/api/v1/vote/:id/comment", "VoteCommentController.update").middlewa
 	"auth",
 	"is:(regular)",
 	"account-status:active",
-	// "params-resource-exists:habit_votes,id",
+	"params-resource-exists:habit_votes,id",
 ]);
 
 Route.get("*", async ({request, response}) => {

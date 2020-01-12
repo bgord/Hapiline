@@ -1,6 +1,10 @@
 const ace = require("@adonisjs/ace");
 
-const {assertInvalidSession, assertAccessDenied} = require("../helpers/assert-errors");
+const {
+	assertInvalidSession,
+	assertAccessDenied,
+	assertUnprocessableEntity,
+} = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Vote comments");
@@ -19,7 +23,7 @@ afterEach(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
-const ADD_VOTE_COMMENT_URL = habitId => `/api/v1/vote/${habitId}/comment`;
+const ADD_VOTE_COMMENT_URL = habitVoteId => `/api/v1/vote/${habitVoteId}/comment`;
 
 test("auth", async ({client}) => {
 	const response = await client.patch(ADD_VOTE_COMMENT_URL(1)).end();
@@ -47,4 +51,14 @@ test("account-status:(active)", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
+});
+
+test("comment can be added only to an existing vote", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.patch(ADD_VOTE_COMMENT_URL(555))
+		.loginVia(jim)
+		.end();
+	assertUnprocessableEntity(response);
 });
