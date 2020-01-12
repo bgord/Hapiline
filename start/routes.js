@@ -111,6 +111,15 @@ Route.get("/api/v1/habit-chart/:id", "HabitChartsController.show")
 	.middleware(["auth", "is:(regular)", "account-status:active", "params-resource-exists:habits,id"])
 	.validator("ShowHabitChart");
 
+Route.patch("/api/v1/vote/:id/comment", "VoteCommentController.update")
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:habit_votes,id",
+	])
+	.validator("UpdateVoteComment");
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {

@@ -1,4 +1,4 @@
-import {Vote} from "./IDayVote";
+import {IDayVote, Vote} from "./IDayVote";
 
 export type HabitScoreType = "positive" | "neutral" | "negative";
 export type HabitStrengthType = "established" | "developing" | "fresh";
@@ -6,7 +6,9 @@ export type HabitStrengthType = "established" | "developing" | "fresh";
 export type HabitVote = {
 	habit: IHabit;
 	vote: Vote | undefined;
+	comment: IDayVote["comment"];
 	day: string;
+	vote_id: IDayVote["vote_id"] | undefined;
 };
 
 export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {

@@ -9,7 +9,7 @@ import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DayDialogSummary} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
-import {IDayVote, Vote} from "./interfaces/IDayVote";
+import {IDayVote} from "./interfaces/IDayVote";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
@@ -36,11 +36,16 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
 
-	const habitVotes: HabitVote[] = habitsAvailableAtThisDay.map(habit => ({
-		habit,
-		vote: getDayVoteForHabit(getDayVotesRequestState, habit),
-		day,
-	}));
+	const habitVotes: HabitVote[] = habitsAvailableAtThisDay.map(habit => {
+		const voteForHabit = getDayVoteForHabit(getDayVotesRequestState, habit);
+		return {
+			habit,
+			day,
+			vote: voteForHabit?.vote,
+			comment: voteForHabit?.comment,
+			vote_id: voteForHabit?.vote_id,
+		};
+	});
 
 	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
 
@@ -131,7 +136,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 function getDayVoteForHabit(
 	getDayVotesRequestState: Async.AsyncState<IDayVote[]>,
 	habit: IHabit,
-): Vote | undefined {
+): IDayVote | undefined {
 	const dayVotes = getDayVotesRequestState.data ?? [];
-	return dayVotes.find(vote => vote.habit_id === habit.id)?.vote;
+	return dayVotes.find(vote => vote.habit_id === habit.id);
 }

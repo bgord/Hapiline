@@ -5,12 +5,12 @@ import React from "react";
 import {BareButton} from "./BareButton";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useDialog} from "./hooks/useDialog";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
+import {useToggle} from "./hooks/useToggle";
 
 export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
-	const [showDialog, openDialog, closeDialog] = useDialog();
+	const [showDialog, openDialog, closeDialog] = useToggle();
 	const getHabitsRequestState = useHabitsState();
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
