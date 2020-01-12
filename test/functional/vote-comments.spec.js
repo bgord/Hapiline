@@ -12,7 +12,6 @@ const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Vote comments");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
-const Database = use("Database");
 
 trait("Test/ApiClient");
 trait("Auth/Client");

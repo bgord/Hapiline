@@ -40,6 +40,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		habit,
 		vote: getDayVoteForHabit(getDayVotesRequestState, habit)?.vote,
 		comment: getDayVoteForHabit(getDayVotesRequestState, habit)?.comment,
+		vote_id: getDayVoteForHabit(getDayVotesRequestState, habit)?.vote_id,
 		day,
 	}));
 

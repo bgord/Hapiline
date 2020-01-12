@@ -208,7 +208,7 @@ describe("Calendar", () => {
 		cy.findAllByText("Habit vote added successfully!");
 	});
 
-	it.only("vote comments", () => {
+	it("vote comments", () => {
 		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
@@ -253,6 +253,31 @@ describe("Calendar", () => {
 				"have.value",
 				"loremloremloremloremloremloremlorem",
 			);
+
+			cy.findByPlaceholderText("Write something...")
+				.clear()
+				.type("nonono");
+
+			cy.findByText("Save").click();
+		});
+
+		cy.findByText("Comment added successfully!");
+
+		cy.findByRole("dialog").within(() => cy.findByText("×").click());
+
+		cy.get("ul").within(() => {
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("Show day").click({force: true});
+				});
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("⌄")
+				.eq(2)
+				.click();
+			cy.findByDisplayValue("nonono");
 		});
 	});
 });

@@ -8,6 +8,7 @@ export type HabitVote = {
 	vote: Vote | undefined;
 	comment: IDayVote["comment"];
 	day: string;
+	vote_id: IDayVote["vote_id"] | undefined;
 };
 
 export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {

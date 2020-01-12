@@ -16,6 +16,7 @@ interface DayDialogHabitVoteListProps {
 	habit: IHabit;
 	day: string;
 	vote: IDayVote["vote"] | undefined;
+	vote_id: IDayVote["vote_id"] | undefined;
 	comment: IDayVote["comment"] | undefined;
 	onResolve: VoidFunction;
 }
@@ -26,6 +27,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	comment,
 	habit,
 	day,
+	vote_id,
 }) => {
 	const history = useHistory();
 	const highlightedHabitId = useQueryParam("highlightedHabitId");
@@ -116,29 +118,56 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					</BareButton>
 				</div>
 			</li>
-			{isCommentVisible && <EditableVoteComment comment={comment} habitId={habit.id} />}
+			{isCommentVisible && isCommentToggleEnabled && (
+				<EditableVoteComment comment={comment} voteId={vote_id} onResolve={onResolve} />
+			)}
 		</>
 	);
 };
 
-const EditableVoteComment: React.FC<{comment: IDayVote["comment"]; habitId: IHabit["id"]}> = ({
-	comment,
-	habitId,
-}) => {
+const EditableVoteComment: React.FC<{
+	comment: IDayVote["comment"];
+	voteId: IDayVote["vote_id"] | undefined;
+	onResolve: VoidFunction;
+}> = ({comment, voteId, onResolve}) => {
+	const [state, setState] = React.useState<"idle" | "focused">("idle");
+
+	const triggerSuccessNotification = useSuccessNotification();
 	const [newComment, setNewComment] = React.useState<IDayVote["comment"]>(() => comment);
 
-	function updateComment() {}
+	const updateVoteCommentRequestState = Async.useAsync({
+		deferFn: api.habit.updateVoteComment,
+		onResolve: () => {
+			triggerSuccessNotification("Comment added successfully!");
+			setState("idle");
+			onResolve();
+		},
+	});
+
+	function updateComment() {
+		if (newComment !== comment) updateVoteCommentRequestState.run(voteId, newComment);
+	}
 
 	return (
 		<>
 			<textarea
+				onFocus={() => setState("focused")}
 				placeholder="Write something..."
-				className="w-full border"
+				className="w-full border p-2"
 				value={newComment ?? undefined}
 				onChange={event => setNewComment(event.target.value)}
 			/>
-			<BareButton onClick={updateComment}>Save</BareButton>
-			<BareButton onClick={() => setNewComment(comment)}>Cancel</BareButton>
+			{state === "focused" && <BareButton onClick={updateComment}>Save</BareButton>}
+			{state === "focused" && (
+				<BareButton
+					onClick={() => {
+						setNewComment(comment || "");
+						setState("idle");
+					}}
+				>
+					Cancel
+				</BareButton>
+			)}
 		</>
 	);
 };
