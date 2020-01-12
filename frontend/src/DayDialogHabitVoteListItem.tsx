@@ -55,12 +55,22 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	}
 
 	const isHabitHighlighted = Number(highlightedHabitId) === habit.id;
+	const isCommentToggleEnabled = vote !== null && vote !== undefined;
+	const commentToggleTitle = isCommentToggleEnabled
+		? "Show and edit comment"
+		: "Vote to be able to add comment";
 
 	return (
 		<>
 			<li className="flex items-baseline justify-between bg-gray-100 my-2 p-2 mt-4">
 				<div className="flex items-center">
-					<BareButton onClick={toggleComment}>{isCommentVisible ? "⌃" : "⌄"}</BareButton>
+					<BareButton
+						title={commentToggleTitle}
+						disabled={!isCommentToggleEnabled}
+						onClick={toggleComment}
+					>
+						{isCommentVisible ? "⌃" : "⌄"}
+					</BareButton>
 					<BareButton
 						className="mr-4"
 						onClick={() => history.push(`/calendar?previewDay=${day}`)}

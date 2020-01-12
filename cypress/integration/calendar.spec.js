@@ -227,27 +227,31 @@ describe("Calendar", () => {
 
 			cy.findAllByText("⌄")
 				.first()
+				.should("be.disabled");
+
+			cy.findAllByText("⌄")
+				.eq(2)
 				.click();
 			cy.findAllByText("⌄").should("have.length", 9);
 			cy.findByText("⌃").should("have.length", 1);
-			cy.findByText("loremloremloremloremlorem");
+			cy.findByDisplayValue("loremloremloremloremloremloremlorem");
 			cy.findByText("⌃").click();
 			cy.findAllByText("⌄").should("have.length", 10);
 			cy.findByText("⌃").should("not.exist");
-			cy.findByText("loremloremloremloremlorem").should("not.exist");
+			cy.findByDisplayValue("loremloremloremloremloremloremlorem").should("not.exist");
 
 			cy.findAllByText("⌄")
-				.first()
+				.eq(2)
 				.click();
 			cy.findByPlaceholderText("Write something...").type("xxx");
 			cy.findByPlaceholderText("Write something...").should(
 				"have.value",
-				"loremloremloremloremloremxxx",
+				"loremloremloremloremloremloremloremxxx",
 			);
 			cy.findByText("Cancel").click();
 			cy.findByPlaceholderText("Write something...").should(
 				"have.value",
-				"loremloremloremloremlorem",
+				"loremloremloremloremloremloremlorem",
 			);
 		});
 	});
