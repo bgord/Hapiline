@@ -4,6 +4,7 @@ import React from "react";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogSummaryProps = DayVoteStats & {
@@ -12,26 +13,73 @@ type DayDialogSummaryProps = DayVoteStats & {
 
 export const DayDialogSummary: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
 	const habits = useHabits();
-	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
+	const howManyHabits = getHabitsAvailableAtThisDay(habits, day).length;
 
-	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
+	const noVotesPercentage = Number(((stats.noVotesCountStats ?? 0) / howManyHabits) * 100).toFixed(
+		2,
+	);
+	const regressVotesPercentage = Number(
+		((stats.regressVotesCountStats ?? 0) / howManyHabits) * 100,
+	).toFixed(2);
+	const plateauVotesPercentage = Number(
+		((stats.plateauVotesCountStats ?? 0) / howManyHabits) * 100,
+	).toFixed(2);
+	const progressVotesPercentage = Number(
+		((stats.progressVotesCountStats ?? 0) / howManyHabits) * 100,
+	).toFixed(2);
+
+	const noVotesCellTitle = `No votes: ${stats.noVotesCountStats}/${howManyHabits} (${noVotesPercentage}%)`;
+	const regressVotesCellTitle = `Regress: ${stats.regressVotesCountStats}/${howManyHabits} (${regressVotesPercentage}%)`;
+	const plateauVotesCellTitle = `Plateau: ${stats.plateauVotesCountStats}/${howManyHabits} (${plateauVotesPercentage}%)`;
+	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${howManyHabits} (${progressVotesPercentage}%)`;
 
 	return (
 		<div className="flex justify-end pl-0 text-sm my-8">
-			<details className="mr-auto" hidden={!stats.createdHabitsCount}>
-				<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
-				<p>Habit(s) added this day:</p>
-				<ul className="mt-2">
-					{habitsAddedAtThisDay.map(habit => (
-						<li key={habit.id}>{habit.name}</li>
-					))}
-				</ul>
-			</details>
-			<Stat count={stats.progressVotesCountStats} sign="+" />
-			<Stat count={stats.plateauVotesCountStats} sign="=" />
-			<Stat count={stats.regressVotesCountStats} sign="-" />
+			<div className="flex p-1 flex-1">
+				<div
+					title={noVotesCellTitle}
+					style={{flexBasis: `${noVotesPercentage}%`}}
+					className="bg-gray-500"
+				/>
+				<div
+					title={regressVotesCellTitle}
+					style={{flexBasis: `${regressVotesPercentage}%`}}
+					className="bg-red-300"
+				/>
+				<div
+					title={plateauVotesCellTitle}
+					style={{flexBasis: `${plateauVotesPercentage}%`}}
+					className="bg-gray-300"
+				/>
+				<div
+					title={progressVotesCellTitle}
+					style={{flexBasis: `${progressVotesPercentage}%`}}
+					className="bg-green-300"
+				/>
+			</div>
 			<Stat count={stats.noVotesCountStats} sign="?" />
+			<Stat count={stats.regressVotesCountStats} sign="-" />
+			<Stat count={stats.plateauVotesCountStats} sign="=" />
+			<Stat count={stats.progressVotesCountStats} sign="+" />
 		</div>
+	);
+};
+
+export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
+	const habits = useHabits();
+	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
+
+	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
+	return (
+		<details className="text-sm my-8" hidden={!stats.createdHabitsCount}>
+			<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
+			<p>Habit(s) added this day:</p>
+			<ul className="mt-2">
+				{habitsAddedAtThisDay.map(habit => (
+					<li key={habit.id}>{habit.name}</li>
+				))}
+			</ul>
+		</details>
 	);
 };
 

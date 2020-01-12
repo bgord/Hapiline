@@ -18,10 +18,8 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	id,
 	setHabitItem,
 }) => {
+	const [inputState, setInputState] = React.useState<"idle" | "focused">("idle");
 	const getHabitsRequestState = useHabitsState();
-	const [isFocused, setIsFocused] = React.useState(false);
-	const blurInput = () => setIsFocused(false);
-	const focusInput = () => setIsFocused(true);
 
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
 
@@ -31,7 +29,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
-			blurInput();
+			setInputState("idle");
 			triggerSuccessNotification("Name updated successfully!");
 			setHabitItem(habit);
 			getHabitsRequestState.reload();
@@ -44,15 +42,15 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	});
 
 	const onSave = () => {
-		if (newHabitName === name) blurInput();
+		if (newHabitName === name) setInputState("idle");
 		else editHabitRequestState.run(id, {name: newHabitName});
 	};
 	const onCancel = () => {
-		blurInput();
+		setInputState("idle");
 		setNewHabitName(name);
 	};
 
-	const inputBgColor = isFocused ? "bg-gray-100" : "";
+	const inputBgColor = inputState === "focused" ? "bg-gray-100" : "";
 
 	return (
 		<div className="flex justify-between items-end w-full ml-4">
@@ -66,13 +64,13 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 							editHabitRequestState.run(id, {name: newHabitName});
 						}
 					}}
-					onFocus={focusInput}
+					onFocus={() => setInputState("focused")}
 					className={`mr-4 p-1 pl-2 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor} border`}
 					value={newHabitName}
 					onChange={event => setNewHabitName(event.target.value)}
 				/>
 			</div>
-			{isFocused && (
+			{inputState === "focused" && (
 				<div className="flex">
 					<BareButton onClick={onSave}>Save</BareButton>
 					<BareButton onClick={onCancel}>Cancel</BareButton>
