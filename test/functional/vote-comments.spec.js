@@ -89,3 +89,17 @@ test("validation", async ({client}) => {
 		assertValidationError({response, argErrors});
 	}
 });
+
+test("user can add comment to votes only for their own habits", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {};
+
+	const response = await client
+		.patch(ADD_VOTE_COMMENT_URL(5))
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
+});
