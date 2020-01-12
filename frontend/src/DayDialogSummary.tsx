@@ -4,19 +4,63 @@ import React from "react";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 
 type DayDialogSummaryProps = DayVoteStats & {
 	day: string;
 };
 
-export const DayDialogSummary: React.FC<DayDialogSummaryProps> = props => {
+export const DayDialogSummary: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
+	const habits = useHabits();
+	const howManyHabits = getHabitsAvailableAtThisDay(habits, day).length;
+
+	const noVotesPercentage = Number(((stats.noVotesCountStats ?? 0) / howManyHabits) * 100).toFixed(
+		2,
+	);
+	const regressVotesPercentage = Number(
+		((stats.regressVotesCountStats ?? 0) / howManyHabits) * 100,
+	).toFixed(2);
+	const plateauVotesPercentage = Number(
+		((stats.plateauVotesCountStats ?? 0) / howManyHabits) * 100,
+	).toFixed(2);
+	const progressVotesPercentage = Number(
+		((stats.progressVotesCountStats ?? 0) / howManyHabits) * 100,
+	).toFixed(2);
+
+	const noVotesCellTitle = `No votes: ${stats.noVotesCountStats}/${howManyHabits} (${noVotesPercentage}%)`;
+	const regressVotesCellTitle = `Regress: ${stats.regressVotesCountStats}/${howManyHabits} (${regressVotesPercentage}%)`;
+	const plateauVotesCellTitle = `Plateau: ${stats.plateauVotesCountStats}/${howManyHabits} (${plateauVotesPercentage}%)`;
+	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${howManyHabits} (${progressVotesPercentage}%)`;
+
 	return (
 		<div className="flex justify-end pl-0 text-sm my-8">
-			<Stat count={props.progressVotesCountStats} sign="+" />
-			<Stat count={props.plateauVotesCountStats} sign="=" />
-			<Stat count={props.regressVotesCountStats} sign="-" />
-			<Stat count={props.noVotesCountStats} sign="?" />
+			<div className="flex p-1 flex-1">
+				<div
+					title={noVotesCellTitle}
+					style={{flexBasis: `${noVotesPercentage}%`}}
+					className="bg-gray-500"
+				/>
+				<div
+					title={regressVotesCellTitle}
+					style={{flexBasis: `${regressVotesPercentage}%`}}
+					className="bg-red-300"
+				/>
+				<div
+					title={plateauVotesCellTitle}
+					style={{flexBasis: `${plateauVotesPercentage}%`}}
+					className="bg-gray-300"
+				/>
+				<div
+					title={progressVotesCellTitle}
+					style={{flexBasis: `${progressVotesPercentage}%`}}
+					className="bg-green-300"
+				/>
+			</div>
+			<Stat count={stats.noVotesCountStats} sign="?" />
+			<Stat count={stats.regressVotesCountStats} sign="-" />
+			<Stat count={stats.plateauVotesCountStats} sign="=" />
+			<Stat count={stats.progressVotesCountStats} sign="+" />
 		</div>
 	);
 };
