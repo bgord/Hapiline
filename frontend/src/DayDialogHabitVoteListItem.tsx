@@ -128,7 +128,7 @@ const EditableVoteComment: React.FC<{comment: IDayVote["comment"]; habitId: IHab
 				onChange={event => setNewComment(event.target.value)}
 			/>
 			<BareButton onClick={updateComment}>Save</BareButton>
-			<BareButton onClick={() => setNewComment(comment)}>Clear</BareButton>
+			<BareButton onClick={() => setNewComment(comment)}>Cancel</BareButton>
 		</>
 	);
 };

@@ -223,6 +223,32 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findAllByText("⌄").should("have.length", 10);
+			cy.findByPlaceholderText("Write something...").should("not.exist");
+
+			cy.findAllByText("⌄")
+				.first()
+				.click();
+			cy.findAllByText("⌄").should("have.length", 9);
+			cy.findByText("⌃").should("have.length", 1);
+			cy.findByText("loremloremloremloremlorem");
+			cy.findByText("⌃").click();
+			cy.findAllByText("⌄").should("have.length", 10);
+			cy.findByText("⌃").should("not.exist");
+			cy.findByText("loremloremloremloremlorem").should("not.exist");
+
+			cy.findAllByText("⌄")
+				.first()
+				.click();
+			cy.findByPlaceholderText("Write something...").type("xxx");
+			cy.findByPlaceholderText("Write something...").should(
+				"have.value",
+				"loremloremloremloremloremxxx",
+			);
+			cy.findByText("Cancel").click();
+			cy.findByPlaceholderText("Write something...").should(
+				"have.value",
+				"loremloremloremloremlorem",
+			);
 		});
 	});
 });
