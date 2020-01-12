@@ -1,21 +1,22 @@
-const Database = use("Database");
+const HabitVote = use("HabitVote");
+const Habit = use("Habit");
 
 class VoteCommentController {
-	async update({params, response, auth}) {
+	async update({params, request, response, auth}) {
+		const {comment} = request.only(["comment"]);
 		const voteId = Number(params.id);
 
-		const vote = await Database.table("habit_votes")
-			.where("id", voteId)
-			.first();
-		const habit = await Database.table("habits")
-			.where("id", vote.habit_id)
-			.first();
+		const vote = await HabitVote.find(voteId);
+		const habit = await Habit.find(vote.habit_id);
 
 		if (auth.user.id !== habit.user_id) {
 			return response.accessDenied();
 		}
 
-		response.send();
+		await vote.merge({comment: comment || null});
+		await vote.save();
+
+		response.send(vote);
 	}
 }
 

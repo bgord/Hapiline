@@ -12,6 +12,7 @@ const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Vote comments");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const Database = use("Database");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -102,4 +103,32 @@ test("user can add comment to votes only for their own habits", async ({client})
 		.end();
 
 	assertAccessDenied(response);
+});
+
+test("full flow with empty comment", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {};
+
+	const response = await client
+		.patch(ADD_VOTE_COMMENT_URL(1))
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assert.equal(response.body.comment, null);
+});
+
+test("full flow with non-empty comment", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {comment: "You miss 100% shots you don't take"};
+
+	const response = await client
+		.patch(ADD_VOTE_COMMENT_URL(1))
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assert.equal(response.body.comment, payload.comment);
 });
