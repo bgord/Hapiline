@@ -4,12 +4,14 @@ const {
 	assertInvalidSession,
 	assertAccessDenied,
 	assertUnprocessableEntity,
+	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Vote comments");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -61,4 +63,29 @@ test("comment can be added only to an existing vote", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertUnprocessableEntity(response);
+});
+
+test("validation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const cases = [
+		[
+			{comment: 222},
+			[{message: VALIDATION_MESSAGES.invalid_comment, field: "comment", validation: "string"}],
+		],
+		[
+			{comment: "0".repeat(1025)},
+			[{message: VALIDATION_MESSAGES.invalid_comment, field: "comment", validation: "max"}],
+		],
+	];
+
+	for (const [payload, argErrors] of cases) {
+		const response = await client
+			.patch(ADD_VOTE_COMMENT_URL(5))
+			.send(payload)
+			.loginVia(jim)
+			.end();
+
+		assertValidationError({response, argErrors});
+	}
 });
