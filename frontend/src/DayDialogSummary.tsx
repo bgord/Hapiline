@@ -10,28 +10,32 @@ type DayDialogSummaryProps = DayVoteStats & {
 	day: string;
 };
 
-export const DayDialogSummary: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
+export const DayDialogSummary: React.FC<DayDialogSummaryProps> = props => {
+	return (
+		<div className="flex justify-end pl-0 text-sm my-8">
+			<Stat count={props.progressVotesCountStats} sign="+" />
+			<Stat count={props.plateauVotesCountStats} sign="=" />
+			<Stat count={props.regressVotesCountStats} sign="-" />
+			<Stat count={props.noVotesCountStats} sign="?" />
+		</div>
+	);
+};
+
+export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
 	const habits = useHabits();
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 
 	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
-
 	return (
-		<div className="flex justify-end pl-0 text-sm my-8">
-			<details className="mr-auto" hidden={!stats.createdHabitsCount}>
-				<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
-				<p>Habit(s) added this day:</p>
-				<ul className="mt-2">
-					{habitsAddedAtThisDay.map(habit => (
-						<li key={habit.id}>{habit.name}</li>
-					))}
-				</ul>
-			</details>
-			<Stat count={stats.progressVotesCountStats} sign="+" />
-			<Stat count={stats.plateauVotesCountStats} sign="=" />
-			<Stat count={stats.regressVotesCountStats} sign="-" />
-			<Stat count={stats.noVotesCountStats} sign="?" />
-		</div>
+		<details className="text-sm my-8" hidden={!stats.createdHabitsCount}>
+			<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
+			<p>Habit(s) added this day:</p>
+			<ul className="mt-2">
+				{habitsAddedAtThisDay.map(habit => (
+					<li key={habit.id}>{habit.name}</li>
+				))}
+			</ul>
+		</details>
 	);
 };
 
