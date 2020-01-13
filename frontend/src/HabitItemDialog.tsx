@@ -8,10 +8,11 @@ import {CloseButton} from "./CloseButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
+import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {HabitCharts} from "./HabitCharts";
 import {IHabit} from "./interfaces/IHabit";
-import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
@@ -137,6 +138,8 @@ const EditableDescription: React.FC<{
 	const [state, setState] = React.useState<"idle" | "focused">("idle");
 
 	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
+
 	const [newDescription, setNewDescription] = React.useState<IHabit["description"]>(
 		() => description,
 	);
@@ -148,12 +151,16 @@ const EditableDescription: React.FC<{
 			setState("idle");
 			onResolve();
 		},
+		onReject: () => triggerErrorNotification("Habit description couldn't be changed"),
 	});
 
 	function updateDescription() {
 		if (newDescription !== description)
 			updateDescriptionRequestState.run(habitId, {description: newDescription});
 	}
+
+	const {getArgErrorMessage} = getRequestStateErrors(updateDescriptionRequestState);
+	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
 	return (
 		<>
@@ -164,6 +171,9 @@ const EditableDescription: React.FC<{
 				value={newDescription ?? undefined}
 				onChange={event => setNewDescription(event.target.value)}
 			/>
+			<Async.IfRejected state={updateDescriptionRequestState}>
+				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
+			</Async.IfRejected>
 			{state === "focused" && <BareButton onClick={updateDescription}>Save</BareButton>}
 			{state === "focused" && (
 				<BareButton

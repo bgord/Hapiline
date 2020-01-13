@@ -721,4 +721,114 @@ describe("Habit", () => {
 			cy.findAllByText("developing").should("have.length", 2);
 		});
 	});
+
+	it("changing description", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
+
+			cy.findAllByText("More")
+				.eq(1)
+				.click();
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByPlaceholderText("Write something...")
+				.clear()
+				.type("xxx");
+
+			cy.findByText("Save").click();
+		});
+
+		cy.findByText("Comment added successfully!");
+	});
+
+	it("changing description error", () => {
+		const errorMessage = "Error while chaning description.";
+
+		cy.server();
+		cy.route({
+			method: "PATCH",
+			url: "/api/v1/habit/7",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
+
+			cy.findAllByText("More")
+				.eq(1)
+				.click();
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByPlaceholderText("Write something...")
+				.clear()
+				.type("xxx");
+
+			cy.findByText("Save").click();
+		});
+
+		cy.findAllByText("Habit description couldn't be changed");
+	});
+
+	it("changing description inline error", () => {
+		const errorMessage = "Error while chaning description.";
+
+		cy.server();
+		cy.route({
+			method: "PATCH",
+			url: "/api/v1/habit/7",
+			status: 400,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [
+					{
+						field: "description",
+						validation: "max",
+						message: "Too long description",
+					},
+				],
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
+
+			cy.findAllByText("More")
+				.eq(1)
+				.click();
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByPlaceholderText("Write something...")
+				.clear()
+				.type("xxx");
+
+			cy.findByText("Save").click();
+			cy.findByText("Too long description");
+		});
+
+		cy.findAllByText("Habit description couldn't be changed");
+	});
 });
