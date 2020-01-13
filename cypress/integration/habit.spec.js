@@ -25,7 +25,7 @@ describe("Habit", () => {
 		cy.findByText("Habit successfully addedd!").should("not.exist");
 
 		cy.findByLabelText("Habit").should("have.value", "");
-		cy.findByLabelText("Score").should("have.value", "neutral");
+		cy.findByLabelText("Score").should("have.value", "positive");
 		cy.findByLabelText("Strength").should("have.value", "established");
 
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
@@ -45,6 +45,16 @@ describe("Habit", () => {
 		cy.findByText("Habit successfully addedd!");
 
 		cy.findByText("Go to sleep at 9:30 AM");
+
+		cy.findByLabelText("Habit")
+			.clear()
+			.type("That's too long");
+		cy.findByLabelText("Score").select("positive");
+		cy.findByLabelText("Strength").select("fresh");
+		// 52 * 20 chars = 1040, which is grater than 1024
+		cy.findByPlaceholderText("Write something...").type("That's what she said".repeat(52));
+		cy.findByText("Add habit").click();
+		cy.findByText("Description must be max of 1024 characters.");
 	});
 
 	it("500 while adding an item", () => {

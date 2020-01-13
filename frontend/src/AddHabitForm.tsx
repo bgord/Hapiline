@@ -25,7 +25,7 @@ export const AddHabitForm: React.FC = () => {
 		deferFn: api.habit.post,
 		onResolve: () => {
 			setName("");
-			setScore("neutral");
+			setScore("positive");
 			setStrength("established");
 			getHabitsRequestState.reload();
 			triggerSuccessNotification("Habit successfully addedd!");
@@ -40,6 +40,7 @@ export const AddHabitForm: React.FC = () => {
 
 	const {getArgErrorMessage, errorMessage} = getRequestStateErrors(addHabitRequestState);
 	const nameInlineErrorMessage = getArgErrorMessage("name");
+	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
 	return (
 		<>
@@ -98,6 +99,9 @@ export const AddHabitForm: React.FC = () => {
 						</select>
 					</div>
 				</div>
+				<Async.IfRejected state={addHabitRequestState}>
+					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
+				</Async.IfRejected>
 				<div className="flex items-center mt-4">
 					<div className="flex flex-col flex-grow">
 						<label htmlFor="description" className="field-label">
@@ -112,12 +116,17 @@ export const AddHabitForm: React.FC = () => {
 						/>
 					</div>
 				</div>
+				<Async.IfRejected state={addHabitRequestState}>
+					<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
+				</Async.IfRejected>
 				<button className="btn btn-blue ml-auto h-10 mt-4" type="submit">
 					Add habit
 				</button>
 			</form>
 			<Async.IfRejected state={addHabitRequestState}>
-				<ErrorMessage className="mt-4">{nameInlineErrorMessage || errorMessage}</ErrorMessage>
+				<ErrorMessage className="mt-4">
+					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && errorMessage}
+				</ErrorMessage>
 			</Async.IfRejected>
 		</>
 	);
