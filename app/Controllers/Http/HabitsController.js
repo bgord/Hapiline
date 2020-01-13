@@ -97,7 +97,7 @@ class HabitsController {
 	}
 
 	async update({request, response, params, auth}) {
-		const payload = request.only(["name", "score", "strength"]);
+		const payload = request.only(["name", "score", "strength", "description"]);
 
 		const habit = await Habit.find(params.id);
 
