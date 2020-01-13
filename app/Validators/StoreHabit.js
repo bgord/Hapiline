@@ -10,6 +10,7 @@ class StoreHabit extends BaseHttpValidator {
 			score: `required|in:${Object.keys(HABIT_SCORE_TYPES)}`,
 			strength: `required|in:${Object.keys(HABIT_STRENGTH_TYPES)}`,
 			user_id: "required|integer|above:0",
+			description: "string|max:1024",
 		};
 	}
 
@@ -22,6 +23,7 @@ class StoreHabit extends BaseHttpValidator {
 			"score.in": VALIDATION_MESSAGES.invalid_score,
 			"strength.in": VALIDATION_MESSAGES.invalid_strength,
 			"user_id.above": VALIDATION_MESSAGES.above("user_id", 0),
+			"description.max": VALIDATION_MESSAGES.invalid_description,
 		};
 	}
 

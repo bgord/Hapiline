@@ -89,6 +89,7 @@ test("validation", async ({client}) => {
 				score: "xxx",
 				strength: "xxx",
 				user_id: "xxxx",
+				description: "x".repeat(1025),
 			},
 			[
 				{
@@ -115,6 +116,11 @@ test("validation", async ({client}) => {
 					message: VALIDATION_MESSAGES.above("user_id", 0),
 					field: "user_id",
 					validation: "above",
+				},
+				{
+					message: VALIDATION_MESSAGES.invalid_description,
+					field: "description",
+					validation: "max",
 				},
 			],
 		],
