@@ -6,7 +6,7 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 class HabitsController {
 	async store({request, response, auth}) {
-		const payload = request.only(["name", "score", "strength", "user_id"]);
+		const payload = request.only(["name", "score", "strength", "user_id", "description"]);
 		try {
 			const {maxOrderValue} = await Database.table("habits")
 				.max("order as maxOrderValue")

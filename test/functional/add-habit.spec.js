@@ -163,6 +163,7 @@ test("full flow", async ({client, assert}) => {
 		score: HABIT_SCORE_TYPES.neutral,
 		strength: HABIT_STRENGTH_TYPES.fresh,
 		user_id: users.jim.id,
+		description: "What can I say?",
 	};
 
 	const response = await client
@@ -175,6 +176,7 @@ test("full flow", async ({client, assert}) => {
 	assert.equal(response.body.name, payload.name);
 	assert.equal(response.body.score, payload.score);
 	assert.equal(response.body.user_id, payload.user_id);
+	assert.equal(response.body.description, payload.description);
 });
 
 test("cannot insert two identical records", async ({client, assert}) => {
