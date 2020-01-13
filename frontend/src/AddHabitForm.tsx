@@ -16,6 +16,7 @@ export const AddHabitForm: React.FC = () => {
 	const [name, setName] = React.useState("");
 	const [score, setScore] = React.useState("positive");
 	const [strength, setStrength] = React.useState("established");
+	const [description, setDescription] = React.useState("");
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerUnexpectedErrorNotification = useErrorNotification();
@@ -45,57 +46,73 @@ export const AddHabitForm: React.FC = () => {
 			<form
 				onSubmit={event => {
 					event.preventDefault();
-					addHabitRequestState.run(name, score, strength, profile?.id);
+					addHabitRequestState.run(name, score, strength, profile?.id, description || null);
 				}}
-				className="flex items-end w-full"
+				className="flex flex-col w-full"
 			>
-				<div className="flex flex-col flex-grow">
-					<label className="field-label" htmlFor="name">
-						Habit
-					</label>
-					<HabitNameInput
-						value={name}
-						onChange={event => setName(event.target.value)}
-						className="field w-full"
-					/>
+				<div className="flex w-full">
+					<div className="flex flex-col flex-grow">
+						<label className="field-label" htmlFor="name">
+							Habit
+						</label>
+						<HabitNameInput
+							value={name}
+							onChange={event => setName(event.target.value)}
+							className="field w-full"
+						/>
+					</div>
+					<div className="flex flex-col ml-8">
+						<label className="field-label" htmlFor="score">
+							Score
+						</label>
+						<select
+							id="score"
+							name="score"
+							required
+							value={score}
+							onChange={event => setScore(event.target.value)}
+							onBlur={event => setScore(event.target.value)}
+							className="field bg-white"
+						>
+							<option value="positive">positive</option>
+							<option value="neutral">neutral</option>
+							<option value="negative">negative</option>
+						</select>
+					</div>
+					<div className="flex flex-col ml-8">
+						<label className="field-label" htmlFor="strength">
+							Strength
+						</label>
+						<select
+							id="strength"
+							name="strength"
+							required
+							value={strength}
+							onChange={event => setStrength(event.target.value)}
+							onBlur={event => setStrength(event.target.value)}
+							className="field bg-white"
+						>
+							<option value="established">established</option>
+							<option value="developing">developing</option>
+							<option value="fresh">fresh</option>
+						</select>
+					</div>
 				</div>
-				<div className="flex flex-col ml-8">
-					<label className="field-label" htmlFor="score">
-						Score
-					</label>
-					<select
-						id="score"
-						name="score"
-						required
-						value={score}
-						onChange={event => setScore(event.target.value)}
-						onBlur={event => setScore(event.target.value)}
-						className="field bg-white"
-					>
-						<option value="positive">positive</option>
-						<option value="neutral">neutral</option>
-						<option value="negative">negative</option>
-					</select>
+				<div className="flex items-center mt-4">
+					<div className="flex flex-col flex-grow">
+						<label htmlFor="description" className="field-label">
+							Description (optional)
+						</label>
+						<textarea
+							value={description}
+							onChange={event => setDescription(event.target.value)}
+							name="description"
+							className="p-1 border"
+							placeholder="Write something..."
+						/>
+					</div>
 				</div>
-				<div className="flex flex-col ml-8">
-					<label className="field-label" htmlFor="strength">
-						Strength
-					</label>
-					<select
-						id="strength"
-						name="strength"
-						required
-						value={strength}
-						onChange={event => setStrength(event.target.value)}
-						onBlur={event => setStrength(event.target.value)}
-						className="field bg-white"
-					>
-						<option value="established">established</option>
-						<option value="developing">developing</option>
-						<option value="fresh">fresh</option>
-					</select>
-				</div>
-				<button className="btn btn-blue ml-8 h-10" type="submit">
+				<button className="btn btn-blue ml-auto h-10 mt-4" type="submit">
 					Add habit
 				</button>
 			</form>

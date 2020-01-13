@@ -15,6 +15,7 @@ export const addHabitRequest: Async.DeferFn<IHabit> = ([
 	score,
 	strength,
 	user_id,
+	description,
 ]: string[]) =>
 	_internal_api
 		.post<IHabit>("/habit", {
@@ -22,6 +23,7 @@ export const addHabitRequest: Async.DeferFn<IHabit> = ([
 			score,
 			strength,
 			user_id,
+			description,
 		})
 		.then(response => response.data);
 
