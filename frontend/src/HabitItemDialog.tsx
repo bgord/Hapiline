@@ -13,6 +13,7 @@ import {HabitCharts} from "./HabitCharts";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {useTextareaState, useEditableValue} from "./hooks/useEditableTextarea";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
@@ -135,51 +136,49 @@ const EditableDescription: React.FC<{
 	habitId: IHabit["id"];
 	onResolve: VoidFunction;
 }> = ({description, habitId, onResolve}) => {
-	const [state, setState] = React.useState<"idle" | "focused">("idle");
+	const [state, textareaHelpers] = useTextareaState();
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
-
-	const [newDescription, setNewDescription] = React.useState<IHabit["description"]>(
-		() => description,
-	);
 
 	const updateDescriptionRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: () => {
 			triggerSuccessNotification("Comment added successfully!");
-			setState("idle");
+			textareaHelpers.setIdle();
 			onResolve();
 		},
 		onReject: () => triggerErrorNotification("Habit description couldn't be changed"),
 	});
 
-	function updateDescription() {
-		if (newDescription !== description)
-			updateDescriptionRequestState.run(habitId, {description: newDescription});
-	}
-
 	const {getArgErrorMessage} = getRequestStateErrors(updateDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
+
+	const [newDescription, newDescriptionHelpers] = useEditableValue(
+		newDescription => updateDescriptionRequestState.run(habitId, {description: newDescription}),
+		description,
+	);
 
 	return (
 		<>
 			<textarea
-				onFocus={() => setState("focused")}
+				onFocus={textareaHelpers.setFocused}
 				placeholder="Write something..."
 				className="w-full border p-2"
 				value={newDescription ?? undefined}
-				onChange={event => setNewDescription(event.target.value)}
+				onChange={newDescriptionHelpers.onChange}
 			/>
 			<Async.IfRejected state={updateDescriptionRequestState}>
 				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
 			</Async.IfRejected>
-			{state === "focused" && <BareButton onClick={updateDescription}>Save</BareButton>}
+			{state === "focused" && (
+				<BareButton onClick={newDescriptionHelpers.onUpdate}>Save</BareButton>
+			)}
 			{state === "focused" && (
 				<BareButton
 					onClick={() => {
-						setNewDescription(description || "");
-						setState("idle");
+						newDescriptionHelpers.onClear();
+						textareaHelpers.setIdle();
 					}}
 				>
 					Cancel
