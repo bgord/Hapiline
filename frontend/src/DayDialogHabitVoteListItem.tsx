@@ -8,7 +8,12 @@ import {HabitStrength} from "./HabitStrength";
 import {IHabit} from "./interfaces/IHabit";
 import {Vote, IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
-import {useTextareaState, useEditableValue} from "./hooks/useEditableTextarea";
+import {
+	useTextareaState,
+	useEditableValue,
+	CancelButton,
+	SaveButton,
+} from "./hooks/useEditableTextarea";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
@@ -131,7 +136,7 @@ const EditableVoteComment: React.FC<{
 	voteId: IDayVote["vote_id"] | undefined;
 	onResolve: VoidFunction;
 }> = ({comment, voteId, onResolve}) => {
-	const [state, textareaHelpers] = useTextareaState();
+	const textarea = useTextareaState();
 
 	const triggerSuccessNotification = useSuccessNotification();
 
@@ -139,7 +144,7 @@ const EditableVoteComment: React.FC<{
 		deferFn: api.habit.updateVoteComment,
 		onResolve: () => {
 			triggerSuccessNotification("Comment added successfully!");
-			textareaHelpers.setIdle();
+			textarea.setIdle();
 			onResolve();
 		},
 	});
@@ -152,23 +157,18 @@ const EditableVoteComment: React.FC<{
 	return (
 		<>
 			<textarea
-				onFocus={textareaHelpers.setFocused}
+				onFocus={textarea.setFocused}
 				placeholder="Write something..."
 				className="w-full border p-2"
 				value={newComment ?? undefined}
 				onChange={newCommentHelpers.onChange}
 			/>
-			{state === "focused" && <BareButton onClick={newCommentHelpers.onUpdate}>Save</BareButton>}
-			{state === "focused" && (
-				<BareButton
-					onClick={() => {
-						newCommentHelpers.onClear();
-						textareaHelpers.setIdle();
-					}}
-				>
-					Cancel
-				</BareButton>
-			)}
+			<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+				Save
+			</SaveButton>
+			<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+				Clear
+			</CancelButton>
 		</>
 	);
 };

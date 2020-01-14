@@ -3,7 +3,12 @@ import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {
+	CancelButton,
+	SaveButton,
+	useEditableValue,
+	useTextareaState,
+} from "./hooks/useEditableTextarea";
 import {CloseButton} from "./CloseButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
@@ -13,7 +18,6 @@ import {HabitCharts} from "./HabitCharts";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useTextareaState, useEditableValue} from "./hooks/useEditableTextarea";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
@@ -136,7 +140,7 @@ const EditableDescription: React.FC<{
 	habitId: IHabit["id"];
 	onResolve: VoidFunction;
 }> = ({description, habitId, onResolve}) => {
-	const [state, textareaHelpers] = useTextareaState();
+	const textarea = useTextareaState();
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
@@ -145,24 +149,24 @@ const EditableDescription: React.FC<{
 		deferFn: api.habit.patch,
 		onResolve: () => {
 			triggerSuccessNotification("Comment added successfully!");
-			textareaHelpers.setIdle();
+			textarea.setIdle();
 			onResolve();
 		},
 		onReject: () => triggerErrorNotification("Habit description couldn't be changed"),
 	});
 
-	const {getArgErrorMessage} = getRequestStateErrors(updateDescriptionRequestState);
-	const descriptionInlineErrorMessage = getArgErrorMessage("description");
-
 	const [newDescription, newDescriptionHelpers] = useEditableValue(
-		newDescription => updateDescriptionRequestState.run(habitId, {description: newDescription}),
+		description => updateDescriptionRequestState.run(habitId, {description}),
 		description,
 	);
+
+	const {getArgErrorMessage} = getRequestStateErrors(updateDescriptionRequestState);
+	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
 	return (
 		<>
 			<textarea
-				onFocus={textareaHelpers.setFocused}
+				onFocus={textarea.setFocused}
 				placeholder="Write something..."
 				className="w-full border p-2"
 				value={newDescription ?? undefined}
@@ -171,19 +175,12 @@ const EditableDescription: React.FC<{
 			<Async.IfRejected state={updateDescriptionRequestState}>
 				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
 			</Async.IfRejected>
-			{state === "focused" && (
-				<BareButton onClick={newDescriptionHelpers.onUpdate}>Save</BareButton>
-			)}
-			{state === "focused" && (
-				<BareButton
-					onClick={() => {
-						newDescriptionHelpers.onClear();
-						textareaHelpers.setIdle();
-					}}
-				>
-					Cancel
-				</BareButton>
-			)}
+			<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
+				Save
+			</SaveButton>
+			<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
+				Cancel
+			</CancelButton>
 		</>
 	);
 };
