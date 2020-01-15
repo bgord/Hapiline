@@ -10,7 +10,7 @@ import {useQueryParam} from "./hooks/useQueryParam";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
-	const registrationEmail = useQueryParam("registrationEmail");
+	const [registrationEmail] = useQueryParam("registrationEmail");
 
 	const [, setUserProfile] = useUserProfile();
 

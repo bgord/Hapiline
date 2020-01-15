@@ -20,7 +20,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const history = useHistory();
 	const habits = useHabits();
 	const [isHovering, ref] = useHover();
-	const previewDay = useQueryParam("previewDay");
+	const [previewDay] = useQueryParam("previewDay");
 
 	const thisDay = new Date(day);
 	const isThisDayToday = isToday(new Date(day));

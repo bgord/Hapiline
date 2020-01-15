@@ -22,7 +22,7 @@ export const useHabitVoteFilter = (
 	reset: VoidFunction;
 } => {
 	const history = useHistory();
-	const habitVoteFilterParam = useQueryParam("habit_vote_filter");
+	const [habitVoteFilterParam] = useQueryParam("habit_vote_filter");
 
 	const queryParams = qs.parse(history.location.search, {ignoreQueryPrefix: true});
 
