@@ -1,6 +1,4 @@
 import React from "react";
-import {useHistory} from "react-router-dom";
-import qs from "qs";
 
 import {HabitVote} from "../interfaces/IHabit";
 import {useQueryParam} from "./useQueryParam";
@@ -21,18 +19,7 @@ export const useHabitVoteFilter = (
 	filterFunction: (habitVote: HabitVote) => boolean;
 	reset: VoidFunction;
 } => {
-	const history = useHistory();
-	const [habitVoteFilterParam] = useQueryParam("habit_vote_filter");
-
-	const queryParams = qs.parse(history.location.search, {ignoreQueryPrefix: true});
-
-	function updateHabitVoteFilterParam(value: HabitVoteFilterTypes) {
-		const newQueryParams = qs.stringify(
-			{...queryParams, habit_vote_filter: value},
-			{addQueryPrefix: true},
-		);
-		history.push(newQueryParams);
-	}
+	const [habitVoteFilterParam, updateHabitVoteFilterParam] = useQueryParam("habit_vote_filter");
 
 	React.useEffect(() => {
 		if (!isFilter(habitVoteFilterParam)) updateHabitVoteFilterParam(defaultValue);
@@ -40,19 +27,15 @@ export const useHabitVoteFilter = (
 
 	const habitVoteFilter = isFilter(habitVoteFilterParam) ? habitVoteFilterParam : defaultValue;
 
-	function setHabitVoteFilter(value: HabitVoteFilterTypes) {
-		updateHabitVoteFilterParam(value);
-	}
-
 	function onHabitVoteFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const {value} = event.target;
-		if (isFilter(value)) setHabitVoteFilter(value);
+		if (isFilter(value)) updateHabitVoteFilterParam(value);
 	}
 	return {
 		current: habitVoteFilter,
 		onChange: onHabitVoteFilterChange,
 		filterFunction: filterToFunction[habitVoteFilter],
-		reset: () => setHabitVoteFilter(defaultValue),
+		reset: () => updateHabitVoteFilterParam(defaultValue),
 	};
 };
 
