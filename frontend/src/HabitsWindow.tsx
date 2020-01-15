@@ -8,7 +8,7 @@ import {InfoMessage} from "./InfoMessage";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 
-export const Dashboard = () => {
+export const HabitsWindow = () => {
 	const habits = useHabits();
 	const getHabitsRequestState = useHabitsState();
 

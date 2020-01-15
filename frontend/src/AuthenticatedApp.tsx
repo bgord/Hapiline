@@ -4,7 +4,7 @@ import * as React from "react";
 import {createBrowserHistory} from "history";
 
 import {Calendar} from "./Calendar";
-import {Dashboard} from "./DashboardWindow";
+import {HabitsWindow} from "./HabitsWindow";
 import {HabitsProvider} from "./contexts/habits-context";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
@@ -23,13 +23,13 @@ function AuthenticatedApp() {
 					<Route exact path="/logout">
 						<Logout />
 					</Route>
-					<Route exact path="/dashboard">
-						<Dashboard />
+					<Route exact path="/habits">
+						<HabitsWindow />
 					</Route>
 					<Route exact path="/calendar">
 						<Calendar />
 					</Route>
-					<Redirect to="/dashboard" />
+					<Redirect to="/habits" />
 				</Switch>
 			</Router>
 		</HabitsProvider>
@@ -42,11 +42,11 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 	return (
 		<nav className="flex justify-end py-1 bg-white shadow-md">
-			<NavLink className="ml-2 mr-auto p-2" exact activeClassName="text-blue-400" to="/dashboard">
+			<NavLink className="ml-2 mr-auto p-2" exact activeClassName="text-blue-400" to="/habits">
 				<Logo />
 			</NavLink>
-			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/dashboard">
-				Habit Scoreboard
+			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/habits">
+				Habits
 			</NavLink>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">
 				Calendar
