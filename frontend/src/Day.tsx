@@ -2,6 +2,7 @@ import {isFuture, isSameDay, isToday} from "date-fns";
 import {useHistory} from "react-router-dom";
 import React from "react";
 import useHover from "@react-hook/hover";
+import qs from "qs";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
@@ -32,7 +33,11 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const isDayDialogVisible = previewDay && isSameDay(new Date(previewDay), thisDay);
 
 	function openDialog() {
-		history.push(`/calendar?previewDay=${day}`);
+		const newQueryParams = qs.stringify({
+			previewDay: day,
+			habit_vote_filter: isThisDayToday ? "unvoted" : "all",
+		});
+		history.push(`/calendar?${newQueryParams}`);
 	}
 
 	return (
