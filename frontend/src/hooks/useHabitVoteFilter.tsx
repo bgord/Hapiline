@@ -1,6 +1,9 @@
 import React from "react";
+import {useHistory} from "react-router-dom";
+import qs from "qs";
 
 import {HabitVote} from "../interfaces/IHabit";
+import {useQueryParam} from "./useQueryParam";
 
 type HabitVoteFilterTypes = "unvoted" | "voted" | "all";
 
@@ -10,14 +13,40 @@ const filterToFunction: {[key in HabitVoteFilterTypes]: (habitVote: HabitVote) =
 	voted: ({vote}) => vote !== null && vote !== undefined,
 };
 
-export const useHabitVoteFilter = (defaultValue: HabitVoteFilterTypes = "all") => {
-	const [habitVoteFilter, setHabitVoteFilter] = React.useState<HabitVoteFilterTypes>(defaultValue);
+export const useHabitVoteFilter = (
+	defaultValue: HabitVoteFilterTypes = "all",
+): {
+	current: HabitVoteFilterTypes;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	filterFunction: (habitVote: HabitVote) => boolean;
+	reset: VoidFunction;
+} => {
+	const history = useHistory();
+	const habitVoteFilterParam = useQueryParam("habit_vote_filter");
+
+	const queryParams = qs.parse(history.location.search, {ignoreQueryPrefix: true});
+
+	function updateHabitVoteFilterParam(value: HabitVoteFilterTypes) {
+		const newQueryParams = qs.stringify(
+			{...queryParams, habit_vote_filter: value},
+			{addQueryPrefix: true},
+		);
+		history.push(newQueryParams);
+	}
+
+	React.useEffect(() => {
+		if (!isFilter(habitVoteFilterParam)) updateHabitVoteFilterParam(defaultValue);
+	}, [habitVoteFilterParam]);
+
+	const habitVoteFilter = isFilter(habitVoteFilterParam) ? habitVoteFilterParam : defaultValue;
+
+	function setHabitVoteFilter(value: HabitVoteFilterTypes) {
+		updateHabitVoteFilterParam(value);
+	}
 
 	function onHabitVoteFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const {value} = event.target;
-		if (isFilter(value)) {
-			setHabitVoteFilter(value);
-		}
+		if (isFilter(value)) setHabitVoteFilter(value);
 	}
 	return {
 		current: habitVoteFilter,
@@ -27,8 +56,8 @@ export const useHabitVoteFilter = (defaultValue: HabitVoteFilterTypes = "all") =
 	};
 };
 
-function isFilter(value: string): value is HabitVoteFilterTypes {
-	return ["all", "voted", "unvoted"].includes(value);
+function isFilter(value: string | undefined): value is HabitVoteFilterTypes {
+	return value ? ["all", "voted", "unvoted"].includes(value) : false;
 }
 
 interface IInput {
