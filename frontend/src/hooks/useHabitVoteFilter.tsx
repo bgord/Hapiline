@@ -1,6 +1,7 @@
 import React from "react";
 
 import {HabitVote} from "../interfaces/IHabit";
+import {useQueryParam} from "./useQueryParam";
 
 type HabitVoteFilterTypes = "unvoted" | "voted" | "all";
 
@@ -10,25 +11,36 @@ const filterToFunction: {[key in HabitVoteFilterTypes]: (habitVote: HabitVote) =
 	voted: ({vote}) => vote !== null && vote !== undefined,
 };
 
-export const useHabitVoteFilter = (defaultValue: HabitVoteFilterTypes = "all") => {
-	const [habitVoteFilter, setHabitVoteFilter] = React.useState<HabitVoteFilterTypes>(defaultValue);
+export const useHabitVoteFilter = (
+	defaultValue: HabitVoteFilterTypes = "all",
+): {
+	current: HabitVoteFilterTypes;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	filterFunction: (habitVote: HabitVote) => boolean;
+	reset: VoidFunction;
+} => {
+	const [habitVoteFilterParam, updateHabitVoteFilterParam] = useQueryParam("habit_vote_filter");
+
+	React.useEffect(() => {
+		if (!isFilter(habitVoteFilterParam)) updateHabitVoteFilterParam(defaultValue);
+	}, [habitVoteFilterParam]);
+
+	const habitVoteFilter = isFilter(habitVoteFilterParam) ? habitVoteFilterParam : defaultValue;
 
 	function onHabitVoteFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
 		const {value} = event.target;
-		if (isFilter(value)) {
-			setHabitVoteFilter(value);
-		}
+		if (isFilter(value)) updateHabitVoteFilterParam(value);
 	}
 	return {
 		current: habitVoteFilter,
 		onChange: onHabitVoteFilterChange,
 		filterFunction: filterToFunction[habitVoteFilter],
-		reset: () => setHabitVoteFilter(defaultValue),
+		reset: () => updateHabitVoteFilterParam(defaultValue),
 	};
 };
 
-function isFilter(value: string): value is HabitVoteFilterTypes {
-	return ["all", "voted", "unvoted"].includes(value);
+function isFilter(value: string | undefined): value is HabitVoteFilterTypes {
+	return value ? ["all", "voted", "unvoted"].includes(value) : false;
 }
 
 interface IInput {

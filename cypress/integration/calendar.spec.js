@@ -102,15 +102,21 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
-			cy.findByTestId("day-dialog-habits").within(() => {
-				cy.get("li").should("have.length", 10);
-			});
-
 			cy.findByText("NEW: 4");
 			cy.findByText("+2");
 			cy.findByText("=1");
 			cy.findByText("-1");
 			cy.findByText("?6");
+
+			cy.findByLabelText("Show voted (4)").should("not.be.checked");
+			cy.findByLabelText("Show unvoted (6)").should("be.checked");
+			cy.findByLabelText("Show all (10)").should("not.be.checked");
+
+			cy.findByLabelText("Show all (10)").click();
+
+			cy.findByTestId("day-dialog-habits").within(() => {
+				cy.get("li").should("have.length", 10);
+			});
 
 			cy.findAllByText("positive").should("have.length", 4);
 			cy.findAllByText("neutral").should("have.length", 3);
@@ -119,10 +125,6 @@ describe("Calendar", () => {
 			cy.findAllByText("established").should("have.length", 4);
 			cy.findAllByText("developing").should("have.length", 3);
 			cy.findAllByText("fresh").should("have.length", 3);
-
-			cy.findByLabelText("Show voted (4)").should("not.be.checked");
-			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
-			cy.findByLabelText("Show all (10)").should("be.checked");
 
 			cy.findByPlaceholderText("Search for habits...")
 				.should("have.value", "")
