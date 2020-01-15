@@ -114,6 +114,12 @@
       "jest/valid-expect": 0,
       "sonarjs/no-duplicate-string": 0,
       "@typescript-eslint/no-empty-function": 0,
+			"@typescript-eslint/no-unused-vars": [
+				2,
+				{
+					"args": "none"
+				}
+			],
       "sonarjs/no-identical-functions": 1,
       "react/no-multi-comp": 0,
       "jsx-a11y/no-onchange": 1,

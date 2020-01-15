@@ -50,7 +50,7 @@ export const CancelButton: React.FC<UseTextareaStateReturnType &
 				<BareButton
 					onClick={event => {
 						setIdle();
-						onClick && onClick(event);
+						if (onClick) onClick(event);
 					}}
 					{...props}
 				/>

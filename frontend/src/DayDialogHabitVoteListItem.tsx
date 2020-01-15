@@ -150,7 +150,7 @@ const EditableVoteComment: React.FC<{
 	});
 
 	const [newComment, newCommentHelpers] = useEditableValue(
-		newComment => updateVoteCommentRequestState.run(voteId, newComment),
+		changedComment => updateVoteCommentRequestState.run(voteId, changedComment),
 		comment,
 	);
 
