@@ -34,7 +34,7 @@ export function useEditableValue(
 		setValue(event.target.value);
 	}
 	function onClear() {
-		return setValue(defaultValue || "");
+		setValue(defaultValue || "");
 	}
 	function onUpdate() {
 		if (value && value !== defaultValue) updateFn(value);

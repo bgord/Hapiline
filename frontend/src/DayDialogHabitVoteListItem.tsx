@@ -167,7 +167,7 @@ const EditableVoteComment: React.FC<{
 				Save
 			</SaveButton>
 			<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
-				Clear
+				Cancel
 			</CancelButton>
 		</>
 	);
