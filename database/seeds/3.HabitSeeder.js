@@ -23,6 +23,7 @@ class HabitsSeeder {
 					score: Object.keys(HABIT_SCORE_TYPES)[index % 3],
 					strength: Object.keys(HABIT_STRENGTH_TYPES)[index % 3],
 					order: index,
+					description: index % 3 === 0 ? null : "lorem ".repeat(index),
 					created_at: date,
 					updated_at: date,
 				};

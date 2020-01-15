@@ -8,6 +8,12 @@ import {HabitStrength} from "./HabitStrength";
 import {IHabit} from "./interfaces/IHabit";
 import {Vote, IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
+import {
+	useTextareaState,
+	useEditableValue,
+	CancelButton,
+	SaveButton,
+} from "./hooks/useEditableTextarea";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
@@ -130,44 +136,39 @@ const EditableVoteComment: React.FC<{
 	voteId: IDayVote["vote_id"] | undefined;
 	onResolve: VoidFunction;
 }> = ({comment, voteId, onResolve}) => {
-	const [state, setState] = React.useState<"idle" | "focused">("idle");
+	const textarea = useTextareaState();
 
 	const triggerSuccessNotification = useSuccessNotification();
-	const [newComment, setNewComment] = React.useState<IDayVote["comment"]>(() => comment);
 
 	const updateVoteCommentRequestState = Async.useAsync({
 		deferFn: api.habit.updateVoteComment,
 		onResolve: () => {
 			triggerSuccessNotification("Comment added successfully!");
-			setState("idle");
+			textarea.setIdle();
 			onResolve();
 		},
 	});
 
-	function updateComment() {
-		if (newComment !== comment) updateVoteCommentRequestState.run(voteId, newComment);
-	}
+	const [newComment, newCommentHelpers] = useEditableValue(
+		changedComment => updateVoteCommentRequestState.run(voteId, changedComment),
+		comment,
+	);
 
 	return (
 		<>
 			<textarea
-				onFocus={() => setState("focused")}
+				onFocus={textarea.setFocused}
 				placeholder="Write something..."
 				className="w-full border p-2"
 				value={newComment ?? undefined}
-				onChange={event => setNewComment(event.target.value)}
+				onChange={newCommentHelpers.onChange}
 			/>
-			{state === "focused" && <BareButton onClick={updateComment}>Save</BareButton>}
-			{state === "focused" && (
-				<BareButton
-					onClick={() => {
-						setNewComment(comment || "");
-						setState("idle");
-					}}
-				>
-					Cancel
-				</BareButton>
-			)}
+			<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+				Save
+			</SaveButton>
+			<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+				Cancel
+			</CancelButton>
 		</>
 	);
 };

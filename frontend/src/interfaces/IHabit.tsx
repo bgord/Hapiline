@@ -31,6 +31,7 @@ export interface IHabit {
 	created_at: string;
 	updated_at: string;
 	order: number;
+	description: string | null;
 	progress_streak?: number;
 	regress_streak?: number;
 }
