@@ -133,7 +133,7 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.All.Label>
 			</div>
 			<div className="flex w-full items-center mr-auto mb-6 ml-2">
-				<HabitSearchInput {...habitSearch} />
+				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 				<div className="ml-auto mr-4">Results: {howManyResults}</div>
 			</div>
