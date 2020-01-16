@@ -23,7 +23,7 @@ export const useHabitVoteFilter = (
 
 	React.useEffect(() => {
 		if (!isFilter(habitVoteFilterParam)) updateHabitVoteFilterParam(defaultValue);
-	}, [habitVoteFilterParam]);
+	}, [habitVoteFilterParam, defaultValue]);
 
 	const habitVoteFilter = isFilter(habitVoteFilterParam) ? habitVoteFilterParam : defaultValue;
 
