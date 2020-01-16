@@ -21,10 +21,6 @@ export const useHabitVoteFilter = (
 } => {
 	const [habitVoteFilterParam, updateHabitVoteFilterParam] = useQueryParam("habit_vote_filter");
 
-	React.useEffect(() => {
-		if (!isFilter(habitVoteFilterParam)) updateHabitVoteFilterParam(defaultValue);
-	}, [habitVoteFilterParam, defaultValue]);
-
 	const habitVoteFilter = isFilter(habitVoteFilterParam) ? habitVoteFilterParam : defaultValue;
 
 	function onHabitVoteFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
