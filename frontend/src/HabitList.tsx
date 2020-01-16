@@ -57,7 +57,7 @@ export const HabitList: React.FC = () => {
 	}
 
 	const isDragDisabled =
-		habitScoreFilter.current !== "all-scores" ||
+		habitScoreFilter.value !== "all-scores" ||
 		habitStrengthFilter.current !== "all-strengths" ||
 		habitSearch.value !== "";
 
@@ -66,7 +66,7 @@ export const HabitList: React.FC = () => {
 			<div className="flex w-full mt-16 mb-6">
 				<HabitScoreFilters.Positive.Input
 					disabled={habitCounts.positive === 0}
-					current={habitScoreFilter.current}
+					value={habitScoreFilter.value}
 					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Positive.Label>
@@ -75,7 +75,7 @@ export const HabitList: React.FC = () => {
 
 				<HabitScoreFilters.Neutral.Input
 					disabled={habitCounts.neutral === 0}
-					current={habitScoreFilter.current}
+					value={habitScoreFilter.value}
 					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Neutral.Label>
@@ -84,7 +84,7 @@ export const HabitList: React.FC = () => {
 
 				<HabitScoreFilters.Negative.Input
 					disabled={habitCounts.negative === 0}
-					current={habitScoreFilter.current}
+					value={habitScoreFilter.value}
 					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Negative.Label>
@@ -92,7 +92,7 @@ export const HabitList: React.FC = () => {
 				</HabitScoreFilters.Negative.Label>
 
 				<HabitScoreFilters.All.Input
-					current={habitScoreFilter.current}
+					value={habitScoreFilter.value}
 					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
