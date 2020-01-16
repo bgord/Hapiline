@@ -58,7 +58,7 @@ export const HabitList: React.FC = () => {
 
 	const isDragDisabled =
 		habitScoreFilter.value !== "all-scores" ||
-		habitStrengthFilter.current !== "all-strengths" ||
+		habitStrengthFilter.value !== "all-strengths" ||
 		habitSearch.value !== "";
 
 	return (
@@ -110,7 +110,7 @@ export const HabitList: React.FC = () => {
 			</div>
 			<div className="flex w-full mb-6">
 				<HabitStrengthFilters.Established.Input
-					current={habitStrengthFilter.current}
+					value={habitStrengthFilter.value}
 					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.established === 0}
 				/>
@@ -119,7 +119,7 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.Established.Label>
 
 				<HabitStrengthFilters.Developing.Input
-					current={habitStrengthFilter.current}
+					value={habitStrengthFilter.value}
 					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.developing === 0}
 				/>
@@ -128,7 +128,7 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.Developing.Label>
 
 				<HabitStrengthFilters.Fresh.Input
-					current={habitStrengthFilter.current}
+					value={habitStrengthFilter.value}
 					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.fresh === 0}
 				/>
@@ -137,7 +137,7 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.Fresh.Label>
 
 				<HabitStrengthFilters.All.Input
-					current={habitStrengthFilter.current}
+					value={habitStrengthFilter.value}
 					onChange={habitStrengthFilter.onChange}
 				/>
 				<HabitStrengthFilters.All.Label>
