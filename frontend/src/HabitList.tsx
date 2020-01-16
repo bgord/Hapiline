@@ -66,7 +66,8 @@ export const HabitList: React.FC = () => {
 			<div className="flex w-full mt-16 mb-6">
 				<HabitScoreFilters.Positive.Input
 					disabled={habitCounts.positive === 0}
-					{...habitScoreFilter}
+					current={habitScoreFilter.current}
+					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Positive.Label>
 					Positive ({habitCounts.positive})
@@ -74,21 +75,26 @@ export const HabitList: React.FC = () => {
 
 				<HabitScoreFilters.Neutral.Input
 					disabled={habitCounts.neutral === 0}
-					{...habitScoreFilter}
+					current={habitScoreFilter.current}
+					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Neutral.Label>
 					Neutral ({habitCounts.neutral})
 				</HabitScoreFilters.Neutral.Label>
 
 				<HabitScoreFilters.Negative.Input
-					{...habitScoreFilter}
 					disabled={habitCounts.negative === 0}
+					current={habitScoreFilter.current}
+					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Negative.Label>
 					Negative ({habitCounts.negative})
 				</HabitScoreFilters.Negative.Label>
 
-				<HabitScoreFilters.All.Input {...habitScoreFilter} />
+				<HabitScoreFilters.All.Input
+					current={habitScoreFilter.current}
+					onChange={habitScoreFilter.onChange}
+				/>
 				<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
 
 				<BareButton
@@ -104,7 +110,8 @@ export const HabitList: React.FC = () => {
 			</div>
 			<div className="flex w-full mb-6">
 				<HabitStrengthFilters.Established.Input
-					{...habitStrengthFilter}
+					current={habitStrengthFilter.current}
+					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.established === 0}
 				/>
 				<HabitStrengthFilters.Established.Label>
@@ -112,7 +119,8 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.Established.Label>
 
 				<HabitStrengthFilters.Developing.Input
-					{...habitStrengthFilter}
+					current={habitStrengthFilter.current}
+					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.developing === 0}
 				/>
 				<HabitStrengthFilters.Developing.Label>
@@ -120,14 +128,18 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.Developing.Label>
 
 				<HabitStrengthFilters.Fresh.Input
-					{...habitStrengthFilter}
+					current={habitStrengthFilter.current}
+					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.fresh === 0}
 				/>
 				<HabitStrengthFilters.Fresh.Label>
 					Fresh ({habitCounts.fresh})
 				</HabitStrengthFilters.Fresh.Label>
 
-				<HabitStrengthFilters.All.Input {...habitStrengthFilter} />
+				<HabitStrengthFilters.All.Input
+					current={habitStrengthFilter.current}
+					onChange={habitStrengthFilter.onChange}
+				/>
 				<HabitStrengthFilters.All.Label>
 					All strengths ({habitCounts.all})
 				</HabitStrengthFilters.All.Label>
