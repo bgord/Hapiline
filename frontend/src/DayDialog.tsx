@@ -83,20 +83,28 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 			)}
 			<DayDialogSummary day={day} {...stats} />
 			<div className="flex my-8">
-				<HabitVoteFilters.Voted.Input {...habitVoteFilter} disabled={howManyVotedHabits === 0} />
+				<HabitVoteFilters.Voted.Input
+					current={habitVoteFilter.current}
+					onChange={habitVoteFilter.onChange}
+					disabled={howManyVotedHabits === 0}
+				/>
 				<HabitVoteFilters.Voted.Label>
 					Show voted ({howManyVotedHabits})
 				</HabitVoteFilters.Voted.Label>
 
 				<HabitVoteFilters.Unvoted.Input
-					{...habitVoteFilter}
+					current={habitVoteFilter.current}
+					onChange={habitVoteFilter.onChange}
 					disabled={howManyUnvotedHabits === 0}
 				/>
 				<HabitVoteFilters.Unvoted.Label>
 					Show unvoted ({howManyUnvotedHabits})
 				</HabitVoteFilters.Unvoted.Label>
 
-				<HabitVoteFilters.All.Input {...habitVoteFilter} disabled={howManyHabitsAtAll === 0} />
+				<HabitVoteFilters.All.Input
+					current={habitVoteFilter.current}
+					onChange={habitVoteFilter.onChange}
+				/>
 				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
 
 				<BareButton
@@ -110,7 +118,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</BareButton>
 			</div>
 			<div className="mb-6">
-				<HabitSearchInput {...habitSearch} />
+				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
