@@ -84,7 +84,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 			<DayDialogSummary day={day} {...stats} />
 			<div className="flex my-8">
 				<HabitVoteFilters.Voted.Input
-					current={habitVoteFilter.current}
+					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
 					disabled={howManyVotedHabits === 0}
 				/>
@@ -93,7 +93,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</HabitVoteFilters.Voted.Label>
 
 				<HabitVoteFilters.Unvoted.Input
-					current={habitVoteFilter.current}
+					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
 					disabled={howManyUnvotedHabits === 0}
 				/>
@@ -102,7 +102,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</HabitVoteFilters.Unvoted.Label>
 
 				<HabitVoteFilters.All.Input
-					current={habitVoteFilter.current}
+					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
 				/>
 				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
