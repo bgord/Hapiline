@@ -77,7 +77,7 @@ const MotivationalText: React.FC<{total: number; votedFor: number}> = ({total, v
 			</>
 		);
 	}
-	if (votedFor > 0) {
+	if (votedFor > 0 && votedFor < total) {
 		return (
 			<>
 				You're on a good track! You have <strong>{total - votedFor}</strong> habits to vote for left
