@@ -370,8 +370,8 @@ describe("Habit", () => {
 			cy.findByDisplayValue("positive");
 			cy.findByDisplayValue("fresh");
 			cy.findByDisplayValue("Watch The Office");
-			cy.findByText("2019/01/01 00:00");
-			cy.findByText("2019/02/01 00:00");
+			cy.findByText("2019-01-01 00:00");
+			cy.findByText("2019-02-01 00:00");
 			cy.findByText("Progress streak: 2 days");
 			cy.findByDisplayValue("Last week");
 			for (let {day, vote} of chartResponse) {
@@ -388,8 +388,8 @@ describe("Habit", () => {
 			cy.findByDisplayValue("neutral");
 			cy.findByDisplayValue("developing");
 			cy.findByDisplayValue("Go to sleep");
-			cy.findByText("2019/01/01 00:00");
-			cy.findByText("2019/02/01 00:00");
+			cy.findByText("2019-01-01 00:00");
+			cy.findByText("2019-02-01 00:00");
 			cy.findByText("Regress streak: 1 days");
 			cy.findByDisplayValue("Last week");
 			cy.findByText("Charts unavailable, please try again.");

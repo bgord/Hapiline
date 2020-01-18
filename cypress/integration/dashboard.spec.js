@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
-import {formatToday} from "../../frontend/src/config/DATE_FORMATS";
+import {format} from "date-fns";
 
 const DASHBOARD_URL = "/dashboard";
 
@@ -10,7 +10,7 @@ describe("Dashboard", () => {
 	});
 
 	it("upper part", () => {
-		const today = formatToday();
+		const today = format(new Date(), "yyyy-MM-dd");
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
@@ -87,7 +87,7 @@ describe("Dashboard", () => {
 	});
 
 	it("upper part request errors", () => {
-		const today = formatToday();
+		const today = format(new Date(), "yyyy-MM-dd");
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
