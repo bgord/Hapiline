@@ -18,12 +18,12 @@ interface HabitListItemProps {
 
 export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDragDisabled}) => {
 	const history = useHistory();
-	const [previewHabitId] = useQueryParam("previewHabitId");
+	const [previewHabitId, updateQueryParam] = useQueryParam("preview_habit_id");
 
-	const doesPreviewHabitIdMatch = previewHabitId && habit.id === Number(previewHabitId);
+	const doesPreviewHabitIdMatch = habit.id === Number(previewHabitId);
 
 	function openPreviewDialog() {
-		history.push(`/habits?previewHabitId=${habit.id}`);
+		updateQueryParam(habit.id.toString());
 	}
 	function closePreviewDialog() {
 		history.push("/habits");

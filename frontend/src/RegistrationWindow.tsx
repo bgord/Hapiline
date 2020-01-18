@@ -99,7 +99,7 @@ export const RegistrationWindow: React.FC = () => {
 					<SuccessMessage>Account confirmation email has been sent!</SuccessMessage>
 					<div className="flex mt-4">
 						<span className="text-sm">You can </span>
-						<Link className="link ml-1" to={`/login?registrationEmail=${email}`}>
+						<Link className="link ml-1" to="/login">
 							login now
 						</Link>
 					</div>

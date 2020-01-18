@@ -1,4 +1,4 @@
-import {Link, useHistory} from "react-router-dom";
+import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
@@ -15,7 +15,7 @@ import {
 	SaveButton,
 } from "./hooks/useEditableTextarea";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
-import {useQueryParam} from "./hooks/useQueryParam";
+import {useQueryParams, constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 
 interface DayDialogHabitVoteListProps {
@@ -35,8 +35,9 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	day,
 	vote_id,
 }) => {
-	const history = useHistory();
-	const highlightedHabitId = useQueryParam("highlightedHabitId");
+	const [queryParams, updateQueryParams] = useQueryParams();
+	const highlightedHabitId = queryParams.highlighted_habit_id;
+
 	const [isCommentVisible, , , toggleComment] = useToggle();
 
 	const triggerSuccessNotification = useSuccessNotification();
@@ -63,6 +64,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	}
 
 	const isHabitHighlighted = Number(highlightedHabitId) === habit.id;
+
 	const isCommentToggleEnabled = vote !== null && vote !== undefined;
 	const commentToggleTitle = isCommentToggleEnabled
 		? "Show and edit comment"
@@ -81,7 +83,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					</BareButton>
 					<BareButton
 						className="mr-4"
-						onClick={() => history.push(`/calendar?previewDay=${day}`)}
+						onClick={() => updateQueryParams("calendar", {preview_day: day})}
 						hidden={!isHabitHighlighted}
 					>
 						Unmark
@@ -89,7 +91,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					<HabitScore score={habit.score} className="px-1 py-1" />
 					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
 					<Link
-						to={`/habits?previewHabitId=${habit.id}`}
+						to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}
 						className={isHabitHighlighted ? "text-blue-600" : ""}
 					>
 						{habit.name}

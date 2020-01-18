@@ -1,14 +1,32 @@
 import {useHistory} from "react-router-dom";
 import qs from "qs";
 
-export function useQueryParam(param: string): [string | undefined, (queryParam: string) => void] {
+type QueryParamsObject = {[index: string]: string};
+
+export const constructQueryParams = (payload: QueryParamsObject) =>
+	qs.stringify(payload, {addQueryPrefix: true});
+
+export const constructUrl = (baseUrl: string, payload: QueryParamsObject) =>
+	baseUrl + constructQueryParams(payload);
+
+const parseQueryParams = (payload: string) => qs.parse(payload, {ignoreQueryPrefix: true});
+
+export function useQueryParam(param: string): [string | undefined, (value: string) => void] {
 	const history = useHistory();
-	const queryParams = qs.parse(history.location.search, {ignoreQueryPrefix: true});
+	const queryParams: QueryParamsObject = parseQueryParams(history.location.search);
 
-	function updateQueryParam(value: string) {
-		const newQueryParams = qs.stringify({...queryParams, [param]: value}, {addQueryPrefix: true});
-		history.push(newQueryParams);
-	}
+	return [
+		queryParams[param],
+		value => history.push(constructQueryParams({...queryParams, [param]: value})),
+	];
+}
 
-	return [queryParams[param], updateQueryParam];
+export function useQueryParams(): [
+	{[index: string]: string | undefined},
+	(baseUrl: string, payload: QueryParamsObject) => void,
+] {
+	const history = useHistory();
+	const queryParams: QueryParamsObject = parseQueryParams(history.location.search);
+
+	return [queryParams, (baseUrl, payload) => history.push(baseUrl + constructQueryParams(payload))];
 }
