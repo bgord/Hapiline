@@ -8,6 +8,7 @@ import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
+import {useTextareaState} from "./hooks/useEditableField";
 
 type EditableHabitNameInputProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
@@ -18,7 +19,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	id,
 	setHabitItem,
 }) => {
-	const [inputState, setInputState] = React.useState<"idle" | "focused">("idle");
+	const {state: inputState, setIdle, setFocused} = useTextareaState();
 	const getHabitsRequestState = useHabitsState();
 
 	const [newHabitName, setNewHabitName] = React.useState(() => name);
@@ -29,7 +30,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
-			setInputState("idle");
+			setIdle();
 			triggerSuccessNotification("Name updated successfully!");
 			setHabitItem(habit);
 			getHabitsRequestState.reload();
@@ -42,11 +43,11 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	});
 
 	const onSave = () => {
-		if (newHabitName === name) setInputState("idle");
+		if (newHabitName === name) setIdle();
 		else editHabitRequestState.run(id, {name: newHabitName});
 	};
 	const onCancel = () => {
-		setInputState("idle");
+		setIdle();
 		setNewHabitName(name);
 	};
 
@@ -64,7 +65,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 							editHabitRequestState.run(id, {name: newHabitName});
 						}
 					}}
-					onFocus={() => setInputState("focused")}
+					onFocus={setFocused}
 					className={`mr-4 p-1 pl-2 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor} border`}
 					value={newHabitName}
 					onChange={event => setNewHabitName(event.target.value)}

@@ -8,7 +8,7 @@ import {
 	SaveButton,
 	useEditableValue,
 	useTextareaState,
-} from "./hooks/useEditableTextarea";
+} from "./hooks/useEditableField";
 import {CloseButton} from "./CloseButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";

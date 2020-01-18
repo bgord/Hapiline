@@ -13,7 +13,7 @@ import {
 	useEditableValue,
 	CancelButton,
 	SaveButton,
-} from "./hooks/useEditableTextarea";
+} from "./hooks/useEditableField";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useQueryParams, constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
