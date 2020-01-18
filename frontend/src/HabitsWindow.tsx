@@ -22,9 +22,11 @@ export const HabitsWindow = () => {
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getHabitsRequestState}>
 				{!habits.length && (
-					<InfoMessage className="pb-4">Seems you haven't added any habits yet.</InfoMessage>
+					<InfoMessage className="pb-4 mr-auto">
+						Seems you haven't added any habits yet.
+					</InfoMessage>
 				)}
-				<HabitList />
+				{habits.length > 0 && <HabitList />}
 			</Async.IfFulfilled>
 		</section>
 	);
