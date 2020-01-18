@@ -1,8 +1,6 @@
 import {isFuture, isSameDay, isToday} from "date-fns";
-import {useHistory} from "react-router-dom";
 import React from "react";
 import useHover from "@react-hook/hover";
-import qs from "qs";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
@@ -10,7 +8,7 @@ import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
-import {useQueryParam} from "./hooks/useQueryParam";
+import {useQueryParams} from "./hooks/useQueryParam";
 
 export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
 	day,
@@ -18,10 +16,11 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	refreshCalendar,
 	...stats
 }) => {
-	const history = useHistory();
 	const habits = useHabits();
 	const [isHovering, ref] = useHover();
-	const [previewDay] = useQueryParam("previewDay");
+	const [queryParams, updateQueryParams] = useQueryParams();
+
+	const previewDay = queryParams?.previewDay;
 
 	const thisDay = new Date(day);
 	const isThisDayToday = isToday(new Date(day));
@@ -33,11 +32,10 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const isDayDialogVisible = previewDay && isSameDay(new Date(previewDay), thisDay);
 
 	function openDialog() {
-		const newQueryParams = qs.stringify({
+		updateQueryParams("calendar", {
 			previewDay: day,
 			habit_vote_filter: isThisDayToday ? "unvoted" : "all",
 		});
-		history.push(`/calendar?${newQueryParams}`);
 	}
 
 	return (

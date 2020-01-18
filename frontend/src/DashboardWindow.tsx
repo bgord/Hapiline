@@ -1,5 +1,5 @@
 import {format} from "date-fns";
-import {useHistory, Link} from "react-router-dom";
+import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
@@ -9,11 +9,14 @@ import {ErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
+import {useQueryParams} from "./hooks/useQueryParam";
 
 export const DashboardWindow = () => {
 	const getHabitsRequestState = useHabitsState();
 	const habits = useHabits();
-	const history = useHistory();
+
+	const [, updateQueryParams] = useQueryParams();
+
 	const triggerErrorNotification = useErrorNotification();
 
 	const today = new Date();
@@ -42,26 +45,24 @@ export const DashboardWindow = () => {
 		noVotesCountStats: howManyHabitsToday - howManyVotesToday,
 	};
 
-	const dayVotesError = getDayVotesRequestState.isRejected;
-	const habitsError = getHabitsRequestState.isRejected;
+	const getDayVotesError = getDayVotesRequestState.isRejected;
+	const getHabitsError = getHabitsRequestState.isRejected;
+
+	const redirectToCurrentDay = () =>
+		updateQueryParams("calendar", {previewDay: currentDate, habit_vote_filter: "unvoted"});
 
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
 			<header className="flex w-full">
 				<h1 className="text-xl font-bold">Hello!</h1>
-				<BareButton
-					onClick={() =>
-						history.push(`/calendar?previewDay=${currentDate}&habit_vote_filter=unvoted`)
-					}
-					className="ml-auto bg-blue-300"
-				>
+				<BareButton onClick={redirectToCurrentDay} className="ml-auto bg-blue-300">
 					View today
 				</BareButton>
 			</header>
-			<ErrorMessage className="mt-8" hidden={!(dayVotesError && habitsError)}>
+			<ErrorMessage className="mt-8" hidden={!(getDayVotesError && getHabitsError)}>
 				Cannot load dashboard stats now, try again.
 			</ErrorMessage>
-			<main hidden={dayVotesError || habitsError}>
+			<main hidden={getDayVotesError || getHabitsError}>
 				<Async.IfFulfilled state={getDayVotesRequestState}>
 					<p className="my-8">
 						<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
