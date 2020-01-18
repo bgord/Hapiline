@@ -1,7 +1,12 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {
+	CancelButton,
+	SaveButton,
+	useEditableFieldState,
+	useEditableFieldValue,
+} from "./hooks/useEditableField";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
@@ -18,10 +23,8 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	id,
 	setHabitItem,
 }) => {
-	const [inputState, setInputState] = React.useState<"idle" | "focused">("idle");
+	const field = useEditableFieldState();
 	const getHabitsRequestState = useHabitsState();
-
-	const [newHabitName, setNewHabitName] = React.useState(() => name);
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
@@ -29,7 +32,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
 		onResolve: habit => {
-			setInputState("idle");
+			field.setIdle();
 			triggerSuccessNotification("Name updated successfully!");
 			setHabitItem(habit);
 			getHabitsRequestState.reload();
@@ -41,16 +44,12 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 		},
 	});
 
-	const onSave = () => {
-		if (newHabitName === name) setInputState("idle");
-		else editHabitRequestState.run(id, {name: newHabitName});
-	};
-	const onCancel = () => {
-		setInputState("idle");
-		setNewHabitName(name);
-	};
+	const [newHabitName, newHabitNameHelpers] = useEditableFieldValue(
+		name => editHabitRequestState.run(id, {name}),
+		name,
+	);
 
-	const inputBgColor = inputState === "focused" ? "bg-gray-100" : "";
+	const inputBgColor = field.state === "focused" ? "bg-gray-100" : "";
 
 	return (
 		<div className="flex justify-between items-end w-full ml-4">
@@ -64,18 +63,18 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 							editHabitRequestState.run(id, {name: newHabitName});
 						}
 					}}
-					onFocus={() => setInputState("focused")}
+					onFocus={field.setFocused}
 					className={`mr-4 p-1 pl-2 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor} border`}
-					value={newHabitName}
-					onChange={event => setNewHabitName(event.target.value)}
+					value={newHabitName ?? undefined}
+					onChange={newHabitNameHelpers.onChange}
 				/>
 			</div>
-			{inputState === "focused" && (
-				<div className="flex">
-					<BareButton onClick={onSave}>Save</BareButton>
-					<BareButton onClick={onCancel}>Cancel</BareButton>
-				</div>
-			)}
+			<SaveButton {...field} onClick={newHabitNameHelpers.onUpdate}>
+				Save
+			</SaveButton>
+			<CancelButton {...field} onClick={newHabitNameHelpers.onClear}>
+				Cancel
+			</CancelButton>
 		</div>
 	);
 };

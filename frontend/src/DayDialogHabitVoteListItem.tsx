@@ -9,11 +9,11 @@ import {IHabit} from "./interfaces/IHabit";
 import {Vote, IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {
-	useTextareaState,
-	useEditableValue,
+	useEditableFieldState,
+	useEditableFieldValue,
 	CancelButton,
 	SaveButton,
-} from "./hooks/useEditableTextarea";
+} from "./hooks/useEditableField";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useQueryParams, constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
@@ -138,7 +138,7 @@ const EditableVoteComment: React.FC<{
 	voteId: IDayVote["vote_id"] | undefined;
 	onResolve: VoidFunction;
 }> = ({comment, voteId, onResolve}) => {
-	const textarea = useTextareaState();
+	const textarea = useEditableFieldState();
 
 	const triggerSuccessNotification = useSuccessNotification();
 
@@ -151,7 +151,7 @@ const EditableVoteComment: React.FC<{
 		},
 	});
 
-	const [newComment, newCommentHelpers] = useEditableValue(
+	const [newComment, newCommentHelpers] = useEditableFieldValue(
 		changedComment => updateVoteCommentRequestState.run(voteId, changedComment),
 		comment,
 	);
