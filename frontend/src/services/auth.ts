@@ -26,11 +26,7 @@ export const forgotPasswordRequest: Async.DeferFn<void> = ([email]: string[]) =>
 		email,
 	});
 
-export const logoutRequest: Async.PromiseFn<void> = async ({history, setUserProfile}) => {
-	await _internal_api.post("/logout");
-	setUserProfile(null);
-	history.push("/");
-};
+export const logoutRequest: Async.PromiseFn<void> = async () => _internal_api.post("/logout");
 
 export const newPasswordRequest: Async.DeferFn<void> = async ([
 	token,

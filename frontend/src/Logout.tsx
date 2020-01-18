@@ -8,6 +8,12 @@ import {useUserProfile} from "./contexts/auth-context";
 export const Logout: React.FC = () => {
 	const history = useHistory();
 	const [, setUserProfile] = useUserProfile();
-	Async.useAsync({promiseFn: api.auth.logout, history, setUserProfile});
+	Async.useAsync({
+		promiseFn: api.auth.logout,
+		onResolve: () => {
+			if (setUserProfile) setUserProfile(null);
+			history.push("/");
+		},
+	});
 	return <div>Logging out...</div>;
 };
