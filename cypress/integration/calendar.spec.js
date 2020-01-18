@@ -174,6 +174,7 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByText("Show all (10)").click();
 			cy.findByText("+2");
 			cy.findByText("=1");
 			cy.findByText("-1");
@@ -224,6 +225,7 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByText("Show all (10)").click();
 			cy.findAllByText("⌄").should("have.length", 10);
 			cy.findByPlaceholderText("Write something...").should("not.exist");
 
@@ -276,6 +278,7 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByText("Show all (10)").click();
 			cy.findAllByText("⌄")
 				.eq(2)
 				.click();

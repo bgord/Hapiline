@@ -26,7 +26,7 @@ export const useHabitScoreFilter = (defaultValue: HabitScoreFilter = "all-scores
 	}
 
 	return {
-		current: habitScoreFilter,
+		value: habitScoreFilter,
 		onChange: onHabitScoreFilterChange,
 		filterFunction: scoreFilterToFunction[habitScoreFilter],
 		reset: () => setHabitScoreFilter(defaultValue),
@@ -35,17 +35,17 @@ export const useHabitScoreFilter = (defaultValue: HabitScoreFilter = "all-scores
 
 interface IInput {
 	filter: HabitScoreFilter;
-	current: HabitScoreFilter;
+	value: HabitScoreFilter;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<IInput> = ({current, filter, ...props}) => {
+const Input: React.FC<IInput> = ({value, filter, ...props}) => {
 	return (
 		<input
 			name="habit-score-filter"
 			id={filter}
 			type="radio"
 			value={filter}
-			checked={current === filter}
+			checked={value === filter}
 			className="mr-1 ml-3"
 			{...props}
 		/>

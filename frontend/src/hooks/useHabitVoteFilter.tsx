@@ -14,16 +14,12 @@ const filterToFunction: {[key in HabitVoteFilterTypes]: (habitVote: HabitVote) =
 export const useHabitVoteFilter = (
 	defaultValue: HabitVoteFilterTypes = "all",
 ): {
-	current: HabitVoteFilterTypes;
+	value: HabitVoteFilterTypes;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 	filterFunction: (habitVote: HabitVote) => boolean;
 	reset: VoidFunction;
 } => {
 	const [habitVoteFilterParam, updateHabitVoteFilterParam] = useQueryParam("habit_vote_filter");
-
-	React.useEffect(() => {
-		if (!isFilter(habitVoteFilterParam)) updateHabitVoteFilterParam(defaultValue);
-	}, [habitVoteFilterParam]);
 
 	const habitVoteFilter = isFilter(habitVoteFilterParam) ? habitVoteFilterParam : defaultValue;
 
@@ -32,7 +28,7 @@ export const useHabitVoteFilter = (
 		if (isFilter(value)) updateHabitVoteFilterParam(value);
 	}
 	return {
-		current: habitVoteFilter,
+		value: habitVoteFilter,
 		onChange: onHabitVoteFilterChange,
 		filterFunction: filterToFunction[habitVoteFilter],
 		reset: () => updateHabitVoteFilterParam(defaultValue),
@@ -45,17 +41,17 @@ function isFilter(value: string | undefined): value is HabitVoteFilterTypes {
 
 interface IInput {
 	filter: HabitVoteFilterTypes;
-	current: HabitVoteFilterTypes;
+	value: HabitVoteFilterTypes;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<IInput> = ({current, filter, ...props}) => {
+const Input: React.FC<IInput> = ({value, filter, ...props}) => {
 	return (
 		<input
 			name="habit-vote-filter"
 			id={filter}
 			type="radio"
 			value={filter}
-			checked={current === filter}
+			checked={value === filter}
 			className="mr-1 ml-3"
 			{...props}
 		/>

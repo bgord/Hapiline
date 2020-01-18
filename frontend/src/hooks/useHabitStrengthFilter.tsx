@@ -23,7 +23,7 @@ export const useHabitStrengthFilter = (defaultValue: HabitStrengthFilter = "all-
 		}
 	}
 	return {
-		current: habitStrengthFilter,
+		value: habitStrengthFilter,
 		onChange: onHabitStrengthFilterChange,
 		filterFunction: strengthFilterToFunction[habitStrengthFilter],
 		reset: () => setHabitStrengthFilter(defaultValue),
@@ -36,16 +36,16 @@ function isHabitStrengthFilter(value: string): value is HabitStrengthFilter {
 
 interface IInput {
 	filter: HabitStrengthFilter;
-	current: HabitStrengthFilter;
+	value: HabitStrengthFilter;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<IInput> = ({current, filter, ...props}) => (
+const Input: React.FC<IInput> = ({value, filter, ...props}) => (
 	<input
 		name="habit-strength-filter"
 		id={filter}
 		type="radio"
 		value={filter}
-		checked={current === filter}
+		checked={value === filter}
 		className="mr-1 ml-3"
 		{...props}
 	/>

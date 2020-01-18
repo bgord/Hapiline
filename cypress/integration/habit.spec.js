@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
-const DASHBOARD_URL = "/dashboard";
+const HABITS_URL = "/habits";
 
 describe("Habit", () => {
 	beforeEach(() => {
@@ -11,7 +11,7 @@ describe("Habit", () => {
 		cy.clock();
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 		cy.findByLabelText("Score").select("positive");
@@ -72,7 +72,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 		cy.findByLabelText("Score").select("positive");
@@ -92,7 +92,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findByText("Seems you haven't added any habits yet.");
 
@@ -134,7 +134,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.get("ul").within(() => {
 			response.forEach(item => {
@@ -207,7 +207,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findByText(errorMessage);
 		cy.findByText("Couldn't fetch habit list.");
@@ -215,7 +215,7 @@ describe("Habit", () => {
 
 	it("deleting items", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findByText("0 lorem");
 		cy.findAllByText("Delete")
@@ -257,7 +257,7 @@ describe("Habit", () => {
 			},
 		});
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findByText("0 lorem");
 
@@ -360,7 +360,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findAllByText("More")
 			.first()
@@ -400,7 +400,7 @@ describe("Habit", () => {
 
 	it("changing name", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		// "Save" flow
 		cy.findByText("0 lorem xxx").should("not.exist");
@@ -435,7 +435,7 @@ describe("Habit", () => {
 
 	it("cancel changing name", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findAllByText("More")
 			.first()
@@ -457,7 +457,7 @@ describe("Habit", () => {
 
 	it("changing name unique error", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findByText("0 lorem xxx").should("not.exist");
 		cy.findAllByText("More")
@@ -490,7 +490,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findAllByText("More")
 			.first()
@@ -509,7 +509,7 @@ describe("Habit", () => {
 
 	it("changing scores", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("positive").should("have.length", 4);
@@ -551,7 +551,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("positive").should("have.length", 4);
@@ -579,7 +579,7 @@ describe("Habit", () => {
 
 	it("reordering habits (keyboard)", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findAllByTestId("draggable-habit-item").should("have.length", 10);
 
@@ -641,7 +641,7 @@ describe("Habit", () => {
 
 	it("reordering habits (mouse)", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.findAllByTestId("draggable-habit-item").should("have.length", 10);
 
@@ -696,7 +696,7 @@ describe("Habit", () => {
 
 	it("changing strengths", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("established").should("have.length", 4);
@@ -724,7 +724,7 @@ describe("Habit", () => {
 
 	it("changing description", () => {
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("positive").should("have.length", 4);
@@ -763,7 +763,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("positive").should("have.length", 4);
@@ -808,7 +808,7 @@ describe("Habit", () => {
 		});
 
 		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
+		cy.visit(HABITS_URL);
 
 		cy.get("ul").within(() => {
 			cy.findAllByText("positive").should("have.length", 4);

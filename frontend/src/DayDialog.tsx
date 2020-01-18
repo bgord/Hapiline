@@ -6,7 +6,7 @@ import React from "react";
 import {BareButton} from "./BareButton";
 import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
-import {DayDialogSummary, HabitsAddedAtGivenDay} from "./DayDialogSummary";
+import {DaySummaryChart, HabitsAddedAtGivenDay} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {IDayVote} from "./interfaces/IDayVote";
@@ -81,22 +81,30 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					</span>
 				</SuccessMessage>
 			)}
-			<DayDialogSummary day={day} {...stats} />
+			<DaySummaryChart day={day} {...stats} />
 			<div className="flex my-8">
-				<HabitVoteFilters.Voted.Input {...habitVoteFilter} disabled={howManyVotedHabits === 0} />
+				<HabitVoteFilters.Voted.Input
+					value={habitVoteFilter.value}
+					onChange={habitVoteFilter.onChange}
+					disabled={howManyVotedHabits === 0}
+				/>
 				<HabitVoteFilters.Voted.Label>
 					Show voted ({howManyVotedHabits})
 				</HabitVoteFilters.Voted.Label>
 
 				<HabitVoteFilters.Unvoted.Input
-					{...habitVoteFilter}
+					value={habitVoteFilter.value}
+					onChange={habitVoteFilter.onChange}
 					disabled={howManyUnvotedHabits === 0}
 				/>
 				<HabitVoteFilters.Unvoted.Label>
 					Show unvoted ({howManyUnvotedHabits})
 				</HabitVoteFilters.Unvoted.Label>
 
-				<HabitVoteFilters.All.Input {...habitVoteFilter} disabled={howManyHabitsAtAll === 0} />
+				<HabitVoteFilters.All.Input
+					value={habitVoteFilter.value}
+					onChange={habitVoteFilter.onChange}
+				/>
 				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
 
 				<BareButton
@@ -110,7 +118,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 				</BareButton>
 			</div>
 			<div className="mb-6">
-				<HabitSearchInput {...habitSearch} />
+				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}

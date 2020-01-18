@@ -57,8 +57,8 @@ export const HabitList: React.FC = () => {
 	}
 
 	const isDragDisabled =
-		habitScoreFilter.current !== "all-scores" ||
-		habitStrengthFilter.current !== "all-strengths" ||
+		habitScoreFilter.value !== "all-scores" ||
+		habitStrengthFilter.value !== "all-strengths" ||
 		habitSearch.value !== "";
 
 	return (
@@ -66,7 +66,8 @@ export const HabitList: React.FC = () => {
 			<div className="flex w-full mt-16 mb-6">
 				<HabitScoreFilters.Positive.Input
 					disabled={habitCounts.positive === 0}
-					{...habitScoreFilter}
+					value={habitScoreFilter.value}
+					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Positive.Label>
 					Positive ({habitCounts.positive})
@@ -74,21 +75,26 @@ export const HabitList: React.FC = () => {
 
 				<HabitScoreFilters.Neutral.Input
 					disabled={habitCounts.neutral === 0}
-					{...habitScoreFilter}
+					value={habitScoreFilter.value}
+					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Neutral.Label>
 					Neutral ({habitCounts.neutral})
 				</HabitScoreFilters.Neutral.Label>
 
 				<HabitScoreFilters.Negative.Input
-					{...habitScoreFilter}
 					disabled={habitCounts.negative === 0}
+					value={habitScoreFilter.value}
+					onChange={habitScoreFilter.onChange}
 				/>
 				<HabitScoreFilters.Negative.Label>
 					Negative ({habitCounts.negative})
 				</HabitScoreFilters.Negative.Label>
 
-				<HabitScoreFilters.All.Input {...habitScoreFilter} />
+				<HabitScoreFilters.All.Input
+					value={habitScoreFilter.value}
+					onChange={habitScoreFilter.onChange}
+				/>
 				<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
 
 				<BareButton
@@ -104,7 +110,8 @@ export const HabitList: React.FC = () => {
 			</div>
 			<div className="flex w-full mb-6">
 				<HabitStrengthFilters.Established.Input
-					{...habitStrengthFilter}
+					value={habitStrengthFilter.value}
+					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.established === 0}
 				/>
 				<HabitStrengthFilters.Established.Label>
@@ -112,7 +119,8 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.Established.Label>
 
 				<HabitStrengthFilters.Developing.Input
-					{...habitStrengthFilter}
+					value={habitStrengthFilter.value}
+					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.developing === 0}
 				/>
 				<HabitStrengthFilters.Developing.Label>
@@ -120,20 +128,24 @@ export const HabitList: React.FC = () => {
 				</HabitStrengthFilters.Developing.Label>
 
 				<HabitStrengthFilters.Fresh.Input
-					{...habitStrengthFilter}
+					value={habitStrengthFilter.value}
+					onChange={habitStrengthFilter.onChange}
 					disabled={habitCounts.fresh === 0}
 				/>
 				<HabitStrengthFilters.Fresh.Label>
 					Fresh ({habitCounts.fresh})
 				</HabitStrengthFilters.Fresh.Label>
 
-				<HabitStrengthFilters.All.Input {...habitStrengthFilter} />
+				<HabitStrengthFilters.All.Input
+					value={habitStrengthFilter.value}
+					onChange={habitStrengthFilter.onChange}
+				/>
 				<HabitStrengthFilters.All.Label>
 					All strengths ({habitCounts.all})
 				</HabitStrengthFilters.All.Label>
 			</div>
 			<div className="flex w-full items-center mr-auto mb-6 ml-2">
-				<HabitSearchInput {...habitSearch} />
+				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 				<div className="ml-auto mr-4">Results: {howManyResults}</div>
 			</div>

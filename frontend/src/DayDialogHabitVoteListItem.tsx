@@ -89,7 +89,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					<HabitScore score={habit.score} className="px-1 py-1" />
 					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
 					<Link
-						to={`/dashboard?previewHabitId=${habit.id}`}
+						to={`/habits?previewHabitId=${habit.id}`}
 						className={isHabitHighlighted ? "text-blue-600" : ""}
 					>
 						{habit.name}
