@@ -1,15 +1,17 @@
 import {format} from "date-fns";
-import {useHistory} from "react-router-dom";
+import {useHistory, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
 import {DaySummaryChart} from "./DayDialogSummary";
+import {ErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {useHabits} from "./contexts/habits-context";
+import {useHabits, useHabitsState} from "./contexts/habits-context";
 
 export const DashboardWindow = () => {
+	const getHabitsRequestState = useHabitsState();
 	const habits = useHabits();
 	const history = useHistory();
 	const triggerErrorNotification = useErrorNotification();
@@ -40,6 +42,9 @@ export const DashboardWindow = () => {
 		noVotesCountStats: howManyHabitsToday - howManyVotesToday,
 	};
 
+	const dayVotesError = getDayVotesRequestState.isRejected;
+	const habitsError = getHabitsRequestState.isRejected;
+
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
 			<header className="flex w-full">
@@ -53,13 +58,20 @@ export const DashboardWindow = () => {
 					View today
 				</BareButton>
 			</header>
-			<main>
+			<ErrorMessage className="mt-8" hidden={!(dayVotesError && habitsError)}>
+				Cannot load dashboard stats now, try again.
+			</ErrorMessage>
+			<main hidden={dayVotesError || habitsError}>
 				<Async.IfFulfilled state={getDayVotesRequestState}>
 					<p className="my-8">
 						<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
 					</p>
-					<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-					<DaySummaryChart className="mt-2" day={currentDate} {...stats} />
+					{habits.length > 0 && (
+						<>
+							<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
+							<DaySummaryChart className="mt-2" day={currentDate} {...stats} />
+						</>
+					)}
 				</Async.IfFulfilled>
 			</main>
 		</section>
@@ -68,7 +80,11 @@ export const DashboardWindow = () => {
 
 const MotivationalText: React.FC<{total: number; votedFor: number}> = ({total, votedFor}) => {
 	if (total === 0 && votedFor === 0) {
-		return <>Add your first habits to start voting!</>;
+		return (
+			<Link className="link" to="habits">
+				Add your first habit to start voting!
+			</Link>
+		);
 	}
 	if (votedFor === 0) {
 		return (
