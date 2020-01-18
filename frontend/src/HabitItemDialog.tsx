@@ -1,5 +1,4 @@
 import {Dialog} from "@reach/dialog";
-import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
@@ -17,6 +16,7 @@ import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {HabitCharts} from "./HabitCharts";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
+import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
@@ -88,13 +88,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							className="flex items-baseline ml-4 mt-8"
 						>
 							<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
-							<dd className="text-sm ml-1 font-mono">
-								{format(new Date(habit?.created_at), "yyyy/MM/dd HH:mm")}
-							</dd>
+							<dd className="text-sm ml-1 font-mono">{formatTime(new Date(habit?.created_at))}</dd>
 							<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
-							<dd className="text-sm ml-1 font-mono">
-								{format(new Date(habit?.updated_at), "yyyy/MM/dd HH:mm")}
-							</dd>
+							<dd className="text-sm ml-1 font-mono">{formatTime(new Date(habit?.updated_at))}</dd>
 						</dl>
 						<div
 							className="text-green-600 uppercase text-sm font-bold ml-2"

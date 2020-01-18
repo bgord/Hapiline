@@ -249,7 +249,7 @@ test("full flow for habit created today", async ({client}) => {
 
 	const payload = {
 		habit_id: 15,
-		day: new Date(datefns.format(new Date(), "yyyy-MM-dd")),
+		day: new Date(),
 		vote: HABIT_VOTE_TYPES.regress,
 	};
 

@@ -10,8 +10,7 @@ describe("Dashboard", () => {
 	});
 
 	it("upper part", () => {
-		const currentDate = new Date();
-		const today = format(currentDate, "yyyy-MM-dd");
+		const today = format(new Date(), "yyyy-MM-dd");
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
@@ -88,8 +87,7 @@ describe("Dashboard", () => {
 	});
 
 	it("upper part request errors", () => {
-		const currentDate = new Date();
-		const today = format(currentDate, "yyyy-MM-dd");
+		const today = format(new Date(), "yyyy-MM-dd");
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);

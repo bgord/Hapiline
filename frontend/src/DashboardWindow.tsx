@@ -1,4 +1,3 @@
-import {format} from "date-fns";
 import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
@@ -10,6 +9,7 @@ import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
+import {formatToday} from "./config/DATE_FORMATS";
 
 export const DashboardWindow = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -19,8 +19,7 @@ export const DashboardWindow = () => {
 
 	const triggerErrorNotification = useErrorNotification();
 
-	const today = new Date();
-	const currentDate = format(today, "yyyy-MM-dd");
+	const currentDate = formatToday();
 
 	const getDayVotesRequestState = Async.useAsync({
 		promiseFn: api.calendar.getDay,

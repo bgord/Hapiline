@@ -1,5 +1,4 @@
 import {Link, LinkProps} from "react-router-dom";
-import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
@@ -7,6 +6,7 @@ import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
+import {formatToday} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
 
 type ChartRange = "last_week" | "last_month" | "all_time";
@@ -93,7 +93,7 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit
 	habitId,
 	...rest
 }) => {
-	const date = format(new Date(day), "yyyy-MM-dd");
+	const date = formatToday();
 	const bgColor = voteToBgColor[vote ?? "plateau"];
 	const title = `${date} - ${vote ?? "no vote"}`;
 	return (
