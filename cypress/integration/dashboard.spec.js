@@ -2,6 +2,8 @@
 
 import {format} from "date-fns";
 
+import {DATE_FORMATS} from "../../frontend/src/config/DATE_FORMATS";
+
 const DASHBOARD_URL = "/dashboard";
 
 describe("Dashboard", () => {
@@ -11,7 +13,7 @@ describe("Dashboard", () => {
 
 	it("upper part", () => {
 		const currentDate = new Date();
-		const today = format(currentDate, "yyyy-MM-dd");
+		const today = format(currentDate, DATE_FORMATS.day);
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
@@ -89,7 +91,7 @@ describe("Dashboard", () => {
 
 	it("upper part request errors", () => {
 		const currentDate = new Date();
-		const today = format(currentDate, "yyyy-MM-dd");
+		const today = format(currentDate, DATE_FORMATS.day);
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);

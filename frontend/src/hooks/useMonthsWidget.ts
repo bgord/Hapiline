@@ -1,6 +1,7 @@
 import {eachDayOfInterval, endOfMonth, format, startOfMonth, subMonths} from "date-fns";
 import React from "react";
 
+import {DATE_FORMATS} from "../config/DATE_FORMATS";
 import {IMonthDay} from "../interfaces/IMonthDay";
 
 type MonthsWidgetProps = [
@@ -35,7 +36,7 @@ export const useMonthsWidget = (): MonthsWidgetProps => {
 		start: startOfGivenMonth,
 		end: endOfGivenMonth,
 	}).map((day, index) => ({
-		day: format(day, "yyyy-MM-dd"),
+		day: format(day, DATE_FORMATS.day),
 		styles: {gridColumnStart: index === 0 ? offset : undefined},
 	}));
 
@@ -45,7 +46,7 @@ export const useMonthsWidget = (): MonthsWidgetProps => {
 			setPreviousMonth,
 			setNextMonth,
 		},
-		format(date, "MMMM yyyy"),
+		format(date, DATE_FORMATS.month),
 		monthOffset,
 	];
 };

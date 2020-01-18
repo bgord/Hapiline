@@ -10,6 +10,7 @@ import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
+import {DATE_FORMATS} from "./config/DATE_FORMATS";
 
 export const DashboardWindow = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -20,7 +21,7 @@ export const DashboardWindow = () => {
 	const triggerErrorNotification = useErrorNotification();
 
 	const today = new Date();
-	const currentDate = format(today, "yyyy-MM-dd");
+	const currentDate = format(today, DATE_FORMATS.day);
 
 	const getDayVotesRequestState = Async.useAsync({
 		promiseFn: api.calendar.getDay,

@@ -2,14 +2,16 @@
 
 import {format, getDate, getDaysInMonth, subMonths} from "date-fns";
 
+import {DATE_FORMATS} from "../../frontend/src/config/DATE_FORMATS";
+
 const CALENDAR_URL = "/calendar";
 
 const today = Date.now();
 
-const currentMonthString = format(today, "MMMM yyyy");
+const currentMonthString = format(today, DATE_FORMATS.month);
 const daysInCurrentMonth = getDaysInMonth(today);
 
-const previousMonthString = format(subMonths(today, 1), "MMMM yyyy");
+const previousMonthString = format(subMonths(today, 1), DATE_FORMATS.month);
 const daysInPreviousMonth = getDaysInMonth(new Date(previousMonthString));
 
 const currentDate = getDate(today);

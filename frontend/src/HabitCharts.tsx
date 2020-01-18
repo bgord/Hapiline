@@ -3,6 +3,7 @@ import {format} from "date-fns";
 import * as Async from "react-async";
 import React from "react";
 
+import {DATE_FORMATS} from "./config/DATE_FORMATS";
 import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
@@ -93,7 +94,7 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit
 	habitId,
 	...rest
 }) => {
-	const date = format(new Date(day), "yyyy-MM-dd");
+	const date = format(new Date(day), DATE_FORMATS.day);
 	const bgColor = voteToBgColor[vote ?? "plateau"];
 	const title = `${date} - ${vote ?? "no vote"}`;
 	return (

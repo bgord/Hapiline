@@ -10,6 +10,7 @@ import {
 	useEditableFieldState,
 } from "./hooks/useEditableField";
 import {CloseButton} from "./CloseButton";
+import {DATE_FORMATS} from "./config/DATE_FORMATS";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
@@ -89,11 +90,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						>
 							<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
 							<dd className="text-sm ml-1 font-mono">
-								{format(new Date(habit?.created_at), "yyyy/MM/dd HH:mm")}
+								{format(new Date(habit?.created_at), DATE_FORMATS.time)}
 							</dd>
 							<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
 							<dd className="text-sm ml-1 font-mono">
-								{format(new Date(habit?.updated_at), "yyyy/MM/dd HH:mm")}
+								{format(new Date(habit?.updated_at), DATE_FORMATS.time)}
 							</dd>
 						</dl>
 						<div
