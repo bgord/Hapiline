@@ -1,6 +1,6 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
-import {formatDay} from "../../frontend/src/config/DATE_FORMATS";
+import {formatToday} from "../../frontend/src/config/DATE_FORMATS";
 
 const DASHBOARD_URL = "/dashboard";
 
@@ -10,7 +10,7 @@ describe("Dashboard", () => {
 	});
 
 	it("upper part", () => {
-		const today = formatDay(new Date());
+		const today = formatToday();
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
@@ -87,7 +87,7 @@ describe("Dashboard", () => {
 	});
 
 	it("upper part request errors", () => {
-		const today = formatDay(new Date());
+		const today = formatToday();
 
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
