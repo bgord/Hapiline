@@ -8,7 +8,7 @@ import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useTextareaState} from "./hooks/useEditableField";
+import {useEditableFieldState} from "./hooks/useEditableField";
 
 type EditableHabitNameInputProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
@@ -19,7 +19,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	id,
 	setHabitItem,
 }) => {
-	const {state: inputState, setIdle, setFocused} = useTextareaState();
+	const {state: inputState, setIdle, setFocused} = useEditableFieldState();
 	const getHabitsRequestState = useHabitsState();
 
 	const [newHabitName, setNewHabitName] = React.useState(() => name);

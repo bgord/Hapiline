@@ -6,8 +6,8 @@ import React from "react";
 import {
 	CancelButton,
 	SaveButton,
-	useEditableValue,
-	useTextareaState,
+	useEditableFieldValue,
+	useEditableFieldState,
 } from "./hooks/useEditableField";
 import {CloseButton} from "./CloseButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
@@ -140,7 +140,7 @@ const EditableDescription: React.FC<{
 	habitId: IHabit["id"];
 	onResolve: VoidFunction;
 }> = ({description, habitId, onResolve}) => {
-	const textarea = useTextareaState();
+	const textarea = useEditableFieldState();
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
@@ -155,7 +155,7 @@ const EditableDescription: React.FC<{
 		onReject: () => triggerErrorNotification("Habit description couldn't be changed"),
 	});
 
-	const [newDescription, newDescriptionHelpers] = useEditableValue(
+	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(
 		description => updateDescriptionRequestState.run(habitId, {description}),
 		description,
 	);

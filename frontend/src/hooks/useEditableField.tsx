@@ -2,12 +2,12 @@ import React from "react";
 
 import {BareButton} from "../BareButton";
 
-interface UseTextareaStateReturnType {
+interface UseEditableFieldStateReturnType {
 	state: "idle" | "focused";
 	setIdle: VoidFunction;
 	setFocused: VoidFunction;
 }
-export function useTextareaState(): UseTextareaStateReturnType {
+export function useEditableFieldState(): UseEditableFieldStateReturnType {
 	const [state, setState] = React.useState<"idle" | "focused">("idle");
 	return {
 		state,
@@ -16,7 +16,7 @@ export function useTextareaState(): UseTextareaStateReturnType {
 	};
 }
 
-type useEditableValueReturnType = [
+type useEditableFieldValueReturnType = [
 	string | null | undefined,
 	{
 		onClear: VoidFunction;
@@ -24,10 +24,10 @@ type useEditableValueReturnType = [
 		onUpdate: VoidFunction;
 	},
 ];
-export function useEditableValue(
+export function useEditableFieldValue(
 	updateFn: (value: string) => void,
 	defaultValue: string | null | undefined,
-): useEditableValueReturnType {
+): useEditableFieldValueReturnType {
 	const [value, setValue] = React.useState<string | null | undefined>(() => defaultValue);
 
 	function onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -42,7 +42,7 @@ export function useEditableValue(
 	return [value, {onClear, onChange, onUpdate}];
 }
 
-export const CancelButton: React.FC<UseTextareaStateReturnType &
+export const CancelButton: React.FC<UseEditableFieldStateReturnType &
 	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, onClick, ...props}) => {
 	return (
 		<>
@@ -59,11 +59,7 @@ export const CancelButton: React.FC<UseTextareaStateReturnType &
 	);
 };
 
-export const SaveButton: React.FC<UseTextareaStateReturnType & JSX.IntrinsicElements["button"]> = ({
-	state,
-	setIdle,
-	setFocused,
-	...props
-}) => {
+export const SaveButton: React.FC<UseEditableFieldStateReturnType &
+	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, ...props}) => {
 	return <>{state === "focused" && <BareButton {...props} />}</>;
 };
