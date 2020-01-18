@@ -20,7 +20,9 @@ type useEditableFieldValueReturnType = [
 	string | null | undefined,
 	{
 		onClear: VoidFunction;
-		onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+		onChange: (
+			event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>,
+		) => void;
 		onUpdate: VoidFunction;
 	},
 ];
@@ -30,7 +32,9 @@ export function useEditableFieldValue(
 ): useEditableFieldValueReturnType {
 	const [value, setValue] = React.useState<string | null | undefined>(() => defaultValue);
 
-	function onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
+	function onChange(
+		event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>,
+	) {
 		setValue(event.target.value);
 	}
 	function onClear() {
