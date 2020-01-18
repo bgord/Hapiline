@@ -8,7 +8,7 @@ import {HabitItemDialog} from "./HabitItemDialog";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
 import {IHabit} from "./interfaces/IHabit";
-import {useQueryParam, useQueryParams} from "./hooks/useQueryParam";
+import {useQueryParam} from "./hooks/useQueryParam";
 
 interface HabitListItemProps {
 	habit: IHabit;
@@ -18,15 +18,12 @@ interface HabitListItemProps {
 
 export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDragDisabled}) => {
 	const history = useHistory();
-	const [previewHabitId] = useQueryParam("previewHabitId");
-	const [, updateQueryParams] = useQueryParams();
+	const [previewHabitId, updateQueryParam] = useQueryParam("preview_habit_id");
 
 	const doesPreviewHabitIdMatch = habit.id === Number(previewHabitId);
 
 	function openPreviewDialog() {
-		updateQueryParams("habits", {
-			previewHabitId: habit.id.toString(),
-		});
+		updateQueryParam(habit.id.toString());
 	}
 	function closePreviewDialog() {
 		history.push("/habits");

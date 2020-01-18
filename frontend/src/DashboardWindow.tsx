@@ -49,7 +49,7 @@ export const DashboardWindow = () => {
 	const getHabitsError = getHabitsRequestState.isRejected;
 
 	const redirectToCurrentDay = () =>
-		updateQueryParams("calendar", {previewDay: currentDate, habit_vote_filter: "unvoted"});
+		updateQueryParams("calendar", {preview_day: currentDate, habit_vote_filter: "unvoted"});
 
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">

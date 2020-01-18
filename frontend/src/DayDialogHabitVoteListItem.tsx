@@ -36,7 +36,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	vote_id,
 }) => {
 	const [queryParams, updateQueryParams] = useQueryParams();
-	const highlightedHabitId = queryParams.highlightedHabitId;
+	const highlightedHabitId = queryParams.highlighted_habit_id;
 
 	const [isCommentVisible, , , toggleComment] = useToggle();
 
@@ -83,7 +83,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					</BareButton>
 					<BareButton
 						className="mr-4"
-						onClick={() => updateQueryParams("calendar", {previewDay: day})}
+						onClick={() => updateQueryParams("calendar", {preview_day: day})}
 						hidden={!isHabitHighlighted}
 					>
 						Unmark
@@ -91,7 +91,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					<HabitScore score={habit.score} className="px-1 py-1" />
 					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
 					<Link
-						to={constructUrl("habits", {previewHabitId: habit.id.toString()})}
+						to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}
 						className={isHabitHighlighted ? "text-blue-600" : ""}
 					>
 						{habit.name}

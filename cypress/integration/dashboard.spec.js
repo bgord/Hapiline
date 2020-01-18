@@ -19,7 +19,7 @@ describe("Dashboard", () => {
 		cy.findByText("Hello!");
 
 		cy.findByText("View today").click();
-		cy.url().should("include", `/calendar?previewDay=${today}&habit_vote_filter=unvoted`);
+		cy.url().should("include", `/calendar?preview_day=${today}&habit_vote_filter=unvoted`);
 		cy.go("back");
 
 		cy.get("p").should(

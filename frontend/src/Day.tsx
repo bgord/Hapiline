@@ -20,7 +20,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const [isHovering, ref] = useHover();
 	const [queryParams, updateQueryParams] = useQueryParams();
 
-	const previewDay = queryParams?.previewDay;
+	const previewDay = queryParams?.preview_day;
 
 	const thisDay = new Date(day);
 	const isThisDayToday = isToday(new Date(day));
@@ -33,7 +33,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 
 	function openDialog() {
 		updateQueryParams("calendar", {
-			previewDay: day,
+			preview_day: day,
 			habit_vote_filter: isThisDayToday ? "unvoted" : "all",
 		});
 	}

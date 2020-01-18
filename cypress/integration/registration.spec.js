@@ -37,8 +37,7 @@ describe("Registration", () => {
 		cy.findByLabelText("Repeat password").should("be.disabled");
 
 		cy.findByText("login now").click();
-		cy.url().should("contain", `${LOGIN_URL}?registrationEmail=${validNewCredentials.email}`);
-		cy.findByLabelText("Email").should("have.value", validNewCredentials.email);
+		cy.url().should("contain", LOGIN_URL);
 	});
 
 	it("validation", () => {

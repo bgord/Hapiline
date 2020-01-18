@@ -6,15 +6,13 @@ import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-import {useQueryParam} from "./hooks/useQueryParam";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
-	const [registrationEmail] = useQueryParam("registrationEmail");
 
 	const [, setUserProfile] = useUserProfile();
 
-	const [email, setEmail] = React.useState(registrationEmail ?? "");
+	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 
 	const loginRequestState = Async.useAsync({
