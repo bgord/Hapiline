@@ -21,7 +21,7 @@ describe("Forgot password", () => {
 		});
 	});
 
-	it("full flow", () => {
+	it.skip("full flow", () => {
 		const tooShortPassword = "xxx";
 		const correctPassword = "prison_mike";
 		const notMatchingPasswordConfirmation = "date_mike";
