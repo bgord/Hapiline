@@ -6,7 +6,7 @@ import {ErrorMessage} from "./ErrorMessages";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
-import {formatToday} from "./config/DATE_FORMATS";
+import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
 
 type ChartRange = "last_week" | "last_month" | "all_time";
@@ -93,12 +93,12 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit
 	habitId,
 	...rest
 }) => {
-	const date = formatToday();
+	const date = formatDay(new Date(day));
 	const bgColor = voteToBgColor[vote ?? "plateau"];
 	const title = `${date} - ${vote ?? "no vote"}`;
 	return (
 		<Link
-			to={`/calendar?previewDay=${date}&highlightedHabitId=${habitId}`}
+			to={`/calendar?preview_day=${date}&highlighted_habit_id=${habitId}`}
 			title={title}
 			key={day}
 			className={`h-8 border-r-2 border-gray-500 ${bgColor}`}

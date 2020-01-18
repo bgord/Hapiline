@@ -34,7 +34,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	function openDialog() {
 		updateQueryParams("calendar", {
 			preview_day: day,
-			habit_vote_filter: isThisDayToday ? "unvoted" : "all",
+			habit_vote_filter: isThisDayToday && stats.noVotesCountStats > 0 ? "unvoted" : "all",
 		});
 	}
 
