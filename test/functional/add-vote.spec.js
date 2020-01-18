@@ -1,4 +1,4 @@
-import {DATE_FORMATS} from "../../frontend/src/config/DATE_FORMATS";
+import {formatDay} from "../../frontend/src/config/DATE_FORMATS";
 
 const ace = require("@adonisjs/ace");
 const datefns = require("date-fns");
@@ -251,7 +251,7 @@ test("full flow for habit created today", async ({client}) => {
 
 	const payload = {
 		habit_id: 15,
-		day: new Date(datefns.format(new Date(), DATE_FORMATS.day)),
+		day: new Date(formatDay(new Date())),
 		vote: HABIT_VOTE_TYPES.regress,
 	};
 

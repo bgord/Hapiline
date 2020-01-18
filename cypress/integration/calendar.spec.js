@@ -1,17 +1,17 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
-import {format, getDate, getDaysInMonth, subMonths} from "date-fns";
+import {getDate, getDaysInMonth, subMonths} from "date-fns";
 
-import {DATE_FORMATS} from "../../frontend/src/config/DATE_FORMATS";
+import {formatMonth} from "../../frontend/src/config/DATE_FORMATS";
 
 const CALENDAR_URL = "/calendar";
 
 const today = Date.now();
 
-const currentMonthString = format(today, DATE_FORMATS.month);
+const currentMonthString = formatMonth(today);
 const daysInCurrentMonth = getDaysInMonth(today);
 
-const previousMonthString = format(subMonths(today, 1), DATE_FORMATS.month);
+const previousMonthString = formatMonth(subMonths(today, 1));
 const daysInPreviousMonth = getDaysInMonth(new Date(previousMonthString));
 
 const currentDate = getDate(today);
