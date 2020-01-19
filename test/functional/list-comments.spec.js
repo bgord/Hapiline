@@ -1,3 +1,5 @@
+/* eslint-disable prefer-template */
+
 const ace = require("@adonisjs/ace");
 
 const {
@@ -116,4 +118,15 @@ test("checks if user has access to the habit", async ({client}) => {
 		.end();
 
 	assertAccessDenied(response);
+});
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(LIST_COMMENTS_URL + "?habitId=2")
+		.loginVia(jim)
+		.end();
+
+	response.body.forEach(entry => assert.hasAllKeys(entry, ["id", "vote", "day", "comment"]));
 });

@@ -26,7 +26,13 @@ class VoteCommentController {
 		if (!habit) return response.unprocessableEntity();
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
-		return response.send();
+		const result = await Database.select("id", "vote", "day", "comment")
+			.from("habit_votes")
+			.where("habit_id", habitId)
+			.whereRaw("comment IS NOT NULL")
+			.orderBy("day", "desc");
+
+		return response.send(result);
 	}
 }
 
