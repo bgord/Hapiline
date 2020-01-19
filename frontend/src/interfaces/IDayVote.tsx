@@ -19,6 +19,7 @@ export interface IVoteComment {
 	vote: Vote;
 	day: string;
 	comment: string;
+	habit_id: IHabit["id"];
 }
 
 export const voteToBgColor = new Map<Vote, string>();

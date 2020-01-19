@@ -41,7 +41,10 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 										{formatDay(voteComment.day)} ({formatDayName(voteComment.day)})
 									</strong>
 									<Link
-										to={constructUrl("calendar", {preview_day: formatDay(voteComment.day)})}
+										to={constructUrl("calendar", {
+											preview_day: formatDay(voteComment.day),
+											highlighted_habit_id: voteComment.habit_id.toString(),
+										})}
 										className={`${voteToBgColor.get(voteComment.vote)} px-2 ml-4`}
 									>
 										{voteComment.vote?.toUpperCase() ?? "NO VOTE"}

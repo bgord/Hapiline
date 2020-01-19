@@ -128,5 +128,7 @@ test("full flow", async ({client, assert}) => {
 		.loginVia(jim)
 		.end();
 
-	response.body.forEach(entry => assert.hasAllKeys(entry, ["id", "vote", "day", "comment"]));
+	response.body.forEach(entry =>
+		assert.hasAllKeys(entry, ["id", "vote", "day", "comment", "habit_id"]),
+	);
 });
