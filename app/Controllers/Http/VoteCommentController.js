@@ -16,6 +16,10 @@ class VoteCommentController {
 
 		response.send(vote);
 	}
+
+	async index({response}) {
+		return response.send();
+	}
 }
 
 module.exports = VoteCommentController;
