@@ -1,11 +1,16 @@
 const ace = require("@adonisjs/ace");
 
-const {assertInvalidSession, assertAccessDenied} = require("../helpers/assert-errors");
+const {
+	assertInvalidSession,
+	assertAccessDenied,
+	assertValidationError,
+} = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("List comments");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -47,4 +52,45 @@ test("account-status:(active)", async ({client}) => {
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
+});
+
+test("validation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const cases = [
+		[
+			"",
+			[
+				{
+					message: VALIDATION_MESSAGES.required("habitId"),
+					field: "habitId",
+					validation: "required",
+				},
+			],
+		],
+		[
+			"?habitId=xxx",
+			[
+				{
+					message: VALIDATION_MESSAGES.above("habitId", 0),
+					field: "habitId",
+					validation: "number",
+				},
+				{
+					message: VALIDATION_MESSAGES.above("habitId", 0),
+					field: "habitId",
+					validation: "above",
+				},
+			],
+		],
+	];
+
+	for (const [queryParams, argErrors] of cases) {
+		const response = await client
+			.get(LIST_COMMENTS_URL + queryParams)
+			.loginVia(jim)
+			.end();
+
+		assertValidationError({response, argErrors});
+	}
 });
