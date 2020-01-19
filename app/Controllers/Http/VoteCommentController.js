@@ -1,5 +1,6 @@
 const HabitVote = use("HabitVote");
 const Habit = use("Habit");
+const Database = use("Database");
 
 class VoteCommentController {
 	async update({params, request, response, auth}) {
@@ -17,7 +18,13 @@ class VoteCommentController {
 		response.send(vote);
 	}
 
-	async index({response}) {
+	async index({request, response, auth}) {
+		const habitId = Number(request.get().habitId);
+
+		const habit = await Habit.find(habitId);
+
+		if (habit.user_id !== auth.user.id) return response.accessDenied();
+
 		return response.send();
 	}
 }

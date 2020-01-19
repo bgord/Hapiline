@@ -94,3 +94,14 @@ test("validation", async ({client}) => {
 		assertValidationError({response, argErrors});
 	}
 });
+
+test("checks if user has access to the habit", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(LIST_COMMENTS_URL + "?habitId=6")
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
+});
