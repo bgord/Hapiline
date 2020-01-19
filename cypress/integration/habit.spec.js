@@ -359,6 +359,13 @@ describe("Habit", () => {
 			response: [],
 		});
 
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=1",
+			status: 200,
+			response: [],
+		});
+
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
@@ -830,5 +837,98 @@ describe("Habit", () => {
 		});
 
 		cy.findAllByText("Habit description couldn't be changed");
+	});
+
+	it("comments history request error", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=6",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findAllByText("More")
+			.first()
+			.click();
+
+		cy.findByText("Vote comments");
+		cy.findAllByText("Couldn't fetch vote comments.");
+	});
+
+	it("comments history empty list", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=6",
+			status: 200,
+			response: [],
+		});
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findAllByText("More")
+			.first()
+			.click();
+
+		cy.findByText("Vote comments");
+		cy.findByText("Future vote comments will appear here.");
+	});
+
+	it("comments history list", () => {
+		cy.login("pam");
+		cy.visit(HABITS_URL);
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=36",
+			status: 200,
+			response: [
+				{
+					id: 35,
+					vote: "regress",
+					day: "2020-01-19T00:00:00.000Z",
+					comment: "123",
+				},
+				{
+					id: 34,
+					vote: "plateau",
+					day: "2020-01-18T00:00:00.000Z",
+					comment: "124",
+				},
+				{
+					id: 33,
+					vote: "progress",
+					day: "2020-01-17T00:00:00.000Z",
+					comment: "125",
+				},
+			],
+		});
+
+		cy.findAllByText("More")
+			.eq(5)
+			.click();
+
+		cy.findByText("Vote comments");
+
+		cy.findByText("2020-01-19 (Sun)");
+		cy.findByDisplayValue("123").should("be.disabled");
+
+		cy.findByText("2020-01-18 (Sat)");
+		cy.findByDisplayValue("124").should("be.disabled");
+
+		cy.findByText("2020-01-17 (Fri)");
+		cy.findByDisplayValue("125").should("be.disabled");
+
+		cy.findByTitle("2020-01-19 - regress").click();
+
+		cy.url().should("contain", "/calendar?preview_day=2020-01-19&highlighted_habit_id=36");
 	});
 });

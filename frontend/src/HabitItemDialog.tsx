@@ -14,6 +14,7 @@ import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {HabitCharts} from "./HabitCharts";
+import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
@@ -55,7 +56,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 				maxWidth: "1000px",
 				maxHeight: "600px",
 			}}
-			className="w-full h-full"
+			className="overflow-auto w-full h-full"
 			onDismiss={dismissDialog}
 			aria-label="Show habit preview"
 		>
@@ -88,9 +89,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							className="flex items-baseline ml-4 mt-8"
 						>
 							<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(new Date(habit?.created_at))}</dd>
+							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.created_at)}</dd>
 							<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(new Date(habit?.updated_at))}</dd>
+							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
 						</dl>
 						<div
 							className="text-green-600 uppercase text-sm font-bold ml-2"
@@ -125,6 +126,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							onResolve={habitRequestState.reload}
 						/>
 					</div>
+					<HabitVoteCommentHistory habitId={habit.id} />
 				</>
 			)}
 		</Dialog>

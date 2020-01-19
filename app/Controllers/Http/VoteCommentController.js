@@ -1,5 +1,6 @@
 const HabitVote = use("HabitVote");
 const Habit = use("Habit");
+const Database = use("Database");
 
 class VoteCommentController {
 	async update({params, request, response, auth}) {
@@ -15,6 +16,23 @@ class VoteCommentController {
 		await vote.save();
 
 		response.send(vote);
+	}
+
+	async index({request, response, auth}) {
+		const habitId = Number(request.get().habitId);
+
+		const habit = await Habit.find(habitId);
+
+		if (!habit) return response.unprocessableEntity();
+		if (habit.user_id !== auth.user.id) return response.accessDenied();
+
+		const result = await Database.select("id", "vote", "day", "comment", "habit_id")
+			.from("habit_votes")
+			.where("habit_id", habitId)
+			.whereRaw("comment IS NOT NULL")
+			.orderBy("day", "desc");
+
+		return response.send(result);
 	}
 }
 

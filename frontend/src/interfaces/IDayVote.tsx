@@ -13,3 +13,17 @@ export interface IVoteChartItem {
 	vote: Vote;
 	day: string;
 }
+
+export interface IVoteComment {
+	id: number;
+	vote: Vote;
+	day: string;
+	comment: string;
+	habit_id: IHabit["id"];
+}
+
+export const voteToBgColor = new Map<Vote, string>();
+voteToBgColor.set("progress", "bg-green-300");
+voteToBgColor.set("plateau", "bg-gray-300");
+voteToBgColor.set("regress", "bg-red-300");
+voteToBgColor.set(null, "bg-gray-500");

@@ -120,6 +120,10 @@ Route.patch("/api/v1/vote/:id/comment", "VoteCommentController.update")
 	])
 	.validator("UpdateVoteComment");
 
+Route.get("/api/v1/comments", "VoteCommentController.index")
+	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.validator("IndexVoteComment");
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {

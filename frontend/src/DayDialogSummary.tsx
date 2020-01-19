@@ -6,6 +6,7 @@ import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
+import {voteToBgColor} from "./interfaces/IDayVote";
 
 type DayDialogSummaryProps = DayVoteStats & {
 	day: string;
@@ -43,22 +44,22 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				<div
 					title={noVotesCellTitle}
 					style={{flexBasis: `${noVotesPercentage}%`}}
-					className="bg-gray-500"
+					className={voteToBgColor.get(null)}
 				/>
 				<div
 					title={regressVotesCellTitle}
 					style={{flexBasis: `${regressVotesPercentage}%`}}
-					className="bg-red-300"
+					className={voteToBgColor.get("regress")}
 				/>
 				<div
 					title={plateauVotesCellTitle}
 					style={{flexBasis: `${plateauVotesPercentage}%`}}
-					className="bg-gray-300"
+					className={voteToBgColor.get("plateau")}
 				/>
 				<div
 					title={progressVotesCellTitle}
 					style={{flexBasis: `${progressVotesPercentage}%`}}
-					className="bg-green-300"
+					className={voteToBgColor.get("progress")}
 				/>
 			</div>
 			<Stat count={stats.noVotesCountStats} sign="?" />
