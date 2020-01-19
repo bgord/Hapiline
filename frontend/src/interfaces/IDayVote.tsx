@@ -13,3 +13,10 @@ export interface IVoteChartItem {
 	vote: Vote;
 	day: string;
 }
+
+export interface IVoteComment {
+	id: number;
+	vote: Vote;
+	day: string;
+	comment: string;
+}

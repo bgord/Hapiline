@@ -832,7 +832,49 @@ describe("Habit", () => {
 		cy.findAllByText("Habit description couldn't be changed");
 	});
 
-	it.only("comments history", () => {
+	it("comments history request error", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=6",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+			},
+		});
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findAllByText("More")
+			.first()
+			.click();
+
+		cy.findByText("Vote comments");
+		cy.findAllByText("Couldn't fetch vote comments.");
+	});
+
+	it("comments history empty list", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=6",
+			status: 200,
+			response: [],
+		});
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findAllByText("More")
+			.first()
+			.click();
+
+		cy.findByText("Vote comments");
+		cy.findByText("Future vote comments will appear here.");
+	});
+
+	it("comments history list", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 

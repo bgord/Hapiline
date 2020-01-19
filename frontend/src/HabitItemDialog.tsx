@@ -126,7 +126,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							onResolve={habitRequestState.reload}
 						/>
 					</div>
-					<HabitVoteCommentHistory />
+					<HabitVoteCommentHistory habitId={habit.id} />
 				</>
 			)}
 		</Dialog>

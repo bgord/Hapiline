@@ -10,6 +10,7 @@ import {
 	patchHabitRequest,
 	reorderHabitsRequest,
 	updateVoteCommentRequest,
+	getHabitVoteCommentsRequest,
 } from "./habit";
 import {
 	forgotPasswordRequest,
@@ -43,6 +44,7 @@ export const api = {
 		addHabitDayVote: addHabitDayVoteRequest,
 		getHabitVoteChart: getHabitVoteChartRequest,
 		updateVoteComment: updateVoteCommentRequest,
+		getHabitVoteComments: getHabitVoteCommentsRequest,
 	},
 	auth: {
 		login: loginRequest,

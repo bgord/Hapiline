@@ -1,6 +1,6 @@
 import * as Async from "react-async";
 
-import {IDayVote, IVoteChartItem} from "../interfaces/IDayVote";
+import {IDayVote, IVoteChartItem, IVoteComment} from "../interfaces/IDayVote";
 import {IHabit} from "../interfaces/IHabit";
 import {_internal_api} from "./api";
 
@@ -48,3 +48,6 @@ export const updateVoteCommentRequest: Async.DeferFn<IDayVote> = ([id, comment])
 	_internal_api
 		.patch<IDayVote>(`vote/${id}/comment`, {comment})
 		.then(response => response.data);
+
+export const getHabitVoteCommentsRequest: Async.PromiseFn<IVoteComment[]> = ({habitId}) =>
+	_internal_api.get<IVoteComment[]>(`/comments?habitId=${habitId}`).then(response => response.data);
