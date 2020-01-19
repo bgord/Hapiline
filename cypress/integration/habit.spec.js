@@ -875,13 +875,49 @@ describe("Habit", () => {
 	});
 
 	it("comments history list", () => {
-		cy.login("dwight");
+		cy.login("pam");
 		cy.visit(HABITS_URL);
 
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=36",
+			status: 200,
+			response: [
+				{
+					id: 35,
+					vote: "regress",
+					day: "2020-01-19T00:00:00.000Z",
+					comment: "123",
+				},
+				{
+					id: 34,
+					vote: "plateau",
+					day: "2020-01-18T00:00:00.000Z",
+					comment: "124",
+				},
+				{
+					id: 33,
+					vote: "progress",
+					day: "2020-01-17T00:00:00.000Z",
+					comment: "125",
+				},
+			],
+		});
+
 		cy.findAllByText("More")
-			.first()
+			.eq(5)
 			.click();
 
 		cy.findByText("Vote comments");
+
+		cy.findByText("2020-01-19 (Sun)");
+		cy.findByDisplayValue("123").should("be.disabled");
+
+		cy.findByText("2020-01-18 (Sat)");
+		cy.findByDisplayValue("124").should("be.disabled");
+
+		cy.findByText("2020-01-17 (Fri)");
+		cy.findByDisplayValue("125").should("be.disabled");
 	});
 });
