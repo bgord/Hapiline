@@ -4,6 +4,7 @@ const {
 	assertInvalidSession,
 	assertAccessDenied,
 	assertValidationError,
+	assertUnprocessableEntity,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
@@ -93,6 +94,17 @@ test("validation", async ({client}) => {
 
 		assertValidationError({response, argErrors});
 	}
+});
+
+test("checks if habit exists", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(LIST_COMMENTS_URL + "?habitId=666")
+		.loginVia(jim)
+		.end();
+
+	assertUnprocessableEntity(response);
 });
 
 test("checks if user has access to the habit", async ({client}) => {

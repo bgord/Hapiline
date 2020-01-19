@@ -23,6 +23,7 @@ class VoteCommentController {
 
 		const habit = await Habit.find(habitId);
 
+		if (!habit) return response.unprocessableEntity();
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
 		return response.send();
