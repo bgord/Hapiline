@@ -831,4 +831,15 @@ describe("Habit", () => {
 
 		cy.findAllByText("Habit description couldn't be changed");
 	});
+
+	it.only("comments history", () => {
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findAllByText("More")
+			.first()
+			.click();
+
+		cy.findByText("Vote comments");
+	});
 });
