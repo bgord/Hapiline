@@ -89,9 +89,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							className="flex items-baseline ml-4 mt-8"
 						>
 							<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(new Date(habit?.created_at))}</dd>
+							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.created_at)}</dd>
 							<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(new Date(habit?.updated_at))}</dd>
+							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
 						</dl>
 						<div
 							className="text-green-600 uppercase text-sm font-bold ml-2"

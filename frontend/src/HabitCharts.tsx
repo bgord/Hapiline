@@ -93,7 +93,7 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit
 	habitId,
 	...rest
 }) => {
-	const date = formatDay(new Date(day));
+	const date = formatDay(day);
 	const bgColor = voteToBgColor[vote ?? "plateau"];
 	const title = `${date} - ${vote ?? "no vote"}`;
 	return (
