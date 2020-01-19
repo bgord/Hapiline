@@ -12,11 +12,7 @@ type DayDialogSummaryProps = DayVoteStats & {
 	day: string;
 };
 
-export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElements["div"]> = ({
-	day,
-	className = "",
-	...stats
-}) => {
+export const DaySummaryChart: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
 	const habits = useHabits();
 	const howManyHabits = getHabitsAvailableAtThisDay(habits, day).length;
 
@@ -39,8 +35,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${howManyHabits} (${progressVotesPercentage}%)`;
 
 	return (
-		<div className={`flex justify-end pl-0 text-sm my-8 ${className}`}>
-			<div className="flex p-1 flex-1">
+		<>
+			<div className={`flex p-1 pl-0 flex-1`}>
 				<div
 					title={noVotesCellTitle}
 					style={{flexBasis: `${noVotesPercentage}%`}}
@@ -62,13 +58,18 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					className={voteToBgColor.get("progress")}
 				/>
 			</div>
-			<Stat count={stats.noVotesCountStats} sign="?" />
-			<Stat count={stats.regressVotesCountStats} sign="-" />
-			<Stat count={stats.plateauVotesCountStats} sign="=" />
-			<Stat count={stats.progressVotesCountStats} sign="+" />
-		</div>
+		</>
 	);
 };
+
+export const DaySummaryStats: React.FC<DayVoteStats> = ({...stats}) => (
+	<>
+		<Stat count={stats.noVotesCountStats} sign="?" />
+		<Stat count={stats.regressVotesCountStats} sign="-" />
+		<Stat count={stats.plateauVotesCountStats} sign="=" />
+		<Stat count={stats.progressVotesCountStats} sign="+" />
+	</>
+);
 
 export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
 	const habits = useHabits();

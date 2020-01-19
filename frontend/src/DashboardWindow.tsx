@@ -3,7 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
-import {DaySummaryChart} from "./DayDialogSummary";
+import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -69,7 +69,10 @@ export const DashboardWindow = () => {
 					{habits.length > 0 && (
 						<>
 							<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-							<DaySummaryChart className="mt-2" day={currentDate} {...stats} />
+							<div className="flex mt-3">
+								<DaySummaryChart day={currentDate} {...stats} />
+								<DaySummaryStats day={currentDate} {...stats} />
+							</div>
 						</>
 					)}
 				</Async.IfFulfilled>
