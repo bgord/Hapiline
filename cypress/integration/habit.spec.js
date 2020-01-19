@@ -359,6 +359,13 @@ describe("Habit", () => {
 			response: [],
 		});
 
+		cy.route({
+			method: "GET",
+			url: "/api/v1/comments?habitId=1",
+			status: 200,
+			response: [],
+		});
+
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
@@ -919,5 +926,9 @@ describe("Habit", () => {
 
 		cy.findByText("2020-01-17 (Fri)");
 		cy.findByDisplayValue("125").should("be.disabled");
+
+		cy.findByTitle("2020-01-19 - regress").click();
+
+		cy.url().should("contain", "/calendar?preview_day=2020-01-19&highlighted_habit_id=36");
 	});
 });

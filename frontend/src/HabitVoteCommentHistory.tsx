@@ -43,16 +43,14 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 									<Link
 										to={constructUrl("calendar", {
 											preview_day: formatDay(voteComment.day),
-											highlighted_habit_id: voteComment.habit_id.toString(),
+											highlighted_habit_id: voteComment?.habit_id?.toString(),
 										})}
 										className={`${voteToBgColor.get(voteComment.vote)} px-2 ml-4`}
 									>
 										{voteComment.vote?.toUpperCase() ?? "NO VOTE"}
 									</Link>
 								</div>
-								<textarea disabled className="w-full border p-1 mt-1">
-									{voteComment.comment}
-								</textarea>
+								<textarea value={voteComment.comment} disabled className="w-full border p-1 mt-1" />
 							</li>
 						))}
 					</ul>
