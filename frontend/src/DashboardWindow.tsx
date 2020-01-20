@@ -52,14 +52,14 @@ export const DashboardWindow = () => {
 
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
-			<header className="flex w-full">
+			<header className="flex items-baseline w-full">
 				<h1 className="text-xl font-bold">Hello!</h1>
-				<BareButton onClick={redirectToCurrentDay} className="ml-auto bg-blue-300">
+				<BareButton onClick={redirectToCurrentDay} className="ml-auto bg-blue-300 p-1">
 					View today
 				</BareButton>
 			</header>
-			<ErrorMessage className="mt-8" hidden={!(getDayVotesError && getHabitsError)}>
-				Cannot load dashboard stats now, try again.
+			<ErrorMessage className="mt-8" hidden={!(getDayVotesError || getHabitsError)}>
+				Cannot load dashboard stats now, please try again.
 			</ErrorMessage>
 			<main hidden={getDayVotesError || getHabitsError}>
 				<Async.IfFulfilled state={getDayVotesRequestState}>
