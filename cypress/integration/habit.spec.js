@@ -13,48 +13,64 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
-		cy.findByLabelText("Score").select("positive");
-		cy.findByLabelText("Strength").select("fresh");
-
 		cy.findByText("Add habit").click();
+		cy.url().should("contain", "/habits?subview=add_habit");
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
+			cy.findByLabelText("Score").select("positive");
+			cy.findByLabelText("Strength").select("fresh");
+
+			cy.findByText("Add habit").click();
+		});
+
 		cy.findByText("Habit successfully addedd!");
 
 		cy.tick(10000);
 
 		cy.findByText("Habit successfully addedd!").should("not.exist");
 
-		cy.findByLabelText("Habit").should("have.value", "");
-		cy.findByLabelText("Score").should("have.value", "positive");
-		cy.findByLabelText("Strength").should("have.value", "established");
+		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit").should("have.value", "");
+			cy.findByLabelText("Score").should("have.value", "positive");
+			cy.findByLabelText("Strength").should("have.value", "established");
 
-		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
-		cy.findByLabelText("Score").select("positive");
-		cy.findByLabelText("Strength").select("fresh");
+			cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
+			cy.findByLabelText("Score").select("positive");
+			cy.findByLabelText("Strength").select("fresh");
 
-		cy.findByText("Add habit").click();
-		cy.findByText("Given habit already exists.");
+			cy.findByText("Add habit").click();
 
-		cy.findByLabelText("Habit")
-			.clear()
-			.type("Go to sleep at 9:30 AM");
-		cy.findByLabelText("Score").select("positive");
-		cy.findByLabelText("Strength").select("fresh");
+			cy.findByText("Given habit already exists.");
 
-		cy.findByText("Add habit").click();
+			cy.findByLabelText("Habit")
+				.clear()
+				.type("Go to sleep at 9:30 AM");
+			cy.findByLabelText("Score").select("positive");
+			cy.findByLabelText("Strength").select("fresh");
+
+			cy.findByText("Add habit").click();
+
+			cy.findByText("×").click();
+		});
+
 		cy.findByText("Habit successfully addedd!");
 
 		cy.findByText("Go to sleep at 9:30 AM");
 
-		cy.findByLabelText("Habit")
-			.clear()
-			.type("That's too long");
-		cy.findByLabelText("Score").select("positive");
-		cy.findByLabelText("Strength").select("fresh");
-		// 52 * 20 chars = 1040, which is grater than 1024
-		cy.findByPlaceholderText("Write something...").type("That's what she said".repeat(52));
 		cy.findByText("Add habit").click();
-		cy.findByText("Description must be max of 1024 characters.");
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit")
+				.clear()
+				.type("That's too long");
+			cy.findByLabelText("Score").select("positive");
+			cy.findByLabelText("Strength").select("fresh");
+			// 52 * 20 chars = 1040, which is grater than 1024
+			cy.findByPlaceholderText("Write something...").type("That's what she said".repeat(52));
+			cy.findByText("Add habit").click();
+			cy.findByText("Description must be max of 1024 characters.");
+		});
 	});
 
 	it("500 while adding an item", () => {
@@ -74,11 +90,16 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
-		cy.findByLabelText("Score").select("positive");
 		cy.findByText("Add habit").click();
 
-		cy.findByText(errorMessage);
+		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
+			cy.findByLabelText("Score").select("positive");
+			cy.findByText("Add habit").click();
+
+			cy.findByText(errorMessage);
+		});
+
 		cy.findByText("Habit couldn't be added.");
 	});
 

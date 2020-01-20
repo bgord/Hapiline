@@ -7,6 +7,7 @@ import {HabitList} from "./HabitList";
 import {InfoMessage} from "./InfoMessage";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
+import {useQueryParam} from "./hooks/useQueryParam";
 
 export const HabitsWindow = () => {
 	const habits = useHabits();
@@ -14,18 +15,31 @@ export const HabitsWindow = () => {
 
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
 
+	const [subview, updateSubviewQueryParam] = useQueryParam("subview");
+
+	function openAddFormDialog() {
+		updateSubviewQueryParam("add_habit");
+	}
+
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto max-w-4xl">
-			<AddHabitForm />
+			<button onClick={openAddFormDialog} className="btn btn-blue ml-auto h-10 mt-4" type="button">
+				Add habit
+			</button>
+
+			{subview === "add_habit" && <AddHabitForm />}
+
 			<Async.IfRejected state={getHabitsRequestState}>
 				<ErrorMessage className="mt-4 text-center">{errorMessage}</ErrorMessage>
 			</Async.IfRejected>
+
 			<Async.IfFulfilled state={getHabitsRequestState}>
-				{!habits.length && (
+				{habits.length === 0 && (
 					<InfoMessage className="pb-4 mr-auto">
 						Seems you haven't added any habits yet.
 					</InfoMessage>
 				)}
+
 				{habits.length > 0 && <HabitList />}
 			</Async.IfFulfilled>
 		</section>
