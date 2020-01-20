@@ -11,6 +11,7 @@ import {useErrorNotification, useSuccessNotification} from "./contexts/notificat
 import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
+import {useQueryParam} from "./hooks/useQueryParam";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -24,6 +25,8 @@ export const HabitList: React.FC = () => {
 		onResolve: () => triggerSuccessNotification("Habits reordered successfully!"),
 		onReject: () => triggerErrorNotification("Error while changing order."),
 	});
+
+	const [, updateSubviewQueryParam] = useQueryParam("subview");
 
 	const habitStrengthFilter = useHabitStrengthFilter();
 	const habitScoreFilter = useHabitScoreFilter();
@@ -61,8 +64,21 @@ export const HabitList: React.FC = () => {
 		habitStrengthFilter.value !== "all-strengths" ||
 		habitSearch.value !== "";
 
+	function openAddFormDialog() {
+		updateSubviewQueryParam("add_habit");
+	}
+
 	return (
 		<>
+			<div className="ml-auto">
+				<button
+					onClick={openAddFormDialog}
+					className="btn btn-blue ml-auto h-10 mt-4"
+					type="button"
+				>
+					Add habit
+				</button>
+			</div>
 			<div className="flex w-full mt-16 mb-6">
 				<HabitScoreFilters.Positive.Input
 					disabled={habitCounts.positive === 0}

@@ -15,18 +15,10 @@ export const HabitsWindow = () => {
 
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
 
-	const [subview, updateSubviewQueryParam] = useQueryParam("subview");
-
-	function openAddFormDialog() {
-		updateSubviewQueryParam("add_habit");
-	}
+	const [subview] = useQueryParam("subview");
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto max-w-4xl">
-			<button onClick={openAddFormDialog} className="btn btn-blue ml-auto h-10 mt-4" type="button">
-				Add habit
-			</button>
-
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<Async.IfRejected state={getHabitsRequestState}>
