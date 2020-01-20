@@ -1,12 +1,15 @@
+import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {CloseButton} from "./CloseButton";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
 import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
+import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
 
 export const AddHabitForm: React.FC = () => {
@@ -21,12 +24,15 @@ export const AddHabitForm: React.FC = () => {
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerUnexpectedErrorNotification = useErrorNotification();
 
+	const [, updateQueryParams] = useQueryParams();
+
 	const addHabitRequestState = Async.useAsync({
 		deferFn: api.habit.post,
 		onResolve: () => {
 			setName("");
 			setScore("positive");
 			setStrength("established");
+			setDescription("");
 			getHabitsRequestState.reload();
 			triggerSuccessNotification("Habit successfully addedd!");
 		},
@@ -42,8 +48,23 @@ export const AddHabitForm: React.FC = () => {
 	const nameInlineErrorMessage = getArgErrorMessage("name");
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
+	function hideAddFormDialog() {
+		updateQueryParams("habits", {});
+	}
+
 	return (
-		<>
+		<Dialog
+			aria-label="Add new habit"
+			onDismiss={hideAddFormDialog}
+			className="overflow-auto h-full"
+			style={{
+				maxWidth: "1000px",
+				maxHeight: "500px",
+			}}
+		>
+			<div className="flex justify-end items-baseline mb-8">
+				<CloseButton onClick={hideAddFormDialog} />
+			</div>
 			<form
 				onSubmit={event => {
 					event.preventDefault();
@@ -108,6 +129,7 @@ export const AddHabitForm: React.FC = () => {
 							Description (optional)
 						</label>
 						<textarea
+							rows={3}
 							value={description}
 							onChange={event => setDescription(event.target.value)}
 							name="description"
@@ -128,6 +150,6 @@ export const AddHabitForm: React.FC = () => {
 					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && errorMessage}
 				</ErrorMessage>
 			</Async.IfRejected>
-		</>
+		</Dialog>
 	);
 };
