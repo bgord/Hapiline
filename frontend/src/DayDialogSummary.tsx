@@ -39,36 +39,39 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${howManyHabits} (${progressVotesPercentage}%)`;
 
 	return (
-		<div className={`flex justify-end pl-0 text-sm my-8 ${className}`}>
-			<div className="flex p-1 flex-1">
-				<div
-					title={noVotesCellTitle}
-					style={{flexBasis: `${noVotesPercentage}%`}}
-					className={voteToBgColor.get(null)}
-				/>
-				<div
-					title={regressVotesCellTitle}
-					style={{flexBasis: `${regressVotesPercentage}%`}}
-					className={voteToBgColor.get("regress")}
-				/>
-				<div
-					title={plateauVotesCellTitle}
-					style={{flexBasis: `${plateauVotesPercentage}%`}}
-					className={voteToBgColor.get("plateau")}
-				/>
-				<div
-					title={progressVotesCellTitle}
-					style={{flexBasis: `${progressVotesPercentage}%`}}
-					className={voteToBgColor.get("progress")}
-				/>
-			</div>
-			<Stat count={stats.noVotesCountStats} sign="?" />
-			<Stat count={stats.regressVotesCountStats} sign="-" />
-			<Stat count={stats.plateauVotesCountStats} sign="=" />
-			<Stat count={stats.progressVotesCountStats} sign="+" />
+		<div className={`flex w-full ${className}`}>
+			<div
+				title={noVotesCellTitle}
+				style={{flexBasis: `${noVotesPercentage}%`}}
+				className={voteToBgColor.get(null)}
+			/>
+			<div
+				title={regressVotesCellTitle}
+				style={{flexBasis: `${regressVotesPercentage}%`}}
+				className={voteToBgColor.get("regress")}
+			/>
+			<div
+				title={plateauVotesCellTitle}
+				style={{flexBasis: `${plateauVotesPercentage}%`}}
+				className={voteToBgColor.get("plateau")}
+			/>
+			<div
+				title={progressVotesCellTitle}
+				style={{flexBasis: `${progressVotesPercentage}%`}}
+				className={voteToBgColor.get("progress")}
+			/>
 		</div>
 	);
 };
+
+export const DaySummaryStats: React.FC<DayVoteStats> = ({...stats}) => (
+	<>
+		<Stat count={stats.noVotesCountStats} sign="?" />
+		<Stat count={stats.regressVotesCountStats} sign="-" />
+		<Stat count={stats.plateauVotesCountStats} sign="=" />
+		<Stat count={stats.progressVotesCountStats} sign="+" />
+	</>
+);
 
 export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
 	const habits = useHabits();

@@ -6,7 +6,7 @@ import React from "react";
 import {BareButton} from "./BareButton";
 import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
-import {DaySummaryChart, HabitsAddedAtGivenDay} from "./DayDialogSummary";
+import {DaySummaryChart, HabitsAddedAtGivenDay, DaySummaryStats} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {IDayVote} from "./interfaces/IDayVote";
@@ -81,7 +81,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					</span>
 				</SuccessMessage>
 			)}
-			<DaySummaryChart day={day} {...stats} />
+			<div className="flex mt-6 items-center">
+				<DaySummaryChart className="h-4" day={day} {...stats} />
+				<DaySummaryStats day={day} {...stats} />
+			</div>
 			<div className="flex my-8">
 				<HabitVoteFilters.Voted.Input
 					value={habitVoteFilter.value}

@@ -15,7 +15,7 @@ const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
 	gridTemplateColumns: "repeat(7, 200px)",
 	gridTemplateRows: "repeat(6, 120px)",
-	gridGap: "3px",
+	gridGap: "10px",
 };
 
 export const Calendar: React.FC = () => {

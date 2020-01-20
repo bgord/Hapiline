@@ -3,7 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
-import {DaySummaryChart} from "./DayDialogSummary";
+import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -52,14 +52,14 @@ export const DashboardWindow = () => {
 
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
-			<header className="flex w-full">
+			<header className="flex items-baseline w-full">
 				<h1 className="text-xl font-bold">Hello!</h1>
-				<BareButton onClick={redirectToCurrentDay} className="ml-auto bg-blue-300">
+				<BareButton onClick={redirectToCurrentDay} className="ml-auto bg-blue-300 p-1">
 					View today
 				</BareButton>
 			</header>
-			<ErrorMessage className="mt-8" hidden={!(getDayVotesError && getHabitsError)}>
-				Cannot load dashboard stats now, try again.
+			<ErrorMessage className="mt-8" hidden={!(getDayVotesError || getHabitsError)}>
+				Cannot load dashboard stats now, please try again.
 			</ErrorMessage>
 			<main hidden={getDayVotesError || getHabitsError}>
 				<Async.IfFulfilled state={getDayVotesRequestState}>
@@ -69,7 +69,10 @@ export const DashboardWindow = () => {
 					{habits.length > 0 && (
 						<>
 							<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-							<DaySummaryChart className="mt-2" day={currentDate} {...stats} />
+							<div className="flex items-center mt-3">
+								<DaySummaryChart className="h-4" day={currentDate} {...stats} />
+								<DaySummaryStats day={currentDate} {...stats} />
+							</div>
 						</>
 					)}
 				</Async.IfFulfilled>
