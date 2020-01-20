@@ -164,6 +164,8 @@ describe("Habit", () => {
 			});
 		});
 
+		cy.findByText("Show filters").click();
+
 		cy.findByLabelText("Positive (1)").should("not.be.checked");
 		cy.findByLabelText("Neutral (1)").should("not.be.checked");
 		cy.findByLabelText("Negative (1)").should("not.be.checked");
@@ -245,6 +247,8 @@ describe("Habit", () => {
 		cy.findByText("Nevermind, don't delete").click();
 		cy.findByText("0 lorem");
 
+		cy.findByText("Show filters").click();
+
 		cy.findByText("Positive (4)");
 		cy.findByText("Neutral (3)");
 		cy.findByText("Negative (3)");
@@ -256,6 +260,8 @@ describe("Habit", () => {
 		cy.findByText("Yes, delete").click();
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
+
+		cy.findByText("Show filters").click();
 
 		cy.findByText("Positive (3)");
 		cy.findByText("Neutral (3)");
