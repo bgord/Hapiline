@@ -30,6 +30,10 @@ describe("Dashboard", () => {
 		cy.findByText("-1");
 		cy.findByText("=1");
 		cy.findByText("+2");
+		cy.findByTitle("No votes: 5/10 (50.00%)");
+		cy.findByTitle("Regress: 1/10 (10.00%)");
+		cy.findByTitle("Plateau: 1/10 (10.00%)");
+		cy.findByTitle("Progress: 2/10 (20.00%)");
 
 		cy.server();
 		cy.route({
@@ -45,6 +49,7 @@ describe("Dashboard", () => {
 		cy.findByText("-0");
 		cy.findByText("=0");
 		cy.findByText("+0");
+		cy.findByTitle("No votes: 10/10 (100.00%)");
 
 		cy.route({
 			method: "GET",
@@ -59,6 +64,7 @@ describe("Dashboard", () => {
 		cy.findByText("-0");
 		cy.findByText("=0");
 		cy.findByText("+10");
+		cy.findByTitle("Progress: 10/10 (100.00%)");
 
 		cy.route({
 			method: "GET",
@@ -113,6 +119,6 @@ describe("Dashboard", () => {
 		cy.findByText("Couldn't fetch habit votes.");
 		cy.findByText("Couldn't fetch habit list.");
 
-		cy.findByText("Cannot load dashboard stats now, try again.");
+		cy.findByText("Cannot load dashboard stats now, please try again.");
 	});
 });

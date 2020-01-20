@@ -69,8 +69,8 @@ export const DashboardWindow = () => {
 					{habits.length > 0 && (
 						<>
 							<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-							<div className="flex mt-3">
-								<DaySummaryChart day={currentDate} {...stats} />
+							<div className="flex items-center mt-3">
+								<DaySummaryChart className="h-4" day={currentDate} {...stats} />
 								<DaySummaryStats day={currentDate} {...stats} />
 							</div>
 						</>

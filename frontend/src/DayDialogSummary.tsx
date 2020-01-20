@@ -12,7 +12,11 @@ type DayDialogSummaryProps = DayVoteStats & {
 	day: string;
 };
 
-export const DaySummaryChart: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
+export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElements["div"]> = ({
+	day,
+	className = "",
+	...stats
+}) => {
 	const habits = useHabits();
 	const howManyHabits = getHabitsAvailableAtThisDay(habits, day).length;
 
@@ -35,30 +39,28 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps> = ({day, ...stats}
 	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${howManyHabits} (${progressVotesPercentage}%)`;
 
 	return (
-		<>
-			<div className={`flex p-1 pl-0 flex-1`}>
-				<div
-					title={noVotesCellTitle}
-					style={{flexBasis: `${noVotesPercentage}%`}}
-					className={voteToBgColor.get(null)}
-				/>
-				<div
-					title={regressVotesCellTitle}
-					style={{flexBasis: `${regressVotesPercentage}%`}}
-					className={voteToBgColor.get("regress")}
-				/>
-				<div
-					title={plateauVotesCellTitle}
-					style={{flexBasis: `${plateauVotesPercentage}%`}}
-					className={voteToBgColor.get("plateau")}
-				/>
-				<div
-					title={progressVotesCellTitle}
-					style={{flexBasis: `${progressVotesPercentage}%`}}
-					className={voteToBgColor.get("progress")}
-				/>
-			</div>
-		</>
+		<div className={`flex w-full ${className}`}>
+			<div
+				title={noVotesCellTitle}
+				style={{flexBasis: `${noVotesPercentage}%`}}
+				className={voteToBgColor.get(null)}
+			/>
+			<div
+				title={regressVotesCellTitle}
+				style={{flexBasis: `${regressVotesPercentage}%`}}
+				className={voteToBgColor.get("regress")}
+			/>
+			<div
+				title={plateauVotesCellTitle}
+				style={{flexBasis: `${plateauVotesPercentage}%`}}
+				className={voteToBgColor.get("plateau")}
+			/>
+			<div
+				title={progressVotesCellTitle}
+				style={{flexBasis: `${progressVotesPercentage}%`}}
+				className={voteToBgColor.get("progress")}
+			/>
+		</div>
 	);
 };
 

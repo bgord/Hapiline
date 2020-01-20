@@ -896,18 +896,21 @@ describe("Habit", () => {
 					vote: "regress",
 					day: "2020-01-19T00:00:00.000Z",
 					comment: "123",
+					habit_id: 36,
 				},
 				{
 					id: 34,
 					vote: "plateau",
 					day: "2020-01-18T00:00:00.000Z",
 					comment: "124",
+					habit_id: 36,
 				},
 				{
 					id: 33,
 					vote: "progress",
 					day: "2020-01-17T00:00:00.000Z",
 					comment: "125",
+					habit_id: 36,
 				},
 			],
 		});
@@ -927,7 +930,7 @@ describe("Habit", () => {
 		cy.findByText("2020-01-17 (Fri)");
 		cy.findByDisplayValue("125").should("be.disabled");
 
-		cy.findByTitle("2020-01-19 - regress").click();
+		cy.findByText("REGRESS").click();
 
 		cy.url().should("contain", "/calendar?preview_day=2020-01-19&highlighted_habit_id=36");
 	});

@@ -97,6 +97,10 @@ describe("Calendar", () => {
 			cy.get("li")
 				.eq(currentDate - 1)
 				.within(() => {
+					cy.findByTitle("No votes: 6/10 (60.00%)");
+					cy.findByTitle("Regress: 1/10 (10.00%)");
+					cy.findByTitle("Plateau: 1/10 (10.00%)");
+					cy.findByTitle("Progress: 2/10 (20.00%)");
 					cy.findByText("Show day").click({force: true});
 				});
 		});

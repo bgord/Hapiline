@@ -81,8 +81,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					</span>
 				</SuccessMessage>
 			)}
-			<div className="flex mt-6">
-				<DaySummaryChart day={day} {...stats} />
+			<div className="flex mt-6 items-center">
+				<DaySummaryChart className="h-4" day={day} {...stats} />
 				<DaySummaryStats day={day} {...stats} />
 			</div>
 			<div className="flex my-8">

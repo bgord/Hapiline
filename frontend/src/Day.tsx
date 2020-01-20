@@ -4,8 +4,10 @@ import useHover from "@react-hook/hover";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
+import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
+import {formatDay} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
@@ -40,17 +42,20 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 
 	return (
 		<li
-			className="flex flex-col justify-between align-center bg-green-100 hover:bg-green-200"
+			className="flex flex-col bg-green-100 hover:bg-green-200"
 			style={styles}
 			ref={ref as React.Ref<HTMLLIElement>}
 		>
+			{isDayDialogAvailable && (
+				<DaySummaryChart className="h-2" day={formatDay(thisDay)} {...stats} />
+			)}
 			<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
 			{isDayDialogAvailable && (
 				<>
 					<BareButton hidden={!isHovering} onClick={openDialog}>
 						Show day
 					</BareButton>
-					<div className="flex justify-end p-2 text-sm">
+					<div className="flex justify-end p-2 text-sm mt-auto">
 						<span hidden={!stats.createdHabitsCount} className="mr-auto">
 							NEW: {stats.createdHabitsCount}
 						</span>

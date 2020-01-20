@@ -35,7 +35,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 				{voteComments.length > 0 && (
 					<ul className="my-8">
 						{voteComments.map(voteComment => (
-							<HabitVoteComment {...voteComment} />
+							<HabitVoteComment key={voteComment.id} {...voteComment} />
 						))}
 					</ul>
 				)}
