@@ -12,6 +12,7 @@ import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilte
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
+import {useToggle} from "./hooks/useToggle";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -27,6 +28,8 @@ export const HabitList: React.FC = () => {
 	});
 
 	const [, updateSubviewQueryParam] = useQueryParam("subview");
+
+	const [areFiltersVisible, , , toggleFilters] = useToggle();
 
 	const habitStrengthFilter = useHabitStrengthFilter();
 	const habitScoreFilter = useHabitScoreFilter();
@@ -68,99 +71,111 @@ export const HabitList: React.FC = () => {
 		updateSubviewQueryParam("add_habit");
 	}
 
+	function resetAllFilters() {
+		habitScoreFilter.reset();
+		habitStrengthFilter.reset();
+		habitSearch.clearPhrase();
+	}
+
 	return (
 		<>
-			<div className="ml-auto">
+			<div className="flex justify-end items-end w-full">
+				<h1 className="text-xl font-bold mr-auto pl-2">Habit list</h1>
 				<button
-					onClick={openAddFormDialog}
-					className="btn btn-blue ml-auto h-10 mt-4"
+					onClick={() => {
+						resetAllFilters();
+						toggleFilters();
+					}}
+					className="btn bg-white color-blue-300 h-10 mt-4 mr-4"
 					type="button"
 				>
+					{areFiltersVisible ? "Hide filters" : "Show filters"}
+				</button>
+				<button onClick={openAddFormDialog} className="btn btn-blue h-10 mt-4" type="button">
 					Add habit
 				</button>
 			</div>
-			<div className="flex w-full mt-16 mb-6">
-				<HabitScoreFilters.Positive.Input
-					disabled={habitCounts.positive === 0}
-					value={habitScoreFilter.value}
-					onChange={habitScoreFilter.onChange}
-				/>
-				<HabitScoreFilters.Positive.Label>
-					Positive ({habitCounts.positive})
-				</HabitScoreFilters.Positive.Label>
+			{areFiltersVisible && (
+				<div className="flex w-full mt-10 mb-6">
+					<HabitScoreFilters.Positive.Input
+						disabled={habitCounts.positive === 0}
+						value={habitScoreFilter.value}
+						onChange={habitScoreFilter.onChange}
+					/>
+					<HabitScoreFilters.Positive.Label>
+						Positive ({habitCounts.positive})
+					</HabitScoreFilters.Positive.Label>
 
-				<HabitScoreFilters.Neutral.Input
-					disabled={habitCounts.neutral === 0}
-					value={habitScoreFilter.value}
-					onChange={habitScoreFilter.onChange}
-				/>
-				<HabitScoreFilters.Neutral.Label>
-					Neutral ({habitCounts.neutral})
-				</HabitScoreFilters.Neutral.Label>
+					<HabitScoreFilters.Neutral.Input
+						disabled={habitCounts.neutral === 0}
+						value={habitScoreFilter.value}
+						onChange={habitScoreFilter.onChange}
+					/>
+					<HabitScoreFilters.Neutral.Label>
+						Neutral ({habitCounts.neutral})
+					</HabitScoreFilters.Neutral.Label>
 
-				<HabitScoreFilters.Negative.Input
-					disabled={habitCounts.negative === 0}
-					value={habitScoreFilter.value}
-					onChange={habitScoreFilter.onChange}
-				/>
-				<HabitScoreFilters.Negative.Label>
-					Negative ({habitCounts.negative})
-				</HabitScoreFilters.Negative.Label>
+					<HabitScoreFilters.Negative.Input
+						disabled={habitCounts.negative === 0}
+						value={habitScoreFilter.value}
+						onChange={habitScoreFilter.onChange}
+					/>
+					<HabitScoreFilters.Negative.Label>
+						Negative ({habitCounts.negative})
+					</HabitScoreFilters.Negative.Label>
 
-				<HabitScoreFilters.All.Input
-					value={habitScoreFilter.value}
-					onChange={habitScoreFilter.onChange}
-				/>
-				<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
+					<HabitScoreFilters.All.Input
+						value={habitScoreFilter.value}
+						onChange={habitScoreFilter.onChange}
+					/>
+					<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
 
-				<BareButton
-					onClick={() => {
-						habitScoreFilter.reset();
-						habitStrengthFilter.reset();
-						habitSearch.clearPhrase();
-					}}
-					className="ml-auto"
-				>
-					Reset filters
-				</BareButton>
-			</div>
-			<div className="flex w-full mb-6">
-				<HabitStrengthFilters.Established.Input
-					value={habitStrengthFilter.value}
-					onChange={habitStrengthFilter.onChange}
-					disabled={habitCounts.established === 0}
-				/>
-				<HabitStrengthFilters.Established.Label>
-					Established ({habitCounts.established})
-				</HabitStrengthFilters.Established.Label>
+					<BareButton onClick={resetAllFilters} className="ml-auto">
+						Reset filters
+					</BareButton>
+				</div>
+			)}
+			{areFiltersVisible && (
+				<div className="flex w-full mb-6">
+					<HabitStrengthFilters.Established.Input
+						value={habitStrengthFilter.value}
+						onChange={habitStrengthFilter.onChange}
+						disabled={habitCounts.established === 0}
+					/>
+					<HabitStrengthFilters.Established.Label>
+						Established ({habitCounts.established})
+					</HabitStrengthFilters.Established.Label>
 
-				<HabitStrengthFilters.Developing.Input
-					value={habitStrengthFilter.value}
-					onChange={habitStrengthFilter.onChange}
-					disabled={habitCounts.developing === 0}
-				/>
-				<HabitStrengthFilters.Developing.Label>
-					Developing ({habitCounts.developing})
-				</HabitStrengthFilters.Developing.Label>
+					<HabitStrengthFilters.Developing.Input
+						value={habitStrengthFilter.value}
+						onChange={habitStrengthFilter.onChange}
+						disabled={habitCounts.developing === 0}
+					/>
+					<HabitStrengthFilters.Developing.Label>
+						Developing ({habitCounts.developing})
+					</HabitStrengthFilters.Developing.Label>
 
-				<HabitStrengthFilters.Fresh.Input
-					value={habitStrengthFilter.value}
-					onChange={habitStrengthFilter.onChange}
-					disabled={habitCounts.fresh === 0}
-				/>
-				<HabitStrengthFilters.Fresh.Label>
-					Fresh ({habitCounts.fresh})
-				</HabitStrengthFilters.Fresh.Label>
+					<HabitStrengthFilters.Fresh.Input
+						value={habitStrengthFilter.value}
+						onChange={habitStrengthFilter.onChange}
+						disabled={habitCounts.fresh === 0}
+					/>
+					<HabitStrengthFilters.Fresh.Label>
+						Fresh ({habitCounts.fresh})
+					</HabitStrengthFilters.Fresh.Label>
 
-				<HabitStrengthFilters.All.Input
-					value={habitStrengthFilter.value}
-					onChange={habitStrengthFilter.onChange}
-				/>
-				<HabitStrengthFilters.All.Label>
-					All strengths ({habitCounts.all})
-				</HabitStrengthFilters.All.Label>
-			</div>
-			<div className="flex w-full items-center mr-auto mb-6 ml-2">
+					<HabitStrengthFilters.All.Input
+						value={habitStrengthFilter.value}
+						onChange={habitStrengthFilter.onChange}
+					/>
+					<HabitStrengthFilters.All.Label>
+						All strengths ({habitCounts.all})
+					</HabitStrengthFilters.All.Label>
+				</div>
+			)}
+			<div
+				className={`flex w-full items-center mr-auto mb-6 ml-2 mt-${areFiltersVisible ? 4 : 12}`}
+			>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
 				<div className="ml-auto mr-4">Results: {howManyResults}</div>
