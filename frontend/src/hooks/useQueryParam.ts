@@ -1,7 +1,7 @@
 import {useHistory} from "react-router-dom";
 import qs from "qs";
 
-type QueryParamsObject = {[index: string]: string | undefined};
+type QueryParamsObject = {[index: string]: string};
 
 export const constructQueryParams = (payload: QueryParamsObject) =>
 	qs.stringify(payload, {addQueryPrefix: true});
