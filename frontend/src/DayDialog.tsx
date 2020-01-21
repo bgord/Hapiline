@@ -69,7 +69,6 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 	function clearHighlightedHabitId() {
 		const {highlighted_habit_id, ...rest} = queryParams;
-
 		updateQueryParams("calendar", {...rest});
 	}
 
@@ -128,7 +127,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					onClick={() => {
 						habitVoteFilter.reset();
 						habitSearch.clearPhrase();
-						clearHighlightedHabitId();
+						updateQueryParams("calendar", {preview_day: queryParams.preview_day});
 					}}
 					className="ml-auto"
 				>

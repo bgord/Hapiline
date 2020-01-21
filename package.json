@@ -117,7 +117,15 @@
       "@typescript-eslint/no-unused-vars": [
         2,
         {
-          "args": "none"
+          "args": "none",
+          "ignoreRestSiblings": true
+        }
+      ],
+      "no-unused-vars": [
+        2,
+        {
+          "args": "none",
+          "ignoreRestSiblings": true
         }
       ],
       "sonarjs/no-identical-functions": 1,
