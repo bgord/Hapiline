@@ -17,6 +17,7 @@ import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabitVoteFilter, HabitVoteFilters} from "./hooks/useHabitVoteFilter";
 import {useHabits} from "./contexts/habits-context";
+import {useQueryParams} from "./hooks/useQueryParam";
 
 type DayDialogProps = DayVoteStats & {
 	refreshCalendar: VoidFunction;
@@ -31,7 +32,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		day,
 		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
 	});
-	const habitSearch = useHabitSearch();
+
+	const [queryParams, updateQueryParams] = useQueryParams();
+	const highlightedHabitId = queryParams.highlighted_habit_id;
+
+	const possiblyHighlightedHabitName = habits.find(habit => habit.id === Number(highlightedHabitId))
+		?.name;
+
+	const habitSearch = useHabitSearch(possiblyHighlightedHabitName);
 	const habitVoteFilter = useHabitVoteFilter();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
@@ -57,6 +65,12 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 
 	function dismissDialog() {
 		history.push("/calendar");
+	}
+
+	function clearHighlightedHabitId() {
+		const {highlighted_habit_id, ...rest} = queryParams;
+
+		updateQueryParams("calendar", {...rest});
 	}
 
 	return (
@@ -114,6 +128,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 					onClick={() => {
 						habitVoteFilter.reset();
 						habitSearch.clearPhrase();
+						clearHighlightedHabitId();
 					}}
 					className="ml-auto"
 				>
@@ -122,7 +137,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 			</div>
 			<div className="mb-6">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
+				<BareButton
+					onClick={() => {
+						habitSearch.clearPhrase();
+						clearHighlightedHabitId();
+					}}
+				>
+					Clear
+				</BareButton>
 			</div>
 			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
 			<ul data-testid="day-dialog-habits">

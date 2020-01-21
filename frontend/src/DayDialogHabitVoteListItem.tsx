@@ -15,7 +15,7 @@ import {
 	SaveButton,
 } from "./hooks/useEditableField";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
-import {useQueryParams, constructUrl} from "./hooks/useQueryParam";
+import {constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 
 interface DayDialogHabitVoteListProps {
@@ -35,9 +35,6 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	day,
 	vote_id,
 }) => {
-	const [queryParams, updateQueryParams] = useQueryParams();
-	const highlightedHabitId = queryParams.highlighted_habit_id;
-
 	const [isCommentVisible, , , toggleComment] = useToggle();
 
 	const triggerSuccessNotification = useSuccessNotification();
@@ -63,8 +60,6 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		});
 	}
 
-	const isHabitHighlighted = Number(highlightedHabitId) === habit.id;
-
 	const isCommentToggleEnabled = vote !== null && vote !== undefined;
 	const commentToggleTitle = isCommentToggleEnabled
 		? "Show and edit comment"
@@ -81,19 +76,9 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					>
 						{isCommentVisible ? "⌃" : "⌄"}
 					</BareButton>
-					<BareButton
-						className="mr-4"
-						onClick={() => updateQueryParams("calendar", {preview_day: day})}
-						hidden={!isHabitHighlighted}
-					>
-						Unmark
-					</BareButton>
 					<HabitScore score={habit.score} className="px-1 py-1" />
 					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
-					<Link
-						to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}
-						className={isHabitHighlighted ? "text-blue-600" : ""}
-					>
+					<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
 						{habit.name}
 					</Link>
 				</div>

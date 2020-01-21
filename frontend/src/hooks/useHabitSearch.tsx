@@ -10,7 +10,7 @@ export const useHabitSearch = (defaultValue = "") => {
 		return habit.name.toLowerCase().includes(habitSearchPhrase.toLowerCase());
 	};
 
-	const clearHabitSearchPhrase = () => setHabitSearchPhrase(defaultValue);
+	const clearHabitSearchPhrase = () => setHabitSearchPhrase("");
 	const onHabitSearchPhraseChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setHabitSearchPhrase(event.target.value);
 	};
