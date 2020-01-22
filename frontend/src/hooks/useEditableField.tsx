@@ -29,6 +29,7 @@ type useEditableFieldValueReturnType = [
 export function useEditableFieldValue(
 	updateFn: (value: string) => void,
 	defaultValue: string | null | undefined,
+	allowEmptyString = false,
 ): useEditableFieldValueReturnType {
 	const [value, setValue] = React.useState<string | null | undefined>(() => defaultValue);
 
@@ -41,7 +42,15 @@ export function useEditableFieldValue(
 		setValue(defaultValue || "");
 	}
 	function onUpdate() {
-		if (value && value !== defaultValue) updateFn(value);
+		if (allowEmptyString) {
+			if (value === null || value === undefined || value === defaultValue) return;
+			updateFn(value);
+		}
+
+		if (!allowEmptyString) {
+			if (value === null || value === undefined || value === "" || value === defaultValue) return;
+			updateFn(value);
+		}
 	}
 	return [value, {onClear, onChange, onUpdate}];
 }
