@@ -39,6 +39,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
+
 	const addHabitDayVoteRequestState = Async.useAsync({
 		deferFn: api.habit.addHabitDayVote,
 		onResolve: () => {
@@ -117,6 +118,7 @@ const EditableVoteComment: React.FC<{
 	const textarea = useEditableFieldState();
 
 	const triggerSuccessNotification = useSuccessNotification();
+	const triggerErrorNotification = useErrorNotification();
 
 	const updateVoteCommentRequestState = Async.useAsync({
 		deferFn: api.habit.updateVoteComment,
@@ -125,6 +127,7 @@ const EditableVoteComment: React.FC<{
 			textarea.setIdle();
 			onResolve();
 		},
+		onReject: () => triggerErrorNotification("Couldn't add comment"),
 	});
 
 	const [newComment, newCommentHelpers] = useEditableFieldValue(
