@@ -104,7 +104,14 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 				</div>
 			</li>
 			{isCommentVisible && (
-				<EditableVoteComment comment={comment} voteId={vote_id} onResolve={onResolve} />
+				<EditableVoteComment
+					key={comment ?? undefined}
+					habitId={habit.id}
+					comment={comment}
+					voteId={vote_id}
+					onResolve={onResolve}
+					day={day}
+				/>
 			)}
 		</>
 	);
@@ -112,27 +119,50 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 const EditableVoteComment: React.FC<{
 	comment: IDayVote["comment"];
+	habitId: IHabit["id"];
 	voteId: IDayVote["vote_id"] | undefined;
 	onResolve: VoidFunction;
-}> = ({comment, voteId, onResolve}) => {
+	day: string;
+}> = ({comment, habitId, voteId, onResolve, day}) => {
 	const textarea = useEditableFieldState();
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
 
-	const updateVoteCommentRequestState = Async.useAsync({
-		deferFn: api.habit.updateVoteComment,
+	const responseHandlers = {
 		onResolve: () => {
 			triggerSuccessNotification("Comment added successfully!");
 			textarea.setIdle();
 			onResolve();
 		},
 		onReject: () => triggerErrorNotification("Couldn't add comment"),
+	};
+
+	const updateVoteCommentRequestState = Async.useAsync({
+		deferFn: api.habit.updateVoteComment,
+		...responseHandlers,
+	});
+
+	const addHabitDayVoteRequestState = Async.useAsync({
+		deferFn: api.habit.addHabitDayVote,
+		...responseHandlers,
 	});
 
 	const [newComment, newCommentHelpers] = useEditableFieldValue(
-		changedComment => updateVoteCommentRequestState.run(voteId, changedComment),
+		changedComment => {
+			console.log({newComment});
+			if (voteId) {
+				updateVoteCommentRequestState.run(voteId, changedComment);
+			} else {
+				addHabitDayVoteRequestState.run({
+					day: new Date(day),
+					habit_id: habitId,
+					vote: null,
+				});
+			}
+		},
 		comment,
+		true,
 	);
 
 	return (
