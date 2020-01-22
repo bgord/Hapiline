@@ -60,20 +60,11 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		});
 	}
 
-	const isCommentToggleEnabled = vote !== null && vote !== undefined;
-	const commentToggleTitle = isCommentToggleEnabled
-		? "Show and edit comment"
-		: "Vote to be able to add comment";
-
 	return (
 		<>
 			<li className="flex items-baseline justify-between bg-gray-100 my-2 p-2 mt-4">
 				<div className="flex items-center">
-					<BareButton
-						title={commentToggleTitle}
-						disabled={!isCommentToggleEnabled}
-						onClick={toggleComment}
-					>
+					<BareButton title="Show and edit comment" onClick={toggleComment}>
 						{isCommentVisible ? "⌃" : "⌄"}
 					</BareButton>
 					<HabitScore score={habit.score} className="px-1 py-1" />
@@ -111,7 +102,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					</BareButton>
 				</div>
 			</li>
-			{isCommentVisible && isCommentToggleEnabled && (
+			{isCommentVisible && (
 				<EditableVoteComment comment={comment} voteId={vote_id} onResolve={onResolve} />
 			)}
 		</>
