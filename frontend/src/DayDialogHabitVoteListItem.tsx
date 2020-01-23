@@ -35,6 +35,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	day,
 	vote_id,
 }) => {
+	const textarea = useEditableFieldState();
 	const [isCommentVisible, , , toggleComment] = useToggle();
 
 	const triggerSuccessNotification = useSuccessNotification();
@@ -49,9 +50,40 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		onReject: () => triggerErrorNotification("Error while changing habit vote."),
 	});
 
-	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
-	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
-	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
+	const upsertCommentResponseHandlers = {
+		onResolve: () => {
+			triggerSuccessNotification("Comment added successfully!");
+			textarea.setIdle();
+			onResolve();
+		},
+		onReject: () => triggerErrorNotification("Couldn't add comment"),
+	};
+
+	const updateVoteCommentRequestState = Async.useAsync({
+		deferFn: api.habit.updateVoteComment,
+		...upsertCommentResponseHandlers,
+	});
+
+	const addEmptyHabitDayVoteRequestState = Async.useAsync({
+		deferFn: api.habit.addHabitDayVote,
+		...upsertCommentResponseHandlers,
+	});
+
+	const [newComment, newCommentHelpers] = useEditableFieldValue(
+		changedComment => {
+			if (vote_id) {
+				updateVoteCommentRequestState.run(vote_id, changedComment);
+			} else {
+				addEmptyHabitDayVoteRequestState.run({
+					day: new Date(day),
+					habit_id: habit.id,
+					vote: null,
+				});
+			}
+		},
+		comment,
+		true,
+	);
 
 	function changeVote(type: NonNullable<Vote>) {
 		addHabitDayVoteRequestState.run({
@@ -60,6 +92,10 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 			vote: vote === type ? null : type,
 		});
 	}
+
+	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
+	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
+	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
 
 	return (
 		<>
@@ -104,81 +140,23 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 				</div>
 			</li>
 			{isCommentVisible && (
-				<EditableVoteComment
-					key={comment ?? undefined}
-					habitId={habit.id}
-					comment={comment}
-					voteId={vote_id}
-					onResolve={onResolve}
-					day={day}
-				/>
+				<>
+					<textarea
+						key={comment ?? undefined}
+						onFocus={textarea.setFocused}
+						placeholder="Write something..."
+						className="w-full border p-2"
+						value={newComment ?? undefined}
+						onChange={newCommentHelpers.onChange}
+					/>
+					<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+						Save
+					</SaveButton>
+					<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+						Cancel
+					</CancelButton>
+				</>
 			)}
-		</>
-	);
-};
-
-const EditableVoteComment: React.FC<{
-	comment: IDayVote["comment"];
-	habitId: IHabit["id"];
-	voteId: IDayVote["vote_id"] | undefined;
-	onResolve: VoidFunction;
-	day: string;
-}> = ({comment, habitId, voteId, onResolve, day}) => {
-	const textarea = useEditableFieldState();
-
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
-
-	const responseHandlers = {
-		onResolve: () => {
-			triggerSuccessNotification("Comment added successfully!");
-			textarea.setIdle();
-			onResolve();
-		},
-		onReject: () => triggerErrorNotification("Couldn't add comment"),
-	};
-
-	const updateVoteCommentRequestState = Async.useAsync({
-		deferFn: api.habit.updateVoteComment,
-		...responseHandlers,
-	});
-
-	const addHabitDayVoteRequestState = Async.useAsync({
-		deferFn: api.habit.addHabitDayVote,
-		...responseHandlers,
-	});
-
-	const [newComment, newCommentHelpers] = useEditableFieldValue(
-		changedComment => {
-			if (voteId) {
-				updateVoteCommentRequestState.run(voteId, changedComment);
-			} else {
-				addHabitDayVoteRequestState.run({
-					day: new Date(day),
-					habit_id: habitId,
-					vote: null,
-				});
-			}
-		},
-		comment,
-		true,
-	);
-
-	return (
-		<>
-			<textarea
-				onFocus={textarea.setFocused}
-				placeholder="Write something..."
-				className="w-full border p-2"
-				value={newComment ?? undefined}
-				onChange={newCommentHelpers.onChange}
-			/>
-			<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
-				Save
-			</SaveButton>
-			<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
-				Cancel
-			</CancelButton>
 		</>
 	);
 };
