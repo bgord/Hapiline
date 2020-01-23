@@ -234,15 +234,13 @@ describe("Calendar", () => {
 			cy.findByPlaceholderText("Write something...").should("not.exist");
 
 			cy.findAllByText("⌄")
-				.first()
-				.should("be.disabled");
-
-			cy.findAllByText("⌄")
 				.eq(2)
 				.click();
 			cy.findAllByText("⌄").should("have.length", 9);
 			cy.findByText("⌃").should("have.length", 1);
+
 			cy.findByDisplayValue("loremloremloremloremloremloremlorem");
+
 			cy.findByText("⌃").click();
 			cy.findAllByText("⌄").should("have.length", 10);
 			cy.findByText("⌃").should("not.exist");
@@ -251,16 +249,12 @@ describe("Calendar", () => {
 			cy.findAllByText("⌄")
 				.eq(2)
 				.click();
-			cy.findByPlaceholderText("Write something...").type("xxx");
-			cy.findByPlaceholderText("Write something...").should(
-				"have.value",
-				"loremloremloremloremloremloremloremxxx",
-			);
+			cy.findByDisplayValue("loremloremloremloremloremloremlorem").type("xxx");
+
+			cy.findByDisplayValue("loremloremloremloremloremloremloremxxx");
 			cy.findByText("Cancel").click();
-			cy.findByPlaceholderText("Write something...").should(
-				"have.value",
-				"loremloremloremloremloremloremlorem",
-			);
+
+			cy.findByDisplayValue("loremloremloremloremloremloremlorem");
 
 			cy.findByPlaceholderText("Write something...")
 				.clear()
