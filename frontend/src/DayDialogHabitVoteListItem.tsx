@@ -35,10 +35,12 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	day,
 	vote_id,
 }) => {
+	const textarea = useEditableFieldState();
 	const [isCommentVisible, , , toggleComment] = useToggle();
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerErrorNotification = useErrorNotification();
+
 	const addHabitDayVoteRequestState = Async.useAsync({
 		deferFn: api.habit.addHabitDayVote,
 		onResolve: () => {
@@ -48,9 +50,40 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		onReject: () => triggerErrorNotification("Error while changing habit vote."),
 	});
 
-	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
-	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
-	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
+	const upsertCommentResponseHandlers = {
+		onResolve: () => {
+			triggerSuccessNotification("Comment added successfully!");
+			textarea.setIdle();
+			onResolve();
+		},
+		onReject: () => triggerErrorNotification("Couldn't add comment"),
+	};
+
+	const updateVoteCommentRequestState = Async.useAsync({
+		deferFn: api.habit.updateVoteComment,
+		...upsertCommentResponseHandlers,
+	});
+
+	const addEmptyHabitDayVoteRequestState = Async.useAsync({
+		deferFn: api.habit.addHabitDayVote,
+		...upsertCommentResponseHandlers,
+	});
+
+	const [newComment, newCommentHelpers] = useEditableFieldValue(
+		changedComment => {
+			if (vote_id) {
+				updateVoteCommentRequestState.run(vote_id, changedComment);
+			} else {
+				addEmptyHabitDayVoteRequestState.run({
+					day: new Date(day),
+					habit_id: habit.id,
+					vote: null,
+				});
+			}
+		},
+		comment,
+		true,
+	);
 
 	function changeVote(type: NonNullable<Vote>) {
 		addHabitDayVoteRequestState.run({
@@ -60,20 +93,15 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		});
 	}
 
-	const isCommentToggleEnabled = vote !== null && vote !== undefined;
-	const commentToggleTitle = isCommentToggleEnabled
-		? "Show and edit comment"
-		: "Vote to be able to add comment";
+	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
+	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
+	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
 
 	return (
 		<>
 			<li className="flex items-baseline justify-between bg-gray-100 my-2 p-2 mt-4">
 				<div className="flex items-center">
-					<BareButton
-						title={commentToggleTitle}
-						disabled={!isCommentToggleEnabled}
-						onClick={toggleComment}
-					>
+					<BareButton title="Show and edit comment" onClick={toggleComment}>
 						{isCommentVisible ? "⌃" : "⌄"}
 					</BareButton>
 					<HabitScore score={habit.score} className="px-1 py-1" />
@@ -111,51 +139,24 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					</BareButton>
 				</div>
 			</li>
-			{isCommentVisible && isCommentToggleEnabled && (
-				<EditableVoteComment comment={comment} voteId={vote_id} onResolve={onResolve} />
+			{isCommentVisible && (
+				<>
+					<textarea
+						key={comment ?? undefined}
+						onFocus={textarea.setFocused}
+						placeholder="Write something..."
+						className="w-full border p-2"
+						value={newComment ?? undefined}
+						onChange={newCommentHelpers.onChange}
+					/>
+					<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+						Save
+					</SaveButton>
+					<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+						Cancel
+					</CancelButton>
+				</>
 			)}
-		</>
-	);
-};
-
-const EditableVoteComment: React.FC<{
-	comment: IDayVote["comment"];
-	voteId: IDayVote["vote_id"] | undefined;
-	onResolve: VoidFunction;
-}> = ({comment, voteId, onResolve}) => {
-	const textarea = useEditableFieldState();
-
-	const triggerSuccessNotification = useSuccessNotification();
-
-	const updateVoteCommentRequestState = Async.useAsync({
-		deferFn: api.habit.updateVoteComment,
-		onResolve: () => {
-			triggerSuccessNotification("Comment added successfully!");
-			textarea.setIdle();
-			onResolve();
-		},
-	});
-
-	const [newComment, newCommentHelpers] = useEditableFieldValue(
-		changedComment => updateVoteCommentRequestState.run(voteId, changedComment),
-		comment,
-	);
-
-	return (
-		<>
-			<textarea
-				onFocus={textarea.setFocused}
-				placeholder="Write something..."
-				className="w-full border p-2"
-				value={newComment ?? undefined}
-				onChange={newCommentHelpers.onChange}
-			/>
-			<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
-				Save
-			</SaveButton>
-			<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
-				Cancel
-			</CancelButton>
 		</>
 	);
 };
