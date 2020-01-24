@@ -64,9 +64,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 						<Stat count={stats.regressVotesCountStats} sign="-" />
 						<Stat count={stats.noVotesCountStats} sign="?" />
 					</div>
-					{isDayDialogVisible && (
-						<DayDialog day={day} refreshCalendar={refreshCalendar} {...stats} />
-					)}
+					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
 			)}
 		</li>

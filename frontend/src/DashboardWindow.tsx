@@ -3,19 +3,20 @@ import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
+import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
+import {formatToday} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
-import {formatToday} from "./config/DATE_FORMATS";
 
 export const DashboardWindow = () => {
 	const getHabitsRequestState = useHabitsState();
 	const habits = useHabits();
 
-	const [, updateQueryParams] = useQueryParams();
+	const [{subview}, updateQueryParams] = useQueryParams();
 
 	const triggerErrorNotification = useErrorNotification();
 
@@ -48,7 +49,11 @@ export const DashboardWindow = () => {
 	const getHabitsError = getHabitsRequestState.isRejected;
 
 	const redirectToCurrentDay = () =>
-		updateQueryParams("calendar", {preview_day: currentDate, habit_vote_filter: "unvoted"});
+		updateQueryParams("dashboard", {
+			subview: "day_preview",
+			preview_day: currentDate,
+			habit_vote_filter: "unvoted",
+		});
 
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
@@ -77,6 +82,13 @@ export const DashboardWindow = () => {
 					)}
 				</Async.IfFulfilled>
 			</main>
+			{subview === "day_preview" && (
+				<DayDialog
+					day={currentDate}
+					onDismiss={() => updateQueryParams("/dashboard", {})}
+					{...stats}
+				/>
+			)}
 		</section>
 	);
 };
