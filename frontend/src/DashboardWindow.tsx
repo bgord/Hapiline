@@ -42,7 +42,8 @@ export const DashboardWindow = () => {
 		progressVotesCountStats: howManyProgressVotes,
 		plateauVotesCountStats: howManyPlateauVotes,
 		regressVotesCountStats: howManyRegressVotes,
-		noVotesCountStats: howManyHabitsToday - howManyVotesToday,
+		noVotesCountStats:
+			howManyHabitsToday - howManyProgressVotes - howManyPlateauVotes - howManyRegressVotes,
 	};
 
 	const getDayVotesError = getDayVotesRequestState.isRejected;
@@ -86,6 +87,7 @@ export const DashboardWindow = () => {
 				<DayDialog
 					day={currentDate}
 					onDismiss={() => updateQueryParams("/dashboard", {})}
+					onResolve={getDayVotesRequestState.reload}
 					{...stats}
 				/>
 			)}
