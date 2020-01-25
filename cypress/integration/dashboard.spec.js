@@ -18,19 +18,23 @@ describe("Dashboard", () => {
 		cy.findByText("Hello!");
 
 		cy.findByText("View today").click();
-		cy.url().should("include", `/calendar?preview_day=${today}&habit_vote_filter=unvoted`);
+		cy.url().should(
+			"include",
+			`/dashboard?subview=day_preview&preview_day=${today}&habit_vote_filter=unvoted`,
+		);
+
 		cy.go("back");
 
 		cy.get("p").should(
 			"have.text",
-			"You're on a good track! You have 5 habits to vote for left out of 10.",
+			"You're on a good track! You have 6 habits to vote for left out of 10.",
 		);
 		cy.findByText("Votes today");
-		cy.findByText("?5");
+		cy.findByText("?6");
 		cy.findByText("-1");
 		cy.findByText("=1");
 		cy.findByText("+2");
-		cy.findByTitle("No votes: 5/10 (50.00%)");
+		cy.findByTitle("No votes: 6/10 (60.00%)");
 		cy.findByTitle("Regress: 1/10 (10.00%)");
 		cy.findByTitle("Plateau: 1/10 (10.00%)");
 		cy.findByTitle("Progress: 2/10 (20.00%)");

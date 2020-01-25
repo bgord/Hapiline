@@ -20,10 +20,11 @@ import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 
 type DayDialogProps = DayVoteStats & {
-	refreshCalendar: VoidFunction;
+	onResolve?: VoidFunction;
+	onDismiss?: VoidFunction;
 };
 
-export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...stats}) => {
+export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, ...stats}) => {
 	const history = useHistory();
 	const habits = useHabits();
 	const triggerErrorNotification = useErrorNotification();
@@ -75,7 +76,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 	return (
 		<Dialog
 			aria-label="Show day preview"
-			onDismiss={dismissDialog}
+			onDismiss={onDismiss || dismissDialog}
 			className="overflow-auto"
 			style={{
 				maxWidth: "1000px",
@@ -84,7 +85,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 		>
 			<div className="flex justify-between items-baseline">
 				<strong>{day}</strong>
-				<CloseButton onClick={dismissDialog} />
+				<CloseButton onClick={onDismiss || dismissDialog} />
 			</div>
 			{doesEveryHabitHasAVote && (
 				<SuccessMessage>
@@ -154,7 +155,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, refreshCalendar, ...st
 						<DayDialogHabitVoteListItem
 							key={entry.habit.id}
 							onResolve={() => {
-								refreshCalendar();
+								if (onResolve) {
+									onResolve();
+								}
 								getDayVotesRequestState.reload();
 							}}
 							{...entry}
