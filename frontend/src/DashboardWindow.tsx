@@ -9,18 +9,11 @@ import {ErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {formatToday} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 
 export const DashboardWindow = () => {
-	const getHabitsRequestState = useHabitsState();
-	const habits = useHabits();
-
 	const [{subview}, updateQueryParams] = useQueryParams();
-
 	const triggerErrorNotification = useErrorNotification();
-
-	const currentDate = formatToday();
 
 	const getDashboardStatsRequestState = Async.useAsync({
 		promiseFn: api.stats.dashboard,
@@ -39,8 +32,7 @@ export const DashboardWindow = () => {
 		noVotesCountStats: todayStats?.noVotes ?? 0,
 	};
 
-	const getDashboardStatsError = getDashboardStatsRequestState.isRejected;
-	const getHabitsError = getHabitsRequestState.isRejected;
+	const currentDate = formatToday();
 
 	const redirectToCurrentDay = () =>
 		updateQueryParams("dashboard", {
@@ -57,25 +49,25 @@ export const DashboardWindow = () => {
 					View today
 				</BareButton>
 			</header>
-			<ErrorMessage className="mt-8" hidden={!(getDashboardStatsError || getHabitsError)}>
-				Cannot load dashboard stats now, please try again.
-			</ErrorMessage>
-			<main hidden={getDashboardStatsError || getHabitsError}>
-				<Async.IfFulfilled state={getDashboardStatsRequestState}>
-					<p className="my-8">
-						<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
-					</p>
-					{habits.length > 0 && (
-						<>
-							<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-							<div className="flex items-center mt-3">
-								<DaySummaryChart className="h-4" day={currentDate} {...stats} />
-								<DaySummaryStats day={currentDate} {...stats} />
-							</div>
-						</>
-					)}
-				</Async.IfFulfilled>
-			</main>
+			<Async.IfRejected state={getDashboardStatsRequestState}>
+				<ErrorMessage className="mt-8">
+					Cannot load dashboard stats now, please try again.
+				</ErrorMessage>
+			</Async.IfRejected>
+			<Async.IfFulfilled state={getDashboardStatsRequestState}>
+				<p className="my-8">
+					<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
+				</p>
+				{howManyHabitsToday > 0 && (
+					<>
+						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
+						<div className="flex items-center mt-3">
+							<DaySummaryChart className="h-4" day={currentDate} {...stats} />
+							<DaySummaryStats day={currentDate} {...stats} />
+						</div>
+					</>
+				)}
+			</Async.IfFulfilled>
 			{subview === "day_preview" && (
 				<DayDialog
 					day={currentDate}
