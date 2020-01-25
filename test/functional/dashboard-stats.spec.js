@@ -48,3 +48,23 @@ test("account-status:(active)", async ({client}) => {
 		.end();
 	assertAccessDenied(response);
 });
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.get(DASHBOARD_STATS_URL)
+		.loginVia(jim)
+		.end();
+
+	assert.deepEqual(response.body, {
+		today: {
+			progressVotes: 0,
+			plateauVotes: 1,
+			regressVotes: 1,
+			allHabits: 5,
+			noVotes: 3,
+			allVotes: 2,
+		},
+	});
+});
