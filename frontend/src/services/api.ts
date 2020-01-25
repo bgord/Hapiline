@@ -22,6 +22,7 @@ import {
 	verifyEmailRequest,
 } from "./auth";
 import {getDayRequest, getMonthRequest} from "./calendar";
+import {getDashboardStats} from "./stats";
 
 declare const process: {
 	env: {
@@ -58,5 +59,8 @@ export const api = {
 	calendar: {
 		getMonth: getMonthRequest,
 		getDay: getDayRequest,
+	},
+	stats: {
+		dashboard: getDashboardStats,
 	},
 };

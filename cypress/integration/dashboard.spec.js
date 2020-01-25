@@ -42,9 +42,18 @@ describe("Dashboard", () => {
 		cy.server();
 		cy.route({
 			method: "GET",
-			url: `/api/v1/day-votes?day=${today}`,
+			url: "/api/v1/dashboard-stats",
 			status: 200,
-			response: [],
+			response: {
+				today: {
+					progressVotes: 0,
+					plateauVotes: 0,
+					regressVotes: 0,
+					allHabits: 10,
+					noVotes: 10,
+					allVotes: 0,
+				},
+			},
 		});
 		cy.reload();
 		cy.get("p").should("have.text", "Start your day well! You have 10 habits to vote for.");
@@ -57,9 +66,18 @@ describe("Dashboard", () => {
 
 		cy.route({
 			method: "GET",
-			url: `/api/v1/day-votes?day=${today}`,
+			url: "/api/v1/dashboard-stats",
 			status: 200,
-			response: Array.from({length: 10}).map(() => ({vote: "progress"})),
+			response: {
+				today: {
+					progressVotes: 10,
+					plateauVotes: 0,
+					regressVotes: 0,
+					allHabits: 10,
+					noVotes: 0,
+					allVotes: 10,
+				},
+			},
 		});
 		cy.reload();
 		cy.get("p").should("have.text", "Congratulations! You voted for every one of 10 habits today!");
@@ -72,9 +90,18 @@ describe("Dashboard", () => {
 
 		cy.route({
 			method: "GET",
-			url: `/api/v1/day-votes?day=${today}`,
+			url: "/api/v1/dashboard-stats",
 			status: 200,
-			response: [],
+			response: {
+				today: {
+					progressVotes: 0,
+					plateauVotes: 0,
+					regressVotes: 0,
+					allHabits: 0,
+					noVotes: 0,
+					allVotes: 0,
+				},
+			},
 		});
 		cy.route({
 			method: "GET",
@@ -97,15 +124,13 @@ describe("Dashboard", () => {
 	});
 
 	it("upper part request errors", () => {
-		const today = format(new Date(), "yyyy-MM-dd");
-
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
 		cy.server();
 		cy.route({
 			method: "GET",
-			url: `/api/v1/day-votes?day=${today}`,
+			url: "/api/v1/dashboard-stats",
 			status: 500,
 			response: {},
 		});
@@ -120,7 +145,7 @@ describe("Dashboard", () => {
 			},
 		});
 
-		cy.findByText("Couldn't fetch habit votes.");
+		cy.findByText("Couldn't fetch dashboard stats.");
 		cy.findByText("Couldn't fetch habit list.");
 
 		cy.findByText("Cannot load dashboard stats now, please try again.");

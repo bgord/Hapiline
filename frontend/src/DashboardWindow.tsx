@@ -22,31 +22,24 @@ export const DashboardWindow = () => {
 
 	const currentDate = formatToday();
 
-	const getDayVotesRequestState = Async.useAsync({
-		promiseFn: api.calendar.getDay,
-		day: currentDate,
-		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
+	const getDashboardStatsRequestState = Async.useAsync({
+		promiseFn: api.stats.dashboard,
+		onReject: () => triggerErrorNotification("Couldn't fetch dashboard stats."),
 	});
 
-	const howManyHabitsToday = habits.length;
+	const todayStats = getDashboardStatsRequestState?.data?.today;
 
-	const howManyProgressVotes =
-		getDayVotesRequestState.data?.filter(vote => vote.vote === "progress").length ?? 0;
-	const howManyPlateauVotes =
-		getDayVotesRequestState.data?.filter(vote => vote.vote === "plateau").length ?? 0;
-	const howManyRegressVotes =
-		getDayVotesRequestState.data?.filter(vote => vote.vote === "regress").length ?? 0;
-
-	const howManyVotesToday = howManyProgressVotes + howManyPlateauVotes + howManyRegressVotes;
+	const howManyHabitsToday = todayStats?.allHabits ?? 0;
+	const howManyVotesToday = todayStats?.allVotes ?? 0;
 
 	const stats = {
-		progressVotesCountStats: howManyProgressVotes,
-		plateauVotesCountStats: howManyPlateauVotes,
-		regressVotesCountStats: howManyRegressVotes,
-		noVotesCountStats: howManyHabitsToday - howManyVotesToday,
+		progressVotesCountStats: todayStats?.progressVotes ?? 0,
+		plateauVotesCountStats: todayStats?.plateauVotes ?? 0,
+		regressVotesCountStats: todayStats?.regressVotes ?? 0,
+		noVotesCountStats: todayStats?.noVotes ?? 0,
 	};
 
-	const getDayVotesError = getDayVotesRequestState.isRejected;
+	const getDashboardStatsError = getDashboardStatsRequestState.isRejected;
 	const getHabitsError = getHabitsRequestState.isRejected;
 
 	const redirectToCurrentDay = () =>
@@ -64,11 +57,11 @@ export const DashboardWindow = () => {
 					View today
 				</BareButton>
 			</header>
-			<ErrorMessage className="mt-8" hidden={!(getDayVotesError || getHabitsError)}>
+			<ErrorMessage className="mt-8" hidden={!(getDashboardStatsError || getHabitsError)}>
 				Cannot load dashboard stats now, please try again.
 			</ErrorMessage>
-			<main hidden={getDayVotesError || getHabitsError}>
-				<Async.IfFulfilled state={getDayVotesRequestState}>
+			<main hidden={getDashboardStatsError || getHabitsError}>
+				<Async.IfFulfilled state={getDashboardStatsRequestState}>
 					<p className="my-8">
 						<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
 					</p>
@@ -87,7 +80,7 @@ export const DashboardWindow = () => {
 				<DayDialog
 					day={currentDate}
 					onDismiss={() => updateQueryParams("/dashboard", {})}
-					onResolve={getDayVotesRequestState.reload}
+					onResolve={getDashboardStatsRequestState.reload}
 					{...stats}
 				/>
 			)}
