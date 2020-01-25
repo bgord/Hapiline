@@ -29,7 +29,6 @@ export const DashboardWindow = () => {
 	});
 
 	const howManyHabitsToday = habits.length;
-	const howManyVotesToday = getDayVotesRequestState.data?.length ?? 0;
 
 	const howManyProgressVotes =
 		getDayVotesRequestState.data?.filter(vote => vote.vote === "progress").length ?? 0;
@@ -38,12 +37,13 @@ export const DashboardWindow = () => {
 	const howManyRegressVotes =
 		getDayVotesRequestState.data?.filter(vote => vote.vote === "regress").length ?? 0;
 
+	const howManyVotesToday = howManyProgressVotes + howManyPlateauVotes + howManyRegressVotes;
+
 	const stats = {
 		progressVotesCountStats: howManyProgressVotes,
 		plateauVotesCountStats: howManyPlateauVotes,
 		regressVotesCountStats: howManyRegressVotes,
-		noVotesCountStats:
-			howManyHabitsToday - howManyProgressVotes - howManyPlateauVotes - howManyRegressVotes,
+		noVotesCountStats: howManyHabitsToday - howManyVotesToday,
 	};
 
 	const getDayVotesError = getDayVotesRequestState.isRejected;
