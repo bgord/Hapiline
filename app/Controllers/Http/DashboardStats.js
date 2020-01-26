@@ -12,7 +12,7 @@ class DashboardStatsController {
           SELECT COUNT(*)
           FROM habits as h
           WHERE h.created_at::date <= NOW()::date AND h.user_id = :user_id
-        )::integer as "allHabits"
+        )::integer as "maximumVotes"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE hv.day::date = NOW()::date AND h.user_id = :user_id
@@ -87,7 +87,7 @@ class DashboardStatsController {
 			today: {
 				...resultForToday,
 				noVotes:
-					resultForToday.allHabits -
+					resultForToday.maximumVotes -
 					resultForToday.progressVotes -
 					resultForToday.plateauVotes -
 					resultForToday.regressVotes,

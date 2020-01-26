@@ -25,7 +25,7 @@ export const DashboardWindow = () => {
 	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
 	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
-	const howManyHabitsToday = todayStats?.allHabits ?? 0;
+	const howManyHabitsToday = todayStats?.maximumVotes ?? 0;
 	const howManyVotesToday = todayStats?.allVotes ?? 0;
 
 	const statsForToday = {
@@ -80,7 +80,7 @@ export const DashboardWindow = () => {
 						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
 						<div className="flex items-center mb-8">
 							<DaySummaryChart
-								maximumVotes={todayStats?.allHabits ?? 0}
+								maximumVotes={todayStats?.maximumVotes ?? 0}
 								className="h-4"
 								day={currentDate}
 								{...statsForToday}

@@ -2,15 +2,6 @@ import * as Async from "react-async";
 
 import {_internal_api} from "./api";
 
-interface ITodayStats {
-	progressVotes: number;
-	plateauVotes: number;
-	regressVotes: number;
-	allHabits: number;
-	noVotes: number;
-	allVotes: number;
-}
-
 interface IDateRangeStats {
 	progressVotes: number;
 	plateauVotes: number;
@@ -21,7 +12,7 @@ interface IDateRangeStats {
 }
 
 interface IDashboardStats {
-	today: ITodayStats;
+	today: IDateRangeStats;
 	lastWeek: IDateRangeStats;
 	lastMonth: IDateRangeStats;
 }
