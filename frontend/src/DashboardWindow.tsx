@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
+import deepEqual from "fast-deep-equal";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
@@ -88,7 +89,7 @@ export const DashboardWindow = () => {
 						</div>
 					</>
 				)}
-				{howManyHabitsToday > 0 && (
+				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
 					<>
 						<div className="uppercase text-sm font-bold text-gray-600">Votes last week</div>
 						<div className="flex items-center mb-8">
@@ -102,7 +103,7 @@ export const DashboardWindow = () => {
 						</div>
 					</>
 				)}
-				{howManyHabitsToday > 0 && (
+				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
 					<>
 						<div className="uppercase text-sm font-bold text-gray-600">Votes last month</div>
 						<div className="flex items-center">
