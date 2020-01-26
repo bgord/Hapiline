@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
+import deepEqual from "fast-deep-equal";
 
 import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
@@ -9,45 +10,46 @@ import {ErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {formatToday} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 
 export const DashboardWindow = () => {
-	const getHabitsRequestState = useHabitsState();
-	const habits = useHabits();
-
 	const [{subview}, updateQueryParams] = useQueryParams();
-
 	const triggerErrorNotification = useErrorNotification();
 
-	const currentDate = formatToday();
-
-	const getDayVotesRequestState = Async.useAsync({
-		promiseFn: api.calendar.getDay,
-		day: currentDate,
-		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
+	const getDashboardStatsRequestState = Async.useAsync({
+		promiseFn: api.stats.dashboard,
+		onReject: () => triggerErrorNotification("Couldn't fetch dashboard stats."),
 	});
 
-	const howManyHabitsToday = habits.length;
+	const todayStats = getDashboardStatsRequestState?.data?.today;
+	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
+	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
-	const howManyProgressVotes =
-		getDayVotesRequestState.data?.filter(vote => vote.vote === "progress").length ?? 0;
-	const howManyPlateauVotes =
-		getDayVotesRequestState.data?.filter(vote => vote.vote === "plateau").length ?? 0;
-	const howManyRegressVotes =
-		getDayVotesRequestState.data?.filter(vote => vote.vote === "regress").length ?? 0;
+	const howManyHabitsToday = todayStats?.maximumVotes ?? 0;
+	const howManyVotesToday = todayStats?.allVotes ?? 0;
 
-	const howManyVotesToday = howManyProgressVotes + howManyPlateauVotes + howManyRegressVotes;
-
-	const stats = {
-		progressVotesCountStats: howManyProgressVotes,
-		plateauVotesCountStats: howManyPlateauVotes,
-		regressVotesCountStats: howManyRegressVotes,
-		noVotesCountStats: howManyHabitsToday - howManyVotesToday,
+	const statsForToday = {
+		progressVotesCountStats: todayStats?.progressVotes ?? 0,
+		plateauVotesCountStats: todayStats?.plateauVotes ?? 0,
+		regressVotesCountStats: todayStats?.regressVotes ?? 0,
+		noVotesCountStats: todayStats?.noVotes ?? 0,
 	};
 
-	const getDayVotesError = getDayVotesRequestState.isRejected;
-	const getHabitsError = getHabitsRequestState.isRejected;
+	const statsForLastWeek = {
+		progressVotesCountStats: lastWeekStats?.progressVotes ?? 0,
+		plateauVotesCountStats: lastWeekStats?.plateauVotes ?? 0,
+		regressVotesCountStats: lastWeekStats?.regressVotes ?? 0,
+		noVotesCountStats: lastWeekStats?.noVotes ?? 0,
+	};
+
+	const statsForLastMonth = {
+		progressVotesCountStats: lastMonthStats?.progressVotes ?? 0,
+		plateauVotesCountStats: lastMonthStats?.plateauVotes ?? 0,
+		regressVotesCountStats: lastMonthStats?.regressVotes ?? 0,
+		noVotesCountStats: lastMonthStats?.noVotes ?? 0,
+	};
+
+	const currentDate = formatToday();
 
 	const redirectToCurrentDay = () =>
 		updateQueryParams("dashboard", {
@@ -64,31 +66,64 @@ export const DashboardWindow = () => {
 					View today
 				</BareButton>
 			</header>
-			<ErrorMessage className="mt-8" hidden={!(getDayVotesError || getHabitsError)}>
-				Cannot load dashboard stats now, please try again.
-			</ErrorMessage>
-			<main hidden={getDayVotesError || getHabitsError}>
-				<Async.IfFulfilled state={getDayVotesRequestState}>
-					<p className="my-8">
-						<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
-					</p>
-					{habits.length > 0 && (
-						<>
-							<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-							<div className="flex items-center mt-3">
-								<DaySummaryChart className="h-4" day={currentDate} {...stats} />
-								<DaySummaryStats day={currentDate} {...stats} />
-							</div>
-						</>
-					)}
-				</Async.IfFulfilled>
-			</main>
+			<Async.IfRejected state={getDashboardStatsRequestState}>
+				<ErrorMessage className="mt-8">
+					Cannot load dashboard stats now, please try again.
+				</ErrorMessage>
+			</Async.IfRejected>
+			<Async.IfFulfilled state={getDashboardStatsRequestState}>
+				<p className="my-8">
+					<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
+				</p>
+				{howManyHabitsToday > 0 && (
+					<div data-testid="chart-today">
+						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
+						<div className="flex items-center mb-8">
+							<DaySummaryChart
+								maximumVotes={todayStats?.maximumVotes ?? 0}
+								className="h-4"
+								day={currentDate}
+								{...statsForToday}
+							/>
+							<DaySummaryStats day={currentDate} {...statsForToday} />
+						</div>
+					</div>
+				)}
+				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
+					<div data-testid="chart-last-week">
+						<div className="uppercase text-sm font-bold text-gray-600">Votes last week</div>
+						<div className="flex items-center mb-8">
+							<DaySummaryChart
+								maximumVotes={lastWeekStats?.maximumVotes ?? 0}
+								className="h-4"
+								day={currentDate}
+								{...statsForLastWeek}
+							/>
+							<DaySummaryStats day={currentDate} {...statsForLastWeek} />
+						</div>
+					</div>
+				)}
+				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
+					<div data-testid="chart-last-month">
+						<div className="uppercase text-sm font-bold text-gray-600">Votes last month</div>
+						<div className="flex items-center">
+							<DaySummaryChart
+								maximumVotes={lastMonthStats?.maximumVotes ?? 0}
+								className="h-4"
+								day={currentDate}
+								{...statsForLastMonth}
+							/>
+							<DaySummaryStats day={currentDate} {...statsForLastMonth} />
+						</div>
+					</div>
+				)}
+			</Async.IfFulfilled>
 			{subview === "day_preview" && (
 				<DayDialog
 					day={currentDate}
 					onDismiss={() => updateQueryParams("/dashboard", {})}
-					onResolve={getDayVotesRequestState.reload}
-					{...stats}
+					onResolve={getDashboardStatsRequestState.reload}
+					{...statsForToday}
 				/>
 			)}
 		</section>

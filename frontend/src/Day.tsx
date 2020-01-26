@@ -47,7 +47,12 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			ref={ref as React.Ref<HTMLLIElement>}
 		>
 			{isDayDialogAvailable && (
-				<DaySummaryChart className="h-2" day={formatDay(thisDay)} {...stats} />
+				<DaySummaryChart
+					maximumVotes={howManyHabitsAvailableAtThisDay}
+					className="h-2"
+					day={formatDay(thisDay)}
+					{...stats}
+				/>
 			)}
 			<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
 			{isDayDialogAvailable && (

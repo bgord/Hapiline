@@ -124,6 +124,12 @@ Route.get("/api/v1/comments", "VoteCommentController.index")
 	.middleware(["auth", "is:(regular)", "account-status:active"])
 	.validator("IndexVoteComment");
 
+Route.get("/api/v1/dashboard-stats", "DashboardStats.index").middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
