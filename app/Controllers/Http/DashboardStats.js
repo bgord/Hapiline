@@ -2,8 +2,6 @@ const Database = use("Database");
 
 class DashboardStatsController {
 	async index({auth, response}) {
-		const today = new Date();
-
 		const _resultForToday = await Database.raw(
 			`
       SELECT
@@ -13,16 +11,29 @@ class DashboardStatsController {
         (
           SELECT COUNT(*)
           FROM habits as h
-          WHERE h.created_at::date <= ? AND h.user_id = ?
+          WHERE h.created_at::date <= NOW()::date AND h.user_id = :user_id
         )::integer as "allHabits"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
-      WHERE hv.day::date = ? AND h.user_id = ?
+      WHERE hv.day::date = NOW()::date AND h.user_id = :user_id
     `,
-			[today, auth.user.id, today, auth.user.id],
+			{user_id: auth.user.id},
 		);
-
 		const resultForToday = _resultForToday.rows[0];
+
+		const _resultForMaximumVotesLastWeek = await Database.raw(
+			`
+      SELECT SUM(COUNT(habits.*)) OVER (ORDER BY day)::integer AS habit_count
+      FROM GENERATE_SERIES(NOW() - '6 days'::interval, NOW(), '1 day') as day
+      LEFT JOIN habits ON habits.created_at::date = day::date
+      WHERE habits.user_id = :user_id
+      GROUP BY day
+      `,
+			{user_id: auth.user.id},
+		);
+		const maximumVotesLastWeek = _resultForMaximumVotesLastWeek.rows
+			.map(item => item.habit_count)
+			.reduce(add, 0);
 
 		return response.send({
 			today: {
@@ -35,8 +46,15 @@ class DashboardStatsController {
 				allVotes:
 					resultForToday.progressVotes + resultForToday.plateauVotes + resultForToday.regressVotes,
 			},
+			lastWeek: {
+				maximumVotes: maximumVotesLastWeek,
+			},
 		});
 	}
+}
+
+function add(a, b) {
+	return a + b;
 }
 
 module.exports = DashboardStatsController;
