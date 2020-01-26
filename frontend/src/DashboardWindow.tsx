@@ -77,7 +77,7 @@ export const DashboardWindow = () => {
 				{howManyHabitsToday > 0 && (
 					<>
 						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-						<div className="flex items-center mt-3">
+						<div className="flex items-center mb-8">
 							<DaySummaryChart
 								maximumVotes={todayStats?.allHabits ?? 0}
 								className="h-4"
@@ -85,6 +85,34 @@ export const DashboardWindow = () => {
 								{...statsForToday}
 							/>
 							<DaySummaryStats day={currentDate} {...statsForToday} />
+						</div>
+					</>
+				)}
+				{howManyHabitsToday > 0 && (
+					<>
+						<div className="uppercase text-sm font-bold text-gray-600">Votes last week</div>
+						<div className="flex items-center mb-8">
+							<DaySummaryChart
+								maximumVotes={lastWeekStats?.maximumVotes ?? 0}
+								className="h-4"
+								day={currentDate}
+								{...statsForLastWeek}
+							/>
+							<DaySummaryStats day={currentDate} {...statsForLastWeek} />
+						</div>
+					</>
+				)}
+				{howManyHabitsToday > 0 && (
+					<>
+						<div className="uppercase text-sm font-bold text-gray-600">Votes last month</div>
+						<div className="flex items-center">
+							<DaySummaryChart
+								maximumVotes={lastMonthStats?.maximumVotes ?? 0}
+								className="h-4"
+								day={currentDate}
+								{...statsForLastMonth}
+							/>
+							<DaySummaryStats day={currentDate} {...statsForLastMonth} />
 						</div>
 					</>
 				)}
