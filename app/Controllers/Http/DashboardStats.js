@@ -35,6 +35,23 @@ class DashboardStatsController {
 			.map(item => item.habit_count)
 			.reduce(add, 0);
 
+		const _resultForLastWeek = await Database.raw(
+			`
+      SELECT
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes"
+      FROM habit_votes as hv
+      INNER JOIN habits as h ON hv.habit_id = h.id
+      WHERE
+        h.user_id = :user_id AND
+        hv.created_at::date >= NOW()::date - '6 days'::interval AND
+        hv.created_at::date <= NOW()::date
+		`,
+			{user_id: auth.user.id},
+		);
+		const resultForLastWeek = _resultForLastWeek.rows[0];
+
 		return response.send({
 			today: {
 				...resultForToday,
@@ -47,6 +64,16 @@ class DashboardStatsController {
 					resultForToday.progressVotes + resultForToday.plateauVotes + resultForToday.regressVotes,
 			},
 			lastWeek: {
+				...resultForLastWeek,
+				noVotes:
+					maximumVotesLastWeek -
+					resultForLastWeek.progressVotes -
+					resultForLastWeek.plateauVotes -
+					resultForLastWeek.regressVotes,
+				allVotes:
+					resultForLastWeek.progressVotes +
+					resultForLastWeek.plateauVotes +
+					resultForLastWeek.regressVotes,
 				maximumVotes: maximumVotesLastWeek,
 			},
 		});

@@ -67,6 +67,11 @@ test("full flow", async ({client, assert}) => {
 			allVotes: 2,
 		},
 		lastWeek: {
+			progressVotes: 1,
+			plateauVotes: 1,
+			regressVotes: 1,
+			noVotes: 6,
+			allVotes: 3,
 			maximumVotes: 9,
 		},
 	});
