@@ -76,7 +76,7 @@ export const DashboardWindow = () => {
 					<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
 				</p>
 				{howManyHabitsToday > 0 && (
-					<>
+					<div data-testid="chart-today">
 						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
 						<div className="flex items-center mb-8">
 							<DaySummaryChart
@@ -87,10 +87,10 @@ export const DashboardWindow = () => {
 							/>
 							<DaySummaryStats day={currentDate} {...statsForToday} />
 						</div>
-					</>
+					</div>
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-					<>
+					<div data-testid="chart-last-week">
 						<div className="uppercase text-sm font-bold text-gray-600">Votes last week</div>
 						<div className="flex items-center mb-8">
 							<DaySummaryChart
@@ -101,10 +101,10 @@ export const DashboardWindow = () => {
 							/>
 							<DaySummaryStats day={currentDate} {...statsForLastWeek} />
 						</div>
-					</>
+					</div>
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-					<>
+					<div data-testid="chart-last-month">
 						<div className="uppercase text-sm font-bold text-gray-600">Votes last month</div>
 						<div className="flex items-center">
 							<DaySummaryChart
@@ -115,7 +115,7 @@ export const DashboardWindow = () => {
 							/>
 							<DaySummaryStats day={currentDate} {...statsForLastMonth} />
 						</div>
-					</>
+					</div>
 				)}
 			</Async.IfFulfilled>
 			{subview === "day_preview" && (
