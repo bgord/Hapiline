@@ -4,39 +4,35 @@ import React from "react";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
-import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {voteToBgColor} from "./interfaces/IDayVote";
 
 type DayDialogSummaryProps = DayVoteStats & {
-	day: string;
+	maximumVotes: number;
 };
 
 export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElements["div"]> = ({
-	day,
+	maximumVotes,
 	className = "",
 	...stats
 }) => {
-	const habits = useHabits();
-	const howManyHabits = getHabitsAvailableAtThisDay(habits, day).length;
-
-	const noVotesPercentage = Number(((stats.noVotesCountStats ?? 0) / howManyHabits) * 100).toFixed(
+	const noVotesPercentage = Number(((stats.noVotesCountStats ?? 0) / maximumVotes) * 100).toFixed(
 		2,
 	);
 	const regressVotesPercentage = Number(
-		((stats.regressVotesCountStats ?? 0) / howManyHabits) * 100,
+		((stats.regressVotesCountStats ?? 0) / maximumVotes) * 100,
 	).toFixed(2);
 	const plateauVotesPercentage = Number(
-		((stats.plateauVotesCountStats ?? 0) / howManyHabits) * 100,
+		((stats.plateauVotesCountStats ?? 0) / maximumVotes) * 100,
 	).toFixed(2);
 	const progressVotesPercentage = Number(
-		((stats.progressVotesCountStats ?? 0) / howManyHabits) * 100,
+		((stats.progressVotesCountStats ?? 0) / maximumVotes) * 100,
 	).toFixed(2);
 
-	const noVotesCellTitle = `No votes: ${stats.noVotesCountStats}/${howManyHabits} (${noVotesPercentage}%)`;
-	const regressVotesCellTitle = `Regress: ${stats.regressVotesCountStats}/${howManyHabits} (${regressVotesPercentage}%)`;
-	const plateauVotesCellTitle = `Plateau: ${stats.plateauVotesCountStats}/${howManyHabits} (${plateauVotesPercentage}%)`;
-	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${howManyHabits} (${progressVotesPercentage}%)`;
+	const noVotesCellTitle = `No votes: ${stats.noVotesCountStats}/${maximumVotes} (${noVotesPercentage}%)`;
+	const regressVotesCellTitle = `Regress: ${stats.regressVotesCountStats}/${maximumVotes} (${regressVotesPercentage}%)`;
+	const plateauVotesCellTitle = `Plateau: ${stats.plateauVotesCountStats}/${maximumVotes} (${plateauVotesPercentage}%)`;
+	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${maximumVotes} (${progressVotesPercentage}%)`;
 
 	return (
 		<div className={`flex w-full ${className}`}>

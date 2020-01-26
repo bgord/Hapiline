@@ -2,7 +2,7 @@ import * as Async from "react-async";
 
 import {_internal_api} from "./api";
 
-interface IStats {
+interface ITodayStats {
 	progressVotes: number;
 	plateauVotes: number;
 	regressVotes: number;
@@ -11,5 +11,20 @@ interface IStats {
 	allVotes: number;
 }
 
-export const getDashboardStats: Async.PromiseFn<{today: IStats}> = () =>
-	_internal_api.get<{today: IStats}>("/dashboard-stats").then(response => response.data);
+interface IDateRangeStats {
+	progressVotes: number;
+	plateauVotes: number;
+	regressVotes: number;
+	noVotes: number;
+	allVotes: number;
+	maximumVotes: number;
+}
+
+interface IDashboardStats {
+	today: ITodayStats;
+	lastWeek: IDateRangeStats;
+	lastMonth: IDateRangeStats;
+}
+
+export const getDashboardStats: Async.PromiseFn<IDashboardStats> = () =>
+	_internal_api.get<IDashboardStats>("/dashboard-stats").then(response => response.data);

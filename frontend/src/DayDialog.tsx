@@ -27,6 +27,7 @@ type DayDialogProps = DayVoteStats & {
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, ...stats}) => {
 	const history = useHistory();
 	const habits = useHabits();
+
 	const triggerErrorNotification = useErrorNotification();
 	const getDayVotesRequestState = Async.useAsync({
 		promiseFn: api.calendar.getDay,
@@ -96,7 +97,12 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				</SuccessMessage>
 			)}
 			<div className="flex mt-6 items-center">
-				<DaySummaryChart className="h-4" day={day} {...stats} />
+				<DaySummaryChart
+					maximumVotes={habitsAvailableAtThisDay.length}
+					className="h-4"
+					day={day}
+					{...stats}
+				/>
 				<DaySummaryStats day={day} {...stats} />
 			</div>
 			<div className="flex my-8">
@@ -164,7 +170,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 						/>
 					))}
 			</ul>
-			<HabitsAddedAtGivenDay day={day} {...stats} />
+			<HabitsAddedAtGivenDay maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
 		</Dialog>
 	);
 };

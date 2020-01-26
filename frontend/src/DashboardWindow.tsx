@@ -21,15 +21,31 @@ export const DashboardWindow = () => {
 	});
 
 	const todayStats = getDashboardStatsRequestState?.data?.today;
+	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
+	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
 	const howManyHabitsToday = todayStats?.allHabits ?? 0;
 	const howManyVotesToday = todayStats?.allVotes ?? 0;
 
-	const stats = {
+	const statsForToday = {
 		progressVotesCountStats: todayStats?.progressVotes ?? 0,
 		plateauVotesCountStats: todayStats?.plateauVotes ?? 0,
 		regressVotesCountStats: todayStats?.regressVotes ?? 0,
 		noVotesCountStats: todayStats?.noVotes ?? 0,
+	};
+
+	const statsForLastWeek = {
+		progressVotesCountStats: lastWeekStats?.progressVotes ?? 0,
+		plateauVotesCountStats: lastWeekStats?.plateauVotes ?? 0,
+		regressVotesCountStats: lastWeekStats?.regressVotes ?? 0,
+		noVotesCountStats: lastWeekStats?.noVotes ?? 0,
+	};
+
+	const statsForLastMonth = {
+		progressVotesCountStats: lastMonthStats?.progressVotes ?? 0,
+		plateauVotesCountStats: lastMonthStats?.plateauVotes ?? 0,
+		regressVotesCountStats: lastMonthStats?.regressVotes ?? 0,
+		noVotesCountStats: lastMonthStats?.noVotes ?? 0,
 	};
 
 	const currentDate = formatToday();
@@ -62,8 +78,13 @@ export const DashboardWindow = () => {
 					<>
 						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
 						<div className="flex items-center mt-3">
-							<DaySummaryChart className="h-4" day={currentDate} {...stats} />
-							<DaySummaryStats day={currentDate} {...stats} />
+							<DaySummaryChart
+								maximumVotes={todayStats?.allHabits ?? 0}
+								className="h-4"
+								day={currentDate}
+								{...statsForToday}
+							/>
+							<DaySummaryStats day={currentDate} {...statsForToday} />
 						</div>
 					</>
 				)}
@@ -73,7 +94,7 @@ export const DashboardWindow = () => {
 					day={currentDate}
 					onDismiss={() => updateQueryParams("/dashboard", {})}
 					onResolve={getDashboardStatsRequestState.reload}
-					{...stats}
+					{...statsForToday}
 				/>
 			)}
 		</section>
