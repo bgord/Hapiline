@@ -34,6 +34,7 @@ export const AddHabitForm: React.FC = () => {
 			setScore("positive");
 			setStrength("established");
 			setDescription("");
+			setIsTrackable(true);
 			getHabitsRequestState.reload();
 			triggerSuccessNotification("Habit successfully addedd!");
 		},
@@ -69,7 +70,14 @@ export const AddHabitForm: React.FC = () => {
 			<form
 				onSubmit={event => {
 					event.preventDefault();
-					addHabitRequestState.run(name, score, strength, profile?.id, description || null);
+					addHabitRequestState.run(
+						name,
+						score,
+						strength,
+						profile?.id,
+						description || null,
+						isTrackable,
+					);
 				}}
 				className="flex flex-col w-full"
 			>
@@ -129,7 +137,6 @@ export const AddHabitForm: React.FC = () => {
 						type="checkbox"
 						id="is_trackable"
 						name="is_trackable"
-						required
 						checked={isTrackable}
 						onChange={() => setIsTrackable(v => !v)}
 						className="field bg-white"
