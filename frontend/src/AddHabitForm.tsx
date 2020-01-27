@@ -20,6 +20,7 @@ export const AddHabitForm: React.FC = () => {
 	const [score, setScore] = React.useState("positive");
 	const [strength, setStrength] = React.useState("established");
 	const [description, setDescription] = React.useState("");
+	const [isTrackable, setIsTrackable] = React.useState(true);
 
 	const triggerSuccessNotification = useSuccessNotification();
 	const triggerUnexpectedErrorNotification = useErrorNotification();
@@ -123,6 +124,20 @@ export const AddHabitForm: React.FC = () => {
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
+				<div className="flex items-center mt-4">
+					<input
+						type="checkbox"
+						id="is_trackable"
+						name="is_trackable"
+						required
+						checked={isTrackable}
+						onChange={() => setIsTrackable(v => !v)}
+						className="field bg-white"
+					/>
+					<label className="field-label mb-0 ml-1" htmlFor="is_trackable">
+						Track this habit
+					</label>
+				</div>
 				<div className="flex items-center mt-4">
 					<div className="flex flex-col flex-grow">
 						<label htmlFor="description" className="field-label">
