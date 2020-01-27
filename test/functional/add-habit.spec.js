@@ -81,6 +81,11 @@ test("validation", async ({client}) => {
 					field: "user_id",
 					validation: "required",
 				},
+				{
+					message: VALIDATION_MESSAGES.required("is_trackable"),
+					field: "is_trackable",
+					validation: "required",
+				},
 			],
 		],
 		[
@@ -90,6 +95,7 @@ test("validation", async ({client}) => {
 				strength: "xxx",
 				user_id: "xxxx",
 				description: "x".repeat(1025),
+				is_trackable: "xxx",
 			},
 			[
 				{
@@ -122,6 +128,11 @@ test("validation", async ({client}) => {
 					field: "description",
 					validation: "max",
 				},
+				{
+					message: VALIDATION_MESSAGES.boolean("is_trackable"),
+					field: "is_trackable",
+					validation: "boolean",
+				},
 			],
 		],
 	];
@@ -144,6 +155,7 @@ test("user can only add their own habit", async ({client}) => {
 		score: HABIT_SCORE_TYPES.neutral,
 		strength: HABIT_STRENGTH_TYPES.fresh,
 		user_id: users.pam.id,
+		is_trackable: true,
 	};
 
 	const response = await client
@@ -164,6 +176,7 @@ test("full flow", async ({client, assert}) => {
 		strength: HABIT_STRENGTH_TYPES.fresh,
 		user_id: users.jim.id,
 		description: "What can I say?",
+		is_trackable: true,
 	};
 
 	const response = await client
@@ -187,6 +200,7 @@ test("cannot insert two identical records", async ({client, assert}) => {
 		score: HABIT_SCORE_TYPES.neutral,
 		strength: HABIT_STRENGTH_TYPES.fresh,
 		user_id: jim.id,
+		is_trackable: true,
 	};
 
 	const firstResponse = await client
