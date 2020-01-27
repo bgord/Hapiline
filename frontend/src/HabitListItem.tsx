@@ -48,7 +48,8 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					<HabitStrength strength={habit.strength} />
 					<div className="flex justify-between w-full">
 						<div className="p-2 bg-gray-100 ml-2 w-full">{habit.name}</div>
-						<div className="flex ml-4">
+						<div className="flex items-center ml-4">
+							{!habit.is_trackable && <div className="mr-2">NT</div>}
 							<BareButton onClick={openPreviewDialog}>More</BareButton>
 							<DeleteHabitButton {...habit} />
 						</div>

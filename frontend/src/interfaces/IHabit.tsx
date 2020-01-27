@@ -34,6 +34,7 @@ export interface IHabit {
 	description: string | null;
 	progress_streak?: number;
 	regress_streak?: number;
+	is_trackable: boolean;
 }
 
 export const scoreToBgColor: {[key in HabitScoreType]: string} = {
