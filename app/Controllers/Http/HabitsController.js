@@ -57,6 +57,14 @@ class HabitsController {
 		if (!habit) return response.notFound();
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
+		if (!habit.is_trackable) {
+			return response.send({
+				...habit,
+				progress_streak: 0,
+				regress_streak: 0,
+			});
+		}
+
 		const habitVotes = await Database.select("vote", "day")
 			.from("habit_votes")
 			.where({
