@@ -81,21 +81,26 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							key={habit?.name}
 						/>
 					</div>
-					<div className="uppercase text-sm font-bold mt-6">
-						<div className="text-green-600" hidden={!habit.progress_streak}>
-							Progress streak: {habit.progress_streak} days
-						</div>
-						<div className="text-red-600" hidden={!habit.regress_streak}>
-							Regress streak: {habit.regress_streak} days
-						</div>
-						<div
-							className="text-gray-600"
-							hidden={Boolean(habit.regress_streak || habit.progress_streak)}
-						>
-							No streak today
-						</div>
-					</div>
-					<HabitCharts id={habit.id} />
+					{!habit.is_trackable && <div className="mt-8">This habit is not tracked.</div>}
+					{habit.is_trackable && (
+						<>
+							<div className="uppercase text-sm font-bold mt-6">
+								<div className="text-green-600" hidden={!habit.progress_streak}>
+									Progress streak: {habit.progress_streak} days
+								</div>
+								<div className="text-red-600" hidden={!habit.regress_streak}>
+									Regress streak: {habit.regress_streak} days
+								</div>
+								<div
+									className="text-gray-600"
+									hidden={Boolean(habit.regress_streak || habit.progress_streak)}
+								>
+									No streak today
+								</div>
+							</div>
+							<HabitCharts id={habit.id} />
+						</>
+					)}
 					<div className="mt-8 mb-10">
 						<label htmlFor="description" className="field-label">
 							Description
@@ -106,7 +111,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							onResolve={habitRequestState.reload}
 						/>
 					</div>
-					<HabitVoteCommentHistory habitId={habit.id} />
+					{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
 					<dl className="flex items-baseline py-8">
 						<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
 						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.created_at)}</dd>

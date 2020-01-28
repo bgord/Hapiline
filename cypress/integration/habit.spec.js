@@ -444,6 +444,62 @@ describe("Habit", () => {
 		cy.findByText("Fetching chart data failed.");
 	});
 
+	it("inspecting untracked habit in dialog", () => {
+		const response = [
+			{
+				id: 1,
+				name: "Watch The Office",
+				score: "positive",
+				strength: "fresh",
+				created_at: "2019/01/01",
+				updated_at: "2019/02/01",
+				is_trackable: false,
+			},
+		];
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response,
+		});
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit/1",
+			status: 200,
+			response: response[0],
+		});
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findByText("NT");
+
+		cy.findAllByText("More")
+			.first()
+			.click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Habit preview");
+			cy.findByDisplayValue("positive");
+			cy.findByDisplayValue("fresh");
+			cy.findByDisplayValue("Watch The Office");
+
+			cy.findByText("This habit is not tracked.");
+			cy.findByPlaceholderText("Write something...");
+
+			cy.findByText("Created at:");
+			cy.findByText("2019-01-01 00:00");
+
+			cy.findByText("Updated at:");
+			cy.findByText("2019-02-01 00:00");
+
+			cy.findByText("Select date range:").should("not.exist");
+			cy.findByText("Vote comments").should("not.exist");
+		});
+	});
+
 	it("changing name", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
