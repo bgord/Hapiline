@@ -39,10 +39,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 
 	return (
 		<>
-			<div
-				className="mt-6 flex items-center"
-				style={{gridColumn: "span 4", gridRow: 4, alignSelf: "start"}}
-			>
+			<div className="mt-6 flex items-center">
 				<label htmlFor="date_range">Select date range:</label>
 				<select
 					id="date_range"
@@ -61,10 +58,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				</select>
 			</div>
 			<Async.IfFulfilled state={habitVoteChartRequestState}>
-				<div
-					className="flex w-full mt-8 border-l-2 border-gray-500"
-					style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
-				>
+				<div className="flex w-full mt-6 border-l-2 border-gray-500">
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
 							key={item.day}
@@ -76,12 +70,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				</div>
 			</Async.IfFulfilled>
 			<Async.IfRejected state={habitVoteChartRequestState}>
-				<ErrorMessage
-					className="mt-8"
-					style={{gridColumn: "span 4", gridRow: 5, alignSelf: "start"}}
-				>
-					Charts unavailable, please try again.
-				</ErrorMessage>
+				<ErrorMessage className="mt-8">Charts unavailable, please try again.</ErrorMessage>
 			</Async.IfRejected>
 		</>
 	);

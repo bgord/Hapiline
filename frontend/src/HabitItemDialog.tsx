@@ -22,12 +22,6 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
-const habitDialogGrid: React.CSSProperties = {
-	display: "grid",
-	gridTemplateColumns: "100px 125px auto 100px",
-	gridTemplateRows: "50px 100px 50px 50px 100px",
-};
-
 interface HabitItemDialogProps {
 	habitId: IHabit["id"];
 	closeDialog: VoidFunction;
@@ -66,9 +60,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			</Async.IfRejected>
 			{habit?.id && (
 				<>
-					<div style={habitDialogGrid}>
-						<strong style={{gridColumn: "span 3", alignSelf: "center"}}>Habit preview</strong>
+					<div className="flex justify-between">
+						<strong>Habit preview</strong>
 						<CloseButton onClick={dismissDialog} />
+					</div>
+					<div className="flex items-end">
 						<EditableHabitScoreSelect
 							{...habit}
 							setHabitItem={habitRequestState.setData}
@@ -84,39 +80,23 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							setHabitItem={habitRequestState.setData}
 							key={habit?.name}
 						/>
-						<dl
-							style={{gridColumn: 3, gridRow: 3, alignSelf: "center"}}
-							className="flex items-baseline ml-4 mt-8"
-						>
-							<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.created_at)}</dd>
-							<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
-						</dl>
-						<div
-							className="text-green-600 uppercase text-sm font-bold ml-2"
-							style={{gridColumn: "span 2", gridRow: 3, alignSelf: "end"}}
-							hidden={!habit.progress_streak}
-						>
+					</div>
+					<div className="uppercase text-sm font-bold mt-6">
+						<div className="text-green-600" hidden={!habit.progress_streak}>
 							Progress streak: {habit.progress_streak} days
 						</div>
-						<div
-							className="text-red-600 uppercase text-sm font-bold ml-2"
-							style={{gridColumn: "span 2", gridRow: 3, alignSelf: "end"}}
-							hidden={!habit.regress_streak}
-						>
+						<div className="text-red-600" hidden={!habit.regress_streak}>
 							Regress streak: {habit.regress_streak} days
 						</div>
 						<div
-							className="text-gray-600 uppercase text-sm font-bold ml-2"
-							style={{gridColumn: "span 2", gridRow: 3, alignSelf: "end"}}
+							className="text-gray-600"
 							hidden={Boolean(habit.regress_streak || habit.progress_streak)}
 						>
 							No streak today
 						</div>
-						<HabitCharts id={habit.id} />
 					</div>
-					<div className="mb-6">
+					<HabitCharts id={habit.id} />
+					<div className="mt-8 mb-10">
 						<label htmlFor="description" className="field-label">
 							Description
 						</label>
@@ -127,6 +107,12 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						/>
 					</div>
 					<HabitVoteCommentHistory habitId={habit.id} />
+					<dl className="flex items-baseline py-8">
+						<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
+						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.created_at)}</dd>
+						<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
+						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
+					</dl>
 				</>
 			)}
 		</Dialog>
