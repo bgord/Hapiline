@@ -14,6 +14,8 @@ class HabitsController {
 
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
+		if (!habit.is_trackable) return response.unprocessableEntity();
+
 		const chartDateRangeToStartDate = {
 			[CHART_DATE_RANGES.last_week]: datefns.subDays(today, 6),
 			[CHART_DATE_RANGES.last_month]: datefns.subDays(today, 30),

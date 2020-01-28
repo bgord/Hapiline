@@ -16,6 +16,8 @@ const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const datefns = require("date-fns");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
+const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
+const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -30,6 +32,7 @@ afterEach(async () => {
 });
 
 const SHOW_HABIT_CHART_URL = "/api/v1/habit-chart";
+const ADD_HABIT_URL = "/api/v1/habit";
 
 test("auth", async ({client}) => {
 	const response = await client.get(`${SHOW_HABIT_CHART_URL}/x`).end();
@@ -153,4 +156,38 @@ test("full flow", async ({client, assert}) => {
 
 	assert.ok(datefns.isSameDay(new Date(response.body[6].day), today));
 	assert.equal(response.body[6].vote, HABIT_VOTE_TYPES.plateau);
+});
+
+test("check if habit is trackable", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		name: "Wake up",
+		score: HABIT_SCORE_TYPES.neutral,
+		strength: HABIT_STRENGTH_TYPES.fresh,
+		user_id: users.jim.id,
+		description: "What can I say?",
+		is_trackable: false,
+	};
+
+	const addHabitResponse = await client
+		.post(ADD_HABIT_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	addHabitResponse.assertStatus(201);
+
+	const habitId = addHabitResponse.body.id;
+
+	const queryString = qs.stringify({
+		dateRange: CHART_DATE_RANGES.last_week,
+	});
+
+	const response = await client
+		.get(`${SHOW_HABIT_CHART_URL}/${habitId}?${queryString}`)
+		.loginVia(jim)
+		.end();
+
+	assertUnprocessableEntity(response);
 });
