@@ -25,6 +25,7 @@ class VoteCommentController {
 
 		if (!habit) return response.unprocessableEntity();
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
+		if (!habit.is_trackable) return response.unprocessableEntity();
 
 		const result = await Database.select("id", "vote", "day", "comment", "habit_id")
 			.from("habit_votes")

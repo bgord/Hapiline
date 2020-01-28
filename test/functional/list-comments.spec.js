@@ -14,6 +14,8 @@ const {test, trait, beforeEach, afterEach} = use("Test/Suite")("List comments");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
+const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -28,6 +30,7 @@ afterEach(async () => {
 });
 
 const LIST_COMMENTS_URL = "/api/v1/comments";
+const ADD_HABIT_URL = "/api/v1/habit";
 
 test("auth", async ({client}) => {
 	const response = await client.get(LIST_COMMENTS_URL).end();
@@ -131,4 +134,34 @@ test("full flow", async ({client, assert}) => {
 	response.body.forEach(entry =>
 		assert.hasAllKeys(entry, ["id", "vote", "day", "comment", "habit_id"]),
 	);
+});
+
+test("check if habit is tracked", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		name: "Wake up",
+		score: HABIT_SCORE_TYPES.neutral,
+		strength: HABIT_STRENGTH_TYPES.fresh,
+		user_id: users.jim.id,
+		description: "What can I say?",
+		is_trackable: false,
+	};
+
+	const addHabitResponse = await client
+		.post(ADD_HABIT_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	addHabitResponse.assertStatus(201);
+
+	const habitId = addHabitResponse.body.id;
+
+	const response = await client
+		.get(LIST_COMMENTS_URL + `?habitId=${habitId}`)
+		.loginVia(jim)
+		.end();
+
+	assertUnprocessableEntity(response);
 });
