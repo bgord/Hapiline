@@ -12,6 +12,7 @@ const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Vote comments");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const Habit = use("Habit");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -130,4 +131,24 @@ test("full flow with non-empty comment", async ({client, assert}) => {
 		.end();
 
 	assert.equal(response.body.comment, payload.comment);
+});
+
+test("checks if habit is trackable", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const habit = await Habit.find(2);
+	habit.merge({
+		is_trackable: false,
+	});
+	await habit.save();
+
+	const payload = {comment: "You miss 100% shots you don't take"};
+
+	const response = await client
+		.patch(ADD_VOTE_COMMENT_URL(1))
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	assertUnprocessableEntity(response);
 });

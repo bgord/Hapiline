@@ -11,6 +11,7 @@ class VoteCommentController {
 		const habit = await Habit.find(vote.habit_id);
 
 		if (auth.user.id !== habit.user_id) return response.accessDenied();
+		if (!habit.is_trackable) return response.unprocessableEntity();
 
 		await vote.merge({comment: comment || null});
 		await vote.save();
