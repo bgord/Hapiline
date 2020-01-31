@@ -58,7 +58,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 		};
 	});
 
-	const areAnyHabitsAvailable = habitsAvailableAtThisDay.length === 0;
+	const isThereNoTrackedHabits = habitsAvailableAtThisDay.length === 0;
 
 	const howManyHabitsAtAll = habitVotes.length;
 	const howManyUnvotedHabits = habitVotes.filter(({vote}) => !vote).length;
@@ -153,25 +153,34 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 					Clear
 				</BareButton>
 			</div>
-			{areAnyHabitsAvailable && <div>No habits available this day.</div>}
-			<ul data-testid="day-dialog-habits">
-				{habitVotes
-					.filter(habitVoteFilter.filterFunction)
-					.filter(entry => habitSearch.filterFn(entry.habit))
-					.map(entry => (
-						<DayDialogHabitVoteListItem
-							key={entry.habit.id}
-							onResolve={() => {
-								if (onResolve) {
-									onResolve();
-								}
-								getDayVotesRequestState.reload();
-							}}
-							{...entry}
-						/>
-					))}
-			</ul>
-			<HabitsAddedAtGivenDay maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
+			{isThereNoTrackedHabits && <div>No habits available this day.</div>}
+			{!isThereNoTrackedHabits && (
+				<>
+					<strong className="mt-2">Tracked habits</strong>
+					<ul data-testid="day-dialog-habits">
+						{habitVotes
+							.filter(habitVoteFilter.filterFunction)
+							.filter(entry => habitSearch.filterFn(entry.habit))
+							.map(entry => (
+								<DayDialogHabitVoteListItem
+									key={entry.habit.id}
+									onResolve={() => {
+										if (onResolve) {
+											onResolve();
+										}
+										getDayVotesRequestState.reload();
+									}}
+									{...entry}
+								/>
+							))}
+					</ul>
+					<HabitsAddedAtGivenDay
+						maximumVotes={habitsAvailableAtThisDay.length}
+						day={day}
+						{...stats}
+					/>
+				</>
+			)}
 		</Dialog>
 	);
 };

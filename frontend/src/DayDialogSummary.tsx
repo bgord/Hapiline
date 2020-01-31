@@ -77,7 +77,9 @@ export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...
 
 	return (
 		<details className="text-sm my-8" hidden={!stats.createdHabitsCount}>
-			<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
+			<summary className="uppercase" title={summaryTitle}>
+				New habits: {stats.createdHabitsCount}
+			</summary>
 			<p>Habit(s) added this day:</p>
 			<ul className="mt-2">
 				{habitsAddedAtThisDay.map(habit => (
