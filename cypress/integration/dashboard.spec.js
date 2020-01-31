@@ -27,7 +27,7 @@ describe("Dashboard", () => {
 
 		cy.get("p").should(
 			"have.text",
-			"You're on a good track! You have 6 habits to vote for left out of 10.",
+			"You're on a good track! You have 6 tracked habits to vote for left out of 10.",
 		);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -89,7 +89,7 @@ describe("Dashboard", () => {
 			},
 		});
 		cy.reload();
-		cy.get("p").should("have.text", "Start your day well! You have 10 habits to vote for.");
+		cy.get("p").should("have.text", "Start your day well! You have 10 tracked habits to vote for.");
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -132,7 +132,10 @@ describe("Dashboard", () => {
 			},
 		});
 		cy.reload();
-		cy.get("p").should("have.text", "Congratulations! You voted for every one of 10 habits today!");
+		cy.get("p").should(
+			"have.text",
+			"Congratulations! You voted for every one of 10 tracked habits today!",
+		);
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -165,7 +168,7 @@ describe("Dashboard", () => {
 			response: [],
 		});
 		cy.reload();
-		cy.get("p").should("have.text", "Add your first habit to start voting!");
+		cy.get("p").should("have.text", "Add your first tracked habit to start voting!");
 
 		cy.findByText("Votes today").should("not.exist");
 		cy.findByText("?0").should("not.exist");
@@ -174,7 +177,7 @@ describe("Dashboard", () => {
 		cy.findByText("+0").should("not.exist");
 
 		cy.get("p")
-			.should("have.text", "Add your first habit to start voting!")
+			.should("have.text", "Add your first tracked habit to start voting!")
 			.click();
 		cy.url().should("contain", "/habits");
 	});

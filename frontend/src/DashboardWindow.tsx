@@ -134,29 +134,29 @@ const MotivationalText: React.FC<{total: number; votedFor: number}> = ({total, v
 	if (total === 0 && votedFor === 0) {
 		return (
 			<Link className="link" to="habits">
-				Add your first habit to start voting!
+				Add your first tracked habit to start voting!
 			</Link>
 		);
 	}
 	if (votedFor === 0) {
 		return (
 			<>
-				Start your day well! You have <strong>{total}</strong> habits to vote for.
+				Start your day well! You have <strong>{total}</strong> tracked habits to vote for.
 			</>
 		);
 	}
 	if (votedFor > 0 && votedFor < total) {
 		return (
 			<>
-				You're on a good track! You have <strong>{total - votedFor}</strong> habits to vote for left
-				out of <strong>{total}</strong>.
+				You're on a good track! You have <strong>{total - votedFor}</strong> tracked habits to vote
+				for left out of <strong>{total}</strong>.
 			</>
 		);
 	}
 	if (votedFor === total) {
 		return (
 			<>
-				<strong>Congratulations!</strong> You voted for every one of {total} habits today!
+				<strong>Congratulations!</strong> You voted for every one of {total} tracked habits today!
 			</>
 		);
 	}
