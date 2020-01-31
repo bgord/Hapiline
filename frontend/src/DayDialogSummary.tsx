@@ -74,13 +74,16 @@ export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 
 	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
+
 	return (
 		<details className="text-sm my-8" hidden={!stats.createdHabitsCount}>
 			<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
 			<p>Habit(s) added this day:</p>
 			<ul className="mt-2">
 				{habitsAddedAtThisDay.map(habit => (
-					<li key={habit.id}>{habit.name}</li>
+					<li key={habit.id}>
+						{habit.name} {!habit.is_trackable && <span>(not tracked)</span>}
+					</li>
 				))}
 			</ul>
 		</details>

@@ -26,9 +26,9 @@ type DayDialogProps = DayVoteStats & {
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, ...stats}) => {
 	const history = useHistory();
-	const _habits = useHabits();
+	const allHabits = useHabits();
 
-	const habits = _habits.filter(habit => habit.is_trackable);
+	const trackedHabits = allHabits.filter(habit => habit.is_trackable);
 
 	const triggerErrorNotification = useErrorNotification();
 	const getDayVotesRequestState = Async.useAsync({
@@ -40,13 +40,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 	const [queryParams, updateQueryParams] = useQueryParams();
 	const highlightedHabitId = queryParams.highlighted_habit_id;
 
-	const possiblyHighlightedHabitName = habits.find(habit => habit.id === Number(highlightedHabitId))
-		?.name;
+	const possiblyHighlightedHabitName = trackedHabits.find(
+		habit => habit.id === Number(highlightedHabitId),
+	)?.name;
 
 	const habitSearch = useHabitSearch(possiblyHighlightedHabitName);
 	const habitVoteFilter = useHabitVoteFilter();
 
-	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, day);
+	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day);
 
 	const habitVotes: HabitVote[] = habitsAvailableAtThisDay.map(habit => {
 		const voteForHabit = getDayVoteForHabit(getDayVotesRequestState, habit);

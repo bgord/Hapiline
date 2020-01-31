@@ -167,43 +167,23 @@ describe("Calendar", () => {
 	it("doesn't render not trackable habits", () => {
 		cy.server();
 
-		const response = [
-			{
-				id: 1,
-				name: "Watch The Office",
-				score: "positive",
-				strength: "established",
-				is_trackable: true,
-				created_at: currentDate,
-			},
-			{
-				id: 2,
-				name: "Go to sleep",
-				score: "neutral",
-				strength: "fresh",
-				is_trackable: true,
-				created_at: currentDate,
-			},
-			{
-				id: 3,
-				name: "Wake up",
-				score: "negative",
-				strength: "developing",
-				is_trackable: false,
-				created_at: currentDate,
-			},
-		];
-
-		cy.route({
-			method: "GET",
-			url: "/api/v1/habits",
-			status: 200,
-			response,
-		});
-
 		cy.viewport(2000, 2000);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
+
+		cy.findByText("Habits").click();
+		cy.findByText("Add habit").click();
+
+		cy.findByLabelText("Habit").type("THE NOT TRACKED ONE");
+
+		cy.findByLabelText("Track this habit").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Add habit").click();
+			cy.findByText("×").click();
+		});
+
+		cy.findByText("Calendar").click();
 
 		cy.get("ul").within(() => {
 			cy.get("li")
@@ -213,7 +193,11 @@ describe("Calendar", () => {
 				});
 		});
 
-		cy.findByRole("dialog").within(() => cy.get("li").should("have.length", 2));
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("NEW: 5").click();
+			cy.findByText("THE NOT TRACKED ONE");
+			cy.findByText("(not tracked)");
+		});
 	});
 
 	it("habit votes", () => {
