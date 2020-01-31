@@ -26,7 +26,9 @@ type DayDialogProps = DayVoteStats & {
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, ...stats}) => {
 	const history = useHistory();
-	const habits = useHabits();
+	const _habits = useHabits();
+
+	const habits = _habits.filter(habit => habit.is_trackable);
 
 	const triggerErrorNotification = useErrorNotification();
 	const getDayVotesRequestState = Async.useAsync({

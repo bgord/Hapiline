@@ -164,6 +164,58 @@ describe("Calendar", () => {
 		cy.findByRole("dialog").should("not.exist");
 	});
 
+	it("doesn't render not trackable habits", () => {
+		cy.server();
+
+		const response = [
+			{
+				id: 1,
+				name: "Watch The Office",
+				score: "positive",
+				strength: "established",
+				is_trackable: true,
+				created_at: currentDate,
+			},
+			{
+				id: 2,
+				name: "Go to sleep",
+				score: "neutral",
+				strength: "fresh",
+				is_trackable: true,
+				created_at: currentDate,
+			},
+			{
+				id: 3,
+				name: "Wake up",
+				score: "negative",
+				strength: "developing",
+				is_trackable: false,
+				created_at: currentDate,
+			},
+		];
+
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response,
+		});
+
+		cy.viewport(2000, 2000);
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.get("ul").within(() => {
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("Show day").click({force: true});
+				});
+		});
+
+		cy.findByRole("dialog").within(() => cy.get("li").should("have.length", 2));
+	});
+
 	it("habit votes", () => {
 		cy.viewport(1700, 1700);
 		cy.login("dwight");
