@@ -4,7 +4,8 @@ import React from "react";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IHabit} from "./interfaces/IHabit";
 import {Stat} from "./Stat";
-import {useHabits} from "./contexts/habits-context";
+import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
+import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
 import {voteToBgColor} from "./interfaces/IDayVote";
 
 type DayDialogSummaryProps = DayVoteStats & {
@@ -74,12 +75,38 @@ export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 
 	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
+
 	return (
-		<details className="text-sm my-8" hidden={!stats.createdHabitsCount}>
-			<summary title={summaryTitle}>NEW: {stats.createdHabitsCount}</summary>
+		<details className="text-sm mt-8" hidden={!stats.createdHabitsCount}>
+			<summary className="uppercase" title={summaryTitle}>
+				New habits: {stats.createdHabitsCount}
+			</summary>
 			<p>Habit(s) added this day:</p>
 			<ul className="mt-2">
 				{habitsAddedAtThisDay.map(habit => (
+					<li key={habit.id}>
+						{habit.name} {!habit.is_trackable && <span>(not tracked)</span>}
+					</li>
+				))}
+			</ul>
+		</details>
+	);
+};
+
+export const UntrackedHabits: React.FC<{day: string}> = ({day}) => {
+	const _untrackedHabits = useUntrackedHabits();
+	const untrackedHabits = getHabitsAvailableAtThisDay(_untrackedHabits, day);
+
+	const summaryTitle = `You have ${untrackedHabits.length} untracked habits.`;
+
+	return (
+		<details className="text-sm mb-4 mt-4" hidden={!untrackedHabits.length}>
+			<summary className="uppercase" title={summaryTitle}>
+				Untracked habits: {untrackedHabits.length}
+			</summary>
+			<p>Untracked habits available at this day:</p>
+			<ul className="mt-2">
+				{untrackedHabits.map(habit => (
 					<li key={habit.id}>{habit.name}</li>
 				))}
 			</ul>

@@ -48,7 +48,7 @@ describe("Calendar", () => {
 
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInPreviousMonth);
-			cy.findByText("NEW:").should("not.exist");
+			cy.findByText("new:").should("not.exist");
 		});
 
 		cy.findByText("Next").click();
@@ -63,6 +63,58 @@ describe("Calendar", () => {
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
 			cy.findByText("NEW: 4");
+		});
+	});
+
+	it("untracked habits are not shown in the calendar tiles", () => {
+		cy.viewport(1700, 1700);
+
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.findByText(currentMonthString);
+
+		cy.get("ul").within(() => {
+			cy.get("li").should("have.length", daysInCurrentMonth);
+
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("NEW: 4");
+					cy.findByText("+2");
+					cy.findByText("=1");
+					cy.findByText("-1");
+					cy.findByText("?6");
+				});
+		});
+
+		cy.findByText("Habits").click();
+		cy.findByText("Add habit").click();
+
+		cy.findByLabelText("Habit").type("THE SPECIAL ONE");
+		cy.findByLabelText("Track this habit").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Add habit").click();
+			cy.findByText("×").click();
+		});
+
+		cy.findByText("Habit successfully addedd!");
+
+		cy.visit(CALENDAR_URL);
+
+		cy.get("ul").within(() => {
+			cy.get("li").should("have.length", daysInCurrentMonth);
+
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("NEW: 5");
+					cy.findByText("+2");
+					cy.findByText("=1");
+					cy.findByText("-1");
+					cy.findByText("?6");
+				});
 		});
 	});
 
@@ -106,7 +158,8 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
-			cy.findByText("NEW: 4");
+			cy.findByText("Tracked habits");
+			cy.findByText("New habits: 4");
 			cy.findByText("+2");
 			cy.findByText("=1");
 			cy.findByText("-1");
@@ -162,6 +215,44 @@ describe("Calendar", () => {
 			cy.findByText("×").click();
 		});
 		cy.findByRole("dialog").should("not.exist");
+	});
+
+	it("doesn't render not trackable habits", () => {
+		cy.server();
+
+		cy.viewport(2000, 2000);
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.findByText("Habits").click();
+		cy.findByText("Add habit").click();
+
+		cy.findByLabelText("Habit").type("THE NOT TRACKED ONE");
+
+		cy.findByLabelText("Track this habit").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Add habit").click();
+			cy.findByText("×").click();
+		});
+
+		cy.findByText("Calendar").click();
+
+		cy.get("ul").within(() => {
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("Show day").click({force: true});
+				});
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("New habits: 5").click();
+			cy.findByText("(not tracked)");
+			cy.findByText("Untracked habits: 1");
+			cy.findByText("Untracked habits available at this day:");
+			cy.findAllByText("THE NOT TRACKED ONE");
+		});
 	});
 
 	it("habit votes", () => {

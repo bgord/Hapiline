@@ -11,8 +11,19 @@ class DashboardStatsController {
         (
           SELECT COUNT(*)
           FROM habits as h
-          WHERE h.created_at::date <= NOW()::date AND h.user_id = :user_id
-        )::integer as "maximumVotes"
+          WHERE
+            h.created_at::date <= NOW()::date
+            AND h.user_id = :user_id
+            AND h.is_trackable IS TRUE
+        )::integer as "maximumVotes",
+        (
+          SELECT COUNT(*)
+          FROM habits as h
+          WHERE
+            h.created_at::date <= NOW()::date
+            AND h.user_id = :user_id
+            AND h.is_trackable IS FALSE
+        )::integer as "untrackedHabits"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE hv.day::date = NOW()::date AND h.user_id = :user_id
@@ -28,7 +39,7 @@ class DashboardStatsController {
         OVER (ORDER BY day)::integer AS "maximumVotesLastWeek"
       FROM GENERATE_SERIES(NOW() - '6 days'::interval, NOW(), '1 day') as day
       LEFT JOIN habits ON habits.created_at::date <= day::date
-      WHERE habits.user_id = :user_id
+      WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
       GROUP BY day
       ORDER BY day DESC
       LIMIT 1
@@ -61,7 +72,7 @@ class DashboardStatsController {
         OVER (ORDER BY day)::integer AS "maximumVotesLastMonth"
       FROM GENERATE_SERIES(NOW() - '29 days'::interval, NOW(), '1 day') as day
       LEFT JOIN habits ON habits.created_at::date <= day::date
-      WHERE habits.user_id = :user_id
+      WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
       GROUP BY day
       ORDER BY day DESC
       LIMIT 1

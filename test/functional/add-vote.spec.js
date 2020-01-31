@@ -5,6 +5,7 @@ const {
 	assertInvalidSession,
 	assertAccessDenied,
 	assertValidationError,
+	assertUnprocessableEntity,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
@@ -13,6 +14,8 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
+const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -27,6 +30,7 @@ afterEach(async () => {
 });
 
 const ADD_VOTE_URL = "/api/v1/vote";
+const ADD_HABIT_URL = "/api/v1/habit";
 
 test("auth", async ({client}) => {
 	const response = await client.post(ADD_VOTE_URL).end();
@@ -260,4 +264,41 @@ test("full flow for habit created today", async ({client}) => {
 		.end();
 
 	response.assertStatus(200);
+});
+
+test("checks if habit is trackable", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const habitPayload = {
+		name: "Wake up",
+		score: HABIT_SCORE_TYPES.neutral,
+		strength: HABIT_STRENGTH_TYPES.fresh,
+		user_id: users.jim.id,
+		description: "What can I say?",
+		is_trackable: false,
+	};
+
+	const addHabitResponse = await client
+		.post(ADD_HABIT_URL)
+		.send(habitPayload)
+		.loginVia(jim)
+		.end();
+
+	addHabitResponse.assertStatus(201);
+
+	const habitId = addHabitResponse.body.id;
+
+	const votePayload = {
+		habit_id: habitId,
+		day: new Date(),
+		vote: HABIT_VOTE_TYPES.regress,
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(votePayload)
+		.loginVia(jim)
+		.end();
+
+	assertUnprocessableEntity(response);
 });

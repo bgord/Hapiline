@@ -26,6 +26,7 @@ const VALIDATION_MESSAGES = {
 	invalid_chart_date_range: `dateRange must one of ${Object.keys(CHART_DATE_RANGES).join(", ")}.`,
 	invalid_comment: "Comment must be max of 1024 characters.",
 	invalid_description: "Description must be max of 1024 characters.",
+	boolean: field => `${field} must be true or false.`,
 };
 
 module.exports = VALIDATION_MESSAGES;

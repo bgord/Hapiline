@@ -13,6 +13,7 @@ class VoteController {
 		const habit = await Habit.find(habit_id);
 
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
+		if (!habit.is_trackable) return response.unprocessableEntity();
 
 		const habitCreationDate = new Date(habit.created_at);
 		const dayDate = new Date(day);

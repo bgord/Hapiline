@@ -6,7 +6,14 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 class HabitsController {
 	async store({request, response, auth}) {
-		const payload = request.only(["name", "score", "strength", "user_id", "description"]);
+		const payload = request.only([
+			"name",
+			"score",
+			"strength",
+			"user_id",
+			"description",
+			"is_trackable",
+		]);
 		try {
 			const {maxOrderValue} = await Database.table("habits")
 				.max("order as maxOrderValue")
@@ -49,6 +56,14 @@ class HabitsController {
 
 		if (!habit) return response.notFound();
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
+
+		if (!habit.is_trackable) {
+			return response.send({
+				...habit,
+				progress_streak: 0,
+				regress_streak: 0,
+			});
+		}
 
 		const habitVotes = await Database.select("vote", "day")
 			.from("habit_votes")

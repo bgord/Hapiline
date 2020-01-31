@@ -11,6 +11,7 @@ class StoreHabit extends BaseHttpValidator {
 			strength: `required|in:${Object.keys(HABIT_STRENGTH_TYPES)}`,
 			user_id: "required|integer|above:0",
 			description: "string|max:1024",
+			is_trackable: "required|boolean",
 		};
 	}
 
@@ -19,6 +20,7 @@ class StoreHabit extends BaseHttpValidator {
 			required: VALIDATION_MESSAGES.required,
 			integer: VALIDATION_MESSAGES.integer,
 			string: VALIDATION_MESSAGES.string,
+			boolean: VALIDATION_MESSAGES.boolean,
 			"name.max": VALIDATION_MESSAGES.max("name", 255),
 			"score.in": VALIDATION_MESSAGES.invalid_score,
 			"strength.in": VALIDATION_MESSAGES.invalid_strength,

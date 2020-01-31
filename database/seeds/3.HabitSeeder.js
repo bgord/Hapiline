@@ -24,6 +24,7 @@ class HabitsSeeder {
 					strength: Object.keys(HABIT_STRENGTH_TYPES)[index % 3],
 					order: index,
 					description: index % 3 === 0 ? null : "lorem ".repeat(index),
+					is_trackable: true,
 					created_at: date,
 					updated_at: date,
 				};

@@ -8,6 +8,8 @@ const {
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
+const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
+const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -22,6 +24,7 @@ afterEach(async () => {
 });
 
 const SHOW_HABIT_URL = "/api/v1/habit";
+const ADD_HABIT_URL = "/api/v1/habit";
 
 test("auth", async ({client}) => {
 	const response = await client.get(`${SHOW_HABIT_URL}/x`).end();
@@ -105,4 +108,35 @@ test("user cannot access other users' resources", async ({client}) => {
 		.end();
 
 	assertAccessDenied(response);
+});
+
+test("return 0 day streaks for untracked habits", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const payload = {
+		name: "Wake up",
+		score: HABIT_SCORE_TYPES.neutral,
+		strength: HABIT_STRENGTH_TYPES.fresh,
+		user_id: users.jim.id,
+		description: "What can I say?",
+		is_trackable: false,
+	};
+
+	const addHabitResponse = await client
+		.post(ADD_HABIT_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	addHabitResponse.assertStatus(201);
+
+	const habitId = addHabitResponse.body.id;
+
+	const response = await client
+		.get(`${SHOW_HABIT_URL}/${habitId}`)
+		.loginVia(jim)
+		.end();
+
+	assert.equal(response.body.progress_streak, 0);
+	assert.equal(response.body.regress_streak, 0);
 });

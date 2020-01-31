@@ -35,7 +35,6 @@ export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> =
 	return (
 		<select
 			className={`${bgColor} w-20 appearance-none cursor-pointer text-center p-1`}
-			style={{alignSelf: "end", justifySelf: "center"}}
 			value={newHabitScore}
 			disabled={editHabitRequestState.isPending}
 			onChange={event => {

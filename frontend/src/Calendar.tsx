@@ -8,7 +8,7 @@ import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useHabits} from "./contexts/habits-context";
+import {useTrackedHabits} from "./contexts/habits-context";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
 
 const habitDialogGrid: React.CSSProperties = {
@@ -20,7 +20,7 @@ const habitDialogGrid: React.CSSProperties = {
 
 export const Calendar: React.FC = () => {
 	const [widget, date, monthOffset] = useMonthsWidget();
-	const habits = useHabits();
+	const trackedHabits = useTrackedHabits();
 
 	const getMonthRequestState = Async.useAsync({
 		promiseFn: api.calendar.getMonth,
@@ -37,7 +37,8 @@ export const Calendar: React.FC = () => {
 			...getMonthRequestState.data?.find(item => item.day === entry.day),
 		};
 
-		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(habits, givenDay).length;
+		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(trackedHabits, givenDay)
+			.length;
 		const noVotesCountStats = getNoVotesCountStats(
 			habitsAvailableAtThisDayCount,
 			fullDayWithVoteStatsFromAPI,

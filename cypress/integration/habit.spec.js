@@ -131,18 +131,28 @@ describe("Habit", () => {
 				name: "Watch The Office",
 				score: "positive",
 				strength: "established",
+				is_trackable: true,
 			},
 			{
 				id: 2,
 				name: "Go to sleep",
 				score: "neutral",
 				strength: "fresh",
+				is_trackable: true,
 			},
 			{
 				id: 3,
 				name: "Wake up",
 				score: "negative",
 				strength: "developing",
+				is_trackable: true,
+			},
+			{
+				id: 4,
+				name: "Untrackable",
+				score: "positive",
+				strength: "established",
+				is_trackable: false,
 			},
 		];
 
@@ -160,25 +170,27 @@ describe("Habit", () => {
 		cy.get("ul").within(() => {
 			response.forEach(item => {
 				cy.findByText(item.name);
-				cy.findByText(item.score);
+				cy.findAllByText(item.score);
 			});
 		});
 
+		cy.findByText("NT");
+
 		cy.findByText("Show filters").click();
 
-		cy.findByLabelText("Positive (1)").should("not.be.checked");
+		cy.findByLabelText("Positive (2)").should("not.be.checked");
 		cy.findByLabelText("Neutral (1)").should("not.be.checked");
 		cy.findByLabelText("Negative (1)").should("not.be.checked");
-		cy.findByLabelText("Established (1)").should("not.be.checked");
+		cy.findByLabelText("Established (2)").should("not.be.checked");
 		cy.findByLabelText("Fresh (1)").should("not.be.checked");
 		cy.findByLabelText("Developing (1)").should("not.be.checked");
-		cy.findByLabelText("All scores (3)").should("be.checked");
-		cy.findByLabelText("All strengths (3)").should("be.checked");
-		cy.findByText("Results: 3");
+		cy.findByLabelText("All scores (4)").should("be.checked");
+		cy.findByLabelText("All strengths (4)").should("be.checked");
+		cy.findByText("Results: 4");
 
-		cy.findByLabelText("Positive (1)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByText("Results: 1");
+		cy.findByLabelText("Positive (2)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 2));
+		cy.findByText("Results: 2");
 
 		cy.findByLabelText("Neutral (1)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
@@ -188,11 +200,11 @@ describe("Habit", () => {
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
 		cy.findByText("Results: 1");
 
-		cy.findByLabelText("All scores (3)").check();
+		cy.findByLabelText("All scores (4)").check();
 
-		cy.findByLabelText("Established (1)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByText("Results: 1");
+		cy.findByLabelText("Established (2)").check();
+		cy.get("ul").within(() => cy.get("li").should("have.length", 2));
+		cy.findByText("Results: 2");
 
 		cy.findByLabelText("Developing (1)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
@@ -202,7 +214,7 @@ describe("Habit", () => {
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
 		cy.findByText("Results: 1");
 
-		cy.findByLabelText("All strengths (3)").check();
+		cy.findByLabelText("All strengths (4)").check();
 
 		cy.findByPlaceholderText("Search for habits...")
 			.should("have.value", "")
@@ -309,6 +321,7 @@ describe("Habit", () => {
 				updated_at: "2019/02/01",
 				progress_streak: 2,
 				regress_streak: 0,
+				is_trackable: true,
 			},
 			{
 				id: 2,
@@ -319,6 +332,7 @@ describe("Habit", () => {
 				updated_at: "2019/02/01",
 				progress_streak: 0,
 				regress_streak: 1,
+				is_trackable: true,
 			},
 		];
 
@@ -408,7 +422,7 @@ describe("Habit", () => {
 			cy.findByText("2019-02-01 00:00");
 			cy.findByText("Progress streak: 2 days");
 			cy.findByDisplayValue("Last week");
-			for (let {day, vote} of chartResponse) {
+			for (const {day, vote} of chartResponse) {
 				cy.findByTitle(`${day} - ${vote}`);
 			}
 			cy.findByText("×").click();
@@ -430,6 +444,62 @@ describe("Habit", () => {
 		});
 
 		cy.findByText("Fetching chart data failed.");
+	});
+
+	it("inspecting untracked habit in dialog", () => {
+		const response = [
+			{
+				id: 1,
+				name: "Watch The Office",
+				score: "positive",
+				strength: "fresh",
+				created_at: "2019/01/01",
+				updated_at: "2019/02/01",
+				is_trackable: false,
+			},
+		];
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response,
+		});
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habit/1",
+			status: 200,
+			response: response[0],
+		});
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findByText("NT");
+
+		cy.findAllByText("More")
+			.first()
+			.click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Habit preview");
+			cy.findByDisplayValue("positive");
+			cy.findByDisplayValue("fresh");
+			cy.findByDisplayValue("Watch The Office");
+
+			cy.findByText("This habit is not tracked.");
+			cy.findByPlaceholderText("Write something...");
+
+			cy.findByText("Created at:");
+			cy.findByText("2019-01-01 00:00");
+
+			cy.findByText("Updated at:");
+			cy.findByText("2019-02-01 00:00");
+
+			cy.findByText("Select date range:").should("not.exist");
+			cy.findByText("Vote comments").should("not.exist");
+		});
 	});
 
 	it("changing name", () => {

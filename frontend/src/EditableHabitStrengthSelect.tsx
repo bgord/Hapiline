@@ -33,7 +33,6 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 	return (
 		<select
 			className={`${bgColor} w-32 appearance-none cursor-pointer text-center p-1`}
-			style={{alignSelf: "end", justifySelf: "center"}}
 			value={newHabitStrength}
 			disabled={editHabitRequestState.isPending}
 			onChange={event => {
