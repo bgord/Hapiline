@@ -15,7 +15,15 @@ class DashboardStatsController {
             h.created_at::date <= NOW()::date
             AND h.user_id = :user_id
             AND h.is_trackable IS TRUE
-        )::integer as "maximumVotes"
+        )::integer as "maximumVotes",
+        (
+          SELECT COUNT(*)
+          FROM habits as h
+          WHERE
+            h.created_at::date <= NOW()::date
+            AND h.user_id = :user_id
+            AND h.is_trackable IS FALSE
+        )::integer as "untrackedHabits"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE hv.day::date = NOW()::date AND h.user_id = :user_id

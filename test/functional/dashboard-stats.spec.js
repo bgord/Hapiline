@@ -68,6 +68,7 @@ test("full flow", async ({client, assert}) => {
 			noVotes: 3,
 			allVotes: 2,
 			maximumVotes: 5,
+			untrackedHabits: 0,
 		},
 		lastWeek: {
 			progressVotes: 1,
@@ -115,6 +116,7 @@ test("full flow", async ({client, assert}) => {
 			noVotes: 3,
 			allVotes: 2,
 			maximumVotes: 5,
+			untrackedHabits: 1,
 		},
 		lastWeek: {
 			progressVotes: 1,

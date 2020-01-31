@@ -12,7 +12,7 @@ interface IDateRangeStats {
 }
 
 interface IDashboardStats {
-	today: IDateRangeStats;
+	today: IDateRangeStats & {untrackedHabits: number};
 	lastWeek: IDateRangeStats;
 	lastMonth: IDateRangeStats;
 }
