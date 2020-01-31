@@ -16,7 +16,7 @@ import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabitVoteFilter, HabitVoteFilters} from "./hooks/useHabitVoteFilter";
-import {useHabits} from "./contexts/habits-context";
+import {useTrackedHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 
 type DayDialogProps = DayVoteStats & {
@@ -26,9 +26,7 @@ type DayDialogProps = DayVoteStats & {
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, ...stats}) => {
 	const history = useHistory();
-	const allHabits = useHabits();
-
-	const trackedHabits = allHabits.filter(habit => habit.is_trackable);
+	const trackedHabits = useTrackedHabits();
 
 	const triggerErrorNotification = useErrorNotification();
 	const getDayVotesRequestState = Async.useAsync({

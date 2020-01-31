@@ -34,3 +34,11 @@ export function useHabits() {
 	}
 	return context?.data ?? [];
 }
+
+export function useTrackedHabits() {
+	const context = React.useContext(HabitsContext);
+	if (context === undefined) {
+		throw new Error(`useTrackedHabits must be used within the HabitsContext`);
+	}
+	return context?.data?.filter(habit => habit.is_trackable) ?? [];
+}

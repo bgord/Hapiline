@@ -133,7 +133,7 @@ test("full flow with non-empty comment", async ({client, assert}) => {
 	assert.equal(response.body.comment, payload.comment);
 });
 
-test("checks if habit is trackable", async ({client, assert}) => {
+test("checks if habit is trackable", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const habit = await Habit.find(2);

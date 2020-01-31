@@ -66,6 +66,58 @@ describe("Calendar", () => {
 		});
 	});
 
+	it("untracked habits are not shown in the calendar tiles", () => {
+		cy.viewport(1700, 1700);
+
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.findByText(currentMonthString);
+
+		cy.get("ul").within(() => {
+			cy.get("li").should("have.length", daysInCurrentMonth);
+
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("NEW: 4");
+					cy.findByText("+2");
+					cy.findByText("=1");
+					cy.findByText("-1");
+					cy.findByText("?6");
+				});
+		});
+
+		cy.findByText("Habits").click();
+		cy.findByText("Add habit").click();
+
+		cy.findByLabelText("Habit").type("THE SPECIAL ONE");
+		cy.findByLabelText("Track this habit").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Add habit").click();
+			cy.findByText("×").click();
+		});
+
+		cy.findByText("Habit successfully addedd!");
+
+		cy.visit(CALENDAR_URL);
+
+		cy.get("ul").within(() => {
+			cy.get("li").should("have.length", daysInCurrentMonth);
+
+			cy.get("li")
+				.eq(currentDate - 1)
+				.within(() => {
+					cy.findByText("NEW: 5");
+					cy.findByText("+2");
+					cy.findByText("=1");
+					cy.findByText("-1");
+					cy.findByText("?6");
+				});
+		});
+	});
+
 	it("get month error", () => {
 		const errorMessage = "Unexpected error, try again later.";
 
