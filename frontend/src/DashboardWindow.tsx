@@ -26,6 +26,7 @@ export const DashboardWindow = () => {
 	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
 	const howManyHabitsToday = todayStats?.maximumVotes ?? 0;
+	const howManyUntrackedHabitsToday = todayStats?.untrackedHabits ?? 0;
 	const howManyVotesToday = todayStats?.allVotes ?? 0;
 
 	const statsForToday = {
@@ -73,7 +74,11 @@ export const DashboardWindow = () => {
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getDashboardStatsRequestState}>
 				<p className="my-8">
-					<MotivationalText total={howManyHabitsToday} votedFor={howManyVotesToday} />
+					<MotivationalText
+						untracked={howManyUntrackedHabitsToday}
+						total={howManyHabitsToday}
+						votedFor={howManyVotesToday}
+					/>
 				</p>
 				{howManyHabitsToday > 0 && (
 					<div data-testid="chart-today">
@@ -130,7 +135,11 @@ export const DashboardWindow = () => {
 	);
 };
 
-const MotivationalText: React.FC<{total: number; votedFor: number}> = ({total, votedFor}) => {
+const MotivationalText: React.FC<{total: number; votedFor: number; untracked: number}> = ({
+	total,
+	votedFor,
+	untracked,
+}) => {
 	if (total === 0 && votedFor === 0) {
 		return (
 			<Link className="link" to="habits">
@@ -141,7 +150,8 @@ const MotivationalText: React.FC<{total: number; votedFor: number}> = ({total, v
 	if (votedFor === 0) {
 		return (
 			<>
-				Start your day well! You have <strong>{total}</strong> tracked habits to vote for.
+				Start your day well! You have <strong>{total}</strong> tracked habits to vote for. And{" "}
+				{untracked} untracked habits.
 			</>
 		);
 	}
@@ -149,7 +159,7 @@ const MotivationalText: React.FC<{total: number; votedFor: number}> = ({total, v
 		return (
 			<>
 				You're on a good track! You have <strong>{total - votedFor}</strong> tracked habits to vote
-				for left out of <strong>{total}</strong>.
+				for left out of <strong>{total}</strong>. And {untracked} untracked habits.
 			</>
 		);
 	}
@@ -157,6 +167,7 @@ const MotivationalText: React.FC<{total: number; votedFor: number}> = ({total, v
 		return (
 			<>
 				<strong>Congratulations!</strong> You voted for every one of {total} tracked habits today!
+				You also have {untracked} untracked habits.
 			</>
 		);
 	}

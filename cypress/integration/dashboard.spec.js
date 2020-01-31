@@ -27,7 +27,7 @@ describe("Dashboard", () => {
 
 		cy.get("p").should(
 			"have.text",
-			"You're on a good track! You have 6 tracked habits to vote for left out of 10.",
+			"You're on a good track! You have 6 tracked habits to vote for left out of 10. And 0 untracked habits.",
 		);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -69,6 +69,7 @@ describe("Dashboard", () => {
 					noVotes: 10,
 					allVotes: 0,
 					maximumVotes: 10,
+					untrackedHabits: 2,
 				},
 				lastWeek: {
 					progressVotes: 1,
@@ -89,7 +90,10 @@ describe("Dashboard", () => {
 			},
 		});
 		cy.reload();
-		cy.get("p").should("have.text", "Start your day well! You have 10 tracked habits to vote for.");
+		cy.get("p").should(
+			"have.text",
+			"Start your day well! You have 10 tracked habits to vote for. And 2 untracked habits.",
+		);
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -128,13 +132,14 @@ describe("Dashboard", () => {
 					maximumVotes: 10,
 					noVotes: 0,
 					allVotes: 10,
+					untrackedHabits: 3,
 				},
 			},
 		});
 		cy.reload();
 		cy.get("p").should(
 			"have.text",
-			"Congratulations! You voted for every one of 10 tracked habits today!",
+			"Congratulations! You voted for every one of 10 tracked habits today! You also have 3 untracked habits.",
 		);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -158,6 +163,7 @@ describe("Dashboard", () => {
 					maximumVotes: 0,
 					noVotes: 0,
 					allVotes: 0,
+					untrackedHabits: 0,
 				},
 			},
 		});
