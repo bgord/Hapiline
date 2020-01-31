@@ -35,7 +35,7 @@ describe("Calendar", () => {
 			cy.get("li")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("New habits: 4");
+					cy.findByText("NEW: 4");
 					cy.findByText("+2");
 					cy.findByText("=1");
 					cy.findByText("-1");
@@ -48,21 +48,21 @@ describe("Calendar", () => {
 
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInPreviousMonth);
-			cy.findByText("New habits:").should("not.exist");
+			cy.findByText("new:").should("not.exist");
 		});
 
 		cy.findByText("Next").click();
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findByText("New habits: 4");
+			cy.findByText("NEW: 4");
 		});
 
 		cy.findByText("Next").click();
 		cy.findByText(currentMonthString);
 		cy.get("ul").within(() => {
 			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findByText("New habits: 4");
+			cy.findByText("NEW: 4");
 		});
 	});
 
@@ -80,7 +80,7 @@ describe("Calendar", () => {
 			cy.get("li")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("New habits: 4");
+					cy.findByText("NEW: 4");
 					cy.findByText("+2");
 					cy.findByText("=1");
 					cy.findByText("-1");
@@ -109,7 +109,7 @@ describe("Calendar", () => {
 			cy.get("li")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("New habits: 5");
+					cy.findByText("NEW: 5");
 					cy.findByText("+2");
 					cy.findByText("=1");
 					cy.findByText("-1");
@@ -140,7 +140,7 @@ describe("Calendar", () => {
 		cy.findByText(errorMessage);
 	});
 
-	it.only("dialog", () => {
+	it("dialog", () => {
 		cy.viewport(2000, 2000);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
@@ -248,8 +248,10 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByText("New habits: 5").click();
-			cy.findByText("THE NOT TRACKED ONE");
 			cy.findByText("(not tracked)");
+			cy.findByText("Untracked habits: 1");
+			cy.findByText("Untracked habits available at this day:");
+			cy.findAllByText("THE NOT TRACKED ONE");
 		});
 	});
 

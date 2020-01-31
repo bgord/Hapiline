@@ -321,6 +321,7 @@ describe("Habit", () => {
 				updated_at: "2019/02/01",
 				progress_streak: 2,
 				regress_streak: 0,
+				is_trackable: true,
 			},
 			{
 				id: 2,
@@ -331,6 +332,7 @@ describe("Habit", () => {
 				updated_at: "2019/02/01",
 				progress_streak: 0,
 				regress_streak: 1,
+				is_trackable: true,
 			},
 		];
 
@@ -420,7 +422,7 @@ describe("Habit", () => {
 			cy.findByText("2019-02-01 00:00");
 			cy.findByText("Progress streak: 2 days");
 			cy.findByDisplayValue("Last week");
-			for (let {day, vote} of chartResponse) {
+			for (const {day, vote} of chartResponse) {
 				cy.findByTitle(`${day} - ${vote}`);
 			}
 			cy.findByText("×").click();

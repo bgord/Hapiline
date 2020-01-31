@@ -42,3 +42,11 @@ export function useTrackedHabits() {
 	}
 	return context?.data?.filter(habit => habit.is_trackable) ?? [];
 }
+
+export function useUntrackedHabits() {
+	const context = React.useContext(HabitsContext);
+	if (context === undefined) {
+		throw new Error(`useUntrackedHabits must be used within the HabitsContext`);
+	}
+	return context?.data?.filter(habit => !habit.is_trackable) ?? [];
+}

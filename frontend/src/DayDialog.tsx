@@ -6,18 +6,24 @@ import React from "react";
 import {BareButton} from "./BareButton";
 import {CloseButton} from "./CloseButton";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
-import {DaySummaryChart, HabitsAddedAtGivenDay, DaySummaryStats} from "./DayDialogSummary";
+import {
+	DaySummaryChart,
+	DaySummaryStats,
+	HabitsAddedAtGivenDay,
+	UntrackedHabits,
+} from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
+import {HabitVoteFilters} from "./hooks/useHabitVoteFilter";
 import {IDayVote} from "./interfaces/IDayVote";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
-import {useHabitVoteFilter, HabitVoteFilters} from "./hooks/useHabitVoteFilter";
-import {useTrackedHabits} from "./contexts/habits-context";
+import {useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {useQueryParams} from "./hooks/useQueryParam";
+import {useTrackedHabits} from "./contexts/habits-context";
 
 type DayDialogProps = DayVoteStats & {
 	onResolve?: VoidFunction;
@@ -179,6 +185,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 						day={day}
 						{...stats}
 					/>
+					<UntrackedHabits day={day} />
 				</>
 			)}
 		</Dialog>
