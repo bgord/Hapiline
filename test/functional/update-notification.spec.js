@@ -13,7 +13,6 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const NOTIFICATION_STATUSES = use("NOTIFICATION_STATUSES");
-const Database = use("Database");
 
 trait("Test/ApiClient");
 trait("Auth/Client");

@@ -1,10 +1,13 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
+import * as Async from "react-async";
 import * as React from "react";
 
 import {createBrowserHistory} from "history";
 
+import {api} from "./services/api";
 import {Calendar} from "./Calendar";
 import {DashboardWindow} from "./DashboardWindow";
+import {RequestErrorMessage} from "./ErrorMessages";
 import {HabitsProvider} from "./contexts/habits-context";
 import {HabitsWindow} from "./HabitsWindow";
 import {Logo} from "./Logo";
@@ -12,6 +15,7 @@ import {Logout} from "./Logout";
 import {Notifications} from "./Notifications";
 import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
+import {useErrorNotification} from "./contexts/notifications-context";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
 
@@ -70,36 +74,58 @@ function AuthenticatedNavbar() {
 }
 
 function NotificationDropdown() {
+	const triggerErrorNotification = useErrorNotification();
 	const [areNotificationsVisible, , , toggleNotifications] = useToggle();
 
-	const notifications = [
-		"Congratulations, you've added your first habit!",
-		'You\'ve achieved five-day streak in your "Reading 5 minutes a day" habit!',
-	];
+	const getNotificationsRequestState = Async.useAsync({
+		promiseFn: api.notifications.get,
+		onReject: () => triggerErrorNotification("Couldn't fetch notifications."),
+	});
+
+	const notifications = getNotificationsRequestState.data ?? [];
+
+	const unreadNotifictionsNumber = notifications.filter(
+		notification => notification.status === "unread",
+	).length;
 
 	return (
 		<>
 			<button type="button" onClick={toggleNotifications} className="px-4">
-				🔔
+				<span role="img" aria-label="Notification bell">
+					🔔
+				</span>
 			</button>
 			{areNotificationsVisible && (
 				<div
 					style={{
 						width: "500px",
 					}}
-					className="absolute h-48 bg-white mt-16 mr-2 p-2 shadow-lg"
+					className="absolute h-48 bg-white mt-16 mr-2 p-2 shadow-lg overflow-auto"
 				>
-					<strong>Notifications ({notifications.length})</strong>
-					<ul className="mt-8">
-						{notifications.map(notification => (
-							<li className="flex mt-6">
-								{notification}
-								<button type="button" className="whitespace-no-wrap ml-2 self-start">
-									Mark as read
-								</button>
-							</li>
-						))}
-					</ul>
+					<Async.IfPending state={getNotificationsRequestState}>Loading...</Async.IfPending>
+					<Async.IfFulfilled state={getNotificationsRequestState}>
+						<strong>Notifications ({unreadNotifictionsNumber})</strong>
+						<ul className="mt-8">
+							{notifications.map(notification => (
+								<li key={notification.id} className="flex mt-6">
+									{notification.content}
+									{notification.status === "unread" && (
+										<button type="button" className="whitespace-no-wrap ml-2 self-start">
+											Mark as read
+										</button>
+									)}
+									{notification.status === "read" && (
+										<button type="button" className="whitespace-no-wrap ml-2 self-start">
+											Mark as unread
+										</button>
+									)}
+								</li>
+							))}
+						</ul>
+					</Async.IfFulfilled>
+					<Async.IfRejected state={getNotificationsRequestState}>
+						<RequestErrorMessage>Couldn't fetch notifications...</RequestErrorMessage>
+					</Async.IfRejected>
 				</div>
 			)}
 		</>
