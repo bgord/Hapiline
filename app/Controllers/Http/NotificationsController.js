@@ -8,7 +8,8 @@ class NotificationsController {
 			.where({
 				user_id: auth.user.id,
 			})
-			.orderBy("created_at", "DESC");
+			.orderBy("created_at", "desc")
+			.orderBy("id", "asc");
 		return response.send(results);
 	}
 	async update({auth, request, response, params}) {

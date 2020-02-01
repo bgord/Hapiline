@@ -16,6 +16,7 @@ import {Notifications} from "./Notifications";
 import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
 import {useErrorNotification} from "./contexts/notifications-context";
+import {CloseButton} from "./CloseButton";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
 
@@ -75,24 +76,43 @@ function AuthenticatedNavbar() {
 
 function NotificationDropdown() {
 	const triggerErrorNotification = useErrorNotification();
-	const [areNotificationsVisible, , , toggleNotifications] = useToggle();
+	const [areNotificationsVisible, , hideNotifications, toggleNotifications] = useToggle();
 
 	const getNotificationsRequestState = Async.useAsync({
 		promiseFn: api.notifications.get,
 		onReject: () => triggerErrorNotification("Couldn't fetch notifications."),
 	});
 
+	const updateNotificationRequestState = Async.useAsync({
+		deferFn: api.notifications.update,
+		onResolve: getNotificationsRequestState.reload,
+		onReject: () => triggerErrorNotification("Couldn't change notification status."),
+	});
+
 	const notifications = getNotificationsRequestState.data ?? [];
+
+	console.log(notifications);
 
 	const unreadNotifictionsNumber = notifications.filter(
 		notification => notification.status === "unread",
 	).length;
 
+	function markNotificationAsRead(id: number) {
+		updateNotificationRequestState.run(id, {status: "read"});
+	}
+
+	function markNotificationAsUnread(id: number) {
+		updateNotificationRequestState.run(id, {status: "unread"});
+	}
+
 	return (
 		<>
-			<button type="button" onClick={toggleNotifications} className="px-4">
+			<button type="button" onClick={toggleNotifications} className="relative px-4">
 				<span role="img" aria-label="Notification bell">
 					🔔
+				</span>
+				<span hidden={unreadNotifictionsNumber === 0} className="absolute top-0">
+					{unreadNotifictionsNumber}
 				</span>
 			</button>
 			{areNotificationsVisible && (
@@ -100,22 +120,35 @@ function NotificationDropdown() {
 					style={{
 						width: "500px",
 					}}
-					className="absolute h-48 bg-white mt-16 mr-2 p-2 shadow-lg overflow-auto"
+					className="absolute h-64 bg-white mt-16 mr-2 p-2 shadow-lg overflow-auto"
 				>
 					<Async.IfPending state={getNotificationsRequestState}>Loading...</Async.IfPending>
 					<Async.IfFulfilled state={getNotificationsRequestState}>
-						<strong>Notifications ({unreadNotifictionsNumber})</strong>
+						<div className="flex justify-between items-center pr-6">
+							<strong>Notifications ({unreadNotifictionsNumber})</strong>
+							<CloseButton onClick={hideNotifications} />
+						</div>
 						<ul className="mt-8">
 							{notifications.map(notification => (
 								<li key={notification.id} className="flex mt-6">
-									{notification.content}
+									{notification.content} ({notification.id})
 									{notification.status === "unread" && (
-										<button type="button" className="whitespace-no-wrap ml-2 self-start">
+										<button
+											onClick={() => markNotificationAsRead(notification.id)}
+											type="button"
+											className="whitespace-no-wrap ml-2 self-start"
+											disabled={updateNotificationRequestState.isPending}
+										>
 											Mark as read
 										</button>
 									)}
 									{notification.status === "read" && (
-										<button type="button" className="whitespace-no-wrap ml-2 self-start">
+										<button
+											onClick={() => markNotificationAsUnread(notification.id)}
+											type="button"
+											className="whitespace-no-wrap ml-2 self-start"
+											disabled={updateNotificationRequestState.isPending}
+										>
 											Mark as unread
 										</button>
 									)}

@@ -23,7 +23,7 @@ import {
 } from "./auth";
 import {getDayRequest, getMonthRequest} from "./calendar";
 import {getDashboardStats} from "./stats";
-import {getNotificationsRequest} from "./notifications";
+import {getNotificationsRequest, updateNotificationRequest} from "./notifications";
 
 declare const process: {
 	env: {
@@ -66,5 +66,6 @@ export const api = {
 	},
 	notifications: {
 		get: getNotificationsRequest,
+		update: updateNotificationRequest,
 	},
 };

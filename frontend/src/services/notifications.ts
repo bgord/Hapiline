@@ -14,3 +14,8 @@ export interface AppNotification {
 
 export const getNotificationsRequest: Async.PromiseFn<AppNotification[]> = () =>
 	_internal_api.get<AppNotification[]>("/notifications").then(response => response.data);
+
+export const updateNotificationRequest: Async.DeferFn<AppNotification> = ([id, payload]) =>
+	_internal_api
+		.patch<AppNotification>(`/notification/${id}`, payload)
+		.then(response => response.data);
