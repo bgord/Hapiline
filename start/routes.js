@@ -140,6 +140,7 @@ Route.patch("/api/v1/notification/:id", "NotificationsController.index").middlew
 	"auth",
 	"is:(regular)",
 	"account-status:active",
+	"params-resource-exists:notifications,id",
 ]);
 
 Route.get("*", async ({request, response}) => {
