@@ -2,6 +2,7 @@ const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const CHART_DATE_RANGES = use("CHART_DATE_RANGES");
+const NOTIFICATION_STATUSES = use("NOTIFICATION_STATUSES");
 
 const VALIDATION_MESSAGES = {
 	invalid_email: "Invalid email address.",
@@ -27,6 +28,9 @@ const VALIDATION_MESSAGES = {
 	invalid_comment: "Comment must be max of 1024 characters.",
 	invalid_description: "Description must be max of 1024 characters.",
 	boolean: field => `${field} must be true or false.`,
+	invalid_notification_status: `Notification status must be one of: ${Object.keys(
+		NOTIFICATION_STATUSES,
+	)}`,
 };
 
 module.exports = VALIDATION_MESSAGES;

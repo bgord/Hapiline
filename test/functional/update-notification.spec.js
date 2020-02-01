@@ -4,12 +4,14 @@ const {
 	assertInvalidSession,
 	assertAccessDenied,
 	assertUnprocessableEntity,
+	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
 const {test, trait, before, after} = use("Test/Suite")("Update notifications");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -62,4 +64,41 @@ test("checks if notification exists", async ({client}) => {
 		.end();
 
 	assertUnprocessableEntity(response);
+});
+
+test("validation", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const cases = [
+		[
+			{},
+			[
+				{
+					message: VALIDATION_MESSAGES.required("status"),
+					field: "status",
+					validation: "required",
+				},
+			],
+		],
+		[
+			{status: "xxx"},
+			[
+				{
+					message: VALIDATION_MESSAGES.invalid_notification_status,
+					field: "status",
+					validation: "in",
+				},
+			],
+		],
+	];
+
+	for (const [payload, argErrors] of cases) {
+		const response = await client
+			.patch(UPDATE_NOTIFICATION_URL(1))
+			.send(payload)
+			.loginVia(jim)
+			.end();
+
+		assertValidationError({response, argErrors});
+	}
 });
