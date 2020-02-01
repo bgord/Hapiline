@@ -117,6 +117,7 @@ function NotificationDropdown() {
 			</button>
 			{areNotificationsVisible && (
 				<div
+					id="notification-list"
 					style={{
 						width: "500px",
 					}}
@@ -131,7 +132,7 @@ function NotificationDropdown() {
 						<ul className="mt-8">
 							{notifications.map(notification => (
 								<li key={notification.id} className="flex mt-6">
-									{notification.content} ({notification.id})
+									{notification.content}
 									{notification.status === "unread" && (
 										<button
 											onClick={() => markNotificationAsRead(notification.id)}
