@@ -215,4 +215,31 @@ describe("Dashboard", () => {
 
 		cy.findByText("Cannot load dashboard stats now, please try again.");
 	});
+
+	it("notifications", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByLabelText("Notification bell").click();
+
+		cy.get("#notification-list").within(() => {
+			cy.findByText("Notifications (1)");
+
+			cy.findByText("Mark as read");
+			cy.findByText("Mark as unread");
+
+			cy.findAllByText("Congratulations! You did something good.").should("have.length", 2);
+
+			cy.findByText("Mark as read").click();
+
+			cy.findByText("Mark as read").should("not.exist");
+			cy.findAllByText("Mark as unread").should("have.length", 2);
+
+			cy.findByText("Notifications (0)");
+
+			cy.findByText("×").click();
+		});
+
+		cy.get("#notification-list").should("not.exist");
+	});
 });

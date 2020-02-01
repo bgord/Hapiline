@@ -130,6 +130,21 @@ Route.get("/api/v1/dashboard-stats", "DashboardStats.index").middleware([
 	"account-status:active",
 ]);
 
+Route.get("/api/v1/notifications", "NotificationsController.index").middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+]);
+
+Route.patch("/api/v1/notification/:id", "NotificationsController.update")
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:notifications,id",
+	])
+	.validator("UpdateNotification");
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
