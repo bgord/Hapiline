@@ -48,3 +48,19 @@ test("account-status:(active)", async ({client}) => {
 		.end();
 	assertAccessDenied(response);
 });
+
+test("full flow", async ({client, assert}) => {
+	const dwight = await User.find(users.dwight.id);
+
+	const response = await client
+		.get(GET_NOTIFICATIONS_URL)
+		.loginVia(dwight)
+		.end();
+	response.assertStatus(200);
+
+	response.body.forEach(notification => assert.equal(notification.user_id, users.dwight.id));
+
+	const expectedKeys = ["id", "content", "type", "status", "user_id", "created_at", "updated_at"];
+
+	response.body.forEach(notification => assert.hasAllKeys(notification, expectedKeys));
+});
