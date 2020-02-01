@@ -10,6 +10,9 @@ class NotificationsController {
 			.orderBy("created_at", "DESC");
 		return response.send(results);
 	}
+	async update({response}) {
+		return response.send();
+	}
 }
 
 module.exports = NotificationsController;
