@@ -8,21 +8,22 @@ const {
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
-const {test, trait, before, after} = use("Test/Suite")("Update notifications");
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Update notifications");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const NOTIFICATION_STATUSES = use("NOTIFICATION_STATUSES");
+const Database = use("Database");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
 
-before(async () => {
+beforeEach(async () => {
 	await ace.call("seed", {}, {silent: true});
 });
 
-after(async () => {
+afterEach(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
@@ -60,7 +61,7 @@ test("checks if notification exists", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.patch(UPDATE_NOTIFICATION_URL(666))
+		.patch(UPDATE_NOTIFICATION_URL(111))
 		.loginVia(jim)
 		.end();
 
@@ -108,7 +109,7 @@ test("checks if notification belongs to the user", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.patch(UPDATE_NOTIFICATION_URL(1))
+		.patch(UPDATE_NOTIFICATION_URL(2))
 		.send({
 			status: NOTIFICATION_STATUSES.read,
 		})
@@ -116,4 +117,18 @@ test("checks if notification belongs to the user", async ({client}) => {
 		.end();
 
 	assertAccessDenied(response);
+});
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.patch(UPDATE_NOTIFICATION_URL(1))
+		.send({
+			status: NOTIFICATION_STATUSES.read,
+		})
+		.loginVia(jim)
+		.end();
+
+	assert.equal(response.body.status, NOTIFICATION_STATUSES.read);
 });

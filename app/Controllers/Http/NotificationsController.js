@@ -1,4 +1,5 @@
 const Database = use("Database");
+const Notification = use("Notification");
 
 class NotificationsController {
 	async index({auth, response}) {
@@ -10,14 +11,21 @@ class NotificationsController {
 			.orderBy("created_at", "DESC");
 		return response.send(results);
 	}
-	async update({auth, response, params}) {
+	async update({auth, request, response, params}) {
 		const notificationId = Number(params.id);
+		const payload = request.only(["status"]);
 
-		const notification = await Database.table("notifications").where("id", notificationId);
+		const notification = await Notification.find(notificationId);
 
 		if (notification.user_id !== auth.user.id) return response.accessDenied();
 
-		return response.send();
+		notification.merge({
+			status: payload.status,
+		});
+
+		await notification.save();
+
+		return response.send(notification);
 	}
 }
 
