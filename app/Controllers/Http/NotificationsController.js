@@ -10,7 +10,13 @@ class NotificationsController {
 			.orderBy("created_at", "DESC");
 		return response.send(results);
 	}
-	async update({response}) {
+	async update({auth, response, params}) {
+		const notificationId = Number(params.id);
+
+		const notification = await Database.table("notifications").where("id", notificationId);
+
+		if (notification.user_id !== auth.user.id) return response.accessDenied();
+
 		return response.send();
 	}
 }

@@ -136,7 +136,7 @@ Route.get("/api/v1/notifications", "NotificationsController.index").middleware([
 	"account-status:active",
 ]);
 
-Route.patch("/api/v1/notification/:id", "NotificationsController.index")
+Route.patch("/api/v1/notification/:id", "NotificationsController.update")
 	.middleware([
 		"auth",
 		"is:(regular)",

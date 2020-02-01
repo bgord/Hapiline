@@ -12,6 +12,7 @@ const {test, trait, before, after} = use("Test/Suite")("Update notifications");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const NOTIFICATION_STATUSES = use("NOTIFICATION_STATUSES");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -101,4 +102,18 @@ test("validation", async ({client}) => {
 
 		assertValidationError({response, argErrors});
 	}
+});
+
+test("checks if notification belongs to the user", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const response = await client
+		.patch(UPDATE_NOTIFICATION_URL(1))
+		.send({
+			status: NOTIFICATION_STATUSES.read,
+		})
+		.loginVia(jim)
+		.end();
+
+	assertAccessDenied(response);
 });
