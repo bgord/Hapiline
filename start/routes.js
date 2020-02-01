@@ -130,6 +130,12 @@ Route.get("/api/v1/dashboard-stats", "DashboardStats.index").middleware([
 	"account-status:active",
 ]);
 
+Route.get("/api/v1/notifications", "NotificationsController.index").middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
