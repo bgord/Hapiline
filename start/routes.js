@@ -145,6 +145,12 @@ Route.patch("/api/v1/notification/:id", "NotificationsController.update")
 	])
 	.validator("UpdateNotification");
 
+Route.get("/api/v1/dashboard-streak-stats", "DashboardStreakStatsController.index").middleware([
+	"auth",
+	"is:(regular)",
+	"account-status:active",
+]);
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
