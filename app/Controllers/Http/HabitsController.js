@@ -65,27 +65,7 @@ class HabitsController {
 			});
 		}
 
-		const habitVotes = await Database.select("vote", "day")
-			.from("habit_votes")
-			.where({
-				habit_id: habit.id,
-			})
-			.orderBy("day");
-
-		const days = datefns
-			.eachDayOfInterval({
-				start: new Date(habit.created_at),
-				end: new Date(),
-			})
-			.map(day => {
-				const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
-				return {
-					day,
-					vote: dayVote ? dayVote.vote : null,
-				};
-			});
-
-		const votes = [...days].reverse().map(day => day.vote);
+		const votes = await getVotesForHabit(habit);
 
 		const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, votes);
 		const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, votes);
@@ -169,6 +149,8 @@ class HabitsController {
 	}
 }
 
+module.exports = HabitsController;
+
 function getVoteTypeStreak(type, votes) {
 	let streak = 0;
 
@@ -183,4 +165,26 @@ function getVoteTypeStreak(type, votes) {
 	return streak;
 }
 
-module.exports = HabitsController;
+async function getVotesForHabit(habit) {
+	const habitVotes = await Database.select("vote", "day")
+		.from("habit_votes")
+		.where({
+			habit_id: habit.id,
+		})
+		.orderBy("day");
+
+	const days = datefns
+		.eachDayOfInterval({
+			start: new Date(habit.created_at),
+			end: new Date(),
+		})
+		.map(day => {
+			const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
+			return {
+				day,
+				vote: dayVote ? dayVote.vote : null,
+			};
+		});
+
+	return [...days].reverse().map(day => day.vote);
+}
