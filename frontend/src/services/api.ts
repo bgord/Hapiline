@@ -22,7 +22,7 @@ import {
 	verifyEmailRequest,
 } from "./auth";
 import {getDayRequest, getMonthRequest} from "./calendar";
-import {getDashboardStats} from "./stats";
+import {getDashboardStats, getDashboardStreakStats} from "./stats";
 import {getNotificationsRequest, updateNotificationRequest} from "./notifications";
 
 declare const process: {
@@ -63,6 +63,7 @@ export const api = {
 	},
 	stats: {
 		dashboard: getDashboardStats,
+		dashboardStreak: getDashboardStreakStats,
 	},
 	notifications: {
 		get: getNotificationsRequest,

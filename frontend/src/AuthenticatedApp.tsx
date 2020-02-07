@@ -91,8 +91,6 @@ function NotificationDropdown() {
 
 	const notifications = getNotificationsRequestState.data ?? [];
 
-	console.log(notifications);
-
 	const unreadNotifictionsNumber = notifications.filter(
 		notification => notification.status === "unread",
 	).length;
@@ -130,6 +128,9 @@ function NotificationDropdown() {
 							<CloseButton onClick={hideNotifications} />
 						</div>
 						<ul className="mt-8">
+							{notifications.length === 0 && (
+								<div className="text-center">You don't have any notifications.</div>
+							)}
 							{notifications.map(notification => (
 								<li key={notification.id} className="flex mt-6">
 									{notification.content}
