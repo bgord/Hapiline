@@ -242,4 +242,38 @@ describe("Dashboard", () => {
 
 		cy.get("#notification-list").should("not.exist");
 	});
+
+	it.only("streak stats", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/dashboard-streak-stats",
+			status: 200,
+			response: {
+				progress_streaks: [
+					{id: 1, name: "first", progress_streak: 3},
+					{id: 2, name: "second", progress_streak: 2},
+					{id: 3, name: "third", progress_streak: 1},
+				],
+				regress_streaks: [
+					{id: 4, name: "fourth", regress_streak: 4},
+					{id: 5, name: "fifth", regress_streak: 2},
+					{id: 6, name: "sixth", regress_streak: 1},
+				],
+			},
+		});
+
+		cy.findByText("Progress streaks");
+		cy.findByText("3 day(s) progress streak - first");
+		cy.findByText("2 day(s) progress streak - second");
+		cy.findByText("1 day(s) progress streak - third");
+
+		cy.findByText("Regress streaks");
+		cy.findByText("4 day(s) regress streak - fourth");
+		cy.findByText("2 day(s) regress streak - fifth");
+		cy.findByText("1 day(s) regress streak - sixth");
+	});
 });

@@ -7,6 +7,7 @@ import {BareButton} from "./BareButton";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
+import {Loader} from "./Loader";
 import {api} from "./services/api";
 import {formatToday} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -20,6 +21,14 @@ export const DashboardWindow = () => {
 		promiseFn: api.stats.dashboard,
 		onReject: () => triggerErrorNotification("Couldn't fetch dashboard stats."),
 	});
+
+	const getDashboardStreakStatsRequestState = Async.useAsync({
+		promiseFn: api.stats.dashboardStreak,
+		onReject: () => triggerErrorNotification("Couldn't fetch dashboard streak stats."),
+	});
+
+	const progressStreakStats = getDashboardStreakStatsRequestState.data?.progress_streaks ?? [];
+	const regressStreakStats = getDashboardStreakStatsRequestState.data?.regress_streaks ?? [];
 
 	const todayStats = getDashboardStatsRequestState?.data?.today;
 	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
@@ -121,6 +130,35 @@ export const DashboardWindow = () => {
 							<DaySummaryStats day={currentDate} {...statsForLastMonth} />
 						</div>
 					</div>
+				)}
+			</Async.IfFulfilled>
+			<Async.IfPending state={getDashboardStreakStatsRequestState}>
+				<Loader />
+			</Async.IfPending>
+			<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
+				{progressStreakStats.length > 0 && (
+					<>
+						<strong>Progress streaks</strong>
+						<ul>
+							{progressStreakStats.map(habit => (
+								<li key={habit.id}>
+									{habit.progress_streak} day(s) progress streak - {habit.name}
+								</li>
+							))}
+						</ul>
+					</>
+				)}
+				{regressStreakStats.length > 0 && (
+					<>
+						<strong className="mt-4">Regress streaks</strong>
+						<ul>
+							{regressStreakStats.map(habit => (
+								<li key={habit.id}>
+									{habit.regress_streak} day(s) regress streak - {habit.name}
+								</li>
+							))}
+						</ul>
+					</>
 				)}
 			</Async.IfFulfilled>
 			{subview === "day_preview" && (
