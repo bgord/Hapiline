@@ -17,6 +17,7 @@ import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {CloseButton} from "./CloseButton";
+import {ProfileWindow} from "./ProfileWindow";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
 
@@ -38,6 +39,9 @@ function AuthenticatedApp() {
 					</Route>
 					<Route exact path="/dashboard">
 						<DashboardWindow />
+					</Route>
+					<Route exact path="/profile">
+						<ProfileWindow />
 					</Route>
 					<Redirect to="/dashboard" />
 				</Switch>
@@ -65,7 +69,9 @@ function AuthenticatedNavbar() {
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">
 				Calendar
 			</NavLink>
-			<h3 className="font-semibold p-4">{profile?.email}</h3>
+			<NavLink to="/profile" activeClassName="text-blue-400">
+				<h3 className="font-semibold p-4">{profile?.email}</h3>
+			</NavLink>
 			<NotificationDropdown />
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/logout">
 				Logout
