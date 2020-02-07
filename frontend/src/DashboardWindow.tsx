@@ -9,9 +9,9 @@ import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
 import {Loader} from "./Loader";
 import {api} from "./services/api";
+import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {useQueryParams} from "./hooks/useQueryParam";
 
 export const DashboardWindow = () => {
 	const [{subview}, updateQueryParams] = useQueryParams();
@@ -138,11 +138,14 @@ export const DashboardWindow = () => {
 			<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
 				{progressStreakStats.length > 0 && (
 					<>
-						<strong>Progress streaks</strong>
+						<strong className="mt-12">Progress streaks</strong>
 						<ul>
 							{progressStreakStats.map(habit => (
 								<li key={habit.id}>
-									{habit.progress_streak} day(s) progress streak - {habit.name}
+									{habit.progress_streak} day(s) progress streak -{" "}
+									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+										{habit.name}
+									</Link>
 								</li>
 							))}
 						</ul>
@@ -151,10 +154,13 @@ export const DashboardWindow = () => {
 				{regressStreakStats.length > 0 && (
 					<>
 						<strong className="mt-4">Regress streaks</strong>
-						<ul>
+						<ul className="mb-6">
 							{regressStreakStats.map(habit => (
 								<li key={habit.id}>
-									{habit.regress_streak} day(s) regress streak - {habit.name}
+									{habit.regress_streak} day(s) regress streak -{" "}
+									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+										{habit.name}
+									</Link>
 								</li>
 							))}
 						</ul>

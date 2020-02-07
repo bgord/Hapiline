@@ -243,7 +243,7 @@ describe("Dashboard", () => {
 		cy.get("#notification-list").should("not.exist");
 	});
 
-	it.only("streak stats", () => {
+	it("streak stats", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -267,13 +267,35 @@ describe("Dashboard", () => {
 		});
 
 		cy.findByText("Progress streaks");
-		cy.findByText("3 day(s) progress streak - first");
-		cy.findByText("2 day(s) progress streak - second");
-		cy.findByText("1 day(s) progress streak - third");
+		cy.findByText("3 day(s) progress streak -");
+		cy.findByText("2 day(s) progress streak -");
+		cy.findByText("1 day(s) progress streak -");
 
 		cy.findByText("Regress streaks");
-		cy.findByText("4 day(s) regress streak - fourth");
-		cy.findByText("2 day(s) regress streak - fifth");
-		cy.findByText("1 day(s) regress streak - sixth");
+		cy.findByText("4 day(s) regress streak -");
+		cy.findByText("2 day(s) regress streak -");
+		cy.findByText("1 day(s) regress streak -");
+
+		cy.findByText("first").should("have.attr", "href", "/habits?preview_habit_id=1");
+		cy.findByText("second").should("have.attr", "href", "/habits?preview_habit_id=2");
+		cy.findByText("third").should("have.attr", "href", "/habits?preview_habit_id=3");
+		cy.findByText("fourth").should("have.attr", "href", "/habits?preview_habit_id=4");
+		cy.findByText("fifth").should("have.attr", "href", "/habits?preview_habit_id=5");
+		cy.findByText("sixth").should("have.attr", "href", "/habits?preview_habit_id=6");
+	});
+
+	it("streak stats error", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/dashboard-streak-stats",
+			status: 400,
+			response: {},
+		});
+
+		cy.findByText("Couldn't fetch dashboard streak stats.");
 	});
 });
