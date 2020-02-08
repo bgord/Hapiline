@@ -208,15 +208,14 @@ const ChangePassword = () => {
 			{status === "editing" && (
 				<>
 					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="password">
+						<label className="field-label" htmlFor="old_password">
 							Old password
 						</label>
 						<input
 							className="field"
-							name="password"
-							id="password"
+							name="old_password"
+							id="old_password"
 							placeholder="********"
-							autoComplete="new-password"
 							title="Password should contain at least 6 characters."
 							value={oldPassword}
 							onChange={event => setOldPassword(event.target.value)}
@@ -226,15 +225,14 @@ const ChangePassword = () => {
 						/>
 					</div>
 					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="password">
+						<label className="field-label" htmlFor="new_password">
 							New password
 						</label>
 						<input
 							className="field"
-							name="password"
-							id="password"
+							name="new_password"
+							id="new_password"
 							placeholder="********"
-							autoComplete="new-password"
 							title="Password should contain at least 6 characters."
 							value={newPassword}
 							onChange={event => setNewPassword(event.target.value)}
@@ -244,14 +242,14 @@ const ChangePassword = () => {
 						/>
 					</div>
 					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="password-confirmation">
+						<label className="field-label" htmlFor="password_confirmation">
 							Repeat new password
 						</label>
 						<input
 							className="field"
 							type="password"
-							name="password-confirmation"
-							id="password-confirmation"
+							name="password_confirmation"
+							id="password_confirmation"
 							placeholder="********"
 							pattern={newPassword}
 							title="Passwords have to be equal"
@@ -261,7 +259,16 @@ const ChangePassword = () => {
 						/>
 					</div>
 					<BareButton type="submit">Submit</BareButton>
-					<BareButton onClick={() => setStatus("idle")}>Cancel</BareButton>
+					<BareButton
+						onClick={() => {
+							setStatus("idle");
+							setOldPassword("");
+							setNewPassword("");
+							setNewPasswordConfirmation("");
+						}}
+					>
+						Cancel
+					</BareButton>
 				</>
 			)}
 		</form>

@@ -150,13 +150,18 @@ describe("Profile", () => {
 		cy.findByText("Update password").click();
 
 		cy.findByText("Update password").should("not.exist");
-		cy.findByLabelText("Old password");
-		cy.findByLabelText("New password");
-		cy.findByLabelText("Repeat new password");
+		cy.findByLabelText("Old password").type("xxx");
+		cy.findByLabelText("New password").type("yyy");
+		cy.findByLabelText("Repeat new password").type("zzz");
 		cy.findByText("Submit");
 		cy.findByText("Cancel");
 
+		// Cancel clears input values
 		cy.findByText("Cancel").click();
 		cy.findByText("Update password").click();
+
+		cy.findByLabelText("Old password").should("have.value", "");
+		cy.findByLabelText("New password").should("have.value", "");
+		cy.findByLabelText("Repeat new password").should("have.value", "");
 	});
 });
