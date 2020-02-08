@@ -45,6 +45,7 @@ export const ProfileWindow = () => {
 					<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
 				</Async.IfRejected>
 				<ChangeEmail />
+				<ChangePassword />
 			</section>
 
 			{showDialog && (
@@ -179,6 +180,88 @@ const ChangeEmail: React.FC = () => {
 				<>
 					<SuccessMessage>Email confirmation message has been sent!</SuccessMessage>
 					<div>You will be logged out in 5 seconds.</div>
+				</>
+			)}
+		</form>
+	);
+};
+
+const ChangePassword = () => {
+	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
+		"idle",
+	);
+	const [oldPassword, setOldPassword] = React.useState("");
+	const [newPassword, setNewPassword] = React.useState("");
+	const [newPasswordConfirmation, setNewPasswordConfirmation] = React.useState("");
+
+	return (
+		<form
+			className="my-8"
+			onSubmit={event => {
+				event.preventDefault();
+				setStatus("pending");
+			}}
+		>
+			{status === "idle" && (
+				<BareButton onClick={() => setStatus("editing")}>Update password</BareButton>
+			)}
+			{status === "editing" && (
+				<>
+					<div className="field-group mb-6 md:w-full">
+						<label className="field-label" htmlFor="password">
+							Old password
+						</label>
+						<input
+							className="field"
+							name="password"
+							id="password"
+							placeholder="********"
+							autoComplete="new-password"
+							title="Password should contain at least 6 characters."
+							value={oldPassword}
+							onChange={event => setOldPassword(event.target.value)}
+							type="password"
+							required
+							pattern=".{6,}"
+						/>
+					</div>
+					<div className="field-group mb-6 md:w-full">
+						<label className="field-label" htmlFor="password">
+							New password
+						</label>
+						<input
+							className="field"
+							name="password"
+							id="password"
+							placeholder="********"
+							autoComplete="new-password"
+							title="Password should contain at least 6 characters."
+							value={newPassword}
+							onChange={event => setNewPassword(event.target.value)}
+							type="password"
+							required
+							pattern=".{6,}"
+						/>
+					</div>
+					<div className="field-group mb-6 md:w-full">
+						<label className="field-label" htmlFor="password-confirmation">
+							Repeat new password
+						</label>
+						<input
+							className="field"
+							type="password"
+							name="password-confirmation"
+							id="password-confirmation"
+							placeholder="********"
+							pattern={newPassword}
+							title="Passwords have to be equal"
+							value={newPasswordConfirmation}
+							onChange={event => setNewPasswordConfirmation(event.target.value)}
+							required
+						/>
+					</div>
+					<BareButton type="submit">Submit</BareButton>
+					<BareButton onClick={() => setStatus("idle")}>Cancel</BareButton>
 				</>
 			)}
 		</form>

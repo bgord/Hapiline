@@ -140,4 +140,23 @@ describe("Profile", () => {
 		cy.findByText("Couldn't change email.");
 		cy.findByText("Given email address already exists.");
 	});
+
+	it.only("password change", () => {
+		cy.clock();
+
+		cy.login("dwight");
+		cy.visit(PROFILE_URL);
+
+		cy.findByText("Update password").click();
+
+		cy.findByText("Update password").should("not.exist");
+		cy.findByLabelText("Old password");
+		cy.findByLabelText("New password");
+		cy.findByLabelText("Repeat new password");
+		cy.findByText("Submit");
+		cy.findByText("Cancel");
+
+		cy.findByText("Cancel").click();
+		cy.findByText("Update password").click();
+	});
 });
