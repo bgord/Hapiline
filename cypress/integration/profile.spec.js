@@ -32,4 +32,21 @@ describe("Profile", () => {
 
 		cy.findByText("Access denied.");
 	});
+
+	it("account deletion error", () => {
+		cy.login("dwight");
+		cy.visit(PROFILE_URL);
+
+		cy.server();
+		cy.route({
+			method: "DELETE",
+			url: "/api/v1/account",
+			status: 500,
+			response: {},
+		});
+
+		cy.findByText("Delete account").click();
+		cy.findByText("An error occurred during account deletion.");
+		cy.findByText("Couldn't delete account.");
+	});
 });
