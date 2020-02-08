@@ -4,9 +4,10 @@ import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
-import {RequestErrorMessage} from "./ErrorMessages";
+import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
@@ -82,23 +83,26 @@ const ChangeEmail: React.FC = () => {
 	const [newEmail, setNewEmail] = React.useState(initialEmail);
 	const [password, setPassword] = React.useState("");
 
-	const deleteAccountRequestState = Async.useAsync({
+	const changeEmailRequestState = Async.useAsync({
 		deferFn: api.auth.changeEmail,
 		onResolve: () => setStatus("success"),
 		onReject: () => {
 			setStatus("error");
-			triggerErrorNotification("Couldn't delete account.");
+			triggerErrorNotification("Couldn't change email.");
 		},
 	});
 
 	const isNewEmailDifferent = newEmail !== "" && newEmail !== initialEmail;
+	const {errorCode} = getRequestStateErrors(changeEmailRequestState);
+
+	const passwordInlineError = errorCode === "E_ACCESS_DENIED" ? "Invalid password." : null;
 
 	return (
 		<form
 			onSubmit={event => {
 				event.preventDefault();
 				setStatus("pending");
-				deleteAccountRequestState.run(newEmail, password);
+				changeEmailRequestState.run(newEmail, password);
 			}}
 			className="flex flex-col flex-grow mt-8"
 		>
@@ -120,12 +124,12 @@ const ChangeEmail: React.FC = () => {
 					{status === "idle" && (
 						<BareButton onClick={() => setStatus("editing")}>Edit email</BareButton>
 					)}
-					{status === "editing" && (
+					{["editing", "error"].includes(status) && (
 						<button disabled={!isNewEmailDifferent} className="btn btn-blue ml-4" type="submit">
 							Confirm email
 						</button>
 					)}
-					{status === "editing" && (
+					{["editing", "error"].includes(status) && (
 						<BareButton
 							onClick={() => {
 								setStatus("idle");
@@ -138,7 +142,7 @@ const ChangeEmail: React.FC = () => {
 					)}
 				</div>
 			</div>
-			{["editing", "pending"].includes(status) && (
+			{["editing", "pending", "error"].includes(status) && (
 				<div className="flex flex-col flex-grow mt-4 w-64">
 					<label className="field-label" htmlFor="password">
 						Password
@@ -156,6 +160,7 @@ const ChangeEmail: React.FC = () => {
 						placeholder="********"
 						disabled={status === "pending"}
 					/>
+					{status === "error" && <ErrorMessage>{passwordInlineError}</ErrorMessage>}
 				</div>
 			)}
 			{status === "pending" && <div className="mt-4">Email change pending...</div>}

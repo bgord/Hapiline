@@ -101,4 +101,19 @@ describe("Profile", () => {
 
 		cy.findByText("Email confirmation message has been sent!");
 	});
+
+	it("email confirmation errors", () => {
+		cy.login("dwight");
+		cy.visit(PROFILE_URL);
+
+		cy.findByText("Edit email").click();
+		cy.findByLabelText("Email")
+			.clear()
+			.type("dwight@dundermifflin.com");
+		cy.findByLabelText("Password").type("battlestar");
+		cy.findByText("Confirm email").click();
+
+		cy.findByText("Couldn't change email.");
+		cy.findByText("Invalid password.");
+	});
 });
