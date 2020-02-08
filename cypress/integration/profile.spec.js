@@ -56,7 +56,7 @@ describe("Profile", () => {
 		cy.findByText("Couldn't delete account.");
 	});
 
-	it("email confirmation", () => {
+	it("email confirmation success flow", () => {
 		cy.login("dwight");
 		cy.visit(PROFILE_URL);
 
@@ -99,13 +99,6 @@ describe("Profile", () => {
 		cy.findByLabelText("Password").type("123456");
 		cy.findByText("Confirm email").click();
 
-		cy.findByLabelText("Email")
-			.should("have.value", "dwight@dundermifflin.com")
-			.should("be.disabled");
-		cy.findByText("Edit email").should("not.exist");
-		cy.findByText("Confirm email").should("not.exist");
-		cy.findByText("Cancel").should("not.exist");
-		cy.findByLabelText("Password").should("have.value", "123456");
-		cy.findByText("Email change pending...");
+		cy.findByText("Email confirmation message has been sent!");
 	});
 });

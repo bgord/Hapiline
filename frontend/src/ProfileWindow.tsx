@@ -5,6 +5,7 @@ import React from "react";
 
 import {BareButton} from "./BareButton";
 import {RequestErrorMessage} from "./ErrorMessages";
+import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useToggle} from "./hooks/useToggle";
@@ -69,14 +70,26 @@ export const ProfileWindow = () => {
 };
 
 const ChangeEmail: React.FC = () => {
+	const triggerErrorNotification = useErrorNotification();
 	const [userProfile] = useUserProfile();
-	const [status, setStatus] = React.useState<"idle" | "editing" | "pending">("idle");
+	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
+		"idle",
+	);
 
 	if (!userProfile?.email) return null;
 
 	const initialEmail = userProfile?.email;
 	const [newEmail, setNewEmail] = React.useState(initialEmail);
 	const [password, setPassword] = React.useState("");
+
+	const deleteAccountRequestState = Async.useAsync({
+		deferFn: api.auth.changeEmail,
+		onResolve: () => setStatus("success"),
+		onReject: () => {
+			setStatus("error");
+			triggerErrorNotification("Couldn't delete account.");
+		},
+	});
 
 	const isNewEmailDifferent = newEmail !== "" && newEmail !== initialEmail;
 
@@ -85,6 +98,7 @@ const ChangeEmail: React.FC = () => {
 			onSubmit={event => {
 				event.preventDefault();
 				setStatus("pending");
+				deleteAccountRequestState.run(newEmail, password);
 			}}
 			className="flex flex-col flex-grow mt-8"
 		>
@@ -101,7 +115,7 @@ const ChangeEmail: React.FC = () => {
 						type="email"
 						name="email"
 						id="email"
-						disabled={["idle", "pending"].includes(status)}
+						disabled={["idle", "pending", "success"].includes(status)}
 					/>
 					{status === "idle" && (
 						<BareButton onClick={() => setStatus("editing")}>Edit email</BareButton>
@@ -145,6 +159,9 @@ const ChangeEmail: React.FC = () => {
 				</div>
 			)}
 			{status === "pending" && <div className="mt-4">Email change pending...</div>}
+			{status === "success" && (
+				<SuccessMessage>Email confirmation message has been sent!</SuccessMessage>
+			)}
 		</form>
 	);
 };

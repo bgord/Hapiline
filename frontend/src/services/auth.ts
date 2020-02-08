@@ -54,3 +54,9 @@ export const isLoggedInRequest: Async.PromiseFn<UserProfileInterface> = () =>
 	_internal_api.get("/me").then(response => response.data);
 
 export const deleteAccountRequest: Async.DeferFn<void> = () => _internal_api.delete("/account");
+
+export const changeEmailRequest: Async.DeferFn<void> = ([newEmail, password]: string[]) =>
+	_internal_api.post("/change-email", {
+		newEmail,
+		password,
+	});
