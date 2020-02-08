@@ -71,6 +71,7 @@ export const ProfileWindow = () => {
 };
 
 const ChangeEmail: React.FC = () => {
+	const history = useHistory();
 	const triggerErrorNotification = useErrorNotification();
 	const [userProfile] = useUserProfile();
 	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
@@ -85,7 +86,10 @@ const ChangeEmail: React.FC = () => {
 
 	const changeEmailRequestState = Async.useAsync({
 		deferFn: api.auth.changeEmail,
-		onResolve: () => setStatus("success"),
+		onResolve: () => {
+			setStatus("success");
+			setTimeout(() => history.push("/logout"), 5000);
+		},
 		onReject: () => {
 			setStatus("error");
 			triggerErrorNotification("Couldn't change email.");
@@ -172,7 +176,10 @@ const ChangeEmail: React.FC = () => {
 			)}
 			{status === "pending" && <div className="mt-4">Email change pending...</div>}
 			{status === "success" && (
-				<SuccessMessage>Email confirmation message has been sent!</SuccessMessage>
+				<>
+					<SuccessMessage>Email confirmation message has been sent!</SuccessMessage>
+					<div>You will be logged out in 5 seconds.</div>
+				</>
 			)}
 		</form>
 	);

@@ -57,6 +57,7 @@ describe("Profile", () => {
 	});
 
 	it("email confirmation success flow", () => {
+		cy.clock();
 		cy.login("dwight");
 		cy.visit(PROFILE_URL);
 
@@ -101,6 +102,11 @@ describe("Profile", () => {
 		cy.findByText("Confirm email").click();
 
 		cy.findByText("Email confirmation message has been sent!");
+		cy.findByText("You will be logged out in 5 seconds.");
+
+		cy.tick(5000);
+		cy.url().should("contain", "/");
+		cy.findByText("Welcome to home page");
 	});
 
 	it("email confirmation errors", () => {
