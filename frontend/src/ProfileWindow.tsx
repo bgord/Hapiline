@@ -5,9 +5,11 @@ import React from "react";
 
 import {BareButton} from "./BareButton";
 import {RequestErrorMessage} from "./ErrorMessages";
+import {UserProfileInterface} from "./interfaces/IUserProfile";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useToggle} from "./hooks/useToggle";
+import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	const [showDialog, openDialog, closeDialog] = useToggle();
@@ -41,6 +43,7 @@ export const ProfileWindow = () => {
 				<Async.IfRejected state={deleteAccountRequestState}>
 					<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
 				</Async.IfRejected>
+				<ChangeEmail />
 			</section>
 
 			{showDialog && (
@@ -63,5 +66,82 @@ export const ProfileWindow = () => {
 				</AlertDialog>
 			)}
 		</>
+	);
+};
+
+const ChangeEmail: React.FC = () => {
+	const [userProfile] = useUserProfile();
+	const [status, setStatus] = React.useState<"idle" | "editing" | "pending">("idle");
+
+	if (!userProfile?.email) return null;
+
+	const initialEmail = userProfile?.email;
+	const [newEmail, setNewEmail] = React.useState();
+	const [password, setPassword] = React.useState("");
+
+	return (
+		<form
+			onSubmit={event => {
+				event.preventDefault();
+				setStatus("pending");
+			}}
+			className="flex flex-col flex-grow mt-8"
+		>
+			<div>
+				<label className="field-label" htmlFor="email">
+					Email
+				</label>
+				<div>
+					<input
+						required
+						value={userProfile.email}
+						className="field w-64"
+						type="email"
+						name="email"
+						id="email"
+						disabled={["idle", "pending"].includes(status)}
+					/>
+					{status === "idle" && (
+						<BareButton onClick={() => setStatus("editing")}>Edit email</BareButton>
+					)}
+					{status === "editing" && (
+						<button className="btn btn-blue ml-4" type="submit">
+							Confirm email
+						</button>
+					)}
+					{status === "editing" && (
+						<BareButton
+							onClick={() => {
+								setStatus("idle");
+								setPassword("");
+							}}
+						>
+							Cancel
+						</BareButton>
+					)}
+				</div>
+			</div>
+			{["editing", "pending"].includes(status) && (
+				<div className="flex flex-col flex-grow mt-4 w-64">
+					<label className="field-label" htmlFor="password">
+						Password
+					</label>
+					<input
+						required
+						pattern=".{6,}"
+						title="Password should contain at least 6 characters."
+						value={password}
+						onChange={event => setPassword(event.target.value)}
+						className="field"
+						type="password"
+						name="password"
+						id="password"
+						placeholder="********"
+						disabled={status === "pending"}
+					/>
+				</div>
+			)}
+			{status === "pending" && <div className="mt-4">Email change pending...</div>}
+		</form>
 	);
 };

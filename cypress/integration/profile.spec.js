@@ -55,4 +55,31 @@ describe("Profile", () => {
 		cy.findByText("An error occurred during account deletion.");
 		cy.findByText("Couldn't delete account.");
 	});
+
+	it("email confirmation", () => {
+		cy.login("dwight");
+		cy.visit(PROFILE_URL);
+
+		cy.findByLabelText("Email")
+			.should("have.value", "dwight@example.com")
+			.should("be.disabled");
+
+		cy.findByText("Confirm email").should("not.exist");
+		cy.findByText("Cancel").should("not.exist");
+		cy.findByLabelText("Password").should("not.exist");
+
+		cy.findByText("Edit email").click();
+
+		cy.findByText("Confirm email");
+		cy.findByText("Edit email").should("not.exist");
+		cy.findByText("Cancel");
+
+		cy.findByLabelText("Password")
+			.should("be.empty")
+			.type("nonono");
+
+		cy.findByText("Cancel").click();
+		cy.findByText("Edit email").click();
+		cy.findByLabelText("Password").should("have.value", "");
+	});
 });
