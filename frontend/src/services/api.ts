@@ -20,6 +20,7 @@ import {
 	newPasswordRequest,
 	registrationRequest,
 	verifyEmailRequest,
+	deleteAccountRequest,
 } from "./auth";
 import {getDayRequest, getMonthRequest} from "./calendar";
 import {getDashboardStats, getDashboardStreakStats} from "./stats";
@@ -56,6 +57,7 @@ export const api = {
 		newPassword: newPasswordRequest,
 		register: registrationRequest,
 		isLoggedIn: isLoggedInRequest,
+		deleteAccount: deleteAccountRequest,
 	},
 	calendar: {
 		getMonth: getMonthRequest,

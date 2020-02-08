@@ -52,3 +52,5 @@ export const registrationRequest: Async.DeferFn<void> = ([
 
 export const isLoggedInRequest: Async.PromiseFn<UserProfileInterface> = () =>
 	_internal_api.get("/me").then(response => response.data);
+
+export const deleteAccountRequest: Async.DeferFn<void> = () => _internal_api.delete("/account");
