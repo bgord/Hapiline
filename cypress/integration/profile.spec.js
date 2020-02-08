@@ -103,9 +103,12 @@ describe("Profile", () => {
 	});
 
 	it("email confirmation errors", () => {
+		cy.clock();
+
 		cy.login("dwight");
 		cy.visit(PROFILE_URL);
 
+		// Invalid password
 		cy.findByText("Edit email").click();
 		cy.findByLabelText("Email")
 			.clear()
@@ -115,5 +118,19 @@ describe("Profile", () => {
 
 		cy.findByText("Couldn't change email.");
 		cy.findByText("Invalid password.");
+		cy.findByText("Cancel").click();
+
+		cy.tick(10000);
+
+		// Already existing email
+		cy.findByText("Edit email").click();
+		cy.findByLabelText("Email")
+			.clear()
+			.type("jim@example.com");
+		cy.findByLabelText("Password").type("123456");
+		cy.findByText("Confirm email").click();
+
+		cy.findByText("Couldn't change email.");
+		cy.findByText("Given email address already exists.");
 	});
 });

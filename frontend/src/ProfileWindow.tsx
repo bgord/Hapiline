@@ -93,9 +93,10 @@ const ChangeEmail: React.FC = () => {
 	});
 
 	const isNewEmailDifferent = newEmail !== "" && newEmail !== initialEmail;
-	const {errorCode} = getRequestStateErrors(changeEmailRequestState);
+	const {errorCode, getArgErrorMessage} = getRequestStateErrors(changeEmailRequestState);
 
 	const passwordInlineError = errorCode === "E_ACCESS_DENIED" ? "Invalid password." : null;
+	const emailInlineError = getArgErrorMessage("email");
 
 	return (
 		<form
@@ -141,6 +142,7 @@ const ChangeEmail: React.FC = () => {
 						</BareButton>
 					)}
 				</div>
+				{status === "error" && emailInlineError && <ErrorMessage>{emailInlineError}</ErrorMessage>}
 			</div>
 			{["editing", "pending", "error"].includes(status) && (
 				<div className="flex flex-col flex-grow mt-4 w-64">
@@ -160,7 +162,9 @@ const ChangeEmail: React.FC = () => {
 						placeholder="********"
 						disabled={status === "pending"}
 					/>
-					{status === "error" && <ErrorMessage>{passwordInlineError}</ErrorMessage>}
+					{status === "error" && passwordInlineError && (
+						<ErrorMessage>{passwordInlineError}</ErrorMessage>
+					)}
 				</div>
 			)}
 			{status === "pending" && <div className="mt-4">Email change pending...</div>}
