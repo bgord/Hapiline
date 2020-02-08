@@ -151,7 +151,7 @@ Route.get("/api/v1/dashboard-streak-stats", "DashboardStreakStatsController.inde
 	"account-status:active",
 ]);
 
-Route.delete("/api/v1/account", "AccountControler.delete").middleware([
+Route.delete("/api/v1/account", "AccountController.delete").middleware([
 	"auth",
 	"is:(regular)",
 	"account-status:active",

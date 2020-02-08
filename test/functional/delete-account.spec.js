@@ -48,3 +48,19 @@ test("account-status:(active)", async ({client}) => {
 		.end();
 	assertAccessDenied(response);
 });
+
+test("full flow", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	assert.equal(jim.account_status, ACCOUNT_STATUSES.active);
+
+	const response = await client
+		.delete(DELETE_ACCOUNT_URL)
+		.loginVia(jim)
+		.end();
+
+	response.assertStatus(200);
+
+	const JimAfterUpdate = await User.find(users.jim.id);
+	assert.equal(JimAfterUpdate.account_status, ACCOUNT_STATUSES.deleted);
+});
