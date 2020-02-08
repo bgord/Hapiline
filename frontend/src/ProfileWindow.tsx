@@ -187,6 +187,7 @@ const ChangeEmail: React.FC = () => {
 };
 
 const ChangePassword = () => {
+	const triggerErrorNotification = useErrorNotification();
 	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
 		"idle",
 	);
@@ -194,18 +195,30 @@ const ChangePassword = () => {
 	const [newPassword, setNewPassword] = React.useState("");
 	const [newPasswordConfirmation, setNewPasswordConfirmation] = React.useState("");
 
+	const updatePasswordRequestState = Async.useAsync({
+		deferFn: api.auth.updatePassword,
+		onResolve: () => {
+			setStatus("success");
+		},
+		onReject: () => {
+			setStatus("error");
+			triggerErrorNotification("Couldn't update password.");
+		},
+	});
+
 	return (
 		<form
 			className="my-8"
 			onSubmit={event => {
 				event.preventDefault();
 				setStatus("pending");
+				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			{status === "idle" && (
+			{["idle", "pending", "success"].includes(status) && (
 				<BareButton onClick={() => setStatus("editing")}>Update password</BareButton>
 			)}
-			{status === "editing" && (
+			{["editing", "pending", "error"].includes(status) && (
 				<>
 					<div className="field-group mb-6 md:w-full">
 						<label className="field-label" htmlFor="old_password">
@@ -222,6 +235,7 @@ const ChangePassword = () => {
 							type="password"
 							required
 							pattern=".{6,}"
+							disabled={updatePasswordRequestState.isPending}
 						/>
 					</div>
 					<div className="field-group mb-6 md:w-full">
@@ -239,6 +253,7 @@ const ChangePassword = () => {
 							type="password"
 							required
 							pattern=".{6,}"
+							disabled={updatePasswordRequestState.isPending}
 						/>
 					</div>
 					<div className="field-group mb-6 md:w-full">
@@ -256,6 +271,7 @@ const ChangePassword = () => {
 							value={newPasswordConfirmation}
 							onChange={event => setNewPasswordConfirmation(event.target.value)}
 							required
+							disabled={updatePasswordRequestState.isPending}
 						/>
 					</div>
 					<BareButton type="submit">Submit</BareButton>
@@ -271,6 +287,7 @@ const ChangePassword = () => {
 					</BareButton>
 				</>
 			)}
+			{status == "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
 		</form>
 	);
 };

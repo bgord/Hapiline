@@ -60,3 +60,14 @@ export const changeEmailRequest: Async.DeferFn<void> = ([newEmail, password]: st
 		newEmail,
 		password,
 	});
+
+export const updatePasswordRequst: Async.DeferFn<void> = ([
+	old_password,
+	new_password,
+	new_password_confirmation,
+]: string[]) =>
+	_internal_api.patch("/update-password", {
+		old_password,
+		password: new_password,
+		password_confirmation: new_password_confirmation,
+	});

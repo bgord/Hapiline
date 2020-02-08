@@ -22,6 +22,7 @@ import {
 	verifyEmailRequest,
 	deleteAccountRequest,
 	changeEmailRequest,
+	updatePasswordRequst,
 } from "./auth";
 import {getDayRequest, getMonthRequest} from "./calendar";
 import {getDashboardStats, getDashboardStreakStats} from "./stats";
@@ -60,6 +61,7 @@ export const api = {
 		isLoggedIn: isLoggedInRequest,
 		deleteAccount: deleteAccountRequest,
 		changeEmail: changeEmailRequest,
+		updatePassword: updatePasswordRequst,
 	},
 	calendar: {
 		getMonth: getMonthRequest,

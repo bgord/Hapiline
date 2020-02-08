@@ -163,5 +163,22 @@ describe("Profile", () => {
 		cy.findByLabelText("Old password").should("have.value", "");
 		cy.findByLabelText("New password").should("have.value", "");
 		cy.findByLabelText("Repeat new password").should("have.value", "");
+
+		// Happy path
+		cy.findByLabelText("Old password").type("123456");
+		cy.findByLabelText("New password").type("nonono");
+		cy.findByLabelText("Repeat new password").type("nonono");
+		cy.findByText("Submit").click();
+
+		cy.findByText("Password changed successfully!");
+
+		cy.findByText("Logout").click();
+		cy.findByText("Login").click();
+
+		cy.findByLabelText("Email").type("dwight@example.com");
+		cy.findByLabelText("Password").type("nonono");
+		cy.findByTestId("login-submit").click();
+
+		cy.url().should("include", DASHBOARD_URL);
 	});
 });
