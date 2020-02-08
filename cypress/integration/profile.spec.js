@@ -63,23 +63,49 @@ describe("Profile", () => {
 		cy.findByLabelText("Email")
 			.should("have.value", "dwight@example.com")
 			.should("be.disabled");
-
+		cy.findByText("Edit email");
 		cy.findByText("Confirm email").should("not.exist");
 		cy.findByText("Cancel").should("not.exist");
 		cy.findByLabelText("Password").should("not.exist");
 
 		cy.findByText("Edit email").click();
 
-		cy.findByText("Confirm email");
+		cy.findByLabelText("Email")
+			.should("have.value", "dwight@example.com")
+			.should("not.be.disabled");
 		cy.findByText("Edit email").should("not.exist");
+		cy.findByText("Confirm email").should("be.disabled");
 		cy.findByText("Cancel");
+		cy.findByLabelText("Password").should("be.empty");
 
-		cy.findByLabelText("Password")
-			.should("be.empty")
-			.type("nonono");
-
+		cy.findByLabelText("Email")
+			.clear()
+			.type("xxx");
+		cy.findByLabelText("Password").type("nonono");
 		cy.findByText("Cancel").click();
+
+		cy.findByLabelText("Email")
+			.should("have.value", "dwight@example.com")
+			.should("be.disabled");
+		cy.findByText("Edit email");
+		cy.findByText("Confirm email").should("not.exist");
+		cy.findByText("Cancel").should("not.exist");
+		cy.findByLabelText("Password").should("not.exist");
+
 		cy.findByText("Edit email").click();
-		cy.findByLabelText("Password").should("have.value", "");
+		cy.findByLabelText("Email")
+			.clear()
+			.type("dwight@dundermifflin.com");
+		cy.findByLabelText("Password").type("123456");
+		cy.findByText("Confirm email").click();
+
+		cy.findByLabelText("Email")
+			.should("have.value", "dwight@dundermifflin.com")
+			.should("be.disabled");
+		cy.findByText("Edit email").should("not.exist");
+		cy.findByText("Confirm email").should("not.exist");
+		cy.findByText("Cancel").should("not.exist");
+		cy.findByLabelText("Password").should("have.value", "123456");
+		cy.findByText("Email change pending...");
 	});
 });

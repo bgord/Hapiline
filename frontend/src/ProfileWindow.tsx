@@ -5,7 +5,6 @@ import React from "react";
 
 import {BareButton} from "./BareButton";
 import {RequestErrorMessage} from "./ErrorMessages";
-import {UserProfileInterface} from "./interfaces/IUserProfile";
 import {api} from "./services/api";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useToggle} from "./hooks/useToggle";
@@ -76,8 +75,10 @@ const ChangeEmail: React.FC = () => {
 	if (!userProfile?.email) return null;
 
 	const initialEmail = userProfile?.email;
-	const [newEmail, setNewEmail] = React.useState();
+	const [newEmail, setNewEmail] = React.useState(initialEmail);
 	const [password, setPassword] = React.useState("");
+
+	const isNewEmailDifferent = newEmail !== "" && newEmail !== initialEmail;
 
 	return (
 		<form
@@ -94,7 +95,8 @@ const ChangeEmail: React.FC = () => {
 				<div>
 					<input
 						required
-						value={userProfile.email}
+						value={newEmail}
+						onChange={event => setNewEmail(event.target.value)}
 						className="field w-64"
 						type="email"
 						name="email"
@@ -105,7 +107,7 @@ const ChangeEmail: React.FC = () => {
 						<BareButton onClick={() => setStatus("editing")}>Edit email</BareButton>
 					)}
 					{status === "editing" && (
-						<button className="btn btn-blue ml-4" type="submit">
+						<button disabled={!isNewEmailDifferent} className="btn btn-blue ml-4" type="submit">
 							Confirm email
 						</button>
 					)}
@@ -114,6 +116,7 @@ const ChangeEmail: React.FC = () => {
 							onClick={() => {
 								setStatus("idle");
 								setPassword("");
+								setNewEmail(initialEmail);
 							}}
 						>
 							Cancel
