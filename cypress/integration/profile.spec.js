@@ -21,6 +21,10 @@ describe("Profile", () => {
 
 		cy.findByText("Profile");
 		cy.findByText("Delete account").click();
+		cy.findByText("Nevermind, don't delete").click();
+
+		cy.findByText("Delete account").click();
+		cy.findByText("Yes, delete").click();
 
 		cy.url().should("contain", "/");
 		cy.findByText("Welcome to home page");
@@ -46,6 +50,8 @@ describe("Profile", () => {
 		});
 
 		cy.findByText("Delete account").click();
+		cy.findByText("Yes, delete").click();
+
 		cy.findByText("An error occurred during account deletion.");
 		cy.findByText("Couldn't delete account.");
 	});
