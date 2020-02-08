@@ -67,6 +67,7 @@ describe("Profile", () => {
 		cy.findByText("Confirm email").should("not.exist");
 		cy.findByText("Cancel").should("not.exist");
 		cy.findByLabelText("Password").should("not.exist");
+		cy.findByText("NOTE: You will have to confirm your new email adress and login back again.");
 
 		cy.findByText("Edit email").click();
 

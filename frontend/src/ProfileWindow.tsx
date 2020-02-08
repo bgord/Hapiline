@@ -142,6 +142,9 @@ const ChangeEmail: React.FC = () => {
 						</BareButton>
 					)}
 				</div>
+				<div className="mt-4">
+					NOTE: You will have to confirm your new email adress and login back again.
+				</div>
 				{status === "error" && emailInlineError && <ErrorMessage>{emailInlineError}</ErrorMessage>}
 			</div>
 			{["editing", "pending", "error"].includes(status) && (
