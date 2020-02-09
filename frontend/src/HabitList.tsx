@@ -92,7 +92,7 @@ export const HabitList: React.FC = () => {
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
 				</button>
 				<button onClick={openAddFormDialog} className="btn btn-blue h-10 mt-4" type="button">
-					Add habit
+					New habit
 				</button>
 			</div>
 			{areFiltersVisible && (

@@ -13,7 +13,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 		cy.url().should("contain", "/habits?subview=add_habit");
 
 		cy.findByRole("dialog").within(() => {
@@ -76,7 +76,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
@@ -108,7 +108,7 @@ describe("Habit", () => {
 		cy.findByText("Negative: 0").should("not.exist");
 		cy.findByText("Total: 0").should("not.exist");
 
-		cy.findByText("Add habit");
+		cy.findByText("New habit");
 	});
 
 	it("renders returned items", () => {
