@@ -12,64 +12,14 @@ import {useErrorNotification} from "./contexts/notifications-context";
 import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
-	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "error">("idle");
-
-	const cancelRef = React.useRef<HTMLButtonElement>();
-
-	const triggerErrorNotification = useErrorNotification();
-	const history = useHistory();
-
-	const deleteAccountRequestState = Async.useAsync({
-		deferFn: api.auth.deleteAccount,
-		onResolve: () => history.push("/logout"),
-		onReject: () => {
-			setStatus("error");
-			triggerErrorNotification("Couldn't delete account.");
-		},
-	});
-
-	function confirmDeletion() {
-		setStatus("pending");
-		deleteAccountRequestState.run();
-	}
-
 	return (
 		<>
 			<section className="flex flex-col max-w-2xl mx-auto mt-12">
 				<strong>Profile</strong>
-				<button
-					className="mt-10 bg-red-500 w-32 text-white"
-					disabled={deleteAccountRequestState.isPending}
-					onClick={() => setStatus("editing")}
-				>
-					Delete account
-				</button>
-				<Async.IfRejected state={deleteAccountRequestState}>
-					<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
-				</Async.IfRejected>
 				<ChangeEmail />
 				<ChangePassword />
+				<DeleteAccount />
 			</section>
-
-			{status === "editing" && (
-				<AlertDialog
-					className="w-1/3"
-					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
-				>
-					<AlertDialogLabel>Do you really want to delete your account?</AlertDialogLabel>
-
-					<div className="mt-12 flex justify-around w-full">
-						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
-						<button
-							type="button"
-							ref={cancelRef as React.RefObject<HTMLButtonElement>}
-							onClick={() => setStatus("idle")}
-						>
-							Nevermind, don't delete
-						</button>
-					</div>
-				</AlertDialog>
-			)}
 		</>
 	);
 };
@@ -307,5 +257,61 @@ const ChangePassword = () => {
 			)}
 			{status == "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
 		</form>
+	);
+};
+
+const DeleteAccount = () => {
+	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "error">("idle");
+
+	const cancelRef = React.useRef<HTMLButtonElement>();
+
+	const triggerErrorNotification = useErrorNotification();
+	const history = useHistory();
+
+	const deleteAccountRequestState = Async.useAsync({
+		deferFn: api.auth.deleteAccount,
+		onResolve: () => history.push("/logout"),
+		onReject: () => {
+			setStatus("error");
+			triggerErrorNotification("Couldn't delete account.");
+		},
+	});
+
+	function confirmDeletion() {
+		setStatus("pending");
+		deleteAccountRequestState.run();
+	}
+	return (
+		<>
+			<button
+				className="mt-10 bg-red-500 w-32 text-white"
+				disabled={deleteAccountRequestState.isPending}
+				onClick={() => setStatus("editing")}
+			>
+				Delete account
+			</button>
+			<Async.IfRejected state={deleteAccountRequestState}>
+				<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
+			</Async.IfRejected>
+			{status === "editing" && (
+				<AlertDialog
+					className="w-1/3"
+					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
+				>
+					<AlertDialogLabel>Do you really want to delete your account?</AlertDialogLabel>
+
+					<div className="mt-12 flex justify-around w-full">
+						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
+						<button
+							type="button"
+							ref={cancelRef as React.RefObject<HTMLButtonElement>}
+							onClick={() => setStatus("idle")}
+						>
+							Nevermind, don't delete
+						</button>
+					</div>
+				</AlertDialog>
+			)}
+		</>
 	);
 };
