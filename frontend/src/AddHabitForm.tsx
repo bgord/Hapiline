@@ -58,11 +58,8 @@ export const AddHabitForm: React.FC = () => {
 		<Dialog
 			aria-label="Add new habit"
 			onDismiss={hideAddFormDialog}
-			className="overflow-auto h-full"
-			style={{
-				maxWidth: "1000px",
-				maxHeight: "500px",
-			}}
+			className="max-w-screen-lg overflow-auto h-full"
+			style={{maxHeight: "500px"}}
 		>
 			<div className="flex justify-between items-baseline mb-8">
 				<strong>Add new habit</strong>

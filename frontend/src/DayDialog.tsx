@@ -87,11 +87,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 		<Dialog
 			aria-label="Show day preview"
 			onDismiss={onDismiss || dismissDialog}
-			className="overflow-auto"
-			style={{
-				maxWidth: "1000px",
-				maxHeight: "700px",
-			}}
+			className="max-w-screen-lg overflow-auto"
+			style={{maxHeight: "700px"}}
 		>
 			<div className="flex justify-between items-baseline">
 				<strong>
