@@ -17,7 +17,9 @@ describe("Profile", () => {
 		cy.findByTestId("login-submit").click();
 		cy.url().should("include", DASHBOARD_URL);
 
-		cy.visit(PROFILE_URL);
+		cy.findByText("dwight@example.com").click();
+
+		cy.url().should("contain", PROFILE_URL);
 
 		cy.findByText("Profile");
 		cy.findByText("Delete account").click();
