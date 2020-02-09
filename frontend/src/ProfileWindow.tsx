@@ -9,11 +9,11 @@ import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
-	const [showDialog, openDialog, closeDialog] = useToggle();
+	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "error">("idle");
+
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
 	const triggerErrorNotification = useErrorNotification();
@@ -22,11 +22,14 @@ export const ProfileWindow = () => {
 	const deleteAccountRequestState = Async.useAsync({
 		deferFn: api.auth.deleteAccount,
 		onResolve: () => history.push("/logout"),
-		onReject: () => triggerErrorNotification("Couldn't delete account."),
+		onReject: () => {
+			setStatus("error");
+			triggerErrorNotification("Couldn't delete account.");
+		},
 	});
 
 	function confirmDeletion() {
-		closeDialog();
+		setStatus("pending");
 		deleteAccountRequestState.run();
 	}
 
@@ -37,7 +40,7 @@ export const ProfileWindow = () => {
 				<button
 					className="mt-10 bg-red-500 w-32 text-white"
 					disabled={deleteAccountRequestState.isPending}
-					onClick={openDialog}
+					onClick={() => setStatus("editing")}
 				>
 					Delete account
 				</button>
@@ -48,7 +51,7 @@ export const ProfileWindow = () => {
 				<ChangePassword />
 			</section>
 
-			{showDialog && (
+			{status === "editing" && (
 				<AlertDialog
 					className="w-1/3"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
@@ -60,7 +63,7 @@ export const ProfileWindow = () => {
 						<button
 							type="button"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
-							onClick={closeDialog}
+							onClick={() => setStatus("idle")}
 						>
 							Nevermind, don't delete
 						</button>
@@ -206,9 +209,7 @@ const ChangePassword = () => {
 		},
 	});
 
-	const {getArgErrorMessage, errorMessage, errorCode} = getRequestStateErrors(
-		updatePasswordRequestState,
-	);
+	const {getArgErrorMessage, errorCode} = getRequestStateErrors(updatePasswordRequestState);
 
 	const oldPasswordInlineError = getArgErrorMessage("old_password");
 
