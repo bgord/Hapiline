@@ -89,7 +89,7 @@ describe("Calendar", () => {
 		});
 
 		cy.findByText("Habits").click();
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 
 		cy.findByLabelText("Habit").type("THE SPECIAL ONE");
 		cy.findByLabelText("Track this habit").click();
@@ -227,7 +227,7 @@ describe("Calendar", () => {
 		cy.visit(CALENDAR_URL);
 
 		cy.findByText("Habits").click();
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 
 		cy.findByLabelText("Habit").type("THE NOT TRACKED ONE");
 

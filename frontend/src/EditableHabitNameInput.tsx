@@ -45,7 +45,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	});
 
 	const [newHabitName, newHabitNameHelpers] = useEditableFieldValue(
-		name => editHabitRequestState.run(id, {name}),
+		newName => editHabitRequestState.run(id, {name: newName}),
 		name,
 	);
 

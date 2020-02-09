@@ -145,7 +145,8 @@ const EditableDescription: React.FC<{
 	});
 
 	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(
-		description => updateDescriptionRequestState.run(habitId, {description}),
+		updateDescription =>
+			updateDescriptionRequestState.run(habitId, {description: updateDescription}),
 		description,
 	);
 
