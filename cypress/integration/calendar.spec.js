@@ -158,6 +158,8 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByText(`${format(new Date(), "yyyy-MM-dd")} - ${format(new Date(), "iiii")}`);
+
 			cy.findByText("Tracked habits");
 			cy.findByText("New habits: 4");
 			cy.findByText("+2");

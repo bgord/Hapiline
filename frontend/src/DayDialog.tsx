@@ -24,6 +24,7 @@ import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
+import {format} from "date-fns";
 
 type DayDialogProps = DayVoteStats & {
 	onResolve?: VoidFunction;
@@ -81,6 +82,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 		updateQueryParams("calendar", {...rest});
 	}
 
+	const dayName = format(new Date(day), "iiii");
+
 	return (
 		<Dialog
 			aria-label="Show day preview"
@@ -92,7 +95,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 			}}
 		>
 			<div className="flex justify-between items-baseline">
-				<strong>{day}</strong>
+				<strong>
+					{day} - {dayName}
+				</strong>
 				<CloseButton onClick={onDismiss || dismissDialog} />
 			</div>
 			{doesEveryHabitHasAVote && (
