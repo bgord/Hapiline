@@ -17,6 +17,7 @@ describe("Habit", () => {
 		cy.url().should("contain", "/habits?subview=add_habit");
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByText("Add new habit");
 			cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 			cy.findByLabelText("Score").select("positive");
 			cy.findByLabelText("Strength").select("fresh");

@@ -64,7 +64,8 @@ export const AddHabitForm: React.FC = () => {
 				maxHeight: "500px",
 			}}
 		>
-			<div className="flex justify-end items-baseline mb-8">
+			<div className="flex justify-between items-baseline mb-8">
+				<strong>Add new habit</strong>
 				<CloseButton onClick={hideAddFormDialog} />
 			</div>
 			<form
