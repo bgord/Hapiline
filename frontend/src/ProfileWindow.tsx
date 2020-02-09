@@ -13,14 +13,12 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<>
-			<section className="flex flex-col max-w-2xl mx-auto mt-12">
-				<strong>Profile</strong>
-				<ChangeEmail />
-				<ChangePassword />
-				<DeleteAccount />
-			</section>
-		</>
+		<section className="flex flex-col max-w-2xl mx-auto mt-12">
+			<strong>Profile</strong>
+			<ChangeEmail />
+			<ChangePassword />
+			<DeleteAccount />
+		</section>
 	);
 };
 
