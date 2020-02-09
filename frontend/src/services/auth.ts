@@ -68,6 +68,6 @@ export const updatePasswordRequst: Async.DeferFn<void> = ([
 ]: string[]) =>
 	_internal_api.patch("/update-password", {
 		old_password,
-		password: password,
-		password_confirmation: password_confirmation,
+		password,
+		password_confirmation,
 	});
