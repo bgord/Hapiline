@@ -57,20 +57,6 @@ describe("Habit", () => {
 		cy.findByText("Habit successfully addedd!");
 
 		cy.findByText("Go to sleep at 9:30 AM");
-
-		cy.findByText("Add habit").click();
-
-		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit")
-				.clear()
-				.type("That's too long");
-			cy.findByLabelText("Score").select("positive");
-			cy.findByLabelText("Strength").select("fresh");
-			// 52 * 20 chars = 1040, which is grater than 1024
-			cy.findByPlaceholderText("Write something...").type("That's what she said".repeat(52));
-			cy.findByText("Add habit").click();
-			cy.findByText("Description must be max of 1024 characters.");
-		});
 	});
 
 	it("500 while adding an item", () => {
