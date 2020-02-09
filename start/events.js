@@ -35,9 +35,15 @@ Event.on("forgot::password", async ({user, token}) => {
 
 Event.on("email::changed", async ({user, token}) => {
 	const {email} = user.toJSON();
-	await Mail.send(MAIL_TEMPLATES.newEmailAddressVerification.template, {token}, message => {
-		message.subject(MAIL_TEMPLATES.newEmailAddressVerification.subject);
-		message.from(Env.get("MAIL_FROM"));
-		message.to(email);
-	});
+	const HOST_PATH = Env.get("HOST_PATH");
+
+	await Mail.send(
+		MAIL_TEMPLATES.newEmailAddressVerification.template,
+		{link: `${HOST_PATH}/verify-email/${encodeURIComponent(token)}`},
+		message => {
+			message.subject(MAIL_TEMPLATES.newEmailAddressVerification.subject);
+			message.from(Env.get("MAIL_FROM"));
+			message.to(email);
+		},
+	);
 });

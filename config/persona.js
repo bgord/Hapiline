@@ -90,5 +90,7 @@ module.exports = {
   | An object of validation messages to be used when validation fails.
   |
   */
-	validationMessages: () => {},
+	validationMessages: () => ({
+		"email.unique": "Given email address already exists.",
+	}),
 };

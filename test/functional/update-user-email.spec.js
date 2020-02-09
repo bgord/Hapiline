@@ -153,16 +153,16 @@ test("/change-email --- full flow", async ({client, assert}) => {
 
 	assert.deepEqual(message.subject, MAIL_TEMPLATES.newEmailAddressVerification.subject);
 
-	assert.include(message.html, "Confirm new email");
+	assert.include(message.html, "Confirm your email address");
 
 	assert.deepEqual(message.to[0].address, newEmail);
 	assert.deepEqual(message.from.address, Env.get("MAIL_FROM"));
 
-	const token = message.html.split("\n")[3];
+	const token = message.html.split("\n")[16].split("/")[4];
 
 	const emailVerificationResponse = await client
 		.post("/api/v1/verify-email")
-		.send({token})
+		.send({token: decodeURIComponent(token)})
 		.end();
 
 	emailVerificationResponse.assertStatus(200);

@@ -52,3 +52,22 @@ export const registrationRequest: Async.DeferFn<void> = ([
 
 export const isLoggedInRequest: Async.PromiseFn<UserProfileInterface> = () =>
 	_internal_api.get("/me").then(response => response.data);
+
+export const deleteAccountRequest: Async.DeferFn<void> = () => _internal_api.delete("/account");
+
+export const changeEmailRequest: Async.DeferFn<void> = ([newEmail, password]: string[]) =>
+	_internal_api.post("/change-email", {
+		newEmail,
+		password,
+	});
+
+export const updatePasswordRequst: Async.DeferFn<void> = ([
+	old_password,
+	password,
+	password_confirmation,
+]: string[]) =>
+	_internal_api.patch("/update-password", {
+		old_password,
+		password,
+		password_confirmation,
+	});
