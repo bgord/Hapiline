@@ -120,8 +120,9 @@ describe("Habit", () => {
 		cy.findByText("Positive: 0").should("not.exist");
 		cy.findByText("Neutral: 0").should("not.exist");
 		cy.findByText("Negative: 0").should("not.exist");
-
 		cy.findByText("Total: 0").should("not.exist");
+
+		cy.findByText("Add habit");
 	});
 
 	it("renders returned items", () => {

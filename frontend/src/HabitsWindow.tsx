@@ -12,10 +12,13 @@ import {useQueryParam} from "./hooks/useQueryParam";
 export const HabitsWindow = () => {
 	const habits = useHabits();
 	const getHabitsRequestState = useHabitsState();
+	const [subview, updateSubviewQueryParam] = useQueryParam("subview");
 
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
 
-	const [subview] = useQueryParam("subview");
+	function openAddFormDialog() {
+		updateSubviewQueryParam("add_habit");
+	}
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto max-w-4xl">
@@ -27,9 +30,12 @@ export const HabitsWindow = () => {
 
 			<Async.IfFulfilled state={getHabitsRequestState}>
 				{habits.length === 0 && (
-					<InfoMessage className="pb-4 mr-auto">
-						Seems you haven't added any habits yet.
-					</InfoMessage>
+					<div className="flex justify-between items-end w-full">
+						<InfoMessage>Seems you haven't added any habits yet.</InfoMessage>
+						<button onClick={openAddFormDialog} className="btn btn-blue h-10 mt-4" type="button">
+							Add habit
+						</button>
+					</div>
 				)}
 
 				{habits.length > 0 && <HabitList />}
