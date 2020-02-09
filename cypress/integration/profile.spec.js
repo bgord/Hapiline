@@ -141,7 +141,7 @@ describe("Profile", () => {
 		cy.findByText("Given email address already exists.");
 	});
 
-	it.only("password change", () => {
+	it("password change", () => {
 		cy.clock();
 
 		cy.login("dwight");
@@ -180,5 +180,67 @@ describe("Profile", () => {
 		cy.findByTestId("login-submit").click();
 
 		cy.url().should("include", DASHBOARD_URL);
+	});
+
+	it("password change errors", () => {
+		cy.clock();
+
+		cy.login("dwight");
+		cy.visit(PROFILE_URL);
+
+		cy.findByText("Update password").click();
+
+		// Old password and new password are equal
+		cy.findByLabelText("Old password").type("123456");
+		cy.findByLabelText("New password").type("123456");
+		cy.findByLabelText("Repeat new password").type("123456");
+		cy.findByText("Submit").click();
+
+		cy.findByText("Couldn't update password.");
+		cy.findByText("Old password cannot be the same as the new password.");
+
+		cy.tick(10000);
+
+		// Old password is invalid
+		cy.findByLabelText("Old password")
+			.clear()
+			.type("nonono");
+		cy.findByLabelText("New password")
+			.clear()
+			.type("nowyno");
+		cy.findByLabelText("Repeat new password")
+			.clear()
+			.type("nowyno");
+		cy.findByText("Submit").click();
+
+		cy.findByText("Couldn't update password.");
+		cy.findByText("Invalid password");
+
+		cy.tick(10000);
+
+		cy.server();
+		cy.route({
+			method: "PATCH",
+			url: "/api/v1/update-password",
+			status: 500,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+			},
+		});
+
+		// A random 500
+		cy.findByLabelText("Old password")
+			.clear()
+			.type("123456");
+		cy.findByLabelText("New password")
+			.clear()
+			.type("nowyno");
+		cy.findByLabelText("Repeat new password")
+			.clear()
+			.type("nowyno");
+		cy.findByText("Submit").click();
+
+		cy.findByText("Couldn't update password.");
+		cy.findByText("An unexpected error happened, please try again.");
 	});
 });

@@ -206,6 +206,17 @@ const ChangePassword = () => {
 		},
 	});
 
+	const {getArgErrorMessage, errorMessage, errorCode} = getRequestStateErrors(
+		updatePasswordRequestState,
+	);
+
+	const oldPasswordInlineError = getArgErrorMessage("old_password");
+
+	const internalServerError =
+		errorCode === "E_INTERNAL_SERVER_ERROR"
+			? "An unexpected error happened, please try again."
+			: null;
+
 	return (
 		<form
 			className="my-8"
@@ -237,6 +248,9 @@ const ChangePassword = () => {
 							pattern=".{6,}"
 							disabled={updatePasswordRequestState.isPending}
 						/>
+						{status === "error" && oldPasswordInlineError && (
+							<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
+						)}
 					</div>
 					<div className="field-group mb-6 md:w-full">
 						<label className="field-label" htmlFor="new_password">
@@ -285,6 +299,9 @@ const ChangePassword = () => {
 					>
 						Cancel
 					</BareButton>
+					{status === "error" && internalServerError && (
+						<RequestErrorMessage>{internalServerError}</RequestErrorMessage>
+					)}
 				</>
 			)}
 			{status == "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
