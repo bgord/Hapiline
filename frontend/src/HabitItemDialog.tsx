@@ -46,7 +46,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 	return (
 		<Dialog
-			className="max-w-screen-lg overflow-auto w-full h-full"
+			className="max-w-screen-lg overflow-auto h-full"
 			onDismiss={dismissDialog}
 			aria-label="Show habit preview"
 			style={{maxHeight: "600px"}}
