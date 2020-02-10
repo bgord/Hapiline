@@ -13,10 +13,11 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 		cy.url().should("contain", "/habits?subview=add_habit");
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByText("Add new habit");
 			cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
 			cy.findByLabelText("Score").select("positive");
 			cy.findByLabelText("Strength").select("fresh");
@@ -57,20 +58,6 @@ describe("Habit", () => {
 		cy.findByText("Habit successfully addedd!");
 
 		cy.findByText("Go to sleep at 9:30 AM");
-
-		cy.findByText("Add habit").click();
-
-		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit")
-				.clear()
-				.type("That's too long");
-			cy.findByLabelText("Score").select("positive");
-			cy.findByLabelText("Strength").select("fresh");
-			// 52 * 20 chars = 1040, which is grater than 1024
-			cy.findByPlaceholderText("Write something...").type("That's what she said".repeat(52));
-			cy.findByText("Add habit").click();
-			cy.findByText("Description must be max of 1024 characters.");
-		});
 	});
 
 	it("500 while adding an item", () => {
@@ -90,7 +77,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByLabelText("Habit").type("Wake up at 7:30 AM");
@@ -120,8 +107,9 @@ describe("Habit", () => {
 		cy.findByText("Positive: 0").should("not.exist");
 		cy.findByText("Neutral: 0").should("not.exist");
 		cy.findByText("Negative: 0").should("not.exist");
-
 		cy.findByText("Total: 0").should("not.exist");
+
+		cy.findByText("New habit");
 	});
 
 	it("renders returned items", () => {

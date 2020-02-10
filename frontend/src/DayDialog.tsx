@@ -14,16 +14,16 @@ import {
 } from "./DayDialogSummary";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
-import {HabitVoteFilters} from "./hooks/useHabitVoteFilter";
+import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {IDayVote} from "./interfaces/IDayVote";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
-import {useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
+import {format} from "date-fns";
 
 type DayDialogProps = DayVoteStats & {
 	onResolve?: VoidFunction;
@@ -81,18 +81,19 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 		updateQueryParams("calendar", {...rest});
 	}
 
+	const dayName = format(new Date(day), "iiii");
+
 	return (
 		<Dialog
 			aria-label="Show day preview"
 			onDismiss={onDismiss || dismissDialog}
-			className="overflow-auto"
-			style={{
-				maxWidth: "1000px",
-				maxHeight: "700px",
-			}}
+			className="max-w-screen-lg overflow-auto"
+			style={{maxHeight: "700px"}}
 		>
 			<div className="flex justify-between items-baseline">
-				<strong>{day}</strong>
+				<strong>
+					{day} - {dayName}
+				</strong>
 				<CloseButton onClick={onDismiss || dismissDialog} />
 			</div>
 			{doesEveryHabitHasAVote && (

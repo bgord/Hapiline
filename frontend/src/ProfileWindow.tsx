@@ -30,11 +30,11 @@ const ChangeEmail: React.FC = () => {
 		"idle",
 	);
 
-	if (!userProfile?.email) return null;
-
 	const initialEmail = userProfile?.email;
 	const [newEmail, setNewEmail] = React.useState(initialEmail);
 	const [password, setPassword] = React.useState("");
+
+	if (!userProfile?.email) return null;
 
 	const changeEmailRequestState = Async.useAsync({
 		deferFn: api.auth.changeEmail,
@@ -253,7 +253,7 @@ const ChangePassword = () => {
 					)}
 				</>
 			)}
-			{status == "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
+			{status === "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
 		</form>
 	);
 };
@@ -282,6 +282,7 @@ const DeleteAccount = () => {
 	return (
 		<>
 			<button
+				type="button"
 				className="mt-10 bg-red-500 w-32 text-white"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}

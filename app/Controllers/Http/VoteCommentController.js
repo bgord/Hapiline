@@ -16,7 +16,7 @@ class VoteCommentController {
 		await vote.merge({comment: comment || null});
 		await vote.save();
 
-		response.send(vote);
+		return response.send(vote);
 	}
 
 	async index({request, response, auth}) {

@@ -89,7 +89,7 @@ describe("Calendar", () => {
 		});
 
 		cy.findByText("Habits").click();
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 
 		cy.findByLabelText("Habit").type("THE SPECIAL ONE");
 		cy.findByLabelText("Track this habit").click();
@@ -158,6 +158,8 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
+			cy.findByText(`${format(new Date(), "yyyy-MM-dd")} - ${format(new Date(), "iiii")}`);
+
 			cy.findByText("Tracked habits");
 			cy.findByText("New habits: 4");
 			cy.findByText("+2");
@@ -225,7 +227,7 @@ describe("Calendar", () => {
 		cy.visit(CALENDAR_URL);
 
 		cy.findByText("Habits").click();
-		cy.findByText("Add habit").click();
+		cy.findByText("New habit").click();
 
 		cy.findByLabelText("Habit").type("THE NOT TRACKED ONE");
 

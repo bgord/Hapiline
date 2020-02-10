@@ -12,6 +12,7 @@ class NotificationsController {
 			.orderBy("id", "asc");
 		return response.send(results);
 	}
+
 	async update({auth, request, response, params}) {
 		const notificationId = Number(params.id);
 		const payload = request.only(["status"]);
