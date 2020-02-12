@@ -10,6 +10,7 @@ module.exports = (env, argv) => {
 	return {
 		entry: "./frontend/src/index.tsx",
 		watch: dev,
+		mode: argv.mode || "development",
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"],
 		},
