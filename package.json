@@ -19,7 +19,9 @@
     "css:build:dev": "postcss frontend/css/tailwind.css -o frontend/css/index.css",
     "css:build:prod": "NODE_ENV=production postcss frontend/css/tailwind.css -o frontend/css/index.css",
     "css:watch": "postcss frontend/css/tailwind.css -w -o frontend/css/index.css",
-    "e2e:test": "./node_modules/.bin/cypress open"
+    "e2e:test": "./node_modules/.bin/cypress open",
+    "cosmos": "cosmos",
+    "cosmos:export": "cosmos-export"
   },
   "author": "Bartosz Gordon",
   "license": "UNLICENSED",
@@ -99,6 +101,7 @@
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^1.11.1",
+    "react-cosmos": "^5.0.7",
     "style-loader": "^1.1.2",
     "typescript": "^3.7.4",
     "webpack": "^4.41.4",
