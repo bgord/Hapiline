@@ -3,5 +3,13 @@ import "../frontend/css/index.css";
 import React from "react";
 
 export const Demo: React.FC = ({children}) => (
-	<div className="w-screen h-screen flex justify-center p-4">{children}</div>
+	<div
+		style={{
+			paddingTop: "24px",
+			paddingLeft: "24px",
+		}}
+		className="flex items-start w-screen h-screen"
+	>
+		{children}
+	</div>
 );
