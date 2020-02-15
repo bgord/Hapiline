@@ -4,10 +4,12 @@ button::-moz-focus-inner {
 }
 
 .c-button {
+	box-sizing: border-box;
 	height: 36px;
+	min-width: 75px;
 	border: none;
-	padding: 0 5px 0 5px;
-	font-size: 14px;
+	padding: 0 10px 0 10px;
+	font-size: 12px;
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
@@ -96,4 +98,30 @@ button::-moz-focus-inner {
 }
 .c-button--secondary:disabled.c-button--secondary:hover {
 	background-color: #363434;
+}
+
+/* --outlined */
+
+/* https://www.0to255.com/e8e7e7 */
+
+.c-button--outlined {
+	background: white;
+	border: 1px solid #c7c4c4;
+	color: #363434;
+}
+
+.c-button--outlined:hover {
+	background: #f9f8f8;
+}
+
+.c-button--outlined:focus {
+	background: #f9f8f8;
+}
+
+.c-button--outlined:active {
+	background: #f0f0f0;
+}
+
+.c-button--outlined:disabled.c-button--outlined:hover {
+	background: white;
 }

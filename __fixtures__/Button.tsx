@@ -19,11 +19,24 @@ export default {
 			</Button>
 		</Demo>
 	),
+	"--outlined": (
+		<Demo>
+			<Button variant="outlined" style={{marginLeft: "10px"}}>
+				Cancel
+			</Button>
+			<Button variant="outlined" style={{marginLeft: "10px"}} disabled>
+				Cancel
+			</Button>
+		</Demo>
+	),
 	"side by side": (
 		<Demo>
 			<Button variant="secondary">New habit</Button>
 			<Button variant="normal" style={{marginLeft: "10px"}}>
 				Show filters
+			</Button>
+			<Button variant="outlined" style={{marginLeft: "10px"}}>
+				Hide
 			</Button>
 		</Demo>
 	),
