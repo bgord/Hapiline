@@ -5,6 +5,7 @@
 :root {
 	--white: #ffffff;
 	--gray-1: #f9f8f8;
+	--brand-blue: #1554ff;
 
 	--body-background: var(--gray-1);
 }
