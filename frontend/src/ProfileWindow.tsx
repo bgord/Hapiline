@@ -3,7 +3,7 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
@@ -67,35 +67,39 @@ const ChangeEmail: React.FC = () => {
 				<label className="field-label" htmlFor="email">
 					Email
 				</label>
-				<div>
+				<div className="flex items-center">
 					<input
 						required
 						value={newEmail}
 						onChange={event => setNewEmail(event.target.value)}
-						className="field w-64"
+						className="field w-64 mr-4"
 						type="email"
 						name="email"
 						id="email"
 						disabled={["idle", "pending", "success"].includes(status)}
 					/>
 					{status === "idle" && (
-						<BareButton onClick={() => setStatus("editing")}>Edit email</BareButton>
+						<Button variant="normal" onClick={() => setStatus("editing")}>
+							Edit email
+						</Button>
 					)}
 					{["editing", "error"].includes(status) && (
-						<button disabled={!isNewEmailDifferent} className="btn btn-blue ml-4" type="submit">
+						<Button type="submit" variant="secondary" disabled={!isNewEmailDifferent}>
 							Confirm email
-						</button>
+						</Button>
 					)}
 					{["editing", "error"].includes(status) && (
-						<BareButton
+						<Button
+							variant="outlined"
 							onClick={() => {
 								setStatus("idle");
 								setPassword("");
 								setNewEmail(initialEmail);
 							}}
+							style={{marginLeft: "6px"}}
 						>
 							Cancel
-						</BareButton>
+						</Button>
 					)}
 				</div>
 				<div className="mt-4">
@@ -176,7 +180,9 @@ const ChangePassword = () => {
 			}}
 		>
 			{["idle", "pending", "success"].includes(status) && (
-				<BareButton onClick={() => setStatus("editing")}>Update password</BareButton>
+				<Button variant="normal" onClick={() => setStatus("editing")}>
+					Update password
+				</Button>
 			)}
 			{["editing", "pending", "error"].includes(status) && (
 				<>
@@ -237,17 +243,21 @@ const ChangePassword = () => {
 							disabled={updatePasswordRequestState.isPending}
 						/>
 					</div>
-					<BareButton type="submit">Submit</BareButton>
-					<BareButton
+					<Button variant="secondary" type="submit">
+						Submit
+					</Button>
+					<Button
+						variant="outlined"
 						onClick={() => {
 							setStatus("idle");
 							setOldPassword("");
 							setNewPassword("");
 							setNewPasswordConfirmation("");
 						}}
+						style={{marginLeft: "6px"}}
 					>
 						Cancel
-					</BareButton>
+					</Button>
 					{status === "error" && internalServerError && (
 						<RequestErrorMessage>{internalServerError}</RequestErrorMessage>
 					)}
@@ -281,14 +291,14 @@ const DeleteAccount = () => {
 	}
 	return (
 		<>
-			<button
-				type="button"
-				className="mt-10 bg-red-500 w-32 text-white"
+			<Button
+				variant="secondary"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}
+				style={{margin: "0 auto 0 0"}}
 			>
 				Delete account
-			</button>
+			</Button>
 			<Async.IfRejected state={deleteAccountRequestState}>
 				<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
 			</Async.IfRejected>
@@ -300,14 +310,16 @@ const DeleteAccount = () => {
 					<AlertDialogLabel>Do you really want to delete your account?</AlertDialogLabel>
 
 					<div className="mt-12 flex justify-around w-full">
-						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
-						<button
-							type="button"
+						<Button variant="outlined" onClick={confirmDeletion}>
+							Yes, delete
+						</Button>
+						<Button
+							variant="secondary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={() => setStatus("idle")}
 						>
 							Nevermind, don't delete
-						</button>
+						</Button>
 					</div>
 				</AlertDialog>
 			)}

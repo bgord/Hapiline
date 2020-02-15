@@ -2,7 +2,7 @@ import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
@@ -81,22 +81,22 @@ export const HabitList: React.FC = () => {
 		<>
 			<div className="flex justify-end items-end w-full">
 				<h1 className="text-xl font-bold mr-auto pl-2">Habit list</h1>
-				<button
+				<Button
+					variant="normal"
 					onClick={() => {
 						resetAllFilters();
 						toggleFilters();
 					}}
-					className="btn bg-white color-blue-300 h-10 mt-4 mr-4"
-					type="button"
+					style={{marginRight: "12px"}}
 				>
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
-				</button>
-				<button onClick={openAddFormDialog} className="btn btn-blue h-10 mt-4" type="button">
+				</Button>
+				<Button variant="secondary" onClick={openAddFormDialog}>
 					New habit
-				</button>
+				</Button>
 			</div>
 			{areFiltersVisible && (
-				<div className="flex w-full mt-10 mb-6">
+				<div className="flex items-center w-full mt-10 mb-6">
 					<HabitScoreFilters.Positive.Input
 						disabled={habitCounts.positive === 0}
 						value={habitScoreFilter.value}
@@ -130,9 +130,9 @@ export const HabitList: React.FC = () => {
 					/>
 					<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
 
-					<BareButton onClick={resetAllFilters} className="ml-auto">
+					<Button variant="outlined" onClick={resetAllFilters} style={{marginLeft: "auto"}}>
 						Reset filters
-					</BareButton>
+					</Button>
 				</div>
 			)}
 			{areFiltersVisible && (
@@ -177,7 +177,9 @@ export const HabitList: React.FC = () => {
 				className={`flex w-full items-center mr-auto mb-6 ml-2 mt-${areFiltersVisible ? 4 : 12}`}
 			>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
+				<Button variant="outlined" onClick={habitSearch.clearPhrase} style={{marginLeft: "12px"}}>
+					Clear
+				</Button>
 				<div className="ml-auto mr-4">Results: {howManyResults}</div>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>

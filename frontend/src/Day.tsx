@@ -2,7 +2,7 @@ import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
@@ -57,9 +57,14 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
 			{isDayDialogAvailable && (
 				<>
-					<BareButton hidden={!isHovering} onClick={openDialog}>
+					<Button
+						variant="outlined"
+						hidden={!isHovering}
+						onClick={openDialog}
+						style={{margin: "5px auto"}}
+					>
 						Show day
-					</BareButton>
+					</Button>
 					<div className="flex justify-end p-2 text-sm mt-auto">
 						<span hidden={!stats.createdHabitsCount} className="mr-auto">
 							NEW: {stats.createdHabitsCount}

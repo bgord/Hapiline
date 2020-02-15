@@ -6,6 +6,7 @@ import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
+import {Button} from "./ui/button/Button";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -73,14 +74,15 @@ export const LoginWindow: React.FC = () => {
 					Forgot password?
 				</Link>
 				<div className="flex justify-end w-full mt-6">
-					<button
-						className="btn btn-blue"
+					<Button
 						type="submit"
+						variant="secondary"
 						disabled={loginRequestState.isPending}
 						data-testid="login-submit"
+						style={{width: "100px"}}
 					>
 						{loginRequestState.isPending ? "Loading..." : "Login"}
-					</button>
+					</Button>
 				</div>
 				<Async.IfRejected state={loginRequestState}>
 					<RequestErrorMessage>{errorMessage}</RequestErrorMessage>

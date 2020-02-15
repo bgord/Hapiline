@@ -2,6 +2,7 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {Button} from "./ui/button/Button";
 import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
@@ -161,9 +162,13 @@ export const AddHabitForm: React.FC = () => {
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
-				<button className="btn btn-blue ml-auto h-10 mt-4" type="submit">
+				<Button
+					variant="secondary"
+					type="submit"
+					style={{marginTop: "24px", alignSelf: "flex-end", width: "125px"}}
+				>
 					Add habit
-				</button>
+				</Button>
 			</form>
 			<Async.IfRejected state={addHabitRequestState}>
 				<ErrorMessage className="mt-4">

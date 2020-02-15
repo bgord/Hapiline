@@ -1,6 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
+import {Button} from "./ui/button/Button";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 
@@ -37,13 +38,14 @@ export const ForgotPasswordWindow: React.FC = () => {
 					/>
 				</div>
 				<div className="flex justify-end w-full mt-6">
-					<button
-						className="btn btn-blue"
-						disabled={forgotPasswordRequestState.isPending}
+					<Button
+						variant="secondary"
 						type="submit"
+						disabled={forgotPasswordRequestState.isPending}
+						style={{width: "125px"}}
 					>
 						{forgotPasswordRequestState.isPending ? "Loading..." : "Send email"}
-					</button>
+					</Button>
 				</div>
 				<Async.IfFulfilled state={forgotPasswordRequestState}>
 					<SuccessMessage className="w-full">Email sent if an account exists.</SuccessMessage>

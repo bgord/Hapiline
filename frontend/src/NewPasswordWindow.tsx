@@ -2,6 +2,7 @@ import {useParams, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {Button} from "./ui/button/Button";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
@@ -64,14 +65,14 @@ export const NewPasswordWindow: React.FC = () => {
 					/>
 				</div>
 				<div className="flex justify-end w-full">
-					<button
-						className="btn btn-blue"
+					<Button
+						variant="secondary"
 						type="submit"
-						data-testid="registration-submit"
 						disabled={newPasswordRequestState.isFulfilled}
+						data-testid="registration-submit"
 					>
 						{newPasswordRequestState.isPending ? "Loading..." : "Change password"}
-					</button>
+					</Button>
 				</div>
 				<Async.IfFulfilled state={newPasswordRequestState}>
 					<SuccessMessage>Password has been changed!</SuccessMessage>

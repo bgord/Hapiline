@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
 import {RequestErrorMessage} from "./ErrorMessages";
@@ -52,14 +52,22 @@ export const Calendar: React.FC = () => {
 
 	return (
 		<section className="flex flex-col items-center p-8 mx-auto">
-			<div className="flex mb-16">
-				<BareButton onClick={widget.setPreviousMonth} disabled={getMonthRequestState.isPending}>
+			<div className="flex items-center mb-16">
+				<Button
+					variant="normal"
+					onClick={widget.setPreviousMonth}
+					disabled={getMonthRequestState.isPending}
+				>
 					Previous
-				</BareButton>
+				</Button>
 				<div className="mx-8 w-32">{date}</div>
-				<BareButton onClick={widget.setNextMonth} disabled={getMonthRequestState.isPending}>
+				<Button
+					variant="normal"
+					onClick={widget.setNextMonth}
+					disabled={getMonthRequestState.isPending}
+				>
 					Next
-				</BareButton>
+				</Button>
 			</div>
 			<Async.IfRejected state={getMonthRequestState}>
 				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>

@@ -3,7 +3,7 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {
@@ -113,7 +113,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				/>
 				<DaySummaryStats day={day} {...stats} />
 			</div>
-			<div className="flex my-8">
+			<div className="flex items-center my-8">
 				<HabitVoteFilters.Voted.Input
 					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
@@ -138,27 +138,30 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				/>
 				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
 
-				<BareButton
+				<Button
 					onClick={() => {
 						habitVoteFilter.reset();
 						habitSearch.clearPhrase();
 						updateQueryParams("calendar", {preview_day: queryParams.preview_day});
 					}}
-					className="ml-auto"
+					variant="normal"
+					style={{marginLeft: "auto"}}
 				>
 					Reset filters
-				</BareButton>
+				</Button>
 			</div>
-			<div className="mb-6">
+			<div className="flex mb-6">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-				<BareButton
+				<Button
 					onClick={() => {
 						habitSearch.clearPhrase();
 						clearHighlightedHabitId();
 					}}
+					variant="outlined"
+					style={{marginLeft: "12px"}}
 				>
 					Clear
-				</BareButton>
+				</Button>
 			</div>
 			{isThereNoTrackedHabits && <div>No habits available this day.</div>}
 			{!isThereNoTrackedHabits && (

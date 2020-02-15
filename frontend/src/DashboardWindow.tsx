@@ -3,7 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
@@ -70,11 +70,11 @@ export const DashboardWindow = () => {
 
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
-			<header className="flex items-baseline w-full">
+			<header className="flex items-center w-full">
 				<h1 className="text-xl font-bold">Hello!</h1>
-				<BareButton onClick={redirectToCurrentDay} className="ml-auto bg-blue-300 p-1">
+				<Button variant="secondary" onClick={redirectToCurrentDay} style={{marginLeft: "auto"}}>
 					View today
-				</BareButton>
+				</Button>
 			</header>
 			<Async.IfRejected state={getDashboardStatsRequestState}>
 				<ErrorMessage className="mt-8">

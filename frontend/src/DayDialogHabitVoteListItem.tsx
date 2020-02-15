@@ -1,8 +1,16 @@
 import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {
+	faChevronUp,
+	faChevronDown,
+	faPlus,
+	faEquals,
+	faMinus,
+} from "@fortawesome/free-solid-svg-icons";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
 import {IHabit} from "./interfaces/IHabit";
@@ -93,18 +101,15 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		});
 	}
 
-	const progressButtonBg = vote === "progress" ? "bg-green-300" : "bg-white";
-	const plateauButtonBg = vote === "plateau" ? "bg-gray-300" : "bg-white";
-	const regressButtonBg = vote === "regress" ? "bg-red-300" : "bg-white";
-
 	return (
 		<>
 			<li className="flex items-baseline justify-between bg-gray-100 my-2 p-2 mt-4">
 				<div className="flex items-center">
-					<BareButton title="Show and edit comment" onClick={toggleComment}>
-						{isCommentVisible ? "⌃" : "⌄"}
-					</BareButton>
-					<HabitScore score={habit.score} className="px-1 py-1" />
+					<Button variant="outlined" title="Show and edit comment" onClick={toggleComment}>
+						{isCommentVisible && <FontAwesomeIcon icon={faChevronUp} />}
+						{!isCommentVisible && <FontAwesomeIcon icon={faChevronDown} />}
+					</Button>
+					<HabitScore score={habit.score} className="px-1 py-1 ml-2" />
 					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
 					<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
 						{habit.name}
@@ -115,28 +120,30 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						!
 					</div>
 				)}
-				<div>
-					<BareButton
+				<div className="flex">
+					<Button
+						variant="outlined"
 						onClick={() => changeVote("progress")}
-						className={progressButtonBg}
 						disabled={addHabitDayVoteRequestState.isPending}
 					>
-						+
-					</BareButton>
-					<BareButton
+						<FontAwesomeIcon icon={faPlus} />
+					</Button>
+					<Button
+						variant="outlined"
 						onClick={() => changeVote("plateau")}
-						className={plateauButtonBg}
 						disabled={addHabitDayVoteRequestState.isPending}
+						style={{marginLeft: "6px"}}
 					>
-						=
-					</BareButton>
-					<BareButton
+						<FontAwesomeIcon icon={faEquals} />
+					</Button>
+					<Button
+						variant="outlined"
 						onClick={() => changeVote("regress")}
 						disabled={addHabitDayVoteRequestState.isPending}
-						className={regressButtonBg}
+						style={{marginLeft: "6px"}}
 					>
-						-
-					</BareButton>
+						<FontAwesomeIcon icon={faMinus} />
+					</Button>
 				</div>
 			</li>
 			{isCommentVisible && (
@@ -152,7 +159,11 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
 						Save
 					</SaveButton>
-					<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+					<CancelButton
+						{...textarea}
+						onClick={newCommentHelpers.onClear}
+						style={{marginLeft: "6px"}}
+					>
 						Cancel
 					</CancelButton>
 				</>

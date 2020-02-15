@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {Button} from "./ui/button/Button";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
@@ -86,14 +87,15 @@ export const RegistrationWindow: React.FC = () => {
 					/>
 				</div>
 				<div className="flex justify-end w-full">
-					<button
-						className="btn btn-blue"
-						type="submit"
+					<Button
 						data-testid="registration-submit"
+						type="submit"
+						variant="secondary"
 						disabled={registrationRequestState.isFulfilled}
+						style={{width: "100px"}}
 					>
 						{registrationRequestState.isPending ? "Loading..." : "Register"}
-					</button>
+					</Button>
 				</div>
 				<Async.IfFulfilled state={registrationRequestState}>
 					<SuccessMessage>Account confirmation email has been sent!</SuccessMessage>

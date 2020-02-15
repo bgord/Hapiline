@@ -1,6 +1,6 @@
 import React from "react";
 
-import {BareButton} from "../BareButton";
+import {Button} from "../ui/button/Button";
 
 interface UseEditableFieldStateReturnType {
 	state: "idle" | "focused";
@@ -56,23 +56,22 @@ export function useEditableFieldValue(
 }
 
 export const CancelButton: React.FC<UseEditableFieldStateReturnType &
-	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, onClick, ...props}) => {
-	return (
-		<>
-			{state === "focused" && (
-				<BareButton
-					onClick={event => {
-						setIdle();
-						if (onClick) onClick(event);
-					}}
-					{...props}
-				/>
-			)}
-		</>
-	);
-};
+	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, onClick, ...props}) => (
+	<>
+		{state === "focused" && (
+			<Button
+				variant="outlined"
+				onClick={event => {
+					setIdle();
+					if (onClick) onClick(event);
+				}}
+				{...props}
+			/>
+		)}
+	</>
+);
 
 export const SaveButton: React.FC<UseEditableFieldStateReturnType &
-	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, ...props}) => {
-	return <>{state === "focused" && <BareButton {...props} />}</>;
-};
+	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, ...props}) => (
+	<>{state === "focused" && <Button variant="secondary" {...props} />}</>
+);

@@ -1,6 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
+import {Button} from "./ui/button/Button";
 import {AddHabitForm} from "./AddHabitForm";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitList} from "./HabitList";
@@ -30,11 +31,11 @@ export const HabitsWindow = () => {
 
 			<Async.IfFulfilled state={getHabitsRequestState}>
 				{habits.length === 0 && (
-					<div className="flex justify-between items-end w-full">
+					<div className="flex justify-between items-center w-full">
 						<InfoMessage>Seems you haven't added any habits yet.</InfoMessage>
-						<button onClick={openAddFormDialog} className="btn btn-blue h-10 mt-4" type="button">
+						<Button variant="secondary" onClick={openAddFormDialog} style={{width: "125px"}}>
 							New habit
-						</button>
+						</Button>
 					</div>
 				)}
 

@@ -2,7 +2,7 @@ import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
@@ -34,9 +34,9 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	return (
 		<>
-			<BareButton onClick={openDialog} className="text-red-500">
+			<Button variant="outlined" onClick={openDialog} style={{marginLeft: "6px"}}>
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
-			</BareButton>
+			</Button>
 			{showDialog && (
 				<AlertDialog
 					className="w-1/3"
@@ -47,14 +47,16 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 					</AlertDialogLabel>
 
 					<div className="mt-12 flex justify-around w-full">
-						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
-						<button
-							type="button"
+						<Button variant="outlined" onClick={confirmDeletion}>
+							Yes, delete
+						</Button>
+						<Button
+							variant="secondary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={closeDialog}
 						>
 							Nevermind, don't delete
-						</button>
+						</Button>
 					</div>
 				</AlertDialog>
 			)}

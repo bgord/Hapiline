@@ -1,9 +1,12 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
 import * as Async from "react-async";
 import * as React from "react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faBell} from "@fortawesome/free-solid-svg-icons";
 
 import {createBrowserHistory} from "history";
 
+import {Button} from "./ui/button/Button";
 import {api} from "./services/api";
 import {Calendar} from "./Calendar";
 import {DashboardWindow} from "./DashboardWindow";
@@ -111,14 +114,23 @@ function NotificationDropdown() {
 
 	return (
 		<>
-			<button type="button" onClick={toggleNotifications} className="relative px-4">
-				<span role="img" aria-label="Notification bell">
-					🔔
-				</span>
-				<span hidden={unreadNotifictionsNumber === 0} className="absolute top-0">
+			<Button
+				variant="outlined"
+				onClick={toggleNotifications}
+				style={{
+					position: "relative",
+					alignSelf: "center",
+					fontSize: "24px",
+				}}
+			>
+				<FontAwesomeIcon icon={faBell} />
+				<span
+					hidden={unreadNotifictionsNumber === 0}
+					style={{position: "absolute", top: "-4px", fontSize: "16px"}}
+				>
 					{unreadNotifictionsNumber}
 				</span>
-			</button>
+			</Button>
 			{areNotificationsVisible && (
 				<div
 					id="notification-list"
@@ -138,27 +150,27 @@ function NotificationDropdown() {
 								<div className="text-center">You don't have any notifications.</div>
 							)}
 							{notifications.map(notification => (
-								<li key={notification.id} className="flex mt-6">
+								<li key={notification.id} className="flex items-center mt-6">
 									{notification.content}
 									{notification.status === "unread" && (
-										<button
-											onClick={() => markNotificationAsRead(notification.id)}
-											type="button"
-											className="whitespace-no-wrap ml-2 self-start"
+										<Button
+											variant="normal"
 											disabled={updateNotificationRequestState.isPending}
+											onClick={() => markNotificationAsRead(notification.id)}
+											style={{marginLeft: "6px"}}
 										>
 											Mark as read
-										</button>
+										</Button>
 									)}
 									{notification.status === "read" && (
-										<button
+										<Button
+											variant="outlined"
 											onClick={() => markNotificationAsUnread(notification.id)}
-											type="button"
-											className="whitespace-no-wrap ml-2 self-start"
 											disabled={updateNotificationRequestState.isPending}
+											style={{marginLeft: "6px"}}
 										>
 											Mark as unread
-										</button>
+										</Button>
 									)}
 								</li>
 							))}
