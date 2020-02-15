@@ -1,3 +1,4 @@
+import "../frontend/css/main.css";
 import React from "react";
 
 export const Demo: React.FC = ({children}) => (
