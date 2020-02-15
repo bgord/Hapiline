@@ -6,7 +6,6 @@ button::-moz-focus-inner {
 .c-button {
 	box-sizing: border-box;
 	height: 36px;
-	min-width: 75px;
 	border: none;
 	padding: 0 10px 0 10px;
 	font-size: 12px;
