@@ -11,4 +11,12 @@ export default {
 			</Button>
 		</Demo>
 	),
+	"--secondary": (
+		<Demo>
+			<Button variant="secondary">New habit</Button>
+			<Button variant="secondary" style={{marginLeft: "25px"}} disabled>
+				New habit
+			</Button>
+		</Demo>
+	),
 };

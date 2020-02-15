@@ -4,7 +4,7 @@ import "./button.css";
 
 import React from "react";
 
-type ButtonVariants = "normal";
+type ButtonVariants = "normal" | "secondary";
 
 export const Button: React.FC<JSX.IntrinsicElements["button"] & {
 	variant: ButtonVariants;
