@@ -8,7 +8,7 @@ import {
 	useEditableFieldValue,
 	useEditableFieldState,
 } from "./hooks/useEditableField";
-import {CloseButton} from "./CloseButton";
+import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
@@ -59,7 +59,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 				<>
 					<div className="flex justify-between">
 						<strong>Habit preview</strong>
-						<CloseButton onClick={dismissDialog} />
+						<CloseIcon onClick={dismissDialog} />
 					</div>
 					<div className="flex items-end">
 						<EditableHabitScoreSelect

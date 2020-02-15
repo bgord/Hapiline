@@ -4,7 +4,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {BareButton} from "./BareButton";
-import {CloseButton} from "./CloseButton";
+import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {
 	DaySummaryChart,
@@ -94,7 +94,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				<strong>
 					{day} - {dayName}
 				</strong>
-				<CloseButton onClick={onDismiss || dismissDialog} />
+				<CloseIcon onClick={onDismiss || dismissDialog} />
 			</div>
 			{doesEveryHabitHasAVote && (
 				<SuccessMessage>

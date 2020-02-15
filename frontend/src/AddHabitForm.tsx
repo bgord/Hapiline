@@ -2,7 +2,7 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {CloseButton} from "./CloseButton";
+import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -63,7 +63,7 @@ export const AddHabitForm: React.FC = () => {
 		>
 			<div className="flex justify-between items-baseline mb-8">
 				<strong>Add new habit</strong>
-				<CloseButton onClick={hideAddFormDialog} />
+				<CloseIcon onClick={hideAddFormDialog} />
 			</div>
 			<form
 				onSubmit={event => {

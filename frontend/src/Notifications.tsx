@@ -2,7 +2,7 @@ import {useTransition, animated} from "react-spring";
 import Alert from "@reach/alert";
 import React from "react";
 
-import {CloseButton} from "./CloseButton";
+import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {INotification, NotificationType} from "./interfaces/INotification";
 import {useNotificationDispatch, useNotificationState} from "./contexts/notifications-context";
 
@@ -25,7 +25,7 @@ const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
 			className={`relative flex justify-between items-center bg-${typeToBgColor[type]}-300 p-3 mt-4`}
 		>
 			{message}
-			<CloseButton onClick={removeNotification} />
+			<CloseIcon onClick={removeNotification} />
 		</Alert>
 	);
 };

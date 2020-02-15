@@ -16,7 +16,7 @@ import {Notifications} from "./Notifications";
 import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {CloseButton} from "./CloseButton";
+import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {ProfileWindow} from "./ProfileWindow";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -131,7 +131,7 @@ function NotificationDropdown() {
 					<Async.IfFulfilled state={getNotificationsRequestState}>
 						<div className="flex justify-between items-center pr-6">
 							<strong>Notifications ({unreadNotifictionsNumber})</strong>
-							<CloseButton onClick={hideNotifications} />
+							<CloseIcon onClick={hideNotifications} />
 						</div>
 						<ul className="mt-8">
 							{notifications.length === 0 && (
