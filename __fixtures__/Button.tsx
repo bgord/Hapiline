@@ -19,4 +19,12 @@ export default {
 			</Button>
 		</Demo>
 	),
+	"side by side": (
+		<Demo>
+			<Button variant="secondary">New habit</Button>
+			<Button variant="normal" style={{marginLeft: "10px"}}>
+				Show filters
+			</Button>
+		</Demo>
+	),
 };

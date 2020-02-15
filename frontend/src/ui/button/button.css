@@ -45,7 +45,8 @@ button::-moz-focus-inner {
 
 .c-button--normal {
 	background-color: #e8e7e7;
-	color: #363434;
+	color: #484545;
+	border: 1px solid #e0dede;
 }
 
 .c-button--normal:hover {
