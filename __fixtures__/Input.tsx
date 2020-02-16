@@ -4,6 +4,7 @@ import {Demo} from "./_Demo";
 import {Input} from "../frontend/src/ui/input/Input";
 import {Button} from "../frontend/src/ui/button/Button";
 import {Label} from "../frontend/src/ui/label/Label";
+import {Field} from "../frontend/src/ui/field/Field";
 
 export default {
 	standard: (
@@ -29,17 +30,12 @@ export default {
 	"an optional input": (
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column-reverse",
-					}}
-				>
+				<Field variant="column">
 					<Input id="email" type="email" placeholder="email@example.com" />
 					<Label htmlFor="email" variant="optional">
 						Email
 					</Label>
-				</div>
+				</Field>
 				<Button variant="secondary" style={{marginLeft: "12px"}}>
 					Submit
 				</Button>
@@ -49,14 +45,14 @@ export default {
 	"with label (vertically)": (
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>
-				<div style={{display: "flex", flexDirection: "column-reverse", marginRight: "12px"}}>
+				<Field variant="column" style={{marginRight: "12px"}}>
 					<Input id="email" placeholder="user@example.com" />
 					<Label htmlFor="email">Email</Label>
-				</div>
-				<div style={{display: "flex", flexDirection: "column-reverse", marginRight: "12px"}}>
+				</Field>
+				<Field variant="column" style={{marginRight: "12px"}}>
 					<Input id="first_name" placeholder="John Doe" />
 					<Label htmlFor="first_name">First name</Label>
-				</div>
+				</Field>
 				<Button variant="secondary">Submit</Button>
 			</form>
 		</Demo>
@@ -64,31 +60,18 @@ export default {
 	"with label (horizontally)": (
 		<Demo>
 			<form style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "row-reverse",
-						alignItems: "center",
-						marginBottom: "12px",
-					}}
-				>
+				<Field variant="row" style={{alignItems: "center", marginBottom: "12px"}}>
 					<Input id="email" placeholder="user@example.com" />
 					<Label htmlFor="email" style={{marginRight: "6px"}}>
 						Email
 					</Label>
-				</div>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "row-reverse",
-						alignItems: "center",
-					}}
-				>
+				</Field>
+				<Field variant="row" style={{alignItems: "center"}}>
 					<Input id="hfirst_nameabit_name" placeholder="John Doe" />
 					<Label htmlFor="first_name" style={{marginRight: "6px"}}>
 						First name
 					</Label>
-				</div>
+				</Field>
 				<Button variant="secondary" style={{marginTop: "18px"}}>
 					Submit
 				</Button>

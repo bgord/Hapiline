@@ -5,6 +5,7 @@ import {Textarea} from "../frontend/src/ui/textarea/Textarea";
 import {Label} from "../frontend/src/ui/label/Label";
 import {Input} from "../frontend/src/ui/input/Input";
 import {Button} from "../frontend/src/ui/button/Button";
+import {Field} from "../frontend/src/ui/field/Field";
 
 export default {
 	standard: (
@@ -14,60 +15,35 @@ export default {
 	),
 	"with label": (
 		<Demo>
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "column-reverse",
-					maxWidth: "400px",
-					width: "100%",
-				}}
-			>
+			<Field variant="column" style={{maxWidth: "400px", width: "100%"}}>
 				<Textarea id="description" />
 				<Label htmlFor="description">Description</Label>
-			</div>
+			</Field>
 		</Demo>
 	),
 	disabled: (
 		<Demo>
-			<div
-				style={{
-					display: "flex",
-					flexDirection: "column-reverse",
-					maxWidth: "400px",
-					width: "100%",
-				}}
-			>
+			<Field variant="column" style={{maxWidth: "400px", width: "100%"}}>
 				<Textarea
 					disabled
 					id="description"
 					value="Ok, so that's it? That's all you wanted to say?"
 				/>
 				<Label htmlFor="description">Description</Label>
-			</div>
+			</Field>
 		</Demo>
 	),
 	"stacked with an input": (
 		<Demo>
 			<form style={{maxWidth: "400px", width: "100%"}}>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column-reverse",
-						marginBottom: "12px",
-					}}
-				>
+				<Field variant="column" style={{marginBottom: "12px"}}>
 					<Input id="last_name" placeholder="John doe" />
 					<Label htmlFor="last_name">Last name</Label>
-				</div>
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "column-reverse",
-					}}
-				>
+				</Field>
+				<Field variant="column">
 					<Textarea id="description" />
 					<Label htmlFor="description">Description</Label>
-				</div>
+				</Field>
 				<div style={{display: "flex", justifyContent: "flex-end", marginTop: "18px"}}>
 					<Button variant="secondary">Add person</Button>
 				</div>
