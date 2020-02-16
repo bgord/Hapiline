@@ -7,6 +7,9 @@ import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 import {Button} from "./ui/button/Button";
+import {Field} from "./ui/field/Field";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -32,39 +35,42 @@ export const LoginWindow: React.FC = () => {
 				}}
 				className="sm:flex sm:flex-wrap sm:justify-between"
 			>
-				<div className="field-group mb-4 sm:w-full">
-					<label className="field-label" htmlFor="email">
-						Email
-					</label>
-					<input
-						required
+				<Field variant="column" style={{width: "100%"}}>
+					<Input
+						id="email"
 						value={email}
 						onChange={event => setEmail(event.target.value)}
-						className="field"
+						required
 						type="email"
-						name="email"
-						id="email"
 						placeholder="john.brown@gmail.com"
 					/>
-				</div>
-				<div className="field-group mb-6 sm:w-full">
-					<label className="field-label" htmlFor="password">
-						Password
-					</label>
-					<input
+					<Label htmlFor="email">Email</Label>
+				</Field>
+				<Field variant="column" style={{width: "100%", marginTop: "12px"}}>
+					<Input
 						required
 						pattern=".{6,}"
 						title="Password should contain at least 6 characters."
 						value={password}
 						onChange={event => setPassword(event.target.value)}
-						className="field"
 						type="password"
-						name="password"
 						id="password"
-						placeholder="********"
+						placeholder="*********"
 					/>
+					<Label htmlFor="password">Password</Label>
+				</Field>
+				<div className="flex justify-end w-full mt-6">
+					<Button
+						type="submit"
+						variant="secondary"
+						disabled={loginRequestState.isPending}
+						data-testid="login-submit"
+						style={{width: "125px"}}
+					>
+						{loginRequestState.isPending ? "Loading..." : "Login"}
+					</Button>
 				</div>
-				<div className="flex">
+				<div className="flex mt-8">
 					<span className="text-sm">Don't have an account?</span>
 					<Link className="link ml-1" to="/register">
 						Create now
@@ -73,17 +79,6 @@ export const LoginWindow: React.FC = () => {
 				<Link className="link mt-2" to="/forgot-password">
 					Forgot password?
 				</Link>
-				<div className="flex justify-end w-full mt-6">
-					<Button
-						type="submit"
-						variant="secondary"
-						disabled={loginRequestState.isPending}
-						data-testid="login-submit"
-						style={{width: "100px"}}
-					>
-						{loginRequestState.isPending ? "Loading..." : "Login"}
-					</Button>
-				</div>
 				<Async.IfRejected state={loginRequestState}>
 					<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 				</Async.IfRejected>
