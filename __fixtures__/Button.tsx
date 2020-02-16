@@ -11,10 +11,10 @@ export default {
 			</Button>
 		</Demo>
 	),
-	"--secondary": (
+	"--primary": (
 		<Demo>
-			<Button variant="secondary">New habit</Button>
-			<Button variant="secondary" style={{marginLeft: "25px"}} disabled>
+			<Button variant="primary">New habit</Button>
+			<Button variant="primary" style={{marginLeft: "25px"}} disabled>
 				New habit
 			</Button>
 		</Demo>
@@ -31,7 +31,7 @@ export default {
 	),
 	"side by side": (
 		<Demo>
-			<Button variant="secondary">New habit</Button>
+			<Button variant="primary">New habit</Button>
 			<Button variant="normal" style={{marginLeft: "10px"}}>
 				Show filters
 			</Button>

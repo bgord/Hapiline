@@ -26,7 +26,7 @@ class ErrorBoundary extends React.Component<{}, {hasError: boolean}> {
 				<>
 					<h1 className="mt-10 text-center">Something went wrong :(</h1>
 					<div className="flex justify-center mt-4 items-baseline">
-						<Button variant="secondary" onClick={() => window.location.reload(true)}>
+						<Button variant="primary" onClick={() => window.location.reload(true)}>
 							Refresh
 						</Button>
 						the page

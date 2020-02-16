@@ -51,7 +51,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 							Yes, delete
 						</Button>
 						<Button
-							variant="secondary"
+							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={closeDialog}
 						>

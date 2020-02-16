@@ -154,7 +154,7 @@ export const AddHabitForm: React.FC = () => {
 					<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
 				<Button
-					variant="secondary"
+					variant="primary"
 					type="submit"
 					style={{marginTop: "24px", alignSelf: "flex-end", width: "125px"}}
 				>

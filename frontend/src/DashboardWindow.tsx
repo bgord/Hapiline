@@ -72,7 +72,7 @@ export const DashboardWindow = () => {
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
 			<header className="flex items-center w-full">
 				<h1 className="text-xl font-bold">Hello!</h1>
-				<Button variant="secondary" onClick={redirectToCurrentDay} style={{marginLeft: "auto"}}>
+				<Button variant="primary" onClick={redirectToCurrentDay} style={{marginLeft: "auto"}}>
 					View today
 				</Button>
 			</header>

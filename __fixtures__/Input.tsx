@@ -21,7 +21,7 @@ export default {
 		<Demo>
 			<form onSubmit={event => event.preventDefault()}>
 				<Input type="email" required placeholder="email@example.com" value="user@example," />
-				<Button type="submit" variant="secondary" style={{marginLeft: "6px"}}>
+				<Button type="submit" variant="primary" style={{marginLeft: "6px"}}>
 					Submit
 				</Button>
 			</form>
@@ -36,7 +36,7 @@ export default {
 					</Label>
 					<Input id="email" type="email" placeholder="email@example.com" />
 				</Field>
-				<Button variant="secondary" style={{marginLeft: "12px"}}>
+				<Button variant="primary" style={{marginLeft: "12px"}}>
 					Submit
 				</Button>
 			</form>
@@ -53,7 +53,7 @@ export default {
 					<Label htmlFor="first_name">First name</Label>
 					<Input id="first_name" placeholder="John Doe" />
 				</Field>
-				<Button variant="secondary">Submit</Button>
+				<Button variant="primary">Submit</Button>
 			</form>
 		</Demo>
 	),
@@ -72,24 +72,24 @@ export default {
 					</Label>
 					<Input id="hfirst_nameabit_name" placeholder="John Doe" />
 				</Field>
-				<Button variant="secondary" style={{marginTop: "18px"}}>
+				<Button variant="primary" style={{marginTop: "18px"}}>
 					Submit
 				</Button>
 			</form>
 		</Demo>
 	),
-	"standard input side by side with a secondary button": (
+	"standard input side by side with a primary button": (
 		<Demo>
 			<Input placeholder="E.g Wake up at 6:30 AM" />
-			<Button variant="secondary" style={{marginLeft: "12px", width: "75px"}}>
+			<Button variant="primary" style={{marginLeft: "12px", width: "75px"}}>
 				Save
 			</Button>
 		</Demo>
 	),
-	"disabled input side by side with a secondary/outlined button": (
+	"disabled input side by side with a primary/outlined button": (
 		<Demo>
 			<Input placeholder="E.g Wake up at 6:30 AM" disabled value="Wake up at 6:30 AM" />
-			<Button variant="secondary" style={{marginLeft: "12px", width: "75px"}}>
+			<Button variant="primary" style={{marginLeft: "12px", width: "75px"}}>
 				Edit
 			</Button>
 			<Button variant="outlined" style={{marginLeft: "6px", width: "75px"}}>

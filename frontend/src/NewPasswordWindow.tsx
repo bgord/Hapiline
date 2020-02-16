@@ -61,7 +61,7 @@ export const NewPasswordWindow: React.FC = () => {
 				</Field>
 				<div className="flex justify-end w-full">
 					<Button
-						variant="secondary"
+						variant="primary"
 						type="submit"
 						disabled={newPasswordRequestState.isFulfilled}
 						data-testid="registration-submit"

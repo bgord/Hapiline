@@ -66,36 +66,36 @@ button::-moz-focus-inner {
 	background-color: #e8e7e7;
 }
 
-/* --secondary */
+/* --primary */
 
 /* https://www.0to255.com/e8e7e7 */
 
-.c-button--secondary {
+.c-button--primary {
 	color: #e8e7e7;
 	background-color: #363434;
 }
 
-.c-button--secondary:hover {
+.c-button--primary:hover {
 	background-color: #3f3c3c;
 	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.c-button--secondary:focus {
+.c-button--primary:focus {
 	background-color: #504d4d;
 }
 
-.c-button--secondary:active {
+.c-button--primary:active {
 	background-color: #595555;
 }
-.c-button--secondary:focus,
-.c-button--secondary:active {
+.c-button--primary:focus,
+.c-button--primary:active {
 	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.c-button--secondary:disabled {
+.c-button--primary:disabled {
 	opacity: 0.4;
 }
-.c-button--secondary:disabled.c-button--secondary:hover {
+.c-button--primary:disabled.c-button--primary:hover {
 	background-color: #363434;
 }
 

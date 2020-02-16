@@ -62,7 +62,7 @@ export const LoginWindow: React.FC = () => {
 				<div className="flex justify-end w-full mt-6">
 					<Button
 						type="submit"
-						variant="secondary"
+						variant="primary"
 						disabled={loginRequestState.isPending}
 						data-testid="login-submit"
 						style={{width: "125px"}}

@@ -91,7 +91,7 @@ export const HabitList: React.FC = () => {
 				>
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
 				</Button>
-				<Button variant="secondary" onClick={openAddFormDialog}>
+				<Button variant="primary" onClick={openAddFormDialog}>
 					New habit
 				</Button>
 			</div>

@@ -33,7 +33,7 @@ export const HabitsWindow = () => {
 				{habits.length === 0 && (
 					<div className="flex justify-between items-center w-full">
 						<InfoMessage>Seems you haven't added any habits yet.</InfoMessage>
-						<Button variant="secondary" onClick={openAddFormDialog} style={{width: "125px"}}>
+						<Button variant="primary" onClick={openAddFormDialog} style={{width: "125px"}}>
 							New habit
 						</Button>
 					</div>

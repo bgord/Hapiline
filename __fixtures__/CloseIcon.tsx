@@ -9,9 +9,9 @@ export default {
 			<CloseIcon />
 		</Demo>
 	),
-	"side by side with a secondary button": (
+	"side by side with a primary button": (
 		<Demo>
-			<Button variant="secondary">New habit</Button>
+			<Button variant="primary">New habit</Button>
 			<CloseIcon style={{marginLeft: "10px"}} />
 		</Demo>
 	),

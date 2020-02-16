@@ -38,7 +38,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 				</Field>
 				<div className="flex justify-end w-full mt-6">
 					<Button
-						variant="secondary"
+						variant="primary"
 						type="submit"
 						disabled={forgotPasswordRequestState.isPending}
 						style={{width: "125px"}}

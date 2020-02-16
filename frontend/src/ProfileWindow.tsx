@@ -81,12 +81,12 @@ const ChangeEmail: React.FC = () => {
 						/>
 					</Field>
 					{status === "idle" && (
-						<Button variant="secondary" onClick={() => setStatus("editing")}>
+						<Button variant="primary" onClick={() => setStatus("editing")}>
 							Edit email
 						</Button>
 					)}
 					{["editing", "error"].includes(status) && (
-						<Button type="submit" variant="secondary" disabled={!isNewEmailDifferent}>
+						<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
 							Confirm email
 						</Button>
 					)}
@@ -231,7 +231,7 @@ const ChangePassword = () => {
 							disabled={updatePasswordRequestState.isPending}
 						/>
 					</Field>
-					<Button variant="secondary" type="submit">
+					<Button variant="primary" type="submit">
 						Submit
 					</Button>
 					<Button
@@ -280,7 +280,7 @@ const DeleteAccount = () => {
 	return (
 		<>
 			<Button
-				variant="secondary"
+				variant="primary"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}
 				style={{margin: "0 auto 0 0"}}
@@ -302,7 +302,7 @@ const DeleteAccount = () => {
 							Yes, delete
 						</Button>
 						<Button
-							variant="secondary"
+							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={() => setStatus("idle")}
 						>

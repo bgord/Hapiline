@@ -80,7 +80,7 @@ export const RegistrationWindow: React.FC = () => {
 					<Button
 						data-testid="registration-submit"
 						type="submit"
-						variant="secondary"
+						variant="primary"
 						disabled={registrationRequestState.isFulfilled}
 						style={{width: "125px"}}
 					>

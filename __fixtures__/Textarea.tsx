@@ -45,7 +45,7 @@ export default {
 					<Textarea id="description" />
 				</Field>
 				<div style={{display: "flex", justifyContent: "flex-end", marginTop: "18px"}}>
-					<Button variant="secondary">Add person</Button>
+					<Button variant="primary">Add person</Button>
 				</div>
 			</form>
 		</Demo>
