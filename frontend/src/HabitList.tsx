@@ -173,9 +173,7 @@ export const HabitList: React.FC = () => {
 					</HabitStrengthFilters.All.Label>
 				</div>
 			)}
-			<div
-				className={`flex w-full items-center mr-auto mb-6 ml-2 mt-${areFiltersVisible ? 4 : 12}`}
-			>
+			<div className={`flex w-full items-end mr-auto mb-6 ml-2 mt-${areFiltersVisible ? 4 : 12}`}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button variant="outlined" onClick={habitSearch.clearPhrase} style={{marginLeft: "12px"}}>
 					Clear

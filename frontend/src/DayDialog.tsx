@@ -150,7 +150,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 					Reset filters
 				</Button>
 			</div>
-			<div className="flex mb-6">
+			<div className="flex items-end mb-6">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button
 					onClick={() => {

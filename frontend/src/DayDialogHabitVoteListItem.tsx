@@ -10,6 +10,9 @@ import {
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
+import {Field} from "./ui/field/Field";
+import {Textarea} from "./ui/textarea/Textarea";
+import {Label} from "./ui/label/Label";
 import {Button} from "./ui/button/Button";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
@@ -148,14 +151,17 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 			</li>
 			{isCommentVisible && (
 				<>
-					<textarea
-						key={comment ?? undefined}
-						onFocus={textarea.setFocused}
-						placeholder="Write something..."
-						className="w-full border p-2"
-						value={newComment ?? undefined}
-						onChange={newCommentHelpers.onChange}
-					/>
+					<Field variant="column" style={{marginBottom: "12px"}}>
+						<Textarea
+							id="vote_comment"
+							key={comment ?? undefined}
+							onFocus={textarea.setFocused}
+							placeholder="Write something..."
+							value={newComment ?? undefined}
+							onChange={newCommentHelpers.onChange}
+						/>
+						<Label htmlFor="vote_comment">Vote comment</Label>
+					</Field>
 					<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
 						Save
 					</SaveButton>

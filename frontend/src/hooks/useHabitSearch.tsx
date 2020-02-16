@@ -1,5 +1,8 @@
 import React from "react";
 
+import {Field} from "../ui/field/Field";
+import {Input} from "../ui/input/Input";
+import {Label} from "../ui/label/Label";
 import {IHabit} from "../interfaces/IHabit";
 
 export const useHabitSearch = (defaultValue = "") => {
@@ -24,5 +27,8 @@ export const useHabitSearch = (defaultValue = "") => {
 };
 
 export const HabitSearchInput: React.FC<JSX.IntrinsicElements["input"]> = props => (
-	<input className="field p-1 w-64" type="search" placeholder="Search for habits..." {...props} />
+	<Field variant="column" style={{width: "300px"}}>
+		<Input id="habit_name" type="search" placeholder="Search for habits..." {...props} />
+		<Label htmlFor="habit_name">Habit name</Label>
+	</Field>
 );

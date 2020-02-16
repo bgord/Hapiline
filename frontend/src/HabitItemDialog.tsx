@@ -13,9 +13,12 @@ import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
+import {Field} from "./ui/field/Field";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {IHabit} from "./interfaces/IHabit";
+import {Label} from "./ui/label/Label";
+import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -98,16 +101,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							<HabitCharts id={habit.id} />
 						</>
 					)}
-					<div className="mt-8 mb-10">
-						<label htmlFor="description" className="field-label">
-							Description
-						</label>
-						<EditableDescription
-							description={habit.description}
-							habitId={habit.id}
-							onResolve={habitRequestState.reload}
-						/>
-					</div>
+					<EditableDescription
+						description={habit.description}
+						habitId={habit.id}
+						onResolve={habitRequestState.reload}
+					/>
 					{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
 					<dl className="flex items-baseline py-8">
 						<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
@@ -152,26 +150,31 @@ const EditableDescription: React.FC<{
 
 	return (
 		<>
-			<textarea
-				onFocus={textarea.setFocused}
-				placeholder="Write something..."
-				className="w-full border p-2"
-				value={newDescription ?? undefined}
-				onChange={newDescriptionHelpers.onChange}
-			/>
+			<Field variant="column" style={{margin: "24px 0 12px 0"}}>
+				<Textarea
+					id="description"
+					onFocus={textarea.setFocused}
+					placeholder="Write something..."
+					value={newDescription ?? undefined}
+					onChange={newDescriptionHelpers.onChange}
+				/>
+				<Label htmlFor="description">Description</Label>
+			</Field>
 			<Async.IfRejected state={updateDescriptionRequestState}>
 				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
 			</Async.IfRejected>
-			<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
-				Save
-			</SaveButton>
-			<CancelButton
-				{...textarea}
-				onClick={newDescriptionHelpers.onClear}
-				style={{marginLeft: "6px"}}
-			>
-				Cancel
-			</CancelButton>
+			<div style={{marginBottom: "36px"}}>
+				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
+					Save
+				</SaveButton>
+				<CancelButton
+					{...textarea}
+					onClick={newDescriptionHelpers.onClear}
+					style={{marginLeft: "6px"}}
+				>
+					Cancel
+				</CancelButton>
+			</div>
 		</>
 	);
 };

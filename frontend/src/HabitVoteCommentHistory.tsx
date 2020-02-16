@@ -3,9 +3,12 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
+import {Field} from "./ui/field/Field";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteComment, voteToBgColor} from "./interfaces/IDayVote";
 import {InfoMessage} from "./InfoMessage";
+import {Label} from "./ui/label/Label";
+import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";
@@ -57,15 +60,15 @@ const HabitVoteComment: React.FC<IVoteComment> = ({id, day, habit_id, vote, comm
 
 	return (
 		<li key={id} className="flex flex-col mb-4">
-			<div className="flex">
-				<strong>
+			<Field variant="column">
+				<Textarea id={comment} value={comment} disabled style={{marginTop: "6px"}} />
+				<Label htmlFor={comment}>
 					{formattedDay} ({formattedDayName})
-				</strong>
-				<Link to={voteUrl} className={`${linkBgColor} px-2 ml-4`}>
-					{vote?.toUpperCase() ?? "NO VOTE"}
-				</Link>
-			</div>
-			<textarea value={comment} disabled className="w-full border p-1 mt-1" />
+					<Link to={voteUrl} className={`${linkBgColor} px-2 ml-4`}>
+						{vote?.toUpperCase() ?? "NO VOTE"}
+					</Link>
+				</Label>
+			</Field>
 		</li>
 	);
 };

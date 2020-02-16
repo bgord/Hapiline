@@ -4,6 +4,9 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Field} from "./ui/field/Field";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
 import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
@@ -63,23 +66,22 @@ const ChangeEmail: React.FC = () => {
 			}}
 			className="flex flex-col flex-grow mt-8"
 		>
-			<div>
-				<label className="field-label" htmlFor="email">
-					Email
-				</label>
-				<div className="flex items-center">
-					<input
-						required
-						value={newEmail}
-						onChange={event => setNewEmail(event.target.value)}
-						className="field w-64 mr-4"
-						type="email"
-						name="email"
-						id="email"
-						disabled={["idle", "pending", "success"].includes(status)}
-					/>
+			<>
+				<div className="flex items-end">
+					<Field variant="column" style={{marginRight: "12px"}}>
+						<Input
+							id="email"
+							value={newEmail}
+							onChange={event => setNewEmail(event.target.value)}
+							required
+							type="email"
+							disabled={["idle", "pending", "success"].includes(status)}
+							placeholder="user@example.com"
+						/>
+						<Label htmlFor="email">Email</Label>
+					</Field>
 					{status === "idle" && (
-						<Button variant="normal" onClick={() => setStatus("editing")}>
+						<Button variant="secondary" onClick={() => setStatus("editing")}>
 							Edit email
 						</Button>
 					)}
@@ -102,34 +104,32 @@ const ChangeEmail: React.FC = () => {
 						</Button>
 					)}
 				</div>
-				<div className="mt-4">
-					NOTE: You will have to confirm your new email adress and login back again.
-				</div>
 				{status === "error" && emailInlineError && <ErrorMessage>{emailInlineError}</ErrorMessage>}
-			</div>
+			</>
 			{["editing", "pending", "error"].includes(status) && (
 				<div className="flex flex-col flex-grow mt-4 w-64">
-					<label className="field-label" htmlFor="password">
-						Password
-					</label>
-					<input
-						required
-						pattern=".{6,}"
-						title="Password should contain at least 6 characters."
-						value={password}
-						onChange={event => setPassword(event.target.value)}
-						className="field"
-						type="password"
-						name="password"
-						id="password"
-						placeholder="********"
-						disabled={status === "pending"}
-					/>
+					<Field variant="column">
+						<Input
+							id="password"
+							pattern=".{6,}"
+							title="Password should contain at least 6 characters."
+							required
+							value={password}
+							onChange={event => setPassword(event.target.value)}
+							type="password"
+							placeholder="********"
+							disabled={status === "pending"}
+						/>
+						<Label htmlFor="password">Password</Label>
+					</Field>
 					{status === "error" && passwordInlineError && (
 						<ErrorMessage>{passwordInlineError}</ErrorMessage>
 					)}
 				</div>
 			)}
+			<div className="mt-4">
+				NOTE: You will have to confirm your new email adress and login back again.
+			</div>
 			{status === "pending" && <div className="mt-4">Email change pending...</div>}
 			{status === "success" && (
 				<>
@@ -186,13 +186,8 @@ const ChangePassword = () => {
 			)}
 			{["editing", "pending", "error"].includes(status) && (
 				<>
-					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="old_password">
-							Old password
-						</label>
-						<input
-							className="field"
-							name="old_password"
+					<Field variant="column" style={{marginBottom: "12px"}}>
+						<Input
 							id="old_password"
 							placeholder="********"
 							title="Password should contain at least 6 characters."
@@ -203,17 +198,13 @@ const ChangePassword = () => {
 							pattern=".{6,}"
 							disabled={updatePasswordRequestState.isPending}
 						/>
-						{status === "error" && oldPasswordInlineError && (
-							<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
-						)}
-					</div>
-					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="new_password">
-							New password
-						</label>
-						<input
-							className="field"
-							name="new_password"
+						<Label htmlFor="old_password">Old password</Label>
+					</Field>
+					{status === "error" && oldPasswordInlineError && (
+						<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
+					)}
+					<Field variant="column" style={{marginBottom: "12px"}}>
+						<Input
 							id="new_password"
 							placeholder="********"
 							title="Password should contain at least 6 characters."
@@ -224,16 +215,12 @@ const ChangePassword = () => {
 							pattern=".{6,}"
 							disabled={updatePasswordRequestState.isPending}
 						/>
-					</div>
-					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="password_confirmation">
-							Repeat new password
-						</label>
-						<input
-							className="field"
-							type="password"
-							name="password_confirmation"
+						<Label htmlFor="new_password">New password</Label>{" "}
+					</Field>
+					<Field variant="column" style={{marginBottom: "24px"}}>
+						<Input
 							id="password_confirmation"
+							type="password"
 							placeholder="********"
 							pattern={newPassword}
 							title="Passwords have to be equal"
@@ -242,7 +229,8 @@ const ChangePassword = () => {
 							required
 							disabled={updatePasswordRequestState.isPending}
 						/>
-					</div>
+						<Label htmlFor="password_confirmation">Repeat new password</Label>
+					</Field>
 					<Button variant="secondary" type="submit">
 						Submit
 					</Button>

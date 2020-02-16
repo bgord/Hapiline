@@ -3,6 +3,9 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Field} from "./ui/field/Field";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
@@ -27,13 +30,8 @@ export const NewPasswordWindow: React.FC = () => {
 				}}
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
-				<div className="field-group mb-6 md:w-full">
-					<label className="field-label" htmlFor="password">
-						Password
-					</label>
-					<input
-						className="field"
-						name="password"
+				<Field variant="column" style={{width: "100%"}}>
+					<Input
 						id="password"
 						placeholder="********"
 						autoComplete="new-password"
@@ -45,16 +43,12 @@ export const NewPasswordWindow: React.FC = () => {
 						pattern=".{6,}"
 						disabled={newPasswordRequestState.isFulfilled}
 					/>
-				</div>
-				<div className="field-group mb-6 md:w-full">
-					<label className="field-label" htmlFor="password-confirmation">
-						Repeat password
-					</label>
-					<input
-						className="field"
+					<Label htmlFor="password">Password</Label>
+				</Field>
+				<Field variant="column" style={{marginTop: "12px", marginBottom: "24px", width: "100%"}}>
+					<Input
+						id="password_confirmation"
 						type="password"
-						name="password-confirmation"
-						id="password-confirmation"
 						placeholder="********"
 						pattern={password}
 						title="Passwords have to be equal"
@@ -63,7 +57,8 @@ export const NewPasswordWindow: React.FC = () => {
 						required
 						disabled={newPasswordRequestState.isFulfilled}
 					/>
-				</div>
+					<Label htmlFor="password_confirmation">Repeat password</Label>
+				</Field>
 				<div className="flex justify-end w-full">
 					<Button
 						variant="secondary"
