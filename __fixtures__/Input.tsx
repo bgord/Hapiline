@@ -26,6 +26,26 @@ export default {
 			</form>
 		</Demo>
 	),
+	"an optional input": (
+		<Demo>
+			<form style={{display: "flex", alignItems: "flex-end"}}>
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column-reverse",
+					}}
+				>
+					<Input id="email" type="email" placeholder="email@example.com" />
+					<Label htmlFor="email" variant="optional">
+						Email
+					</Label>
+				</div>
+				<Button variant="secondary" style={{marginLeft: "12px"}}>
+					Submit
+				</Button>
+			</form>
+		</Demo>
+	),
 	"with label (vertically)": (
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>

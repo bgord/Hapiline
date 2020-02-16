@@ -7,6 +7,12 @@
 	color: #363434;
 }
 
+.c-label--optional::after {
+	margin-left: 6px;
+	text-transform: lowercase;
+	content: "(optional)";
+}
+
 .c-input:focus + .c-label,
 .c-textarea:focus + .c-label {
 	text-decoration: underline;
