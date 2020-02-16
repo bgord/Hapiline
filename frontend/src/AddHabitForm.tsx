@@ -2,6 +2,9 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {Field} from "./ui/field/Field";
+import {Label} from "./ui/label/Label";
+import {Textarea} from "./ui/textarea/Textarea";
 import {Button} from "./ui/button/Button";
 import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {ErrorMessage} from "./ErrorMessages";
@@ -81,16 +84,10 @@ export const AddHabitForm: React.FC = () => {
 				className="flex flex-col w-full"
 			>
 				<div className="flex w-full">
-					<div className="flex flex-col flex-grow">
-						<label className="field-label" htmlFor="name">
-							Habit
-						</label>
-						<HabitNameInput
-							value={name}
-							onChange={event => setName(event.target.value)}
-							className="field w-full"
-						/>
-					</div>
+					<Field variant="column" style={{flexGrow: 1}}>
+						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
+						<Label htmlFor="habit_name">Habit name</Label>
+					</Field>
 					<div className="flex flex-col ml-8">
 						<label className="field-label" htmlFor="score">
 							Score
@@ -144,21 +141,15 @@ export const AddHabitForm: React.FC = () => {
 						Track this habit
 					</label>
 				</div>
-				<div className="flex items-center mt-4">
-					<div className="flex flex-col flex-grow">
-						<label htmlFor="description" className="field-label">
-							Description (optional)
-						</label>
-						<textarea
-							rows={3}
-							value={description}
-							onChange={event => setDescription(event.target.value)}
-							name="description"
-							className="p-1 border"
-							placeholder="Write something..."
-						/>
-					</div>
-				</div>
+				<Field variant="column" style={{marginTop: "18px"}}>
+					<Textarea
+						value={description}
+						onChange={event => setDescription(event.target.value)}
+						name="description"
+						placeholder="Write something..."
+					/>
+					<Label htmlFor="description">Description</Label>
+				</Field>
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
