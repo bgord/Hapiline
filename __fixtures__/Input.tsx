@@ -34,7 +34,7 @@ export default {
 					<Label htmlFor="email">Email</Label>
 				</div>
 				<div style={{display: "flex", flexDirection: "column-reverse", marginRight: "12px"}}>
-					<Input id="hfirst_nameabit_name" placeholder="John Doe" />
+					<Input id="first_name" placeholder="John Doe" />
 					<Label htmlFor="first_name">First name</Label>
 				</div>
 				<Button variant="secondary">Submit</Button>
