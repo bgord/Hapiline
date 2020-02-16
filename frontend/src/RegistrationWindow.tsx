@@ -34,9 +34,7 @@ export const RegistrationWindow: React.FC = () => {
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
 				<Field variant="column" style={{width: "100%"}}>
-					<Async.IfRejected state={registrationRequestState}>
-						<ErrorMessage>{emailInlineErrorMessage}</ErrorMessage>
-					</Async.IfRejected>
+					<Label htmlFor="email">Email</Label>
 					<Input
 						id="email"
 						value={email}
@@ -46,9 +44,12 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 						placeholder="john.brown@gmail.com"
 					/>
-					<Label htmlFor="email">Email</Label>
+					<Async.IfRejected state={registrationRequestState}>
+						<ErrorMessage>{emailInlineErrorMessage}</ErrorMessage>
+					</Async.IfRejected>
 				</Field>
 				<Field variant="column" style={{width: "100%", marginTop: "12px"}}>
+					<Label htmlFor="Password">Password</Label>
 					<Input
 						id="password"
 						placeholder="********"
@@ -60,9 +61,9 @@ export const RegistrationWindow: React.FC = () => {
 						pattern=".{6,}"
 						disabled={registrationRequestState.isFulfilled}
 					/>
-					<Label htmlFor="Password">Password</Label>
 				</Field>
 				<Field variant="column" style={{width: "100%", marginTop: "12px"}}>
+					<Label htmlFor="password_confirmation">Repeat password</Label>
 					<Input
 						id="password_confirmation"
 						type="password"
@@ -74,7 +75,6 @@ export const RegistrationWindow: React.FC = () => {
 						onChange={event => setPasswordConfirmation(event.target.value)}
 						disabled={registrationRequestState.isFulfilled}
 					/>
-					<Label htmlFor="password_confirmation">Repeat password</Label>
 				</Field>
 				<div className="flex justify-end w-full mt-6">
 					<Button

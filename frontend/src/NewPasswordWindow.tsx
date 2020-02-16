@@ -31,6 +31,7 @@ export const NewPasswordWindow: React.FC = () => {
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
 				<Field variant="column" style={{width: "100%"}}>
+					<Label htmlFor="password">Password</Label>
 					<Input
 						id="password"
 						placeholder="********"
@@ -43,9 +44,9 @@ export const NewPasswordWindow: React.FC = () => {
 						pattern=".{6,}"
 						disabled={newPasswordRequestState.isFulfilled}
 					/>
-					<Label htmlFor="password">Password</Label>
 				</Field>
 				<Field variant="column" style={{marginTop: "12px", marginBottom: "24px", width: "100%"}}>
+					<Label htmlFor="password_confirmation">Repeat password</Label>
 					<Input
 						id="password_confirmation"
 						type="password"
@@ -57,7 +58,6 @@ export const NewPasswordWindow: React.FC = () => {
 						required
 						disabled={newPasswordRequestState.isFulfilled}
 					/>
-					<Label htmlFor="password_confirmation">Repeat password</Label>
 				</Field>
 				<div className="flex justify-end w-full">
 					<Button

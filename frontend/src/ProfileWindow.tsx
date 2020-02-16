@@ -69,6 +69,7 @@ const ChangeEmail: React.FC = () => {
 			<>
 				<div className="flex items-end">
 					<Field variant="column" style={{marginRight: "12px"}}>
+						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
 							value={newEmail}
@@ -78,7 +79,6 @@ const ChangeEmail: React.FC = () => {
 							disabled={["idle", "pending", "success"].includes(status)}
 							placeholder="user@example.com"
 						/>
-						<Label htmlFor="email">Email</Label>
 					</Field>
 					{status === "idle" && (
 						<Button variant="secondary" onClick={() => setStatus("editing")}>
@@ -109,6 +109,7 @@ const ChangeEmail: React.FC = () => {
 			{["editing", "pending", "error"].includes(status) && (
 				<div className="flex flex-col flex-grow mt-4 w-64">
 					<Field variant="column">
+						<Label htmlFor="password">Password</Label>
 						<Input
 							id="password"
 							pattern=".{6,}"
@@ -120,7 +121,6 @@ const ChangeEmail: React.FC = () => {
 							placeholder="********"
 							disabled={status === "pending"}
 						/>
-						<Label htmlFor="password">Password</Label>
 					</Field>
 					{status === "error" && passwordInlineError && (
 						<ErrorMessage>{passwordInlineError}</ErrorMessage>
@@ -187,6 +187,7 @@ const ChangePassword = () => {
 			{["editing", "pending", "error"].includes(status) && (
 				<>
 					<Field variant="column" style={{marginBottom: "12px"}}>
+						<Label htmlFor="old_password">Old password</Label>
 						<Input
 							id="old_password"
 							placeholder="********"
@@ -198,12 +199,12 @@ const ChangePassword = () => {
 							pattern=".{6,}"
 							disabled={updatePasswordRequestState.isPending}
 						/>
-						<Label htmlFor="old_password">Old password</Label>
 					</Field>
 					{status === "error" && oldPasswordInlineError && (
 						<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
 					)}
 					<Field variant="column" style={{marginBottom: "12px"}}>
+						<Label htmlFor="new_password">New password</Label>{" "}
 						<Input
 							id="new_password"
 							placeholder="********"
@@ -215,9 +216,9 @@ const ChangePassword = () => {
 							pattern=".{6,}"
 							disabled={updatePasswordRequestState.isPending}
 						/>
-						<Label htmlFor="new_password">New password</Label>{" "}
 					</Field>
 					<Field variant="column" style={{marginBottom: "24px"}}>
+						<Label htmlFor="password_confirmation">Repeat new password</Label>
 						<Input
 							id="password_confirmation"
 							type="password"
@@ -229,7 +230,6 @@ const ChangePassword = () => {
 							required
 							disabled={updatePasswordRequestState.isPending}
 						/>
-						<Label htmlFor="password_confirmation">Repeat new password</Label>
 					</Field>
 					<Button variant="secondary" type="submit">
 						Submit

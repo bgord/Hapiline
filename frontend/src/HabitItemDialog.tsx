@@ -151,6 +151,7 @@ const EditableDescription: React.FC<{
 	return (
 		<>
 			<Field variant="column" style={{margin: "24px 0 12px 0"}}>
+				<Label htmlFor="description">Description</Label>
 				<Textarea
 					id="description"
 					onFocus={textarea.setFocused}
@@ -158,7 +159,6 @@ const EditableDescription: React.FC<{
 					value={newDescription ?? undefined}
 					onChange={newDescriptionHelpers.onChange}
 				/>
-				<Label htmlFor="description">Description</Label>
 			</Field>
 			<Async.IfRejected state={updateDescriptionRequestState}>
 				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>

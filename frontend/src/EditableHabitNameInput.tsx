@@ -54,6 +54,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	return (
 		<div className="flex justify-between items-end w-full ml-4">
 			<Field variant="column" style={{width: "100%", marginRight: "12px"}}>
+				<Label htmlFor="habit_name">Habit name</Label>
 				<HabitNameInput
 					onKeyDown={event => {
 						if (event.keyCode === 13 && newHabitName !== name) {
@@ -64,7 +65,6 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 					value={newHabitName ?? undefined}
 					onChange={newHabitNameHelpers.onChange}
 				/>
-				<Label htmlFor="habit_name">Habit name</Label>
 			</Field>
 			<SaveButton {...field} onClick={newHabitNameHelpers.onUpdate}>
 				Save

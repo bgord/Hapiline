@@ -31,10 +31,10 @@ export default {
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>
 				<Field variant="column">
-					<Input id="email" type="email" placeholder="email@example.com" />
 					<Label htmlFor="email" variant="optional">
 						Email
 					</Label>
+					<Input id="email" type="email" placeholder="email@example.com" />
 				</Field>
 				<Button variant="secondary" style={{marginLeft: "12px"}}>
 					Submit
@@ -46,12 +46,12 @@ export default {
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>
 				<Field variant="column" style={{marginRight: "12px"}}>
-					<Input id="email" placeholder="user@example.com" />
 					<Label htmlFor="email">Email</Label>
+					<Input id="email" placeholder="user@example.com" />
 				</Field>
 				<Field variant="column" style={{marginRight: "12px"}}>
-					<Input id="first_name" placeholder="John Doe" />
 					<Label htmlFor="first_name">First name</Label>
+					<Input id="first_name" placeholder="John Doe" />
 				</Field>
 				<Button variant="secondary">Submit</Button>
 			</form>
@@ -61,16 +61,16 @@ export default {
 		<Demo>
 			<form style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 				<Field variant="row" style={{alignItems: "center", marginBottom: "12px"}}>
-					<Input id="email" placeholder="user@example.com" />
 					<Label htmlFor="email" style={{marginRight: "6px"}}>
 						Email
 					</Label>
+					<Input id="email" placeholder="user@example.com" />
 				</Field>
 				<Field variant="row" style={{alignItems: "center"}}>
-					<Input id="hfirst_nameabit_name" placeholder="John Doe" />
 					<Label htmlFor="first_name" style={{marginRight: "6px"}}>
 						First name
 					</Label>
+					<Input id="hfirst_nameabit_name" placeholder="John Doe" />
 				</Field>
 				<Button variant="secondary" style={{marginTop: "18px"}}>
 					Submit

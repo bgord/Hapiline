@@ -85,8 +85,8 @@ export const AddHabitForm: React.FC = () => {
 			>
 				<div className="flex w-full">
 					<Field variant="column" style={{flexGrow: 1}}>
-						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
 						<Label htmlFor="habit_name">Habit name</Label>
+						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
 					</Field>
 					<div className="flex flex-col ml-8">
 						<label className="field-label" htmlFor="score">
@@ -142,13 +142,13 @@ export const AddHabitForm: React.FC = () => {
 					</label>
 				</div>
 				<Field variant="column" style={{marginTop: "18px"}}>
+					<Label htmlFor="description">Description</Label>
 					<Textarea
 						value={description}
 						onChange={event => setDescription(event.target.value)}
 						name="description"
 						placeholder="Write something..."
 					/>
-					<Label htmlFor="description">Description</Label>
 				</Field>
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>

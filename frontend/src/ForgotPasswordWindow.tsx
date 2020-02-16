@@ -26,6 +26,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 				className="sm:flex sm:flex-wrap sm:justify-between"
 			>
 				<Field variant="column" style={{width: "100%"}}>
+					<Label htmlFor="email">Email</Label>
 					<Input
 						type="email"
 						id="email"
@@ -34,7 +35,6 @@ export const ForgotPasswordWindow: React.FC = () => {
 						onChange={event => setEmail(event.target.value)}
 						placeholder="john.brown@gmail.com"
 					/>
-					<Label htmlFor="email">Email</Label>
 				</Field>
 				<div className="flex justify-end w-full mt-6">
 					<Button
