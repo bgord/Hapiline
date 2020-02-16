@@ -1,0 +1,11 @@
+.c-label {
+	line-height: 24px;
+	font-size: 11px;
+	text-transform: uppercase;
+	font-weight: 600;
+	color: #363434;
+}
+
+.c-input:focus + .c-label {
+	text-decoration: underline;
+}
