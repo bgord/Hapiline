@@ -10,6 +10,10 @@
 	--body-background: var(--gray-1);
 }
 
+html {
+	font-family: "Noto Sans";
+}
+
 body {
 	background-color: var(--body-background);
 }
