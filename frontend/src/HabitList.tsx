@@ -82,7 +82,7 @@ export const HabitList: React.FC = () => {
 			<div className="flex justify-end items-end w-full">
 				<h1 className="text-xl font-bold mr-auto pl-2">Habit list</h1>
 				<Button
-					variant="normal"
+					variant="secondary"
 					onClick={() => {
 						resetAllFilters();
 						toggleFilters();

@@ -144,7 +144,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 						habitSearch.clearPhrase();
 						updateQueryParams("calendar", {preview_day: queryParams.preview_day});
 					}}
-					variant="normal"
+					variant="secondary"
 					style={{marginLeft: "auto"}}
 				>
 					Reset filters

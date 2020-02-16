@@ -180,7 +180,7 @@ const ChangePassword = () => {
 			}}
 		>
 			{["idle", "pending", "success"].includes(status) && (
-				<Button variant="normal" onClick={() => setStatus("editing")}>
+				<Button variant="secondary" onClick={() => setStatus("editing")}>
 					Update password
 				</Button>
 			)}

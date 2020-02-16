@@ -4,7 +4,7 @@ import "./button.css";
 
 import React from "react";
 
-type ButtonVariants = "normal" | "primary" | "outlined";
+type ButtonVariants = "secondary" | "primary" | "outlined";
 
 export const Button: React.FC<JSX.IntrinsicElements["button"] & {
 	variant: ButtonVariants;

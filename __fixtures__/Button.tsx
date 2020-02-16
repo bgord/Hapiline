@@ -3,10 +3,10 @@ import {Demo} from "./_Demo";
 import {Button} from "../frontend/src/ui/button/Button";
 
 export default {
-	"--normal": (
+	"--secondary": (
 		<Demo>
-			<Button variant="normal">Reset filters</Button>
-			<Button variant="normal" style={{marginLeft: "25px"}} disabled>
+			<Button variant="secondary">Reset filters</Button>
+			<Button variant="secondary" style={{marginLeft: "25px"}} disabled>
 				Reset filters
 			</Button>
 		</Demo>
@@ -32,7 +32,7 @@ export default {
 	"side by side": (
 		<Demo>
 			<Button variant="primary">New habit</Button>
-			<Button variant="normal" style={{marginLeft: "10px"}}>
+			<Button variant="secondary" style={{marginLeft: "10px"}}>
 				Show filters
 			</Button>
 			<Button variant="outlined" style={{marginLeft: "10px"}}>

@@ -15,9 +15,9 @@ export default {
 			<CloseIcon style={{marginLeft: "10px"}} />
 		</Demo>
 	),
-	"side by side with a normal button": (
+	"side by side with a secondary button": (
 		<Demo>
-			<Button variant="normal">Show filters</Button>
+			<Button variant="secondary">Show filters</Button>
 			<CloseIcon style={{marginLeft: "10px"}} />
 		</Demo>
 	),
