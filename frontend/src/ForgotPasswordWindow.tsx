@@ -2,6 +2,9 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Field} from "./ui/field/Field";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
 import {SuccessMessage} from "./SuccessMessages";
 import {api} from "./services/api";
 
@@ -16,27 +19,23 @@ export const ForgotPasswordWindow: React.FC = () => {
 	return (
 		<div className="bg-white rounded shadow-lg p-8 sm:max-w-sm sm:mx-auto">
 			<form
-				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+				onSubmit={event => {
 					event.preventDefault();
 					forgotPasswordRequestState.run(email);
 				}}
 				className="sm:flex sm:flex-wrap sm:justify-between"
 			>
-				<div className="field-group mb-4 sm:w-full">
-					<label className="field-label" htmlFor="email">
-						Email
-					</label>
-					<input
-						required
-						className="field"
+				<Field variant="column" style={{width: "100%"}}>
+					<Input
 						type="email"
-						name="email"
 						id="email"
 						value={email}
+						required
 						onChange={event => setEmail(event.target.value)}
 						placeholder="john.brown@gmail.com"
 					/>
-				</div>
+					<Label htmlFor="email">Email</Label>
+				</Field>
 				<div className="flex justify-end w-full mt-6">
 					<Button
 						variant="secondary"
