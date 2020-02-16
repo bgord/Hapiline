@@ -53,7 +53,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 
 	return (
 		<div className="flex justify-between items-end w-full ml-4">
-			<Field variant="column" style={{width: "100%", marginRight: "12px"}}>
+			<Field style={{width: "100%", marginRight: "12px"}}>
 				<Label htmlFor="habit_name">Habit name</Label>
 				<HabitNameInput
 					onKeyDown={event => {

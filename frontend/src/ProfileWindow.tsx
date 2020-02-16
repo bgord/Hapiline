@@ -68,7 +68,7 @@ const ChangeEmail: React.FC = () => {
 		>
 			<>
 				<div className="flex items-end">
-					<Field variant="column" style={{marginRight: "12px"}}>
+					<Field style={{marginRight: "12px"}}>
 						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
@@ -108,7 +108,7 @@ const ChangeEmail: React.FC = () => {
 			</>
 			{["editing", "pending", "error"].includes(status) && (
 				<div className="flex flex-col flex-grow mt-4 w-64">
-					<Field variant="column">
+					<Field>
 						<Label htmlFor="password">Password</Label>
 						<Input
 							id="password"
@@ -186,7 +186,7 @@ const ChangePassword = () => {
 			)}
 			{["editing", "pending", "error"].includes(status) && (
 				<>
-					<Field variant="column" style={{marginBottom: "12px"}}>
+					<Field style={{marginBottom: "12px"}}>
 						<Label htmlFor="old_password">Old password</Label>
 						<Input
 							id="old_password"
@@ -203,7 +203,7 @@ const ChangePassword = () => {
 					{status === "error" && oldPasswordInlineError && (
 						<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
 					)}
-					<Field variant="column" style={{marginBottom: "12px"}}>
+					<Field style={{marginBottom: "12px"}}>
 						<Label htmlFor="new_password">New password</Label>{" "}
 						<Input
 							id="new_password"
@@ -217,7 +217,7 @@ const ChangePassword = () => {
 							disabled={updatePasswordRequestState.isPending}
 						/>
 					</Field>
-					<Field variant="column" style={{marginBottom: "24px"}}>
+					<Field style={{marginBottom: "24px"}}>
 						<Label htmlFor="password_confirmation">Repeat new password</Label>
 						<Input
 							id="password_confirmation"

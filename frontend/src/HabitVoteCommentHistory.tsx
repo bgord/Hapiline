@@ -60,13 +60,13 @@ const HabitVoteComment: React.FC<IVoteComment> = ({id, day, habit_id, vote, comm
 
 	return (
 		<li key={id} className="flex flex-col mb-4">
-			<Field variant="column">
+			<Field>
 				<Label htmlFor={comment}>
 					{formattedDay} ({formattedDayName})
 					<Link to={voteUrl} className={`${linkBgColor} px-2 ml-4`}>
 						{vote?.toUpperCase() ?? "NO VOTE"}
 					</Link>
-				</Label>{" "}
+				</Label>
 				<Textarea id={comment} value={comment} disabled style={{marginTop: "6px"}} />
 			</Field>
 		</li>

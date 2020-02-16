@@ -84,7 +84,7 @@ export const AddHabitForm: React.FC = () => {
 				className="flex flex-col w-full"
 			>
 				<div className="flex w-full">
-					<Field variant="column" style={{flexGrow: 1}}>
+					<Field style={{flexGrow: 1}}>
 						<Label htmlFor="habit_name">Habit name</Label>
 						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
 					</Field>
@@ -141,7 +141,7 @@ export const AddHabitForm: React.FC = () => {
 						Track this habit
 					</label>
 				</div>
-				<Field variant="column" style={{marginTop: "18px"}}>
+				<Field style={{marginTop: "18px"}}>
 					<Label htmlFor="description">Description</Label>
 					<Textarea
 						value={description}

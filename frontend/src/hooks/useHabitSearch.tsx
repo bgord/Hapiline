@@ -27,7 +27,7 @@ export const useHabitSearch = (defaultValue = "") => {
 };
 
 export const HabitSearchInput: React.FC<JSX.IntrinsicElements["input"]> = props => (
-	<Field variant="column" style={{width: "300px"}}>
+	<Field style={{width: "300px"}}>
 		<Label htmlFor="habit_name">Habit name</Label>
 		<Input id="habit_name" type="search" placeholder="Search for habits..." {...props} />
 	</Field>

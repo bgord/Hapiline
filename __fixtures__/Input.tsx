@@ -30,7 +30,7 @@ export default {
 	"an optional input": (
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>
-				<Field variant="column">
+				<Field>
 					<Label htmlFor="email" variant="optional">
 						Email
 					</Label>
@@ -45,11 +45,11 @@ export default {
 	"with label (vertically)": (
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>
-				<Field variant="column" style={{marginRight: "12px"}}>
+				<Field style={{marginRight: "12px"}}>
 					<Label htmlFor="email">Email</Label>
 					<Input id="email" placeholder="user@example.com" />
 				</Field>
-				<Field variant="column" style={{marginRight: "12px"}}>
+				<Field style={{marginRight: "12px"}}>
 					<Label htmlFor="first_name">First name</Label>
 					<Input id="first_name" placeholder="John Doe" />
 				</Field>
@@ -60,13 +60,13 @@ export default {
 	"with label (horizontally)": (
 		<Demo>
 			<form style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-				<Field variant="row" style={{alignItems: "center", marginBottom: "12px"}}>
+				<Field style={{alignItems: "center", marginBottom: "12px"}}>
 					<Label htmlFor="email" style={{marginRight: "6px"}}>
 						Email
 					</Label>
 					<Input id="email" placeholder="user@example.com" />
 				</Field>
-				<Field variant="row" style={{alignItems: "center"}}>
+				<Field style={{alignItems: "center"}}>
 					<Label htmlFor="first_name" style={{marginRight: "6px"}}>
 						First name
 					</Label>

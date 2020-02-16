@@ -25,7 +25,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 				}}
 				className="sm:flex sm:flex-wrap sm:justify-between"
 			>
-				<Field variant="column" style={{width: "100%"}}>
+				<Field style={{width: "100%"}}>
 					<Label htmlFor="email">Email</Label>
 					<Input
 						type="email"

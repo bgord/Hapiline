@@ -15,7 +15,7 @@ export default {
 	),
 	"with label": (
 		<Demo>
-			<Field variant="column" style={{maxWidth: "400px", width: "100%"}}>
+			<Field style={{maxWidth: "400px", width: "100%"}}>
 				<Label htmlFor="description">Description</Label>
 				<Textarea id="description" />
 			</Field>
@@ -23,7 +23,7 @@ export default {
 	),
 	disabled: (
 		<Demo>
-			<Field variant="column" style={{maxWidth: "400px", width: "100%"}}>
+			<Field style={{maxWidth: "400px", width: "100%"}}>
 				<Label htmlFor="description">Description</Label>
 				<Textarea
 					disabled
@@ -36,11 +36,11 @@ export default {
 	"stacked with an input": (
 		<Demo>
 			<form style={{maxWidth: "400px", width: "100%"}}>
-				<Field variant="column" style={{marginBottom: "12px"}}>
+				<Field style={{marginBottom: "12px"}}>
 					<Label htmlFor="last_name">Last name</Label>
 					<Input id="last_name" placeholder="John doe" />
 				</Field>
-				<Field variant="column">
+				<Field>
 					<Label htmlFor="description">Description</Label>
 					<Textarea id="description" />
 				</Field>

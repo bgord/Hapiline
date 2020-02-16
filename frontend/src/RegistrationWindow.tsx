@@ -33,7 +33,7 @@ export const RegistrationWindow: React.FC = () => {
 				}}
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
-				<Field variant="column" style={{width: "100%"}}>
+				<Field style={{width: "100%"}}>
 					<Label htmlFor="email">Email</Label>
 					<Input
 						id="email"
@@ -48,7 +48,7 @@ export const RegistrationWindow: React.FC = () => {
 						<ErrorMessage>{emailInlineErrorMessage}</ErrorMessage>
 					</Async.IfRejected>
 				</Field>
-				<Field variant="column" style={{width: "100%", marginTop: "12px"}}>
+				<Field style={{width: "100%", marginTop: "12px"}}>
 					<Label htmlFor="Password">Password</Label>
 					<Input
 						id="password"
@@ -62,7 +62,7 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 					/>
 				</Field>
-				<Field variant="column" style={{width: "100%", marginTop: "12px"}}>
+				<Field style={{width: "100%", marginTop: "12px"}}>
 					<Label htmlFor="password_confirmation">Repeat password</Label>
 					<Input
 						id="password_confirmation"
