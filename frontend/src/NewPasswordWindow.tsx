@@ -4,6 +4,7 @@ import React from "react";
 
 import {Button} from "./ui/button/Button";
 import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
 import {RequestErrorMessage} from "./ErrorMessages";
@@ -30,7 +31,8 @@ export const NewPasswordWindow: React.FC = () => {
 				}}
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
-				<Field style={{width: "100%"}}>
+				<Header>New password</Header>
+				<Field style={{width: "100%", marginTop: "48px"}}>
 					<Label htmlFor="password">Password</Label>
 					<Input
 						id="password"

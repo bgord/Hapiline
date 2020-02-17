@@ -4,12 +4,13 @@ import React from "react";
 import {Button} from "./ui/button/Button";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
+import {Header} from "./ui/header/Header";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useTrackedHabits} from "./contexts/habits-context";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
+import {useTrackedHabits} from "./contexts/habits-context";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -60,7 +61,9 @@ export const Calendar: React.FC = () => {
 				>
 					Previous
 				</Button>
-				<div className="mx-8 w-32">{date}</div>
+				<Header variant="small" style={{margin: "0 36px"}}>
+					{date}
+				</Header>
 				<Button
 					variant="secondary"
 					onClick={widget.setNextMonth}

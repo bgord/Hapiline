@@ -7,6 +7,7 @@ import {Button} from "./ui/button/Button";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
+import {Header} from "./ui/header/Header";
 import {Loader} from "./Loader";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
@@ -71,7 +72,7 @@ export const DashboardWindow = () => {
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
 			<header className="flex items-center w-full">
-				<h1 className="text-xl font-bold">Hello!</h1>
+				<Header variant="large">Hello!</Header>
 				<Button variant="primary" onClick={redirectToCurrentDay} style={{marginLeft: "auto"}}>
 					View today
 				</Button>

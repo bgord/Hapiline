@@ -3,6 +3,7 @@ import React from "react";
 
 import {Button} from "./ui/button/Button";
 import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
 import {SuccessMessage} from "./SuccessMessages";
@@ -25,7 +26,8 @@ export const ForgotPasswordWindow: React.FC = () => {
 				}}
 				className="sm:flex sm:flex-wrap sm:justify-between"
 			>
-				<Field style={{width: "100%"}}>
+				<Header>Forgot password</Header>
+				<Field style={{width: "100%", marginTop: "48px"}}>
 					<Label htmlFor="email">Email</Label>
 					<Input
 						type="email"

@@ -3,6 +3,7 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {Header} from "./ui/header/Header";
 import {Button} from "./ui/button/Button";
 import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
@@ -90,10 +91,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 			className="max-w-screen-lg overflow-auto"
 			style={{maxHeight: "700px"}}
 		>
-			<div className="flex justify-between items-baseline">
-				<strong>
+			<div className="flex justify-between items-center">
+				<Header variant="small">
 					{day} - {dayName}
-				</strong>
+				</Header>
 				<CloseIcon onClick={onDismiss || dismissDialog} />
 			</div>
 			{doesEveryHabitHasAVote && (

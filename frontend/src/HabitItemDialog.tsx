@@ -16,6 +16,7 @@ import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {Field} from "./ui/field/Field";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
+import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
 import {Label} from "./ui/label/Label";
 import {Textarea} from "./ui/textarea/Textarea";
@@ -60,11 +61,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			</Async.IfRejected>
 			{habit?.id && (
 				<>
-					<div className="flex justify-between">
-						<strong>Habit preview</strong>
+					<div className="flex justify-between items-center">
+						<Header variant="small">Habit preview</Header>
 						<CloseIcon onClick={dismissDialog} />
 					</div>
-					<div className="flex items-end">
+					<div className="flex items-end mt-8">
 						<EditableHabitScoreSelect
 							{...habit}
 							setHabitItem={habitRequestState.setData}

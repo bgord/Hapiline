@@ -2,6 +2,7 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {Header} from "./ui/header/Header";
 import {Field} from "./ui/field/Field";
 import {Label} from "./ui/label/Label";
 import {Textarea} from "./ui/textarea/Textarea";
@@ -65,8 +66,8 @@ export const AddHabitForm: React.FC = () => {
 			className="max-w-screen-lg overflow-auto h-full"
 			style={{maxHeight: "500px"}}
 		>
-			<div className="flex justify-between items-baseline mb-8">
-				<strong>Add new habit</strong>
+			<div className="flex justify-between items-center mb-8">
+				<Header variant="small">New habit</Header>
 				<CloseIcon onClick={hideAddFormDialog} />
 			</div>
 			<form

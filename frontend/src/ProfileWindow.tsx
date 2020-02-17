@@ -5,6 +5,7 @@ import React from "react";
 
 import {Button} from "./ui/button/Button";
 import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
 import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
@@ -17,7 +18,7 @@ import {useUserProfile} from "./contexts/auth-context";
 export const ProfileWindow = () => {
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
-			<strong>Profile</strong>
+			<Header variant="large">Profile settings</Header>
 			<ChangeEmail />
 			<ChangePassword />
 			<DeleteAccount />
@@ -64,7 +65,7 @@ const ChangeEmail: React.FC = () => {
 				setStatus("pending");
 				changeEmailRequestState.run(newEmail, password);
 			}}
-			className="flex flex-col flex-grow mt-8"
+			className="flex flex-col flex-grow mt-12"
 		>
 			<>
 				<div className="flex items-end">
@@ -292,12 +293,13 @@ const DeleteAccount = () => {
 			</Async.IfRejected>
 			{status === "editing" && (
 				<AlertDialog
-					className="w-1/3"
+					className="w-1/4"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
-					<AlertDialogLabel>Do you really want to delete your account?</AlertDialogLabel>
-
-					<div className="mt-12 flex justify-around w-full">
+					<AlertDialogLabel>
+						<Header variant="small">Do you really want to delete your account? </Header>
+					</AlertDialogLabel>
+					<div className="mt-12 flex justify-between w-full">
 						<Button variant="outlined" onClick={confirmDeletion}>
 							Yes, delete
 						</Button>

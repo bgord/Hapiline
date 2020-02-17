@@ -3,6 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
@@ -43,9 +44,9 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
 					<AlertDialogLabel>
-						Do you want to delete the <span className="italic">{`"${name}"`}</span> habit?
+						<Header variant="small">Do you want to delete the following habit?</Header>
 					</AlertDialogLabel>
-
+					<div className="italic mt-8">{name}</div>
 					<div className="mt-12 flex justify-around w-full">
 						<Button variant="outlined" onClick={confirmDeletion}>
 							Yes, delete

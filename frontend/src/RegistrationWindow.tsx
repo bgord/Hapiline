@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {Header} from "./ui/header/Header";
 import {Button} from "./ui/button/Button";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {Field} from "./ui/field/Field";
@@ -33,7 +34,8 @@ export const RegistrationWindow: React.FC = () => {
 				}}
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
-				<Field style={{width: "100%"}}>
+				<Header>Register</Header>
+				<Field style={{width: "100%", marginTop: "48px"}}>
 					<Label htmlFor="email">Email</Label>
 					<Input
 						id="email"

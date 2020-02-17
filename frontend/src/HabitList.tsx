@@ -3,6 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Header} from "./ui/header/Header";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
@@ -79,8 +80,10 @@ export const HabitList: React.FC = () => {
 
 	return (
 		<>
-			<div className="flex justify-end items-end w-full">
-				<h1 className="text-xl font-bold mr-auto pl-2">Habit list</h1>
+			<div className="flex justify-end items-center w-full mt-4">
+				<Header variant="large" style={{marginRight: "auto", marginLeft: "12px"}}>
+					Habit list
+				</Header>
 				<Button
 					variant="secondary"
 					onClick={() => {
@@ -173,7 +176,7 @@ export const HabitList: React.FC = () => {
 					</HabitStrengthFilters.All.Label>
 				</div>
 			)}
-			<div className={`flex w-full items-end mr-auto mb-6 ml-2 mt-${areFiltersVisible ? 4 : 12}`}>
+			<div className={`flex w-full items-end mr-auto mb-6 ml-3 mt-${areFiltersVisible ? 4 : 12}`}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button variant="outlined" onClick={habitSearch.clearPhrase} style={{marginLeft: "12px"}}>
 					Clear

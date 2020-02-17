@@ -6,6 +6,7 @@ import {faBell} from "@fortawesome/free-solid-svg-icons";
 
 import {createBrowserHistory} from "history";
 
+import {Header} from "./ui/header/Header";
 import {Button} from "./ui/button/Button";
 import {api} from "./services/api";
 import {Calendar} from "./Calendar";
@@ -141,8 +142,8 @@ function NotificationDropdown() {
 				>
 					<Async.IfPending state={getNotificationsRequestState}>Loading...</Async.IfPending>
 					<Async.IfFulfilled state={getNotificationsRequestState}>
-						<div className="flex justify-between items-center pr-6">
-							<strong>Notifications ({unreadNotifictionsNumber})</strong>
+						<div className="flex justify-between items-center px-2 mt-2">
+							<Header variant="small">Notifications ({unreadNotifictionsNumber})</Header>
 							<CloseIcon onClick={hideNotifications} />
 						</div>
 						<ul className="mt-8">
