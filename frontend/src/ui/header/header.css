@@ -4,3 +4,15 @@
 	letter-spacing: 0.02em;
 	font-weight: 300;
 }
+
+.c-header--small {
+	font-size: 20px;
+}
+
+.c-header--medium {
+	font-size: 22px;
+}
+
+.c-header--large {
+	font-size: 24px;
+}
