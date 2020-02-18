@@ -2,7 +2,11 @@
 	font-size: 22px;
 	line-height: 24px;
 	letter-spacing: 0.02em;
-	font-weight: 300;
+	font-weight: 500;
+}
+
+.c-header--extra-small {
+	font-size: 18px;
 }
 
 .c-header--small {

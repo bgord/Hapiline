@@ -2,7 +2,7 @@ import "./header.css";
 
 import React from "react";
 
-type HeaderVariant = "small" | "medium" | "large";
+type HeaderVariant = "extra-small" | "small" | "medium" | "large";
 
 export const Header: React.FC<JSX.IntrinsicElements["header"] & {
 	variant?: HeaderVariant;

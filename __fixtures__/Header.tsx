@@ -8,9 +8,22 @@ import {Input} from "../frontend/src/ui/input/Input";
 import {Label} from "../frontend/src/ui/label/Label";
 
 export default {
-	standard: (
+	"all variants": (
 		<Demo>
-			<Header>Habit list</Header>
+			<div style={{display: "flex", flexDirection: "column"}}>
+				<Header variant="extra-small" style={{marginTop: "24px"}}>
+					Habit list
+				</Header>
+				<Header variant="small" style={{marginTop: "24px"}}>
+					Habit list
+				</Header>
+				<Header variant="medium" style={{marginTop: "24px"}}>
+					Habit list
+				</Header>
+				<Header variant="large" style={{marginTop: "24px"}}>
+					Habit list
+				</Header>
+			</div>
 		</Demo>
 	),
 	"as a form header": (
