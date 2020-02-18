@@ -11,6 +11,7 @@ import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
 import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
 import {SuccessMessage} from "./SuccessMessages";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -67,7 +68,7 @@ const ChangeEmail: React.FC = () => {
 				setStatus("pending");
 				changeEmailRequestState.run(newEmail, password);
 			}}
-			className="flex flex-col flex-grow mt-16"
+			className="flex flex-col flex-grow mt-12"
 		>
 			<>
 				<Header variant="extra-small">Email change</Header>
@@ -131,9 +132,9 @@ const ChangeEmail: React.FC = () => {
 					)}
 				</div>
 			)}
-			<div className="mt-4">
+			<Text style={{marginTop: "24px"}}>
 				NOTE: You will have to confirm your new email adress and login back again.
-			</div>
+			</Text>
 			{status === "pending" && <div className="mt-4">Email change pending...</div>}
 			{status === "success" && (
 				<>
@@ -177,14 +178,14 @@ const ChangePassword = () => {
 
 	return (
 		<form
-			className="my-8"
+			className="my-4"
 			onSubmit={event => {
 				event.preventDefault();
 				setStatus("pending");
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			<Header variant="extra-small" style={{marginBottom: "36px"}}>
+			<Header variant="extra-small" style={{marginBottom: "24px"}}>
 				Password change
 			</Header>
 			{["idle", "pending", "success"].includes(status) && (
@@ -288,7 +289,7 @@ const DeleteAccount = () => {
 	}
 	return (
 		<>
-			<Header variant="extra-small" style={{marginTop: "12px", marginBottom: "36px"}}>
+			<Header variant="extra-small" style={{marginBottom: "36px"}}>
 				Account deletion
 			</Header>
 			<Button

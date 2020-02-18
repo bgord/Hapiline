@@ -7,8 +7,8 @@ import {Field} from "./ui/field/Field";
 import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteComment, voteToBgColor} from "./interfaces/IDayVote";
-import {InfoMessage} from "./InfoMessage";
 import {Label} from "./ui/label/Label";
+import {Text} from "./ui/text/Text";
 import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
@@ -36,7 +36,9 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>
 				{voteComments.length === 0 && (
-					<InfoMessage>Future vote comments will appear here.</InfoMessage>
+					<Text style={{display: "inline-block", marginTop: "24px"}}>
+						Future vote comments will appear here.
+					</Text>
 				)}
 				{voteComments.length > 0 && (
 					<ul className="mt-6 mb-8">

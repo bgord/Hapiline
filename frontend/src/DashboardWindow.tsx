@@ -6,9 +6,11 @@ import deepEqual from "fast-deep-equal";
 import {Button} from "./ui/button/Button";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
+import {Divider} from "./ui/divider/Divider";
 import {ErrorMessage} from "./ErrorMessages";
 import {Header} from "./ui/header/Header";
 import {Loader} from "./Loader";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
@@ -139,13 +141,16 @@ export const DashboardWindow = () => {
 			<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
 				{progressStreakStats.length > 0 && (
 					<>
-						<strong className="mt-12">Progress streaks</strong>
+						<Divider style={{marginTop: "24px"}} />
+						<Header variant="extra-small" style={{marginTop: "24px", marginBottom: "36px"}}>
+							Progress streaks
+						</Header>
 						<ul>
 							{progressStreakStats.map(habit => (
 								<li key={habit.id}>
-									{habit.progress_streak} day(s) progress streak -{" "}
+									<Text>{habit.progress_streak} day(s) progress streak - </Text>
 									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-										{habit.name}
+										<Text>{habit.name}</Text>
 									</Link>
 								</li>
 							))}
@@ -154,13 +159,16 @@ export const DashboardWindow = () => {
 				)}
 				{regressStreakStats.length > 0 && (
 					<>
-						<strong className="mt-4">Regress streaks</strong>
+						<Divider style={{marginTop: "24px"}} />
+						<Header variant="extra-small" style={{marginTop: "24px", marginBottom: "36px"}}>
+							Regress streaks
+						</Header>
 						<ul className="mb-6">
 							{regressStreakStats.map(habit => (
 								<li key={habit.id}>
-									{habit.regress_streak} day(s) regress streak -{" "}
+									<Text>{habit.regress_streak} day(s) regress streak - </Text>
 									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-										{habit.name}
+										<Text>{habit.name}</Text>
 									</Link>
 								</li>
 							))}
@@ -194,26 +202,29 @@ const MotivationalText: React.FC<{total: number; votedFor: number; untracked: nu
 	}
 	if (votedFor === 0) {
 		return (
-			<>
-				Start your day well! You have <strong>{total}</strong> tracked habits to vote for. And{" "}
-				{untracked} untracked habits.
-			</>
+			<Text>
+				Start your day well! You have <Text variant="bold">{total}</Text> tracked habits to vote
+				for. And {untracked} untracked habits.
+			</Text>
 		);
 	}
 	if (votedFor > 0 && votedFor < total) {
 		return (
-			<>
-				You're on a good track! You have <strong>{total - votedFor}</strong> tracked habits to vote
-				for left out of <strong>{total}</strong>. And {untracked} untracked habits.
-			</>
+			<Text>
+				You're on a good track!
+				<br />
+				You have <Text variant="bold">{total - votedFor}</Text> tracked habits to vote for left out
+				of <Text variant="bold">{total}</Text> (and {untracked} untracked habits).
+			</Text>
 		);
 	}
 	if (votedFor === total) {
 		return (
-			<>
-				<strong>Congratulations!</strong> You voted for every one of {total} tracked habits today!
-				You also have {untracked} untracked habits.
-			</>
+			<Text>
+				<Text variant="bold">Congratulations! </Text>
+				You voted for every one of <Text variant="bold">{total}</Text> tracked habits today!
+				<br /> You also have {untracked} untracked habits.
+			</Text>
 		);
 	}
 	return null;

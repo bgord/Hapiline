@@ -1,4 +1,8 @@
 .c-text {
-	font-size: 14px;
+	font-size: 16px;
 	color: #363434;
+}
+
+.c-text--bold {
+	font-weight: 600;
 }

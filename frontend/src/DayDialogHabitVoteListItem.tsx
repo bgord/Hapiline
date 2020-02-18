@@ -10,6 +10,7 @@ import {
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
+import {Text} from "./ui/text/Text";
 import {Field} from "./ui/field/Field";
 import {Textarea} from "./ui/textarea/Textarea";
 import {Label} from "./ui/label/Label";
@@ -115,7 +116,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					<HabitScore score={habit.score} className="px-1 py-1 ml-2" />
 					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
 					<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-						{habit.name}
+						<Text>{habit.name}</Text>
 					</Link>
 				</div>
 				{!vote && (

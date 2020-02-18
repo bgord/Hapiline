@@ -2,6 +2,7 @@ import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
+import {Text} from "./ui/text/Text";
 import {Button} from "./ui/button/Button";
 import {Header} from "./ui/header/Header";
 import {HabitListItem} from "./HabitListItem";
@@ -181,7 +182,9 @@ export const HabitList: React.FC = () => {
 				<Button variant="outlined" onClick={habitSearch.clearPhrase} style={{marginLeft: "12px"}}>
 					Clear
 				</Button>
-				<div className="ml-auto mr-4">Results: {howManyResults}</div>
+				<Text style={{marginLeft: "auto", marginRight: "16px"}}>
+					<Text variant="bold">{howManyResults}</Text> results
+				</Text>
 			</div>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">

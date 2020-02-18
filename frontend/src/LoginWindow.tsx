@@ -11,6 +11,7 @@ import {Button} from "./ui/button/Button";
 import {Field} from "./ui/field/Field";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
+import {Text} from "./ui/text/Text";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -73,7 +74,7 @@ export const LoginWindow: React.FC = () => {
 					</Button>
 				</div>
 				<div className="flex mt-8">
-					<span className="text-sm">Don't have an account?</span>
+					<Text>Don't have an account?</Text>
 					<Link className="link ml-1" to="/register">
 						Create now
 					</Link>

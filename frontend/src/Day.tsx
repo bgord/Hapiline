@@ -7,6 +7,7 @@ import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
 import {Stat} from "./Stat";
+import {Text} from "./ui/text/Text";
 import {formatDay} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
@@ -54,7 +55,12 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					{...stats}
 				/>
 			)}
-			<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
+			<Text
+				variant={isThisDayToday ? "bold" : "regular"}
+				style={{textAlign: "center", marginTop: "4px"}}
+			>
+				{day}
+			</Text>
 			{isDayDialogAvailable && (
 				<>
 					<Button
@@ -66,9 +72,9 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 						Show day
 					</Button>
 					<div className="flex justify-end p-2 text-sm mt-auto">
-						<span hidden={!stats.createdHabitsCount} className="mr-auto">
+						<Text hidden={!stats.createdHabitsCount} style={{marginRight: "auto"}}>
 							NEW: {stats.createdHabitsCount}
-						</span>
+						</Text>
 						<Stat count={stats.progressVotesCountStats} sign="+" />
 						<Stat count={stats.plateauVotesCountStats} sign="=" />
 						<Stat count={stats.regressVotesCountStats} sign="-" />

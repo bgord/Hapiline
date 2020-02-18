@@ -6,6 +6,7 @@ import {faBell} from "@fortawesome/free-solid-svg-icons";
 
 import {createBrowserHistory} from "history";
 
+import {Text} from "./ui/text/Text";
 import {Header} from "./ui/header/Header";
 import {Button} from "./ui/button/Button";
 import {api} from "./services/api";
@@ -61,13 +62,18 @@ function AuthenticatedNavbar() {
 
 	return (
 		<nav className="flex justify-end py-1 bg-white shadow-md">
-			<NavLink className="ml-2 mr-auto p-2" exact activeClassName="text-blue-400" to="/dashboard">
+			<NavLink
+				className="c-text ml-2 mr-auto p-2"
+				exact
+				activeClassName="text-blue-400"
+				to="/dashboard"
+			>
 				<Logo />
 			</NavLink>
 			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/dashboard">
 				Dashboard
 			</NavLink>
-			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/habits">
+			<NavLink exact className="c-text p-4" activeClassName="text-blue-400" to="/habits">
 				Habits
 			</NavLink>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">
@@ -138,18 +144,16 @@ function NotificationDropdown() {
 					style={{
 						width: "500px",
 					}}
-					className="absolute h-64 bg-white mt-16 mr-2 p-2 shadow-lg overflow-auto"
+					className="absolute h-64 bg-white mt-16 mr-2 p-3 shadow-lg overflow-auto"
 				>
 					<Async.IfPending state={getNotificationsRequestState}>Loading...</Async.IfPending>
 					<Async.IfFulfilled state={getNotificationsRequestState}>
-						<div className="flex justify-between items-center px-2 mt-2">
-							<Header variant="small">Notifications ({unreadNotifictionsNumber})</Header>
+						<div className="flex justify-between items-center mt-2">
+							<Header variant="extra-small">Notifications ({unreadNotifictionsNumber})</Header>
 							<CloseIcon onClick={hideNotifications} />
 						</div>
 						<ul className="mt-8">
-							{notifications.length === 0 && (
-								<div className="text-center">You don't have any notifications.</div>
-							)}
+							{notifications.length === 0 && <Text>You don't have any notifications.</Text>}
 							{notifications.map(notification => (
 								<li key={notification.id} className="flex items-center mt-6">
 									{notification.content}
