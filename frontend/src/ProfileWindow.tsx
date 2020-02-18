@@ -4,6 +4,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Divider} from "./ui/divider/Divider";
 import {Field} from "./ui/field/Field";
 import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
@@ -19,6 +20,7 @@ export const ProfileWindow = () => {
 	return (
 		<section className="flex flex-col max-w-2xl mx-auto mt-12">
 			<Header variant="large">Profile settings</Header>
+			<Divider style={{width: "200px", marginTop: "6px"}} />
 			<ChangeEmail />
 			<ChangePassword />
 			<DeleteAccount />
@@ -65,7 +67,7 @@ const ChangeEmail: React.FC = () => {
 				setStatus("pending");
 				changeEmailRequestState.run(newEmail, password);
 			}}
-			className="flex flex-col flex-grow mt-12"
+			className="flex flex-col flex-grow mt-16"
 		>
 			<>
 				<Header variant="extra-small">Email change</Header>
@@ -139,6 +141,7 @@ const ChangeEmail: React.FC = () => {
 					<div>You will be logged out in 5 seconds.</div>
 				</>
 			)}
+			<Divider style={{marginTop: "48px"}} />
 		</form>
 	);
 };
@@ -181,7 +184,7 @@ const ChangePassword = () => {
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			<Header variant="extra-small" style={{marginTop: "24px", marginBottom: "36px"}}>
+			<Header variant="extra-small" style={{marginBottom: "36px"}}>
 				Password change
 			</Header>
 			{["idle", "pending", "success"].includes(status) && (
@@ -257,6 +260,7 @@ const ChangePassword = () => {
 				</>
 			)}
 			{status === "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
+			<Divider style={{marginTop: "48px"}} />
 		</form>
 	);
 };

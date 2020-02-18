@@ -14,7 +14,7 @@ export default {
 		<Demo>
 			<div style={{display: "flex", flexDirection: "column", width: "350px"}}>
 				<Header variant="large">User profile</Header>
-				<Divider style={{marginTop: "6px"}} />
+				<Divider />
 			</div>
 		</Demo>
 	),
