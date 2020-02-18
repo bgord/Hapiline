@@ -167,7 +167,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 			{isThereNoTrackedHabits && <div>No habits available this day.</div>}
 			{!isThereNoTrackedHabits && (
 				<>
-					<strong className="mt-2">Tracked habits</strong>
+					<Header variant="extra-small" style={{marginTop: "36px"}}>
+						Tracked habits
+					</Header>
 					<ul data-testid="day-dialog-habits">
 						{habitVotes
 							.filter(habitVoteFilter.filterFunction)

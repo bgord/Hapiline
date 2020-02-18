@@ -4,6 +4,7 @@ import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
 import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteComment, voteToBgColor} from "./interfaces/IDayVote";
 import {InfoMessage} from "./InfoMessage";
@@ -27,7 +28,9 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 
 	return (
 		<div>
-			<strong>Vote comments</strong>
+			<Header variant="extra-small" style={{marginTop: "48px"}}>
+				Vote comments
+			</Header>
 			<Async.IfRejected state={getHabitVoteCommentsRequestState}>
 				<ErrorMessage className="mt-4">Couldn't fetch vote comments.</ErrorMessage>
 			</Async.IfRejected>
@@ -36,7 +39,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 					<InfoMessage>Future vote comments will appear here.</InfoMessage>
 				)}
 				{voteComments.length > 0 && (
-					<ul className="my-8">
+					<ul className="mt-6 mb-8">
 						{voteComments.map(voteComment => (
 							<HabitVoteComment key={voteComment.id} {...voteComment} />
 						))}

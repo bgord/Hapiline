@@ -164,7 +164,7 @@ const EditableDescription: React.FC<{
 			<Async.IfRejected state={updateDescriptionRequestState}>
 				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
 			</Async.IfRejected>
-			<div style={{marginBottom: "36px"}}>
+			<div>
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
 					Save
 				</SaveButton>

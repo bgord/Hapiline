@@ -68,8 +68,9 @@ const ChangeEmail: React.FC = () => {
 			className="flex flex-col flex-grow mt-12"
 		>
 			<>
+				<Header variant="extra-small">Email change</Header>
 				<div className="flex items-end">
-					<Field style={{marginRight: "12px"}}>
+					<Field style={{marginRight: "12px", marginTop: "24px"}}>
 						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
@@ -180,6 +181,9 @@ const ChangePassword = () => {
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
+			<Header variant="extra-small" style={{marginTop: "24px", marginBottom: "36px"}}>
+				Password change
+			</Header>
 			{["idle", "pending", "success"].includes(status) && (
 				<Button variant="secondary" onClick={() => setStatus("editing")}>
 					Update password
@@ -280,6 +284,9 @@ const DeleteAccount = () => {
 	}
 	return (
 		<>
+			<Header variant="extra-small" style={{marginTop: "12px", marginBottom: "36px"}}>
+				Account deletion
+			</Header>
 			<Button
 				variant="primary"
 				disabled={deleteAccountRequestState.isPending}
