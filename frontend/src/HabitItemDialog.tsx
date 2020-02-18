@@ -19,6 +19,7 @@ import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
 import {Label} from "./ui/label/Label";
+import {Text} from "./ui/text/Text";
 import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
@@ -109,9 +110,13 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					/>
 					{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
 					<dl className="flex items-baseline py-8">
-						<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
-						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.created_at)}</dd>
-						<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
+						<dt>
+							<Text variant="dimmed">Created at:</Text>
+						</dt>
+						<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
+						<dt>
+							<Text variant="dimmed">Updated at:</Text>
+						</dt>
 						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
 					</dl>
 				</>

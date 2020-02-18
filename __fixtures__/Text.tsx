@@ -9,6 +9,7 @@ export default {
 			<div style={{display: "flex", flexDirection: "column"}}>
 				<Text>Working on Hapiline 5 minutes a day</Text>
 				<Text variant="bold">2020-02-02</Text>
+				<Text variant="dimmed">Future vote comments will appear here.</Text>
 			</div>
 		</Demo>
 	),

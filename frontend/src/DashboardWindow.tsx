@@ -94,7 +94,7 @@ export const DashboardWindow = () => {
 				</p>
 				{howManyHabitsToday > 0 && (
 					<div data-testid="chart-today">
-						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
+						<Text variant="dimmed">Votes today</Text>
 						<div className="flex items-center mb-8">
 							<DaySummaryChart
 								maximumVotes={todayStats?.maximumVotes ?? 0}
@@ -108,7 +108,7 @@ export const DashboardWindow = () => {
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
 					<div data-testid="chart-last-week">
-						<div className="uppercase text-sm font-bold text-gray-600">Votes last week</div>
+						<Text variant="dimmed">Votes last week</Text>
 						<div className="flex items-center mb-8">
 							<DaySummaryChart
 								maximumVotes={lastWeekStats?.maximumVotes ?? 0}
@@ -122,7 +122,7 @@ export const DashboardWindow = () => {
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
 					<div data-testid="chart-last-month">
-						<div className="uppercase text-sm font-bold text-gray-600">Votes last month</div>
+						<Text variant="dimmed">Votes last month</Text>
 						<div className="flex items-center">
 							<DaySummaryChart
 								maximumVotes={lastMonthStats?.maximumVotes ?? 0}

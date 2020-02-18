@@ -72,7 +72,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 						Show day
 					</Button>
 					<div className="flex justify-end p-2 text-sm mt-auto">
-						<Text hidden={!stats.createdHabitsCount} style={{marginRight: "auto"}}>
+						<Text variant="dimmed" hidden={!stats.createdHabitsCount} style={{marginRight: "auto"}}>
 							NEW: {stats.createdHabitsCount}
 						</Text>
 						<Stat count={stats.progressVotesCountStats} sign="+" />
