@@ -100,7 +100,7 @@ export const HabitList: React.FC = () => {
 				</Button>
 			</div>
 			{areFiltersVisible && (
-				<div className="flex items-center w-full mt-10 mb-6">
+				<div className="flex items-center w-full mt-10 mb-3">
 					<HabitScoreFilters.Positive.Input
 						disabled={habitCounts.positive === 0}
 						value={habitScoreFilter.value}

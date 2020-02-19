@@ -1,6 +1,8 @@
 import React from "react";
 
 import {HabitVote} from "../interfaces/IHabit";
+import {Label} from "../ui/label/Label";
+import {Radio} from "../ui/radio/Radio";
 import {useQueryParam} from "./useQueryParam";
 
 type HabitVoteFilterTypes = "unvoted" | "voted" | "all";
@@ -44,37 +46,40 @@ interface IInput {
 	value: HabitVoteFilterTypes;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<IInput> = ({value, filter, ...props}) => {
-	return (
-		<input
-			name="habit-vote-filter"
-			id={filter}
-			type="radio"
-			value={filter}
-			checked={value === filter}
-			className="mr-1 ml-3"
-			{...props}
-		/>
-	);
-};
+const RadioButton: React.FC<IInput> = ({value, filter, ...props}) => (
+	<Radio
+		name="habit-vote-filter"
+		id={filter}
+		type="radio"
+		value={filter}
+		checked={value === filter}
+		{...props}
+	/>
+);
 
 export const HabitVoteFilters = {
 	Voted: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter="voted" {...props} />
+			<RadioButton filter="voted" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="voted" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => (
+			<Label style={{margin: "0 8px 0 4px"}} htmlFor="voted" {...props} />
+		),
 	},
 	Unvoted: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter="unvoted" {...props} />
+			<RadioButton filter="unvoted" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="unvoted" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => (
+			<Label style={{margin: "0 8px 0 4px"}} htmlFor="unvoted" {...props} />
+		),
 	},
 	All: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter="all" {...props} />
+			<RadioButton filter="all" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="all" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => (
+			<Label style={{margin: "0 8px 0 4px"}} htmlFor="all" {...props} />
+		),
 	},
 };
