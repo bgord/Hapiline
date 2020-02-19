@@ -14,12 +14,14 @@
 		border-radius: 50%;
 	}
 	.c-radio:hover,
-	.c-radio:focus:not(:disabled) {
+	.c-radio:focus:not(:disabled),
+	.c-radio:checked:not(:disabled) {
 		border-color: #bebcbc;
 		transition: border-color 400ms;
 	}
 	.c-radio:active:not(:disabled),
-	.c-radio:focus:not(:disabled) {
+	.c-radio:focus:not(:disabled),
+	.c-radio:checked:not(:disabled) {
 		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 	}
 
@@ -49,7 +51,8 @@
 	.c-radio::after:hover:not(:disabled) {
 		opacity: 1;
 	}
-	.c-radio:focus::after {
+	.c-radio:focus::after,
+	.c-radio:checked::after {
 		opacity: 1;
 		background: white;
 	}
