@@ -1,3 +1,56 @@
-.c-radio {
-	background: black;
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+	.c-radio {
+		position: relative;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		width: 24px;
+		height: 23px;
+		margin: 0;
+		padding: 0;
+		outline: none;
+		cursor: pointer;
+		background: #e8e7e7;
+		border: 1px solid white;
+		border-radius: 50%;
+	}
+	.c-radio:hover,
+	.c-radio:focus:not(:disabled) {
+		border-color: #bebcbc;
+		transition: border-color 400ms;
+	}
+	.c-radio:active:not(:disabled),
+	.c-radio:focus:not(:disabled) {
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	}
+
+	.c-radio:disabled:hover {
+		cursor: not-allowed;
+		opacity: 0.8;
+		background: white;
+		border-color: #bebcbc;
+		transition: all 300ms;
+	}
+	.c-radio:disabled:hover::after {
+		background: white;
+	}
+
+	.c-radio::after {
+		position: absolute;
+		content: "";
+		top: calc(50% - 4px);
+		left: calc(50% - 4px);
+		height: 8px;
+		width: 8px;
+		background: #d7d6d6;
+		border-radius: 50%;
+		opacity: 0;
+		transition: all 300ms;
+	}
+	.c-radio::after:hover:not(:disabled) {
+		opacity: 1;
+	}
+	.c-radio:focus::after {
+		opacity: 1;
+		background: white;
+	}
 }
