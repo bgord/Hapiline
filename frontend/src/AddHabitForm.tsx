@@ -2,6 +2,7 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {Checkbox} from "./ui/checkbox/Checkbox";
 import {Header} from "./ui/header/Header";
 import {Field} from "./ui/field/Field";
 import {Label} from "./ui/label/Label";
@@ -129,19 +130,17 @@ export const AddHabitForm: React.FC = () => {
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
-				<div className="flex items-center mt-4">
-					<input
-						type="checkbox"
+				<Field variant="row" style={{alignSelf: "flex-start", marginTop: "18px"}}>
+					<Checkbox
 						id="is_trackable"
 						name="is_trackable"
 						checked={isTrackable}
 						onChange={() => setIsTrackable(v => !v)}
-						className="field bg-white"
 					/>
-					<label className="field-label mb-0 ml-1" htmlFor="is_trackable">
+					<Label htmlFor="is_trackable" style={{marginLeft: "8px"}}>
 						Track this habit
-					</label>
-				</div>
+					</Label>
+				</Field>
 				<Field style={{marginTop: "18px"}}>
 					<Label htmlFor="description">Description</Label>
 					<Textarea

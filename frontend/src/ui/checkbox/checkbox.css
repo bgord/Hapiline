@@ -32,9 +32,9 @@
 	.c-checkbox:hover:not(:checked):not(:disabled)::after {
 		content: "";
 		position: absolute;
-		top: 5px;
-		left: 5px;
-		height: 5px;
+		top: 7px;
+		left: 7px;
+		height: 6px;
 		width: 10px;
 		border-width: 2px;
 		border-style: solid;
