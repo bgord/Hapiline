@@ -1,7 +1,10 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {IHabit, scoreToBgColor} from "./interfaces/IHabit";
+import {Field} from "./ui/field/Field";
+import {IHabit} from "./interfaces/IHabit";
+import {Label} from "./ui/label/Label";
+import {Select} from "./ui/select/Select";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
@@ -30,25 +33,26 @@ export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> =
 		onReject: () => triggerErrorNotification("Habit score couldn't be changed."),
 	});
 
-	const bgColor = scoreToBgColor[score];
-
 	return (
-		<select
-			className={`${bgColor} w-20 appearance-none cursor-pointer text-center p-1`}
-			value={newHabitScore}
-			disabled={editHabitRequestState.isPending}
-			onChange={event => {
-				const {value} = event.target;
-				if (isHabitScore(value) && value !== score) {
-					setNewHabitScore(value);
-					editHabitRequestState.run(id, {score: value});
-				}
-			}}
-		>
-			<option value="positive">positive</option>
-			<option value="neutral">neutral</option>
-			<option value="negative">negative</option>
-		</select>
+		<Field>
+			<Label htmlFor="habit_score">Score</Label>
+			<Select
+				id="habit_score"
+				value={newHabitScore}
+				disabled={editHabitRequestState.isPending}
+				onChange={event => {
+					const {value} = event.target;
+					if (isHabitScore(value) && value !== score) {
+						setNewHabitScore(value);
+						editHabitRequestState.run(id, {score: value});
+					}
+				}}
+			>
+				<option value="positive">positive</option>
+				<option value="neutral">neutral</option>
+				<option value="negative">negative</option>
+			</Select>
+		</Field>
 	);
 };
 

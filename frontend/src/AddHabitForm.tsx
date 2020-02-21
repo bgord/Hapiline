@@ -2,6 +2,7 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
+import {Select} from "./ui/select/Select";
 import {Checkbox} from "./ui/checkbox/Checkbox";
 import {Header} from "./ui/header/Header";
 import {Field} from "./ui/field/Field";
@@ -90,47 +91,41 @@ export const AddHabitForm: React.FC = () => {
 						<Label htmlFor="habit_name">Habit name</Label>
 						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
 					</Field>
-					<div className="flex flex-col ml-8">
-						<label className="field-label" htmlFor="score">
-							Score
-						</label>
-						<select
+					<Field style={{marginLeft: "12px"}}>
+						<Label htmlFor="score">Score</Label>
+						<Select
 							id="score"
 							name="score"
 							required
 							value={score}
 							onChange={event => setScore(event.target.value)}
 							onBlur={event => setScore(event.target.value)}
-							className="field bg-white"
 						>
 							<option value="positive">positive</option>
 							<option value="neutral">neutral</option>
 							<option value="negative">negative</option>
-						</select>
-					</div>
-					<div className="flex flex-col ml-8">
-						<label className="field-label" htmlFor="strength">
-							Strength
-						</label>
-						<select
+						</Select>
+					</Field>
+					<Field style={{marginLeft: "12px"}}>
+						<Label htmlFor="strength">Strength</Label>
+						<Select
 							id="strength"
 							name="strength"
 							required
 							value={strength}
 							onChange={event => setStrength(event.target.value)}
 							onBlur={event => setStrength(event.target.value)}
-							className="field bg-white"
 						>
 							<option value="established">established</option>
 							<option value="developing">developing</option>
 							<option value="fresh">fresh</option>
-						</select>
-					</div>
+						</Select>
+					</Field>
 				</div>
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
-				<Field variant="row" style={{alignSelf: "flex-start", marginTop: "18px"}}>
+				<Field variant="row" style={{alignSelf: "flex-start", marginTop: "24px"}}>
 					<Checkbox
 						id="is_trackable"
 						name="is_trackable"
@@ -141,7 +136,7 @@ export const AddHabitForm: React.FC = () => {
 						Track this habit
 					</Label>
 				</Field>
-				<Field style={{marginTop: "18px"}}>
+				<Field style={{marginTop: "24px"}}>
 					<Label htmlFor="description">Description</Label>
 					<Textarea
 						value={description}

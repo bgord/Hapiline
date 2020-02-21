@@ -3,8 +3,11 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
+import {Field} from "./ui/field/Field";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
+import {Label} from "./ui/label/Label";
+import {Select} from "./ui/select/Select";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -39,11 +42,19 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 
 	return (
 		<>
-			<div className="mt-6 flex items-center">
-				<label htmlFor="date_range">Select date range:</label>
-				<select
+			<Field
+				variant="row"
+				style={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "flex-end",
+					marginTop: "36px",
+				}}
+			>
+				<Label htmlFor="date_range">Select date range:</Label>
+				<Select
+					style={{marginLeft: "6px"}}
 					id="date_range"
-					className="field mx-2"
 					value={dateRange}
 					onChange={event => {
 						const {value} = event.target;
@@ -55,8 +66,8 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 					<option value="last_week">Last week</option>
 					<option value="last_month">Last month</option>
 					<option value="all_time">All time</option>
-				</select>
-			</div>
+				</Select>
+			</Field>
 			<Async.IfFulfilled state={habitVoteChartRequestState}>
 				<div className="flex w-full mt-6 border-l-2 border-gray-500">
 					{habitVoteChartRequestState.data?.map(item => (
