@@ -19,6 +19,7 @@ import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
 import {Label} from "./ui/label/Label";
+import {Row} from "./ui/row/Row";
 import {Text} from "./ui/text/Text";
 import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
@@ -62,11 +63,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			</Async.IfRejected>
 			{habit?.id && (
 				<>
-					<div className="flex justify-between items-center">
+					<Row mainAxis="between">
 						<Header variant="small">Habit preview</Header>
 						<CloseIcon onClick={dismissDialog} />
-					</div>
-					<div className="flex items-end mt-8">
+					</Row>
+					<Row style={{marginTop: "24px"}}>
 						<EditableHabitScoreSelect
 							{...habit}
 							setHabitItem={habitRequestState.setData}
@@ -82,11 +83,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							setHabitItem={habitRequestState.setData}
 							key={habit?.name}
 						/>
-					</div>
+					</Row>
 					{!habit.is_trackable && <div className="mt-8">This habit is not tracked.</div>}
 					{habit.is_trackable && (
 						<>
-							<div className="uppercase text-sm font-bold mt-6">
+							<Text style={{textTransform: "uppercase", marginTop: "24px", display: "flex"}}>
 								<div className="text-green-600" hidden={!habit.progress_streak}>
 									Progress streak: {habit.progress_streak} days
 								</div>
@@ -99,7 +100,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								>
 									No streak today
 								</div>
-							</div>
+							</Text>
 							<HabitCharts id={habit.id} />
 						</>
 					)}
@@ -169,7 +170,7 @@ const EditableDescription: React.FC<{
 			<Async.IfRejected state={updateDescriptionRequestState}>
 				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
 			</Async.IfRejected>
-			<div>
+			<Row>
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
 					Save
 				</SaveButton>
@@ -180,7 +181,7 @@ const EditableDescription: React.FC<{
 				>
 					Cancel
 				</CancelButton>
-			</div>
+			</Row>
 		</>
 	);
 };

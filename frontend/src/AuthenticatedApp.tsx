@@ -23,6 +23,7 @@ import {useUserProfile} from "./contexts/auth-context";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {ProfileWindow} from "./ProfileWindow";
+import {Row} from "./ui/row/Row";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
 
@@ -148,10 +149,10 @@ function NotificationDropdown() {
 				>
 					<Async.IfPending state={getNotificationsRequestState}>Loading...</Async.IfPending>
 					<Async.IfFulfilled state={getNotificationsRequestState}>
-						<div className="flex justify-between items-center mt-2">
+						<Row mainAxis="between">
 							<Header variant="extra-small">Notifications ({unreadNotifictionsNumber})</Header>
 							<CloseIcon onClick={hideNotifications} />
-						</div>
+						</Row>
 						<ul className="mt-8">
 							{notifications.length === 0 && <Text>You don't have any notifications.</Text>}
 							{notifications.map(notification => (

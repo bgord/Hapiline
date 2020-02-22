@@ -11,6 +11,7 @@ import {Field} from "./ui/field/Field";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {Label} from "./ui/label/Label";
+import {Row} from "./ui/row/Row";
 import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
@@ -52,7 +53,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	);
 
 	return (
-		<div className="flex justify-between items-end w-full ml-4">
+		<Row style={{marginLeft: "12px"}}>
 			<Field style={{width: "100%", marginRight: "12px"}}>
 				<Label htmlFor="habit_name">Habit name</Label>
 				<HabitNameInput
@@ -72,6 +73,6 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 			<CancelButton {...field} onClick={newHabitNameHelpers.onClear} style={{marginLeft: "6px"}}>
 				Cancel
 			</CancelButton>
-		</div>
+		</Row>
 	);
 };

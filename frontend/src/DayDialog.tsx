@@ -17,7 +17,8 @@ import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {IDayVote} from "./interfaces/IDayVote";
-import {SuccessMessage} from "./SuccessMessages";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -91,21 +92,21 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 			className="max-w-screen-lg overflow-auto"
 			style={{maxHeight: "700px"}}
 		>
-			<div className="flex justify-between items-center">
+			<Row mainAxis="between" style={{marginBottom: "24px"}}>
 				<Header variant="small">
 					{day} - {dayName}
 				</Header>
 				<CloseIcon onClick={onDismiss || dismissDialog} />
-			</div>
+			</Row>
 			{doesEveryHabitHasAVote && (
-				<SuccessMessage>
-					Congratulations! You've voted for every habit{" "}
+				<Text>
 					<span role="img" aria-label="Party emoji">
 						🎉
 					</span>
-				</SuccessMessage>
+					Congratulations! You've voted for every habit{" "}
+				</Text>
 			)}
-			<div className="flex mt-6 items-center">
+			<Row style={{marginTop: "36px"}}>
 				<DaySummaryChart
 					maximumVotes={habitsAvailableAtThisDay.length}
 					className="h-4"
@@ -113,8 +114,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 					{...stats}
 				/>
 				<DaySummaryStats day={day} {...stats} />
-			</div>
-			<div className="flex items-center my-8">
+			</Row>
+			<Row crossAxis="end" style={{marginTop: "36px"}}>
 				<HabitVoteFilters.Voted.Input
 					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
@@ -150,8 +151,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				>
 					Reset filters
 				</Button>
-			</div>
-			<div className="flex items-end mb-6">
+			</Row>
+			<Row style={{marginTop: "24px"}}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button
 					onClick={() => {
@@ -163,7 +164,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				>
 					Clear
 				</Button>
-			</div>
+			</Row>
 			{isThereNoTrackedHabits && <div>No habits available this day.</div>}
 			{!isThereNoTrackedHabits && (
 				<>

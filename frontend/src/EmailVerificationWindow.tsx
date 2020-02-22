@@ -2,6 +2,8 @@ import {useParams, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 
 export const EmailVerificationWindow = () => {
@@ -16,13 +18,13 @@ export const EmailVerificationWindow = () => {
 		<>
 			<Async.IfPending state={emailVerificationRequestState}>Verifying...</Async.IfPending>
 			<Async.IfFulfilled state={emailVerificationRequestState}>
-				<div className="flex">
-					<span>Success! You can </span>
+				<Row>
+					<Text>Success! You can </Text>
 					<Link className="link mx-1 text-base" to="/login">
 						login
 					</Link>{" "}
-					<span>now.</span>
-				</div>
+					<Text>now.</Text>
+				</Row>
 			</Async.IfFulfilled>
 			<Async.IfRejected state={emailVerificationRequestState}>
 				Invalid or expired token.

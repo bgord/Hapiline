@@ -10,6 +10,7 @@ import {
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
+import {Row} from "./ui/row/Row";
 import {Text} from "./ui/text/Text";
 import {Field} from "./ui/field/Field";
 import {Textarea} from "./ui/textarea/Textarea";
@@ -108,7 +109,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	return (
 		<>
 			<li className="flex items-baseline justify-between bg-gray-100 my-2 p-2 mt-4">
-				<div className="flex items-center">
+				<Row>
 					<Button variant="outlined" title="Show and edit comment" onClick={toggleComment}>
 						{isCommentVisible && <FontAwesomeIcon icon={faChevronUp} />}
 						{!isCommentVisible && <FontAwesomeIcon icon={faChevronDown} />}
@@ -118,13 +119,17 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
 						<Text>{habit.name}</Text>
 					</Link>
-				</div>
+				</Row>
 				{!vote && (
-					<div title="Vote for a habit" className="ml-auto text-red-600 mr-1 px-2 font-bold">
+					<Text
+						variant="bold"
+						title="Vote for a habit"
+						style={{marginLeft: "auto", marginRight: "6px"}}
+					>
 						!
-					</div>
+					</Text>
 				)}
-				<div className="flex">
+				<Row style={{width: "auto"}}>
 					<Button
 						variant="outlined"
 						onClick={() => changeVote("progress")}
@@ -148,7 +153,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					>
 						<FontAwesomeIcon icon={faMinus} />
 					</Button>
-				</div>
+				</Row>
 			</li>
 			{isCommentVisible && (
 				<>

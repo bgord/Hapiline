@@ -15,6 +15,7 @@ import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
+import {Row} from "./ui/row/Row";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -81,8 +82,8 @@ export const HabitList: React.FC = () => {
 
 	return (
 		<>
-			<div className="flex justify-end items-center w-full mt-4">
-				<Header variant="large" style={{marginRight: "auto", marginLeft: "12px"}}>
+			<Row mainAxis="end">
+				<Header variant="large" style={{marginRight: "auto"}}>
 					Habit list
 				</Header>
 				<Button
@@ -98,9 +99,9 @@ export const HabitList: React.FC = () => {
 				<Button variant="primary" onClick={openAddFormDialog}>
 					New habit
 				</Button>
-			</div>
+			</Row>
 			{areFiltersVisible && (
-				<div className="flex items-center w-full mt-10 mb-3">
+				<Row style={{marginTop: "60px"}}>
 					<HabitScoreFilters.Positive.Input
 						disabled={habitCounts.positive === 0}
 						value={habitScoreFilter.value}
@@ -137,10 +138,10 @@ export const HabitList: React.FC = () => {
 					<Button variant="outlined" onClick={resetAllFilters} style={{marginLeft: "auto"}}>
 						Reset filters
 					</Button>
-				</div>
+				</Row>
 			)}
 			{areFiltersVisible && (
-				<div className="flex w-full mb-6">
+				<Row style={{marginTop: "24px"}}>
 					<HabitStrengthFilters.Established.Input
 						value={habitStrengthFilter.value}
 						onChange={habitStrengthFilter.onChange}
@@ -175,9 +176,12 @@ export const HabitList: React.FC = () => {
 					<HabitStrengthFilters.All.Label>
 						All strengths ({habitCounts.all})
 					</HabitStrengthFilters.All.Label>
-				</div>
+				</Row>
 			)}
-			<div className={`flex w-full items-end mr-auto mb-6 ml-3 mt-${areFiltersVisible ? 4 : 12}`}>
+			<Row
+				crossAxis="end"
+				style={{marginTop: areFiltersVisible ? "36px" : "60px", marginBottom: "36px"}}
+			>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button variant="outlined" onClick={habitSearch.clearPhrase} style={{marginLeft: "12px"}}>
 					Clear
@@ -185,7 +189,7 @@ export const HabitList: React.FC = () => {
 				<Text style={{marginLeft: "auto", marginRight: "16px"}}>
 					<Text variant="bold">{howManyResults}</Text> results
 				</Text>
-			</div>
+			</Row>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
 					{provided => (

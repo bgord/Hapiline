@@ -6,6 +6,7 @@ import {Button} from "./ui/button/Button";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
+import {Row} from "./ui/row/Row";
 import {Stat} from "./Stat";
 import {Text} from "./ui/text/Text";
 import {formatDay} from "./config/DATE_FORMATS";
@@ -71,7 +72,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					>
 						Show day
 					</Button>
-					<div className="flex justify-end p-2 text-sm mt-auto">
+					<Row mainAxis="end" style={{marginTop: "auto", padding: "4px"}}>
 						<Text variant="dimmed" hidden={!stats.createdHabitsCount} style={{marginRight: "auto"}}>
 							NEW: {stats.createdHabitsCount}
 						</Text>
@@ -79,7 +80,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 						<Stat count={stats.plateauVotesCountStats} sign="=" />
 						<Stat count={stats.regressVotesCountStats} sign="-" />
 						<Stat count={stats.noVotesCountStats} sign="?" />
-					</div>
+					</Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
 			)}

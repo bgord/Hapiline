@@ -2,10 +2,12 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Column} from "./ui/column/Column";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
 import {Header} from "./ui/header/Header";
 import {RequestErrorMessage} from "./ErrorMessages";
+import {Row} from "./ui/row/Row";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -52,8 +54,8 @@ export const Calendar: React.FC = () => {
 	});
 
 	return (
-		<section className="flex flex-col items-center p-8 mx-auto">
-			<div className="flex items-center mb-16">
+		<Column style={{margin: "0 auto", alignItems: "center", marginTop: "36px"}}>
+			<Row style={{marginBottom: "72px", width: "auto"}}>
 				<Button
 					variant="secondary"
 					onClick={widget.setPreviousMonth}
@@ -71,7 +73,7 @@ export const Calendar: React.FC = () => {
 				>
 					Next
 				</Button>
-			</div>
+			</Row>
 			<Async.IfRejected state={getMonthRequestState}>
 				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 			</Async.IfRejected>
@@ -84,7 +86,7 @@ export const Calendar: React.FC = () => {
 					/>
 				))}
 			</ul>
-		</section>
+		</Column>
 	);
 };
 

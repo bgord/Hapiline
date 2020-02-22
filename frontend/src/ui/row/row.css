@@ -1,3 +1,27 @@
 .c-row {
 	display: flex;
+	width: 100%;
+}
+
+.c-row[data-main-axis="start"] {
+	justify-content: flex-start;
+}
+.c-row[data-main-axis="between"] {
+	justify-content: space-between;
+}
+.c-row[data-main-axis="end"] {
+	justify-content: flex-end;
+}
+
+.c-row[data-cross-axis="start"] {
+	align-items: flex-start;
+}
+.c-row[data-cross-axis="center"] {
+	align-items: center;
+}
+.c-row[data-cross-axis="baseline"] {
+	align-items: baseline;
+}
+.c-row[data-cross-axis="end"] {
+	align-items: flex-end;
 }

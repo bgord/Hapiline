@@ -8,6 +8,7 @@ import {HabitItemDialog} from "./HabitItemDialog";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
 import {IHabit} from "./interfaces/IHabit";
+import {Row} from "./ui/row/Row";
 import {Text} from "./ui/text/Text";
 import {useQueryParam} from "./hooks/useQueryParam";
 
@@ -47,16 +48,16 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 				>
 					<HabitScore score={habit.score} />
 					<HabitStrength strength={habit.strength} />
-					<div className="flex justify-between w-full">
+					<Row mainAxis="between">
 						<Text style={{paddingLeft: "12px"}}>{habit.name}</Text>
-						<div className="flex items-center ml-4">
-							{!habit.is_trackable && <div className="mr-2">NT</div>}
+						<Row style={{width: "auto"}}>
+							{!habit.is_trackable && <Text style={{marginRight: "6px"}}>NT</Text>}
 							<Button variant="outlined" onClick={openPreviewDialog}>
 								More
 							</Button>
 							<DeleteHabitButton {...habit} />
-						</div>
-					</div>
+						</Row>
+					</Row>
 					{doesPreviewHabitIdMatch && (
 						<HabitItemDialog habitId={habit.id} closeDialog={closePreviewDialog} />
 					)}

@@ -5,6 +5,8 @@ import React from "react";
 import {Button} from "./ui/button/Button";
 import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
@@ -43,11 +45,11 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 					className="w-1/3"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
-					<AlertDialogLabel>
+					<AlertDialogLabel style={{marginBottom: "48px"}}>
 						<Header variant="small">Do you want to delete the following habit?</Header>
 					</AlertDialogLabel>
-					<div className="italic mt-8">{name}</div>
-					<div className="mt-12 flex justify-around w-full">
+					<Text>{name}</Text>
+					<Row mainAxis="between" style={{marginTop: "48px"}}>
 						<Button variant="outlined" onClick={confirmDeletion}>
 							Yes, delete
 						</Button>
@@ -58,7 +60,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 						>
 							Nevermind, don't delete
 						</Button>
-					</div>
+					</Row>
 				</AlertDialog>
 			)}
 		</>

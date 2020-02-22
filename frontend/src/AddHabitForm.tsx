@@ -18,6 +18,7 @@ import {useErrorNotification, useSuccessNotification} from "./contexts/notificat
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
+import {Row} from "./ui/row/Row";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
@@ -68,10 +69,10 @@ export const AddHabitForm: React.FC = () => {
 			className="max-w-screen-lg overflow-auto h-full"
 			style={{maxHeight: "500px"}}
 		>
-			<div className="flex justify-between items-center mb-8">
+			<Row mainAxis="between">
 				<Header variant="small">New habit</Header>
 				<CloseIcon onClick={hideAddFormDialog} />
-			</div>
+			</Row>
 			<form
 				onSubmit={event => {
 					event.preventDefault();
@@ -84,9 +85,9 @@ export const AddHabitForm: React.FC = () => {
 						isTrackable,
 					);
 				}}
-				className="flex flex-col w-full"
+				className="flex flex-col w-full mt-6"
 			>
-				<div className="flex w-full">
+				<Row>
 					<Field style={{flexGrow: 1}}>
 						<Label htmlFor="habit_name">Habit name</Label>
 						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
@@ -121,7 +122,7 @@ export const AddHabitForm: React.FC = () => {
 							<option value="fresh">fresh</option>
 						</Select>
 					</Field>
-				</div>
+				</Row>
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>

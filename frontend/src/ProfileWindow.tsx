@@ -4,13 +4,14 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Column} from "./ui/column/Column";
 import {Divider} from "./ui/divider/Divider";
 import {Field} from "./ui/field/Field";
 import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
 import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
-import {SuccessMessage} from "./SuccessMessages";
+import {Row} from "./ui/row/Row";
 import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -19,13 +20,13 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<section className="flex flex-col max-w-2xl mx-auto mt-12">
+		<Column style={{maxWidth: "750px", margin: "48px auto 0 auto"}}>
 			<Header variant="large">Profile settings</Header>
 			<Divider style={{width: "200px", marginTop: "6px"}} />
 			<ChangeEmail />
 			<ChangePassword />
 			<DeleteAccount />
-		</section>
+		</Column>
 	);
 };
 
@@ -72,7 +73,7 @@ const ChangeEmail: React.FC = () => {
 		>
 			<>
 				<Header variant="extra-small">Email change</Header>
-				<div className="flex items-end">
+				<Row crossAxis="end">
 					<Field style={{marginRight: "12px", marginTop: "24px"}}>
 						<Label htmlFor="email">Email</Label>
 						<Input
@@ -108,11 +109,11 @@ const ChangeEmail: React.FC = () => {
 							Cancel
 						</Button>
 					)}
-				</div>
+				</Row>
 				{status === "error" && emailInlineError && <ErrorMessage>{emailInlineError}</ErrorMessage>}
 			</>
 			{["editing", "pending", "error"].includes(status) && (
-				<div className="flex flex-col flex-grow mt-4 w-64">
+				<Column style={{maxWidth: "405px", marginTop: "12px"}}>
 					<Field>
 						<Label htmlFor="password">Password</Label>
 						<Input
@@ -130,17 +131,18 @@ const ChangeEmail: React.FC = () => {
 					{status === "error" && passwordInlineError && (
 						<ErrorMessage>{passwordInlineError}</ErrorMessage>
 					)}
-				</div>
+				</Column>
 			)}
 			<Text style={{marginTop: "24px"}}>
 				NOTE: You will have to confirm your new email adress and login back again.
 			</Text>
-			{status === "pending" && <div className="mt-4">Email change pending...</div>}
+			{status === "pending" && <Text style={{marginTop: "12px"}}>Email change pending...</Text>}
 			{status === "success" && (
-				<>
-					<SuccessMessage>Email confirmation message has been sent!</SuccessMessage>
-					<div>You will be logged out in 5 seconds.</div>
-				</>
+				<Text>
+					Email confirmation message has been sent!
+					<br />
+					You will be logged out in 5 seconds.
+				</Text>
 			)}
 			<Divider style={{marginTop: "48px"}} />
 		</form>
@@ -260,7 +262,7 @@ const ChangePassword = () => {
 					)}
 				</>
 			)}
-			{status === "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
+			{status === "success" && <Text>Password changed successfully!</Text>}
 			<Divider style={{marginTop: "48px"}} />
 		</form>
 	);
@@ -311,7 +313,7 @@ const DeleteAccount = () => {
 					<AlertDialogLabel>
 						<Header variant="small">Do you really want to delete your account? </Header>
 					</AlertDialogLabel>
-					<div className="mt-12 flex justify-between w-full">
+					<Row mainAxis="between" style={{marginTop: "48px"}}>
 						<Button variant="outlined" onClick={confirmDeletion}>
 							Yes, delete
 						</Button>
@@ -322,7 +324,7 @@ const DeleteAccount = () => {
 						>
 							Nevermind, don't delete
 						</Button>
-					</div>
+					</Row>
 				</AlertDialog>
 			)}
 		</>

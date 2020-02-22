@@ -2,13 +2,14 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Header} from "./ui/header/Header";
 import {Button} from "./ui/button/Button";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
-import {SuccessMessage} from "./SuccessMessages";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
@@ -78,7 +79,7 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 					/>
 				</Field>
-				<div className="flex justify-end w-full mt-6">
+				<Row mainAxis="end" style={{marginTop: "24px"}}>
 					<Button
 						data-testid="registration-submit"
 						type="submit"
@@ -88,15 +89,15 @@ export const RegistrationWindow: React.FC = () => {
 					>
 						{registrationRequestState.isPending ? "Loading..." : "Register"}
 					</Button>
-				</div>
+				</Row>
 				<Async.IfFulfilled state={registrationRequestState}>
-					<SuccessMessage>Account confirmation email has been sent!</SuccessMessage>
-					<div className="flex mt-4">
+					<Text>Account confirmation email has been sent!</Text>
+					<Row style={{marginTop: "18px"}}>
 						<span className="text-sm">You can </span>
 						<Link className="link ml-1" to="/login">
 							login now
 						</Link>
-					</div>
+					</Row>
 				</Async.IfFulfilled>
 				<Async.IfRejected state={registrationRequestState}>
 					<RequestErrorMessage>{responseStatus === 500 && errorMessage}</RequestErrorMessage>

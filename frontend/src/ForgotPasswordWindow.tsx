@@ -6,7 +6,8 @@ import {Field} from "./ui/field/Field";
 import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
-import {SuccessMessage} from "./SuccessMessages";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 
 export const ForgotPasswordWindow: React.FC = () => {
@@ -38,7 +39,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 						placeholder="john.brown@gmail.com"
 					/>
 				</Field>
-				<div className="flex justify-end w-full mt-6">
+				<Row mainAxis="end" style={{marginTop: "24px"}}>
 					<Button
 						variant="primary"
 						type="submit"
@@ -47,9 +48,9 @@ export const ForgotPasswordWindow: React.FC = () => {
 					>
 						{forgotPasswordRequestState.isPending ? "Loading..." : "Send email"}
 					</Button>
-				</div>
+				</Row>
 				<Async.IfFulfilled state={forgotPasswordRequestState}>
-					<SuccessMessage className="w-full">Email sent if an account exists.</SuccessMessage>
+					<Text>Email sent if an account exists.</Text>
 				</Async.IfFulfilled>
 			</form>
 		</div>

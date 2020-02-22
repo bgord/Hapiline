@@ -7,6 +7,7 @@ import {Field} from "./ui/field/Field";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
 import {Label} from "./ui/label/Label";
+import {Row} from "./ui/row/Row";
 import {Select} from "./ui/select/Select";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
@@ -69,7 +70,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				</Select>
 			</Field>
 			<Async.IfFulfilled state={habitVoteChartRequestState}>
-				<div className="flex w-full mt-6 border-l-2 border-gray-500">
+				<Row style={{marginTop: "24px"}}>
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
 							key={item.day}
@@ -78,7 +79,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 							{...item}
 						/>
 					))}
-				</div>
+				</Row>
 			</Async.IfFulfilled>
 			<Async.IfRejected state={habitVoteChartRequestState}>
 				<ErrorMessage className="mt-8">Charts unavailable, please try again.</ErrorMessage>

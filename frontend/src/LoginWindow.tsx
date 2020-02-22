@@ -12,6 +12,7 @@ import {Field} from "./ui/field/Field";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
 import {Text} from "./ui/text/Text";
+import {Row} from "./ui/row/Row";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -62,7 +63,7 @@ export const LoginWindow: React.FC = () => {
 						placeholder="*********"
 					/>
 				</Field>
-				<div className="flex justify-end w-full mt-6">
+				<Row mainAxis="end" style={{marginTop: "24px"}}>
 					<Button
 						type="submit"
 						variant="primary"
@@ -72,13 +73,13 @@ export const LoginWindow: React.FC = () => {
 					>
 						{loginRequestState.isPending ? "Loading..." : "Login"}
 					</Button>
-				</div>
-				<div className="flex mt-8">
+				</Row>
+				<Row style={{marginTop: "36px"}}>
 					<Text>Don't have an account?</Text>
 					<Link className="link ml-1" to="/register">
 						Create now
 					</Link>
-				</div>
+				</Row>
 				<Link className="link mt-2" to="/forgot-password">
 					Forgot password?
 				</Link>

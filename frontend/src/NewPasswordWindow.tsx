@@ -8,7 +8,8 @@ import {Header} from "./ui/header/Header";
 import {Input} from "./ui/input/Input";
 import {Label} from "./ui/label/Label";
 import {RequestErrorMessage} from "./ErrorMessages";
-import {SuccessMessage} from "./SuccessMessages";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
@@ -61,7 +62,7 @@ export const NewPasswordWindow: React.FC = () => {
 						disabled={newPasswordRequestState.isFulfilled}
 					/>
 				</Field>
-				<div className="flex justify-end w-full">
+				<Row mainAxis="end">
 					<Button
 						variant="primary"
 						type="submit"
@@ -70,9 +71,9 @@ export const NewPasswordWindow: React.FC = () => {
 					>
 						{newPasswordRequestState.isPending ? "Loading..." : "Change password"}
 					</Button>
-				</div>
+				</Row>
 				<Async.IfFulfilled state={newPasswordRequestState}>
-					<SuccessMessage>Password has been changed!</SuccessMessage>
+					<Text>Password has been changed!</Text>
 					<div className="flex mt-4">
 						<span className="text-sm">You can </span>
 						<Link className="link ml-1" to="/login">

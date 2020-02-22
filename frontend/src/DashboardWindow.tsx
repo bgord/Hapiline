@@ -4,12 +4,14 @@ import React from "react";
 import deepEqual from "fast-deep-equal";
 
 import {Button} from "./ui/button/Button";
+import {Column} from "./ui/column/Column";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
 import {Divider} from "./ui/divider/Divider";
 import {ErrorMessage} from "./ErrorMessages";
 import {Header} from "./ui/header/Header";
 import {Loader} from "./Loader";
+import {Row} from "./ui/row/Row";
 import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
@@ -72,30 +74,30 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<section className="flex flex-col max-w-2xl mx-auto mt-12">
-			<header className="flex items-center w-full">
+		<Column style={{maxWidth: "750px", margin: "48px auto 0 auto"}}>
+			<Row>
 				<Header variant="large">Hello!</Header>
 				<Button variant="primary" onClick={redirectToCurrentDay} style={{marginLeft: "auto"}}>
 					View today
 				</Button>
-			</header>
+			</Row>
 			<Async.IfRejected state={getDashboardStatsRequestState}>
 				<ErrorMessage className="mt-8">
 					Cannot load dashboard stats now, please try again.
 				</ErrorMessage>
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getDashboardStatsRequestState}>
-				<p className="my-8">
+				<Row style={{margin: "48px 0"}}>
 					<MotivationalText
 						untracked={howManyUntrackedHabitsToday}
 						total={howManyHabitsToday}
 						votedFor={howManyVotesToday}
 					/>
-				</p>
+				</Row>
 				{howManyHabitsToday > 0 && (
-					<div data-testid="chart-today">
+					<Column data-testid="chart-today">
 						<Text variant="dimmed">Votes today</Text>
-						<div className="flex items-center mb-8">
+						<Row style={{marginBottom: "36px"}}>
 							<DaySummaryChart
 								maximumVotes={todayStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -103,13 +105,13 @@ export const DashboardWindow = () => {
 								{...statsForToday}
 							/>
 							<DaySummaryStats day={currentDate} {...statsForToday} />
-						</div>
-					</div>
+						</Row>
+					</Column>
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-					<div data-testid="chart-last-week">
+					<Column data-testid="chart-last-week">
 						<Text variant="dimmed">Votes last week</Text>
-						<div className="flex items-center mb-8">
+						<Row style={{marginBottom: "36px"}}>
 							<DaySummaryChart
 								maximumVotes={lastWeekStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -117,13 +119,13 @@ export const DashboardWindow = () => {
 								{...statsForLastWeek}
 							/>
 							<DaySummaryStats day={currentDate} {...statsForLastWeek} />
-						</div>
-					</div>
+						</Row>
+					</Column>
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-					<div data-testid="chart-last-month">
+					<Column data-testid="chart-last-month">
 						<Text variant="dimmed">Votes last month</Text>
-						<div className="flex items-center">
+						<Row style={{marginBottom: "36px"}}>
 							<DaySummaryChart
 								maximumVotes={lastMonthStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -131,8 +133,8 @@ export const DashboardWindow = () => {
 								{...statsForLastMonth}
 							/>
 							<DaySummaryStats day={currentDate} {...statsForLastMonth} />
-						</div>
-					</div>
+						</Row>
+					</Column>
 				)}
 			</Async.IfFulfilled>
 			<Async.IfPending state={getDashboardStreakStatsRequestState}>
@@ -184,7 +186,7 @@ export const DashboardWindow = () => {
 					{...statsForToday}
 				/>
 			)}
-		</section>
+		</Column>
 	);
 };
 
