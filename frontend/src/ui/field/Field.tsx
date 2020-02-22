@@ -2,18 +2,15 @@ import "./field.css";
 
 import React from "react";
 
+import {Margins} from "../margins";
+
 type FieldVariant = "column" | "row";
 
-type Margin = "12" | "24" | "48" | undefined;
-
-export const Field: React.FC<JSX.IntrinsicElements["div"] & {
-	children: JSX.IntrinsicElements["div"]["children"];
-	variant?: FieldVariant;
-	mt?: Margin;
-	mr?: Margin;
-	mb?: Margin;
-	ml?: Margin;
-}> = ({children, mt, mr, mb, ml, variant = "column", ...props}) => {
+export const Field: React.FC<JSX.IntrinsicElements["div"] &
+	Margins & {
+		children: JSX.IntrinsicElements["div"]["children"];
+		variant?: FieldVariant;
+	}> = ({children, mt, mr, mb, ml, variant = "column", ...props}) => {
 	const passedChildren = [...React.Children.toArray(children)];
 	const reorderedChildren = passedChildren.reverse();
 

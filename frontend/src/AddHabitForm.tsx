@@ -152,7 +152,8 @@ export const AddHabitForm: React.FC = () => {
 				<Button
 					variant="primary"
 					type="submit"
-					style={{marginTop: "24px", alignSelf: "flex-end", width: "125px"}}
+					mt="24"
+					style={{alignSelf: "flex-end", width: "125px"}}
 				>
 					Add habit
 				</Button>

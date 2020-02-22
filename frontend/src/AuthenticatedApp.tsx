@@ -160,20 +160,20 @@ function NotificationDropdown() {
 									{notification.content}
 									{notification.status === "unread" && (
 										<Button
+											ml="6"
 											variant="secondary"
 											disabled={updateNotificationRequestState.isPending}
 											onClick={() => markNotificationAsRead(notification.id)}
-											style={{marginLeft: "6px"}}
 										>
 											Mark as read
 										</Button>
 									)}
 									{notification.status === "read" && (
 										<Button
+											ml="6"
 											variant="outlined"
 											onClick={() => markNotificationAsUnread(notification.id)}
 											disabled={updateNotificationRequestState.isPending}
-											style={{marginLeft: "6px"}}
 										>
 											Mark as unread
 										</Button>

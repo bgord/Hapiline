@@ -37,7 +37,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	return (
 		<>
-			<Button variant="outlined" onClick={openDialog} style={{marginLeft: "6px"}}>
+			<Button ml="6" variant="outlined" onClick={openDialog}>
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
 			</Button>
 			{showDialog && (

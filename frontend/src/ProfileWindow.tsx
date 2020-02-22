@@ -98,13 +98,13 @@ const ChangeEmail: React.FC = () => {
 					)}
 					{["editing", "error"].includes(status) && (
 						<Button
+							ml="6"
 							variant="outlined"
 							onClick={() => {
 								setStatus("idle");
 								setPassword("");
 								setNewEmail(initialEmail);
 							}}
-							style={{marginLeft: "6px"}}
 						>
 							Cancel
 						</Button>

@@ -38,15 +38,15 @@ export default {
 				}}
 			>
 				<Header>Login</Header>
-				<Field style={{marginTop: "36px"}}>
+				<Field mt="48">
 					<Label htmlFor="email">Email</Label>
 					<Input id="email" placeholder="user@example.com" />
 				</Field>
-				<Field style={{marginTop: "12px"}}>
+				<Field mt="12">
 					<Label htmlFor="password">Password</Label>
 					<Input id="password" type="password" placeholder="*********" />
 				</Field>
-				<Button variant="primary" style={{marginTop: "24px", width: "100%"}}>
+				<Button mt="24" variant="primary" style={{width: "100%"}}>
 					Login
 				</Button>
 			</form>

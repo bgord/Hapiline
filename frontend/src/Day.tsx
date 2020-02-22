@@ -65,10 +65,13 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			{isDayDialogAvailable && (
 				<>
 					<Button
+						ml="auto"
+						mr="auto"
+						mt="6"
+						mb="6"
 						variant="outlined"
 						hidden={!isHovering}
 						onClick={openDialog}
-						style={{margin: "5px auto"}}
 					>
 						Show day
 					</Button>

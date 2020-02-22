@@ -141,13 +141,13 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
 
 				<Button
+					ml="auto"
 					onClick={() => {
 						habitVoteFilter.reset();
 						habitSearch.clearPhrase();
 						updateQueryParams("calendar", {preview_day: queryParams.preview_day});
 					}}
 					variant="secondary"
-					style={{marginLeft: "auto"}}
 				>
 					Reset filters
 				</Button>
@@ -155,12 +155,12 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 			<Row style={{marginTop: "24px"}}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button
+					ml="12"
 					onClick={() => {
 						habitSearch.clearPhrase();
 						clearHighlightedHabitId();
 					}}
 					variant="outlined"
-					style={{marginLeft: "12px"}}
 				>
 					Clear
 				</Button>

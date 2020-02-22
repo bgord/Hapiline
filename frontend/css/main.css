@@ -28,6 +28,9 @@ body {
 	}
 }
 
+*[data-mt="6"] {
+	margin-top: 6px;
+}
 *[data-mt="12"] {
 	margin-top: 12px;
 }
@@ -37,7 +40,13 @@ body {
 *[data-mt="48"] {
 	margin-top: 48px;
 }
+*[data-mt="auto"] {
+	margin-top: auto;
+}
 
+*[data-mr="6"] {
+	margin-right: 6px;
+}
 *[data-mr="12"] {
 	margin-right: 12px;
 }
@@ -47,7 +56,13 @@ body {
 *[data-mr="48"] {
 	margin-right: 48px;
 }
+*[data-mr="auto"] {
+	margin-right: auto;
+}
 
+*[data-mb="6"] {
+	margin-bottom: 6px;
+}
 *[data-mb="12"] {
 	margin-bottom: 12px;
 }
@@ -57,7 +72,13 @@ body {
 *[data-mb="48"] {
 	margin-bottom: 48px;
 }
+*[data-mb="auto"] {
+	margin-bottom: auto;
+}
 
+*[data-ml="6"] {
+	margin-left: 6px;
+}
 *[data-ml="12"] {
 	margin-left: 12px;
 }
@@ -66,4 +87,7 @@ body {
 }
 *[data-ml="48"] {
 	margin-left: 48px;
+}
+*[data-ml="auto"] {
+	margin-left: auto;
 }

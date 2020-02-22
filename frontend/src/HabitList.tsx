@@ -87,12 +87,12 @@ export const HabitList: React.FC = () => {
 					Habit list
 				</Header>
 				<Button
+					mr="12"
 					variant="secondary"
 					onClick={() => {
 						resetAllFilters();
 						toggleFilters();
 					}}
-					style={{marginRight: "12px"}}
 				>
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
 				</Button>
@@ -135,7 +135,7 @@ export const HabitList: React.FC = () => {
 					/>
 					<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
 
-					<Button variant="outlined" onClick={resetAllFilters} style={{marginLeft: "auto"}}>
+					<Button ml="auto" variant="outlined" onClick={resetAllFilters}>
 						Reset filters
 					</Button>
 				</Row>
@@ -183,7 +183,7 @@ export const HabitList: React.FC = () => {
 				style={{marginTop: areFiltersVisible ? "36px" : "60px", marginBottom: "36px"}}
 			>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-				<Button variant="outlined" onClick={habitSearch.clearPhrase} style={{marginLeft: "12px"}}>
+				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear
 				</Button>
 				<Text style={{marginLeft: "auto", marginRight: "16px"}}>

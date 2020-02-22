@@ -138,18 +138,18 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						<FontAwesomeIcon icon={faPlus} />
 					</Button>
 					<Button
+						ml="6"
 						variant="outlined"
 						onClick={() => changeVote("plateau")}
 						disabled={addHabitDayVoteRequestState.isPending}
-						style={{marginLeft: "6px"}}
 					>
 						<FontAwesomeIcon icon={faEquals} />
 					</Button>
 					<Button
+						ml="6"
 						variant="outlined"
 						onClick={() => changeVote("regress")}
 						disabled={addHabitDayVoteRequestState.isPending}
-						style={{marginLeft: "6px"}}
 					>
 						<FontAwesomeIcon icon={faMinus} />
 					</Button>
