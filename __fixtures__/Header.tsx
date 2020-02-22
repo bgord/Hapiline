@@ -12,16 +12,16 @@ export default {
 	"all variants": (
 		<Demo>
 			<Column>
-				<Header variant="extra-small" style={{marginTop: "24px"}}>
+				<Header mt="24" variant="extra-small">
 					Habit list
 				</Header>
-				<Header variant="small" style={{marginTop: "24px"}}>
+				<Header mt="24" variant="small">
 					Habit list
 				</Header>
-				<Header variant="medium" style={{marginTop: "24px"}}>
+				<Header mt="24" variant="medium">
 					Habit list
 				</Header>
-				<Header variant="large" style={{marginTop: "24px"}}>
+				<Header mt="24" variant="large">
 					Habit list
 				</Header>
 			</Column>

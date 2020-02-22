@@ -83,7 +83,7 @@ export const HabitList: React.FC = () => {
 	return (
 		<>
 			<Row mainAxis="end">
-				<Header variant="large" style={{marginRight: "auto"}}>
+				<Header mr="auto" variant="large">
 					Habit list
 				</Header>
 				<Button

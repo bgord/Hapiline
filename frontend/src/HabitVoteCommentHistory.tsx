@@ -28,7 +28,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 
 	return (
 		<div>
-			<Header variant="extra-small" style={{marginTop: "48px"}}>
+			<Header mt="48" variant="extra-small">
 				Vote comments
 			</Header>
 			<Async.IfRejected state={getHabitVoteCommentsRequestState}>

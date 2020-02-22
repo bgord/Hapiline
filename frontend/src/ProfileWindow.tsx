@@ -187,7 +187,7 @@ const ChangePassword = () => {
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			<Header variant="extra-small" style={{marginBottom: "24px"}}>
+			<Header mb="24" variant="extra-small">
 				Password change
 			</Header>
 			{["idle", "pending", "success"].includes(status) && (
@@ -291,7 +291,7 @@ const DeleteAccount = () => {
 	}
 	return (
 		<>
-			<Header variant="extra-small" style={{marginBottom: "36px"}}>
+			<Header mt="48" variant="extra-small">
 				Account deletion
 			</Header>
 			<Button

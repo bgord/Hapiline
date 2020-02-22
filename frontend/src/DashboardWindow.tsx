@@ -144,7 +144,7 @@ export const DashboardWindow = () => {
 				{progressStreakStats.length > 0 && (
 					<>
 						<Divider style={{marginTop: "24px"}} />
-						<Header variant="extra-small" style={{marginTop: "24px", marginBottom: "36px"}}>
+						<Header mt="24" mb="48" variant="extra-small">
 							Progress streaks
 						</Header>
 						<ul>
@@ -162,7 +162,7 @@ export const DashboardWindow = () => {
 				{regressStreakStats.length > 0 && (
 					<>
 						<Divider style={{marginTop: "24px"}} />
-						<Header variant="extra-small" style={{marginTop: "24px", marginBottom: "36px"}}>
+						<Header mt="24" mb="48" variant="extra-small">
 							Regress streaks
 						</Header>
 						<ul className="mb-6">
