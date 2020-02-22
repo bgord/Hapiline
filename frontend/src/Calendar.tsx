@@ -55,7 +55,7 @@ export const Calendar: React.FC = () => {
 
 	return (
 		<Column style={{margin: "0 auto", alignItems: "center", marginTop: "36px"}}>
-			<Row style={{marginBottom: "72px", width: "auto"}}>
+			<Row mb="72" style={{width: "auto"}}>
 				<Button
 					variant="secondary"
 					onClick={widget.setPreviousMonth}

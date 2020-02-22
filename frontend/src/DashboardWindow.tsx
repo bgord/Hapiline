@@ -87,7 +87,7 @@ export const DashboardWindow = () => {
 				</ErrorMessage>
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getDashboardStatsRequestState}>
-				<Row style={{margin: "48px 0"}}>
+				<Row mt="48" mb="48">
 					<MotivationalText
 						untracked={howManyUntrackedHabitsToday}
 						total={howManyHabitsToday}
@@ -97,7 +97,7 @@ export const DashboardWindow = () => {
 				{howManyHabitsToday > 0 && (
 					<Column data-testid="chart-today">
 						<Text variant="dimmed">Votes today</Text>
-						<Row style={{marginBottom: "36px"}}>
+						<Row mb="48">
 							<DaySummaryChart
 								maximumVotes={todayStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -111,7 +111,7 @@ export const DashboardWindow = () => {
 				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
 					<Column data-testid="chart-last-week">
 						<Text variant="dimmed">Votes last week</Text>
-						<Row style={{marginBottom: "36px"}}>
+						<Row mb="48">
 							<DaySummaryChart
 								maximumVotes={lastWeekStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -125,7 +125,7 @@ export const DashboardWindow = () => {
 				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
 					<Column data-testid="chart-last-month">
 						<Text variant="dimmed">Votes last month</Text>
-						<Row style={{marginBottom: "36px"}}>
+						<Row mb="48">
 							<DaySummaryChart
 								maximumVotes={lastMonthStats?.maximumVotes ?? 0}
 								className="h-4"

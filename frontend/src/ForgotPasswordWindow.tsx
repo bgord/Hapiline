@@ -39,7 +39,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 						placeholder="john.brown@gmail.com"
 					/>
 				</Field>
-				<Row mainAxis="end" style={{marginTop: "24px"}}>
+				<Row mt="24" mainAxis="end">
 					<Button
 						variant="primary"
 						type="submit"

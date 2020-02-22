@@ -53,7 +53,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	);
 
 	return (
-		<Row crossAxis="end" style={{marginLeft: "12px"}}>
+		<Row ml="12" crossAxis="end">
 			<Field mr="12" style={{width: "100%"}}>
 				<Label htmlFor="habit_name">Habit name</Label>
 				<HabitNameInput

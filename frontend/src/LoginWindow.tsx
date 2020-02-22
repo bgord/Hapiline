@@ -63,7 +63,7 @@ export const LoginWindow: React.FC = () => {
 						placeholder="*********"
 					/>
 				</Field>
-				<Row mainAxis="end" style={{marginTop: "24px"}}>
+				<Row mt="24" mainAxis="end">
 					<Button
 						type="submit"
 						variant="primary"
@@ -74,7 +74,7 @@ export const LoginWindow: React.FC = () => {
 						{loginRequestState.isPending ? "Loading..." : "Login"}
 					</Button>
 				</Row>
-				<Row style={{marginTop: "36px"}}>
+				<Row mt="48">
 					<Text>Don't have an account?</Text>
 					<Link className="link ml-1" to="/register">
 						Create now

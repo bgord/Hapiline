@@ -75,7 +75,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					>
 						Show day
 					</Button>
-					<Row mainAxis="end" style={{marginTop: "auto", padding: "4px"}}>
+					<Row mt="auto" mainAxis="end" style={{padding: "4px"}}>
 						<Text variant="dimmed" hidden={!stats.createdHabitsCount} style={{marginRight: "auto"}}>
 							NEW: {stats.createdHabitsCount}
 						</Text>

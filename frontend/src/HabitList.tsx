@@ -101,7 +101,7 @@ export const HabitList: React.FC = () => {
 				</Button>
 			</Row>
 			{areFiltersVisible && (
-				<Row style={{marginTop: "60px"}}>
+				<Row mt="48">
 					<HabitScoreFilters.Positive.Input
 						disabled={habitCounts.positive === 0}
 						value={habitScoreFilter.value}
@@ -141,7 +141,7 @@ export const HabitList: React.FC = () => {
 				</Row>
 			)}
 			{areFiltersVisible && (
-				<Row style={{marginTop: "24px"}}>
+				<Row mt="24">
 					<HabitStrengthFilters.Established.Input
 						value={habitStrengthFilter.value}
 						onChange={habitStrengthFilter.onChange}
@@ -178,10 +178,7 @@ export const HabitList: React.FC = () => {
 					</HabitStrengthFilters.All.Label>
 				</Row>
 			)}
-			<Row
-				crossAxis="end"
-				style={{marginTop: areFiltersVisible ? "36px" : "60px", marginBottom: "36px"}}
-			>
+			<Row crossAxis="end" mb="48" style={{marginTop: areFiltersVisible ? "36px" : "60px"}}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear

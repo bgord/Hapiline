@@ -67,7 +67,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						<Header variant="small">Habit preview</Header>
 						<CloseIcon onClick={dismissDialog} />
 					</Row>
-					<Row style={{marginTop: "24px"}}>
+					<Row mt="24">
 						<EditableHabitScoreSelect
 							{...habit}
 							setHabitItem={habitRequestState.setData}

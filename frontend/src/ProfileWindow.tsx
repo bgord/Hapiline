@@ -313,7 +313,7 @@ const DeleteAccount = () => {
 					<AlertDialogLabel>
 						<Header variant="small">Do you really want to delete your account? </Header>
 					</AlertDialogLabel>
-					<Row mainAxis="between" style={{marginTop: "48px"}}>
+					<Row mt="48" mainAxis="between">
 						<Button variant="outlined" onClick={confirmDeletion}>
 							Yes, delete
 						</Button>

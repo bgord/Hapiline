@@ -92,7 +92,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 			className="max-w-screen-lg overflow-auto"
 			style={{maxHeight: "700px"}}
 		>
-			<Row mainAxis="between" style={{marginBottom: "24px"}}>
+			<Row mb="24" mainAxis="between">
 				<Header variant="small">
 					{day} - {dayName}
 				</Header>
@@ -106,7 +106,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 					Congratulations! You've voted for every habit{" "}
 				</Text>
 			)}
-			<Row style={{marginTop: "36px"}}>
+			<Row mt="48">
 				<DaySummaryChart
 					maximumVotes={habitsAvailableAtThisDay.length}
 					className="h-4"
@@ -115,7 +115,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				/>
 				<DaySummaryStats day={day} {...stats} />
 			</Row>
-			<Row crossAxis="end" style={{marginTop: "36px"}}>
+			<Row mt="48" crossAxis="end">
 				<HabitVoteFilters.Voted.Input
 					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
@@ -152,7 +152,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 					Reset filters
 				</Button>
 			</Row>
-			<Row style={{marginTop: "24px"}}>
+			<Row mt="24">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button
 					ml="12"

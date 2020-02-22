@@ -79,7 +79,7 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.isFulfilled}
 					/>
 				</Field>
-				<Row mainAxis="end" style={{marginTop: "24px"}}>
+				<Row mt="24" mainAxis="end">
 					<Button
 						data-testid="registration-submit"
 						type="submit"
@@ -92,7 +92,7 @@ export const RegistrationWindow: React.FC = () => {
 				</Row>
 				<Async.IfFulfilled state={registrationRequestState}>
 					<Text>Account confirmation email has been sent!</Text>
-					<Row style={{marginTop: "18px"}}>
+					<Row mt="24">
 						<span className="text-sm">You can </span>
 						<Link className="link ml-1" to="/login">
 							login now

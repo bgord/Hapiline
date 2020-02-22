@@ -70,7 +70,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				</Select>
 			</Field>
 			<Async.IfFulfilled state={habitVoteChartRequestState}>
-				<Row style={{marginTop: "24px"}}>
+				<Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
 							key={item.day}

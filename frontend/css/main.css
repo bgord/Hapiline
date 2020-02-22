@@ -40,6 +40,9 @@ body {
 *[data-mt="48"] {
 	margin-top: 48px;
 }
+*[data-mt="72"] {
+	margin-top: 72px;
+}
 *[data-mt="auto"] {
 	margin-top: auto;
 }
@@ -55,6 +58,9 @@ body {
 }
 *[data-mr="48"] {
 	margin-right: 48px;
+}
+*[data-mr="72"] {
+	margin-right: 72px;
 }
 *[data-mr="auto"] {
 	margin-right: auto;
@@ -72,6 +78,9 @@ body {
 *[data-mb="48"] {
 	margin-bottom: 48px;
 }
+*[data-mb="72"] {
+	margin-bottom: 72px;
+}
 *[data-mb="auto"] {
 	margin-bottom: auto;
 }
@@ -87,6 +96,9 @@ body {
 }
 *[data-ml="48"] {
 	margin-left: 48px;
+}
+*[data-ml="72"] {
+	margin-left: 72px;
 }
 *[data-ml="auto"] {
 	margin-left: auto;
