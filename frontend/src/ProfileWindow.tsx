@@ -22,7 +22,7 @@ export const ProfileWindow = () => {
 	return (
 		<Column style={{maxWidth: "750px", margin: "48px auto 0 auto"}}>
 			<Header variant="large">Profile settings</Header>
-			<Divider style={{width: "200px", marginTop: "6px"}} />
+			<Divider mt="6" style={{width: "200px"}} />
 			<ChangeEmail />
 			<ChangePassword />
 			<DeleteAccount />
@@ -144,7 +144,7 @@ const ChangeEmail: React.FC = () => {
 					You will be logged out in 5 seconds.
 				</Text>
 			)}
-			<Divider style={{marginTop: "48px"}} />
+			<Divider mt="48" />
 		</form>
 	);
 };
@@ -263,7 +263,7 @@ const ChangePassword = () => {
 				</>
 			)}
 			{status === "success" && <Text>Password changed successfully!</Text>}
-			<Divider style={{marginTop: "48px"}} />
+			<Divider mt="48" />
 		</form>
 	);
 };

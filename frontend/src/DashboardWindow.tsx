@@ -143,7 +143,7 @@ export const DashboardWindow = () => {
 			<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
 				{progressStreakStats.length > 0 && (
 					<>
-						<Divider style={{marginTop: "24px"}} />
+						<Divider mt="24" />
 						<Header mt="24" mb="48" variant="extra-small">
 							Progress streaks
 						</Header>
@@ -161,7 +161,7 @@ export const DashboardWindow = () => {
 				)}
 				{regressStreakStats.length > 0 && (
 					<>
-						<Divider style={{marginTop: "24px"}} />
+						<Divider mt="24" />
 						<Header mt="24" mb="48" variant="extra-small">
 							Regress streaks
 						</Header>

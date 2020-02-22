@@ -2,6 +2,12 @@ import "./divider.css";
 
 import React from "react";
 
-export const Divider: React.FC<JSX.IntrinsicElements["div"]> = props => (
-	<div className="c-divider" {...props} />
-);
+import {Margins} from "../margins";
+
+export const Divider: React.FC<JSX.IntrinsicElements["div"] & Margins> = ({
+	mt,
+	mr,
+	mb,
+	ml,
+	...props
+}) => <div data-mt={mt} data-mr={mr} data-mb={mb} data-ml={ml} className="c-divider" {...props} />;
