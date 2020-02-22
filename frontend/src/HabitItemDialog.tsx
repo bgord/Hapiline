@@ -174,11 +174,7 @@ const EditableDescription: React.FC<{
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
 					Save
 				</SaveButton>
-				<CancelButton
-					{...textarea}
-					onClick={newDescriptionHelpers.onClear}
-					style={{marginLeft: "6px"}}
-				>
+				<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
 					Cancel
 				</CancelButton>
 			</Row>

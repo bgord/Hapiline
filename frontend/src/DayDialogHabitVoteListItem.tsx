@@ -171,11 +171,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
 						Save
 					</SaveButton>
-					<CancelButton
-						{...textarea}
-						onClick={newCommentHelpers.onClear}
-						style={{marginLeft: "6px"}}
-					>
+					<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
 						Cancel
 					</CancelButton>
 				</>

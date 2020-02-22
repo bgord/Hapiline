@@ -60,6 +60,7 @@ export const CancelButton: React.FC<UseEditableFieldStateReturnType &
 	<>
 		{state === "focused" && (
 			<Button
+				ml="6"
 				variant="outlined"
 				onClick={event => {
 					setIdle();

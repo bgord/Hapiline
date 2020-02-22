@@ -25,7 +25,7 @@ export default {
 				variant="row"
 				style={{display: "flex", justifyContent: "center", alignItems: "center"}}
 			>
-				<Label htmlFor="type" style={{marginRight: "12px"}}>
+				<Label mr="12" htmlFor="type">
 					Type
 				</Label>
 				<Select id="type">

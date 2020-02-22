@@ -246,6 +246,7 @@ const ChangePassword = () => {
 						Submit
 					</Button>
 					<Button
+						ml="6"
 						variant="outlined"
 						onClick={() => {
 							setStatus("idle");
@@ -253,7 +254,6 @@ const ChangePassword = () => {
 							setNewPassword("");
 							setNewPasswordConfirmation("");
 						}}
-						style={{marginLeft: "6px"}}
 					>
 						Cancel
 					</Button>
@@ -298,7 +298,7 @@ const DeleteAccount = () => {
 				variant="primary"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}
-				style={{margin: "0 auto 0 0"}}
+				mr="auto"
 			>
 				Delete account
 			</Button>

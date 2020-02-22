@@ -58,7 +58,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter={HABIT_STRENGTHS.established} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label style={{margin: "0 8px 0 4px"}} htmlFor={HABIT_STRENGTHS.established} {...props} />
+			<Label mr="6" htmlFor={HABIT_STRENGTHS.established} {...props} />
 		),
 	},
 	Developing: {
@@ -66,7 +66,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter={HABIT_STRENGTHS.developing} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label style={{margin: "0 8px 0 4px"}} htmlFor={HABIT_STRENGTHS.developing} {...props} />
+			<Label mr="6" htmlFor={HABIT_STRENGTHS.developing} {...props} />
 		),
 	},
 	Fresh: {
@@ -74,7 +74,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter={HABIT_STRENGTHS.fresh} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label style={{margin: "0 8px 0 4px"}} htmlFor={HABIT_STRENGTHS.fresh} {...props} />
+			<Label mr="6" htmlFor={HABIT_STRENGTHS.fresh} {...props} />
 		),
 	},
 	All: {
@@ -82,7 +82,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter="all-strengths" {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label style={{margin: "0 8px 0 4px"}} htmlFor="all-strengths" {...props} />
+			<Label mr="6" htmlFor="all-strengths" {...props} />
 		),
 	},
 };

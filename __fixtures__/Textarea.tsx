@@ -45,7 +45,7 @@ export default {
 					<Label htmlFor="description">Description</Label>
 					<Textarea id="description" />
 				</Field>
-				<Row mainAxis="end" style={{marginTop: "18px"}}>
+				<Row mt="24" mainAxis="end">
 					<Button variant="primary">Add person</Button>
 				</Row>
 			</form>

@@ -21,7 +21,7 @@ export default {
 		<Demo>
 			<form onSubmit={event => event.preventDefault()}>
 				<Input type="email" required placeholder="email@example.com" value="user@example," />
-				<Button type="submit" variant="primary" style={{marginLeft: "6px"}}>
+				<Button ml="6" type="submit" variant="primary">
 					Submit
 				</Button>
 			</form>
@@ -36,7 +36,7 @@ export default {
 					</Label>
 					<Input id="email" type="email" placeholder="email@example.com" />
 				</Field>
-				<Button variant="primary" style={{marginLeft: "12px"}}>
+				<Button ml="12" variant="primary">
 					Submit
 				</Button>
 			</form>
@@ -61,18 +61,18 @@ export default {
 		<Demo>
 			<form style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
 				<Field mb="12" style={{alignItems: "center"}}>
-					<Label htmlFor="email" style={{marginRight: "6px"}}>
+					<Label mr="6" htmlFor="email">
 						Email
 					</Label>
 					<Input id="email" placeholder="user@example.com" />
 				</Field>
 				<Field style={{alignItems: "center"}}>
-					<Label htmlFor="first_name" style={{marginRight: "6px"}}>
+					<Label mr="6" htmlFor="first_name">
 						First name
 					</Label>
 					<Input id="hfirst_nameabit_name" placeholder="John Doe" />
 				</Field>
-				<Button variant="primary" style={{marginTop: "18px"}}>
+				<Button mt="24" variant="primary">
 					Submit
 				</Button>
 			</form>
@@ -81,7 +81,7 @@ export default {
 	"standard input side by side with a primary button": (
 		<Demo>
 			<Input placeholder="E.g Wake up at 6:30 AM" />
-			<Button variant="primary" style={{marginLeft: "12px", width: "75px"}}>
+			<Button ml="12" variant="primary" style={{width: "75px"}}>
 				Save
 			</Button>
 		</Demo>
@@ -89,10 +89,10 @@ export default {
 	"disabled input side by side with a primary/outlined button": (
 		<Demo>
 			<Input placeholder="E.g Wake up at 6:30 AM" disabled value="Wake up at 6:30 AM" />
-			<Button variant="primary" style={{marginLeft: "12px", width: "75px"}}>
+			<Button ml="12" variant="primary" style={{width: "75px"}}>
 				Edit
 			</Button>
-			<Button variant="outlined" style={{marginLeft: "6px", width: "75px"}}>
+			<Button ml="6" variant="outlined" style={{width: "75px"}}>
 				Cancel
 			</Button>
 		</Demo>

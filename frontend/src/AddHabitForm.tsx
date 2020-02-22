@@ -133,7 +133,7 @@ export const AddHabitForm: React.FC = () => {
 						checked={isTrackable}
 						onChange={() => setIsTrackable(v => !v)}
 					/>
-					<Label htmlFor="is_trackable" style={{marginLeft: "8px"}}>
+					<Label ml="6" htmlFor="is_trackable">
 						Track this habit
 					</Label>
 				</Field>

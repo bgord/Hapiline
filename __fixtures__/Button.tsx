@@ -6,7 +6,7 @@ export default {
 	"--secondary": (
 		<Demo>
 			<Button variant="secondary">Reset filters</Button>
-			<Button variant="secondary" style={{marginLeft: "25px"}} disabled>
+			<Button ml="24" variant="secondary" disabled>
 				Reset filters
 			</Button>
 		</Demo>
@@ -14,17 +14,17 @@ export default {
 	"--primary": (
 		<Demo>
 			<Button variant="primary">New habit</Button>
-			<Button variant="primary" style={{marginLeft: "25px"}} disabled>
+			<Button ml="24" variant="primary" disabled>
 				New habit
 			</Button>
 		</Demo>
 	),
 	"--outlined": (
 		<Demo>
-			<Button variant="outlined" style={{marginLeft: "10px"}}>
+			<Button ml="12" variant="outlined">
 				Cancel
 			</Button>
-			<Button variant="outlined" style={{marginLeft: "10px"}} disabled>
+			<Button ml="12" variant="outlined" disabled>
 				Cancel
 			</Button>
 		</Demo>
@@ -32,10 +32,10 @@ export default {
 	"side by side": (
 		<Demo>
 			<Button variant="primary">New habit</Button>
-			<Button variant="secondary" style={{marginLeft: "10px"}}>
+			<Button ml="12" variant="secondary">
 				Show filters
 			</Button>
-			<Button variant="outlined" style={{marginLeft: "10px"}}>
+			<Button ml="12" variant="outlined">
 				Hide
 			</Button>
 		</Demo>

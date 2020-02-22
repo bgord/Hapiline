@@ -10,13 +10,13 @@ export default {
 		<Demo>
 			<Field variant="row">
 				<Checkbox id="is_trackable" />
-				<Label htmlFor="is_trackable" style={{marginLeft: "4px"}}>
+				<Label ml="6" htmlFor="is_trackable">
 					Track this habit
 				</Label>
 			</Field>
-			<Field variant="row" style={{marginLeft: "24px"}}>
+			<Field ml="24" variant="row">
 				<Checkbox id="include_in_stats" disabled />
-				<Label htmlFor="include_in_stats" style={{marginLeft: "4px"}}>
+				<Label ml="6" htmlFor="include_in_stats">
 					Include in stats
 				</Label>
 			</Field>

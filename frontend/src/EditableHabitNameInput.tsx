@@ -70,7 +70,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 			<SaveButton {...field} onClick={newHabitNameHelpers.onUpdate}>
 				Save
 			</SaveButton>
-			<CancelButton {...field} onClick={newHabitNameHelpers.onClear} style={{marginLeft: "6px"}}>
+			<CancelButton {...field} onClick={newHabitNameHelpers.onClear}>
 				Cancel
 			</CancelButton>
 		</Row>
