@@ -74,7 +74,7 @@ const ChangeEmail: React.FC = () => {
 			<>
 				<Header variant="extra-small">Email change</Header>
 				<Row crossAxis="end">
-					<Field style={{marginRight: "12px", marginTop: "24px"}}>
+					<Field mt="24" mr="12">
 						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
@@ -197,7 +197,7 @@ const ChangePassword = () => {
 			)}
 			{["editing", "pending", "error"].includes(status) && (
 				<>
-					<Field style={{marginBottom: "12px"}}>
+					<Field mb="12">
 						<Label htmlFor="old_password">Old password</Label>
 						<Input
 							id="old_password"
@@ -214,8 +214,8 @@ const ChangePassword = () => {
 					{status === "error" && oldPasswordInlineError && (
 						<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
 					)}
-					<Field style={{marginBottom: "12px"}}>
-						<Label htmlFor="new_password">New password</Label>{" "}
+					<Field mb="12">
+						<Label htmlFor="new_password">New password</Label>
 						<Input
 							id="new_password"
 							placeholder="********"
@@ -228,7 +228,7 @@ const ChangePassword = () => {
 							disabled={updatePasswordRequestState.isPending}
 						/>
 					</Field>
-					<Field style={{marginBottom: "24px"}}>
+					<Field mb="24">
 						<Label htmlFor="password_confirmation">Repeat new password</Label>
 						<Input
 							id="password_confirmation"

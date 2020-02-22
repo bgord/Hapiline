@@ -92,7 +92,7 @@ export const AddHabitForm: React.FC = () => {
 						<Label htmlFor="habit_name">Habit name</Label>
 						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
 					</Field>
-					<Field style={{marginLeft: "12px"}}>
+					<Field ml="12">
 						<Label htmlFor="score">Score</Label>
 						<Select
 							id="score"
@@ -107,7 +107,7 @@ export const AddHabitForm: React.FC = () => {
 							<option value="negative">negative</option>
 						</Select>
 					</Field>
-					<Field style={{marginLeft: "12px"}}>
+					<Field ml="12">
 						<Label htmlFor="strength">Strength</Label>
 						<Select
 							id="strength"
@@ -126,7 +126,7 @@ export const AddHabitForm: React.FC = () => {
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
-				<Field variant="row" style={{alignSelf: "flex-start", marginTop: "24px"}}>
+				<Field mt="24" variant="row" style={{alignSelf: "flex-start"}}>
 					<Checkbox
 						id="is_trackable"
 						name="is_trackable"
@@ -137,7 +137,7 @@ export const AddHabitForm: React.FC = () => {
 						Track this habit
 					</Label>
 				</Field>
-				<Field style={{marginTop: "24px"}}>
+				<Field mt="24">
 					<Label htmlFor="description">Description</Label>
 					<Textarea
 						value={description}

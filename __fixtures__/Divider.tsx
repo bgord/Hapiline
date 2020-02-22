@@ -1,5 +1,6 @@
 import React from "react";
 
+import {Column} from "../frontend/src/ui/column/Column";
 import {Demo} from "./_Demo";
 import {Divider} from "../frontend/src/ui/divider/Divider";
 import {Header} from "../frontend/src/ui/header/Header";
@@ -12,10 +13,10 @@ export default {
 	),
 	"section separator": (
 		<Demo>
-			<div style={{display: "flex", flexDirection: "column", width: "350px"}}>
+			<Column style={{width: "350px"}}>
 				<Header variant="large">User profile</Header>
 				<Divider />
-			</div>
+			</Column>
 		</Demo>
 	),
 };

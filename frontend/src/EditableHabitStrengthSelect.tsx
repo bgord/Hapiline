@@ -32,7 +32,7 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 	});
 
 	return (
-		<Field style={{marginLeft: "12px"}}>
+		<Field ml="12">
 			<Label htmlFor="habit_strength">Strength</Label>
 			<Select
 				id="habit_strength"

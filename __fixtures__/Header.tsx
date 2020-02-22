@@ -1,6 +1,7 @@
 import React from "react";
 
 import {Button} from "../frontend/src/ui/button/Button";
+import {Column} from "../frontend/src/ui/column/Column";
 import {Demo} from "./_Demo";
 import {Field} from "../frontend/src/ui/field/Field";
 import {Header} from "../frontend/src/ui/header/Header";
@@ -10,7 +11,7 @@ import {Label} from "../frontend/src/ui/label/Label";
 export default {
 	"all variants": (
 		<Demo>
-			<div style={{display: "flex", flexDirection: "column"}}>
+			<Column>
 				<Header variant="extra-small" style={{marginTop: "24px"}}>
 					Habit list
 				</Header>
@@ -23,7 +24,7 @@ export default {
 				<Header variant="large" style={{marginTop: "24px"}}>
 					Habit list
 				</Header>
-			</div>
+			</Column>
 		</Demo>
 	),
 	"as a form header": (

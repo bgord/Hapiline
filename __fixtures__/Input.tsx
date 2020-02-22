@@ -45,11 +45,11 @@ export default {
 	"with label (vertically)": (
 		<Demo>
 			<form style={{display: "flex", alignItems: "flex-end"}}>
-				<Field style={{marginRight: "12px"}}>
+				<Field mr="12">
 					<Label htmlFor="email">Email</Label>
 					<Input id="email" placeholder="user@example.com" />
 				</Field>
-				<Field style={{marginRight: "12px"}}>
+				<Field mr="12">
 					<Label htmlFor="first_name">First name</Label>
 					<Input id="first_name" placeholder="John Doe" />
 				</Field>
@@ -60,7 +60,7 @@ export default {
 	"with label (horizontally)": (
 		<Demo>
 			<form style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-				<Field style={{alignItems: "center", marginBottom: "12px"}}>
+				<Field mb="12" style={{alignItems: "center"}}>
 					<Label htmlFor="email" style={{marginRight: "6px"}}>
 						Email
 					</Label>

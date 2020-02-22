@@ -14,13 +14,13 @@ export default {
 					Left
 				</Label>
 			</Field>
-			<Field variant="row" style={{marginLeft: "24px"}}>
+			<Field ml="24" variant="row">
 				<Radio id="medium" name="direction" value="medium" disabled />
 				<Label htmlFor="medium" style={{marginLeft: "4px"}}>
 					Medium
 				</Label>
 			</Field>
-			<Field variant="row" style={{marginLeft: "24px"}}>
+			<Field ml="24" variant="row">
 				<Radio id="right" name="direction" value="right" />
 				<Label htmlFor="right" style={{marginLeft: "4px"}}>
 					Right

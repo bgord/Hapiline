@@ -46,7 +46,7 @@ export default {
 					<option>neutral</option>
 				</Select>
 			</Field>
-			<Field style={{marginLeft: "12px"}}>
+			<Field ml="12">
 				<Label htmlFor="name">Name</Label>
 				<Input id="name" placeholder="Wake up at 6:30 AM" />
 			</Field>

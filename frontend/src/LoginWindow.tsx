@@ -39,7 +39,7 @@ export const LoginWindow: React.FC = () => {
 				className="sm:flex sm:flex-wrap sm:justify-between"
 			>
 				<Header>Login</Header>
-				<Field style={{width: "100%", marginTop: "48px"}}>
+				<Field mt="48" style={{width: "100%"}}>
 					<Label htmlFor="email">Email</Label>
 					<Input
 						id="email"
@@ -50,7 +50,7 @@ export const LoginWindow: React.FC = () => {
 						placeholder="john.brown@gmail.com"
 					/>
 				</Field>
-				<Field style={{width: "100%", marginTop: "12px"}}>
+				<Field mt="12" style={{width: "100%"}}>
 					<Label htmlFor="password">Password</Label>
 					<Input
 						required

@@ -27,3 +27,43 @@ body {
 		opacity: 1;
 	}
 }
+
+*[data-mt="12"] {
+	margin-top: 12px;
+}
+*[data-mt="24"] {
+	margin-top: 24px;
+}
+*[data-mt="48"] {
+	margin-top: 48px;
+}
+
+*[data-mr="12"] {
+	margin-right: 12px;
+}
+*[data-mr="24"] {
+	margin-right: 24px;
+}
+*[data-mr="48"] {
+	margin-right: 48px;
+}
+
+*[data-mb="12"] {
+	margin-bottom: 12px;
+}
+*[data-mb="24"] {
+	margin-bottom: 24px;
+}
+*[data-mb="48"] {
+	margin-bottom: 48px;
+}
+
+*[data-ml="12"] {
+	margin-left: 12px;
+}
+*[data-ml="24"] {
+	margin-left: 24px;
+}
+*[data-ml="48"] {
+	margin-left: 48px;
+}

@@ -157,7 +157,7 @@ const EditableDescription: React.FC<{
 
 	return (
 		<>
-			<Field style={{margin: "24px 0 12px 0"}}>
+			<Field mt="24" mb="12">
 				<Label htmlFor="description">Description</Label>
 				<Textarea
 					id="description"
