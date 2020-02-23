@@ -194,7 +194,7 @@ export const HabitList: React.FC = () => {
 						<ul
 							ref={provided.innerRef}
 							{...provided.droppableProps}
-							className="flex flex-col bg-white p-4 pb-0 w-full"
+							className="flex flex-col bg-white py-4 pb-0 w-full"
 						>
 							{filteredHabits.map((habit, index) => (
 								<HabitListItem
