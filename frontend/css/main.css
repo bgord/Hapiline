@@ -28,6 +28,11 @@ body {
 	}
 }
 
+/* ----------------------------------------------------- */
+/* Margins */
+/* ----------------------------------------------------- */
+
+/* Margin top */
 *[data-mt="6"] {
 	margin-top: 6px;
 }
@@ -47,6 +52,7 @@ body {
 	margin-top: auto;
 }
 
+/* Margin right */
 *[data-mr="6"] {
 	margin-right: 6px;
 }
@@ -66,6 +72,7 @@ body {
 	margin-right: auto;
 }
 
+/* Margin bottom */
 *[data-mb="6"] {
 	margin-bottom: 6px;
 }
@@ -85,6 +92,7 @@ body {
 	margin-bottom: auto;
 }
 
+/* Margin left */
 *[data-ml="6"] {
 	margin-left: 6px;
 }
@@ -102,4 +110,16 @@ body {
 }
 *[data-ml="auto"] {
 	margin-left: auto;
+}
+
+/* ----------------------------------------------------- */
+/* Widths */
+/* ----------------------------------------------------- */
+
+*[data-width="100%"] {
+	width: 100%;
+}
+
+*[data-width="auto"] {
+	width: auto;
 }
