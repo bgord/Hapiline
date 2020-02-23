@@ -63,12 +63,7 @@ export const AddHabitForm: React.FC = () => {
 	}
 
 	return (
-		<Dialog
-			aria-label="Add new habit"
-			onDismiss={hideAddFormDialog}
-			className="max-w-screen-lg overflow-auto h-full"
-			style={{maxHeight: "500px"}}
-		>
+		<Dialog aria-label="Add new habit" onDismiss={hideAddFormDialog} style={{maxHeight: "500px"}}>
 			<Row mainAxis="between">
 				<Header variant="small">New habit</Header>
 				<CloseIcon onClick={hideAddFormDialog} />

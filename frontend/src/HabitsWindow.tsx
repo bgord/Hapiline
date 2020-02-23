@@ -3,6 +3,7 @@ import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
 import {Button} from "./ui/button/Button";
+import {Column} from "./ui/column/Column";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitList} from "./HabitList";
 import {Text} from "./ui/text/Text";
@@ -22,7 +23,7 @@ export const HabitsWindow = () => {
 	}
 
 	return (
-		<section className="flex flex-col items-center p-8 mx-auto max-w-4xl">
+		<Column>
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<Async.IfRejected state={getHabitsRequestState}>
@@ -41,6 +42,6 @@ export const HabitsWindow = () => {
 
 				{habits.length > 0 && <HabitList />}
 			</Async.IfFulfilled>
-		</section>
+		</Column>
 	);
 };

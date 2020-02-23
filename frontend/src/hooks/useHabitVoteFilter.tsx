@@ -62,18 +62,24 @@ export const HabitVoteFilters = {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
 			<RadioButton filter="voted" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <Label mr="6" htmlFor="voted" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => (
+			<Label ml="6" mr="12" htmlFor="voted" {...props} />
+		),
 	},
 	Unvoted: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
 			<RadioButton filter="unvoted" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <Label mr="6" htmlFor="unvoted" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => (
+			<Label ml="6" mr="12" htmlFor="unvoted" {...props} />
+		),
 	},
 	All: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
 			<RadioButton filter="all" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <Label mr="6" htmlFor="all" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => (
+			<Label ml="6" mr="12" htmlFor="all" {...props} />
+		),
 	},
 };

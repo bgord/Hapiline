@@ -70,7 +70,7 @@ function AuthenticatedNavbar() {
 			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/dashboard">
 				Dashboard
 			</NavLink>
-			<NavLink exact className="c-text p-4" activeClassName="text-blue-400" to="/habits">
+			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/habits">
 				Habits
 			</NavLink>
 			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">

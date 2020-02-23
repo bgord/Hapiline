@@ -43,8 +43,9 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					ref={provided.innerRef}
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
-					className="flex items-baseline mb-4"
+					className="flex items-baseline p-1"
 					data-testid="draggable-habit-item"
+					style={{background: "#f9f8f8", marginBottom: "12px"}}
 				>
 					<HabitScore score={habit.score} />
 					<HabitStrength strength={habit.strength} />

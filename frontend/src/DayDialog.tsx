@@ -115,7 +115,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				/>
 				<DaySummaryStats day={day} {...stats} />
 			</Row>
-			<Row mt="48" crossAxis="end">
+			<Row mt="48" crossAxis="center">
 				<HabitVoteFilters.Voted.Input
 					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}

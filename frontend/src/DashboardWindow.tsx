@@ -4,6 +4,7 @@ import React from "react";
 import deepEqual from "fast-deep-equal";
 
 import {Button} from "./ui/button/Button";
+import {Card} from "./ui/card/Card";
 import {Column} from "./ui/column/Column";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
@@ -74,119 +75,131 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
-			<Row>
-				<Header variant="large">Hello!</Header>
-				<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>
-					View today
-				</Button>
-			</Row>
-			<Async.IfRejected state={getDashboardStatsRequestState}>
-				<ErrorMessage className="mt-8">
-					Cannot load dashboard stats now, please try again.
-				</ErrorMessage>
-			</Async.IfRejected>
-			<Async.IfFulfilled state={getDashboardStatsRequestState}>
-				<Row mt="48" mb="48">
-					<MotivationalText
-						untracked={howManyUntrackedHabitsToday}
-						total={howManyHabitsToday}
-						votedFor={howManyVotesToday}
-					/>
+		<Card
+			ml="auto"
+			mr="auto"
+			mt="72"
+			mb="24"
+			pl="24"
+			pr="24"
+			pt="24"
+			pb="24"
+			style={{maxWidth: "750px"}}
+		>
+			<Column>
+				<Row>
+					<Header variant="large">Hello!</Header>
+					<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>
+						View today
+					</Button>
 				</Row>
-				{howManyHabitsToday > 0 && (
-					<Column data-testid="chart-today">
-						<Text variant="dimmed">Votes today</Text>
-						<Row mb="48">
-							<DaySummaryChart
-								maximumVotes={todayStats?.maximumVotes ?? 0}
-								className="h-4"
-								day={currentDate}
-								{...statsForToday}
-							/>
-							<DaySummaryStats day={currentDate} {...statsForToday} />
-						</Row>
-					</Column>
+				<Async.IfRejected state={getDashboardStatsRequestState}>
+					<ErrorMessage className="mt-8">
+						Cannot load dashboard stats now, please try again.
+					</ErrorMessage>
+				</Async.IfRejected>
+				<Async.IfFulfilled state={getDashboardStatsRequestState}>
+					<Row mt="48" mb="48">
+						<MotivationalText
+							untracked={howManyUntrackedHabitsToday}
+							total={howManyHabitsToday}
+							votedFor={howManyVotesToday}
+						/>
+					</Row>
+					{howManyHabitsToday > 0 && (
+						<Column data-testid="chart-today">
+							<Text variant="dimmed">Votes today</Text>
+							<Row mb="48">
+								<DaySummaryChart
+									maximumVotes={todayStats?.maximumVotes ?? 0}
+									className="h-4"
+									day={currentDate}
+									{...statsForToday}
+								/>
+								<DaySummaryStats day={currentDate} {...statsForToday} />
+							</Row>
+						</Column>
+					)}
+					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
+						<Column data-testid="chart-last-week">
+							<Text variant="dimmed">Votes last week</Text>
+							<Row mb="48">
+								<DaySummaryChart
+									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
+									className="h-4"
+									day={currentDate}
+									{...statsForLastWeek}
+								/>
+								<DaySummaryStats day={currentDate} {...statsForLastWeek} />
+							</Row>
+						</Column>
+					)}
+					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
+						<Column data-testid="chart-last-month">
+							<Text variant="dimmed">Votes last month</Text>
+							<Row mb="48">
+								<DaySummaryChart
+									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
+									className="h-4"
+									day={currentDate}
+									{...statsForLastMonth}
+								/>
+								<DaySummaryStats day={currentDate} {...statsForLastMonth} />
+							</Row>
+						</Column>
+					)}
+				</Async.IfFulfilled>
+				<Async.IfPending state={getDashboardStreakStatsRequestState}>
+					<Loader />
+				</Async.IfPending>
+				<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
+					{progressStreakStats.length > 0 && (
+						<>
+							<Divider />
+							<Header mt="24" mb="24" variant="extra-small">
+								Progress streaks
+							</Header>
+							<ul>
+								{progressStreakStats.map(habit => (
+									<li key={habit.id}>
+										<Text>{habit.progress_streak} day(s) progress streak - </Text>
+										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+											<Text>{habit.name}</Text>
+										</Link>
+									</li>
+								))}
+							</ul>
+						</>
+					)}
+					{regressStreakStats.length > 0 && (
+						<>
+							<Divider mt="24" />
+							<Header mt="24" mb="24" variant="extra-small">
+								Regress streaks
+							</Header>
+							<ul className="mb-6">
+								{regressStreakStats.map(habit => (
+									<li key={habit.id}>
+										<Text>{habit.regress_streak} day(s) regress streak - </Text>
+										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+											<Text>{habit.name}</Text>
+										</Link>
+									</li>
+								))}
+							</ul>
+						</>
+					)}
+				</Async.IfFulfilled>
+				{subview === "day_preview" && (
+					<DayDialog
+						day={currentDate}
+						onDismiss={() => updateQueryParams("/dashboard", {})}
+						onResolve={getDashboardStatsRequestState.reload}
+						{...statsForToday}
+					/>
 				)}
-				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-					<Column data-testid="chart-last-week">
-						<Text variant="dimmed">Votes last week</Text>
-						<Row mb="48">
-							<DaySummaryChart
-								maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-								className="h-4"
-								day={currentDate}
-								{...statsForLastWeek}
-							/>
-							<DaySummaryStats day={currentDate} {...statsForLastWeek} />
-						</Row>
-					</Column>
-				)}
-				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-					<Column data-testid="chart-last-month">
-						<Text variant="dimmed">Votes last month</Text>
-						<Row mb="48">
-							<DaySummaryChart
-								maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-								className="h-4"
-								day={currentDate}
-								{...statsForLastMonth}
-							/>
-							<DaySummaryStats day={currentDate} {...statsForLastMonth} />
-						</Row>
-					</Column>
-				)}
-			</Async.IfFulfilled>
-			<Async.IfPending state={getDashboardStreakStatsRequestState}>
-				<Loader />
-			</Async.IfPending>
-			<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
-				{progressStreakStats.length > 0 && (
-					<>
-						<Divider mt="24" />
-						<Header mt="24" mb="48" variant="extra-small">
-							Progress streaks
-						</Header>
-						<ul>
-							{progressStreakStats.map(habit => (
-								<li key={habit.id}>
-									<Text>{habit.progress_streak} day(s) progress streak - </Text>
-									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-										<Text>{habit.name}</Text>
-									</Link>
-								</li>
-							))}
-						</ul>
-					</>
-				)}
-				{regressStreakStats.length > 0 && (
-					<>
-						<Divider mt="24" />
-						<Header mt="24" mb="48" variant="extra-small">
-							Regress streaks
-						</Header>
-						<ul className="mb-6">
-							{regressStreakStats.map(habit => (
-								<li key={habit.id}>
-									<Text>{habit.regress_streak} day(s) regress streak - </Text>
-									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-										<Text>{habit.name}</Text>
-									</Link>
-								</li>
-							))}
-						</ul>
-					</>
-				)}
-			</Async.IfFulfilled>
-			{subview === "day_preview" && (
-				<DayDialog
-					day={currentDate}
-					onDismiss={() => updateQueryParams("/dashboard", {})}
-					onResolve={getDashboardStatsRequestState.reload}
-					{...statsForToday}
-				/>
-			)}
-		</Column>
+			</Column>
+		</Card>
 	);
 };
 
