@@ -74,7 +74,7 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<Column style={{maxWidth: "750px", margin: "48px auto 0 auto"}}>
+		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
 			<Row>
 				<Header variant="large">Hello!</Header>
 				<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>

@@ -20,7 +20,7 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<Column style={{maxWidth: "750px", margin: "48px auto 0 auto"}}>
+		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
 			<Header variant="large">Profile settings</Header>
 			<Divider mt="6" style={{width: "200px"}} />
 			<ChangeEmail />
@@ -113,7 +113,7 @@ const ChangeEmail: React.FC = () => {
 				{status === "error" && emailInlineError && <ErrorMessage>{emailInlineError}</ErrorMessage>}
 			</>
 			{["editing", "pending", "error"].includes(status) && (
-				<Column style={{maxWidth: "405px", marginTop: "12px"}}>
+				<Column mt="12" style={{maxWidth: "405px"}}>
 					<Field>
 						<Label htmlFor="password">Password</Label>
 						<Input

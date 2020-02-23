@@ -73,9 +73,11 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 						Show day
 					</Button>
 					<Row mt="auto" mainAxis="end" style={{padding: "4px"}}>
-						<Text mr="auto" variant="dimmed" hidden={!stats.createdHabitsCount}>
-							NEW: {stats.createdHabitsCount}
-						</Text>
+						{stats && stats.createdHabitsCount && stats.createdHabitsCount > 0 ? (
+							<Text mr="auto" variant="dimmed">
+								NEW: {stats.createdHabitsCount}
+							</Text>
+						) : null}
 						<Stat count={stats.progressVotesCountStats} sign="+" />
 						<Stat count={stats.plateauVotesCountStats} sign="=" />
 						<Stat count={stats.regressVotesCountStats} sign="-" />
