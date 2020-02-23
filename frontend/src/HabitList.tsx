@@ -2,6 +2,7 @@ import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
+import {Card} from "./ui/card/Card";
 import {Text} from "./ui/text/Text";
 import {Button} from "./ui/button/Button";
 import {Header} from "./ui/header/Header";
@@ -81,7 +82,7 @@ export const HabitList: React.FC = () => {
 	}
 
 	return (
-		<>
+		<Card pl="24" pr="24" pt="24" pb="24" ml="auto" mr="auto" mt="48" mb="24">
 			<Row mainAxis="end">
 				<Header mr="auto" variant="large">
 					Habit list
@@ -208,7 +209,7 @@ export const HabitList: React.FC = () => {
 					)}
 				</Droppable>
 			</DragDropContext>
-		</>
+		</Card>
 	);
 };
 
