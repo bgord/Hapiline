@@ -138,11 +138,10 @@ const ChangeEmail: React.FC = () => {
 			</Text>
 			{status === "pending" && <Text mt="12">Email change pending...</Text>}
 			{status === "success" && (
-				<Text>
-					Email confirmation message has been sent!
-					<br />
-					You will be logged out in 5 seconds.
-				</Text>
+				<Column mt="6">
+					<Text>Email confirmation message has been sent!</Text>
+					<Text>You will be logged out in 5 seconds.</Text>
+				</Column>
 			)}
 			<Divider mt="48" />
 		</form>
