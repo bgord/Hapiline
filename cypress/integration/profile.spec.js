@@ -21,7 +21,7 @@ describe("Profile", () => {
 
 		cy.url().should("contain", PROFILE_URL);
 
-		cy.findByText("Profile");
+		cy.findByText("Profile settings");
 		cy.findByText("Delete account").click();
 		cy.findByText("Nevermind, don't delete").click();
 

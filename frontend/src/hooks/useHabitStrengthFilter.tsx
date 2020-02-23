@@ -1,6 +1,8 @@
 import React from "react";
 
 import {HabitStrengthType, IHabit, HABIT_STRENGTHS} from "../interfaces/IHabit";
+import {Label} from "../ui/label/Label";
+import {Radio} from "../ui/radio/Radio";
 
 type HabitStrengthFilter = HabitStrengthType | "all-strengths";
 
@@ -39,14 +41,13 @@ interface IInput {
 	value: HabitStrengthFilter;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const Input: React.FC<IInput> = ({value, filter, ...props}) => (
-	<input
+const RadioButton: React.FC<IInput> = ({value, filter, ...props}) => (
+	<Radio
 		name="habit-strength-filter"
 		id={filter}
 		type="radio"
 		value={filter}
 		checked={value === filter}
-		className="mr-1 ml-3"
 		{...props}
 	/>
 );
@@ -54,32 +55,34 @@ const Input: React.FC<IInput> = ({value, filter, ...props}) => (
 export const HabitStrengthFilters = {
 	Established: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter={HABIT_STRENGTHS.established} {...props} />
+			<RadioButton filter={HABIT_STRENGTHS.established} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<label htmlFor={HABIT_STRENGTHS.established} {...props} />
+			<Label mr="6" htmlFor={HABIT_STRENGTHS.established} {...props} />
 		),
 	},
 	Developing: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter={HABIT_STRENGTHS.developing} {...props} />
+			<RadioButton filter={HABIT_STRENGTHS.developing} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<label htmlFor={HABIT_STRENGTHS.developing} {...props} />
+			<Label mr="6" htmlFor={HABIT_STRENGTHS.developing} {...props} />
 		),
 	},
 	Fresh: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter={HABIT_STRENGTHS.fresh} {...props} />
+			<RadioButton filter={HABIT_STRENGTHS.fresh} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<label htmlFor={HABIT_STRENGTHS.fresh} {...props} />
+			<Label mr="6" htmlFor={HABIT_STRENGTHS.fresh} {...props} />
 		),
 	},
 	All: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<Input filter="all-strengths" {...props} />
+			<RadioButton filter="all-strengths" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <label htmlFor="all-strengths" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => (
+			<Label mr="6" htmlFor="all-strengths" {...props} />
+		),
 	},
 };

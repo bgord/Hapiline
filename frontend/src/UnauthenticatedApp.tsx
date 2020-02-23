@@ -16,7 +16,7 @@ const unauthenticatedAppBrowserHistory = createBrowserHistory();
 function UnauthenticatedApp() {
 	return (
 		<Router history={unauthenticatedAppBrowserHistory}>
-			<main className="flex flex-col h-screen w-full bg-gray-200">
+			<main className="flex flex-col h-screen w-full">
 				<UnauthenticatedNavbar />
 				<Switch>
 					<Route exact path="/login">

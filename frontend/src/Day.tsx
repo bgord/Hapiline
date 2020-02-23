@@ -2,11 +2,13 @@ import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
+import {Row} from "./ui/row/Row";
 import {Stat} from "./Stat";
+import {Text} from "./ui/text/Text";
 import {formatDay} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
@@ -54,21 +56,33 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					{...stats}
 				/>
 			)}
-			<span className={`text-center w-full pt-2 ${isThisDayToday && "font-bold"}`}>{day}</span>
+			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
+				{day}
+			</Text>
 			{isDayDialogAvailable && (
 				<>
-					<BareButton hidden={!isHovering} onClick={openDialog}>
+					<Button
+						ml="auto"
+						mr="auto"
+						mt="6"
+						mb="6"
+						variant="outlined"
+						hidden={!isHovering}
+						onClick={openDialog}
+					>
 						Show day
-					</BareButton>
-					<div className="flex justify-end p-2 text-sm mt-auto">
-						<span hidden={!stats.createdHabitsCount} className="mr-auto">
-							NEW: {stats.createdHabitsCount}
-						</span>
+					</Button>
+					<Row mt="auto" mainAxis="end" style={{padding: "4px"}}>
+						{stats && stats.createdHabitsCount && stats.createdHabitsCount > 0 ? (
+							<Text mr="auto" variant="dimmed">
+								NEW: {stats.createdHabitsCount}
+							</Text>
+						) : null}
 						<Stat count={stats.progressVotesCountStats} sign="+" />
 						<Stat count={stats.plateauVotesCountStats} sign="=" />
 						<Stat count={stats.regressVotesCountStats} sign="-" />
 						<Stat count={stats.noVotesCountStats} sign="?" />
-					</div>
+					</Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
 			)}

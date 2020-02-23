@@ -1,15 +1,18 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
+import {Column} from "./ui/column/Column";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
+import {Header} from "./ui/header/Header";
 import {RequestErrorMessage} from "./ErrorMessages";
+import {Row} from "./ui/row/Row";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useTrackedHabits} from "./contexts/habits-context";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
+import {useTrackedHabits} from "./contexts/habits-context";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -51,16 +54,26 @@ export const Calendar: React.FC = () => {
 	});
 
 	return (
-		<section className="flex flex-col items-center p-8 mx-auto">
-			<div className="flex mb-16">
-				<BareButton onClick={widget.setPreviousMonth} disabled={getMonthRequestState.isPending}>
+		<Column mt="72" crossAxis="center">
+			<Row mb="72" width="auto">
+				<Button
+					variant="secondary"
+					onClick={widget.setPreviousMonth}
+					disabled={getMonthRequestState.isPending}
+				>
 					Previous
-				</BareButton>
-				<div className="mx-8 w-32">{date}</div>
-				<BareButton onClick={widget.setNextMonth} disabled={getMonthRequestState.isPending}>
+				</Button>
+				<Header ml="48" mr="48" variant="small">
+					{date}
+				</Header>
+				<Button
+					variant="secondary"
+					onClick={widget.setNextMonth}
+					disabled={getMonthRequestState.isPending}
+				>
 					Next
-				</BareButton>
-			</div>
+				</Button>
+			</Row>
 			<Async.IfRejected state={getMonthRequestState}>
 				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 			</Async.IfRejected>
@@ -73,7 +86,7 @@ export const Calendar: React.FC = () => {
 					/>
 				))}
 			</ul>
-		</section>
+		</Column>
 	);
 };
 

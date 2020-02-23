@@ -1,0 +1,19 @@
+.c-label {
+	line-height: 24px;
+	font-size: 12px;
+	text-transform: uppercase;
+	font-weight: 600;
+	letter-spacing: 0.4px;
+	color: #363434;
+}
+
+.c-label--optional::after {
+	margin-left: 6px;
+	text-transform: lowercase;
+	content: "(optional)";
+}
+
+.c-input:focus + .c-label,
+.c-textarea:focus + .c-label {
+	text-decoration: underline;
+}

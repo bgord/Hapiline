@@ -3,9 +3,16 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
+import {Column} from "./ui/column/Column";
+import {Divider} from "./ui/divider/Divider";
+import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
 import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
-import {SuccessMessage} from "./SuccessMessages";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -13,12 +20,13 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<section className="flex flex-col max-w-2xl mx-auto mt-12">
-			<strong>Profile</strong>
+		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
+			<Header variant="large">Profile settings</Header>
+			<Divider mt="6" style={{width: "200px"}} />
 			<ChangeEmail />
 			<ChangePassword />
 			<DeleteAccount />
-		</section>
+		</Column>
 	);
 };
 
@@ -61,33 +69,37 @@ const ChangeEmail: React.FC = () => {
 				setStatus("pending");
 				changeEmailRequestState.run(newEmail, password);
 			}}
-			className="flex flex-col flex-grow mt-8"
+			className="flex flex-col flex-grow mt-12"
 		>
-			<div>
-				<label className="field-label" htmlFor="email">
-					Email
-				</label>
-				<div>
-					<input
-						required
-						value={newEmail}
-						onChange={event => setNewEmail(event.target.value)}
-						className="field w-64"
-						type="email"
-						name="email"
-						id="email"
-						disabled={["idle", "pending", "success"].includes(status)}
-					/>
+			<>
+				<Header variant="extra-small">Email change</Header>
+				<Row crossAxis="end">
+					<Field mt="24" mr="12">
+						<Label htmlFor="email">Email</Label>
+						<Input
+							id="email"
+							value={newEmail}
+							onChange={event => setNewEmail(event.target.value)}
+							required
+							type="email"
+							disabled={["idle", "pending", "success"].includes(status)}
+							placeholder="user@example.com"
+						/>
+					</Field>
 					{status === "idle" && (
-						<BareButton onClick={() => setStatus("editing")}>Edit email</BareButton>
+						<Button variant="primary" onClick={() => setStatus("editing")}>
+							Edit email
+						</Button>
 					)}
 					{["editing", "error"].includes(status) && (
-						<button disabled={!isNewEmailDifferent} className="btn btn-blue ml-4" type="submit">
+						<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
 							Confirm email
-						</button>
+						</Button>
 					)}
 					{["editing", "error"].includes(status) && (
-						<BareButton
+						<Button
+							ml="6"
+							variant="outlined"
 							onClick={() => {
 								setStatus("idle");
 								setPassword("");
@@ -95,44 +107,43 @@ const ChangeEmail: React.FC = () => {
 							}}
 						>
 							Cancel
-						</BareButton>
+						</Button>
 					)}
-				</div>
-				<div className="mt-4">
-					NOTE: You will have to confirm your new email adress and login back again.
-				</div>
+				</Row>
 				{status === "error" && emailInlineError && <ErrorMessage>{emailInlineError}</ErrorMessage>}
-			</div>
+			</>
 			{["editing", "pending", "error"].includes(status) && (
-				<div className="flex flex-col flex-grow mt-4 w-64">
-					<label className="field-label" htmlFor="password">
-						Password
-					</label>
-					<input
-						required
-						pattern=".{6,}"
-						title="Password should contain at least 6 characters."
-						value={password}
-						onChange={event => setPassword(event.target.value)}
-						className="field"
-						type="password"
-						name="password"
-						id="password"
-						placeholder="********"
-						disabled={status === "pending"}
-					/>
+				<Column mt="12" style={{maxWidth: "405px"}}>
+					<Field>
+						<Label htmlFor="password">Password</Label>
+						<Input
+							id="password"
+							pattern=".{6,}"
+							title="Password should contain at least 6 characters."
+							required
+							value={password}
+							onChange={event => setPassword(event.target.value)}
+							type="password"
+							placeholder="********"
+							disabled={status === "pending"}
+						/>
+					</Field>
 					{status === "error" && passwordInlineError && (
 						<ErrorMessage>{passwordInlineError}</ErrorMessage>
 					)}
-				</div>
+				</Column>
 			)}
-			{status === "pending" && <div className="mt-4">Email change pending...</div>}
+			<Text mt="24">
+				NOTE: You will have to confirm your new email adress and login back again.
+			</Text>
+			{status === "pending" && <Text mt="12">Email change pending...</Text>}
 			{status === "success" && (
-				<>
-					<SuccessMessage>Email confirmation message has been sent!</SuccessMessage>
-					<div>You will be logged out in 5 seconds.</div>
-				</>
+				<Column mt="6">
+					<Text>Email confirmation message has been sent!</Text>
+					<Text>You will be logged out in 5 seconds.</Text>
+				</Column>
 			)}
+			<Divider mt="48" />
 		</form>
 	);
 };
@@ -168,25 +179,26 @@ const ChangePassword = () => {
 
 	return (
 		<form
-			className="my-8"
+			className="my-4"
 			onSubmit={event => {
 				event.preventDefault();
 				setStatus("pending");
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
+			<Header mb="24" variant="extra-small">
+				Password change
+			</Header>
 			{["idle", "pending", "success"].includes(status) && (
-				<BareButton onClick={() => setStatus("editing")}>Update password</BareButton>
+				<Button variant="secondary" onClick={() => setStatus("editing")}>
+					Update password
+				</Button>
 			)}
 			{["editing", "pending", "error"].includes(status) && (
 				<>
-					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="old_password">
-							Old password
-						</label>
-						<input
-							className="field"
-							name="old_password"
+					<Field mb="12">
+						<Label htmlFor="old_password">Old password</Label>
+						<Input
 							id="old_password"
 							placeholder="********"
 							title="Password should contain at least 6 characters."
@@ -197,17 +209,13 @@ const ChangePassword = () => {
 							pattern=".{6,}"
 							disabled={updatePasswordRequestState.isPending}
 						/>
-						{status === "error" && oldPasswordInlineError && (
-							<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
-						)}
-					</div>
-					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="new_password">
-							New password
-						</label>
-						<input
-							className="field"
-							name="new_password"
+					</Field>
+					{status === "error" && oldPasswordInlineError && (
+						<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
+					)}
+					<Field mb="12">
+						<Label htmlFor="new_password">New password</Label>
+						<Input
 							id="new_password"
 							placeholder="********"
 							title="Password should contain at least 6 characters."
@@ -218,16 +226,12 @@ const ChangePassword = () => {
 							pattern=".{6,}"
 							disabled={updatePasswordRequestState.isPending}
 						/>
-					</div>
-					<div className="field-group mb-6 md:w-full">
-						<label className="field-label" htmlFor="password_confirmation">
-							Repeat new password
-						</label>
-						<input
-							className="field"
-							type="password"
-							name="password_confirmation"
+					</Field>
+					<Field mb="24">
+						<Label htmlFor="password_confirmation">Repeat new password</Label>
+						<Input
 							id="password_confirmation"
+							type="password"
 							placeholder="********"
 							pattern={newPassword}
 							title="Passwords have to be equal"
@@ -236,9 +240,13 @@ const ChangePassword = () => {
 							required
 							disabled={updatePasswordRequestState.isPending}
 						/>
-					</div>
-					<BareButton type="submit">Submit</BareButton>
-					<BareButton
+					</Field>
+					<Button variant="primary" type="submit">
+						Submit
+					</Button>
+					<Button
+						ml="6"
+						variant="outlined"
 						onClick={() => {
 							setStatus("idle");
 							setOldPassword("");
@@ -247,13 +255,14 @@ const ChangePassword = () => {
 						}}
 					>
 						Cancel
-					</BareButton>
+					</Button>
 					{status === "error" && internalServerError && (
 						<RequestErrorMessage>{internalServerError}</RequestErrorMessage>
 					)}
 				</>
 			)}
-			{status === "success" && <SuccessMessage>Password changed successfully!</SuccessMessage>}
+			{status === "success" && <Text>Password changed successfully!</Text>}
+			<Divider mt="48" />
 		</form>
 	);
 };
@@ -281,34 +290,41 @@ const DeleteAccount = () => {
 	}
 	return (
 		<>
-			<button
-				type="button"
-				className="mt-10 bg-red-500 w-32 text-white"
+			<Header mt="48" variant="extra-small">
+				Account deletion
+			</Header>
+			<Button
+				mt="24"
+				variant="primary"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}
+				mr="auto"
 			>
 				Delete account
-			</button>
+			</Button>
 			<Async.IfRejected state={deleteAccountRequestState}>
 				<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
 			</Async.IfRejected>
 			{status === "editing" && (
 				<AlertDialog
-					className="w-1/3"
+					className="w-1/4"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
-					<AlertDialogLabel>Do you really want to delete your account?</AlertDialogLabel>
-
-					<div className="mt-12 flex justify-around w-full">
-						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
-						<button
-							type="button"
+					<AlertDialogLabel>
+						<Header variant="small">Do you really want to delete your account? </Header>
+					</AlertDialogLabel>
+					<Row mt="48" mainAxis="between">
+						<Button variant="outlined" onClick={confirmDeletion}>
+							Yes, delete
+						</Button>
+						<Button
+							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={() => setStatus("idle")}
 						>
 							Nevermind, don't delete
-						</button>
-					</div>
+						</Button>
+					</Row>
 				</AlertDialog>
 			)}
 		</>

@@ -2,12 +2,14 @@ import {Draggable} from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
 import {IHabit} from "./interfaces/IHabit";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {useQueryParam} from "./hooks/useQueryParam";
 
 interface HabitListItemProps {
@@ -46,14 +48,16 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 				>
 					<HabitScore score={habit.score} />
 					<HabitStrength strength={habit.strength} />
-					<div className="flex justify-between w-full">
-						<div className="p-2 bg-gray-100 ml-2 w-full">{habit.name}</div>
-						<div className="flex items-center ml-4">
-							{!habit.is_trackable && <div className="mr-2">NT</div>}
-							<BareButton onClick={openPreviewDialog}>More</BareButton>
+					<Row ml="12" mainAxis="between">
+						<Text>{habit.name}</Text>
+						<Row width="auto">
+							{!habit.is_trackable && <Text mr="6">NT</Text>}
+							<Button variant="outlined" onClick={openPreviewDialog}>
+								More
+							</Button>
 							<DeleteHabitButton {...habit} />
-						</div>
-					</div>
+						</Row>
+					</Row>
 					{doesPreviewHabitIdMatch && (
 						<HabitItemDialog habitId={habit.id} closeDialog={closePreviewDialog} />
 					)}

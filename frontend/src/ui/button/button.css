@@ -1,0 +1,126 @@
+button::-moz-focus-inner {
+	padding: 0;
+	border: 0;
+}
+
+.c-button {
+	box-sizing: border-box;
+	height: 36px;
+	border: none;
+	padding: 0 10px 0 10px;
+	font-size: 12px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	border-radius: 3px;
+}
+
+.c-button:hover {
+	cursor: pointer;
+	border-radius: 0;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+	transition: all 300ms;
+}
+
+.c-button:active,
+.c-button:focus {
+	cursor: pointer;
+	border-radius: 3px;
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+	transition: all 300ms;
+}
+
+.c-button:disabled {
+	opacity: 0.6;
+}
+.c-button:disabled.c-button:hover {
+	cursor: auto;
+	box-shadow: none;
+}
+
+/* --secondary */
+
+/* https://www.0to255.com/e8e7e7 */
+
+.c-button--secondary {
+	background-color: #e8e7e7;
+	color: #484545;
+	border: 1px solid #e0dede;
+}
+
+.c-button--secondary:hover {
+	background-color: #d7d6d6;
+}
+
+.c-button--secondary:focus {
+	background-color: #c7c4c4;
+}
+
+.c-button--secondary:active {
+	background-color: #bebcbc;
+}
+
+.c-button--secondary:disabled.c-button--secondary:hover {
+	background-color: #e8e7e7;
+}
+
+/* --primary */
+
+/* https://www.0to255.com/e8e7e7 */
+
+.c-button--primary {
+	color: #e8e7e7;
+	background-color: #363434;
+}
+
+.c-button--primary:hover {
+	background-color: #3f3c3c;
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.c-button--primary:focus {
+	background-color: #504d4d;
+}
+
+.c-button--primary:active {
+	background-color: #595555;
+}
+.c-button--primary:focus,
+.c-button--primary:active {
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.c-button--primary:disabled {
+	opacity: 0.4;
+}
+.c-button--primary:disabled.c-button--primary:hover {
+	background-color: #363434;
+}
+
+/* --outlined */
+
+/* https://www.0to255.com/e8e7e7 */
+
+.c-button--outlined {
+	background: white;
+	border: 1px solid #c7c4c4;
+	color: #363434;
+}
+
+.c-button--outlined:hover {
+	background: #f9f8f8;
+}
+
+.c-button--outlined:focus {
+	background: #f9f8f8;
+}
+
+.c-button--outlined:active {
+	background: #f0f0f0;
+}
+
+.c-button--outlined:disabled.c-button--outlined:hover {
+	background: white;
+}

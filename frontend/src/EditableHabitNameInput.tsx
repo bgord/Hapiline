@@ -7,8 +7,11 @@ import {
 	useEditableFieldState,
 	useEditableFieldValue,
 } from "./hooks/useEditableField";
+import {Field} from "./ui/field/Field";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
+import {Label} from "./ui/label/Label";
+import {Row} from "./ui/row/Row";
 import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
@@ -49,14 +52,10 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 		name,
 	);
 
-	const inputBgColor = field.state === "focused" ? "bg-gray-100" : "";
-
 	return (
-		<div className="flex justify-between items-end w-full ml-4">
-			<div className="field-group w-full">
-				<label className="field-label" htmlFor="email">
-					Name
-				</label>
+		<Row ml="12" crossAxis="end">
+			<Field width="100%" mr="12">
+				<Label htmlFor="habit_name">Habit name</Label>
 				<HabitNameInput
 					onKeyDown={event => {
 						if (event.keyCode === 13 && newHabitName !== name) {
@@ -64,17 +63,16 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 						}
 					}}
 					onFocus={field.setFocused}
-					className={`mr-4 p-1 pl-2 break-words pr-4 flex-grow focus:bg-gray-100 ${inputBgColor} border`}
 					value={newHabitName ?? undefined}
 					onChange={newHabitNameHelpers.onChange}
 				/>
-			</div>
+			</Field>
 			<SaveButton {...field} onClick={newHabitNameHelpers.onUpdate}>
 				Save
 			</SaveButton>
 			<CancelButton {...field} onClick={newHabitNameHelpers.onClear}>
 				Cancel
 			</CancelButton>
-		</div>
+		</Row>
 	);
 };

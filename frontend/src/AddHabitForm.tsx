@@ -2,7 +2,14 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {CloseButton} from "./CloseButton";
+import {Select} from "./ui/select/Select";
+import {Checkbox} from "./ui/checkbox/Checkbox";
+import {Header} from "./ui/header/Header";
+import {Field} from "./ui/field/Field";
+import {Label} from "./ui/label/Label";
+import {Textarea} from "./ui/textarea/Textarea";
+import {Button} from "./ui/button/Button";
+import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -11,6 +18,7 @@ import {useErrorNotification, useSuccessNotification} from "./contexts/notificat
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
+import {Row} from "./ui/row/Row";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
@@ -61,10 +69,10 @@ export const AddHabitForm: React.FC = () => {
 			className="max-w-screen-lg overflow-auto h-full"
 			style={{maxHeight: "500px"}}
 		>
-			<div className="flex justify-between items-baseline mb-8">
-				<strong>Add new habit</strong>
-				<CloseButton onClick={hideAddFormDialog} />
-			</div>
+			<Row mainAxis="between">
+				<Header variant="small">New habit</Header>
+				<CloseIcon onClick={hideAddFormDialog} />
+			</Row>
 			<form
 				onSubmit={event => {
 					event.preventDefault();
@@ -79,91 +87,80 @@ export const AddHabitForm: React.FC = () => {
 				}}
 				className="flex flex-col w-full"
 			>
-				<div className="flex w-full">
-					<div className="flex flex-col flex-grow">
-						<label className="field-label" htmlFor="name">
-							Habit
-						</label>
+				<Row mt="48">
+					<Field style={{flexGrow: 1}}>
+						<Label htmlFor="name">Habit name</Label>
 						<HabitNameInput
+							id="name"
 							value={name}
 							onChange={event => setName(event.target.value)}
-							className="field w-full"
 						/>
-					</div>
-					<div className="flex flex-col ml-8">
-						<label className="field-label" htmlFor="score">
-							Score
-						</label>
-						<select
+					</Field>
+					<Field ml="12">
+						<Label htmlFor="score">Score</Label>
+						<Select
 							id="score"
 							name="score"
 							required
 							value={score}
 							onChange={event => setScore(event.target.value)}
 							onBlur={event => setScore(event.target.value)}
-							className="field bg-white"
 						>
 							<option value="positive">positive</option>
 							<option value="neutral">neutral</option>
 							<option value="negative">negative</option>
-						</select>
-					</div>
-					<div className="flex flex-col ml-8">
-						<label className="field-label" htmlFor="strength">
-							Strength
-						</label>
-						<select
+						</Select>
+					</Field>
+					<Field ml="12">
+						<Label htmlFor="strength">Strength</Label>
+						<Select
 							id="strength"
 							name="strength"
 							required
 							value={strength}
 							onChange={event => setStrength(event.target.value)}
 							onBlur={event => setStrength(event.target.value)}
-							className="field bg-white"
 						>
 							<option value="established">established</option>
 							<option value="developing">developing</option>
 							<option value="fresh">fresh</option>
-						</select>
-					</div>
-				</div>
+						</Select>
+					</Field>
+				</Row>
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
-				<div className="flex items-center mt-4">
-					<input
-						type="checkbox"
+				<Field mt="24" variant="row" style={{alignSelf: "flex-start"}}>
+					<Checkbox
 						id="is_trackable"
 						name="is_trackable"
 						checked={isTrackable}
 						onChange={() => setIsTrackable(v => !v)}
-						className="field bg-white"
 					/>
-					<label className="field-label mb-0 ml-1" htmlFor="is_trackable">
+					<Label ml="6" htmlFor="is_trackable">
 						Track this habit
-					</label>
-				</div>
-				<div className="flex items-center mt-4">
-					<div className="flex flex-col flex-grow">
-						<label htmlFor="description" className="field-label">
-							Description (optional)
-						</label>
-						<textarea
-							rows={3}
-							value={description}
-							onChange={event => setDescription(event.target.value)}
-							name="description"
-							className="p-1 border"
-							placeholder="Write something..."
-						/>
-					</div>
-				</div>
+					</Label>
+				</Field>
+				<Field mt="24">
+					<Label htmlFor="description">Description</Label>
+					<Textarea
+						value={description}
+						onChange={event => setDescription(event.target.value)}
+						name="description"
+						placeholder="Write something..."
+					/>
+				</Field>
 				<Async.IfRejected state={addHabitRequestState}>
 					<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
 				</Async.IfRejected>
-				<button className="btn btn-blue ml-auto h-10 mt-4" type="submit">
+				<Button
+					variant="primary"
+					type="submit"
+					mt="24"
+					style={{alignSelf: "flex-end", width: "125px"}}
+				>
 					Add habit
-				</button>
+				</Button>
 			</form>
 			<Async.IfRejected state={addHabitRequestState}>
 				<ErrorMessage className="mt-4">

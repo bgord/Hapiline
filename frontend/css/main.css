@@ -1,0 +1,152 @@
+* {
+	box-sizing: border-box;
+	line-height: 24px;
+}
+
+:root {
+	--white: #ffffff;
+	--gray-1: #f9f8f8;
+	--brand-blue: #1554ff;
+
+	--body-background: var(--gray-1);
+}
+
+html {
+	font-family: "Noto Sans";
+}
+
+body {
+	background-color: var(--body-background) !important;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* ----------------------------------------------------- */
+/* Margins */
+/* ----------------------------------------------------- */
+
+/* Margin top */
+*[data-mt="6"] {
+	margin-top: 6px;
+}
+*[data-mt="12"] {
+	margin-top: 12px;
+}
+*[data-mt="24"] {
+	margin-top: 24px;
+}
+*[data-mt="48"] {
+	margin-top: 48px;
+}
+*[data-mt="72"] {
+	margin-top: 72px;
+}
+*[data-mt="auto"] {
+	margin-top: auto;
+}
+
+/* Margin right */
+*[data-mr="6"] {
+	margin-right: 6px;
+}
+*[data-mr="12"] {
+	margin-right: 12px;
+}
+*[data-mr="24"] {
+	margin-right: 24px;
+}
+*[data-mr="48"] {
+	margin-right: 48px;
+}
+*[data-mr="72"] {
+	margin-right: 72px;
+}
+*[data-mr="auto"] {
+	margin-right: auto;
+}
+
+/* Margin bottom */
+*[data-mb="6"] {
+	margin-bottom: 6px;
+}
+*[data-mb="12"] {
+	margin-bottom: 12px;
+}
+*[data-mb="24"] {
+	margin-bottom: 24px;
+}
+*[data-mb="48"] {
+	margin-bottom: 48px;
+}
+*[data-mb="72"] {
+	margin-bottom: 72px;
+}
+*[data-mb="auto"] {
+	margin-bottom: auto;
+}
+
+/* Margin left */
+*[data-ml="6"] {
+	margin-left: 6px;
+}
+*[data-ml="12"] {
+	margin-left: 12px;
+}
+*[data-ml="24"] {
+	margin-left: 24px;
+}
+*[data-ml="48"] {
+	margin-left: 48px;
+}
+*[data-ml="72"] {
+	margin-left: 72px;
+}
+*[data-ml="auto"] {
+	margin-left: auto;
+}
+
+/* ----------------------------------------------------- */
+/* Widths */
+/* ----------------------------------------------------- */
+
+*[data-width="100%"] {
+	width: 100%;
+}
+
+*[data-width="auto"] {
+	width: auto !important;
+}
+
+/* ----------------------------------------------------- */
+/* Alignments */
+/* ----------------------------------------------------- */
+
+*[data-main-axis="start"] {
+	justify-content: flex-start;
+}
+*[data-main-axis="between"] {
+	justify-content: space-between;
+}
+*[data-main-axis="end"] {
+	justify-content: flex-end;
+}
+
+*[data-cross-axis="start"] {
+	align-items: flex-start;
+}
+*[data-cross-axis="center"] {
+	align-items: center;
+}
+*[data-cross-axis="baseline"] {
+	align-items: baseline;
+}
+*[data-cross-axis="end"] {
+	align-items: flex-end;
+}

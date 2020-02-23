@@ -3,9 +3,13 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
+import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteComment, voteToBgColor} from "./interfaces/IDayVote";
-import {InfoMessage} from "./InfoMessage";
+import {Label} from "./ui/label/Label";
+import {Text} from "./ui/text/Text";
+import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";
@@ -24,16 +28,16 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 
 	return (
 		<div>
-			<strong>Vote comments</strong>
+			<Header mt="48" variant="extra-small">
+				Vote comments
+			</Header>
 			<Async.IfRejected state={getHabitVoteCommentsRequestState}>
 				<ErrorMessage className="mt-4">Couldn't fetch vote comments.</ErrorMessage>
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>
-				{voteComments.length === 0 && (
-					<InfoMessage>Future vote comments will appear here.</InfoMessage>
-				)}
+				{voteComments.length === 0 && <Text mt="24">Future vote comments will appear here.</Text>}
 				{voteComments.length > 0 && (
-					<ul className="my-8">
+					<ul className="mt-6 mb-8">
 						{voteComments.map(voteComment => (
 							<HabitVoteComment key={voteComment.id} {...voteComment} />
 						))}
@@ -57,15 +61,15 @@ const HabitVoteComment: React.FC<IVoteComment> = ({id, day, habit_id, vote, comm
 
 	return (
 		<li key={id} className="flex flex-col mb-4">
-			<div className="flex">
-				<strong>
+			<Field>
+				<Label mb="6" htmlFor={comment}>
 					{formattedDay} ({formattedDayName})
-				</strong>
-				<Link to={voteUrl} className={`${linkBgColor} px-2 ml-4`}>
-					{vote?.toUpperCase() ?? "NO VOTE"}
-				</Link>
-			</div>
-			<textarea value={comment} disabled className="w-full border p-1 mt-1" />
+					<Link to={voteUrl} className={`${linkBgColor} px-2 ml-2`}>
+						{vote?.toUpperCase() ?? "NO VOTE"}
+					</Link>
+				</Label>
+				<Textarea id={comment} value={comment} disabled />
+			</Field>
 		</li>
 	);
 };

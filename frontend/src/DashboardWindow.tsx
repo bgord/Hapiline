@@ -3,11 +3,16 @@ import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
+import {Column} from "./ui/column/Column";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
+import {Divider} from "./ui/divider/Divider";
 import {ErrorMessage} from "./ErrorMessages";
+import {Header} from "./ui/header/Header";
 import {Loader} from "./Loader";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
@@ -69,30 +74,30 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<section className="flex flex-col max-w-2xl mx-auto mt-12">
-			<header className="flex items-baseline w-full">
-				<h1 className="text-xl font-bold">Hello!</h1>
-				<BareButton onClick={redirectToCurrentDay} className="ml-auto bg-blue-300 p-1">
+		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
+			<Row>
+				<Header variant="large">Hello!</Header>
+				<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>
 					View today
-				</BareButton>
-			</header>
+				</Button>
+			</Row>
 			<Async.IfRejected state={getDashboardStatsRequestState}>
 				<ErrorMessage className="mt-8">
 					Cannot load dashboard stats now, please try again.
 				</ErrorMessage>
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getDashboardStatsRequestState}>
-				<p className="my-8">
+				<Row mt="48" mb="48">
 					<MotivationalText
 						untracked={howManyUntrackedHabitsToday}
 						total={howManyHabitsToday}
 						votedFor={howManyVotesToday}
 					/>
-				</p>
+				</Row>
 				{howManyHabitsToday > 0 && (
-					<div data-testid="chart-today">
-						<div className="uppercase text-sm font-bold text-gray-600">Votes today</div>
-						<div className="flex items-center mb-8">
+					<Column data-testid="chart-today">
+						<Text variant="dimmed">Votes today</Text>
+						<Row mb="48">
 							<DaySummaryChart
 								maximumVotes={todayStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -100,13 +105,13 @@ export const DashboardWindow = () => {
 								{...statsForToday}
 							/>
 							<DaySummaryStats day={currentDate} {...statsForToday} />
-						</div>
-					</div>
+						</Row>
+					</Column>
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-					<div data-testid="chart-last-week">
-						<div className="uppercase text-sm font-bold text-gray-600">Votes last week</div>
-						<div className="flex items-center mb-8">
+					<Column data-testid="chart-last-week">
+						<Text variant="dimmed">Votes last week</Text>
+						<Row mb="48">
 							<DaySummaryChart
 								maximumVotes={lastWeekStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -114,13 +119,13 @@ export const DashboardWindow = () => {
 								{...statsForLastWeek}
 							/>
 							<DaySummaryStats day={currentDate} {...statsForLastWeek} />
-						</div>
-					</div>
+						</Row>
+					</Column>
 				)}
 				{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-					<div data-testid="chart-last-month">
-						<div className="uppercase text-sm font-bold text-gray-600">Votes last month</div>
-						<div className="flex items-center">
+					<Column data-testid="chart-last-month">
+						<Text variant="dimmed">Votes last month</Text>
+						<Row mb="48">
 							<DaySummaryChart
 								maximumVotes={lastMonthStats?.maximumVotes ?? 0}
 								className="h-4"
@@ -128,8 +133,8 @@ export const DashboardWindow = () => {
 								{...statsForLastMonth}
 							/>
 							<DaySummaryStats day={currentDate} {...statsForLastMonth} />
-						</div>
-					</div>
+						</Row>
+					</Column>
 				)}
 			</Async.IfFulfilled>
 			<Async.IfPending state={getDashboardStreakStatsRequestState}>
@@ -138,13 +143,16 @@ export const DashboardWindow = () => {
 			<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
 				{progressStreakStats.length > 0 && (
 					<>
-						<strong className="mt-12">Progress streaks</strong>
+						<Divider mt="24" />
+						<Header mt="24" mb="48" variant="extra-small">
+							Progress streaks
+						</Header>
 						<ul>
 							{progressStreakStats.map(habit => (
 								<li key={habit.id}>
-									{habit.progress_streak} day(s) progress streak -{" "}
+									<Text>{habit.progress_streak} day(s) progress streak - </Text>
 									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-										{habit.name}
+										<Text>{habit.name}</Text>
 									</Link>
 								</li>
 							))}
@@ -153,13 +161,16 @@ export const DashboardWindow = () => {
 				)}
 				{regressStreakStats.length > 0 && (
 					<>
-						<strong className="mt-4">Regress streaks</strong>
+						<Divider mt="24" />
+						<Header mt="24" mb="48" variant="extra-small">
+							Regress streaks
+						</Header>
 						<ul className="mb-6">
 							{regressStreakStats.map(habit => (
 								<li key={habit.id}>
-									{habit.regress_streak} day(s) regress streak -{" "}
+									<Text>{habit.regress_streak} day(s) regress streak - </Text>
 									<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-										{habit.name}
+										<Text>{habit.name}</Text>
 									</Link>
 								</li>
 							))}
@@ -175,7 +186,7 @@ export const DashboardWindow = () => {
 					{...statsForToday}
 				/>
 			)}
-		</section>
+		</Column>
 	);
 };
 
@@ -193,26 +204,34 @@ const MotivationalText: React.FC<{total: number; votedFor: number; untracked: nu
 	}
 	if (votedFor === 0) {
 		return (
-			<>
-				Start your day well! You have <strong>{total}</strong> tracked habits to vote for. And{" "}
-				{untracked} untracked habits.
-			</>
+			<Text>
+				Start your day well! You have <Text variant="bold">{total}</Text> tracked habits to vote
+				for. And {untracked} untracked habits.
+			</Text>
 		);
 	}
 	if (votedFor > 0 && votedFor < total) {
 		return (
-			<>
-				You're on a good track! You have <strong>{total - votedFor}</strong> tracked habits to vote
-				for left out of <strong>{total}</strong>. And {untracked} untracked habits.
-			</>
+			<Column>
+				<Text>You're on a good track!</Text>
+				<Text>
+					You have <Text variant="bold">{total - votedFor}</Text> tracked habits to vote for left
+					out of <Text variant="bold">{total}</Text> (and {untracked} untracked habits).
+				</Text>
+			</Column>
 		);
 	}
 	if (votedFor === total) {
 		return (
-			<>
-				<strong>Congratulations!</strong> You voted for every one of {total} tracked habits today!
-				You also have {untracked} untracked habits.
-			</>
+			<Column>
+				<Row>
+					<Text variant="bold">Congratulations! </Text>
+					<Text ml="6">
+						You voted for every one of <Text variant="bold">{total}</Text> tracked habits today!
+					</Text>
+				</Row>
+				<Text> You also have {untracked} untracked habits.</Text>
+			</Column>
 		);
 	}
 	return null;

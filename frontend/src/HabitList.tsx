@@ -2,7 +2,9 @@ import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Text} from "./ui/text/Text";
+import {Button} from "./ui/button/Button";
+import {Header} from "./ui/header/Header";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
@@ -13,6 +15,7 @@ import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
+import {Row} from "./ui/row/Row";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -79,24 +82,26 @@ export const HabitList: React.FC = () => {
 
 	return (
 		<>
-			<div className="flex justify-end items-end w-full">
-				<h1 className="text-xl font-bold mr-auto pl-2">Habit list</h1>
-				<button
+			<Row mainAxis="end">
+				<Header mr="auto" variant="large">
+					Habit list
+				</Header>
+				<Button
+					mr="12"
+					variant="secondary"
 					onClick={() => {
 						resetAllFilters();
 						toggleFilters();
 					}}
-					className="btn bg-white color-blue-300 h-10 mt-4 mr-4"
-					type="button"
 				>
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
-				</button>
-				<button onClick={openAddFormDialog} className="btn btn-blue h-10 mt-4" type="button">
+				</Button>
+				<Button variant="primary" onClick={openAddFormDialog}>
 					New habit
-				</button>
-			</div>
+				</Button>
+			</Row>
 			{areFiltersVisible && (
-				<div className="flex w-full mt-10 mb-6">
+				<Row mt="48">
 					<HabitScoreFilters.Positive.Input
 						disabled={habitCounts.positive === 0}
 						value={habitScoreFilter.value}
@@ -130,13 +135,13 @@ export const HabitList: React.FC = () => {
 					/>
 					<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
 
-					<BareButton onClick={resetAllFilters} className="ml-auto">
+					<Button ml="auto" variant="outlined" onClick={resetAllFilters}>
 						Reset filters
-					</BareButton>
-				</div>
+					</Button>
+				</Row>
 			)}
 			{areFiltersVisible && (
-				<div className="flex w-full mb-6">
+				<Row mt="24">
 					<HabitStrengthFilters.Established.Input
 						value={habitStrengthFilter.value}
 						onChange={habitStrengthFilter.onChange}
@@ -171,15 +176,17 @@ export const HabitList: React.FC = () => {
 					<HabitStrengthFilters.All.Label>
 						All strengths ({habitCounts.all})
 					</HabitStrengthFilters.All.Label>
-				</div>
+				</Row>
 			)}
-			<div
-				className={`flex w-full items-center mr-auto mb-6 ml-2 mt-${areFiltersVisible ? 4 : 12}`}
-			>
+			<Row crossAxis="end" mb="48" mt={areFiltersVisible ? "48" : "72"}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-				<BareButton onClick={habitSearch.clearPhrase}>Clear</BareButton>
-				<div className="ml-auto mr-4">Results: {howManyResults}</div>
-			</div>
+				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
+					Clear
+				</Button>
+				<Text ml="auto" mr="12" data-testid="habit-search-result-count">
+					<Text variant="bold">{howManyResults}</Text> results
+				</Text>
+			</Row>
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
 					{provided => (

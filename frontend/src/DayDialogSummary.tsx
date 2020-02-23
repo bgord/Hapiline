@@ -78,7 +78,7 @@ export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...
 
 	return (
 		<details className="text-sm mt-8" hidden={!stats.createdHabitsCount}>
-			<summary className="uppercase" title={summaryTitle}>
+			<summary className="c-header c-header--extra-small" title={summaryTitle}>
 				New habits: {stats.createdHabitsCount}
 			</summary>
 			<p>Habit(s) added this day:</p>
@@ -100,8 +100,8 @@ export const UntrackedHabits: React.FC<{day: string}> = ({day}) => {
 	const summaryTitle = `You have ${untrackedHabits.length} untracked habits.`;
 
 	return (
-		<details className="text-sm mb-4 mt-4" hidden={!untrackedHabits.length}>
-			<summary className="uppercase" title={summaryTitle}>
+		<details className="text-sm mb-8 mt-6" hidden={!untrackedHabits.length}>
+			<summary className="c-header c-header--extra-small" title={summaryTitle}>
 				Untracked habits: {untrackedHabits.length}
 			</summary>
 			<p>Untracked habits available at this day:</p>

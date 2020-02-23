@@ -1,7 +1,13 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {SuccessMessage} from "./SuccessMessages";
+import {Button} from "./ui/button/Button";
+import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 
 export const ForgotPasswordWindow: React.FC = () => {
@@ -15,38 +21,36 @@ export const ForgotPasswordWindow: React.FC = () => {
 	return (
 		<div className="bg-white rounded shadow-lg p-8 sm:max-w-sm sm:mx-auto">
 			<form
-				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+				onSubmit={event => {
 					event.preventDefault();
 					forgotPasswordRequestState.run(email);
 				}}
 				className="sm:flex sm:flex-wrap sm:justify-between"
 			>
-				<div className="field-group mb-4 sm:w-full">
-					<label className="field-label" htmlFor="email">
-						Email
-					</label>
-					<input
-						required
-						className="field"
+				<Header>Forgot password</Header>
+				<Field width="100%" mt="48">
+					<Label htmlFor="email">Email</Label>
+					<Input
 						type="email"
-						name="email"
 						id="email"
 						value={email}
+						required
 						onChange={event => setEmail(event.target.value)}
 						placeholder="john.brown@gmail.com"
 					/>
-				</div>
-				<div className="flex justify-end w-full mt-6">
-					<button
-						className="btn btn-blue"
-						disabled={forgotPasswordRequestState.isPending}
+				</Field>
+				<Row mt="24" mainAxis="end">
+					<Button
+						variant="primary"
 						type="submit"
+						disabled={forgotPasswordRequestState.isPending}
+						style={{width: "125px"}}
 					>
 						{forgotPasswordRequestState.isPending ? "Loading..." : "Send email"}
-					</button>
-				</div>
+					</Button>
+				</Row>
 				<Async.IfFulfilled state={forgotPasswordRequestState}>
-					<SuccessMessage className="w-full">Email sent if an account exists.</SuccessMessage>
+					<Text mt="12">Email sent if an account exists.</Text>
 				</Async.IfFulfilled>
 			</form>
 		</div>

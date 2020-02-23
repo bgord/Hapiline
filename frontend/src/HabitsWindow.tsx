@@ -2,9 +2,10 @@ import * as Async from "react-async";
 import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
+import {Button} from "./ui/button/Button";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitList} from "./HabitList";
-import {InfoMessage} from "./InfoMessage";
+import {Text} from "./ui/text/Text";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
@@ -30,11 +31,11 @@ export const HabitsWindow = () => {
 
 			<Async.IfFulfilled state={getHabitsRequestState}>
 				{habits.length === 0 && (
-					<div className="flex justify-between items-end w-full">
-						<InfoMessage>Seems you haven't added any habits yet.</InfoMessage>
-						<button onClick={openAddFormDialog} className="btn btn-blue h-10 mt-4" type="button">
+					<div className="flex justify-between items-center w-full">
+						<Text>Seems you haven't added any habits yet.</Text>
+						<Button variant="primary" onClick={openAddFormDialog} style={{width: "125px"}}>
 							New habit
-						</button>
+						</Button>
 					</div>
 				)}
 

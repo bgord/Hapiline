@@ -2,8 +2,14 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {Button} from "./ui/button/Button";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
-import {SuccessMessage} from "./SuccessMessages";
+import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
@@ -29,35 +35,27 @@ export const RegistrationWindow: React.FC = () => {
 				}}
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
-				<div className="field-group mb-4 md:w-full">
-					<label className="field-label" htmlFor="email">
-						Email
-					</label>
-					<input
-						className="field"
-						name="email"
+				<Header>Register</Header>
+				<Field width="100%" mt="48">
+					<Label htmlFor="email">Email</Label>
+					<Input
 						id="email"
-						placeholder="john.brown@gmail.com"
 						value={email}
 						onChange={event => setEmail(event.target.value)}
 						required
 						type="email"
 						disabled={registrationRequestState.isFulfilled}
+						placeholder="john.brown@gmail.com"
 					/>
 					<Async.IfRejected state={registrationRequestState}>
 						<ErrorMessage>{emailInlineErrorMessage}</ErrorMessage>
 					</Async.IfRejected>
-				</div>
-				<div className="field-group mb-6 md:w-full">
-					<label className="field-label" htmlFor="password">
-						Password
-					</label>
-					<input
-						className="field"
-						name="password"
+				</Field>
+				<Field width="100%" mt="12">
+					<Label htmlFor="password">Password</Label>
+					<Input
 						id="password"
 						placeholder="********"
-						autoComplete="new-password"
 						title="Password should contain at least 6 characters."
 						value={password}
 						onChange={event => setPassword(event.target.value)}
@@ -66,43 +64,40 @@ export const RegistrationWindow: React.FC = () => {
 						pattern=".{6,}"
 						disabled={registrationRequestState.isFulfilled}
 					/>
-				</div>
-				<div className="field-group mb-6 md:w-full">
-					<label className="field-label" htmlFor="password-confirmation">
-						Repeat password
-					</label>
-					<input
-						className="field"
+				</Field>
+				<Field width="100%" mt="12">
+					<Label htmlFor="password_confirmation">Repeat password</Label>
+					<Input
+						id="password_confirmation"
 						type="password"
-						name="password-confirmation"
-						id="password-confirmation"
 						placeholder="********"
 						pattern={password}
+						required
 						title="Passwords have to be equal"
 						value={passwordConfirmation}
 						onChange={event => setPasswordConfirmation(event.target.value)}
-						required
 						disabled={registrationRequestState.isFulfilled}
 					/>
-				</div>
-				<div className="flex justify-end w-full">
-					<button
-						className="btn btn-blue"
-						type="submit"
+				</Field>
+				<Row mt="24" mainAxis="end">
+					<Button
 						data-testid="registration-submit"
+						type="submit"
+						variant="primary"
 						disabled={registrationRequestState.isFulfilled}
+						style={{width: "125px"}}
 					>
 						{registrationRequestState.isPending ? "Loading..." : "Register"}
-					</button>
-				</div>
+					</Button>
+				</Row>
 				<Async.IfFulfilled state={registrationRequestState}>
-					<SuccessMessage>Account confirmation email has been sent!</SuccessMessage>
-					<div className="flex mt-4">
+					<Text>Account confirmation email has been sent!</Text>
+					<Row mt="24">
 						<span className="text-sm">You can </span>
 						<Link className="link ml-1" to="/login">
 							login now
 						</Link>
-					</div>
+					</Row>
 				</Async.IfFulfilled>
 				<Async.IfRejected state={registrationRequestState}>
 					<RequestErrorMessage>{responseStatus === 500 && errorMessage}</RequestErrorMessage>

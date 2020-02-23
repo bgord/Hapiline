@@ -2,8 +2,11 @@ import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {BareButton} from "./BareButton";
+import {Button} from "./ui/button/Button";
+import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
@@ -34,28 +37,30 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	return (
 		<>
-			<BareButton onClick={openDialog} className="text-red-500">
+			<Button ml="6" variant="outlined" onClick={openDialog}>
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
-			</BareButton>
+			</Button>
 			{showDialog && (
 				<AlertDialog
 					className="w-1/3"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
 					<AlertDialogLabel>
-						Do you want to delete the <span className="italic">{`"${name}"`}</span> habit?
+						<Header variant="small">Do you want to delete the following habit?</Header>
 					</AlertDialogLabel>
-
-					<div className="mt-12 flex justify-around w-full">
-						<BareButton onClick={confirmDeletion}>Yes, delete</BareButton>
-						<button
-							type="button"
+					<Text mt="48">{name}</Text>
+					<Row mt="48" mainAxis="between">
+						<Button variant="outlined" onClick={confirmDeletion}>
+							Yes, delete
+						</Button>
+						<Button
+							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={closeDialog}
 						>
 							Nevermind, don't delete
-						</button>
-					</div>
+						</Button>
+					</Row>
 				</AlertDialog>
 			)}
 		</>

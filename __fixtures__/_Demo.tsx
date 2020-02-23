@@ -1,7 +1,17 @@
-import "../frontend/css/index.css";
-
+import "../frontend/css/main.css";
 import React from "react";
 
 export const Demo: React.FC = ({children}) => (
-	<div className="w-screen h-screen flex justify-center p-4">{children}</div>
+	<div
+		style={{
+			display: "flex",
+			alignItems: "start",
+			width: "100vh",
+			height: "100vh",
+			paddingTop: "24px",
+			paddingLeft: "24px",
+		}}
+	>
+		{children}
+	</div>
 );

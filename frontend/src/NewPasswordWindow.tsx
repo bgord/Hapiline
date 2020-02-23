@@ -2,8 +2,14 @@ import {useParams, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import {Button} from "./ui/button/Button";
+import {Field} from "./ui/field/Field";
+import {Header} from "./ui/header/Header";
+import {Input} from "./ui/input/Input";
+import {Label} from "./ui/label/Label";
 import {RequestErrorMessage} from "./ErrorMessages";
-import {SuccessMessage} from "./SuccessMessages";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
@@ -26,13 +32,10 @@ export const NewPasswordWindow: React.FC = () => {
 				}}
 				className="mb-4 md:flex md:flex-wrap md:justify-between"
 			>
-				<div className="field-group mb-6 md:w-full">
-					<label className="field-label" htmlFor="password">
-						Password
-					</label>
-					<input
-						className="field"
-						name="password"
+				<Header>New password</Header>
+				<Field mt="48" width="100%">
+					<Label htmlFor="password">Password</Label>
+					<Input
 						id="password"
 						placeholder="********"
 						autoComplete="new-password"
@@ -44,16 +47,12 @@ export const NewPasswordWindow: React.FC = () => {
 						pattern=".{6,}"
 						disabled={newPasswordRequestState.isFulfilled}
 					/>
-				</div>
-				<div className="field-group mb-6 md:w-full">
-					<label className="field-label" htmlFor="password-confirmation">
-						Repeat password
-					</label>
-					<input
-						className="field"
+				</Field>
+				<Field width="100%" mt="12" mb="24">
+					<Label htmlFor="password_confirmation">Repeat password</Label>
+					<Input
+						id="password_confirmation"
 						type="password"
-						name="password-confirmation"
-						id="password-confirmation"
 						placeholder="********"
 						pattern={password}
 						title="Passwords have to be equal"
@@ -62,19 +61,19 @@ export const NewPasswordWindow: React.FC = () => {
 						required
 						disabled={newPasswordRequestState.isFulfilled}
 					/>
-				</div>
-				<div className="flex justify-end w-full">
-					<button
-						className="btn btn-blue"
+				</Field>
+				<Row mainAxis="end">
+					<Button
+						variant="primary"
 						type="submit"
-						data-testid="registration-submit"
 						disabled={newPasswordRequestState.isFulfilled}
+						data-testid="registration-submit"
 					>
 						{newPasswordRequestState.isPending ? "Loading..." : "Change password"}
-					</button>
-				</div>
+					</Button>
+				</Row>
 				<Async.IfFulfilled state={newPasswordRequestState}>
-					<SuccessMessage>Password has been changed!</SuccessMessage>
+					<Text>Password has been changed!</Text>
 					<div className="flex mt-4">
 						<span className="text-sm">You can </span>
 						<Link className="link ml-1" to="/login">

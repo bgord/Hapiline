@@ -8,14 +8,20 @@ import {
 	useEditableFieldValue,
 	useEditableFieldState,
 } from "./hooks/useEditableField";
-import {CloseButton} from "./CloseButton";
+import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
+import {Field} from "./ui/field/Field";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
+import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
+import {Label} from "./ui/label/Label";
+import {Row} from "./ui/row/Row";
+import {Text} from "./ui/text/Text";
+import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -57,11 +63,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			</Async.IfRejected>
 			{habit?.id && (
 				<>
-					<div className="flex justify-between">
-						<strong>Habit preview</strong>
-						<CloseButton onClick={dismissDialog} />
-					</div>
-					<div className="flex items-end">
+					<Row mainAxis="between">
+						<Header variant="small">Habit preview</Header>
+						<CloseIcon onClick={dismissDialog} />
+					</Row>
+					<Row mt="24">
 						<EditableHabitScoreSelect
 							{...habit}
 							setHabitItem={habitRequestState.setData}
@@ -77,11 +83,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							setHabitItem={habitRequestState.setData}
 							key={habit?.name}
 						/>
-					</div>
+					</Row>
 					{!habit.is_trackable && <div className="mt-8">This habit is not tracked.</div>}
 					{habit.is_trackable && (
 						<>
-							<div className="uppercase text-sm font-bold mt-6">
+							<Text mt="24" style={{textTransform: "uppercase"}}>
 								<div className="text-green-600" hidden={!habit.progress_streak}>
 									Progress streak: {habit.progress_streak} days
 								</div>
@@ -94,25 +100,24 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								>
 									No streak today
 								</div>
-							</div>
+							</Text>
 							<HabitCharts id={habit.id} />
 						</>
 					)}
-					<div className="mt-8 mb-10">
-						<label htmlFor="description" className="field-label">
-							Description
-						</label>
-						<EditableDescription
-							description={habit.description}
-							habitId={habit.id}
-							onResolve={habitRequestState.reload}
-						/>
-					</div>
+					<EditableDescription
+						description={habit.description}
+						habitId={habit.id}
+						onResolve={habitRequestState.reload}
+					/>
 					{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
 					<dl className="flex items-baseline py-8">
-						<dt className="text-gray-600 uppercase text-sm font-bold">Created at:</dt>
-						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.created_at)}</dd>
-						<dt className="text-gray-600 uppercase text-sm font-bold ml-4">Updated at:</dt>
+						<dt>
+							<Text variant="dimmed">Created at:</Text>
+						</dt>
+						<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
+						<dt>
+							<Text variant="dimmed">Updated at:</Text>
+						</dt>
 						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
 					</dl>
 				</>
@@ -152,22 +157,27 @@ const EditableDescription: React.FC<{
 
 	return (
 		<>
-			<textarea
-				onFocus={textarea.setFocused}
-				placeholder="Write something..."
-				className="w-full border p-2"
-				value={newDescription ?? undefined}
-				onChange={newDescriptionHelpers.onChange}
-			/>
+			<Field mt="24" mb="12">
+				<Label htmlFor="description">Description</Label>
+				<Textarea
+					id="description"
+					onFocus={textarea.setFocused}
+					placeholder="Write something..."
+					value={newDescription ?? undefined}
+					onChange={newDescriptionHelpers.onChange}
+				/>
+			</Field>
 			<Async.IfRejected state={updateDescriptionRequestState}>
 				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
 			</Async.IfRejected>
-			<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
-				Save
-			</SaveButton>
-			<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
-				Cancel
-			</CancelButton>
+			<Row>
+				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
+					Save
+				</SaveButton>
+				<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
+					Cancel
+				</CancelButton>
+			</Row>
 		</>
 	);
 };

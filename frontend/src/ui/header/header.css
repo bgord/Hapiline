@@ -1,0 +1,23 @@
+.c-header {
+	font-size: 22px;
+	line-height: 24px;
+	letter-spacing: 0.02em;
+	font-weight: 500;
+	color: #363434;
+}
+
+.c-header--extra-small {
+	font-size: 18px;
+}
+
+.c-header--small {
+	font-size: 20px;
+}
+
+.c-header--medium {
+	font-size: 22px;
+}
+
+.c-header--large {
+	font-size: 24px;
+}

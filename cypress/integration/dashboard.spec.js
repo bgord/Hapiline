@@ -25,10 +25,12 @@ describe("Dashboard", () => {
 
 		cy.go("back");
 
-		cy.get("p").should(
-			"have.text",
-			"You're on a good track! You have 6 tracked habits to vote for left out of 10. And 0 untracked habits.",
-		);
+		cy.get("div")
+			.eq(5)
+			.should(
+				"have.text",
+				"You're on a good track!You have 6 tracked habits to vote for left out of 10 (and 0 untracked habits).",
+			);
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -90,10 +92,15 @@ describe("Dashboard", () => {
 			},
 		});
 		cy.reload();
-		cy.get("p").should(
-			"have.text",
-			"Start your day well! You have 10 tracked habits to vote for. And 2 untracked habits.",
-		);
+
+		cy.wait(1000);
+
+		cy.get("div")
+			.eq(4)
+			.should(
+				"have.text",
+				"Start your day well! You have 10 tracked habits to vote for. And 2 untracked habits.",
+			);
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -137,10 +144,15 @@ describe("Dashboard", () => {
 			},
 		});
 		cy.reload();
-		cy.get("p").should(
-			"have.text",
-			"Congratulations! You voted for every one of 10 tracked habits today! You also have 3 untracked habits.",
-		);
+
+		cy.wait(1000);
+
+		cy.get("div")
+			.eq(4)
+			.should(
+				"have.text",
+				"Congratulations! You voted for every one of 10 tracked habits today! You also have 3 untracked habits.",
+			);
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -174,7 +186,7 @@ describe("Dashboard", () => {
 			response: [],
 		});
 		cy.reload();
-		cy.get("p").should("have.text", "Add your first tracked habit to start voting!");
+		cy.findByText("Add your first tracked habit to start voting!");
 
 		cy.findByText("Votes today").should("not.exist");
 		cy.findByText("?0").should("not.exist");
@@ -182,9 +194,7 @@ describe("Dashboard", () => {
 		cy.findByText("=0").should("not.exist");
 		cy.findByText("+0").should("not.exist");
 
-		cy.get("p")
-			.should("have.text", "Add your first tracked habit to start voting!")
-			.click();
+		cy.findByText("Add your first tracked habit to start voting!").click();
 		cy.url().should("contain", "/habits");
 	});
 
@@ -220,7 +230,7 @@ describe("Dashboard", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
-		cy.findByLabelText("Notification bell").click();
+		cy.findByText("Notifications dropdown").click({force: true});
 
 		cy.get("#notification-list").within(() => {
 			cy.findByText("Notifications (1)");
@@ -237,7 +247,7 @@ describe("Dashboard", () => {
 
 			cy.findByText("Notifications (0)");
 
-			cy.findByText("×").click();
+			cy.findByText("Close dialog").click({force: true});
 		});
 
 		cy.get("#notification-list").should("not.exist");
@@ -276,12 +286,24 @@ describe("Dashboard", () => {
 		cy.findByText("2 day(s) regress streak -");
 		cy.findByText("1 day(s) regress streak -");
 
-		cy.findByText("first").should("have.attr", "href", "/habits?preview_habit_id=1");
-		cy.findByText("second").should("have.attr", "href", "/habits?preview_habit_id=2");
-		cy.findByText("third").should("have.attr", "href", "/habits?preview_habit_id=3");
-		cy.findByText("fourth").should("have.attr", "href", "/habits?preview_habit_id=4");
-		cy.findByText("fifth").should("have.attr", "href", "/habits?preview_habit_id=5");
-		cy.findByText("sixth").should("have.attr", "href", "/habits?preview_habit_id=6");
+		cy.findByText("first")
+			.parent()
+			.should("have.attr", "href", "/habits?preview_habit_id=1");
+		cy.findByText("second")
+			.parent()
+			.should("have.attr", "href", "/habits?preview_habit_id=2");
+		cy.findByText("third")
+			.parent()
+			.should("have.attr", "href", "/habits?preview_habit_id=3");
+		cy.findByText("fourth")
+			.parent()
+			.should("have.attr", "href", "/habits?preview_habit_id=4");
+		cy.findByText("fifth")
+			.parent()
+			.should("have.attr", "href", "/habits?preview_habit_id=5");
+		cy.findByText("sixth")
+			.parent()
+			.should("have.attr", "href", "/habits?preview_habit_id=6");
 	});
 
 	it("streak stats error", () => {

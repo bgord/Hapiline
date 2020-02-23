@@ -1,0 +1,53 @@
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+	.c-checkbox {
+		position: relative;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		padding: 0;
+		margin: 0;
+		width: 24px;
+		height: 23px;
+		background: #e8e7e7;
+		border: 1px solid white;
+		outline: none;
+	}
+
+	.c-checkbox:hover:not(:disabled) {
+		border-color: #bebcbc;
+		transition: border-color 400ms;
+		cursor: pointer;
+	}
+
+	.c-checkbox:active:not(:disabled),
+	.c-checkbox:focus:not(:disabled),
+	.c-checkbox:checked:not(:disabled) {
+		box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	}
+
+	.c-checkbox:hover:disabled {
+		cursor: not-allowed;
+	}
+
+	.c-checkbox:checked::after,
+	.c-checkbox:hover:not(:checked):not(:disabled)::after {
+		content: "";
+		position: absolute;
+		top: 7px;
+		left: 7px;
+		height: 6px;
+		width: 10px;
+		border-width: 2px;
+		border-style: solid;
+		border-top: 0;
+		border-right: 0;
+		transform: rotate(-45deg);
+	}
+
+	.c-checkbox:checked::after {
+		border-color: #363434;
+	}
+
+	.c-checkbox:hover:not(:checked):not(:disabled)::after {
+		border-color: #bebcbc;
+	}
+}

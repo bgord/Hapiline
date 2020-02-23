@@ -7,7 +7,7 @@ export const HabitScore: React.FC<{score: IHabit["score"]} & JSX.IntrinsicElemen
 	className = "",
 	...rest
 }) => (
-	<div className={`${scoreToBgColor[score]} w-24 pl-1 p-2 text-center ${className}`} {...rest}>
+	<div className={`c-text ${scoreToBgColor[score]} w-24 p-1 text-center ${className}`} {...rest}>
 		{score}
 	</div>
 );
