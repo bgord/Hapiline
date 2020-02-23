@@ -48,7 +48,7 @@ export default UnauthenticatedApp;
 
 function UnauthenticatedNavbar() {
 	return (
-		<nav className="flex justify-end py-1 bg-white shadow-md mb-20">
+		<nav className="flex justify-end py-1 bg-white shadow-md">
 			<NavLink className="ml-2 mr-auto px-4 py-2" exact activeClassName="text-blue-400" to="/">
 				<Logo className="h-10" />
 			</NavLink>
