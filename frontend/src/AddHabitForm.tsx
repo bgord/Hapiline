@@ -85,9 +85,9 @@ export const AddHabitForm: React.FC = () => {
 						isTrackable,
 					);
 				}}
-				className="flex flex-col w-full mt-6"
+				className="flex flex-col w-full"
 			>
-				<Row>
+				<Row mt="48">
 					<Field style={{flexGrow: 1}}>
 						<Label htmlFor="name">Habit name</Label>
 						<HabitNameInput

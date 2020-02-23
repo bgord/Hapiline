@@ -64,12 +64,7 @@ function AuthenticatedNavbar() {
 
 	return (
 		<nav className="flex justify-end py-1 bg-white shadow-md">
-			<NavLink
-				className="c-text ml-2 mr-auto p-2"
-				exact
-				activeClassName="text-blue-400"
-				to="/dashboard"
-			>
+			<NavLink className="ml-2 mr-auto p-2" exact activeClassName="text-blue-400" to="/dashboard">
 				<Logo />
 			</NavLink>
 			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/dashboard">
@@ -148,35 +143,35 @@ function NotificationDropdown() {
 				>
 					<Async.IfPending state={getNotificationsRequestState}>Loading...</Async.IfPending>
 					<Async.IfFulfilled state={getNotificationsRequestState}>
-						<Row mainAxis="between">
+						<Row mainAxis="between" mb="24">
 							<Header variant="extra-small">Notifications ({unreadNotifictionsNumber})</Header>
 							<CloseIcon onClick={hideNotifications} />
 						</Row>
-						<ul className="mt-8">
+						<ul>
 							{notifications.length === 0 && <Text>You don't have any notifications.</Text>}
 							{notifications.map(notification => (
-								<li key={notification.id} className="flex items-center mt-6">
-									{notification.content}
-									{notification.status === "unread" && (
-										<Button
-											ml="6"
-											variant="secondary"
-											disabled={updateNotificationRequestState.isPending}
-											onClick={() => markNotificationAsRead(notification.id)}
-										>
-											Mark as read
-										</Button>
-									)}
-									{notification.status === "read" && (
-										<Button
-											ml="6"
-											variant="outlined"
-											onClick={() => markNotificationAsUnread(notification.id)}
-											disabled={updateNotificationRequestState.isPending}
-										>
-											Mark as unread
-										</Button>
-									)}
+								<li key={notification.id}>
+									<Row mainAxis="between">
+										<Text>{notification.content}</Text>
+										{notification.status === "unread" && (
+											<Button
+												variant="secondary"
+												disabled={updateNotificationRequestState.isPending}
+												onClick={() => markNotificationAsRead(notification.id)}
+											>
+												Mark as read
+											</Button>
+										)}
+										{notification.status === "read" && (
+											<Button
+												variant="outlined"
+												onClick={() => markNotificationAsUnread(notification.id)}
+												disabled={updateNotificationRequestState.isPending}
+											>
+												Mark as unread
+											</Button>
+										)}
+									</Row>
 								</li>
 							))}
 						</ul>

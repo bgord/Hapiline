@@ -43,15 +43,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 
 	return (
 		<>
-			<Field
-				mt="48"
-				variant="row"
-				style={{
-					display: "flex",
-					alignItems: "center",
-					justifyContent: "flex-end",
-				}}
-			>
+			<Field mt="48" variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
 				<Label mr="12" htmlFor="date_range">
 					Select date range:
 				</Label>

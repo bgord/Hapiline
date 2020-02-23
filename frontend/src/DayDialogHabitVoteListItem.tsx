@@ -110,63 +110,65 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<>
-			<li className="flex items-baseline justify-between bg-gray-100 my-2 p-2 mt-4">
+			<li className="bg-gray-100 p-2 mt-4">
 				<Row>
-					<Button variant="outlined" title="Show and edit comment" onClick={toggleComment}>
-						{isCommentVisible && (
-							<>
-								<VisuallyHidden>Hide vote comment</VisuallyHidden>
-								<FontAwesomeIcon icon={faChevronUp} />
-							</>
-						)}
-						{!isCommentVisible && (
-							<>
-								<VisuallyHidden>Show vote comment</VisuallyHidden>
-								<FontAwesomeIcon icon={faChevronDown} />
-							</>
-						)}
-					</Button>
-					<HabitScore score={habit.score} className="px-1 py-1 ml-2" />
-					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
-					<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-						<Text>{habit.name}</Text>
-					</Link>
-				</Row>
-				{!vote && (
-					<Text ml="auto" mr="6" variant="bold" title="Vote for a habit">
-						!
-					</Text>
-				)}
-				<Row width="auto">
-					<Button
-						style={{background: vote === "progress" ? "#3ddc97" : "white"}}
-						variant="outlined"
-						onClick={() => changeVote("progress")}
-						disabled={addHabitDayVoteRequestState.isPending}
-					>
-						<VisuallyHidden>Add progress vote</VisuallyHidden>
-						<FontAwesomeIcon icon={faPlus} />
-					</Button>
-					<Button
-						style={{background: vote === "plateau" ? "#cfdee7" : "white"}}
-						ml="6"
-						variant="outlined"
-						onClick={() => changeVote("plateau")}
-						disabled={addHabitDayVoteRequestState.isPending}
-					>
-						<VisuallyHidden>Add plateau vote</VisuallyHidden>
-						<FontAwesomeIcon icon={faEquals} />
-					</Button>
-					<Button
-						style={{background: vote === "regress" ? "#ff495c" : "white"}}
-						ml="6"
-						variant="outlined"
-						onClick={() => changeVote("regress")}
-						disabled={addHabitDayVoteRequestState.isPending}
-					>
-						<VisuallyHidden>Add regress vote</VisuallyHidden>
-						<FontAwesomeIcon icon={faMinus} />
-					</Button>
+					<Row>
+						<Button variant="outlined" title="Show and edit comment" onClick={toggleComment}>
+							{isCommentVisible && (
+								<>
+									<VisuallyHidden>Hide vote comment</VisuallyHidden>
+									<FontAwesomeIcon icon={faChevronUp} />
+								</>
+							)}
+							{!isCommentVisible && (
+								<>
+									<VisuallyHidden>Show vote comment</VisuallyHidden>
+									<FontAwesomeIcon icon={faChevronDown} />
+								</>
+							)}
+						</Button>
+						<HabitScore score={habit.score} className="px-1 py-1 ml-2" />
+						<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
+						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+							<Text>{habit.name}</Text>
+						</Link>
+					</Row>
+					{!vote && (
+						<Text ml="auto" mr="6" variant="bold" title="Vote for a habit">
+							!
+						</Text>
+					)}
+					<Row width="auto">
+						<Button
+							style={{background: vote === "progress" ? "#3ddc97" : "white"}}
+							variant="outlined"
+							onClick={() => changeVote("progress")}
+							disabled={addHabitDayVoteRequestState.isPending}
+						>
+							<VisuallyHidden>Add progress vote</VisuallyHidden>
+							<FontAwesomeIcon icon={faPlus} />
+						</Button>
+						<Button
+							style={{background: vote === "plateau" ? "#cfdee7" : "white"}}
+							ml="6"
+							variant="outlined"
+							onClick={() => changeVote("plateau")}
+							disabled={addHabitDayVoteRequestState.isPending}
+						>
+							<VisuallyHidden>Add plateau vote</VisuallyHidden>
+							<FontAwesomeIcon icon={faEquals} />
+						</Button>
+						<Button
+							style={{background: vote === "regress" ? "#ff495c" : "white"}}
+							ml="6"
+							variant="outlined"
+							onClick={() => changeVote("regress")}
+							disabled={addHabitDayVoteRequestState.isPending}
+						>
+							<VisuallyHidden>Add regress vote</VisuallyHidden>
+							<FontAwesomeIcon icon={faMinus} />
+						</Button>
+					</Row>
 				</Row>
 			</li>
 			{isCommentVisible && (

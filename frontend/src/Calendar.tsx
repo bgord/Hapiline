@@ -54,7 +54,7 @@ export const Calendar: React.FC = () => {
 	});
 
 	return (
-		<Column mt="72" style={{alignItems: "center"}}>
+		<Column mt="72" crossAxis="center">
 			<Row mb="72" width="auto">
 				<Button
 					variant="secondary"

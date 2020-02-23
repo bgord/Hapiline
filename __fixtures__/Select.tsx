@@ -21,10 +21,7 @@ export default {
 	),
 	horizontal: (
 		<Demo>
-			<Field
-				variant="row"
-				style={{display: "flex", justifyContent: "center", alignItems: "center"}}
-			>
+			<Field variant="row" style={{justifyContent: "center", alignItems: "center"}}>
 				<Label mr="12" htmlFor="type">
 					Type
 				</Label>
