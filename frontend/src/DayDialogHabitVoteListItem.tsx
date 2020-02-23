@@ -125,7 +125,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						!
 					</Text>
 				)}
-				<Row style={{width: "auto"}}>
+				<Row width="auto">
 					<Button
 						variant="outlined"
 						onClick={() => changeVote("progress")}

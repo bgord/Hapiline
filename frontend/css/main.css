@@ -121,7 +121,7 @@ body {
 }
 
 *[data-width="auto"] {
-	width: auto;
+	width: auto !important;
 }
 
 /* ----------------------------------------------------- */

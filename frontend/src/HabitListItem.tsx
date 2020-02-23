@@ -50,7 +50,7 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					<HabitStrength strength={habit.strength} />
 					<Row ml="12" mainAxis="between">
 						<Text>{habit.name}</Text>
-						<Row style={{width: "auto"}}>
+						<Row width="auto">
 							{!habit.is_trackable && <Text mr="6">NT</Text>}
 							<Button variant="outlined" onClick={openPreviewDialog}>
 								More
