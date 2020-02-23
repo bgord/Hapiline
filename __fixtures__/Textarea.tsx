@@ -16,7 +16,7 @@ export default {
 	),
 	"with label": (
 		<Demo>
-			<Field style={{maxWidth: "400px", width: "100%"}}>
+			<Field width="100%" style={{maxWidth: "400px"}}>
 				<Label htmlFor="description">Description</Label>
 				<Textarea id="description" />
 			</Field>
@@ -24,7 +24,7 @@ export default {
 	),
 	disabled: (
 		<Demo>
-			<Field style={{maxWidth: "400px", width: "100%"}}>
+			<Field width="100%" style={{maxWidth: "400px"}}>
 				<Label htmlFor="description">Description</Label>
 				<Textarea
 					disabled
@@ -36,7 +36,7 @@ export default {
 	),
 	"stacked with an input": (
 		<Demo>
-			<form style={{maxWidth: "400px", width: "100%"}}>
+			<form data-width="100%" style={{maxWidth: "400px"}}>
 				<Field mb="12">
 					<Label htmlFor="last_name">Last name</Label>
 					<Input id="last_name" placeholder="John doe" />

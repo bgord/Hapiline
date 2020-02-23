@@ -33,11 +33,10 @@ export default {
 				style={{
 					width: "300px",
 					background: "white",
-					padding: "24px",
 					boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
 				}}
 			>
-				<Header>Login</Header>
+				<Header mt="24">Login</Header>
 				<Field mt="48">
 					<Label htmlFor="email">Email</Label>
 					<Input id="email" placeholder="user@example.com" />
@@ -46,7 +45,7 @@ export default {
 					<Label htmlFor="password">Password</Label>
 					<Input id="password" type="password" placeholder="*********" />
 				</Field>
-				<Button mt="24" variant="primary" style={{width: "100%"}}>
+				<Button data-width="100%" mt="24" variant="primary">
 					Login
 				</Button>
 			</form>
