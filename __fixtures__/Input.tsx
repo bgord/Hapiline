@@ -60,13 +60,13 @@ export default {
 	"with label (horizontally)": (
 		<Demo>
 			<form style={{display: "flex", flexDirection: "column", alignItems: "flex-end"}}>
-				<Field mb="12" style={{alignItems: "center"}}>
+				<Field mb="12">
 					<Label mr="6" htmlFor="email">
 						Email
 					</Label>
 					<Input id="email" placeholder="user@example.com" />
 				</Field>
-				<Field style={{alignItems: "center"}}>
+				<Field>
 					<Label mr="6" htmlFor="first_name">
 						First name
 					</Label>
