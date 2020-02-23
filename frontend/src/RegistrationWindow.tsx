@@ -52,7 +52,7 @@ export const RegistrationWindow: React.FC = () => {
 					</Async.IfRejected>
 				</Field>
 				<Field width="100%" mt="12">
-					<Label htmlFor="Password">Password</Label>
+					<Label htmlFor="password">Password</Label>
 					<Input
 						id="password"
 						placeholder="********"
