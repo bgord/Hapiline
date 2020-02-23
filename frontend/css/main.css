@@ -234,3 +234,7 @@ body {
 *[data-cross-axis="end"] {
 	align-items: flex-end;
 }
+
+[data-reach-dialog-content] {
+	margin-top: 120px;
+}
