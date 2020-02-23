@@ -2,16 +2,18 @@ import "./row.css";
 
 import React from "react";
 
+import {Alignments} from "../alignments";
 import {Margins} from "../margins";
 
-type MainAxisAlignment = "start" | "between" | "end";
-type CrossAxisAlignment = "start" | "center" | "baseline" | "end";
-
-export const Row: React.FC<JSX.IntrinsicElements["div"] &
-	Margins & {
-		mainAxis?: MainAxisAlignment;
-		crossAxis?: CrossAxisAlignment;
-	}> = ({mainAxis = "start", crossAxis = "center", mt, mr, mb, ml, ...props}) => (
+export const Row: React.FC<JSX.IntrinsicElements["div"] & Margins & Alignments> = ({
+	mainAxis = "start",
+	crossAxis = "center",
+	mt,
+	mr,
+	mb,
+	ml,
+	...props
+}) => (
 	<div
 		data-mt={mt}
 		data-mr={mr}
