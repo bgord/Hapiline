@@ -121,11 +121,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					</Link>
 				</Row>
 				{!vote && (
-					<Text
-						variant="bold"
-						title="Vote for a habit"
-						style={{marginLeft: "auto", marginRight: "6px"}}
-					>
+					<Text ml="auto" mr="6" variant="bold" title="Vote for a habit">
 						!
 					</Text>
 				)}

@@ -45,10 +45,10 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 					className="w-1/3"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
-					<AlertDialogLabel style={{marginBottom: "48px"}}>
+					<AlertDialogLabel>
 						<Header variant="small">Do you want to delete the following habit?</Header>
 					</AlertDialogLabel>
-					<Text>{name}</Text>
+					<Text mt="48">{name}</Text>
 					<Row mt="48" mainAxis="between">
 						<Button variant="outlined" onClick={confirmDeletion}>
 							Yes, delete

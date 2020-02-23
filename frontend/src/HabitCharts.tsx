@@ -52,9 +52,10 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 					justifyContent: "flex-end",
 				}}
 			>
-				<Label htmlFor="date_range">Select date range:</Label>
+				<Label mr="12" htmlFor="date_range">
+					Select date range:
+				</Label>
 				<Select
-					style={{marginLeft: "6px"}}
 					id="date_range"
 					value={dateRange}
 					onChange={event => {

@@ -152,7 +152,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 					Reset filters
 				</Button>
 			</Row>
-			<Row mt="24">
+			<Row mt="24" crossAxis="end">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button
 					ml="12"

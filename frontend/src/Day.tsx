@@ -56,10 +56,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					{...stats}
 				/>
 			)}
-			<Text
-				variant={isThisDayToday ? "bold" : "regular"}
-				style={{textAlign: "center", marginTop: "4px"}}
-			>
+			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 				{day}
 			</Text>
 			{isDayDialogAvailable && (
@@ -76,7 +73,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 						Show day
 					</Button>
 					<Row mt="auto" mainAxis="end" style={{padding: "4px"}}>
-						<Text variant="dimmed" hidden={!stats.createdHabitsCount} style={{marginRight: "auto"}}>
+						<Text mr="auto" variant="dimmed" hidden={!stats.createdHabitsCount}>
 							NEW: {stats.createdHabitsCount}
 						</Text>
 						<Stat count={stats.progressVotesCountStats} sign="+" />

@@ -87,7 +87,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					{!habit.is_trackable && <div className="mt-8">This habit is not tracked.</div>}
 					{habit.is_trackable && (
 						<>
-							<Text style={{textTransform: "uppercase", marginTop: "24px", display: "flex"}}>
+							<Text mt="24" style={{textTransform: "uppercase"}}>
 								<div className="text-green-600" hidden={!habit.progress_streak}>
 									Progress streak: {habit.progress_streak} days
 								</div>

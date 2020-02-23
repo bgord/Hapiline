@@ -133,10 +133,10 @@ const ChangeEmail: React.FC = () => {
 					)}
 				</Column>
 			)}
-			<Text style={{marginTop: "24px"}}>
+			<Text mt="24">
 				NOTE: You will have to confirm your new email adress and login back again.
 			</Text>
-			{status === "pending" && <Text style={{marginTop: "12px"}}>Email change pending...</Text>}
+			{status === "pending" && <Text mt="12">Email change pending...</Text>}
 			{status === "success" && (
 				<Text>
 					Email confirmation message has been sent!
@@ -295,6 +295,7 @@ const DeleteAccount = () => {
 				Account deletion
 			</Header>
 			<Button
+				mt="24"
 				variant="primary"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}

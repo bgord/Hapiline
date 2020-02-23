@@ -178,12 +178,12 @@ export const HabitList: React.FC = () => {
 					</HabitStrengthFilters.All.Label>
 				</Row>
 			)}
-			<Row crossAxis="end" mb="48" style={{marginTop: areFiltersVisible ? "36px" : "60px"}}>
+			<Row crossAxis="end" mb="48" mt={areFiltersVisible ? "48" : "72"}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear
 				</Button>
-				<Text style={{marginLeft: "auto", marginRight: "16px"}}>
+				<Text ml="auto" mr="12">
 					<Text variant="bold">{howManyResults}</Text> results
 				</Text>
 			</Row>

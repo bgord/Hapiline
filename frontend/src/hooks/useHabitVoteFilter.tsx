@@ -62,7 +62,7 @@ export const HabitVoteFilters = {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
 			<RadioButton filter="voted" {...props} />
 		),
-		Label: (props: JSX.IntrinsicElements["label"]) => <Label mr-6 htmlFor="voted" {...props} />,
+		Label: (props: JSX.IntrinsicElements["label"]) => <Label mr="6" htmlFor="voted" {...props} />,
 	},
 	Unvoted: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (

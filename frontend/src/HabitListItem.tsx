@@ -48,10 +48,10 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 				>
 					<HabitScore score={habit.score} />
 					<HabitStrength strength={habit.strength} />
-					<Row mainAxis="between">
-						<Text style={{paddingLeft: "12px"}}>{habit.name}</Text>
+					<Row ml="12" mainAxis="between">
+						<Text>{habit.name}</Text>
 						<Row style={{width: "auto"}}>
-							{!habit.is_trackable && <Text style={{marginRight: "6px"}}>NT</Text>}
+							{!habit.is_trackable && <Text mr="6">NT</Text>}
 							<Button variant="outlined" onClick={openPreviewDialog}>
 								More
 							</Button>

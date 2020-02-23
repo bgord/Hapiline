@@ -35,11 +35,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 				<ErrorMessage className="mt-4">Couldn't fetch vote comments.</ErrorMessage>
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>
-				{voteComments.length === 0 && (
-					<Text style={{display: "inline-block", marginTop: "24px"}}>
-						Future vote comments will appear here.
-					</Text>
-				)}
+				{voteComments.length === 0 && <Text mt="24">Future vote comments will appear here.</Text>}
 				{voteComments.length > 0 && (
 					<ul className="mt-6 mb-8">
 						{voteComments.map(voteComment => (
@@ -66,13 +62,13 @@ const HabitVoteComment: React.FC<IVoteComment> = ({id, day, habit_id, vote, comm
 	return (
 		<li key={id} className="flex flex-col mb-4">
 			<Field>
-				<Label htmlFor={comment}>
+				<Label mb="6" htmlFor={comment}>
 					{formattedDay} ({formattedDayName})
-					<Link to={voteUrl} className={`${linkBgColor} px-2 ml-4`}>
+					<Link to={voteUrl} className={`${linkBgColor} px-2 ml-2`}>
 						{vote?.toUpperCase() ?? "NO VOTE"}
 					</Link>
 				</Label>
-				<Textarea id={comment} value={comment} disabled style={{marginTop: "6px"}} />
+				<Textarea id={comment} value={comment} disabled />
 			</Field>
 		</li>
 	);
