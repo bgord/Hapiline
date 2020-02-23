@@ -89,8 +89,12 @@ export const AddHabitForm: React.FC = () => {
 			>
 				<Row>
 					<Field style={{flexGrow: 1}}>
-						<Label htmlFor="habit_name">Habit name</Label>
-						<HabitNameInput value={name} onChange={event => setName(event.target.value)} />
+						<Label htmlFor="name">Habit name</Label>
+						<HabitNameInput
+							id="name"
+							value={name}
+							onChange={event => setName(event.target.value)}
+						/>
 					</Field>
 					<Field ml="12">
 						<Label htmlFor="score">Score</Label>

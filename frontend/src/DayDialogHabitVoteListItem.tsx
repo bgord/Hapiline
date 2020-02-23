@@ -9,7 +9,9 @@ import {
 	faEquals,
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
+import VisuallyHidden from "@reach/visually-hidden";
 
+import {Column} from "./ui/column/Column";
 import {Row} from "./ui/row/Row";
 import {Text} from "./ui/text/Text";
 import {Field} from "./ui/field/Field";
@@ -111,8 +113,18 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 			<li className="flex items-baseline justify-between bg-gray-100 my-2 p-2 mt-4">
 				<Row>
 					<Button variant="outlined" title="Show and edit comment" onClick={toggleComment}>
-						{isCommentVisible && <FontAwesomeIcon icon={faChevronUp} />}
-						{!isCommentVisible && <FontAwesomeIcon icon={faChevronDown} />}
+						{isCommentVisible && (
+							<>
+								<VisuallyHidden>Hide vote comment</VisuallyHidden>
+								<FontAwesomeIcon icon={faChevronUp} />
+							</>
+						)}
+						{!isCommentVisible && (
+							<>
+								<VisuallyHidden>Show vote comment</VisuallyHidden>
+								<FontAwesomeIcon icon={faChevronDown} />
+							</>
+						)}
 					</Button>
 					<HabitScore score={habit.score} className="px-1 py-1 ml-2" />
 					<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
@@ -127,32 +139,38 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 				)}
 				<Row width="auto">
 					<Button
+						style={{background: vote === "progress" ? "#3ddc97" : "white"}}
 						variant="outlined"
 						onClick={() => changeVote("progress")}
 						disabled={addHabitDayVoteRequestState.isPending}
 					>
+						<VisuallyHidden>Add progress vote</VisuallyHidden>
 						<FontAwesomeIcon icon={faPlus} />
 					</Button>
 					<Button
+						style={{background: vote === "plateau" ? "#cfdee7" : "white"}}
 						ml="6"
 						variant="outlined"
 						onClick={() => changeVote("plateau")}
 						disabled={addHabitDayVoteRequestState.isPending}
 					>
+						<VisuallyHidden>Add plateau vote</VisuallyHidden>
 						<FontAwesomeIcon icon={faEquals} />
 					</Button>
 					<Button
+						style={{background: vote === "regress" ? "#ff495c" : "white"}}
 						ml="6"
 						variant="outlined"
 						onClick={() => changeVote("regress")}
 						disabled={addHabitDayVoteRequestState.isPending}
 					>
+						<VisuallyHidden>Add regress vote</VisuallyHidden>
 						<FontAwesomeIcon icon={faMinus} />
 					</Button>
 				</Row>
 			</li>
 			{isCommentVisible && (
-				<>
+				<Column>
 					<Field mb="12">
 						<Label htmlFor="vote_comment">Vote comment</Label>
 						<Textarea
@@ -164,13 +182,15 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							onChange={newCommentHelpers.onChange}
 						/>
 					</Field>
-					<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
-						Save
-					</SaveButton>
-					<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
-						Cancel
-					</CancelButton>
-				</>
+					<Row>
+						<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+							Save
+						</SaveButton>
+						<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+							Cancel
+						</CancelButton>
+					</Row>
+				</Column>
 			)}
 		</>
 	);

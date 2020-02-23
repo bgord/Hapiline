@@ -91,12 +91,12 @@ describe("Calendar", () => {
 		cy.findByText("Habits").click();
 		cy.findByText("New habit").click();
 
-		cy.findByLabelText("Habit").type("THE SPECIAL ONE");
-		cy.findByLabelText("Track this habit").click();
-
 		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit name").type("THE SPECIAL ONE");
+			cy.findByLabelText("Track this habit").click();
+
 			cy.findByText("Add habit").click();
-			cy.findByText("×").click();
+			cy.findByText("Close dialog").click({force: true});
 		});
 
 		cy.findByText("Habit successfully addedd!");
@@ -214,7 +214,7 @@ describe("Calendar", () => {
 			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
 			cy.findByLabelText("Show all (10)").should("be.checked");
 
-			cy.findByText("×").click();
+			cy.findByText("Close dialog").click({force: true});
 		});
 		cy.findByRole("dialog").should("not.exist");
 	});
@@ -229,13 +229,12 @@ describe("Calendar", () => {
 		cy.findByText("Habits").click();
 		cy.findByText("New habit").click();
 
-		cy.findByLabelText("Habit").type("THE NOT TRACKED ONE");
-
-		cy.findByLabelText("Track this habit").click();
-
 		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit name").type("THE NOT TRACKED ONE");
+			cy.findByLabelText("Track this habit").click();
+
 			cy.findByText("Add habit").click();
-			cy.findByText("×").click();
+			cy.findByText("Close dialog").click({force: true});
 		});
 
 		cy.findByText("Calendar").click();
@@ -277,27 +276,29 @@ describe("Calendar", () => {
 			cy.findByText("-1");
 			cy.findByText("?6");
 
-			cy.findAllByText("+")
+			cy.findAllByText("Add progress vote")
 				.first()
-				.click();
+				.click({force: true});
 
 			cy.findByText("+3");
 			cy.findByText("=1");
 			cy.findByText("-1");
 			cy.findByText("?5");
 
-			cy.findAllByText("+")
+			cy.wait(10);
+
+			cy.findAllByText("Add progress vote")
 				.first()
-				.click();
+				.click({force: true});
 
 			cy.findByText("+2");
 			cy.findByText("=1");
 			cy.findByText("-1");
 			cy.findByText("?6");
 
-			cy.findAllByText("-")
+			cy.findAllByText("Add regress vote")
 				.eq(2)
-				.click();
+				.click({force: true});
 
 			cy.findByText("+2");
 			cy.findByText("=1");
@@ -323,25 +324,25 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByText("Show all (10)").click();
-			cy.findAllByText("⌄").should("have.length", 10);
+			cy.findAllByText("Show vote comment").should("have.length", 10);
 			cy.findByPlaceholderText("Write something...").should("not.exist");
 
-			cy.findAllByText("⌄")
+			cy.findAllByText("Show vote comment")
 				.eq(2)
-				.click();
-			cy.findAllByText("⌄").should("have.length", 9);
-			cy.findByText("⌃").should("have.length", 1);
+				.click({force: true});
+			cy.findAllByText("Show vote comment").should("have.length", 9);
+			cy.findByText("Hide vote comment").should("have.length", 1);
 
 			cy.findByDisplayValue("loremloremloremloremloremloremlorem");
 
-			cy.findByText("⌃").click();
-			cy.findAllByText("⌄").should("have.length", 10);
-			cy.findByText("⌃").should("not.exist");
+			cy.findByText("Hide vote comment").click({force: true});
+			cy.findAllByText("Show vote comment").should("have.length", 10);
+			cy.findByText("Hide vote comment").should("not.exist");
 			cy.findByDisplayValue("loremloremloremloremloremloremlorem").should("not.exist");
 
-			cy.findAllByText("⌄")
+			cy.findAllByText("Show vote comment")
 				.eq(2)
-				.click();
+				.click({force: true});
 			cy.findByDisplayValue("loremloremloremloremloremloremlorem").type("xxx");
 
 			cy.findByDisplayValue("loremloremloremloremloremloremloremxxx");
@@ -358,7 +359,7 @@ describe("Calendar", () => {
 
 		cy.findByText("Comment added successfully!");
 
-		cy.findByRole("dialog").within(() => cy.findByText("×").click());
+		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
 
 		cy.get("ul").within(() => {
 			cy.get("li")
@@ -370,9 +371,9 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByText("Show all (10)").click();
-			cy.findAllByText("⌄")
+			cy.findAllByText("Show vote comment")
 				.eq(2)
-				.click();
+				.click({force: true});
 			cy.findByDisplayValue("nonono");
 		});
 	});
