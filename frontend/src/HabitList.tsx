@@ -183,7 +183,7 @@ export const HabitList: React.FC = () => {
 				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear
 				</Button>
-				<Text ml="auto" mr="12">
+				<Text ml="auto" mr="12" data-testid="habit-search-result-count">
 					<Text variant="bold">{howManyResults}</Text> results
 				</Text>
 			</Row>
