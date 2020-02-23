@@ -3,6 +3,7 @@ import * as Async from "react-async";
 import * as React from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faBell} from "@fortawesome/free-solid-svg-icons";
+import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
 
@@ -131,13 +132,11 @@ function NotificationDropdown() {
 					fontSize: "24px",
 				}}
 			>
+				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
 				<FontAwesomeIcon icon={faBell} />
-				<span
-					hidden={unreadNotifictionsNumber === 0}
-					style={{position: "absolute", top: "-4px", fontSize: "16px"}}
-				>
+				<Text hidden={unreadNotifictionsNumber === 0} style={{position: "absolute", top: "-4px"}}>
 					{unreadNotifictionsNumber}
-				</span>
+				</Text>
 			</Button>
 			{areNotificationsVisible && (
 				<div

@@ -212,21 +212,26 @@ const MotivationalText: React.FC<{total: number; votedFor: number; untracked: nu
 	}
 	if (votedFor > 0 && votedFor < total) {
 		return (
-			<Text>
-				You're on a good track!
-				<br />
-				You have <Text variant="bold">{total - votedFor}</Text> tracked habits to vote for left out
-				of <Text variant="bold">{total}</Text> (and {untracked} untracked habits).
-			</Text>
+			<Column>
+				<Text>You're on a good track!</Text>
+				<Text>
+					You have <Text variant="bold">{total - votedFor}</Text> tracked habits to vote for left
+					out of <Text variant="bold">{total}</Text> (and {untracked} untracked habits).
+				</Text>
+			</Column>
 		);
 	}
 	if (votedFor === total) {
 		return (
-			<Text>
-				<Text variant="bold">Congratulations! </Text>
-				You voted for every one of <Text variant="bold">{total}</Text> tracked habits today!
-				<br /> You also have {untracked} untracked habits.
-			</Text>
+			<Column>
+				<Row>
+					<Text variant="bold">Congratulations! </Text>
+					<Text ml="6">
+						You voted for every one of <Text variant="bold">{total}</Text> tracked habits today!
+					</Text>
+				</Row>
+				<Text> You also have {untracked} untracked habits.</Text>
+			</Column>
 		);
 	}
 	return null;

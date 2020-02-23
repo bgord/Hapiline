@@ -50,7 +50,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 					</Button>
 				</Row>
 				<Async.IfFulfilled state={forgotPasswordRequestState}>
-					<Text>Email sent if an account exists.</Text>
+					<Text mt="12">Email sent if an account exists.</Text>
 				</Async.IfFulfilled>
 			</form>
 		</div>
