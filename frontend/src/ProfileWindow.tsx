@@ -4,6 +4,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button} from "./ui/button/Button";
+import {Card} from "./ui/card/Card";
 import {Column} from "./ui/column/Column";
 import {Divider} from "./ui/divider/Divider";
 import {Field} from "./ui/field/Field";
@@ -20,12 +21,14 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
-			<Header variant="large">Profile settings</Header>
-			<Divider mt="6" style={{width: "200px"}} />
-			<ChangeEmail />
-			<ChangePassword />
-			<DeleteAccount />
+		<Column ml="auto" mr="auto" mt="72" style={{maxWidth: "750px"}}>
+			<Card pl="24" pr="24" pt="24" pb="24">
+				<Header variant="large">Profile settings</Header>
+				<Divider mt="12" style={{width: "200px"}} />
+				<ChangeEmail />
+				<ChangePassword />
+				<DeleteAccount />
+			</Card>
 		</Column>
 	);
 };
@@ -69,12 +72,13 @@ const ChangeEmail: React.FC = () => {
 				setStatus("pending");
 				changeEmailRequestState.run(newEmail, password);
 			}}
-			className="flex flex-col flex-grow mt-12"
 		>
-			<>
-				<Header variant="extra-small">Email change</Header>
+			<Column>
+				<Header variant="extra-small" mt="48" mb="12">
+					Email change
+				</Header>
 				<Row crossAxis="end">
-					<Field mt="24" mr="12">
+					<Field mt="24" mr="12" style={{flexGrow: 1}}>
 						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
@@ -110,10 +114,10 @@ const ChangeEmail: React.FC = () => {
 						</Button>
 					)}
 				</Row>
-				{status === "error" && emailInlineError && <ErrorMessage>{emailInlineError}</ErrorMessage>}
-			</>
+				{status === "error" && emailInlineError && <Text mt="12">{emailInlineError}</Text>}
+			</Column>
 			{["editing", "pending", "error"].includes(status) && (
-				<Column mt="12" style={{maxWidth: "405px"}}>
+				<Column mt="12">
 					<Field>
 						<Label htmlFor="password">Password</Label>
 						<Input
@@ -179,90 +183,97 @@ const ChangePassword = () => {
 
 	return (
 		<form
-			className="my-4"
 			onSubmit={event => {
 				event.preventDefault();
 				setStatus("pending");
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			<Header mb="24" variant="extra-small">
-				Password change
-			</Header>
-			{["idle", "pending", "success"].includes(status) && (
-				<Button variant="secondary" onClick={() => setStatus("editing")}>
-					Update password
-				</Button>
-			)}
-			{["editing", "pending", "error"].includes(status) && (
-				<>
-					<Field mb="12">
-						<Label htmlFor="old_password">Old password</Label>
-						<Input
-							id="old_password"
-							placeholder="********"
-							title="Password should contain at least 6 characters."
-							value={oldPassword}
-							onChange={event => setOldPassword(event.target.value)}
-							type="password"
-							required
-							pattern=".{6,}"
-							disabled={updatePasswordRequestState.isPending}
-						/>
-					</Field>
-					{status === "error" && oldPasswordInlineError && (
-						<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
-					)}
-					<Field mb="12">
-						<Label htmlFor="new_password">New password</Label>
-						<Input
-							id="new_password"
-							placeholder="********"
-							title="Password should contain at least 6 characters."
-							value={newPassword}
-							onChange={event => setNewPassword(event.target.value)}
-							type="password"
-							required
-							pattern=".{6,}"
-							disabled={updatePasswordRequestState.isPending}
-						/>
-					</Field>
-					<Field mb="24">
-						<Label htmlFor="password_confirmation">Repeat new password</Label>
-						<Input
-							id="password_confirmation"
-							type="password"
-							placeholder="********"
-							pattern={newPassword}
-							title="Passwords have to be equal"
-							value={newPasswordConfirmation}
-							onChange={event => setNewPasswordConfirmation(event.target.value)}
-							required
-							disabled={updatePasswordRequestState.isPending}
-						/>
-					</Field>
-					<Button variant="primary" type="submit">
-						Submit
-					</Button>
+			<Column>
+				<Header mt="24" mb="24" variant="extra-small">
+					Password change
+				</Header>
+				{["idle", "pending", "success"].includes(status) && (
 					<Button
-						ml="6"
-						variant="outlined"
-						onClick={() => {
-							setStatus("idle");
-							setOldPassword("");
-							setNewPassword("");
-							setNewPasswordConfirmation("");
-						}}
+						variant="secondary"
+						onClick={() => setStatus("editing")}
+						style={{alignSelf: "flex-start"}}
 					>
-						Cancel
+						Update password
 					</Button>
-					{status === "error" && internalServerError && (
-						<RequestErrorMessage>{internalServerError}</RequestErrorMessage>
-					)}
-				</>
-			)}
-			{status === "success" && <Text>Password changed successfully!</Text>}
-			<Divider mt="48" />
+				)}
+				{["editing", "pending", "error"].includes(status) && (
+					<Column>
+						<Field mb="12">
+							<Label htmlFor="old_password">Old password</Label>
+							<Input
+								id="old_password"
+								placeholder="********"
+								title="Password should contain at least 6 characters."
+								value={oldPassword}
+								onChange={event => setOldPassword(event.target.value)}
+								type="password"
+								required
+								pattern=".{6,}"
+								disabled={updatePasswordRequestState.isPending}
+							/>
+						</Field>
+						{status === "error" && oldPasswordInlineError && (
+							<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
+						)}
+						<Field mb="12">
+							<Label htmlFor="new_password">New password</Label>
+							<Input
+								id="new_password"
+								placeholder="********"
+								title="Password should contain at least 6 characters."
+								value={newPassword}
+								onChange={event => setNewPassword(event.target.value)}
+								type="password"
+								required
+								pattern=".{6,}"
+								disabled={updatePasswordRequestState.isPending}
+							/>
+						</Field>
+						<Field mb="24">
+							<Label htmlFor="password_confirmation">Repeat new password</Label>
+							<Input
+								id="password_confirmation"
+								type="password"
+								placeholder="********"
+								pattern={newPassword}
+								title="Passwords have to be equal"
+								value={newPasswordConfirmation}
+								onChange={event => setNewPasswordConfirmation(event.target.value)}
+								required
+								disabled={updatePasswordRequestState.isPending}
+							/>
+						</Field>
+						<Row>
+							<Button variant="primary" type="submit">
+								Submit
+							</Button>
+							<Button
+								ml="6"
+								variant="outlined"
+								onClick={() => {
+									setStatus("idle");
+									setOldPassword("");
+									setNewPassword("");
+									setNewPasswordConfirmation("");
+								}}
+							>
+								Cancel
+							</Button>
+						</Row>
+						{status === "error" && internalServerError && (
+							<RequestErrorMessage>{internalServerError}</RequestErrorMessage>
+						)}
+					</Column>
+				)}
+				{status === "success" && <Text mt="12">Password changed successfully!</Text>}
+				<Divider mt="24" />
+			</Column>
 		</form>
 	);
 };
@@ -290,7 +301,7 @@ const DeleteAccount = () => {
 	}
 	return (
 		<>
-			<Header mt="48" variant="extra-small">
+			<Header mt="24" variant="extra-small">
 				Account deletion
 			</Header>
 			<Button
