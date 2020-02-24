@@ -25,8 +25,6 @@
 	--gray-7: #81899e;
 	--gray-8: #656c7e;
 	--gray-9: #3b3f4a;
-
-	--body-background: var(--gray-1);
 }
 
 html {
@@ -34,7 +32,7 @@ html {
 }
 
 body {
-	background-color: var(--body-background) !important;
+	background-color: var(--gray-1) !important;
 }
 
 @keyframes fadeIn {
