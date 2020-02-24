@@ -94,20 +94,20 @@ button::-moz-focus-inner {
 
 .c-button--outlined {
 	background: white;
-	border: 1px solid #c7c4c4;
-	color: #363434;
+	border: 2px solid var(--gray-2);
+	color: var(--gray-8);
 }
 
 .c-button--outlined:hover {
-	background: #f9f8f8;
+	background: var(--gray-0);
 }
 
 .c-button--outlined:focus {
-	background: #f9f8f8;
+	background: var(--gray-0);
 }
 
 .c-button--outlined:active {
-	background: #f0f0f0;
+	background: var(--gray-1);
 }
 
 .c-button--outlined:disabled.c-button--outlined:hover {

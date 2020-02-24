@@ -1,10 +1,10 @@
 .c-input {
 	height: 36px;
 	font-size: 12px;
-	color: #363434;
+	color: var(--gray-10);
 	padding: 0 10px;
 	background: white;
-	border: 1px solid #f0f0f0;
+	border: 1px solid var(--gray-1);
 	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 	transition: all 0.5s;
 	border-radius: 3px;
@@ -12,28 +12,26 @@
 
 .c-input:hover,
 .c-input:focus {
-	border: 1px solid #e0dede;
+	border-color: var(--gray-4);
 	border-radius: 0;
-	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .c-input:active,
 .c-input:disabled {
-	border: 1px solid #c7c4c4;
+	border-color: var(--gray-4);
 }
 
 .c-input:disabled {
 	opacity: 0.6;
-	background: #e8e7e7;
+	background: var(--gray-4);
 }
 
 .c-input:disabled.c-input:hover {
 	border-radius: inherit;
-	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .c-input:invalid {
-	border: 1px solid #9e1738;
+	border-color: #9e1738;
 }
 
 .c-input:placeholder-shown {
@@ -41,5 +39,5 @@
 }
 
 .c-input:required.c-input:placeholder-shown {
-	border: 1px solid #f0f0f0;
+	border-color: var(--gray-1);
 }
