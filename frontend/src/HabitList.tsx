@@ -83,12 +83,9 @@ export const HabitList: React.FC = () => {
 
 	return (
 		<Card pl="24" pr="24" pt="24" pb="24" ml="auto" mr="auto" mt="48" mb="24">
-			<Row mainAxis="end">
-				<Header mr="auto" variant="large">
-					Habit list
-				</Header>
+			<Row mainAxis="between">
+				<Header variant="large">Habit list</Header>
 				<Button
-					mr="12"
 					variant="secondary"
 					onClick={() => {
 						resetAllFilters();
@@ -96,9 +93,6 @@ export const HabitList: React.FC = () => {
 					}}
 				>
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
-				</Button>
-				<Button variant="primary" onClick={openAddFormDialog}>
-					New habit
 				</Button>
 			</Row>
 			{areFiltersVisible && (
@@ -179,12 +173,17 @@ export const HabitList: React.FC = () => {
 					</HabitStrengthFilters.All.Label>
 				</Row>
 			)}
-			<Row crossAxis="end" mb="48" mt={areFiltersVisible ? "48" : "72"}>
+			<Row crossAxis="end" mb="24" mt={areFiltersVisible ? "48" : "72"}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear
 				</Button>
-				<Text ml="auto" mr="12" data-testid="habit-search-result-count">
+				<Button ml="auto" variant="primary" onClick={openAddFormDialog}>
+					New habit
+				</Button>
+			</Row>
+			<Row mainAxis="end" mt="24" mb="24">
+				<Text data-testid="habit-search-result-count">
 					<Text variant="bold">{howManyResults}</Text> results
 				</Text>
 			</Row>
