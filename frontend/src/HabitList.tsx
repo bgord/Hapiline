@@ -18,6 +18,7 @@ import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 import {Row} from "./ui/row/Row";
 import {FilterIcon} from "./ui/icons/Filter";
+import {PlusIcon} from "./ui/icons/Plus";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -176,12 +177,23 @@ export const HabitList: React.FC = () => {
 					</HabitStrengthFilters.All.Label>
 				</Row>
 			)}
-			<Row px="24" mb="24" crossAxis="end" mt={areFiltersVisible ? "48" : "72"}>
+			<Row px="24" mb="24" mt="48" crossAxis="end">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear
 				</Button>
-				<Button ml="auto" variant="primary" onClick={openAddFormDialog}>
+				<Button
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						width: "125px",
+					}}
+					ml="auto"
+					variant="primary"
+					onClick={openAddFormDialog}
+				>
+					<PlusIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
 					New habit
 				</Button>
 			</Row>
