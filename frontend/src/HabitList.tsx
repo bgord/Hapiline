@@ -82,8 +82,8 @@ export const HabitList: React.FC = () => {
 	}
 
 	return (
-		<Card p="24" mx="auto" mt="48" mb="24">
-			<Row mainAxis="between">
+		<Card mx="auto" mt="48" mb="24">
+			<Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="large">Habit list</Header>
 				<Button
 					variant="secondary"
@@ -173,7 +173,7 @@ export const HabitList: React.FC = () => {
 					</HabitStrengthFilters.All.Label>
 				</Row>
 			)}
-			<Row crossAxis="end" mb="24" mt={areFiltersVisible ? "48" : "72"}>
+			<Row px="24" mb="24" crossAxis="end" mt={areFiltersVisible ? "48" : "72"}>
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear
@@ -182,7 +182,7 @@ export const HabitList: React.FC = () => {
 					New habit
 				</Button>
 			</Row>
-			<Row mainAxis="end" mt="24" mb="24">
+			<Row mainAxis="end" mt="24" mb="24" px="24">
 				<Text data-testid="habit-search-result-count">
 					<Text variant="bold">{howManyResults}</Text> results
 				</Text>
