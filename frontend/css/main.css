@@ -48,6 +48,78 @@ body {
 /* Margins */
 /* ----------------------------------------------------- */
 
+/* Margin */
+*[data-m="6"] {
+	margin: 6px;
+}
+*[data-m="12"] {
+	margin: 12px;
+}
+*[data-m="24"] {
+	margin: 24px;
+}
+*[data-m="48"] {
+	margin: 48px;
+}
+*[data-m="72"] {
+	margin: 72px;
+}
+*[data-m="auto"] {
+	margin: auto;
+}
+
+/* Margin horizontal */
+*[data-mx="6"] {
+	margin-left: 6px;
+	margin-right: 6px;
+}
+*[data-mx="12"] {
+	margin-left: 12px;
+	margin-right: 12px;
+}
+*[data-mx="24"] {
+	margin-left: 24px;
+	margin-right: 24px;
+}
+*[data-mx="48"] {
+	margin-left: 48px;
+	margin-right: 48px;
+}
+*[data-mx="72"] {
+	margin-left: 72px;
+	margin-right: 72px;
+}
+*[data-mx="auto"] {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Margin vertical */
+*[data-my="6"] {
+	margin-top: 6px;
+	margin-bottom: 6px;
+}
+*[data-my="12"] {
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+*[data-my="24"] {
+	margin-top: 24px;
+	margin-bottom: 24px;
+}
+*[data-my="48"] {
+	margin-top: 48px;
+	margin-bottom: 48px;
+}
+*[data-my="72"] {
+	margin-top: 72px;
+	margin-bottom: 72px;
+}
+*[data-my="auto"] {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
 /* Margin top */
 *[data-mt="6"] {
 	margin-top: 6px;

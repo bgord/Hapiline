@@ -5,4 +5,7 @@ export interface Margins {
 	mr?: Margin;
 	mb?: Margin;
 	ml?: Margin;
+	m?: Margin;
+	mx?: Margin;
+	my?: Margin;
 }
