@@ -3,10 +3,29 @@
 	line-height: 24px;
 }
 
+/* https://palx.jxnblk.com/ */
+/* https://mycolor.space/?hex=%231554FF&sub=1 */
+/* https://colordesigner.io/ */
+/* https://colors.eva.design/ */
+
+/* https://github.com/feathericons/react-feather */
+
 :root {
-	--white: #ffffff;
-	--gray-1: #f9f8f8;
 	--brand-blue: #1554ff;
+
+	--white: #ffffff;
+
+	--gray-0: #f9f9fa;
+	--gray-1: #ecedf1;
+	--gray-2: #dfe1e6;
+
+	--gray-3: #d0d3db;
+	--gray-4: #c0c4ce;
+	--gray-5: #aeb3c0;
+	--gray-6: #9aa0b1;
+	--gray-7: #81899e;
+	--gray-8: #656c7e;
+	--gray-9: #3b3f4a;
 
 	--body-background: var(--gray-1);
 }
