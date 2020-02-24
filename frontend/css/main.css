@@ -132,6 +132,78 @@ body {
 /* Paddings */
 /* ----------------------------------------------------- */
 
+/* Padding */
+*[data-p="6"] {
+	padding: 6px;
+}
+*[data-p="12"] {
+	padding: 12px;
+}
+*[data-p="24"] {
+	padding: 24px;
+}
+*[data-p="48"] {
+	padding: 48px;
+}
+*[data-p="72"] {
+	padding: 72px;
+}
+*[data-p="auto"] {
+	padding: auto;
+}
+
+/* Padding horizontal */
+*[data-px="6"] {
+	padding-left: 6px;
+	padding-right: 6px;
+}
+*[data-px="12"] {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+*[data-px="24"] {
+	padding-left: 24px;
+	padding-right: 24px;
+}
+*[data-px="48"] {
+	padding-left: 48px;
+	padding-right: 48px;
+}
+*[data-px="72"] {
+	padding-left: 72px;
+	padding-right: 72px;
+}
+*[data-px="auto"] {
+	padding-left: auto;
+	padding-right: auto;
+}
+
+/* Padding vertical */
+*[data-py="6"] {
+	padding-top: 6px;
+	padding-bottom: 6px;
+}
+*[data-py="12"] {
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
+*[data-py="24"] {
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+*[data-py="48"] {
+	padding-top: 48px;
+	padding-bottom: 48px;
+}
+*[data-py="72"] {
+	padding-top: 72px;
+	padding-bottom: 72px;
+}
+*[data-py="auto"] {
+	padding-top: auto;
+	padding-bottom: auto;
+}
+
 /* Padding top */
 *[data-pt="6"] {
 	padding-top: 6px;
