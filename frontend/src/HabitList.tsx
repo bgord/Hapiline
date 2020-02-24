@@ -17,6 +17,7 @@ import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 import {Row} from "./ui/row/Row";
+import {FilterIcon} from "./ui/icons/Filter";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -86,12 +87,14 @@ export const HabitList: React.FC = () => {
 			<Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="large">Habit list</Header>
 				<Button
+					style={{display: "flex", justifyContent: "center", alignItems: "center", width: "145px"}}
 					variant="secondary"
 					onClick={() => {
 						resetAllFilters();
 						toggleFilters();
 					}}
 				>
+					<FilterIcon mr="auto" />
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
 				</Button>
 			</Row>
