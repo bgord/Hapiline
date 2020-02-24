@@ -1,7 +1,7 @@
 .c-text {
 	display: inline-block;
 	font-size: 16px;
-	color: #363434;
+	color: var(--gray-9);
 }
 
 .c-text--bold {
