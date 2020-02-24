@@ -64,35 +64,28 @@ button::-moz-focus-inner {
 
 /* --primary */
 
-/* https://www.0to255.com/e8e7e7 */
-
 .c-button--primary {
-	color: #e8e7e7;
-	background-color: #363434;
+	color: var(--gray-1);
+	background-color: var(--gray-9);
 }
 
 .c-button--primary:hover {
-	background-color: #3f3c3c;
-	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+	background-color: var(--gray-8);
+}
+
+.c-button--primary:active:not(:disabled) {
+	background-color: var(--gray-7) !important;
 }
 
 .c-button--primary:focus {
-	background-color: #504d4d;
-}
-
-.c-button--primary:active {
-	background-color: #595555;
-}
-.c-button--primary:focus,
-.c-button--primary:active {
-	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	background-color: var(--gray-8);
 }
 
 .c-button--primary:disabled {
 	opacity: 0.4;
 }
 .c-button--primary:disabled.c-button--primary:hover {
-	background-color: #363434;
+	background-color: var(--gray-9);
 }
 
 /* --outlined */
