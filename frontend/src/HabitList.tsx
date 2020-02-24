@@ -82,7 +82,7 @@ export const HabitList: React.FC = () => {
 	}
 
 	return (
-		<Card pl="24" pr="24" pt="24" pb="24" ml="auto" mr="auto" mt="48" mb="24">
+		<Card p="24" mx="auto" mt="48" mb="24">
 			<Row mainAxis="between">
 				<Header variant="large">Habit list</Header>
 				<Button

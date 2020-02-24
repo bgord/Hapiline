@@ -29,7 +29,7 @@ export const RegistrationWindow: React.FC = () => {
 	const emailInlineErrorMessage = getArgErrorMessage("email");
 
 	return (
-		<Card pt="48" pb="48" pr="24" pl="24" ml="auto" mr="auto" mt="72">
+		<Card py="48" px="24" mx="auto" mt="72">
 			<form
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();

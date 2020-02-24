@@ -75,17 +75,7 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<Card
-			ml="auto"
-			mr="auto"
-			mt="72"
-			mb="24"
-			pl="24"
-			pr="24"
-			pt="24"
-			pb="24"
-			style={{maxWidth: "750px"}}
-		>
+		<Card mx="auto" mt="72" mb="24" p="24" style={{maxWidth: "750px"}}>
 			<Column>
 				<Row>
 					<Header variant="large">Hello!</Header>
