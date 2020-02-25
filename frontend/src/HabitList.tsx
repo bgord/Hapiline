@@ -2,6 +2,7 @@ import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
+import {Column} from "./ui/column/Column";
 import {Card} from "./ui/card/Card";
 import {Text} from "./ui/text/Text";
 import {Button} from "./ui/button/Button";
@@ -100,46 +101,55 @@ export const HabitList: React.FC = () => {
 				</Button>
 			</Row>
 			{areFiltersVisible && (
-				<Row mt="48">
-					<HabitScoreFilters.Positive.Input
-						disabled={habitCounts.positive === 0}
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.Positive.Label>
-						Positive ({habitCounts.positive})
-					</HabitScoreFilters.Positive.Label>
-
-					<HabitScoreFilters.Neutral.Input
-						disabled={habitCounts.neutral === 0}
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.Neutral.Label>
-						Neutral ({habitCounts.neutral})
-					</HabitScoreFilters.Neutral.Label>
-
-					<HabitScoreFilters.Negative.Input
-						disabled={habitCounts.negative === 0}
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.Negative.Label>
-						Negative ({habitCounts.negative})
-					</HabitScoreFilters.Negative.Label>
-
-					<HabitScoreFilters.All.Input
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
-
-					<Button ml="auto" variant="outlined" onClick={resetAllFilters}>
+				<Row mt="48" px="24">
+					<Column>
+						<Text variant="bold">Scores</Text>
+						<Row mt="24" crossAxis="center">
+							<HabitScoreFilters.Positive.Input
+								disabled={habitCounts.positive === 0}
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.Positive.Label>
+								Positive ({habitCounts.positive})
+							</HabitScoreFilters.Positive.Label>
+						</Row>
+						<Row mt="12" crossAxis="center">
+							<HabitScoreFilters.Neutral.Input
+								disabled={habitCounts.neutral === 0}
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.Neutral.Label>
+								Neutral ({habitCounts.neutral})
+							</HabitScoreFilters.Neutral.Label>
+						</Row>
+						<Row mt="12" crossAxis="center">
+							<HabitScoreFilters.Negative.Input
+								disabled={habitCounts.negative === 0}
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.Negative.Label>
+								Negative ({habitCounts.negative})
+							</HabitScoreFilters.Negative.Label>
+						</Row>
+						<Row mt="12" crossAxis="center">
+							<HabitScoreFilters.All.Input
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.All.Label>
+								All scores ({habitCounts.all})
+							</HabitScoreFilters.All.Label>
+						</Row>
+					</Column>
+					<Button ml="auto" mb="auto" variant="outlined" onClick={resetAllFilters}>
 						Reset filters
 					</Button>
 				</Row>
 			)}
-			{areFiltersVisible && (
+			{areFiltersVisible && false && (
 				<Row mt="24">
 					<HabitStrengthFilters.Established.Input
 						value={habitStrengthFilter.value}
