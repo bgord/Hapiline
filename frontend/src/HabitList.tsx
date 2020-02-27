@@ -219,11 +219,7 @@ export const HabitList: React.FC = () => {
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
 					{provided => (
-						<ul
-							ref={provided.innerRef}
-							{...provided.droppableProps}
-							className="flex flex-col bg-white py-4 pb-0 w-full"
-						>
+						<ul data-mt="48" ref={provided.innerRef} {...provided.droppableProps}>
 							{filteredHabits.map((habit, index) => (
 								<HabitListItem
 									isDragDisabled={isDragDisabled}
