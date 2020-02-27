@@ -23,6 +23,11 @@
 }
 
 .c-badge[data-variant="light"] {
+	color: #568187;
+	background: #b9e4ea;
+}
+
+.c-badge[data-variant="normal"] {
 	color: #5d6987;
 	background: #cad6f4;
 }

@@ -14,6 +14,9 @@ export default {
 				Neutral
 			</Badge>
 			<Badge data-ml="24" variant="light">
+				Fresh
+			</Badge>
+			<Badge data-ml="24" variant="normal">
 				Developing
 			</Badge>
 		</Demo>
