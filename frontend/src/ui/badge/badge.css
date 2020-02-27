@@ -1,13 +1,13 @@
 .c-badge {
-	font-size: 13px;
+	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 0.8px;
 	border-radius: 5px;
 	font-weight: 600;
-	padding: 0 16px;
+	padding: 0 12px;
 }
 
-.c-badge[data-variant="success"] {
-	color: #2d7d32;
-	background: #8fdf94;
+.c-badge[data-variant="positive"] {
+	color: #07620de3;
+	background: #8fdf9491;
 }

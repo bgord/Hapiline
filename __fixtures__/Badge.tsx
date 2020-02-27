@@ -6,7 +6,7 @@ import {Badge} from "../frontend/src/ui/badge/Badge";
 export default {
 	"all variants": (
 		<Demo>
-			<Badge variant="success">Positive</Badge>
+			<Badge variant="positive">Positive</Badge>
 		</Demo>
 	),
 };
