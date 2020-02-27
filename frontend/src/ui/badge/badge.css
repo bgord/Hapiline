@@ -11,3 +11,8 @@
 	color: #07620de3;
 	background: #8fdf9491;
 }
+
+.c-badge[data-variant="negative"] {
+	color: #9c343de3;
+	background: #ffc4cd;
+}

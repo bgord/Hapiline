@@ -7,6 +7,9 @@ export default {
 	"all variants": (
 		<Demo>
 			<Badge variant="positive">Positive</Badge>
+			<Badge data-ml="24" variant="negative">
+				Negative
+			</Badge>
 		</Demo>
 	),
 };
