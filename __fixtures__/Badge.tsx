@@ -10,6 +10,12 @@ export default {
 			<Badge data-ml="24" variant="negative">
 				Negative
 			</Badge>
+			<Badge data-ml="24" variant="neutral">
+				Neutral
+			</Badge>
+			<Badge data-ml="24" variant="light">
+				Developing
+			</Badge>
 		</Demo>
 	),
 };

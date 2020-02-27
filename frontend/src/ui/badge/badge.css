@@ -21,3 +21,8 @@
 	color: var(--gray-8);
 	background: var(--gray-2);
 }
+
+.c-badge[data-variant="light"] {
+	color: #5d6987;
+	background: #cad6f4;
+}

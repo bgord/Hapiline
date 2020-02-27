@@ -2,7 +2,7 @@ import "./badge.css";
 
 import React from "react";
 
-type BadgeVariant = "positive" | "negative" | "neutral";
+type BadgeVariant = "positive" | "negative" | "neutral" | "light";
 
 type BadgeProps = JSX.IntrinsicElements["div"] & {variant: BadgeVariant};
 
