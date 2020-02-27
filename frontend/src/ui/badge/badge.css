@@ -31,3 +31,8 @@
 	color: #5d6987;
 	background: #cad6f4;
 }
+
+.c-badge[data-variant="strong"] {
+	color: #2d2d77ad;
+	background: #b4b4ef;
+}

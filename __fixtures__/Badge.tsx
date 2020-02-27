@@ -19,6 +19,9 @@ export default {
 			<Badge data-ml="24" variant="normal">
 				Developing
 			</Badge>
+			<Badge data-ml="24" variant="strong">
+				Established
+			</Badge>
 		</Demo>
 	),
 };
