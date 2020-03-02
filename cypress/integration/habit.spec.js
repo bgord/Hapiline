@@ -162,7 +162,7 @@ describe("Habit", () => {
 			});
 		});
 
-		cy.findByText("NT");
+		cy.findByText("Untracked");
 
 		cy.findByText("Show filters").click();
 
@@ -241,10 +241,14 @@ describe("Habit", () => {
 		cy.visit(HABITS_URL);
 
 		cy.findByText("0 lorem");
-		cy.findAllByText("Delete")
+
+		cy.findAllByText("More")
 			.first()
 			.click();
+		cy.findByText("Delete").click();
+
 		cy.findByText("Nevermind, don't delete").click();
+		cy.findByText("Close dialog").click({force: true});
 		cy.findByText("0 lorem");
 
 		cy.findByText("Show filters").click();
@@ -254,10 +258,12 @@ describe("Habit", () => {
 		cy.findByText("Negative (3)");
 		cy.findByText("All scores (10)");
 
-		cy.findAllByText("Delete")
+		cy.findAllByText("More")
 			.first()
 			.click();
+		cy.findByText("Delete").click();
 		cy.findByText("Yes, delete").click();
+
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
 
@@ -288,10 +294,11 @@ describe("Habit", () => {
 
 		cy.findByText("0 lorem");
 
-		cy.findAllByText("Delete")
+		cy.findAllByText("More")
 			.first()
 			.click();
 
+		cy.findByText("Delete").click();
 		cy.findByText("Yes, delete").click();
 
 		cy.findByText("0 lorem").should("exist");
@@ -464,7 +471,7 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByText("NT");
+		cy.findByText("Untracked");
 
 		cy.findAllByText("More")
 			.first()
@@ -759,7 +766,7 @@ describe("Habit", () => {
 
 		cy.dragAndDrop("li:nth-child(1)", "li:nth-child(3)");
 
-		cy.findByText("Habits reordered successfully!").click();
+		cy.findByText("Habits reordered successfully!");
 
 		const expectedOrderAfterDragAndDrop = [
 			"1 loremlorem",
@@ -779,7 +786,7 @@ describe("Habit", () => {
 				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
 		});
 
-		cy.reload().wait(1000);
+		cy.reload().wait(3000);
 
 		expectedOrderAfterDragAndDrop.forEach((_, index) => {
 			cy.queryAllByTestId("draggable-habit-item")

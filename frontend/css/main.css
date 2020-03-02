@@ -379,6 +379,9 @@ body {
 *[data-main-axis="start"] {
 	justify-content: flex-start;
 }
+*[data-main-axis="center"] {
+	justify-content: center;
+}
 *[data-main-axis="between"] {
 	justify-content: space-between;
 }
