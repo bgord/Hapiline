@@ -9,14 +9,14 @@
 		padding: 0;
 		outline: none;
 		cursor: pointer;
-		background: #e8e7e7;
-		border: 1px solid white;
+		background: var(--gray-1);
+		border: 1px solid var(--gray-3);
 		border-radius: 50%;
 	}
 	.c-radio:hover,
 	.c-radio:focus:not(:disabled),
 	.c-radio:checked:not(:disabled) {
-		border-color: #bebcbc;
+		border-color: var(--gray-7);
 		transition: border-color 400ms;
 	}
 	.c-radio:active:not(:disabled),
@@ -43,17 +43,22 @@
 		left: calc(50% - 4px);
 		height: 8px;
 		width: 8px;
-		background: #d7d6d6;
+		background: var(--gray-9);
 		border-radius: 50%;
 		opacity: 0;
 		transition: all 300ms;
 	}
 	.c-radio::after:hover:not(:disabled) {
 		opacity: 1;
+		background: var(--gray-8);
 	}
 	.c-radio:focus::after,
 	.c-radio:checked::after {
 		opacity: 1;
-		background: white;
+		background: var(--gray-10);
 	}
+}
+
+.c-radio ~ .c-label {
+	font-weight: 500;
 }

@@ -4,7 +4,7 @@
 	text-transform: uppercase;
 	font-weight: 600;
 	letter-spacing: 0.4px;
-	color: #363434;
+	color: var(--gray-10);
 }
 
 .c-label--optional::after {

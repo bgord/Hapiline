@@ -2,6 +2,7 @@ import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
+import {Column} from "./ui/column/Column";
 import {Card} from "./ui/card/Card";
 import {Text} from "./ui/text/Text";
 import {Button} from "./ui/button/Button";
@@ -17,6 +18,8 @@ import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 import {Row} from "./ui/row/Row";
+import {FilterIcon} from "./ui/icons/Filter";
+import {PlusIcon} from "./ui/icons/Plus";
 
 export const HabitList: React.FC = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -82,109 +85,134 @@ export const HabitList: React.FC = () => {
 	}
 
 	return (
-		<Card pl="24" pr="24" pt="24" pb="24" ml="auto" mr="auto" mt="48" mb="24">
-			<Row mainAxis="end">
-				<Header mr="auto" variant="large">
-					Habit list
-				</Header>
+		<Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
+			<Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+				<Header variant="large">Habit list</Header>
 				<Button
-					mr="12"
+					style={{display: "flex", justifyContent: "center", alignItems: "center", width: "145px"}}
 					variant="secondary"
 					onClick={() => {
 						resetAllFilters();
 						toggleFilters();
 					}}
 				>
+					<FilterIcon mr="auto" />
 					{areFiltersVisible ? "Hide filters" : "Show filters"}
-				</Button>
-				<Button variant="primary" onClick={openAddFormDialog}>
-					New habit
 				</Button>
 			</Row>
 			{areFiltersVisible && (
-				<Row mt="48">
-					<HabitScoreFilters.Positive.Input
-						disabled={habitCounts.positive === 0}
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.Positive.Label>
-						Positive ({habitCounts.positive})
-					</HabitScoreFilters.Positive.Label>
-
-					<HabitScoreFilters.Neutral.Input
-						disabled={habitCounts.neutral === 0}
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.Neutral.Label>
-						Neutral ({habitCounts.neutral})
-					</HabitScoreFilters.Neutral.Label>
-
-					<HabitScoreFilters.Negative.Input
-						disabled={habitCounts.negative === 0}
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.Negative.Label>
-						Negative ({habitCounts.negative})
-					</HabitScoreFilters.Negative.Label>
-
-					<HabitScoreFilters.All.Input
-						value={habitScoreFilter.value}
-						onChange={habitScoreFilter.onChange}
-					/>
-					<HabitScoreFilters.All.Label>All scores ({habitCounts.all})</HabitScoreFilters.All.Label>
-
-					<Button ml="auto" variant="outlined" onClick={resetAllFilters}>
+				<Row mt="48" px="24" crossAxis="start">
+					<Column data-pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
+						<Text variant="semi-bold">Scores</Text>
+						<Row mt="24" crossAxis="center">
+							<HabitScoreFilters.Positive.Input
+								disabled={habitCounts.positive === 0}
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.Positive.Label>
+								Positive ({habitCounts.positive})
+							</HabitScoreFilters.Positive.Label>
+						</Row>
+						<Row mt="12" crossAxis="center">
+							<HabitScoreFilters.Neutral.Input
+								disabled={habitCounts.neutral === 0}
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.Neutral.Label>
+								Neutral ({habitCounts.neutral})
+							</HabitScoreFilters.Neutral.Label>
+						</Row>
+						<Row mt="12" crossAxis="center">
+							<HabitScoreFilters.Negative.Input
+								disabled={habitCounts.negative === 0}
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.Negative.Label>
+								Negative ({habitCounts.negative})
+							</HabitScoreFilters.Negative.Label>
+						</Row>
+						<Row mt="12" crossAxis="center">
+							<HabitScoreFilters.All.Input
+								value={habitScoreFilter.value}
+								onChange={habitScoreFilter.onChange}
+							/>
+							<HabitScoreFilters.All.Label>
+								All scores ({habitCounts.all})
+							</HabitScoreFilters.All.Label>
+						</Row>
+					</Column>
+					<Column ml="72">
+						<Text variant="semi-bold">Strengths</Text>
+						<Row mt="24">
+							<HabitStrengthFilters.Established.Input
+								value={habitStrengthFilter.value}
+								onChange={habitStrengthFilter.onChange}
+								disabled={habitCounts.established === 0}
+							/>
+							<HabitStrengthFilters.Established.Label>
+								Established ({habitCounts.established})
+							</HabitStrengthFilters.Established.Label>
+						</Row>
+						<Row mt="12">
+							<HabitStrengthFilters.Developing.Input
+								value={habitStrengthFilter.value}
+								onChange={habitStrengthFilter.onChange}
+								disabled={habitCounts.developing === 0}
+							/>
+							<HabitStrengthFilters.Developing.Label>
+								Developing ({habitCounts.developing})
+							</HabitStrengthFilters.Developing.Label>
+						</Row>
+						<Row mt="12">
+							<HabitStrengthFilters.Fresh.Input
+								value={habitStrengthFilter.value}
+								onChange={habitStrengthFilter.onChange}
+								disabled={habitCounts.fresh === 0}
+							/>
+							<HabitStrengthFilters.Fresh.Label>
+								Fresh ({habitCounts.fresh})
+							</HabitStrengthFilters.Fresh.Label>
+						</Row>
+						<Row mt="12">
+							<HabitStrengthFilters.All.Input
+								value={habitStrengthFilter.value}
+								onChange={habitStrengthFilter.onChange}
+							/>
+							<HabitStrengthFilters.All.Label>
+								All strengths ({habitCounts.all})
+							</HabitStrengthFilters.All.Label>
+						</Row>
+					</Column>
+					<Button ml="auto" mb="auto" variant="outlined" onClick={resetAllFilters}>
 						Reset filters
 					</Button>
 				</Row>
 			)}
-			{areFiltersVisible && (
-				<Row mt="24">
-					<HabitStrengthFilters.Established.Input
-						value={habitStrengthFilter.value}
-						onChange={habitStrengthFilter.onChange}
-						disabled={habitCounts.established === 0}
-					/>
-					<HabitStrengthFilters.Established.Label>
-						Established ({habitCounts.established})
-					</HabitStrengthFilters.Established.Label>
-
-					<HabitStrengthFilters.Developing.Input
-						value={habitStrengthFilter.value}
-						onChange={habitStrengthFilter.onChange}
-						disabled={habitCounts.developing === 0}
-					/>
-					<HabitStrengthFilters.Developing.Label>
-						Developing ({habitCounts.developing})
-					</HabitStrengthFilters.Developing.Label>
-
-					<HabitStrengthFilters.Fresh.Input
-						value={habitStrengthFilter.value}
-						onChange={habitStrengthFilter.onChange}
-						disabled={habitCounts.fresh === 0}
-					/>
-					<HabitStrengthFilters.Fresh.Label>
-						Fresh ({habitCounts.fresh})
-					</HabitStrengthFilters.Fresh.Label>
-
-					<HabitStrengthFilters.All.Input
-						value={habitStrengthFilter.value}
-						onChange={habitStrengthFilter.onChange}
-					/>
-					<HabitStrengthFilters.All.Label>
-						All strengths ({habitCounts.all})
-					</HabitStrengthFilters.All.Label>
-				</Row>
-			)}
-			<Row crossAxis="end" mb="48" mt={areFiltersVisible ? "48" : "72"}>
+			<Row px="24" mb="24" mt="48" crossAxis="end">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 				<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 					Clear
 				</Button>
-				<Text ml="auto" mr="12" data-testid="habit-search-result-count">
+				<Button
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						width: "125px",
+					}}
+					ml="auto"
+					variant="primary"
+					onClick={openAddFormDialog}
+				>
+					<PlusIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
+					New habit
+				</Button>
+			</Row>
+			<Row mainAxis="end" mt="24" mb="24" px="24">
+				<Text data-testid="habit-search-result-count">
 					<Text variant="bold">{howManyResults}</Text> results
 				</Text>
 			</Row>
@@ -192,9 +220,10 @@ export const HabitList: React.FC = () => {
 				<Droppable droppableId="habits">
 					{provided => (
 						<ul
+							data-mt="48"
 							ref={provided.innerRef}
+							style={{borderTop: "1px solid var(--gray-1)", background: "var(--gray-3)"}}
 							{...provided.droppableProps}
-							className="flex flex-col bg-white py-4 pb-0 w-full"
 						>
 							{filteredHabits.map((habit, index) => (
 								<HabitListItem

@@ -5,4 +5,7 @@ export interface Paddings {
 	pr?: Padding;
 	pb?: Padding;
 	pl?: Padding;
+	p?: Padding;
+	px?: Padding;
+	py?: Padding;
 }

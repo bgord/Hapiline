@@ -96,7 +96,7 @@ describe("Dashboard", () => {
 		cy.wait(1000);
 
 		cy.get("div")
-			.eq(4)
+			.eq(5)
 			.should(
 				"have.text",
 				"Start your day well! You have 10 tracked habits to vote for. And 2 untracked habits.",
@@ -148,7 +148,7 @@ describe("Dashboard", () => {
 		cy.wait(1000);
 
 		cy.get("div")
-			.eq(4)
+			.eq(5)
 			.should(
 				"have.text",
 				"Congratulations! You voted for every one of 10 tracked habits today! You also have 3 untracked habits.",

@@ -9,6 +9,7 @@ import {
 	useEditableFieldState,
 } from "./hooks/useEditableField";
 import {CloseIcon} from "./ui/close-icon/CloseIcon";
+import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
@@ -110,16 +111,19 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						onResolve={habitRequestState.reload}
 					/>
 					{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-					<dl className="flex items-baseline py-8">
-						<dt>
-							<Text variant="dimmed">Created at:</Text>
-						</dt>
-						<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
-						<dt>
-							<Text variant="dimmed">Updated at:</Text>
-						</dt>
-						<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
-					</dl>
+					<Row mainAxis="between">
+						<dl className="flex items-baseline py-8">
+							<dt>
+								<Text variant="dimmed">Created at:</Text>
+							</dt>
+							<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
+							<dt>
+								<Text variant="dimmed">Updated at:</Text>
+							</dt>
+							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
+						</dl>
+						<DeleteHabitButton {...habit} />
+					</Row>
 				</>
 			)}
 		</Dialog>

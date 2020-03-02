@@ -63,7 +63,7 @@ export const Calendar: React.FC = () => {
 				>
 					Previous
 				</Button>
-				<Header ml="48" mr="48" variant="small">
+				<Header data-mx="48" variant="small">
 					{date}
 				</Header>
 				<Button

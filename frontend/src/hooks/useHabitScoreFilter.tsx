@@ -57,7 +57,7 @@ export const HabitScoreFilters = {
 			<InputButton filter={HABIT_SCORES.positive} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label mr="6" htmlFor={HABIT_SCORES.positive} {...props} />
+			<Label ml="12" htmlFor={HABIT_SCORES.positive} {...props} />
 		),
 	},
 	Neutral: {
@@ -65,7 +65,7 @@ export const HabitScoreFilters = {
 			<InputButton filter={HABIT_SCORES.neutral} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label mr="6" htmlFor={HABIT_SCORES.neutral} {...props} />
+			<Label ml="12" htmlFor={HABIT_SCORES.neutral} {...props} />
 		),
 	},
 	Negative: {
@@ -73,7 +73,7 @@ export const HabitScoreFilters = {
 			<InputButton filter={HABIT_SCORES.negative} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label mr="6" htmlFor={HABIT_SCORES.negative} {...props} />
+			<Label ml="12" htmlFor={HABIT_SCORES.negative} {...props} />
 		),
 	},
 	All: {
@@ -81,7 +81,7 @@ export const HabitScoreFilters = {
 			<InputButton filter="all-scores" {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label mr="6" htmlFor="all-scores" {...props} />
+			<Label ml="12" htmlFor="all-scores" {...props} />
 		),
 	},
 };

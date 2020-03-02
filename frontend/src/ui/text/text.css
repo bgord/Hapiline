@@ -1,7 +1,7 @@
 .c-text {
 	display: inline-block;
 	font-size: 16px;
-	color: #363434;
+	color: var(--gray-10);
 }
 
 .c-text--bold {
@@ -13,4 +13,8 @@
 	font-size: 14px;
 	font-weight: 600;
 	color: #b6b3b3;
+}
+
+.c-text--semi-bold {
+	font-weight: 500;
 }

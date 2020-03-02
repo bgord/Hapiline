@@ -1,4 +1,4 @@
-type MainAxisAlignment = "start" | "between" | "end";
+type MainAxisAlignment = "start" | "center" | "between" | "end";
 type CrossAxisAlignment = "start" | "center" | "baseline" | "end";
 
 export interface Alignments {

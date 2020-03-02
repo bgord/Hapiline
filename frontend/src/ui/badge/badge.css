@@ -1,0 +1,38 @@
+.c-badge {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.8px;
+	border-radius: 5px;
+	font-weight: 600;
+	padding: 0 12px;
+}
+
+.c-badge[data-variant="positive"] {
+	color: #08630ee4;
+	background: #8fdf9491;
+}
+
+.c-badge[data-variant="negative"] {
+	color: #9f3740;
+	background: #ffc4cd;
+}
+
+.c-badge[data-variant="neutral"] {
+	color: var(--gray-9);
+	background: var(--gray-2);
+}
+
+.c-badge[data-variant="light"] {
+	color: #3d686e;
+	background: #b9e4ea;
+}
+
+.c-badge[data-variant="normal"] {
+	color: #515d7b;
+	background: #cad6f4;
+}
+
+.c-badge[data-variant="strong"] {
+	color: #4e4e98;
+	background: #b4b4ef;
+}
