@@ -11,6 +11,7 @@ import {Row} from "./ui/row/Row";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
 
@@ -22,6 +23,8 @@ const habitDialogGrid: React.CSSProperties = {
 };
 
 export const Calendar: React.FC = () => {
+	useDocumentTitle("Hapiline - calendar");
+
 	const [widget, date, monthOffset] = useMonthsWidget();
 	const trackedHabits = useTrackedHabits();
 

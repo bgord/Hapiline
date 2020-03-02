@@ -17,9 +17,11 @@ import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
+import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification} from "./contexts/notifications-context";
 
 export const DashboardWindow = () => {
+	useDocumentTitle("Hapiline - dashboard");
 	const [{subview}, updateQueryParams] = useQueryParams();
 	const triggerErrorNotification = useErrorNotification();
 

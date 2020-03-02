@@ -16,12 +16,13 @@ import {Row} from "./ui/row/Row";
 import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification} from "./contexts/notifications-context";
 import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<Column mx="auto" mt="72" style={{maxWidth: "750px"}}>
+		<Column ml="auto" mr="auto" mt="72" style={{maxWidth: "750px"}}>
 			<Card p="24">
 				<Header variant="large">Profile settings</Header>
 				<Divider mt="12" style={{width: "200px"}} />
@@ -34,6 +35,8 @@ export const ProfileWindow = () => {
 };
 
 const ChangeEmail: React.FC = () => {
+	useDocumentTitle("Hapiline - profile");
+
 	const history = useHistory();
 	const triggerErrorNotification = useErrorNotification();
 	const [userProfile] = useUserProfile();

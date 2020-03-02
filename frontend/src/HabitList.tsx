@@ -20,8 +20,11 @@ import {useToggle} from "./hooks/useToggle";
 import {Row} from "./ui/row/Row";
 import {FilterIcon} from "./ui/icons/Filter";
 import {PlusIcon} from "./ui/icons/Plus";
+import {useDocumentTitle} from "./hooks/useDocumentTitle";
 
 export const HabitList: React.FC = () => {
+	useDocumentTitle("Hapiline - habit list");
+
 	const getHabitsRequestState = useHabitsState();
 	const habits = useHabits();
 
