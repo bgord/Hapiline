@@ -8,31 +8,31 @@
 }
 
 .c-badge[data-variant="positive"] {
-	color: #07620de3;
+	color: #08630ee4;
 	background: #8fdf9491;
 }
 
 .c-badge[data-variant="negative"] {
-	color: #9c343de3;
+	color: #9f3740;
 	background: #ffc4cd;
 }
 
 .c-badge[data-variant="neutral"] {
-	color: var(--gray-8);
+	color: var(--gray-9);
 	background: var(--gray-2);
 }
 
 .c-badge[data-variant="light"] {
-	color: #568187;
+	color: #3d686e;
 	background: #b9e4ea;
 }
 
 .c-badge[data-variant="normal"] {
-	color: #5d6987;
+	color: #515d7b;
 	background: #cad6f4;
 }
 
 .c-badge[data-variant="strong"] {
-	color: #2d2d77ad;
+	color: #4e4e98;
 	background: #b4b4ef;
 }
