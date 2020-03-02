@@ -57,7 +57,11 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 						data-px="24"
 						data-py="6"
 						data-pb="12"
-						style={{borderTop: "1px solid var(--gray-1)", borderBottom: "1px solid var(--gray-1)"}}
+						style={{
+							borderTop: "1px solid var(--gray-1)",
+							borderBottom: "1px solid var(--gray-1)",
+							cursor: "move",
+						}}
 					>
 						<Row mainAxis="between" crossAxis="baseline">
 							<Text variant="semi-bold">{habit.name}</Text>
