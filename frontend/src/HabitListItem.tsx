@@ -45,13 +45,14 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 			draggableId={habit.id.toString()}
 			index={index}
 		>
-			{provided => (
+			{(provided, snapshot) => (
 				<li
 					ref={provided.innerRef}
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
 					data-testid="draggable-habit-item"
 					data-bg="0"
+					data-state={snapshot.isDragging ? "dragging" : "idle"}
 				>
 					<Column
 						data-px="24"
