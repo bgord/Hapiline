@@ -222,7 +222,7 @@ export const HabitList: React.FC = () => {
 						<ul
 							data-mt="48"
 							ref={provided.innerRef}
-							style={{borderTop: "1px solid var(--gray-1)"}}
+							style={{borderTop: "1px solid var(--gray-1)", background: "var(--gray-3)"}}
 							{...provided.droppableProps}
 						>
 							{filteredHabits.map((habit, index) => (
