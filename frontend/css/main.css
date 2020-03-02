@@ -399,6 +399,14 @@ body {
 	align-items: flex-end;
 }
 
+/* ----------------------------------------------------- */
+/* Backgrounds */
+/* ----------------------------------------------------- */
+
+*[data-bg="0"] {
+	background: var(--gray-0);
+}
+
 [data-reach-dialog-content] {
 	margin-top: 120px;
 }

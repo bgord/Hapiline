@@ -51,12 +51,13 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					{...provided.draggableProps}
 					{...provided.dragHandleProps}
 					data-testid="draggable-habit-item"
+					data-bg="0"
 				>
 					<Column
 						data-px="24"
 						data-py="6"
 						data-pb="12"
-						style={{borderTop: "2px solid var(--gray-1)"}}
+						style={{borderTop: "1px solid var(--gray-1)", borderBottom: "1px solid var(--gray-1)"}}
 					>
 						<Row mainAxis="between" crossAxis="baseline">
 							<Text variant="semi-bold">{habit.name}</Text>
