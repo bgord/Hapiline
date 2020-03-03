@@ -229,6 +229,7 @@ describe("Habit", () => {
 
 		cy.findByText(errorMessage);
 		cy.findByText("Couldn't fetch habit list.");
+		cy.findByText("It seems you haven't added any habits yet.").should("not.exist");
 	});
 
 	it("deleting items", () => {

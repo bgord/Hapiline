@@ -3,7 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
-import {ErrorMessage} from "./ErrorMessages";
+import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {InfoIcon} from "./ui/icons/Info";
 import {Banner} from "./ui/banner/Banner";
@@ -99,10 +99,6 @@ export const HabitsWindow = () => {
 	return (
 		<Column>
 			{subview === "add_habit" && <AddHabitForm />}
-
-			<Async.IfRejected state={getHabitsRequestState}>
-				<ErrorMessage className="mt-4 text-center">{errorMessage}</ErrorMessage>
-			</Async.IfRejected>
 
 			<Async.IfSettled state={getHabitsRequestState}>
 				<Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
@@ -242,12 +238,22 @@ export const HabitsWindow = () => {
 							<Text variant="bold">{howManyResults}</Text> results
 						</Text>
 					</Row>
-					{filteredHabits.length === 0 && (
-						<Banner data-mt="48" data-mx="24" data-p="12" variant="info">
-							<InfoIcon />
-							<Text ml="12">It seems you haven't added any habits yet.</Text>
+					<Async.IfFulfilled state={getHabitsRequestState}>
+						{filteredHabits.length === 0 && (
+							<Banner data-mt="48" data-mx="24" data-p="12" variant="info">
+								<InfoIcon />
+								<Text ml="12">It seems you haven't added any habits yet.</Text>
+							</Banner>
+						)}
+					</Async.IfFulfilled>
+					<Async.IfRejected state={getHabitsRequestState}>
+						<Banner data-mt="48" data-mx="24" data-p="12" variant="error">
+							<ExclamationIcon stroke="#682d36" />
+							<Text style={{color: "#682d36"}} ml="12">
+								{errorMessage}
+							</Text>
 						</Banner>
-					)}
+					</Async.IfRejected>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="habits">
 							{provided => (
