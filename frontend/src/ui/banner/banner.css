@@ -1,2 +1,10 @@
 .c-banner {
+	display: flex;
+	align-items: center;
+	border-radius: 6px;
+}
+
+.c-banner--info {
+	color: var(--gray-9);
+	background: var(--gray-2);
 }

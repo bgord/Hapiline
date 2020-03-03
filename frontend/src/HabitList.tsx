@@ -2,6 +2,8 @@ import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
 import React from "react";
 
+import {InfoIcon} from "./ui/icons/Info";
+import {Banner} from "./ui/banner/Banner";
 import {Column} from "./ui/column/Column";
 import {Card} from "./ui/card/Card";
 import {Text} from "./ui/text/Text";
@@ -220,11 +222,10 @@ export const HabitList: React.FC = () => {
 				</Text>
 			</Row>
 			{filteredHabits.length === 0 && (
-				<Row mt="48">
-					<Text variant="light" ml="24">
-						It seems you haven't added any habits yet.
-					</Text>
-				</Row>
+				<Banner data-mt="48" data-mx="24" data-p="12" variant="info">
+					<InfoIcon />
+					<Text ml="12">It seems you haven't added any habits yet.</Text>
+				</Banner>
 			)}
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
