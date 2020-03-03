@@ -262,8 +262,6 @@ describe("Habit", () => {
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
 
-		cy.findByText("Show filters").click();
-
 		cy.findByText("Positive (3)");
 		cy.findByText("Neutral (3)");
 		cy.findByText("Negative (3)");
@@ -781,7 +779,7 @@ describe("Habit", () => {
 				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
 		});
 
-		cy.reload().wait(3000);
+		cy.reload().wait(5000);
 
 		expectedOrderAfterDragAndDrop.forEach((_, index) => {
 			cy.queryAllByTestId("draggable-habit-item")
