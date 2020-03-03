@@ -230,6 +230,19 @@ describe("Habit", () => {
 		cy.findByText(errorMessage);
 		cy.findByText("Couldn't fetch habit list.");
 		cy.findByText("It seems you haven't added any habits yet.").should("not.exist");
+
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response: [],
+		});
+
+		cy.findByText("Retry").click();
+
+		cy.findByText(errorMessage).should("not.exist");
+		cy.findByText("Retry").should("not.exist");
+		cy.findByText("It seems you haven't added any habits yet.");
 	});
 
 	it("deleting items", () => {

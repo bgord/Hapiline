@@ -252,6 +252,9 @@ export const HabitsWindow = () => {
 							<Text style={{color: "#682d36"}} ml="12">
 								{errorMessage}
 							</Text>
+							<Button onClick={getHabitsRequestState.reload} ml="24" variant="outlined">
+								Retry
+							</Button>
 						</Banner>
 					</Async.IfRejected>
 					<DragDropContext onDragEnd={onDragEnd}>
