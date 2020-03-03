@@ -102,13 +102,8 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByText("Seems you haven't added any habits yet.");
-
-		cy.findByText("Positive: 0").should("not.exist");
-		cy.findByText("Neutral: 0").should("not.exist");
-		cy.findByText("Negative: 0").should("not.exist");
-		cy.findByText("Total: 0").should("not.exist");
-
+		cy.findByText("It seems you haven't added any habits yet.");
+		cy.findByText("Show filters").should("be.disabled");
 		cy.findByText("New habit");
 	});
 

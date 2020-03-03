@@ -94,6 +94,7 @@ export const HabitList: React.FC = () => {
 			<Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="large">Habit list</Header>
 				<Button
+					disabled={filteredHabits.length === 0}
 					style={{display: "flex", justifyContent: "center", alignItems: "center", width: "145px"}}
 					variant="secondary"
 					onClick={() => {
