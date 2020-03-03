@@ -18,3 +18,7 @@
 .c-text--semi-bold {
 	font-weight: 500;
 }
+
+.c-text--light {
+	color: var(--gray-7);
+}

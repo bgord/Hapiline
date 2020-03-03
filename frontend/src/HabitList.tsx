@@ -219,6 +219,13 @@ export const HabitList: React.FC = () => {
 					<Text variant="bold">{howManyResults}</Text> results
 				</Text>
 			</Row>
+			{filteredHabits.length === 0 && (
+				<Row mt="48">
+					<Text variant="light" ml="24">
+						It seems you haven't added any habits yet.
+					</Text>
+				</Row>
+			)}
 			<DragDropContext onDragEnd={onDragEnd}>
 				<Droppable droppableId="habits">
 					{provided => (
