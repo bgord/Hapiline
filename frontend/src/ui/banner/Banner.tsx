@@ -2,7 +2,7 @@ import "./banner.css";
 
 import React from "react";
 
-type BannerVariant = "info";
+type BannerVariant = "info" | "error";
 
 export const Banner: React.FC<JSX.IntrinsicElements["div"] & {variant: BannerVariant}> = ({
 	variant,

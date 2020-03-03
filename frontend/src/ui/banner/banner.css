@@ -5,6 +5,9 @@
 }
 
 .c-banner--info {
-	color: var(--gray-9);
 	background: var(--gray-2);
+}
+
+.c-banner--error {
+	background: #ffc4cd;
 }
