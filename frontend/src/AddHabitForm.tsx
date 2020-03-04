@@ -3,7 +3,8 @@ import * as Async from "react-async";
 import React from "react";
 
 // prettier-ignore
-import {Button, Textarea, Field, Label, Checkbox, Row, Select, Header, CloseIcon,Column} from "./ui";
+import {Button, Textarea, Field, Label, Checkbox, Row, Select, Header, CloseIcon, Column, Banner, Text} from "./ui";
+import {InfoIcon} from "./ui/icons/Info";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -124,17 +125,23 @@ export const AddHabitForm: React.FC = () => {
 					<Async.IfRejected state={addHabitRequestState}>
 						<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
 					</Async.IfRejected>
-					<Field mt="24" variant="row" style={{alignSelf: "flex-start"}}>
-						<Checkbox
-							id="is_trackable"
-							name="is_trackable"
-							checked={isTrackable}
-							onChange={() => setIsTrackable(v => !v)}
-						/>
-						<Label ml="6" htmlFor="is_trackable">
-							Track this habit
-						</Label>
-					</Field>
+					<Row mt="48" crossAxis="center">
+						<Field variant="row">
+							<Checkbox
+								id="is_trackable"
+								name="is_trackable"
+								checked={isTrackable}
+								onChange={() => setIsTrackable(v => !v)}
+							/>
+							<Label ml="6" htmlFor="is_trackable">
+								Track this habit
+							</Label>
+						</Field>
+						<Banner style={{padding: "3px 6px"}} data-ml="24" variant="info">
+							<InfoIcon />
+							<Text ml="12">You won't be able to vote for an untracked habit.</Text>
+						</Banner>
+					</Row>
 					<Field mt="24">
 						<Label htmlFor="description">Description</Label>
 						<Textarea
