@@ -4,10 +4,10 @@
 	border-radius: 6px;
 }
 
-.c-banner--info {
+.c-banner[data-variant="info"] {
 	background: var(--gray-2);
 }
 
-.c-banner--error {
+.c-banner[data-variant="error"] {
 	background: #ffc4cd;
 }

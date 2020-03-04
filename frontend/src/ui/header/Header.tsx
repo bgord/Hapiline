@@ -15,7 +15,8 @@ export const Header: React.FC<JSX.IntrinsicElements["header"] &
 		data-mr={mr}
 		data-mb={mb}
 		data-ml={ml}
-		className={`c-header c-header--${variant}`}
+		data-variant={variant}
+		className="c-header"
 		{...props}
 	/>
 );

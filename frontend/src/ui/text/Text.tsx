@@ -15,7 +15,8 @@ export const Text: React.FC<JSX.IntrinsicElements["div"] &
 		data-mr={mr}
 		data-mb={mb}
 		data-ml={ml}
-		className={`c-text c-text--${variant}`}
+		data-variant={variant}
+		className="c-text"
 		{...props}
 	/>
 );

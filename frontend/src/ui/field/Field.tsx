@@ -34,7 +34,8 @@ export const Field: React.FC<FieldProps> = ({
 			data-mr={mr}
 			data-mb={mb}
 			data-ml={ml}
-			className={`c-field c-field--${variant}`}
+			data-variant={variant}
+			className="c-field"
 			{...props}
 		>
 			{reorderedChildren}

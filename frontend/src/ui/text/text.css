@@ -4,21 +4,18 @@
 	color: var(--gray-10);
 }
 
-.c-text--bold {
+.c-text[data-variant="bold"] {
 	font-weight: 600;
 }
-
-.c-text--dimmed {
+.c-text[data-variant="dimmed"] {
 	text-transform: uppercase;
 	font-size: 14px;
 	font-weight: 600;
 	color: #b6b3b3;
 }
-
-.c-text--semi-bold {
+.c-text[data-variant="semi-bold"] {
 	font-weight: 500;
 }
-
-.c-text--light {
+.c-text[data-variant="light"] {
 	color: var(--gray-7);
 }
