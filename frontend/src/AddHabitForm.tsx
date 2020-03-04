@@ -184,10 +184,10 @@ export const AddHabitForm: React.FC = () => {
 				</form>
 				<Async.IfRejected state={addHabitRequestState}>
 					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
-						<Banner data-mt="24" data-p="12" variant="error">
+						<Banner data-p="12" variant="error">
 							<ExclamationIcon stroke="#682d36" />
 							<Text style={{color: "#682d36"}} ml="12">
-								{errorMessage}
+								{errorMessage || "Something unexpected happened. Please try again later."}
 							</Text>
 						</Banner>
 					)}
