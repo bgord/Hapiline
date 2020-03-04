@@ -19,6 +19,7 @@ import {
 } from "./ui";
 import {InfoIcon} from "./ui/icons/Info";
 import {ExclamationIcon} from "./ui/icons/Exclamation";
+import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
 import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -165,11 +166,19 @@ export const AddHabitForm: React.FC = () => {
 						<Error mt="6">{descriptionInlineErrorMessage}</Error>
 					</Async.IfRejected>
 					<Button
+						style={{
+							display: "flex",
+							justifyContent: "center",
+							alignItems: "center",
+							width: "125px",
+						}}
+						ml="auto"
+						mt="48"
+						mb="24"
 						variant="primary"
 						type="submit"
-						mt="24"
-						style={{alignSelf: "flex-end", width: "125px"}}
 					>
+						<PlusCircleIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
 						Add habit
 					</Button>
 				</form>
