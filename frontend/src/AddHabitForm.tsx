@@ -2,14 +2,7 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {Select} from "./ui/select/Select";
-import {Checkbox} from "./ui/checkbox/Checkbox";
-import {Header} from "./ui/header/Header";
-import {Field} from "./ui/field/Field";
-import {Label} from "./ui/label/Label";
-import {Textarea} from "./ui/textarea/Textarea";
-import {Button} from "./ui/button/Button";
-import {CloseIcon} from "./ui/close-icon/CloseIcon";
+import {Button, Textarea, Field, Label, Checkbox, Row, Select, Header, CloseIcon} from "./ui";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -18,7 +11,6 @@ import {useErrorNotification, useSuccessNotification} from "./contexts/notificat
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
-import {Row} from "./ui/row/Row";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();

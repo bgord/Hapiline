@@ -2,7 +2,7 @@ import {useTransition, animated} from "react-spring";
 import Alert from "@reach/alert";
 import React from "react";
 
-import {CloseIcon} from "./ui/close-icon/CloseIcon";
+import {CloseIcon} from "./ui";
 import {INotification, NotificationType} from "./interfaces/INotification";
 import {useNotificationDispatch, useNotificationState} from "./contexts/notifications-context";
 

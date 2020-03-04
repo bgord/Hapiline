@@ -1,4 +1,4 @@
-import {Input} from "./ui/input/Input";
+import {Input} from "./ui";
 import React from "react";
 
 export const HabitNameInput: React.FC<JSX.IntrinsicElements["input"]> = props => (

@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Demo} from "./_Demo";
-import {Banner} from "../frontend/src/ui/banner/Banner";
+import {Banner} from "../frontend/src/ui";
 
 export default {
 	info: (

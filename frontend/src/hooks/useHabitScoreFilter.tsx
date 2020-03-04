@@ -1,8 +1,7 @@
 import React from "react";
 
 import {HABIT_SCORES, HabitScoreType, IHabit} from "../interfaces/IHabit";
-import {Label} from "../ui/label/Label";
-import {Radio} from "../ui/radio/Radio";
+import {Label, Radio} from "../ui";
 
 type HabitScoreFilter = HabitScoreType | "all-scores";
 

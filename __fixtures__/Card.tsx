@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Demo} from "./_Demo";
-import {Card} from "../frontend/src/ui/card/Card";
+import {Card} from "../frontend/src/ui";
 
 export default {
 	"all variants": (

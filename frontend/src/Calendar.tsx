@@ -1,13 +1,10 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button} from "./ui/button/Button";
-import {Column} from "./ui/column/Column";
+import {Button, Row, Header, Column} from "./ui";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
-import {Header} from "./ui/header/Header";
 import {RequestErrorMessage} from "./ErrorMessages";
-import {Row} from "./ui/row/Row";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";

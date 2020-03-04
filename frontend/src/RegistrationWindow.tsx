@@ -2,16 +2,8 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button} from "./ui/button/Button";
-import {Card} from "./ui/card/Card";
-import {Column} from "./ui/column/Column";
+import {Button, Card, Column, Header, Field, Input, Label, Row, Text} from "./ui";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
-import {Field} from "./ui/field/Field";
-import {Header} from "./ui/header/Header";
-import {Input} from "./ui/input/Input";
-import {Label} from "./ui/label/Label";
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 

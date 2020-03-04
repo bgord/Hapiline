@@ -7,9 +7,7 @@ import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
 
-import {Text} from "./ui/text/Text";
-import {Header} from "./ui/header/Header";
-import {Button} from "./ui/button/Button";
+import {Button, Text, Row, Header, CloseIcon} from "./ui";
 import {api} from "./services/api";
 import {Calendar} from "./Calendar";
 import {DashboardWindow} from "./DashboardWindow";
@@ -22,9 +20,7 @@ import {Notifications} from "./Notifications";
 import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {CloseIcon} from "./ui/close-icon/CloseIcon";
 import {ProfileWindow} from "./ProfileWindow";
-import {Row} from "./ui/row/Row";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
 

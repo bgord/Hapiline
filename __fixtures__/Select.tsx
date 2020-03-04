@@ -1,10 +1,7 @@
 import React from "react";
 
 import {Demo} from "./_Demo";
-import {Field} from "../frontend/src/ui/field/Field";
-import {Input} from "../frontend/src/ui/input/Input";
-import {Label} from "../frontend/src/ui/label/Label";
-import {Select} from "../frontend/src/ui/select/Select";
+import {Field, Label, Select, Input} from "../frontend/src/ui";
 
 export default {
 	vertical: (

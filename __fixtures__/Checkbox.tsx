@@ -1,9 +1,7 @@
 import React from "react";
 
-import {Checkbox} from "../frontend/src/ui/checkbox/Checkbox";
+import {Checkbox, Field, Label} from "../frontend/src/ui/";
 import {Demo} from "./_Demo";
-import {Field} from "../frontend/src/ui/field/Field";
-import {Label} from "../frontend/src/ui/label/Label";
 
 export default {
 	"all variants": (

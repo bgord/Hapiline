@@ -1,10 +1,8 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Field} from "./ui/field/Field";
+import {Field, Label, Select} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
-import {Label} from "./ui/label/Label";
-import {Select} from "./ui/select/Select";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 

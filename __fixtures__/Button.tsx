@@ -1,6 +1,6 @@
 import React from "react";
 import {Demo} from "./_Demo";
-import {Button} from "../frontend/src/ui/button/Button";
+import {Button} from "../frontend/src/ui";
 
 export default {
 	"--secondary": (

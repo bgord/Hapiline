@@ -11,13 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import VisuallyHidden from "@reach/visually-hidden";
 
-import {Column} from "./ui/column/Column";
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
-import {Field} from "./ui/field/Field";
-import {Textarea} from "./ui/textarea/Textarea";
-import {Label} from "./ui/label/Label";
-import {Button} from "./ui/button/Button";
+import {Button, Text, Textarea, Field, Row, Column, Label} from "./ui";
 import {HabitScore} from "./HabitScore";
 import {HabitStrength} from "./HabitStrength";
 import {IHabit} from "./interfaces/IHabit";

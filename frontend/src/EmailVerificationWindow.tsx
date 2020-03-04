@@ -2,8 +2,7 @@ import {useParams, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
+import {Row, Text} from "./ui";
 import {api} from "./services/api";
 
 export const EmailVerificationWindow = () => {

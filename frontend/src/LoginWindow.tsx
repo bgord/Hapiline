@@ -6,15 +6,7 @@ import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-import {Header} from "./ui/header/Header";
-import {Button} from "./ui/button/Button";
-import {Card} from "./ui/card/Card";
-import {Column} from "./ui/column/Column";
-import {Field} from "./ui/field/Field";
-import {Input} from "./ui/input/Input";
-import {Label} from "./ui/label/Label";
-import {Text} from "./ui/text/Text";
-import {Row} from "./ui/row/Row";
+import {Button, Column, Header, Label, Input, Row, Card, Text, Field} from "./ui";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
