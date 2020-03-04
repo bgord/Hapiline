@@ -3,17 +3,11 @@ import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
 
-import {Button} from "./ui/button/Button";
-import {Card} from "./ui/card/Card";
-import {Column} from "./ui/column/Column";
+import {Button, Row, Text, Column, Header, Divider, Card} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
-import {Divider} from "./ui/divider/Divider";
 import {ErrorMessage} from "./ErrorMessages";
-import {Header} from "./ui/header/Header";
 import {Loader} from "./Loader";
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";

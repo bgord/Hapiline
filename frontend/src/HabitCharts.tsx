@@ -3,12 +3,9 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
-import {Field} from "./ui/field/Field";
+import {Field, Select, Row, Label} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
-import {Label} from "./ui/label/Label";
-import {Row} from "./ui/row/Row";
-import {Select} from "./ui/select/Select";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";

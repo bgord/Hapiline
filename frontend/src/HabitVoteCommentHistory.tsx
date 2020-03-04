@@ -3,13 +3,9 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
-import {Field} from "./ui/field/Field";
-import {Header} from "./ui/header/Header";
+import {Field, Header, Label, Textarea, Text} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteComment, voteToBgColor} from "./interfaces/IDayVote";
-import {Label} from "./ui/label/Label";
-import {Text} from "./ui/text/Text";
-import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";

@@ -1,8 +1,6 @@
 import React from "react";
 
-import {Field} from "../ui/field/Field";
-import {Input} from "../ui/input/Input";
-import {Label} from "../ui/label/Label";
+import {Field, Input, Label} from "../ui";
 import {IHabit} from "../interfaces/IHabit";
 
 export const useHabitSearch = (defaultValue = "") => {

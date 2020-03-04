@@ -113,3 +113,14 @@ button::-moz-focus-inner {
 .c-button--outlined:disabled.c-button--outlined:hover {
 	background: white;
 }
+
+/* bare */
+
+.c-button--bare {
+	background: inherit;
+}
+
+.c-button--bare:hover {
+	background: white;
+	border-radius: 2px;
+}

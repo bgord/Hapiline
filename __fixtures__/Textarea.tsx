@@ -1,12 +1,7 @@
 import React from "react";
 
-import {Button} from "../frontend/src/ui/button/Button";
+import {Button, Textarea, Label, Field, Input, Row} from "../frontend/src/ui";
 import {Demo} from "./_Demo";
-import {Field} from "../frontend/src/ui/field/Field";
-import {Input} from "../frontend/src/ui/input/Input";
-import {Label} from "../frontend/src/ui/label/Label";
-import {Row} from "../frontend/src/ui/row/Row";
-import {Textarea} from "../frontend/src/ui/textarea/Textarea";
 
 export default {
 	standard: (

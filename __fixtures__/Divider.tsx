@@ -1,9 +1,7 @@
 import React from "react";
 
-import {Column} from "../frontend/src/ui/column/Column";
+import {Column, Divider, Header} from "../frontend/src/ui";
 import {Demo} from "./_Demo";
-import {Divider} from "../frontend/src/ui/divider/Divider";
-import {Header} from "../frontend/src/ui/header/Header";
 
 export default {
 	standard: (

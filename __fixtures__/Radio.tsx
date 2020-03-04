@@ -1,9 +1,7 @@
 import React from "react";
 
 import {Demo} from "./_Demo";
-import {Field} from "../frontend/src/ui/field/Field";
-import {Label} from "../frontend/src/ui/label/Label";
-import {Radio} from "../frontend/src/ui/radio/Radio";
+import {Field, Label, Radio} from "../frontend/src/ui";
 
 export default {
 	"all variants": (

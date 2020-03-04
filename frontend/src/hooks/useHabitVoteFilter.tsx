@@ -1,8 +1,7 @@
 import React from "react";
 
 import {HabitVote} from "../interfaces/IHabit";
-import {Label} from "../ui/label/Label";
-import {Radio} from "../ui/radio/Radio";
+import {Label, Radio} from "../ui";
 import {useQueryParam} from "./useQueryParam";
 
 type HabitVoteFilterTypes = "unvoted" | "voted" | "all";

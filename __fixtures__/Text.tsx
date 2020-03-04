@@ -1,8 +1,7 @@
 import React from "react";
 
-import {Column} from "../frontend/src/ui/column/Column";
+import {Column, Text} from "../frontend/src/ui";
 import {Demo} from "./_Demo";
-import {Text} from "../frontend/src/ui/text/Text";
 
 export default {
 	"all variants": (

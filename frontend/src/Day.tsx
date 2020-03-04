@@ -2,13 +2,11 @@ import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
-import {Button} from "./ui/button/Button";
+import {Button, Row, Text} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
-import {Row} from "./ui/row/Row";
 import {Stat} from "./Stat";
-import {Text} from "./ui/text/Text";
 import {formatDay} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";

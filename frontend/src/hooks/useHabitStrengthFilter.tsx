@@ -1,8 +1,7 @@
 import React from "react";
 
 import {HabitStrengthType, IHabit, HABIT_STRENGTHS} from "../interfaces/IHabit";
-import {Label} from "../ui/label/Label";
-import {Radio} from "../ui/radio/Radio";
+import {Label, Radio} from "../ui";
 
 type HabitStrengthFilter = HabitStrengthType | "all-strengths";
 

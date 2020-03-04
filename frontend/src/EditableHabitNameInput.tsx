@@ -7,11 +7,9 @@ import {
 	useEditableFieldState,
 	useEditableFieldValue,
 } from "./hooks/useEditableField";
-import {Field} from "./ui/field/Field";
+import {Field, Row, Label} from "./ui";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
-import {Label} from "./ui/label/Label";
-import {Row} from "./ui/row/Row";
 import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";

@@ -5,7 +5,7 @@ import "../css/main.css";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import {Button} from "./ui/button/Button";
+import {Button} from "./ui";
 import {App} from "./App";
 import {AuthProvider} from "./contexts/auth-context";
 import {NotificationsProvider} from "./contexts/notifications-context";

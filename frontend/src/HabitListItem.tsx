@@ -2,13 +2,9 @@ import {Draggable} from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
 import React from "react";
 
-import {BadgeVariant, Badge} from "./ui/badge/Badge";
-import {Button} from "./ui/button/Button";
-import {Column} from "./ui/column/Column";
+import {BadgeVariant, Badge, Row, Button, Column, Text} from "./ui/";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit} from "./interfaces/IHabit";
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
 import {useQueryParam} from "./hooks/useQueryParam";
 
 interface HabitListItemProps {

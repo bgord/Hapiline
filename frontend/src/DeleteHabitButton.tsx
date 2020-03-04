@@ -2,11 +2,8 @@ import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button} from "./ui/button/Button";
-import {Header} from "./ui/header/Header";
+import {Button, Text, Row, Header} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";

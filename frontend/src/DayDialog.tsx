@@ -3,9 +3,7 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Header} from "./ui/header/Header";
-import {Button} from "./ui/button/Button";
-import {CloseIcon} from "./ui/close-icon/CloseIcon";
+import {Button, Row, Header, Text, CloseIcon} from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {
 	DaySummaryChart,
@@ -17,8 +15,6 @@ import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {IDayVote} from "./interfaces/IDayVote";
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorNotification} from "./contexts/notifications-context";

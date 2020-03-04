@@ -8,21 +8,15 @@ import {
 	useEditableFieldValue,
 	useEditableFieldState,
 } from "./hooks/useEditableField";
-import {CloseIcon} from "./ui/close-icon/CloseIcon";
+import {CloseIcon, Textarea, Field, Row, Label, Text, Header} from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
-import {Field} from "./ui/field/Field";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
-import {Header} from "./ui/header/Header";
 import {IHabit} from "./interfaces/IHabit";
-import {Label} from "./ui/label/Label";
-import {Row} from "./ui/row/Row";
-import {Text} from "./ui/text/Text";
-import {Textarea} from "./ui/textarea/Textarea";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";

@@ -1,7 +1,6 @@
 import React from "react";
 import {Demo} from "./_Demo";
-import {CloseIcon} from "../frontend/src/ui/close-icon/CloseIcon";
-import {Button} from "../frontend/src/ui/button/Button";
+import {CloseIcon, Button} from "../frontend/src/ui";
 
 export default {
 	standard: (

@@ -1,10 +1,7 @@
 import React from "react";
 
 import {Demo} from "./_Demo";
-import {Input} from "../frontend/src/ui/input/Input";
-import {Button} from "../frontend/src/ui/button/Button";
-import {Label} from "../frontend/src/ui/label/Label";
-import {Field} from "../frontend/src/ui/field/Field";
+import {Button, Input, Field, Label} from "../frontend/src/ui";
 
 export default {
 	standard: (

@@ -1,12 +1,7 @@
 import React from "react";
 
-import {Button} from "../frontend/src/ui/button/Button";
-import {Column} from "../frontend/src/ui/column/Column";
+import {Button, Column, Header, Field, Label, Input} from "../frontend/src/ui";
 import {Demo} from "./_Demo";
-import {Field} from "../frontend/src/ui/field/Field";
-import {Header} from "../frontend/src/ui/header/Header";
-import {Input} from "../frontend/src/ui/input/Input";
-import {Label} from "../frontend/src/ui/label/Label";
 
 export default {
 	"all variants": (
