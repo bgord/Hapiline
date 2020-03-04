@@ -2,7 +2,8 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Textarea, Field, Label, Checkbox, Row, Select, Header, CloseIcon} from "./ui";
+// prettier-ignore
+import {Button, Textarea, Field, Label, Checkbox, Row, Select, Header, CloseIcon,Column} from "./ui";
 import {ErrorMessage} from "./ErrorMessages";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -55,100 +56,108 @@ export const AddHabitForm: React.FC = () => {
 	}
 
 	return (
-		<Dialog aria-label="Add new habit" onDismiss={hideAddFormDialog} style={{maxHeight: "500px"}}>
-			<Row mainAxis="between">
+		<Dialog
+			data-pt="12"
+			aria-label="Add new habit"
+			onDismiss={hideAddFormDialog}
+			style={{maxHeight: "600px", height: "100%"}}
+		>
+			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="small">New habit</Header>
 				<CloseIcon onClick={hideAddFormDialog} />
 			</Row>
-			<form
-				onSubmit={event => {
-					event.preventDefault();
-					addHabitRequestState.run(
-						name,
-						score,
-						strength,
-						profile?.id,
-						description || null,
-						isTrackable,
-					);
-				}}
-				className="flex flex-col w-full"
-			>
-				<Row mt="48">
-					<Field style={{flexGrow: 1}}>
-						<Label htmlFor="name">Habit name</Label>
-						<HabitNameInput
-							id="name"
-							value={name}
-							onChange={event => setName(event.target.value)}
+			<Column data-p="24">
+				<form
+					onSubmit={event => {
+						event.preventDefault();
+						addHabitRequestState.run(
+							name,
+							score,
+							strength,
+							profile?.id,
+							description || null,
+							isTrackable,
+						);
+					}}
+					className="flex flex-col w-full"
+				>
+					<Row mt="48">
+						<Field style={{flexGrow: 1}}>
+							<Label htmlFor="name">Habit name</Label>
+							<HabitNameInput
+								id="name"
+								value={name}
+								onChange={event => setName(event.target.value)}
+							/>
+						</Field>
+						<Field ml="12">
+							<Label htmlFor="score">Score</Label>
+							<Select
+								id="score"
+								name="score"
+								required
+								value={score}
+								onChange={event => setScore(event.target.value)}
+								onBlur={event => setScore(event.target.value)}
+							>
+								<option value="positive">positive</option>
+								<option value="neutral">neutral</option>
+								<option value="negative">negative</option>
+							</Select>
+						</Field>
+						<Field ml="12">
+							<Label htmlFor="strength">Strength</Label>
+							<Select
+								id="strength"
+								name="strength"
+								required
+								value={strength}
+								onChange={event => setStrength(event.target.value)}
+								onBlur={event => setStrength(event.target.value)}
+							>
+								<option value="established">established</option>
+								<option value="developing">developing</option>
+								<option value="fresh">fresh</option>
+							</Select>
+						</Field>
+					</Row>
+					<Async.IfRejected state={addHabitRequestState}>
+						<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
+					</Async.IfRejected>
+					<Field mt="24" variant="row" style={{alignSelf: "flex-start"}}>
+						<Checkbox
+							id="is_trackable"
+							name="is_trackable"
+							checked={isTrackable}
+							onChange={() => setIsTrackable(v => !v)}
+						/>
+						<Label ml="6" htmlFor="is_trackable">
+							Track this habit
+						</Label>
+					</Field>
+					<Field mt="24">
+						<Label htmlFor="description">Description</Label>
+						<Textarea
+							value={description}
+							onChange={event => setDescription(event.target.value)}
+							name="description"
+							placeholder="Write something..."
 						/>
 					</Field>
-					<Field ml="12">
-						<Label htmlFor="score">Score</Label>
-						<Select
-							id="score"
-							name="score"
-							required
-							value={score}
-							onChange={event => setScore(event.target.value)}
-							onBlur={event => setScore(event.target.value)}
-						>
-							<option value="positive">positive</option>
-							<option value="neutral">neutral</option>
-							<option value="negative">negative</option>
-						</Select>
-					</Field>
-					<Field ml="12">
-						<Label htmlFor="strength">Strength</Label>
-						<Select
-							id="strength"
-							name="strength"
-							required
-							value={strength}
-							onChange={event => setStrength(event.target.value)}
-							onBlur={event => setStrength(event.target.value)}
-						>
-							<option value="established">established</option>
-							<option value="developing">developing</option>
-							<option value="fresh">fresh</option>
-						</Select>
-					</Field>
-				</Row>
-				<Async.IfRejected state={addHabitRequestState}>
-					<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
-				</Async.IfRejected>
-				<Field mt="24" variant="row" style={{alignSelf: "flex-start"}}>
-					<Checkbox
-						id="is_trackable"
-						name="is_trackable"
-						checked={isTrackable}
-						onChange={() => setIsTrackable(v => !v)}
-					/>
-					<Label ml="6" htmlFor="is_trackable">
-						Track this habit
-					</Label>
-				</Field>
-				<Field mt="24">
-					<Label htmlFor="description">Description</Label>
-					<Textarea
-						value={description}
-						onChange={event => setDescription(event.target.value)}
-						name="description"
-						placeholder="Write something..."
-					/>
-				</Field>
-				<Async.IfRejected state={addHabitRequestState}>
-					<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
-				</Async.IfRejected>
-				<Button
-					variant="primary"
-					type="submit"
-					mt="24"
-					style={{alignSelf: "flex-end", width: "125px"}}
-				>
-					Add habit
-				</Button>
-			</form>
+					<Async.IfRejected state={addHabitRequestState}>
+						<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
+					</Async.IfRejected>
+					<Button
+						variant="primary"
+						type="submit"
+						mt="24"
+						style={{alignSelf: "flex-end", width: "125px"}}
+					>
+						Add habit
+					</Button>
+				</form>
+			</Column>
+
 			<Async.IfRejected state={addHabitRequestState}>
 				<ErrorMessage className="mt-4">
 					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && errorMessage}
