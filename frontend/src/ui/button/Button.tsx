@@ -7,7 +7,7 @@ import React from "react";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 
-type ButtonVariants = "secondary" | "primary" | "outlined";
+type ButtonVariants = "secondary" | "primary" | "outlined" | "bare";
 
 type ButtonProps = JSX.IntrinsicElements["button"] &
 	Margins &
