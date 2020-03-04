@@ -6,6 +6,7 @@ const users = require("../fixtures/users.json");
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Dashboard stats");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+const Database = use("Database");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
@@ -133,6 +134,47 @@ test("full flow", async ({client, assert}) => {
 			noVotes: 6,
 			allVotes: 3,
 			maximumVotes: 9,
+		},
+	});
+});
+
+test("no habits", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	await Database.delete()
+		.from("habits")
+		.where("user_id", jim.id);
+
+	const response = await client
+		.get(DASHBOARD_STATS_URL)
+		.loginVia(jim)
+		.end();
+
+	assert.deepEqual(response.body, {
+		today: {
+			progressVotes: 0,
+			plateauVotes: 0,
+			regressVotes: 0,
+			noVotes: 0,
+			allVotes: 0,
+			maximumVotes: 0,
+			untrackedHabits: 0,
+		},
+		lastWeek: {
+			progressVotes: 0,
+			plateauVotes: 0,
+			regressVotes: 0,
+			noVotes: 0,
+			allVotes: 0,
+			maximumVotes: 0,
+		},
+		lastMonth: {
+			progressVotes: 0,
+			plateauVotes: 0,
+			regressVotes: 0,
+			noVotes: 0,
+			allVotes: 0,
+			maximumVotes: 0,
 		},
 	});
 });

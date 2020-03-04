@@ -102,13 +102,8 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		cy.findByText("Seems you haven't added any habits yet.");
-
-		cy.findByText("Positive: 0").should("not.exist");
-		cy.findByText("Neutral: 0").should("not.exist");
-		cy.findByText("Negative: 0").should("not.exist");
-		cy.findByText("Total: 0").should("not.exist");
-
+		cy.findByText("It seems you haven't added any habits yet.");
+		cy.findByText("Show filters").should("be.disabled");
 		cy.findByText("New habit");
 	});
 
@@ -234,6 +229,20 @@ describe("Habit", () => {
 
 		cy.findByText(errorMessage);
 		cy.findByText("Couldn't fetch habit list.");
+		cy.findByText("It seems you haven't added any habits yet.").should("not.exist");
+
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response: [],
+		});
+
+		cy.findByText("Retry").click();
+
+		cy.findByText(errorMessage).should("not.exist");
+		cy.findByText("Retry").should("not.exist");
+		cy.findByText("It seems you haven't added any habits yet.");
 	});
 
 	it("deleting items", () => {
@@ -266,8 +275,6 @@ describe("Habit", () => {
 
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
-
-		cy.findByText("Show filters").click();
 
 		cy.findByText("Positive (3)");
 		cy.findByText("Neutral (3)");
@@ -786,7 +793,7 @@ describe("Habit", () => {
 				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
 		});
 
-		cy.reload().wait(3000);
+		cy.reload().wait(5000);
 
 		expectedOrderAfterDragAndDrop.forEach((_, index) => {
 			cy.queryAllByTestId("draggable-habit-item")

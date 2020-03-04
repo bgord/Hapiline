@@ -1,0 +1,13 @@
+.c-banner {
+	display: flex;
+	align-items: center;
+	border-radius: 6px;
+}
+
+.c-banner--info {
+	background: var(--gray-2);
+}
+
+.c-banner--error {
+	background: #ffc4cd;
+}

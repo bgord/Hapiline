@@ -46,7 +46,7 @@ class DashboardStatsController {
       `,
 			{user_id: auth.user.id},
 		);
-		const {maximumVotesLastWeek} = _resultForMaximumVotesLastWeek.rows[0];
+		const {maximumVotesLastWeek} = _resultForMaximumVotesLastWeek.rows[0] || 0;
 
 		const _resultForLastWeek = await Database.raw(
 			`
@@ -79,7 +79,7 @@ class DashboardStatsController {
       `,
 			{user_id: auth.user.id},
 		);
-		const {maximumVotesLastMonth} = _resultForMaximumVotesLastMonth.rows[0];
+		const {maximumVotesLastMonth} = _resultForMaximumVotesLastMonth.rows[0] || 0;
 
 		const _resultForLastMonth = await Database.raw(
 			`
@@ -103,9 +103,9 @@ class DashboardStatsController {
 				...resultForToday,
 				noVotes:
 					resultForToday.maximumVotes -
-					resultForToday.progressVotes -
-					resultForToday.plateauVotes -
-					resultForToday.regressVotes,
+						resultForToday.progressVotes -
+						resultForToday.plateauVotes -
+						resultForToday.regressVotes || 0,
 				allVotes:
 					resultForToday.progressVotes + resultForToday.plateauVotes + resultForToday.regressVotes,
 			},
@@ -113,27 +113,27 @@ class DashboardStatsController {
 				...resultForLastWeek,
 				noVotes:
 					maximumVotesLastWeek -
-					resultForLastWeek.progressVotes -
-					resultForLastWeek.plateauVotes -
-					resultForLastWeek.regressVotes,
+						resultForLastWeek.progressVotes -
+						resultForLastWeek.plateauVotes -
+						resultForLastWeek.regressVotes || 0,
 				allVotes:
 					resultForLastWeek.progressVotes +
 					resultForLastWeek.plateauVotes +
 					resultForLastWeek.regressVotes,
-				maximumVotes: maximumVotesLastWeek,
+				maximumVotes: maximumVotesLastWeek || 0,
 			},
 			lastMonth: {
 				...resultForLastMonth,
 				noVotes:
 					maximumVotesLastMonth -
-					resultForLastMonth.progressVotes -
-					resultForLastMonth.plateauVotes -
-					resultForLastMonth.regressVotes,
+						resultForLastMonth.progressVotes -
+						resultForLastMonth.plateauVotes -
+						resultForLastMonth.regressVotes || 0,
 				allVotes:
 					resultForLastMonth.progressVotes +
 					resultForLastMonth.plateauVotes +
 					resultForLastMonth.regressVotes,
-				maximumVotes: maximumVotesLastMonth,
+				maximumVotes: maximumVotesLastMonth || 0,
 			},
 		});
 	}
