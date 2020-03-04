@@ -16,3 +16,4 @@ export * from "./row/Row";
 export * from "./select/Select";
 export * from "./text/Text";
 export * from "./textarea/Textarea";
+export * from "./error/Error";

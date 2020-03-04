@@ -2,10 +2,23 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
-// prettier-ignore
-import {Button, Textarea, Field, Label, Checkbox, Row, Select, Header, CloseIcon, Column, Banner, Text} from "./ui";
+import {
+	Button,
+	Textarea,
+	Field,
+	Label,
+	Checkbox,
+	Row,
+	Select,
+	Header,
+	CloseIcon,
+	Column,
+	Banner,
+	Text,
+	Error,
+} from "./ui";
 import {InfoIcon} from "./ui/icons/Info";
-import {ErrorMessage} from "./ErrorMessages";
+import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
 import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -57,12 +70,7 @@ export const AddHabitForm: React.FC = () => {
 	}
 
 	return (
-		<Dialog
-			data-pt="12"
-			aria-label="Add new habit"
-			onDismiss={hideAddFormDialog}
-			style={{maxHeight: "600px", height: "100%"}}
-		>
+		<Dialog data-pt="12" data-pb="48" aria-label="Add new habit" onDismiss={hideAddFormDialog}>
 			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="small">New habit</Header>
 				<CloseIcon onClick={hideAddFormDialog} />
@@ -123,7 +131,7 @@ export const AddHabitForm: React.FC = () => {
 						</Field>
 					</Row>
 					<Async.IfRejected state={addHabitRequestState}>
-						<ErrorMessage className="mt-4">{nameInlineErrorMessage}</ErrorMessage>
+						<Error mt="6">{nameInlineErrorMessage}</Error>
 					</Async.IfRejected>
 					<Row mt="48" crossAxis="center">
 						<Field variant="row">
@@ -139,7 +147,9 @@ export const AddHabitForm: React.FC = () => {
 						</Field>
 						<Banner style={{padding: "3px 6px"}} data-ml="24" variant="info">
 							<InfoIcon />
-							<Text ml="12">You won't be able to vote for an untracked habit.</Text>
+							<Text style={{fontSize: "14px"}} ml="12">
+								You won't be able to vote for an untracked habit.
+							</Text>
 						</Banner>
 					</Row>
 					<Field mt="24">
@@ -152,7 +162,7 @@ export const AddHabitForm: React.FC = () => {
 						/>
 					</Field>
 					<Async.IfRejected state={addHabitRequestState}>
-						<ErrorMessage className="mt-4">{descriptionInlineErrorMessage}</ErrorMessage>
+						<Error mt="6">{descriptionInlineErrorMessage}</Error>
 					</Async.IfRejected>
 					<Button
 						variant="primary"
@@ -163,13 +173,17 @@ export const AddHabitForm: React.FC = () => {
 						Add habit
 					</Button>
 				</form>
+				<Async.IfRejected state={addHabitRequestState}>
+					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
+						<Banner data-mt="24" data-p="12" variant="error">
+							<ExclamationIcon stroke="#682d36" />
+							<Text style={{color: "#682d36"}} ml="12">
+								{errorMessage}
+							</Text>
+						</Banner>
+					)}
+				</Async.IfRejected>
 			</Column>
-
-			<Async.IfRejected state={addHabitRequestState}>
-				<ErrorMessage className="mt-4">
-					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && errorMessage}
-				</ErrorMessage>
-			</Async.IfRejected>
 		</Dialog>
 	);
 };

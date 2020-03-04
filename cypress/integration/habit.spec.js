@@ -7,7 +7,7 @@ describe("Habit", () => {
 		cy.request("POST", "/test/db/seed");
 	});
 
-	it("Add an item", () => {
+	it("Add a habit", () => {
 		cy.clock();
 
 		cy.login("dwight");
@@ -21,6 +21,8 @@ describe("Habit", () => {
 			cy.findByLabelText("Habit name").type("Wake up at 7:30 AM");
 			cy.findByLabelText("Score").select("positive");
 			cy.findByLabelText("Strength").select("fresh");
+
+			cy.findByText("You won't be able to vote for an untracked habit.");
 
 			cy.findByText("Add habit").click();
 		});
