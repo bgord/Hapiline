@@ -152,7 +152,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 								subview: "day_preview",
 							});
 						}}
-						variant="secondary"
+						variant="outlined"
 					>
 						Reset filters
 					</Button>
