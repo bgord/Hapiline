@@ -88,7 +88,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 			className="max-w-screen-lg overflow-auto"
 			style={{maxHeight: "700px"}}
 		>
-			<Row mb="24" mainAxis="between">
+			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="small">
 					{day} - {dayName}
 				</Header>
