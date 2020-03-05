@@ -11,3 +11,7 @@
 .c-banner[data-variant="error"] {
 	background: #ffc4cd;
 }
+
+.c-banner[data-variant="success"] {
+	background: #80dba4e6;
+}

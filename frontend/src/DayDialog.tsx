@@ -3,7 +3,7 @@ import {useLocation} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Header, Text, CloseIcon, Column} from "./ui";
+import {Button, Row, Header, Text, CloseIcon, Column, Banner} from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {
 	DaySummaryChart,
@@ -95,12 +95,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			</Row>
 			<Column data-px="24">
 				{doesEveryHabitHasAVote && (
-					<Text>
-						<span role="img" aria-label="Party emoji">
-							🎉
-						</span>
-						Congratulations! You've voted for every habit{" "}
-					</Text>
+					<Banner data-p="6" data-mt="24" variant="success">
+						<Text style={{color: "#025D26"}}>
+							<span data-mx="12" role="img" aria-label="Party emoji">
+								🎉
+							</span>
+							Congratulations! You've voted for every habit.
+						</Text>
+					</Banner>
 				)}
 				<Row mt="48">
 					<DaySummaryChart
