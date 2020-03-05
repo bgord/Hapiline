@@ -3,7 +3,7 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Header, Text, CloseIcon} from "./ui";
+import {Button, Row, Header, Text, CloseIcon, Column} from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {
 	DaySummaryChart,
@@ -94,104 +94,106 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				</Header>
 				<CloseIcon onClick={onDismiss || dismissDialog} />
 			</Row>
-			{doesEveryHabitHasAVote && (
-				<Text>
-					<span role="img" aria-label="Party emoji">
-						🎉
-					</span>
-					Congratulations! You've voted for every habit{" "}
-				</Text>
-			)}
-			<Row mt="48">
-				<DaySummaryChart
-					maximumVotes={habitsAvailableAtThisDay.length}
-					className="h-4"
-					day={day}
-					{...stats}
-				/>
-				<DaySummaryStats day={day} {...stats} />
-			</Row>
-			<Row mt="48" crossAxis="center">
-				<HabitVoteFilters.Voted.Input
-					value={habitVoteFilter.value}
-					onChange={habitVoteFilter.onChange}
-					disabled={howManyVotedHabits === 0}
-				/>
-				<HabitVoteFilters.Voted.Label>
-					Show voted ({howManyVotedHabits})
-				</HabitVoteFilters.Voted.Label>
-
-				<HabitVoteFilters.Unvoted.Input
-					value={habitVoteFilter.value}
-					onChange={habitVoteFilter.onChange}
-					disabled={howManyUnvotedHabits === 0}
-				/>
-				<HabitVoteFilters.Unvoted.Label>
-					Show unvoted ({howManyUnvotedHabits})
-				</HabitVoteFilters.Unvoted.Label>
-
-				<HabitVoteFilters.All.Input
-					value={habitVoteFilter.value}
-					onChange={habitVoteFilter.onChange}
-				/>
-				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
-
-				<Button
-					ml="auto"
-					onClick={() => {
-						habitVoteFilter.reset();
-						habitSearch.clearPhrase();
-						updateQueryParams("calendar", {preview_day: queryParams.preview_day});
-					}}
-					variant="secondary"
-				>
-					Reset filters
-				</Button>
-			</Row>
-			<Row mt="24" crossAxis="end">
-				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-				<Button
-					ml="12"
-					onClick={() => {
-						habitSearch.clearPhrase();
-						clearHighlightedHabitId();
-					}}
-					variant="outlined"
-				>
-					Clear
-				</Button>
-			</Row>
-			{isThereNoTrackedHabits && <div>No habits available this day.</div>}
-			{!isThereNoTrackedHabits && (
-				<>
-					<Header mt="24" variant="extra-small">
-						Tracked habits
-					</Header>
-					<ul data-testid="day-dialog-habits">
-						{habitVotes
-							.filter(habitVoteFilter.filterFunction)
-							.filter(entry => habitSearch.filterFn(entry.habit))
-							.map(entry => (
-								<DayDialogHabitVoteListItem
-									key={entry.habit.id}
-									onResolve={() => {
-										if (onResolve) {
-											onResolve();
-										}
-										getDayVotesRequestState.reload();
-									}}
-									{...entry}
-								/>
-							))}
-					</ul>
-					<HabitsAddedAtGivenDay
+			<Column data-px="24">
+				{doesEveryHabitHasAVote && (
+					<Text>
+						<span role="img" aria-label="Party emoji">
+							🎉
+						</span>
+						Congratulations! You've voted for every habit{" "}
+					</Text>
+				)}
+				<Row mt="48">
+					<DaySummaryChart
 						maximumVotes={habitsAvailableAtThisDay.length}
+						className="h-4"
 						day={day}
 						{...stats}
 					/>
-					<UntrackedHabits day={day} />
-				</>
-			)}
+					<DaySummaryStats day={day} {...stats} />
+				</Row>
+				<Row mt="48" crossAxis="center">
+					<HabitVoteFilters.Voted.Input
+						value={habitVoteFilter.value}
+						onChange={habitVoteFilter.onChange}
+						disabled={howManyVotedHabits === 0}
+					/>
+					<HabitVoteFilters.Voted.Label>
+						Show voted ({howManyVotedHabits})
+					</HabitVoteFilters.Voted.Label>
+
+					<HabitVoteFilters.Unvoted.Input
+						value={habitVoteFilter.value}
+						onChange={habitVoteFilter.onChange}
+						disabled={howManyUnvotedHabits === 0}
+					/>
+					<HabitVoteFilters.Unvoted.Label>
+						Show unvoted ({howManyUnvotedHabits})
+					</HabitVoteFilters.Unvoted.Label>
+
+					<HabitVoteFilters.All.Input
+						value={habitVoteFilter.value}
+						onChange={habitVoteFilter.onChange}
+					/>
+					<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
+
+					<Button
+						ml="auto"
+						onClick={() => {
+							habitVoteFilter.reset();
+							habitSearch.clearPhrase();
+							updateQueryParams("calendar", {preview_day: queryParams.preview_day});
+						}}
+						variant="secondary"
+					>
+						Reset filters
+					</Button>
+				</Row>
+				<Row mt="24" crossAxis="end">
+					<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
+					<Button
+						ml="12"
+						onClick={() => {
+							habitSearch.clearPhrase();
+							clearHighlightedHabitId();
+						}}
+						variant="outlined"
+					>
+						Clear
+					</Button>
+				</Row>
+				{isThereNoTrackedHabits && <div>No habits available this day.</div>}
+				{!isThereNoTrackedHabits && (
+					<>
+						<Header mt="24" variant="extra-small">
+							Tracked habits
+						</Header>
+						<ul data-testid="day-dialog-habits">
+							{habitVotes
+								.filter(habitVoteFilter.filterFunction)
+								.filter(entry => habitSearch.filterFn(entry.habit))
+								.map(entry => (
+									<DayDialogHabitVoteListItem
+										key={entry.habit.id}
+										onResolve={() => {
+											if (onResolve) {
+												onResolve();
+											}
+											getDayVotesRequestState.reload();
+										}}
+										{...entry}
+									/>
+								))}
+						</ul>
+						<HabitsAddedAtGivenDay
+							maximumVotes={habitsAvailableAtThisDay.length}
+							day={day}
+							{...stats}
+						/>
+						<UntrackedHabits day={day} />
+					</>
+				)}
+			</Column>
 		</Dialog>
 	);
 };
