@@ -1,5 +1,5 @@
 import {Dialog} from "@reach/dialog";
-import {useHistory} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
@@ -25,11 +25,10 @@ import {format} from "date-fns";
 
 type DayDialogProps = DayVoteStats & {
 	onResolve?: VoidFunction;
-	onDismiss?: VoidFunction;
 };
 
-export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, ...stats}) => {
-	const history = useHistory();
+export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) => {
+	const location = useLocation<{from: string}>();
 	const trackedHabits = useTrackedHabits();
 
 	const triggerErrorNotification = useErrorNotification();
@@ -71,12 +70,12 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 	const doesEveryHabitHasAVote = howManyUnvotedHabits === 0 && howManyHabitsAtAll > 0;
 
 	function dismissDialog() {
-		history.push("/calendar");
+		updateQueryParams(location.state.from, {});
 	}
 
 	function clearHighlightedHabitId() {
 		const {highlighted_habit_id, ...rest} = queryParams;
-		updateQueryParams("calendar", {...rest});
+		updateQueryParams(location.state.from, {...rest});
 	}
 
 	const dayName = format(new Date(day), "iiii");
@@ -84,7 +83,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 	return (
 		<Dialog
 			aria-label="Show day preview"
-			onDismiss={onDismiss || dismissDialog}
+			onDismiss={dismissDialog}
 			className="max-w-screen-lg overflow-auto"
 			style={{maxHeight: "700px"}}
 		>
@@ -92,7 +91,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 				<Header variant="small">
 					{day} - {dayName}
 				</Header>
-				<CloseIcon onClick={onDismiss || dismissDialog} />
+				<CloseIcon onClick={dismissDialog} />
 			</Row>
 			<Column data-px="24">
 				{doesEveryHabitHasAVote && (
@@ -142,7 +141,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, onDismiss, 
 						onClick={() => {
 							habitVoteFilter.reset();
 							habitSearch.clearPhrase();
-							updateQueryParams("calendar", {preview_day: queryParams.preview_day});
+							updateQueryParams(location.state.from, {
+								preview_day: queryParams.preview_day,
+								subview: "day_preview",
+							});
 						}}
 						variant="secondary"
 					>

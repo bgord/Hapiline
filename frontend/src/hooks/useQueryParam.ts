@@ -28,5 +28,15 @@ export function useQueryParams(): [
 	const history = useHistory();
 	const queryParams: QueryParamsObject = parseQueryParams(history.location.search);
 
-	return [queryParams, (baseUrl, payload) => history.push(baseUrl + constructQueryParams(payload))];
+	return [
+		queryParams,
+		(baseUrl, payload) =>
+			history.push({
+				pathname: baseUrl,
+				search: constructQueryParams(payload),
+				state: {
+					from: baseUrl,
+				},
+			}),
+	];
 }

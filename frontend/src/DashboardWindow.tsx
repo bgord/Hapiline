@@ -179,7 +179,6 @@ export const DashboardWindow = () => {
 				{subview === "day_preview" && (
 					<DayDialog
 						day={currentDate}
-						onDismiss={() => updateQueryParams("/dashboard", {})}
 						onResolve={getDashboardStatsRequestState.reload}
 						{...statsForToday}
 					/>
