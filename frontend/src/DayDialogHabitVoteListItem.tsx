@@ -170,9 +170,9 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							{habit.strength}
 						</Badge>
 						{!vote && (
-							<Text ml="auto" mr="6" variant="bold" title="Vote for a habit">
-								!
-							</Text>
+							<Badge ml="auto" variant="neutral">
+								No vote yet
+							</Badge>
 						)}
 					</Row>
 					{isCommentVisible && (
