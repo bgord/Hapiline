@@ -131,11 +131,6 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							</Text>
 						</Link>
 						<div data-ml="auto">
-							{!vote && (
-								<Text ml="auto" mr="6" variant="bold" title="Vote for a habit">
-									!
-								</Text>
-							)}
 							<Button
 								style={{background: vote === "progress" ? "#3ddc97" : "white"}}
 								variant="bare"
@@ -174,6 +169,11 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						<Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
 							{habit.strength}
 						</Badge>
+						{!vote && (
+							<Text ml="auto" mr="6" variant="bold" title="Vote for a habit">
+								!
+							</Text>
+						)}
 					</Row>
 					{isCommentVisible && (
 						<Column mt="12">
