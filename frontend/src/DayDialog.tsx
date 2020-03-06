@@ -28,7 +28,7 @@ type DayDialogProps = DayVoteStats & {
 };
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) => {
-	const location = useLocation<{from: string}>();
+	const location = useLocation<{from: string | undefined}>();
 	const trackedHabits = useTrackedHabits();
 
 	const triggerErrorNotification = useErrorNotification();
@@ -70,12 +70,12 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const doesEveryHabitHasAVote = howManyUnvotedHabits === 0 && howManyHabitsAtAll > 0;
 
 	function dismissDialog() {
-		updateQueryParams(location.state.from, {});
+		updateQueryParams(location?.state?.from ?? location.pathname, {});
 	}
 
 	function clearHighlightedHabitId() {
 		const {highlighted_habit_id, ...rest} = queryParams;
-		updateQueryParams(location.state.from, {...rest});
+		updateQueryParams(location?.state?.from ?? location.pathname, {...rest});
 	}
 
 	const dayName = format(new Date(day), "iiii");
@@ -147,7 +147,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						onClick={() => {
 							habitVoteFilter.reset();
 							habitSearch.clearPhrase();
-							updateQueryParams(location.state.from, {
+							updateQueryParams(location.state.from ?? location.pathname, {
 								preview_day: queryParams.preview_day,
 								subview: "day_preview",
 							});
