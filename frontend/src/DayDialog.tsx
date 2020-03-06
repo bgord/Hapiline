@@ -89,7 +89,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
 			className="max-w-screen-lg overflow-auto"
-			style={{maxHeight: "700px"}}
+			style={{maxHeight: "700px", paddingBottom: "48px"}}
 		>
 			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="small">
@@ -175,7 +175,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				</Row>
 				{isThereNoTrackedHabits && <div>No habits available this day.</div>}
 				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
-					<Column>
+					<Column data-pb="48">
 						<Header mt="48" data-mb="6" variant="extra-small">
 							Tracked habits
 						</Header>
