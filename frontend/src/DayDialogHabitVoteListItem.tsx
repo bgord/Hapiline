@@ -111,20 +111,18 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 			>
 				<Column data-width="100%">
 					<Row pt="6">
-						<Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
-							{isCommentVisible && (
-								<>
-									<VisuallyHidden>Hide vote comment</VisuallyHidden>
-									<FontAwesomeIcon icon={faChevronUp} />
-								</>
-							)}
-							{!isCommentVisible && (
-								<>
-									<VisuallyHidden>Show vote comment</VisuallyHidden>
-									<FontAwesomeIcon icon={faChevronDown} />
-								</>
-							)}
-						</Button>
+						{isCommentVisible && (
+							<Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
+								<VisuallyHidden>Hide vote comment</VisuallyHidden>
+								<FontAwesomeIcon icon={faChevronUp} />
+							</Button>
+						)}
+						{!isCommentVisible && (
+							<Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
+								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
+								<FontAwesomeIcon icon={faChevronDown} />
+							</Button>
+						)}
 						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
 							<Text ml="12" variant="semi-bold">
 								{habit.name}
