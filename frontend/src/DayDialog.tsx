@@ -99,7 +99,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			</Row>
 			<Column px="24">
 				{doesEveryHabitHasAVote && (
-					<Banner data-p="6" data-mt="24" variant="success">
+					<Banner p="6" mt="24" variant="success">
 						<Text style={{color: "#025D26"}}>
 							<span data-mx="12" role="img" aria-label="Party emoji">
 								🎉

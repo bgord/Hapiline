@@ -146,7 +146,7 @@ export const AddHabitForm: React.FC = () => {
 								Track this habit
 							</Label>
 						</Field>
-						<Banner style={{padding: "3px 6px"}} data-ml="24" variant="info">
+						<Banner style={{padding: "3px 6px"}} ml="24" variant="info">
 							<InfoIcon />
 							<Text style={{fontSize: "14px"}} ml="12">
 								You won't be able to vote for an untracked habit.
@@ -184,7 +184,7 @@ export const AddHabitForm: React.FC = () => {
 				</form>
 				<Async.IfRejected state={addHabitRequestState}>
 					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
-						<Banner data-p="12" variant="error">
+						<Banner p="12" variant="error">
 							<ExclamationIcon stroke="#682d36" />
 							<Text style={{color: "#682d36"}} ml="12">
 								{errorMessage || "Something unexpected happened. Please try again later."}

@@ -234,14 +234,14 @@ export const HabitsWindow = () => {
 					</Row>
 					<Async.IfFulfilled state={getHabitsRequestState}>
 						{filteredHabits.length === 0 && (
-							<Banner data-mt="48" data-mx="24" data-p="12" variant="info">
+							<Banner mt="48" mx="24" p="12" variant="info">
 								<InfoIcon />
 								<Text ml="12">It seems you haven't added any habits yet.</Text>
 							</Banner>
 						)}
 					</Async.IfFulfilled>
 					<Async.IfRejected state={getHabitsRequestState}>
-						<Banner data-mt="48" data-mx="24" data-p="12" variant="error">
+						<Banner mt="48" mx="24" p="12" variant="error">
 							<ExclamationIcon stroke="#682d36" />
 							<Text style={{color: "#682d36"}} ml="12">
 								{errorMessage}
