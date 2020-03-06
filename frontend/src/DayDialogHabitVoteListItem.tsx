@@ -130,7 +130,11 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						</Link>
 						<div data-ml="auto">
 							<Button
-								style={{background: vote === "progress" ? "#3ddc97" : "white"}}
+								style={{
+									background: vote === "progress" ? "#8fdf9491" : "var(--gray-0)",
+									color: vote === "progress" ? " #08630ee4" : "var(--gray-10)",
+									borderRadius: "var(--radius-half)",
+								}}
 								variant="bare"
 								onClick={() => changeVote("progress")}
 								disabled={addHabitDayVoteRequestState.isPending}
@@ -139,7 +143,11 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faPlus} />
 							</Button>
 							<Button
-								style={{background: vote === "plateau" ? "#cfdee7" : "white"}}
+								style={{
+									background: vote === "plateau" ? "var(--gray-2)" : "var(--gray-0)",
+									color: vote === "plateau" ? " var(--gray-9)" : "var(--gray-10)",
+									borderRadius: "var(--radius-half)",
+								}}
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("plateau")}
@@ -149,7 +157,11 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faEquals} />
 							</Button>
 							<Button
-								style={{background: vote === "regress" ? "#ff495c" : "white"}}
+								style={{
+									background: vote === "regress" ? "#ffc4cd" : "var(--gray-0)",
+									color: vote === "regress" ? " #9f3740" : "var(--gray-10)",
+									borderRadius: "var(--radius-half)",
+								}}
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("regress")}
