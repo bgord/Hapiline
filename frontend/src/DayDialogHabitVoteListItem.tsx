@@ -174,7 +174,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						)}
 					</Row>
 					{isCommentVisible && (
-						<Column mt="12">
+						<Column mt="24">
 							<Field mb="12">
 								<Label htmlFor="vote_comment">Vote comment</Label>
 								<Textarea
@@ -186,7 +186,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 									onChange={newCommentHelpers.onChange}
 								/>
 							</Field>
-							<Row>
+							<Row mb="12">
 								<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
 									Save
 								</SaveButton>
