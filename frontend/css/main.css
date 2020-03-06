@@ -37,6 +37,11 @@
 	--spacing-xl: 72px;
 	--spacing-max: 100%;
 	--spacing-auto: auto;
+
+	--radius-s: 2px;
+	--radius-m: 3px;
+	--radius-l: 6px;
+	--radius-half: 50%;
 }
 
 html {
@@ -421,7 +426,7 @@ body {
 [data-reach-dialog-content] {
 	margin-top: 120px;
 	padding: var(--spacing-s) 0 0 0;
-	border-radius: 5px;
+	border-radius: var(--radius-l);
 }
 
 *[data-state="dragging"] {

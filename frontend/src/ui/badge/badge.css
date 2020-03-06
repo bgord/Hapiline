@@ -2,7 +2,7 @@
 	font-size: 12px;
 	text-transform: uppercase;
 	letter-spacing: 0.8px;
-	border-radius: 5px;
+	border-radius: var(--radius-l);
 	font-weight: 600;
 	padding: 0 var(--spacing-s);
 }

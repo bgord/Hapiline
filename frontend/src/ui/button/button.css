@@ -12,7 +12,7 @@ button::-moz-focus-inner {
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
-	border-radius: 3px;
+	border-radius: var(--radius-m);
 }
 
 .c-button:hover {
@@ -25,7 +25,7 @@ button::-moz-focus-inner {
 .c-button:active,
 .c-button:focus {
 	cursor: pointer;
-	border-radius: 3px;
+	border-radius: var(--radius-s);
 
 	transition: all 300ms;
 }
