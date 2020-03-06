@@ -174,8 +174,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					</Text>
 				</Row>
 				{isThereNoTrackedHabits && <div>No habits available this day.</div>}
-				{!isThereNoTrackedHabits && (
-					<>
+				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
+					<Column>
 						<Header mt="48" data-mb="6" variant="extra-small">
 							Tracked habits
 						</Header>
@@ -199,7 +199,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 							{...stats}
 						/>
 						<UntrackedHabits day={day} />
-					</>
+					</Column>
 				)}
 			</Column>
 		</Dialog>
