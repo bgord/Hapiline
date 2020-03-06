@@ -2,9 +2,9 @@ import {Draggable} from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
 import React from "react";
 
-import {BadgeVariant, Badge, Row, Button, Column, Text} from "./ui/";
+import {Badge, Row, Button, Column, Text} from "./ui/";
 import {HabitItemDialog} from "./HabitItemDialog";
-import {IHabit} from "./interfaces/IHabit";
+import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
 import {useQueryParam} from "./hooks/useQueryParam";
 
 interface HabitListItemProps {
@@ -12,14 +12,6 @@ interface HabitListItemProps {
 	index: number;
 	isDragDisabled: boolean;
 }
-
-const habitStrengthToBadgeVariant: {
-	[key in IHabit["strength"]]: BadgeVariant;
-} = {
-	fresh: "light",
-	developing: "normal",
-	established: "strong",
-};
 
 export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDragDisabled}) => {
 	const history = useHistory();

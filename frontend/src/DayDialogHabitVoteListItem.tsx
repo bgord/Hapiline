@@ -10,11 +10,8 @@ import {
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import VisuallyHidden from "@reach/visually-hidden";
-
-import {Button, Text, Textarea, Field, Row, Column, Label} from "./ui";
-import {HabitScore} from "./HabitScore";
-import {HabitStrength} from "./HabitStrength";
-import {IHabit} from "./interfaces/IHabit";
+import {habitStrengthToBadgeVariant, IHabit} from "./interfaces/IHabit";
+import {Button, Text, Textarea, Field, Row, Column, Label, Badge} from "./ui";
 import {Vote, IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {
@@ -107,7 +104,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 			<li className="bg-gray-100 p-2 mt-4">
 				<Row>
 					<Row>
-						<Button variant="outlined" title="Show and edit comment" onClick={toggleComment}>
+						<Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
 							{isCommentVisible && (
 								<>
 									<VisuallyHidden>Hide vote comment</VisuallyHidden>
@@ -121,10 +118,14 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								</>
 							)}
 						</Button>
-						<HabitScore score={habit.score} className="px-1 py-1 ml-2" />
-						<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
+						<Badge mr="6" variant={habit.score}>
+							{habit.score}
+						</Badge>
+						<Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
+							{habit.strength}
+						</Badge>
 						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-							<Text>{habit.name}</Text>
+							<Text variant="semi-bold">{habit.name}</Text>
 						</Link>
 					</Row>
 					{!vote && (

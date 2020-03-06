@@ -1,4 +1,5 @@
 import {IDayVote, Vote} from "./IDayVote";
+import {BadgeVariant} from "../ui/badge/Badge";
 
 export type HabitScoreType = "positive" | "neutral" | "negative";
 export type HabitStrengthType = "established" | "developing" | "fresh";
@@ -47,4 +48,12 @@ export const strengthToBgColor: {[key in HabitStrengthType]: string} = {
 	established: "bg-blue-300",
 	developing: "bg-blue-200",
 	fresh: "bg-blue-100",
+};
+
+export const habitStrengthToBadgeVariant: {
+	[key in IHabit["strength"]]: BadgeVariant;
+} = {
+	fresh: "light",
+	developing: "normal",
+	established: "strong",
 };
