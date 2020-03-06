@@ -67,14 +67,14 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 							</Button>
 						</Row>
 						<Row mt="6">
-							<Badge data-mr="6" variant={habit.score}>
+							<Badge mr="6" variant={habit.score}>
 								{habit.score}
 							</Badge>
-							<Badge data-ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
+							<Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
 								{habit.strength}
 							</Badge>
 							{!habit.is_trackable && (
-								<Badge data-ml="12" variant="neutral">
+								<Badge ml="12" variant="neutral">
 									Untracked
 								</Badge>
 							)}
