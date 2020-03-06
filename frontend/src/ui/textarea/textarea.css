@@ -6,7 +6,7 @@
 	font-family: "Noto Sans";
 	font-size: 12px;
 	color: #363434;
-	padding: 10px;
+	padding: calc(var(--spacing-s) - 2px); /* 2px come from borders */
 	height: 96px;
 	background: white;
 	border: 1px solid #f0f0f0;
@@ -20,14 +20,14 @@
 
 .c-textarea:hover,
 .c-textarea:focus {
-	border: 1px solid #e0dede;
+	border-color: #e0dede;
 	border-radius: 0;
 	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .c-textarea:active,
 .c-textarea:disabled {
-	border: 1px solid #c7c4c4;
+	border-color: #c7c4c4;
 }
 
 .c-textarea:disabled {

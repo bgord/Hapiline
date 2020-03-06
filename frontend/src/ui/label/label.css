@@ -8,7 +8,7 @@
 }
 
 .c-label[data-variant="optional"]::after {
-	margin-left: 6px;
+	margin-left: var(--spacing-xs);
 	text-transform: lowercase;
 	content: "(optional)";
 }

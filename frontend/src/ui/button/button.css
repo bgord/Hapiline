@@ -7,7 +7,7 @@ button::-moz-focus-inner {
 	box-sizing: border-box;
 	height: 36px;
 	border: none;
-	padding: 0 10px 0 10px;
+	padding: 0 var(--spacing-s) 0 var(--spacing-s);
 	font-size: 12px;
 	font-weight: 600;
 	text-transform: uppercase;
