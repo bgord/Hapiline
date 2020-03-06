@@ -76,7 +76,7 @@ export const AddHabitForm: React.FC = () => {
 				<Header variant="small">New habit</Header>
 				<CloseIcon onClick={hideAddFormDialog} />
 			</Row>
-			<Column data-p="24">
+			<Column p="24">
 				<form
 					onSubmit={event => {
 						event.preventDefault();

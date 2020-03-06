@@ -51,9 +51,9 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					data-state={snapshot.isDragging ? "dragging" : "idle"}
 				>
 					<Column
-						data-px="24"
-						data-py="6"
-						data-pb="12"
+						px="24"
+						py="6"
+						pb="12"
 						style={{
 							borderTop: "1px solid var(--gray-1)",
 							borderBottom: "1px solid var(--gray-1)",

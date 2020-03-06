@@ -118,7 +118,7 @@ export const HabitsWindow = () => {
 					</Row>
 					{areFiltersVisible && (
 						<Row mt="48" px="24" crossAxis="start">
-							<Column data-pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
+							<Column pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
 								<Text variant="semi-bold">Scores</Text>
 								<Row mt="24" crossAxis="center">
 									<HabitScoreFilters.Positive.Input

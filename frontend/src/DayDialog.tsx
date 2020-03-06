@@ -97,7 +97,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				</Header>
 				<CloseIcon onClick={dismissDialog} />
 			</Row>
-			<Column data-px="24">
+			<Column px="24">
 				{doesEveryHabitHasAVote && (
 					<Banner data-p="6" data-mt="24" variant="success">
 						<Text style={{color: "#025D26"}}>
@@ -175,7 +175,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				</Row>
 				{isThereNoTrackedHabits && <div>No habits available this day.</div>}
 				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
-					<Column data-pb="48">
+					<Column pb="48">
 						<Header mt="48" data-mb="6" variant="extra-small">
 							Tracked habits
 						</Header>
