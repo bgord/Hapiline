@@ -186,7 +186,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						)}
 					</Row>
 					{isCommentVisible && (
-						<Column mt="24">
+						<Column mt="24" pl="48">
 							<Field mb="12">
 								<Label htmlFor="vote_comment">Vote comment</Label>
 								<Textarea

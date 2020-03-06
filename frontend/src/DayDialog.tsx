@@ -173,6 +173,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						<Text variant="bold">{filteredHabitVotes.length}</Text> results
 					</Text>
 				</Row>
+				{/* TODO: refactor to an info banner */}
 				{isThereNoTrackedHabits && <div>No habits available this day.</div>}
 				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
 					<Column pb="48">
