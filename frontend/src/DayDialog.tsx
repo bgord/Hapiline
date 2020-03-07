@@ -101,6 +101,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				{doesEveryHabitHasAVote && (
 					<Banner p="6" mt="24" variant="success">
 						<Text style={{color: "#025D26"}}>
+							{/* TODO: create an emoji UI component */}
 							<span data-mx="12" role="img" aria-label="Party emoji">
 								🎉
 							</span>
