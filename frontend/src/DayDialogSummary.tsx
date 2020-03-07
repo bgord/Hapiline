@@ -3,7 +3,6 @@ import React from "react";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IHabit} from "./interfaces/IHabit";
-import {Stat} from "./Stat";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
 import {voteToBgColor} from "./interfaces/IDayVote";
@@ -36,44 +35,58 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${maximumVotes} (${progressVotesPercentage}%)`;
 
 	return (
-		<div className={`flex w-full ${className}`}>
+		<div style={{height: "18px", fontSize: "14px"}} className={`flex w-full ${className}`}>
 			<div
 				title={noVotesCellTitle}
-				style={{flexBasis: `${noVotesPercentage}%`, backgroundColor: voteToBgColor.get(null)}}
-			/>
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					flexBasis: `${noVotesPercentage}%`,
+					backgroundColor: voteToBgColor.get(null),
+				}}
+			>
+				{stats.noVotesCountStats > 0 && stats.noVotesCountStats}
+			</div>
 			<div
 				title={regressVotesCellTitle}
 				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
 					flexBasis: `${regressVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("regress"),
 				}}
-			/>
+			>
+				{stats.regressVotesCountStats ?? 0}
+			</div>
 			<div
 				title={plateauVotesCellTitle}
 				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
 					flexBasis: `${plateauVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("plateau"),
 				}}
-			/>
+			>
+				{stats.plateauVotesCountStats ?? 0}
+			</div>
 			<div
 				title={progressVotesCellTitle}
 				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
 					flexBasis: `${progressVotesPercentage}%`,
 					background: voteToBgColor.get("progress"),
 				}}
-			/>
+			>
+				{stats.progressVotesCountStats ?? 0}
+			</div>
 		</div>
 	);
 };
-
-export const DaySummaryStats: React.FC<DayVoteStats> = ({...stats}) => (
-	<>
-		<Stat count={stats.noVotesCountStats} sign="?" />
-		<Stat count={stats.regressVotesCountStats} sign="-" />
-		<Stat count={stats.plateauVotesCountStats} sign="=" />
-		<Stat count={stats.progressVotesCountStats} sign="+" />
-	</>
-);
 
 export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
 	const habits = useHabits();

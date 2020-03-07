@@ -6,7 +6,6 @@ import {Button, Row, Text} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
-import {Stat} from "./Stat";
 import {formatDay} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
@@ -68,10 +67,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 								NEW: {stats.createdHabitsCount}
 							</Text>
 						) : null}
-						<Stat count={stats.progressVotesCountStats} sign="+" />
-						<Stat count={stats.plateauVotesCountStats} sign="=" />
-						<Stat count={stats.regressVotesCountStats} sign="-" />
-						<Stat count={stats.noVotesCountStats} sign="?" />
 					</Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
