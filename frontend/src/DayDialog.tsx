@@ -11,6 +11,7 @@ import {
 	HabitsAddedAtGivenDay,
 	UntrackedHabits,
 } from "./DayDialogSummary";
+import {InfoIcon} from "./ui/icons/Info";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
@@ -174,8 +175,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						<Text variant="bold">{filteredHabitVotes.length}</Text> results
 					</Text>
 				</Row>
-				{/* TODO: refactor to an info banner */}
-				{isThereNoTrackedHabits && <div>No habits available this day.</div>}
+				{isThereNoTrackedHabits && (
+					<Banner p="12" mt="48" variant="info">
+						<InfoIcon />
+						<Text style={{fontSize: "14px"}} ml="12">
+							No habits available this day.
+						</Text>
+					</Banner>
+				)}
 				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
 					<Column pb="48">
 						<Header mt="48" mb="24" variant="extra-small">
