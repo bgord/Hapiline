@@ -44,6 +44,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					alignItems: "center",
 					flexBasis: `${noVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get(null),
+					fontWeight: "bold",
+					color: "var(--gray-3)",
+					padding: `0 ${stats.noVotesCountStats ? 3 : 0}px`,
 				}}
 			>
 				{stats.noVotesCountStats > 0 && stats.noVotesCountStats}
@@ -56,6 +59,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					alignItems: "center",
 					flexBasis: `${regressVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("regress"),
+					fontWeight: "bold",
+					color: "#720A13",
+					padding: "0 3px",
 				}}
 			>
 				{stats.regressVotesCountStats ?? 0}
@@ -68,6 +74,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					alignItems: "center",
 					flexBasis: `${plateauVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("plateau"),
+					fontWeight: "bold",
+					color: "var(--gray-9)",
+					padding: "0 3px",
 				}}
 			>
 				{stats.plateauVotesCountStats ?? 0}
@@ -80,6 +89,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					alignItems: "center",
 					flexBasis: `${progressVotesPercentage}%`,
 					background: voteToBgColor.get("progress"),
+					fontWeight: "bold",
+					color: "#106015",
+					padding: "0 3px",
 				}}
 			>
 				{stats.progressVotesCountStats ?? 0}
