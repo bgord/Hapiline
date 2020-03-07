@@ -116,7 +116,11 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						day={day}
 						{...stats}
 					/>
-					<DaySummaryStats day={day} {...stats} />
+
+					<Text ml="12" style={{whiteSpace: "nowrap"}}>
+						<Text variant="bold">{trackedHabits.length}</Text>
+						{" in total"}
+					</Text>
 				</Row>
 				<Row mt="48" crossAxis="center">
 					<HabitVoteFilters.Voted.Input
