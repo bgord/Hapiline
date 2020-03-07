@@ -17,3 +17,4 @@ export * from "./select/Select";
 export * from "./text/Text";
 export * from "./textarea/Textarea";
 export * from "./error/Error";
+export * from "./emoji/Emoji";

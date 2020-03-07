@@ -3,7 +3,7 @@ import {useLocation} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Header, Text, CloseIcon, Column, Banner} from "./ui";
+import {Button, Row, Header, Text, CloseIcon, Column, Banner, Emoji} from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {
 	DaySummaryChart,
@@ -102,10 +102,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				{doesEveryHabitHasAVote && (
 					<Banner p="6" mt="24" variant="success">
 						<Text style={{color: "#025D26"}}>
-							{/* TODO: create an emoji UI component */}
-							<span data-mx="12" role="img" aria-label="Party emoji">
+							<Emoji ariaLabel="Party emoji" mx="12">
 								🎉
-							</span>
+							</Emoji>
 							Congratulations! You've voted for every habit.
 						</Text>
 					</Banner>
