@@ -23,7 +23,7 @@ export interface IVoteComment {
 }
 
 export const voteToBgColor = new Map<Vote, string>();
-voteToBgColor.set("progress", "bg-green-300");
-voteToBgColor.set("plateau", "bg-gray-300");
-voteToBgColor.set("regress", "bg-red-300");
-voteToBgColor.set(null, "bg-gray-500");
+voteToBgColor.set("progress", "#8bdb90");
+voteToBgColor.set("plateau", "var(--gray-3)");
+voteToBgColor.set("regress", "#ef8790");
+voteToBgColor.set(null, "var(--gray-9)");

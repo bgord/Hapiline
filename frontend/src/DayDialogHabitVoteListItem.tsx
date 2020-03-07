@@ -145,7 +145,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							<Button
 								style={{
 									background: vote === "plateau" ? "var(--gray-2)" : "var(--gray-0)",
-									color: vote === "plateau" ? " var(--gray-9)" : "var(--gray-10)",
+									color: vote === "plateau" ? "var(--gray-9)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
 								ml="6"

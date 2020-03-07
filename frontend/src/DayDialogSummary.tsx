@@ -39,23 +39,28 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 		<div className={`flex w-full ${className}`}>
 			<div
 				title={noVotesCellTitle}
-				style={{flexBasis: `${noVotesPercentage}%`}}
-				className={voteToBgColor.get(null)}
+				style={{flexBasis: `${noVotesPercentage}%`, backgroundColor: voteToBgColor.get(null)}}
 			/>
 			<div
 				title={regressVotesCellTitle}
-				style={{flexBasis: `${regressVotesPercentage}%`}}
-				className={voteToBgColor.get("regress")}
+				style={{
+					flexBasis: `${regressVotesPercentage}%`,
+					backgroundColor: voteToBgColor.get("regress"),
+				}}
 			/>
 			<div
 				title={plateauVotesCellTitle}
-				style={{flexBasis: `${plateauVotesPercentage}%`}}
-				className={voteToBgColor.get("plateau")}
+				style={{
+					flexBasis: `${plateauVotesPercentage}%`,
+					backgroundColor: voteToBgColor.get("plateau"),
+				}}
 			/>
 			<div
 				title={progressVotesCellTitle}
-				style={{flexBasis: `${progressVotesPercentage}%`}}
-				className={voteToBgColor.get("progress")}
+				style={{
+					flexBasis: `${progressVotesPercentage}%`,
+					background: voteToBgColor.get("progress"),
+				}}
 			/>
 		</div>
 	);
