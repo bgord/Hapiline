@@ -56,6 +56,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				{stats.noVotesCountStats > 0 && stats.noVotesCountStats}
 			</div>
 			<div
+				data-py="0"
+				data-px="3"
 				title={regressVotesCellTitle}
 				style={{
 					display: "flex",
@@ -65,12 +67,13 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					backgroundColor: voteToBgColor.get("regress"),
 					fontWeight: "bold",
 					color: "#720A13",
-					padding: "0 3px",
 				}}
 			>
 				{stats.regressVotesCountStats ?? 0}
 			</div>
 			<div
+				data-py="0"
+				data-px="3"
 				title={plateauVotesCellTitle}
 				style={{
 					display: "flex",
@@ -80,12 +83,13 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					backgroundColor: voteToBgColor.get("plateau"),
 					fontWeight: "bold",
 					color: "var(--gray-9)",
-					padding: "0 3px",
 				}}
 			>
 				{stats.plateauVotesCountStats ?? 0}
 			</div>
 			<div
+				data-py="0"
+				data-px="3"
 				title={progressVotesCellTitle}
 				style={{
 					display: "flex",
@@ -95,7 +99,6 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					background: voteToBgColor.get("progress"),
 					fontWeight: "bold",
 					color: "#106015",
-					padding: "0 3px",
 				}}
 			>
 				{stats.progressVotesCountStats ?? 0}

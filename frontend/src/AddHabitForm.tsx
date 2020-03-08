@@ -146,7 +146,7 @@ export const AddHabitForm: React.FC = () => {
 								Track this habit
 							</Label>
 						</Field>
-						<Banner style={{padding: "3px 6px"}} ml="24" variant="info">
+						<Banner px="6" py="3" ml="24" variant="info">
 							<InfoIcon />
 							<Text style={{fontSize: "14px"}} ml="12">
 								You won't be able to vote for an untracked habit.
