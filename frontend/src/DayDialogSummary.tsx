@@ -101,16 +101,18 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 	);
 };
 
-export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...stats}) => {
+export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 	const habits = useHabits();
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 
-	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
+	const _untrackedHabits = useUntrackedHabits();
+	const untrackedHabits = getHabitsAvailableAtThisDay(_untrackedHabits, day);
 
 	return (
 		<Tabs data-mt="24" defaultIndex={-1}>
 			<TabList>
 				<Tab>New habits</Tab>
+				<Tab>Untracked habits</Tab>
 			</TabList>
 			<TabPanels>
 				<TabPanel>
@@ -120,29 +122,15 @@ export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...
 						<div>{habitsAddedAtThisDay.length} habits added this day.</div>
 					)}
 				</TabPanel>
+				<TabPanel>
+					{untrackedHabits.length === 0 && <div>No untracked habit available this day.</div>}
+					{untrackedHabits.length === 1 && <div>One untracked habit available this day.</div>}
+					{untrackedHabits.length > 1 && (
+						<div>{useUntrackedHabits.length} untracked habit available this day.</div>
+					)}
+				</TabPanel>
 			</TabPanels>
 		</Tabs>
-	);
-};
-
-export const UntrackedHabits: React.FC<{day: string}> = ({day}) => {
-	const _untrackedHabits = useUntrackedHabits();
-	const untrackedHabits = getHabitsAvailableAtThisDay(_untrackedHabits, day);
-
-	const summaryTitle = `You have ${untrackedHabits.length} untracked habits.`;
-
-	return (
-		<details className="text-sm mb-8 mt-6" hidden={!untrackedHabits.length}>
-			<summary className="c-header c-header--extra-small" title={summaryTitle}>
-				Untracked habits: {untrackedHabits.length}
-			</summary>
-			<p>Untracked habits available at this day:</p>
-			<ul className="mt-2">
-				{untrackedHabits.map(habit => (
-					<li key={habit.id}>{habit.name}</li>
-				))}
-			</ul>
-		</details>
 	);
 };
 

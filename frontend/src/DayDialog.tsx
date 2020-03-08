@@ -5,7 +5,7 @@ import React from "react";
 
 import {Button, Row, Header, Text, CloseIcon, Column, Banner, Emoji} from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
-import {DaySummaryChart, HabitsAddedAtGivenDay, UntrackedHabits} from "./DayDialogSummary";
+import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
 import {InfoIcon} from "./ui/icons/Info";
 import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
 import {DayVoteStats} from "./interfaces/IMonthDay";
@@ -228,12 +228,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 								/>
 							))}
 						</ul>
-						<HabitsAddedAtGivenDay
-							maximumVotes={habitsAvailableAtThisDay.length}
-							day={day}
-							{...stats}
-						/>
-						<UntrackedHabits day={day} />
+						<DayDialogSummaryTabs day={day} />
 					</Column>
 				)}
 			</Column>
