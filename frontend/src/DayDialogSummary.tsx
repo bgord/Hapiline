@@ -114,6 +114,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 	const _untrackedHabits = useUntrackedHabits();
 	const untrackedHabits = getHabitsAvailableAtThisDay(_untrackedHabits, day);
 
+	// -1 means that no tab is selected by default
 	return (
 		<Tabs data-mt="48" defaultIndex={-1}>
 			<TabList>
