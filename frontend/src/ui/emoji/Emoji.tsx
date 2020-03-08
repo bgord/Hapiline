@@ -1,6 +1,10 @@
 import React from "react";
 import {Margins} from "../margins";
 
+export const labelToEmoji = {
+	party: "🎉",
+};
+
 type EmojiProps = JSX.IntrinsicElements["span"] & {
 	ariaLabel: string;
 } & Margins;
