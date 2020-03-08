@@ -49,6 +49,7 @@
     "@reach/alert": "^0.6.4",
     "@reach/alert-dialog": "^0.6.4",
     "@reach/dialog": "^0.6.4",
+    "@reach/tabs": "^0.8.6",
     "@reach/visually-hidden": "^0.6.2",
     "@react-hook/hover": "^2.0.1",
     "@types/jest": "^24.0.25",

@@ -1,4 +1,5 @@
 import {isSameDay} from "date-fns";
+import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
 import React from "react";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
@@ -107,19 +108,20 @@ export const HabitsAddedAtGivenDay: React.FC<DayDialogSummaryProps> = ({day, ...
 	const summaryTitle = `${stats.createdHabitsCount} habit(s) added this day`;
 
 	return (
-		<details className="text-sm mt-8" hidden={!stats.createdHabitsCount}>
-			<summary className="c-header c-header--extra-small" title={summaryTitle}>
-				New habits: {stats.createdHabitsCount}
-			</summary>
-			<p>Habit(s) added this day:</p>
-			<ul className="mt-2">
-				{habitsAddedAtThisDay.map(habit => (
-					<li key={habit.id}>
-						{habit.name} {!habit.is_trackable && <span>(not tracked)</span>}
-					</li>
-				))}
-			</ul>
-		</details>
+		<Tabs data-mt="24" defaultIndex={-1}>
+			<TabList>
+				<Tab>New habits</Tab>
+			</TabList>
+			<TabPanels>
+				<TabPanel>
+					{habitsAddedAtThisDay.length === 0 && <div>No habits added this day.</div>}
+					{habitsAddedAtThisDay.length === 1 && <div>One habit added this day.</div>}
+					{habitsAddedAtThisDay.length > 1 && (
+						<div>{habitsAddedAtThisDay.length} habits added this day.</div>
+					)}
+				</TabPanel>
+			</TabPanels>
+		</Tabs>
 	);
 };
 
