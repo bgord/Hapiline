@@ -18,12 +18,14 @@ import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
 import {format} from "date-fns";
+import {useDocumentTitle} from "./hooks/useDocumentTitle";
 
 type DayDialogProps = DayVoteStats & {
 	onResolve?: VoidFunction;
 };
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) => {
+	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
 	const trackedHabits = useTrackedHabits();
 
