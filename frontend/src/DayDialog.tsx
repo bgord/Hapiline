@@ -90,7 +90,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
 			className="max-w-screen-lg overflow-auto"
-			style={{maxHeight: "700px", paddingBottom: "48px"}}
+			data-pb="48"
+			style={{maxHeight: "700px"}}
 		>
 			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="small">
