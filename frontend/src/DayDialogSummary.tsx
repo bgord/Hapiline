@@ -2,12 +2,14 @@ import {isSameDay} from "date-fns";
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
 import {Text, Row, Badge, Column} from "./ui/";
 import React from "react";
+import {Link} from "react-router-dom";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
 import {voteToBgColor} from "./interfaces/IDayVote";
+import {constructUrl} from "./hooks/useQueryParam";
 
 type DayDialogSummaryProps = DayVoteStats & {
 	maximumVotes: number;
@@ -146,7 +148,9 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 									borderBottom: "1px solid var(--gray-1)",
 								}}
 							>
-								<Text variant="semi-bold">{habit.name}</Text>
+								<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+									<Text variant="semi-bold">{habit.name}</Text>
+								</Link>
 								<Badge ml="auto" variant={habit.score}>
 									{habit.score}
 								</Badge>
@@ -186,7 +190,9 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 									borderBottom: "1px solid var(--gray-1)",
 								}}
 							>
-								<Text variant="semi-bold">{habit.name}</Text>
+								<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+									<Text variant="semi-bold">{habit.name}</Text>
+								</Link>
 								<Badge ml="auto" variant={habit.score}>
 									{habit.score}
 								</Badge>
