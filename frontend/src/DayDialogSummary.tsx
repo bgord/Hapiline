@@ -1,10 +1,10 @@
 import {isSameDay} from "date-fns";
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
-import {Text} from "./ui/";
+import {Text, Row, Badge, Column} from "./ui/";
 import React from "react";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
-import {IHabit} from "./interfaces/IHabit";
+import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
 import {voteToBgColor} from "./interfaces/IDayVote";
@@ -110,7 +110,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 	const untrackedHabits = getHabitsAvailableAtThisDay(_untrackedHabits, day);
 
 	return (
-		<Tabs data-mt="48">
+		<Tabs data-mt="48" defaultIndex={-1}>
 			<TabList>
 				<Tab data-variant="bare" className="c-button">
 					Show new habits
@@ -122,17 +122,85 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 			<TabPanels data-mt="12">
 				<TabPanel>
 					{habitsAddedAtThisDay.length === 0 && <Text>No habits added this day.</Text>}
-					{habitsAddedAtThisDay.length === 1 && <Text>One habit added this day.</Text>}
-					{habitsAddedAtThisDay.length > 1 && (
-						<Text>{habitsAddedAtThisDay.length} habits added this day.</Text>
+					{habitsAddedAtThisDay.length === 1 && (
+						<Text>
+							<Text variant="bold">One</Text> habit added this day.
+						</Text>
 					)}
+					{habitsAddedAtThisDay.length > 1 && (
+						<Text>
+							<Text variant="bold">{habitsAddedAtThisDay.length}</Text> habits added this day.
+						</Text>
+					)}
+					<Column
+						style={{
+							borderTop: habitsAddedAtThisDay.length > 0 ? `1px solid var(--gray-1)` : undefined,
+						}}
+						mt="24"
+					>
+						{habitsAddedAtThisDay.map(habit => (
+							<Row
+								py="12"
+								style={{
+									borderTop: "1px solid var(--gray-1)",
+									borderBottom: "1px solid var(--gray-1)",
+								}}
+							>
+								<Text variant="semi-bold">{habit.name}</Text>
+								<Badge ml="auto" variant={habit.score}>
+									{habit.score}
+								</Badge>
+								<Badge ml="12" variant={habitStrengthToBadgeVariant[habit.strength]}>
+									{habit.strength}
+								</Badge>
+								{!habit.is_trackable && (
+									<Badge ml="12" variant="neutral">
+										Untracked
+									</Badge>
+								)}
+							</Row>
+						))}
+					</Column>
 				</TabPanel>
 				<TabPanel>
 					{untrackedHabits.length === 0 && <Text>No untracked habit available this day.</Text>}
-					{untrackedHabits.length === 1 && <Text>One untracked habit available this day.</Text>}
+					{untrackedHabits.length === 1 && (
+						<Text>
+							<Text variant="bold">One</Text> untracked habit available this day.
+						</Text>
+					)}
 					{untrackedHabits.length > 1 && (
 						<Text>{useUntrackedHabits.length} untracked habit available this day.</Text>
 					)}
+					<Column
+						style={{
+							borderTop: untrackedHabits.length > 0 ? `1px solid var(--gray-1)` : undefined,
+						}}
+						mt="24"
+					>
+						{untrackedHabits.map(habit => (
+							<Row
+								py="12"
+								style={{
+									borderTop: "1px solid var(--gray-1)",
+									borderBottom: "1px solid var(--gray-1)",
+								}}
+							>
+								<Text variant="semi-bold">{habit.name}</Text>
+								<Badge ml="auto" variant={habit.score}>
+									{habit.score}
+								</Badge>
+								<Badge ml="12" variant={habitStrengthToBadgeVariant[habit.strength]}>
+									{habit.strength}
+								</Badge>
+								{!habit.is_trackable && (
+									<Badge ml="6" variant="neutral">
+										Untracked
+									</Badge>
+								)}
+							</Row>
+						))}
+					</Column>
 				</TabPanel>
 			</TabPanels>
 		</Tabs>
