@@ -7,6 +7,7 @@ import {Button, Row, Header, Text, CloseIcon, Column, Banner, Emoji} from "./ui"
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, HabitsAddedAtGivenDay, UntrackedHabits} from "./DayDialogSummary";
 import {InfoIcon} from "./ui/icons/Info";
+import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
@@ -19,6 +20,7 @@ import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
 import {format} from "date-fns";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
+import {useToggle} from "./hooks/useToggle";
 
 type DayDialogProps = DayVoteStats & {
 	onResolve?: VoidFunction;
@@ -28,6 +30,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
 	const trackedHabits = useTrackedHabits();
+	const [isChartLegendVisible, , , toggleIsChartLegendVisible] = useToggle();
 
 	const triggerErrorNotification = useErrorNotification();
 	const getDayVotesRequestState = Async.useAsync({
@@ -113,23 +116,34 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						{" in total"}
 					</Text>
 				</Row>
-				<Row mt="12">
-					<Row>
-						<Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</Text>
-						<Text>no votes</Text>
-					</Row>
-					<Row>
-						<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
-						<Text>regress votes</Text>
-					</Row>
-					<Row>
-						<Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</Text>
-						<Text>plateau votes</Text>
-					</Row>
-					<Row>
-						<Text style={{fontSize: "72px", color: "#8bdb90"}}>·</Text>
-						<Text>progress votes</Text>
-					</Row>
+				<Row mt="6" crossAxis="center">
+					<Button onClick={toggleIsChartLegendVisible} style={{marginLeft: "-12px"}} variant="bare">
+						<QuestionMarkIcon />
+					</Button>
+					{isChartLegendVisible && (
+						<Row mb="6">
+							<Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</Text>
+							<Text>no votes</Text>
+						</Row>
+					)}
+					{isChartLegendVisible && (
+						<Row mb="6">
+							<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
+							<Text>regress votes</Text>
+						</Row>
+					)}
+					{isChartLegendVisible && (
+						<Row mb="6">
+							<Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</Text>
+							<Text>plateau votes</Text>
+						</Row>
+					)}
+					{isChartLegendVisible && (
+						<Row mb="6">
+							<Text style={{fontSize: "72px", color: "#8bdb90"}}>·</Text>
+							<Text>progress votes</Text>
+						</Row>
+					)}
 				</Row>
 				<Row mt="48" crossAxis="center">
 					<HabitVoteFilters.Voted.Input
