@@ -1,5 +1,6 @@
 import {isSameDay} from "date-fns";
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
+import {Text} from "./ui/";
 import React from "react";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
@@ -118,19 +119,19 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 					Show untracked habits
 				</Tab>
 			</TabList>
-			<TabPanels>
+			<TabPanels data-mt="12">
 				<TabPanel>
-					{habitsAddedAtThisDay.length === 0 && <div>No habits added this day.</div>}
-					{habitsAddedAtThisDay.length === 1 && <div>One habit added this day.</div>}
+					{habitsAddedAtThisDay.length === 0 && <Text>No habits added this day.</Text>}
+					{habitsAddedAtThisDay.length === 1 && <Text>One habit added this day.</Text>}
 					{habitsAddedAtThisDay.length > 1 && (
-						<div>{habitsAddedAtThisDay.length} habits added this day.</div>
+						<Text>{habitsAddedAtThisDay.length} habits added this day.</Text>
 					)}
 				</TabPanel>
 				<TabPanel>
-					{untrackedHabits.length === 0 && <div>No untracked habit available this day.</div>}
-					{untrackedHabits.length === 1 && <div>One untracked habit available this day.</div>}
+					{untrackedHabits.length === 0 && <Text>No untracked habit available this day.</Text>}
+					{untrackedHabits.length === 1 && <Text>One untracked habit available this day.</Text>}
 					{untrackedHabits.length > 1 && (
-						<div>{useUntrackedHabits.length} untracked habit available this day.</div>
+						<Text>{useUntrackedHabits.length} untracked habit available this day.</Text>
 					)}
 				</TabPanel>
 			</TabPanels>
