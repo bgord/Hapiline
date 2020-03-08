@@ -1,4 +1,5 @@
 import "@reach/dialog/styles.css";
+import "@reach/tabs/styles.css";
 import "../css/index.css";
 import "../css/main.css";
 
