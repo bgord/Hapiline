@@ -111,8 +111,12 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 	return (
 		<Tabs data-mt="24" defaultIndex={-1}>
 			<TabList>
-				<Tab>New habits</Tab>
-				<Tab>Untracked habits</Tab>
+				<Tab data-variant="bare" className="c-button">
+					Show new habits
+				</Tab>
+				<Tab data-variant="bare" className="c-button" data-ml="12">
+					Show untracked habits
+				</Tab>
 			</TabList>
 			<TabPanels>
 				<TabPanel>

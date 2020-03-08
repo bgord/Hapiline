@@ -433,3 +433,8 @@ body {
 	background: var(--gray-1);
 	border: 3px solid var(--gray-3);
 }
+
+[data-reach-tab-list] {
+	padding: var(--spacing-xs);
+	background: var(--gray-1);
+}
