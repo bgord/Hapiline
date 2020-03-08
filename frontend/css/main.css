@@ -438,3 +438,7 @@ body {
 	padding: var(--spacing-xs);
 	background: var(--gray-1);
 }
+
+[data-reach-tab][data-selected] {
+	background: white !important;
+}
