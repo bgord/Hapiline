@@ -113,6 +113,24 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						{" in total"}
 					</Text>
 				</Row>
+				<Row mt="12">
+					<Row>
+						<Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</Text>
+						<Text>no votes</Text>
+					</Row>
+					<Row>
+						<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
+						<Text>regress votes</Text>
+					</Row>
+					<Row>
+						<Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</Text>
+						<Text>plateau votes</Text>
+					</Row>
+					<Row>
+						<Text style={{fontSize: "72px", color: "#8bdb90"}}>·</Text>
+						<Text>progress votes</Text>
+					</Row>
+				</Row>
 				<Row mt="48" crossAxis="center">
 					<HabitVoteFilters.Voted.Input
 						value={habitVoteFilter.value}
