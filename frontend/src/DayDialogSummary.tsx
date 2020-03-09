@@ -145,28 +145,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{habitsAddedAtThisDay.map(habit => (
-							<Row
-								py="12"
-								style={{
-									borderTop: "1px solid var(--gray-1)",
-									borderBottom: "1px solid var(--gray-1)",
-								}}
-							>
-								<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-									<Text variant="semi-bold">{habit.name}</Text>
-								</Link>
-								<Badge ml="auto" variant={habit.score}>
-									{habit.score}
-								</Badge>
-								<Badge ml="12" variant={habitStrengthToBadgeVariant[habit.strength]}>
-									{habit.strength}
-								</Badge>
-								{!habit.is_trackable && (
-									<Badge ml="12" variant="neutral">
-										Untracked
-									</Badge>
-								)}
-							</Row>
+							<CompantHabitItem {...habit} />
 						))}
 					</Column>
 				</TabPanel>
@@ -187,28 +166,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{untrackedHabits.map(habit => (
-							<Row
-								py="12"
-								style={{
-									borderTop: "1px solid var(--gray-1)",
-									borderBottom: "1px solid var(--gray-1)",
-								}}
-							>
-								<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-									<Text variant="semi-bold">{habit.name}</Text>
-								</Link>
-								<Badge ml="auto" variant={habit.score}>
-									{habit.score}
-								</Badge>
-								<Badge ml="12" variant={habitStrengthToBadgeVariant[habit.strength]}>
-									{habit.strength}
-								</Badge>
-								{!habit.is_trackable && (
-									<Badge ml="6" variant="neutral">
-										Untracked
-									</Badge>
-								)}
-							</Row>
+							<CompantHabitItem {...habit} />
 						))}
 					</Column>
 				</TabPanel>
@@ -225,3 +183,28 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 		return isSameDay(createdAtDate, dayDate);
 	});
 }
+
+const CompantHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
+	<Row
+		py="12"
+		style={{
+			borderTop: "1px solid var(--gray-1)",
+			borderBottom: "1px solid var(--gray-1)",
+		}}
+	>
+		<Link to={constructUrl("habits", {preview_habit_id: id.toString()})}>
+			<Text variant="semi-bold">{name}</Text>
+		</Link>
+		<Badge ml="auto" variant={score}>
+			{score}
+		</Badge>
+		<Badge ml="12" variant={habitStrengthToBadgeVariant[strength]}>
+			{strength}
+		</Badge>
+		{!is_trackable && (
+			<Badge ml="12" variant="neutral">
+				Untracked
+			</Badge>
+		)}
+	</Row>
+);
