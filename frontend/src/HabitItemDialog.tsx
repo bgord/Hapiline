@@ -19,12 +19,13 @@ import {
 	Badge,
 	InfoBanner,
 	Column,
+	Error,
+	ErrorBanner,
 } from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
-import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {IHabit} from "./interfaces/IHabit";
@@ -66,7 +67,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 		>
 			<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
 			<Async.IfRejected state={habitRequestState}>
-				<RequestErrorMessage>Couldn't fetch task details, please try again.</RequestErrorMessage>
+				<ErrorBanner>Couldn't fetch task details, please try again.</ErrorBanner>
 			</Async.IfRejected>
 			{habit?.id && (
 				<>
@@ -189,7 +190,7 @@ const EditableDescription: React.FC<{
 				/>
 			</Field>
 			<Async.IfRejected state={updateDescriptionRequestState}>
-				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
+				<Error>{descriptionInlineErrorMessage}</Error>
 			</Async.IfRejected>
 			<Row>
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
