@@ -20,6 +20,7 @@ import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
@@ -29,6 +30,7 @@ interface HabitItemDialogProps {
 }
 
 export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeDialog}) => {
+	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
 
 	const triggerErrorNotification = useErrorNotification();
