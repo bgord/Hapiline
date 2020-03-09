@@ -8,7 +8,18 @@ import {
 	useEditableFieldValue,
 	useEditableFieldState,
 } from "./hooks/useEditableField";
-import {CloseIcon, Textarea, Field, Row, Label, Text, Header, Badge, InfoBanner} from "./ui";
+import {
+	CloseIcon,
+	Textarea,
+	Field,
+	Row,
+	Label,
+	Text,
+	Header,
+	Badge,
+	InfoBanner,
+	Column,
+} from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
@@ -90,44 +101,46 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							</>
 						)}
 					</Row>
-					{habit.is_trackable && (
-						<>
-							<Text mt="24" style={{textTransform: "uppercase"}}>
-								<div className="text-green-600" hidden={!habit.progress_streak}>
-									Progress streak: {habit.progress_streak} days
-								</div>
-								<div className="text-red-600" hidden={!habit.regress_streak}>
-									Regress streak: {habit.regress_streak} days
-								</div>
-								<div
-									className="text-gray-600"
-									hidden={Boolean(habit.regress_streak || habit.progress_streak)}
-								>
-									No streak today
-								</div>
-							</Text>
-							<HabitCharts id={habit.id} />
-						</>
-					)}
-					<EditableDescription
-						description={habit.description}
-						habitId={habit.id}
-						onResolve={habitRequestState.reload}
-					/>
-					{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-					<Row mainAxis="between">
-						<dl className="flex items-baseline py-8">
-							<dt>
-								<Text variant="dimmed">Created at:</Text>
-							</dt>
-							<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
-							<dt>
-								<Text variant="dimmed">Updated at:</Text>
-							</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
-						</dl>
-						<DeleteHabitButton {...habit} />
-					</Row>
+					<Column px="24">
+						{habit.is_trackable && (
+							<>
+								<Text mt="24" style={{textTransform: "uppercase"}}>
+									<div className="text-green-600" hidden={!habit.progress_streak}>
+										Progress streak: {habit.progress_streak} days
+									</div>
+									<div className="text-red-600" hidden={!habit.regress_streak}>
+										Regress streak: {habit.regress_streak} days
+									</div>
+									<div
+										className="text-gray-600"
+										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
+									>
+										No streak today
+									</div>
+								</Text>
+								<HabitCharts id={habit.id} />
+							</>
+						)}
+						<EditableDescription
+							description={habit.description}
+							habitId={habit.id}
+							onResolve={habitRequestState.reload}
+						/>
+						{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
+						<Row mainAxis="between">
+							<dl className="flex items-baseline py-8">
+								<dt>
+									<Text variant="dimmed">Created at:</Text>
+								</dt>
+								<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
+								<dt>
+									<Text variant="dimmed">Updated at:</Text>
+								</dt>
+								<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
+							</dl>
+							<DeleteHabitButton {...habit} />
+						</Row>
+					</Column>
 				</>
 			)}
 		</Dialog>
