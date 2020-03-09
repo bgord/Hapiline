@@ -40,69 +40,68 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 
 	return (
 		<div style={{height: "18px", fontSize: "14px"}} className={`flex w-full ${className}`}>
-			<div
+			<Row
+				mainAxis="center"
+				crossAxis="center"
 				title={noVotesCellTitle}
+				py="0"
+				px={stats.noVotesCountStats ? "3" : "0"}
 				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
 					flexBasis: `${noVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get(null),
 					fontWeight: "bold",
 					color: "var(--gray-3)",
-					padding: `0 ${stats.noVotesCountStats ? 3 : 0}px`,
 				}}
 			>
 				{stats.noVotesCountStats > 0 && stats.noVotesCountStats}
-			</div>
-			<div
-				data-py="0"
-				data-px="3"
+			</Row>
+			<Row
+				mainAxis="center"
+				crossAxis="center"
 				title={regressVotesCellTitle}
+				py="0"
+				px={stats.noVotesCountStats ? "3" : "0"}
 				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
+					fontWeight: "bold",
 					flexBasis: `${regressVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("regress"),
-					fontWeight: "bold",
 					color: "#720A13",
 				}}
 			>
 				{stats.regressVotesCountStats ?? 0}
-			</div>
-			<div
-				data-py="0"
-				data-px="3"
+			</Row>
+
+			<Row
+				mainAxis="center"
+				crossAxis="center"
 				title={plateauVotesCellTitle}
+				py="0"
+				px={stats.noVotesCountStats ? "3" : "0"}
 				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
+					fontWeight: "bold",
 					flexBasis: `${plateauVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("plateau"),
-					fontWeight: "bold",
 					color: "var(--gray-9)",
 				}}
 			>
 				{stats.plateauVotesCountStats ?? 0}
-			</div>
-			<div
-				data-py="0"
-				data-px="3"
+			</Row>
+
+			<Row
+				mainAxis="center"
+				crossAxis="center"
 				title={progressVotesCellTitle}
+				py="0"
+				px={stats.noVotesCountStats ? "3" : "0"}
 				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
+					fontWeight: "bold",
 					flexBasis: `${progressVotesPercentage}%`,
 					background: voteToBgColor.get("progress"),
-					fontWeight: "bold",
 					color: "#106015",
 				}}
 			>
 				{stats.progressVotesCountStats ?? 0}
-			</div>
+			</Row>
 		</div>
 	);
 };
