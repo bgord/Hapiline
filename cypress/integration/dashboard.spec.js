@@ -34,10 +34,12 @@ describe("Dashboard", () => {
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
-			cy.findByText("?6");
-			cy.findByText("-1");
-			cy.findByText("=1");
-			cy.findByText("+2");
+
+			cy.findByText("2 habits with progress votes");
+			cy.findByText("1 habits with plateau votes");
+			cy.findByText("1 habits with regress votes");
+			cy.findByText("6 habits with no votes");
+
 			cy.findByTitle("No votes: 6/10 (60.00%)");
 			cy.findByTitle("Regress: 1/10 (10.00%)");
 			cy.findByTitle("Plateau: 1/10 (10.00%)");
@@ -46,10 +48,12 @@ describe("Dashboard", () => {
 
 		cy.findByTestId("chart-last-week").within(() => {
 			cy.findByText("Votes last week");
-			cy.findByText("?12");
-			cy.findByText("-2");
-			cy.findByText("=2");
-			cy.findByText("+3");
+
+			cy.findByText("3 habits with progress votes");
+			cy.findByText("2 habits with plateau votes");
+			cy.findByText("2 habits with regress votes");
+			cy.findByText("12 habits with no votes");
+
 			cy.findByTitle("No votes: 12/19 (63.16%)");
 			cy.findByTitle("Regress: 2/19 (10.53%)");
 			cy.findByTitle("Plateau: 2/19 (10.53%)");
@@ -104,27 +108,29 @@ describe("Dashboard", () => {
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
-			cy.findByText("?10");
-			cy.findByText("-0");
-			cy.findByText("=0");
-			cy.findByText("+0");
+
+			cy.findByText("0 habits with progress votes");
+			cy.findByText("0 habits with plateau votes");
+			cy.findByText("0 habits with regress votes");
+			cy.findByText("10 habits with no votes");
+
 			cy.findByTitle("No votes: 10/10 (100.00%)");
 		});
 
 		cy.findByTestId("chart-last-week").within(() => {
 			cy.findByText("Votes last week");
-			cy.findByText("?69");
-			cy.findByText("-1");
-			cy.findByText("=1");
-			cy.findByText("+1");
+			cy.findByText("1 habits with progress votes");
+			cy.findByText("1 habits with plateau votes");
+			cy.findByText("1 habits with regress votes");
+			cy.findByText("69 habits with no votes");
 		});
 
 		cy.findByTestId("chart-last-month").within(() => {
 			cy.findByText("Votes last month");
-			cy.findByText("?234");
-			cy.findByText("-2");
-			cy.findByText("=2");
-			cy.findByText("+2");
+			cy.findByText("2 habits with progress votes");
+			cy.findByText("2 habits with plateau votes");
+			cy.findByText("2 habits with regress votes");
+			cy.findByText("234 habits with no votes");
 		});
 
 		cy.route({
@@ -156,10 +162,10 @@ describe("Dashboard", () => {
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
-			cy.findByText("?0");
-			cy.findByText("-0");
-			cy.findByText("=0");
-			cy.findByText("+10");
+			cy.findByText("10 habits with progress votes");
+			cy.findByText("0 habits with plateau votes");
+			cy.findByText("0 habits with regress votes");
+			cy.findByText("0 habits with no votes");
 			cy.findByTitle("Progress: 10/10 (100.00%)");
 		});
 
@@ -189,10 +195,10 @@ describe("Dashboard", () => {
 		cy.findByText("Add your first tracked habit to start voting!");
 
 		cy.findByText("Votes today").should("not.exist");
-		cy.findByText("?0").should("not.exist");
-		cy.findByText("-0").should("not.exist");
-		cy.findByText("=0").should("not.exist");
-		cy.findByText("+0").should("not.exist");
+		cy.findByText("0 habits with progress votes").should("not.exist");
+		cy.findByText("0 habits with plateau votes").should("not.exist");
+		cy.findByText("0 habits with regress votes").should("not.exist");
+		cy.findByText("0 habits with no votes").should("not.exist");
 
 		cy.findByText("Add your first tracked habit to start voting!").click();
 		cy.url().should("contain", "/habits");

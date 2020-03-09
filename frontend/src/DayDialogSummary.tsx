@@ -3,6 +3,7 @@ import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
 import {Text, Row, Badge, Column} from "./ui/";
 import React from "react";
 import {Link} from "react-router-dom";
+import VisuallyHidden from "@reach/visually-hidden";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
@@ -53,6 +54,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					color: "var(--gray-3)",
 				}}
 			>
+				<VisuallyHidden>{stats.noVotesCountStats} habits with no votes</VisuallyHidden>
 				{stats.noVotesCountStats > 0 && stats.noVotesCountStats}
 			</Row>
 			<Row
@@ -68,6 +70,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					color: "#720A13",
 				}}
 			>
+				<VisuallyHidden>
+					{stats.regressVotesCountStats ?? 0} habits with regress votes
+				</VisuallyHidden>
 				{stats.regressVotesCountStats ?? 0}
 			</Row>
 
@@ -84,6 +89,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					color: "var(--gray-9)",
 				}}
 			>
+				<VisuallyHidden>
+					{stats.plateauVotesCountStats ?? 0} habits with plateau votes
+				</VisuallyHidden>
 				{stats.plateauVotesCountStats ?? 0}
 			</Row>
 
@@ -100,6 +108,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					color: "#106015",
 				}}
 			>
+				<VisuallyHidden>
+					{stats.progressVotesCountStats ?? 0} habits with progress votes
+				</VisuallyHidden>
 				{stats.progressVotesCountStats ?? 0}
 			</Row>
 		</div>
@@ -133,9 +144,10 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						</Text>
 					)}
 					{habitsAddedAtThisDay.length > 1 && (
-						<Text>
-							<Text variant="bold">{habitsAddedAtThisDay.length}</Text> habits added this day.
-						</Text>
+						<>
+							<Text variant="bold">{habitsAddedAtThisDay.length}</Text>{" "}
+							<Text>habits added this day</Text>.
+						</>
 					)}
 					<Column
 						style={{
@@ -144,7 +156,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{habitsAddedAtThisDay.map(habit => (
-							<CompantHabitItem {...habit} />
+							<CompantHabitItem key={habit.id} {...habit} />
 						))}
 					</Column>
 				</TabPanel>
@@ -165,7 +177,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{untrackedHabits.map(habit => (
-							<CompantHabitItem {...habit} />
+							<CompantHabitItem key={habit.id} {...habit} />
 						))}
 					</Column>
 				</TabPanel>

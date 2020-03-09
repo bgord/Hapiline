@@ -184,7 +184,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						onClick={() => {
 							habitVoteFilter.reset();
 							habitSearch.clearPhrase();
-							updateQueryParams(location.state.from ?? location.pathname, {
+							updateQueryParams(location.state?.from ?? location.pathname, {
 								preview_day: queryParams.preview_day,
 								subview: "day_preview",
 							});
