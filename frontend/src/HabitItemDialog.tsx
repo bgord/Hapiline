@@ -63,7 +63,12 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						<Header variant="small">Habit preview</Header>
 						<CloseIcon onClick={dismissDialog} />
 					</Row>
-					<Row mt="24">
+					<Row mt="24" px="24">
+						<EditableHabitNameInput
+							{...habit}
+							setHabitItem={habitRequestState.setData}
+							key={habit?.name}
+						/>
 						<EditableHabitScoreSelect
 							{...habit}
 							setHabitItem={habitRequestState.setData}
@@ -73,11 +78,6 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							{...habit}
 							setHabitItem={habitRequestState.setData}
 							key={habit?.strength}
-						/>
-						<EditableHabitNameInput
-							{...habit}
-							setHabitItem={habitRequestState.setData}
-							key={habit?.name}
 						/>
 					</Row>
 					{!habit.is_trackable && <div className="mt-8">This habit is not tracked.</div>}
