@@ -8,13 +8,13 @@
 }
 
 .c-badge[data-variant="positive"] {
-	color: #08630ee4;
-	background: #8fdf9491;
+	color: var(--green-dark);
+	background: var(--green-light);
 }
 
 .c-badge[data-variant="negative"] {
-	color: #9f3740;
-	background: #ffc4cd;
+	color: var(--red-dark);
+	background: var(--red-light);
 }
 
 .c-badge[data-variant="neutral"] {

@@ -1,4 +1,4 @@
 .c-error {
-	color: #9f3740;
+	color: var(--red-dark);
 	font-size: 12px;
 }

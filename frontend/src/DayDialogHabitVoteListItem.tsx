@@ -131,8 +131,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						<div data-ml="auto">
 							<Button
 								style={{
-									background: vote === "progress" ? "#8fdf9491" : "var(--gray-0)",
-									color: vote === "progress" ? " #08630ee4" : "var(--gray-10)",
+									background: vote === "progress" ? "var(--green-light)" : "var(--gray-0)",
+									color: vote === "progress" ? "var(--green-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
 								variant="bare"
@@ -158,8 +158,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							</Button>
 							<Button
 								style={{
-									background: vote === "regress" ? "#ffc4cd" : "var(--gray-0)",
-									color: vote === "regress" ? " #9f3740" : "var(--gray-10)",
+									background: vote === "regress" ? "var(--red-light)" : "var(--gray-0)",
+									color: vote === "regress" ? "var(--red-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
 								ml="6"

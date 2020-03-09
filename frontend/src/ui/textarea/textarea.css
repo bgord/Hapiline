@@ -5,7 +5,7 @@
 	line-height: 24px;
 	font-family: "Noto Sans";
 	font-size: 12px;
-	color: #363434;
+	color: var(--gray-10);
 	padding: calc(var(--spacing-s) - 2px); /* 2px come from borders */
 	height: 96px;
 	background: white;

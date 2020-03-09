@@ -9,7 +9,7 @@
 }
 
 .c-banner[data-variant="error"] {
-	background: #ffc4cd;
+	background: var(--red-light);
 }
 
 .c-banner[data-variant="success"] {
