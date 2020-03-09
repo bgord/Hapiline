@@ -49,10 +49,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 	return (
 		<Dialog
-			className="max-w-screen-lg overflow-auto h-full"
 			onDismiss={dismissDialog}
 			aria-label="Show habit preview"
-			style={{maxHeight: "600px"}}
+			style={{maxHeight: "600px", overflow: "auto"}}
 		>
 			<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
 			<Async.IfRejected state={habitRequestState}>
@@ -60,7 +59,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			</Async.IfRejected>
 			{habit?.id && (
 				<>
-					<Row mainAxis="between">
+					<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 						<Header variant="small">Habit preview</Header>
 						<CloseIcon onClick={dismissDialog} />
 					</Row>
