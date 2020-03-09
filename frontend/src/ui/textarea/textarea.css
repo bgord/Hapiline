@@ -9,7 +9,7 @@
 	padding: calc(var(--spacing-s) - 2px); /* 2px come from borders */
 	height: 96px;
 	background: white;
-	border: 1px solid #f0f0f0;
+	border: 1px solid var(--gray-0);
 	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
 	transition: all 0.5s;
 	border-radius: var(--radius-l);
@@ -20,19 +20,19 @@
 
 .c-textarea:hover,
 .c-textarea:focus {
-	border-color: #e0dede;
+	border-color: var(--gray-2);
 	border-radius: 0;
 	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .c-textarea:active,
 .c-textarea:disabled {
-	border-color: #c7c4c4;
+	border-color: var(--gray-1);
 }
 
 .c-textarea:disabled {
-	opacity: 0.6;
-	background: #e8e7e7;
+	opacity: 0.8;
+	background: var(--gray-0);
 }
 
 .c-textarea:disabled.c-textarea:hover {
