@@ -65,85 +65,89 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			aria-label="Show habit preview"
 			style={{maxHeight: "600px", overflow: "auto"}}
 		>
-			<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
-			<Async.IfRejected state={habitRequestState}>
-				<ErrorBanner>Couldn't fetch task details, please try again.</ErrorBanner>
-			</Async.IfRejected>
-			{habit?.id && (
-				<>
-					<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
-						<Header variant="small">Habit preview</Header>
-						<CloseIcon onClick={dismissDialog} />
-					</Row>
-					<Row mt="24" pl="12" pr="24">
-						<EditableHabitNameInput
-							{...habit}
-							setHabitItem={habitRequestState.setData}
-							key={habit?.name}
-						/>
-						<EditableHabitScoreSelect
-							{...habit}
-							setHabitItem={habitRequestState.setData}
-							key={habit?.score}
-						/>
-						<EditableHabitStrengthSelect
-							{...habit}
-							setHabitItem={habitRequestState.setData}
-							key={habit?.strength}
-						/>
-					</Row>
-					{!habit.is_trackable && (
-						<Row mt="24" px="24">
-							<Badge variant="neutral">Untracked</Badge>
-							<InfoBanner px="6" py="3" ml="24">
-								You cannot vote for an untracked habit.
-							</InfoBanner>
-						</Row>
-					)}
+			<Column>
+				<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+					<Header variant="small">Habit preview</Header>
+					<CloseIcon onClick={dismissDialog} />
+				</Row>
+
+				<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
+				<Async.IfRejected state={habitRequestState}>
+					<ErrorBanner>Couldn't fetch task details, please try again.</ErrorBanner>
+				</Async.IfRejected>
+
+				{habit?.id && (
 					<Column px="24">
-						{habit.is_trackable && (
-							<>
-								<Row>
-									<Text mt="24" style={{textTransform: "uppercase"}}>
-										<Badge hidden={!habit.progress_streak} variant="positive">
-											{habit.progress_streak} days progress streak
-										</Badge>
-										<Badge hidden={!habit.regress_streak} variant="negative">
-											{habit.regress_streak} days regress streak
-										</Badge>
-										<Badge
-											hidden={Boolean(habit.regress_streak || habit.progress_streak)}
-											variant="neutral"
-										>
-											No streak today
-										</Badge>
-									</Text>
-								</Row>
-								<HabitCharts id={habit.id} />
-							</>
-						)}
-						<EditableDescription
-							description={habit.description}
-							habitId={habit.id}
-							onResolve={habitRequestState.reload}
-						/>
-						{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-						<Row mainAxis="between">
-							<dl className="flex items-baseline py-8">
-								<dt>
-									<Text variant="dimmed">Created at:</Text>
-								</dt>
-								<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
-								<dt>
-									<Text variant="dimmed">Updated at:</Text>
-								</dt>
-								<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
-							</dl>
-							<DeleteHabitButton {...habit} />
+						<Row mt="24" style={{marginLeft: "-12px"}}>
+							<EditableHabitNameInput
+								{...habit}
+								setHabitItem={habitRequestState.setData}
+								key={habit?.name}
+							/>
+							<EditableHabitScoreSelect
+								{...habit}
+								setHabitItem={habitRequestState.setData}
+								key={habit?.score}
+							/>
+							<EditableHabitStrengthSelect
+								{...habit}
+								setHabitItem={habitRequestState.setData}
+								key={habit?.strength}
+							/>
 						</Row>
+						{!habit.is_trackable && (
+							<Row mt="24">
+								<Badge variant="neutral">Untracked</Badge>
+								<InfoBanner px="6" py="3" ml="24">
+									You cannot vote for an untracked habit.
+								</InfoBanner>
+							</Row>
+						)}
+						<Column>
+							{habit.is_trackable && (
+								<>
+									<Row>
+										<Text mt="24" style={{textTransform: "uppercase"}}>
+											<Badge hidden={!habit.progress_streak} variant="positive">
+												{habit.progress_streak} days progress streak
+											</Badge>
+											<Badge hidden={!habit.regress_streak} variant="negative">
+												{habit.regress_streak} days regress streak
+											</Badge>
+											<Badge
+												hidden={Boolean(habit.regress_streak || habit.progress_streak)}
+												variant="neutral"
+											>
+												No streak today
+											</Badge>
+										</Text>
+									</Row>
+									<HabitCharts id={habit.id} />
+								</>
+							)}
+							<EditableDescription
+								description={habit.description}
+								habitId={habit.id}
+								onResolve={habitRequestState.reload}
+							/>
+							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
+							<Row mainAxis="between">
+								<dl className="flex items-baseline py-8">
+									<dt>
+										<Text variant="dimmed">Created at:</Text>
+									</dt>
+									<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
+									<dt>
+										<Text variant="dimmed">Updated at:</Text>
+									</dt>
+									<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
+								</dl>
+								<DeleteHabitButton {...habit} />
+							</Row>
+						</Column>
 					</Column>
-				</>
-			)}
+				)}
+			</Column>
 		</Dialog>
 	);
 };
