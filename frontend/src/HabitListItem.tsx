@@ -2,9 +2,9 @@ import {Draggable} from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
 import React from "react";
 
-import {BadgeVariant, Badge, Row, Button, Column, Text} from "./ui/";
+import {Badge, Row, Button, Column, Text} from "./ui/";
 import {HabitItemDialog} from "./HabitItemDialog";
-import {IHabit} from "./interfaces/IHabit";
+import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
 import {useQueryParam} from "./hooks/useQueryParam";
 
 interface HabitListItemProps {
@@ -12,14 +12,6 @@ interface HabitListItemProps {
 	index: number;
 	isDragDisabled: boolean;
 }
-
-const habitStrengthToBadgeVariant: {
-	[key in IHabit["strength"]]: BadgeVariant;
-} = {
-	fresh: "light",
-	developing: "normal",
-	established: "strong",
-};
 
 export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDragDisabled}) => {
 	const history = useHistory();
@@ -51,9 +43,9 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					data-state={snapshot.isDragging ? "dragging" : "idle"}
 				>
 					<Column
-						data-px="24"
-						data-py="6"
-						data-pb="12"
+						px="24"
+						py="6"
+						pb="12"
 						style={{
 							borderTop: "1px solid var(--gray-1)",
 							borderBottom: "1px solid var(--gray-1)",
@@ -67,14 +59,14 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 							</Button>
 						</Row>
 						<Row mt="6">
-							<Badge data-mr="6" variant={habit.score}>
+							<Badge mr="6" variant={habit.score}>
 								{habit.score}
 							</Badge>
-							<Badge data-ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
+							<Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
 								{habit.strength}
 							</Badge>
 							{!habit.is_trackable && (
-								<Badge data-ml="12" variant="neutral">
+								<Badge ml="12" variant="neutral">
 									Untracked
 								</Badge>
 							)}

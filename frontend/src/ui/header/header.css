@@ -6,18 +6,15 @@
 	color: var(--gray-10);
 }
 
-.c-header--extra-small {
+.c-header[data-variant="extra-small"] {
 	font-size: 18px;
 }
-
-.c-header--small {
+.c-header[data-variant="small"] {
 	font-size: 20px;
 }
-
-.c-header--medium {
+.c-header[data-variant="medium"] {
 	font-size: 22px;
 }
-
-.c-header--large {
+.c-header[data-variant="large"] {
 	font-size: 24px;
 }

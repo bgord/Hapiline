@@ -7,12 +7,12 @@ button::-moz-focus-inner {
 	box-sizing: border-box;
 	height: 36px;
 	border: none;
-	padding: 0 10px 0 10px;
+	padding: 0 var(--spacing-s) 0 var(--spacing-s);
 	font-size: 12px;
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
-	border-radius: 3px;
+	border-radius: var(--radius-m);
 }
 
 .c-button:hover {
@@ -25,7 +25,7 @@ button::-moz-focus-inner {
 .c-button:active,
 .c-button:focus {
 	cursor: pointer;
-	border-radius: 3px;
+	border-radius: var(--radius-s);
 
 	transition: all 300ms;
 }
@@ -39,88 +39,69 @@ button::-moz-focus-inner {
 }
 
 /* --secondary */
-
-.c-button--secondary {
+.c-button[data-variant="secondary"] {
 	background-color: var(--gray-3);
 	color: var(--gray-8);
 	border: 1px solid #e0dede;
 }
-
-.c-button--secondary:hover {
+.c-button[data-variant="secondary"]:hover {
 	background-color: var(--gray-4);
 }
-
-.c-button--secondary:focus {
+.c-button[data-variant="secondary"]:focus {
 	background-color: var(--gray-4);
 }
-
-.c-button--secondary:active {
+.c-button[data-variant="secondary"]:active {
 	background-color: var(--gray-5);
 }
-
-.c-button--secondary:disabled.c-button--secondary:hover {
+.c-button[data-variant="secondary"]:disabled.c-button[data-variant="secondary"]:hover {
 	background-color: var(--gray-3);
 }
 
 /* --primary */
-
-.c-button--primary {
+.c-button[data-variant="primary"] {
 	color: var(--gray-1);
 	background-color: var(--gray-9);
 }
-
-.c-button--primary:hover {
+.c-button[data-variant="primary"]:hover {
 	background-color: var(--gray-8);
 }
-
-.c-button--primary:active:not(:disabled) {
+.c-button[data-variant="primary"]:active:not(:disabled) {
 	background-color: var(--gray-7) !important;
 }
-
-.c-button--primary:focus {
+.c-button[data-variant="primary"]:focus {
 	background-color: var(--gray-8);
 }
-
-.c-button--primary:disabled {
+.c-button[data-variant="primary"]:disabled {
 	opacity: 0.4;
 }
-.c-button--primary:disabled.c-button--primary:hover {
+.c-button[data-variant="primary"]:disabled.c-button[data-variant="primary"]:hover {
 	background-color: var(--gray-9);
 }
 
 /* --outlined */
-
-/* https://www.0to255.com/e8e7e7 */
-
-.c-button--outlined {
+.c-button[data-variant="outlined"] {
 	background: white;
 	border: 2px solid var(--gray-2);
 	color: var(--gray-8);
 }
-
-.c-button--outlined:hover {
+.c-button[data-variant="outlined"]:hover {
 	background: var(--gray-0);
 }
-
-.c-button--outlined:focus {
+.c-button[data-variant="outlined"]:focus {
 	background: var(--gray-0);
 }
-
-.c-button--outlined:active {
+.c-button[data-variant="outlined"]:active {
 	background: var(--gray-1);
 }
-
-.c-button--outlined:disabled.c-button--outlined:hover {
+.c-button[data-variant="outlined"]:disabled.c-button[data-variant="outlined"]:hover {
 	background: white;
 }
 
 /* bare */
-
-.c-button--bare {
+.c-button[data-variant="bare"] {
 	background: inherit;
 }
-
-.c-button--bare:hover {
-	background: white;
-	border-radius: 2px;
+.c-button[data-variant="bare"]:hover {
+	background: var(--gray-0);
+	border-radius: var(--radius-m);
 }

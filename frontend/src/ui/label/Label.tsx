@@ -18,7 +18,8 @@ export const Label: React.FC<JSX.IntrinsicElements["label"] &
 		data-mr={mr}
 		data-mb={mb}
 		data-ml={ml}
-		className={`c-label c-label--${variant}`}
+		data-variant={variant}
+		className="c-label"
 		{...props}
 	/>
 );

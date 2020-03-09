@@ -13,12 +13,10 @@ import {
 	Header,
 	CloseIcon,
 	Column,
-	Banner,
-	Text,
 	Error,
+	InfoBanner,
+	ErrorBanner,
 } from "./ui";
-import {InfoIcon} from "./ui/icons/Info";
-import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -76,7 +74,7 @@ export const AddHabitForm: React.FC = () => {
 				<Header variant="small">New habit</Header>
 				<CloseIcon onClick={hideAddFormDialog} />
 			</Row>
-			<Column data-p="24">
+			<Column p="24">
 				<form
 					onSubmit={event => {
 						event.preventDefault();
@@ -146,12 +144,9 @@ export const AddHabitForm: React.FC = () => {
 								Track this habit
 							</Label>
 						</Field>
-						<Banner style={{padding: "3px 6px"}} data-ml="24" variant="info">
-							<InfoIcon />
-							<Text style={{fontSize: "14px"}} ml="12">
-								You won't be able to vote for an untracked habit.
-							</Text>
-						</Banner>
+						<InfoBanner px="6" py="3" ml="24">
+							You won't be able to vote for an untracked habit.
+						</InfoBanner>
 					</Row>
 					<Field mt="24">
 						<Label htmlFor="description">Description</Label>
@@ -184,12 +179,9 @@ export const AddHabitForm: React.FC = () => {
 				</form>
 				<Async.IfRejected state={addHabitRequestState}>
 					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
-						<Banner data-p="12" variant="error">
-							<ExclamationIcon stroke="#682d36" />
-							<Text style={{color: "#682d36"}} ml="12">
-								{errorMessage || "Something unexpected happened. Please try again later."}
-							</Text>
-						</Banner>
+						<ErrorBanner p="12">
+							{errorMessage || "Something unexpected happened. Please try again later."}
+						</ErrorBanner>
 					)}
 				</Async.IfRejected>
 			</Column>

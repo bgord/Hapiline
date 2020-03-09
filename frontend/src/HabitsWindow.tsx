@@ -3,10 +3,8 @@ import * as Async from "react-async";
 import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
-import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {InfoIcon} from "./ui/icons/Info";
-import {Banner, Card, Button, Column, Text, Row, Header} from "./ui";
+import {InfoBanner, ErrorBanner, Card, Button, Column, Text, Row, Header} from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
@@ -118,7 +116,7 @@ export const HabitsWindow = () => {
 					</Row>
 					{areFiltersVisible && (
 						<Row mt="48" px="24" crossAxis="start">
-							<Column data-pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
+							<Column pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
 								<Text variant="semi-bold">Scores</Text>
 								<Row mt="24" crossAxis="center">
 									<HabitScoreFilters.Positive.Input
@@ -234,22 +232,18 @@ export const HabitsWindow = () => {
 					</Row>
 					<Async.IfFulfilled state={getHabitsRequestState}>
 						{filteredHabits.length === 0 && (
-							<Banner data-mt="48" data-mx="24" data-p="12" variant="info">
-								<InfoIcon />
-								<Text ml="12">It seems you haven't added any habits yet.</Text>
-							</Banner>
+							<InfoBanner mt="48" mx="24" p="12">
+								It seems you haven't added any habits yet.
+							</InfoBanner>
 						)}
 					</Async.IfFulfilled>
 					<Async.IfRejected state={getHabitsRequestState}>
-						<Banner data-mt="48" data-mx="24" data-p="12" variant="error">
-							<ExclamationIcon stroke="#682d36" />
-							<Text style={{color: "#682d36"}} ml="12">
-								{errorMessage}
-							</Text>
+						<ErrorBanner mt="48" mx="24" p="12">
+							{errorMessage}
 							<Button onClick={getHabitsRequestState.reload} ml="24" variant="outlined">
 								Retry
 							</Button>
-						</Banner>
+						</ErrorBanner>
 					</Async.IfRejected>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="habits">

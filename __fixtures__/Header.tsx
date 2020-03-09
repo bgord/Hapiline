@@ -25,11 +25,11 @@ export default {
 	"as a form header": (
 		<Demo>
 			<form
+				data-p="24"
 				style={{
 					width: "300px",
 					background: "white",
 					boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-					padding: "24px",
 				}}
 			>
 				<Header mt="12">Login</Header>

@@ -36,10 +36,10 @@ describe("Calendar", () => {
 				.eq(currentDate - 1)
 				.within(() => {
 					cy.findByText("NEW: 4");
-					cy.findByText("+2");
-					cy.findByText("=1");
-					cy.findByText("-1");
-					cy.findByText("?6");
+					cy.findByText("2 habits with progress votes");
+					cy.findByText("1 habits with plateau votes");
+					cy.findByText("1 habits with regress votes");
+					cy.findByText("6 habits with no votes");
 				});
 		});
 
@@ -81,10 +81,10 @@ describe("Calendar", () => {
 				.eq(currentDate - 1)
 				.within(() => {
 					cy.findByText("NEW: 4");
-					cy.findByText("+2");
-					cy.findByText("=1");
-					cy.findByText("-1");
-					cy.findByText("?6");
+					cy.findByText("2 habits with progress votes");
+					cy.findByText("1 habits with plateau votes");
+					cy.findByText("1 habits with regress votes");
+					cy.findByText("6 habits with no votes");
 				});
 		});
 
@@ -110,10 +110,10 @@ describe("Calendar", () => {
 				.eq(currentDate - 1)
 				.within(() => {
 					cy.findByText("NEW: 5");
-					cy.findByText("+2");
-					cy.findByText("=1");
-					cy.findByText("-1");
-					cy.findByText("?6");
+					cy.findByText("2 habits with progress votes");
+					cy.findByText("1 habits with plateau votes");
+					cy.findByText("1 habits with regress votes");
+					cy.findByText("6 habits with no votes");
 				});
 		});
 	});
@@ -161,11 +161,15 @@ describe("Calendar", () => {
 			cy.findByText(`${format(new Date(), "yyyy-MM-dd")} - ${format(new Date(), "iiii")}`);
 
 			cy.findByText("Tracked habits");
-			cy.findByText("New habits: 4");
-			cy.findByText("+2");
-			cy.findByText("=1");
-			cy.findByText("-1");
-			cy.findByText("?6");
+			cy.findByText("2 habits with progress votes");
+			cy.findByText("1 habits with plateau votes");
+			cy.findByText("1 habits with regress votes");
+			cy.findByText("6 habits with no votes");
+
+			cy.findByText("Show new habits").click();
+			cy.findByText("4");
+			cy.findByText("habits added this day");
+			cy.findByText("Show untracked habits").click();
 
 			cy.findByLabelText("Show voted (4)").should("not.be.checked");
 			cy.findByLabelText("Show unvoted (6)").should("be.checked");
@@ -173,38 +177,42 @@ describe("Calendar", () => {
 
 			cy.findByLabelText("Show all (10)").click();
 
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 10);
+
 			cy.findByTestId("day-dialog-habits").within(() => {
-				cy.get("li").should("have.length", 10);
+				cy.findAllByText("positive").should("have.length", 4);
+				cy.findAllByText("neutral").should("have.length", 3);
+				cy.findAllByText("negative").should("have.length", 3);
+
+				cy.findAllByText("established").should("have.length", 4);
+				cy.findAllByText("developing").should("have.length", 3);
+				cy.findAllByText("fresh").should("have.length", 3);
 			});
-
-			cy.findAllByText("positive").should("have.length", 4);
-			cy.findAllByText("neutral").should("have.length", 3);
-			cy.findAllByText("negative").should("have.length", 3);
-
-			cy.findAllByText("established").should("have.length", 4);
-			cy.findAllByText("developing").should("have.length", 3);
-			cy.findAllByText("fresh").should("have.length", 3);
 
 			cy.findByPlaceholderText("Search for habits...")
 				.should("have.value", "")
 				.type("0");
-			cy.findByTestId("day-dialog-habits").within(() => {
-				cy.get("li").should("have.length", 1);
-			});
+
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 1);
 			cy.findByText("Clear").click();
-			cy.findByTestId("day-dialog-habits").within(() => {
-				cy.get("li").should("have.length", 10);
-			});
+
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 10);
 
 			cy.findByLabelText("Show voted (4)").check();
-			cy.findByTestId("day-dialog-habits").within(() => {
-				cy.get("li").should("have.length", 4);
-			});
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 4);
 
 			cy.findByLabelText("Show unvoted (6)").check();
-			cy.findByTestId("day-dialog-habits").within(() => {
-				cy.get("li").should("have.length", 6);
-			});
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 6);
 
 			cy.findByPlaceholderText("Search for habits...").type("xxx");
 
@@ -248,10 +256,17 @@ describe("Calendar", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
-			cy.findByText("New habits: 5").click();
-			cy.findByText("(not tracked)");
-			cy.findByText("Untracked habits: 1");
-			cy.findByText("Untracked habits available at this day:");
+			cy.findByText("Show new habits").click();
+
+			cy.findByText("5");
+			cy.findByText("habits added this day");
+
+			cy.findAllByText("Untracked");
+
+			cy.findByText("Show untracked habits").click();
+			cy.findByText("One");
+			cy.findByText("untracked habit available this day.");
+
 			cy.findAllByText("THE NOT TRACKED ONE");
 		});
 	});
@@ -271,19 +286,20 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByText("Show all (10)").click();
-			cy.findByText("+2");
-			cy.findByText("=1");
-			cy.findByText("-1");
-			cy.findByText("?6");
+
+			cy.findByText("2 habits with progress votes");
+			cy.findByText("1 habits with plateau votes");
+			cy.findByText("1 habits with regress votes");
+			cy.findByText("6 habits with no votes");
 
 			cy.findAllByText("Add progress vote")
 				.first()
 				.click({force: true});
 
-			cy.findByText("+3");
-			cy.findByText("=1");
-			cy.findByText("-1");
-			cy.findByText("?5");
+			cy.findByText("3 habits with progress votes");
+			cy.findByText("1 habits with plateau votes");
+			cy.findByText("1 habits with regress votes");
+			cy.findByText("5 habits with no votes");
 
 			cy.wait(10);
 
@@ -291,19 +307,19 @@ describe("Calendar", () => {
 				.first()
 				.click({force: true});
 
-			cy.findByText("+2");
-			cy.findByText("=1");
-			cy.findByText("-1");
-			cy.findByText("?6");
+			cy.findByText("2 habits with progress votes");
+			cy.findByText("1 habits with plateau votes");
+			cy.findByText("1 habits with regress votes");
+			cy.findByText("6 habits with no votes");
 
 			cy.findAllByText("Add regress vote")
 				.eq(2)
 				.click({force: true});
 
-			cy.findByText("+2");
-			cy.findByText("=1");
-			cy.findByText("-0");
-			cy.findByText("?7");
+			cy.findByText("2 habits with progress votes");
+			cy.findByText("1 habits with plateau votes");
+			cy.findByText("0 habits with regress votes");
+			cy.findByText("7 habits with no votes");
 		});
 
 		cy.findAllByText("Habit vote added successfully!");
@@ -324,23 +340,23 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByText("Show all (10)").click();
-			cy.findAllByText("Show vote comment").should("have.length", 10);
+			cy.findAllByText("Show and edit vote comment").should("have.length", 10);
 			cy.findByPlaceholderText("Write something...").should("not.exist");
 
-			cy.findAllByText("Show vote comment")
+			cy.findAllByText("Show and edit vote comment")
 				.eq(2)
 				.click({force: true});
-			cy.findAllByText("Show vote comment").should("have.length", 9);
+			cy.findAllByText("Show and edit vote comment").should("have.length", 9);
 			cy.findByText("Hide vote comment").should("have.length", 1);
 
 			cy.findByDisplayValue("loremloremloremloremloremloremlorem");
 
 			cy.findByText("Hide vote comment").click({force: true});
-			cy.findAllByText("Show vote comment").should("have.length", 10);
+			cy.findAllByText("Show and edit vote comment").should("have.length", 10);
 			cy.findByText("Hide vote comment").should("not.exist");
 			cy.findByDisplayValue("loremloremloremloremloremloremlorem").should("not.exist");
 
-			cy.findAllByText("Show vote comment")
+			cy.findAllByText("Show and edit vote comment")
 				.eq(2)
 				.click({force: true});
 			cy.findByDisplayValue("loremloremloremloremloremloremlorem").type("xxx");
@@ -371,7 +387,7 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByText("Show all (10)").click();
-			cy.findAllByText("Show vote comment")
+			cy.findAllByText("Show and edit vote comment")
 				.eq(2)
 				.click({force: true});
 			cy.findByDisplayValue("nonono");

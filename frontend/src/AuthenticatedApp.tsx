@@ -115,7 +115,7 @@ function NotificationDropdown() {
 	return (
 		<>
 			<Button
-				variant="outlined"
+				variant="bare"
 				onClick={toggleNotifications}
 				style={{
 					position: "relative",

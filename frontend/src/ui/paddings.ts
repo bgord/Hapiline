@@ -1,4 +1,4 @@
-type Padding = "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
+type Padding = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
 
 export interface Paddings {
 	pt?: Padding;

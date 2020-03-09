@@ -7,8 +7,8 @@
 	color: var(--gray-10);
 }
 
-.c-label--optional::after {
-	margin-left: 6px;
+.c-label[data-variant="optional"]::after {
+	margin-left: var(--spacing-xs);
 	text-transform: lowercase;
 	content: "(optional)";
 }

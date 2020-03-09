@@ -50,7 +50,8 @@ export const Button: React.FC<ButtonProps> = ({
 		data-mb={mb}
 		data-ml={ml}
 		type={type}
-		className={`c-button c-button--${variant}`}
+		data-variant={variant}
+		className="c-button"
 		{...props}
 	/>
 );

@@ -2,10 +2,10 @@
 	display: flex;
 }
 
-.c-field--column {
+.c-field[data-variant="column"] {
 	flex-direction: column-reverse;
 }
 
-.c-field--row {
+.c-field[data-variant="row"] {
 	flex-direction: row-reverse;
 }

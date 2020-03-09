@@ -10,11 +10,8 @@ import {
 	faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 import VisuallyHidden from "@reach/visually-hidden";
-
-import {Button, Text, Textarea, Field, Row, Column, Label} from "./ui";
-import {HabitScore} from "./HabitScore";
-import {HabitStrength} from "./HabitStrength";
-import {IHabit} from "./interfaces/IHabit";
+import {habitStrengthToBadgeVariant, IHabit} from "./interfaces/IHabit";
+import {Button, Text, Textarea, Field, Row, Column, Label, Badge} from "./ui";
 import {Vote, IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {
@@ -104,90 +101,115 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<>
-			<li className="bg-gray-100 p-2 mt-4">
-				<Row>
-					<Row>
-						<Button variant="outlined" title="Show and edit comment" onClick={toggleComment}>
-							{isCommentVisible && (
-								<>
-									<VisuallyHidden>Hide vote comment</VisuallyHidden>
-									<FontAwesomeIcon icon={faChevronUp} />
-								</>
-							)}
-							{!isCommentVisible && (
-								<>
-									<VisuallyHidden>Show vote comment</VisuallyHidden>
-									<FontAwesomeIcon icon={faChevronDown} />
-								</>
-							)}
-						</Button>
-						<HabitScore score={habit.score} className="px-1 py-1 ml-2" />
-						<HabitStrength strength={habit.strength} className="px-1 py-1 mr-4" />
+			<Row
+				pb="12"
+				width="100%"
+				style={{
+					borderTop: "1px solid var(--gray-1)",
+					borderBottom: "1px solid var(--gray-1)",
+				}}
+			>
+				<Column data-width="100%">
+					<Row pt="6">
+						{isCommentVisible && (
+							<Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
+								<VisuallyHidden>Hide vote comment</VisuallyHidden>
+								<FontAwesomeIcon icon={faChevronUp} />
+							</Button>
+						)}
+						{!isCommentVisible && (
+							<Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
+								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
+								<FontAwesomeIcon icon={faChevronDown} />
+							</Button>
+						)}
 						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-							<Text>{habit.name}</Text>
+							<Text ml="12" variant="semi-bold">
+								{habit.name}
+							</Text>
 						</Link>
+						<div data-ml="auto">
+							<Button
+								style={{
+									background: vote === "progress" ? "var(--green-light)" : "var(--gray-0)",
+									color: vote === "progress" ? "var(--green-dark)" : "var(--gray-10)",
+									borderRadius: "var(--radius-half)",
+								}}
+								variant="bare"
+								onClick={() => changeVote("progress")}
+								disabled={addHabitDayVoteRequestState.isPending}
+							>
+								<VisuallyHidden>Add progress vote</VisuallyHidden>
+								<FontAwesomeIcon icon={faPlus} />
+							</Button>
+							<Button
+								style={{
+									background: vote === "plateau" ? "var(--gray-2)" : "var(--gray-0)",
+									color: vote === "plateau" ? "var(--gray-9)" : "var(--gray-10)",
+									borderRadius: "var(--radius-half)",
+								}}
+								ml="6"
+								variant="bare"
+								onClick={() => changeVote("plateau")}
+								disabled={addHabitDayVoteRequestState.isPending}
+							>
+								<VisuallyHidden>Add plateau vote</VisuallyHidden>
+								<FontAwesomeIcon icon={faEquals} />
+							</Button>
+							<Button
+								style={{
+									background: vote === "regress" ? "var(--red-light)" : "var(--gray-0)",
+									color: vote === "regress" ? "var(--red-dark)" : "var(--gray-10)",
+									borderRadius: "var(--radius-half)",
+								}}
+								ml="6"
+								variant="bare"
+								onClick={() => changeVote("regress")}
+								disabled={addHabitDayVoteRequestState.isPending}
+							>
+								<VisuallyHidden>Add regress vote</VisuallyHidden>
+								<FontAwesomeIcon icon={faMinus} />
+							</Button>
+						</div>
 					</Row>
-					{!vote && (
-						<Text ml="auto" mr="6" variant="bold" title="Vote for a habit">
-							!
-						</Text>
+					<Row mt="6">
+						<Badge ml="48" mr="6" variant={habit.score}>
+							{habit.score}
+						</Badge>
+						<Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
+							{habit.strength}
+						</Badge>
+						{!vote && (
+							<Badge ml="auto" variant="neutral">
+								No vote yet
+							</Badge>
+						)}
+					</Row>
+					{isCommentVisible && (
+						<Column mt="24" pl="48">
+							<Field mb="12">
+								<Label htmlFor="vote_comment">Vote comment</Label>
+								<Textarea
+									id="vote_comment"
+									key={comment ?? undefined}
+									onFocus={textarea.setFocused}
+									placeholder="Write something..."
+									value={newComment ?? undefined}
+									onChange={newCommentHelpers.onChange}
+								/>
+							</Field>
+							<Row mb="12">
+								<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+									Save
+								</SaveButton>
+								<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+									Cancel
+								</CancelButton>
+							</Row>
+						</Column>
 					)}
-					<Row width="auto">
-						<Button
-							style={{background: vote === "progress" ? "#3ddc97" : "white"}}
-							variant="outlined"
-							onClick={() => changeVote("progress")}
-							disabled={addHabitDayVoteRequestState.isPending}
-						>
-							<VisuallyHidden>Add progress vote</VisuallyHidden>
-							<FontAwesomeIcon icon={faPlus} />
-						</Button>
-						<Button
-							style={{background: vote === "plateau" ? "#cfdee7" : "white"}}
-							ml="6"
-							variant="outlined"
-							onClick={() => changeVote("plateau")}
-							disabled={addHabitDayVoteRequestState.isPending}
-						>
-							<VisuallyHidden>Add plateau vote</VisuallyHidden>
-							<FontAwesomeIcon icon={faEquals} />
-						</Button>
-						<Button
-							style={{background: vote === "regress" ? "#ff495c" : "white"}}
-							ml="6"
-							variant="outlined"
-							onClick={() => changeVote("regress")}
-							disabled={addHabitDayVoteRequestState.isPending}
-						>
-							<VisuallyHidden>Add regress vote</VisuallyHidden>
-							<FontAwesomeIcon icon={faMinus} />
-						</Button>
-					</Row>
-				</Row>
-			</li>
-			{isCommentVisible && (
-				<Column>
-					<Field mb="12">
-						<Label htmlFor="vote_comment">Vote comment</Label>
-						<Textarea
-							id="vote_comment"
-							key={comment ?? undefined}
-							onFocus={textarea.setFocused}
-							placeholder="Write something..."
-							value={newComment ?? undefined}
-							onChange={newCommentHelpers.onChange}
-						/>
-					</Field>
-					<Row>
-						<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
-							Save
-						</SaveButton>
-						<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
-							Cancel
-						</CancelButton>
-					</Row>
 				</Column>
-			)}
+			</Row>
 		</>
 	);
 };

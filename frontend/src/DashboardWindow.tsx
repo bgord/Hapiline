@@ -5,7 +5,7 @@ import deepEqual from "fast-deep-equal";
 
 import {Button, Row, Text, Column, Header, Divider, Card} from "./ui";
 import {DayDialog} from "./DayDialog";
-import {DaySummaryChart, DaySummaryStats} from "./DayDialogSummary";
+import {DaySummaryChart} from "./DayDialogSummary";
 import {ErrorMessage} from "./ErrorMessages";
 import {Loader} from "./Loader";
 import {api} from "./services/api";
@@ -102,7 +102,6 @@ export const DashboardWindow = () => {
 									day={currentDate}
 									{...statsForToday}
 								/>
-								<DaySummaryStats day={currentDate} {...statsForToday} />
 							</Row>
 						</Column>
 					)}
@@ -116,7 +115,6 @@ export const DashboardWindow = () => {
 									day={currentDate}
 									{...statsForLastWeek}
 								/>
-								<DaySummaryStats day={currentDate} {...statsForLastWeek} />
 							</Row>
 						</Column>
 					)}
@@ -130,7 +128,6 @@ export const DashboardWindow = () => {
 									day={currentDate}
 									{...statsForLastMonth}
 								/>
-								<DaySummaryStats day={currentDate} {...statsForLastMonth} />
 							</Row>
 						</Column>
 					)}
@@ -179,7 +176,6 @@ export const DashboardWindow = () => {
 				{subview === "day_preview" && (
 					<DayDialog
 						day={currentDate}
-						onDismiss={() => updateQueryParams("/dashboard", {})}
 						onResolve={getDashboardStatsRequestState.reload}
 						{...statsForToday}
 					/>

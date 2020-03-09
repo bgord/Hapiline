@@ -1,4 +1,4 @@
-type Margin = "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
+type Margin = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
 
 export interface Margins {
 	mt?: Margin;
