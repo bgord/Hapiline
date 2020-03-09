@@ -2,10 +2,9 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {ErrorMessage} from "./ErrorMessages";
-import {Field, Header, Label, Textarea, Text} from "./ui";
+import {Field, Header, Label, Textarea, Text, ErrorBanner, Badge, BadgeVariant, Row} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
-import {IVoteComment, voteToBgColor} from "./interfaces/IDayVote";
+import {IVoteComment} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";
@@ -24,27 +23,27 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 
 	return (
 		<div>
-			<Header mt="48" variant="extra-small">
+			<Header mt="48" mb="24" variant="extra-small">
 				Vote comments
 			</Header>
 			<Async.IfRejected state={getHabitVoteCommentsRequestState}>
-				<ErrorMessage className="mt-4">Couldn't fetch vote comments.</ErrorMessage>
+				<ErrorBanner>Couldn't fetch vote comments.</ErrorBanner>
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>
 				{voteComments.length === 0 && <Text mt="24">Future vote comments will appear here.</Text>}
 				{voteComments.length > 0 && (
-					<ul className="mt-6 mb-8">
+					<>
 						{voteComments.map(voteComment => (
 							<HabitVoteComment key={voteComment.id} {...voteComment} />
 						))}
-					</ul>
+					</>
 				)}
 			</Async.IfFulfilled>
 		</div>
 	);
 };
 
-const HabitVoteComment: React.FC<IVoteComment> = ({id, day, habit_id, vote, comment}) => {
+const HabitVoteComment: React.FC<IVoteComment> = ({day, habit_id, vote, comment}) => {
 	const voteUrl = constructUrl("calendar", {
 		preview_day: formatDay(day),
 		highlighted_habit_id: habit_id?.toString(),
@@ -53,19 +52,25 @@ const HabitVoteComment: React.FC<IVoteComment> = ({id, day, habit_id, vote, comm
 	const formattedDay = formatDay(day);
 	const formattedDayName = formatDayName(day);
 
-	const linkBgColor = voteToBgColor.get(vote);
+	const voteToBadgeVariant = new Map<typeof vote, BadgeVariant>();
+	voteToBadgeVariant.set("progress", "positive");
+	voteToBadgeVariant.set("plateau", "neutral");
+	voteToBadgeVariant.set("regress", "negative");
+	voteToBadgeVariant.set(null, "neutral");
 
 	return (
-		<li key={id} className="flex flex-col mb-4">
-			<Field>
-				<Label mb="6" htmlFor={comment}>
+		<Field mt="24">
+			<Row mb="6" crossAxis="center">
+				<Label htmlFor={comment}>
 					{formattedDay} ({formattedDayName})
-					<Link to={voteUrl} className={`${linkBgColor} px-2 ml-2`}>
-						{vote?.toUpperCase() ?? "NO VOTE"}
-					</Link>
 				</Label>
-				<Textarea id={comment} value={comment} disabled />
-			</Field>
-		</li>
+				<Link to={voteUrl}>
+					<Badge ml="6" variant={voteToBadgeVariant.get(vote) ?? "neutral"}>
+						{vote ?? "NO VOTE"}
+					</Badge>
+				</Link>
+			</Row>
+			<Textarea id={comment} value={comment} disabled />
+		</Field>
 	);
 };
