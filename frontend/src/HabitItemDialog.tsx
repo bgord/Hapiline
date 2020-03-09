@@ -8,7 +8,7 @@ import {
 	useEditableFieldValue,
 	useEditableFieldState,
 } from "./hooks/useEditableField";
-import {CloseIcon, Textarea, Field, Row, Label, Text, Header} from "./ui";
+import {CloseIcon, Textarea, Field, Row, Label, Text, Header, Badge, InfoBanner} from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
@@ -63,7 +63,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						<Header variant="small">Habit preview</Header>
 						<CloseIcon onClick={dismissDialog} />
 					</Row>
-					<Row mt="24" px="24">
+					<Row mt="24" pl="12" pr="24">
 						<EditableHabitNameInput
 							{...habit}
 							setHabitItem={habitRequestState.setData}
@@ -80,7 +80,16 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							key={habit?.strength}
 						/>
 					</Row>
-					{!habit.is_trackable && <div className="mt-8">This habit is not tracked.</div>}
+					<Row mt="24" px="24">
+						{!habit.is_trackable && (
+							<>
+								<Badge variant="neutral">Untracked</Badge>
+								<InfoBanner px="6" py="3" ml="24">
+									You cannot vote for an untracked habit.
+								</InfoBanner>
+							</>
+						)}
+					</Row>
 					{habit.is_trackable && (
 						<>
 							<Text mt="24" style={{textTransform: "uppercase"}}>
