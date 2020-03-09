@@ -4,6 +4,7 @@ import React from "react";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {InfoIcon} from "../icons/Info";
+import {ExclamationIcon} from "../icons/Exclamation";
 import {Text} from "../";
 
 type BannerVariant = "info" | "error" | "success";
@@ -55,6 +56,17 @@ export const InfoBanner: React.FC<InfoBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="info">
 		<InfoIcon />
 		<Text style={{fontSize: "14px"}} ml="12">
+			{children}
+		</Text>
+	</Banner>
+);
+
+type ErrorBannerProps = JSX.IntrinsicElements["div"] & Margins & Paddings;
+
+export const ErrorBanner: React.FC<ErrorBannerProps> = ({children, ...props}) => (
+	<Banner {...props} variant="error">
+		<ExclamationIcon stroke="#682d36" />
+		<Text style={{color: "#682d36"}} ml="12">
 			{children}
 		</Text>
 	</Banner>

@@ -3,9 +3,8 @@ import * as Async from "react-async";
 import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
-import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {Banner, InfoBanner, Card, Button, Column, Text, Row, Header} from "./ui";
+import {InfoBanner, ErrorBanner, Card, Button, Column, Text, Row, Header} from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
@@ -239,15 +238,12 @@ export const HabitsWindow = () => {
 						)}
 					</Async.IfFulfilled>
 					<Async.IfRejected state={getHabitsRequestState}>
-						<Banner mt="48" mx="24" p="12" variant="error">
-							<ExclamationIcon stroke="#682d36" />
-							<Text style={{color: "#682d36"}} ml="12">
-								{errorMessage}
-							</Text>
+						<ErrorBanner mt="48" mx="24" p="12">
+							{errorMessage}
 							<Button onClick={getHabitsRequestState.reload} ml="24" variant="outlined">
 								Retry
 							</Button>
-						</Banner>
+						</ErrorBanner>
 					</Async.IfRejected>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="habits">

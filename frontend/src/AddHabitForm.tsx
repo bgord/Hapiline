@@ -13,12 +13,10 @@ import {
 	Header,
 	CloseIcon,
 	Column,
-	Banner,
-	Text,
 	Error,
 	InfoBanner,
+	ErrorBanner,
 } from "./ui";
-import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -181,12 +179,9 @@ export const AddHabitForm: React.FC = () => {
 				</form>
 				<Async.IfRejected state={addHabitRequestState}>
 					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
-						<Banner p="12" variant="error">
-							<ExclamationIcon stroke="#682d36" />
-							<Text style={{color: "#682d36"}} ml="12">
-								{errorMessage || "Something unexpected happened. Please try again later."}
-							</Text>
-						</Banner>
+						<ErrorBanner p="12">
+							{errorMessage || "Something unexpected happened. Please try again later."}
+						</ErrorBanner>
 					)}
 				</Async.IfRejected>
 			</Column>
