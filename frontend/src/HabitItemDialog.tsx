@@ -91,33 +91,33 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							key={habit?.strength}
 						/>
 					</Row>
-					<Row mt="24" px="24">
-						{!habit.is_trackable && (
-							<>
-								<Badge variant="neutral">Untracked</Badge>
-								<InfoBanner px="6" py="3" ml="24">
-									You cannot vote for an untracked habit.
-								</InfoBanner>
-							</>
-						)}
-					</Row>
+					{!habit.is_trackable && (
+						<Row mt="24" px="24">
+							<Badge variant="neutral">Untracked</Badge>
+							<InfoBanner px="6" py="3" ml="24">
+								You cannot vote for an untracked habit.
+							</InfoBanner>
+						</Row>
+					)}
 					<Column px="24">
 						{habit.is_trackable && (
 							<>
-								<Text mt="24" style={{textTransform: "uppercase"}}>
-									<div className="text-green-600" hidden={!habit.progress_streak}>
-										Progress streak: {habit.progress_streak} days
-									</div>
-									<div className="text-red-600" hidden={!habit.regress_streak}>
-										Regress streak: {habit.regress_streak} days
-									</div>
-									<div
-										className="text-gray-600"
-										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
-									>
-										No streak today
-									</div>
-								</Text>
+								<Row>
+									<Text mt="24" style={{textTransform: "uppercase"}}>
+										<Badge hidden={!habit.progress_streak} variant="positive">
+											{habit.progress_streak} days progress streak
+										</Badge>
+										<Badge hidden={!habit.regress_streak} variant="negative">
+											{habit.regress_streak} days regress streak
+										</Badge>
+										<Badge
+											hidden={Boolean(habit.regress_streak || habit.progress_streak)}
+											variant="neutral"
+										>
+											No streak today
+										</Badge>
+									</Text>
+								</Row>
 								<HabitCharts id={habit.id} />
 							</>
 						)}
