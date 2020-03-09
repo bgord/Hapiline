@@ -3,10 +3,20 @@ import {useLocation} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Header, Text, CloseIcon, Column, Banner, Emoji, labelToEmoji} from "./ui";
+import {
+	Button,
+	Row,
+	Header,
+	Text,
+	CloseIcon,
+	Column,
+	Banner,
+	InfoBanner,
+	Emoji,
+	labelToEmoji,
+} from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
-import {InfoIcon} from "./ui/icons/Info";
 import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
 import {DayVoteStats} from "./interfaces/IMonthDay";
 import {HabitVote, IHabit} from "./interfaces/IHabit";
@@ -201,12 +211,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					</Text>
 				</Row>
 				{isThereNoTrackedHabits && (
-					<Banner p="12" mt="48" variant="info">
-						<InfoIcon />
-						<Text style={{fontSize: "14px"}} ml="12">
-							No habits available this day.
-						</Text>
-					</Banner>
+					<InfoBanner p="12" mt="48">
+						No habits available this day.
+					</InfoBanner>
 				)}
 				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
 					<Column pb="48">

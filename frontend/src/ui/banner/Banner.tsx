@@ -3,6 +3,8 @@ import "./banner.css";
 import React from "react";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
+import {InfoIcon} from "../icons/Info";
+import {Text} from "../";
 
 type BannerVariant = "info" | "error" | "success";
 
@@ -45,4 +47,15 @@ export const Banner: React.FC<BannerProps> = ({
 		className="c-banner"
 		{...props}
 	/>
+);
+
+type InfoBannerProps = JSX.IntrinsicElements["div"] & Margins & Paddings;
+
+export const InfoBanner: React.FC<InfoBannerProps> = ({children, ...props}) => (
+	<Banner {...props} variant="info">
+		<InfoIcon />
+		<Text style={{fontSize: "14px"}} ml="12">
+			{children}
+		</Text>
+	</Banner>
 );

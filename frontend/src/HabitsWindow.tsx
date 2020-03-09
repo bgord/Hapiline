@@ -5,8 +5,7 @@ import React from "react";
 import {AddHabitForm} from "./AddHabitForm";
 import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {InfoIcon} from "./ui/icons/Info";
-import {Banner, Card, Button, Column, Text, Row, Header} from "./ui";
+import {Banner, InfoBanner, Card, Button, Column, Text, Row, Header} from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
@@ -234,10 +233,9 @@ export const HabitsWindow = () => {
 					</Row>
 					<Async.IfFulfilled state={getHabitsRequestState}>
 						{filteredHabits.length === 0 && (
-							<Banner mt="48" mx="24" p="12" variant="info">
-								<InfoIcon />
-								<Text ml="12">It seems you haven't added any habits yet.</Text>
-							</Banner>
+							<InfoBanner mt="48" mx="24" p="12">
+								It seems you haven't added any habits yet.
+							</InfoBanner>
 						)}
 					</Async.IfFulfilled>
 					<Async.IfRejected state={getHabitsRequestState}>

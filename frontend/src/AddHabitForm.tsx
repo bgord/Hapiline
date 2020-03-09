@@ -16,8 +16,8 @@ import {
 	Banner,
 	Text,
 	Error,
+	InfoBanner,
 } from "./ui";
-import {InfoIcon} from "./ui/icons/Info";
 import {ExclamationIcon} from "./ui/icons/Exclamation";
 import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
@@ -146,12 +146,9 @@ export const AddHabitForm: React.FC = () => {
 								Track this habit
 							</Label>
 						</Field>
-						<Banner px="6" py="3" ml="24" variant="info">
-							<InfoIcon />
-							<Text style={{fontSize: "14px"}} ml="12">
-								You won't be able to vote for an untracked habit.
-							</Text>
-						</Banner>
+						<InfoBanner px="6" py="3" ml="24">
+							You won't be able to vote for an untracked habit.
+						</InfoBanner>
 					</Row>
 					<Field mt="24">
 						<Label htmlFor="description">Description</Label>
