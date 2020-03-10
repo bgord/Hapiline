@@ -71,7 +71,11 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					<CloseIcon onClick={dismissDialog} />
 				</Row>
 
-				<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
+				<Async.IfPending state={habitRequestState}>
+					<Text ml="24" mt="48">
+						Loading details...
+					</Text>
+				</Async.IfPending>
 				<Async.IfRejected state={habitRequestState}>
 					<ErrorBanner>Couldn't fetch task details, please try again.</ErrorBanner>
 				</Async.IfRejected>
