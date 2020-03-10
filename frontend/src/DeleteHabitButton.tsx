@@ -43,7 +43,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 					width: "125px",
 				}}
 				ml="auto"
-				variant="outlined"
+				variant="danger"
 				type="submit"
 				onClick={openDialog}
 			>
