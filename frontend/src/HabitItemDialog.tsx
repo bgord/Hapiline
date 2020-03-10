@@ -133,17 +133,18 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								onResolve={habitRequestState.reload}
 							/>
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-							<Row mainAxis="between">
-								<dl className="flex items-baseline py-8">
-									<dt>
-										<Text variant="dimmed">Created at:</Text>
-									</dt>
-									<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
-									<dt>
-										<Text variant="dimmed">Updated at:</Text>
-									</dt>
-									<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
-								</dl>
+							<Row my="48" mainAxis="between" crossAxis="center">
+								<Text variant="dimmed">Created at:</Text>
+								<Text variant="monospaced" ml="6">
+									{formatTime(habit?.created_at)}
+								</Text>
+								<Text variant="dimmed" ml="24">
+									Last updated at:
+								</Text>
+								<Text variant="monospaced" ml="6">
+									{formatTime(habit?.updated_at)}
+								</Text>
+
 								<DeleteHabitButton {...habit} />
 							</Row>
 						</Column>

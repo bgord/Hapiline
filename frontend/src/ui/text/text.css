@@ -11,11 +11,15 @@
 	text-transform: uppercase;
 	font-size: 14px;
 	font-weight: 600;
-	color: #b6b3b3;
+	color: var(--gray-6);
 }
 .c-text[data-variant="semi-bold"] {
 	font-weight: 500;
 }
 .c-text[data-variant="light"] {
 	color: var(--gray-7);
+}
+
+.c-text[data-variant="monospaced"] {
+	font-family: monospace;
 }

@@ -4,7 +4,7 @@ import React from "react";
 
 import {Margins} from "../margins";
 
-type TextVariant = "regular" | "bold" | "dimmed" | "semi-bold" | "light";
+type TextVariant = "regular" | "bold" | "dimmed" | "semi-bold" | "light" | "monospaced";
 
 export const Text: React.FC<JSX.IntrinsicElements["div"] &
 	Margins & {
