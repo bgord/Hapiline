@@ -56,7 +56,7 @@ export function useEditableFieldValue(
 }
 
 export const CancelButton: React.FC<UseEditableFieldStateReturnType &
-	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, onClick, ...props}) => (
+	React.ComponentPropsWithoutRef<"button">> = ({state, setIdle, setFocused, onClick, ...props}) => (
 	<>
 		{state === "focused" && (
 			<Button
@@ -73,6 +73,6 @@ export const CancelButton: React.FC<UseEditableFieldStateReturnType &
 );
 
 export const SaveButton: React.FC<UseEditableFieldStateReturnType &
-	JSX.IntrinsicElements["button"]> = ({state, setIdle, setFocused, ...props}) => (
+	React.ComponentPropsWithoutRef<"button">> = ({state, setIdle, setFocused, ...props}) => (
 	<>{state === "focused" && <Button variant="primary" {...props} />}</>
 );
