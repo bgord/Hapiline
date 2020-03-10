@@ -30,14 +30,18 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 		onReject: () => triggerErrorNotification("Fetching chart data failed."),
 	});
 
-	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length;
+	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
 
-	const regressVotes = habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress")
-		.length;
-	const plateauVotes = habitVoteChartRequestState?.data?.filter(vote => vote.vote === "plateau")
-		.length;
-	const progressVotes = habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress")
-		.length;
+	const regressVotes =
+		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress").length ?? 0;
+	const plateauVotes =
+		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "plateau").length ?? 0;
+	const progressVotes =
+		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress").length ?? 0;
+
+	const regressVotesPrct = ((regressVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
+	const plateauVotesPrct = ((plateauVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
+	const progressVotesPrct = ((progressVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
 
 	return (
 		<>
@@ -73,17 +77,21 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 				</Row>
 				<Row mt="6" crossAxis="center">
 					<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
-					<Text>{regressVotes} regress votes</Text>
-
+					<Text>
+						{regressVotes} regress votes ({regressVotesPrct}%)
+					</Text>
 					<Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
 						·
 					</Text>
-					<Text>{plateauVotes} plateau votes</Text>
-
+					<Text>
+						{plateauVotes} plateau votes ({plateauVotesPrct}%)
+					</Text>
 					<Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
 						·
 					</Text>
-					<Text>{progressVotes} progress votes</Text>
+					<Text>
+						{progressVotes} progress votes ({progressVotesPrct}%)
+					</Text>
 
 					<Text ml="auto" variant="bold">
 						{howManyHabitVoteChartItems}
