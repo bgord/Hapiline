@@ -83,11 +83,13 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 				{habit?.id && (
 					<Column px="24">
 						<Row mt="24" style={{marginLeft: "-12px"}}>
-							<EditableHabitNameInput
-								{...habit}
-								setHabitItem={habitRequestState.setData}
-								key={habit?.name}
-							/>
+							<Row mr="6">
+								<EditableHabitNameInput
+									{...habit}
+									setHabitItem={habitRequestState.setData}
+									key={habit?.name}
+								/>
+							</Row>
 							<EditableHabitScoreSelect
 								{...habit}
 								setHabitItem={habitRequestState.setData}
