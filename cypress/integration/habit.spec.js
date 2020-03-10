@@ -424,7 +424,7 @@ describe("Habit", () => {
 			cy.findByDisplayValue("Watch The Office");
 			cy.findByText("2019-01-01 00:00");
 			cy.findByText("2019-02-01 00:00");
-			cy.findByText("Progress streak: 2 days");
+			cy.findByText("2 days progress streak");
 			cy.findByDisplayValue("Last week");
 			for (const {day, vote} of chartResponse) {
 				cy.findByTitle(`${day} - ${vote}`);
@@ -442,7 +442,7 @@ describe("Habit", () => {
 			cy.findByDisplayValue("Go to sleep");
 			cy.findByText("2019-01-01 00:00");
 			cy.findByText("2019-02-01 00:00");
-			cy.findByText("Regress streak: 1 days");
+			cy.findByText("1 days regress streak");
 			cy.findByDisplayValue("Last week");
 			cy.findByText("Charts unavailable, please try again.");
 		});
@@ -492,13 +492,13 @@ describe("Habit", () => {
 			cy.findByDisplayValue("fresh");
 			cy.findByDisplayValue("Watch The Office");
 
-			cy.findByText("This habit is not tracked.");
+			cy.findByText("Untracked");
 			cy.findByPlaceholderText("Write something...");
 
 			cy.findByText("Created at:");
 			cy.findByText("2019-01-01 00:00");
 
-			cy.findByText("Updated at:");
+			cy.findByText("Last updated at:");
 			cy.findByText("2019-02-01 00:00");
 
 			cy.findByText("Select date range:").should("not.exist");
@@ -1034,7 +1034,7 @@ describe("Habit", () => {
 		cy.findByText("2020-01-17 (Fri)");
 		cy.findByDisplayValue("125").should("be.disabled");
 
-		cy.findByText("REGRESS").click();
+		cy.findByText("regress").click();
 
 		cy.url().should("contain", "/calendar?preview_day=2020-01-19&highlighted_habit_id=36");
 	});
