@@ -107,25 +107,22 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								</InfoBanner>
 							</Row>
 						)}
-						<Column>
+						<Column mt="48">
 							{habit.is_trackable && (
-								<>
-									<Row mt="24">
-										<Badge hidden={!habit.progress_streak} variant="positive">
-											{habit.progress_streak} days progress streak
-										</Badge>
-										<Badge hidden={!habit.regress_streak} variant="negative">
-											{habit.regress_streak} days regress streak
-										</Badge>
-										<Badge
-											hidden={Boolean(habit.regress_streak || habit.progress_streak)}
-											variant="neutral"
-										>
-											No streak today
-										</Badge>
-									</Row>
-									<HabitCharts id={habit.id} />
-								</>
+								<HabitCharts id={habit.id}>
+									<Badge hidden={!habit.progress_streak} variant="positive">
+										{habit.progress_streak} days progress streak
+									</Badge>
+									<Badge hidden={!habit.regress_streak} variant="negative">
+										{habit.regress_streak} days regress streak
+									</Badge>
+									<Badge
+										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
+										variant="neutral"
+									>
+										No streak today
+									</Badge>
+								</HabitCharts>
 							)}
 							<Column mt="24">
 								<EditableDescription

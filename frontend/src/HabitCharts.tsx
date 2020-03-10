@@ -18,7 +18,7 @@ const chartRanges: {[key in ChartRange]: string} = {
 	all_time: "all_time",
 };
 
-export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
+export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 	const [dateRange, setChartRange] = React.useState<ChartRange>("last_week");
 	const triggerErrorNotification = useErrorNotification();
 
@@ -45,25 +45,28 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 
 	return (
 		<>
-			<Field mt="48" variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
-				<Label mr="12" htmlFor="date_range">
-					Select date range:
-				</Label>
-				<Select
-					id="date_range"
-					value={dateRange}
-					onChange={event => {
-						const {value} = event.target;
-						if (isChartRange(value) && value !== dateRange) {
-							setChartRange(value);
-						}
-					}}
-				>
-					<option value="last_week">Last week</option>
-					<option value="last_month">Last month</option>
-					<option value="all_time">All time</option>
-				</Select>
-			</Field>
+			<Row mainAxis="between">
+				<Field variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
+					<Label mr="12" htmlFor="date_range">
+						Select date range:
+					</Label>
+					<Select
+						id="date_range"
+						value={dateRange}
+						onChange={event => {
+							const {value} = event.target;
+							if (isChartRange(value) && value !== dateRange) {
+								setChartRange(value);
+							}
+						}}
+					>
+						<option value="last_week">Last week</option>
+						<option value="last_month">Last month</option>
+						<option value="all_time">All time</option>
+					</Select>
+				</Field>
+				{children}
+			</Row>
 			<Async.IfFulfilled state={habitVoteChartRequestState}>
 				<Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
