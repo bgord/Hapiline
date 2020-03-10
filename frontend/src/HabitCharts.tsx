@@ -116,7 +116,7 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit
 	...rest
 }) => {
 	const date = formatDay(day);
-	const backgroundColor = voteToBgColor.get(vote ?? "plateau");
+	const backgroundColor = voteToBgColor.get(vote);
 
 	const title = `${date} - ${vote ?? "no vote"}`;
 
