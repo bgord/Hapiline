@@ -127,11 +127,13 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 									<HabitCharts id={habit.id} />
 								</>
 							)}
-							<EditableDescription
-								description={habit.description}
-								habitId={habit.id}
-								onResolve={habitRequestState.reload}
-							/>
+							<Column mt="24">
+								<EditableDescription
+									description={habit.description}
+									habitId={habit.id}
+									onResolve={habitRequestState.reload}
+								/>
+							</Column>
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
 							<Row my="48" mainAxis="between" crossAxis="center">
 								<Text variant="dimmed">Created at:</Text>
