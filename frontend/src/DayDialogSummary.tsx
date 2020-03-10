@@ -156,7 +156,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{habitsAddedAtThisDay.map(habit => (
-							<CompantHabitItem key={habit.id} {...habit} />
+							<CompactHabitItem key={habit.id} {...habit} />
 						))}
 					</Column>
 				</TabPanel>
@@ -177,7 +177,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{untrackedHabits.map(habit => (
-							<CompantHabitItem key={habit.id} {...habit} />
+							<CompactHabitItem key={habit.id} {...habit} />
 						))}
 					</Column>
 				</TabPanel>
@@ -195,7 +195,7 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 	});
 }
 
-const CompantHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
+const CompactHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
 	<Row
 		py="12"
 		style={{
