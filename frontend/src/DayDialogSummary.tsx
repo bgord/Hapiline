@@ -62,7 +62,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				crossAxis="center"
 				title={regressVotesCellTitle}
 				py="0"
-				px={stats.noVotesCountStats ? "3" : "0"}
+				px="3"
 				style={{
 					fontWeight: "bold",
 					flexBasis: `${regressVotesPercentage}%`,
@@ -81,7 +81,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				crossAxis="center"
 				title={plateauVotesCellTitle}
 				py="0"
-				px={stats.noVotesCountStats ? "3" : "0"}
+				px="3"
 				style={{
 					fontWeight: "bold",
 					flexBasis: `${plateauVotesPercentage}%`,
@@ -100,7 +100,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				crossAxis="center"
 				title={progressVotesCellTitle}
 				py="0"
-				px={stats.noVotesCountStats ? "3" : "0"}
+				px="3"
 				style={{
 					fontWeight: "bold",
 					flexBasis: `${progressVotesPercentage}%`,
