@@ -38,10 +38,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
 			</Button>
 			{showDialog && (
-				<AlertDialog
-					className="w-1/3"
-					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
-				>
+				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
 					<AlertDialogLabel>
 						<Header variant="small">Do you want to delete the following habit?</Header>
 					</AlertDialogLabel>

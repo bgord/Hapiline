@@ -542,3 +542,8 @@ body {
 [data-reach-tab][data-selected] {
 	background: white !important;
 }
+
+[data-reach-alert-dialog-content] {
+	padding: var(--spacing-m);
+	width: 33%;
+}
