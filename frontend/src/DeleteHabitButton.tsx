@@ -3,6 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {Button, Text, Row, Header} from "./ui";
+import {TrashIcon} from "./ui/icons/Trash";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
@@ -34,7 +35,19 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	return (
 		<>
-			<Button ml="6" variant="outlined" onClick={openDialog}>
+			<Button
+				style={{
+					display: "flex",
+					justifyContent: "center",
+					alignItems: "center",
+					width: "125px",
+				}}
+				ml="auto"
+				variant="outlined"
+				type="submit"
+				onClick={openDialog}
+			>
+				<TrashIcon />
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
 			</Button>
 			{showDialog && (
