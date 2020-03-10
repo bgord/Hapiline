@@ -3,7 +3,7 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
-import {Field, Select, Row, Label} from "./ui";
+import {Field, Select, Row, Label, Text} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -31,6 +31,13 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 	});
 
 	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length;
+
+	const regressVotes = habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress")
+		.length;
+	const plateauVotes = habitVoteChartRequestState?.data?.filter(vote => vote.vote === "plateau")
+		.length;
+	const progressVotes = habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress")
+		.length;
 
 	return (
 		<>
@@ -63,6 +70,25 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 							{...item}
 						/>
 					))}
+				</Row>
+				<Row mt="6" crossAxis="center">
+					<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
+					<Text>{regressVotes} regress votes</Text>
+
+					<Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
+						·
+					</Text>
+					<Text>{plateauVotes} plateau votes</Text>
+
+					<Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
+						·
+					</Text>
+					<Text>{progressVotes} progress votes</Text>
+
+					<Text ml="auto" variant="bold">
+						{howManyHabitVoteChartItems}
+					</Text>
+					<Text ml="6">in total</Text>
 				</Row>
 			</Async.IfFulfilled>
 			<Async.IfRejected state={habitVoteChartRequestState}>
