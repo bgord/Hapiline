@@ -71,14 +71,14 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<Card mx="auto" mt="72" mb="24" p="24" style={{maxWidth: "750px"}}>
+		<Card mx="auto" mt="72" mb="24" style={{maxWidth: "750px"}}>
+			<Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+				<Header variant="large">Hello!</Header>
+				<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>
+					View today
+				</Button>
+			</Row>
 			<Column>
-				<Row>
-					<Header variant="large">Hello!</Header>
-					<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>
-						View today
-					</Button>
-				</Row>
 				<Async.IfRejected state={getDashboardStatsRequestState}>
 					<ErrorMessage className="mt-8">
 						Cannot load dashboard stats now, please try again.
