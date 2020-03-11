@@ -1,4 +1,4 @@
-import {isFuture, isSameDay, isToday} from "date-fns";
+import {isFuture, isSameDay, isToday, format} from "date-fns";
 import React from "react";
 
 import {Button, Row, Text, Column} from "./ui";
@@ -41,9 +41,12 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 
 	return (
 		<Column style={{background: "var(--gray-0)", border: "1px solid var(--gray-2)", ...styles}}>
-			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
-				{day}
-			</Text>
+			<Row mainAxis="between" mt="6" px="6">
+				<Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
+					{day}
+				</Text>
+				<Text>{format(new Date(day), "E")}</Text>
+			</Row>
 			{isDayDialogAvailable && (
 				<>
 					<Row mt="auto" mainAxis="end" p="6">
