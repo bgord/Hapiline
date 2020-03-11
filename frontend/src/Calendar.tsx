@@ -54,20 +54,20 @@ export const Calendar: React.FC = () => {
 	});
 
 	return (
-		<Column mt="72" crossAxis="center">
-			<Row mb="72" width="auto">
+		<Column mt="48" crossAxis="center">
+			<Row mb="24" width="auto">
 				<Button
-					variant="secondary"
+					variant="outlined"
 					onClick={widget.setPreviousMonth}
 					disabled={getMonthRequestState.isPending}
 				>
 					Previous
 				</Button>
-				<Header mx="48" variant="small">
+				<Header mx="24" variant="small">
 					{date}
 				</Header>
 				<Button
-					variant="secondary"
+					variant="outlined"
 					onClick={widget.setNextMonth}
 					disabled={getMonthRequestState.isPending}
 				>
