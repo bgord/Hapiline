@@ -94,7 +94,7 @@ export const DashboardWindow = () => {
 					{howManyHabitsToday > 0 && (
 						<Column data-testid="chart-today">
 							<Text variant="dimmed">Votes today</Text>
-							<Row mb="48">
+							<Row mb="24">
 								<DaySummaryChart
 									maximumVotes={todayStats?.maximumVotes ?? 0}
 									day={currentDate}
@@ -106,7 +106,7 @@ export const DashboardWindow = () => {
 					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
 						<Column data-testid="chart-last-week">
 							<Text variant="dimmed">Votes last week</Text>
-							<Row mb="48">
+							<Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
 									day={currentDate}
@@ -118,7 +118,7 @@ export const DashboardWindow = () => {
 					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
 						<Column data-testid="chart-last-month">
 							<Text variant="dimmed">Votes last month</Text>
-							<Row mb="48">
+							<Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
 									day={currentDate}
