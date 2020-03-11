@@ -1,6 +1,5 @@
 import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
-import useHover from "@react-hook/hover";
 
 import {Button, Row, Text, Column} from "./ui";
 import {DayDialog} from "./DayDialog";
@@ -18,7 +17,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	...stats
 }) => {
 	const habits = useHabits();
-	const [isHovering, ref] = useHover();
 	const [queryParams, updateQueryParams] = useQueryParams();
 
 	const previewDay = queryParams?.preview_day;
@@ -39,22 +37,30 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 		});
 	}
 
+	const isNewTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
+
 	return (
-		<Column style={{background: "var(--gray-0)", ...styles}} ref={ref as React.Ref<HTMLDivElement>}>
+		<Column style={{background: "var(--gray-0)", ...styles}}>
 			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 				{day}
 			</Text>
 			{isDayDialogAvailable && (
 				<>
-					<Button mx="auto" my="6" variant="outlined" hidden={!isHovering} onClick={openDialog}>
-						Show day
-					</Button>
 					<Row mt="auto" mainAxis="end" style={{padding: "4px"}}>
-						{stats && stats.createdHabitsCount && stats.createdHabitsCount > 0 ? (
+						{isNewTextVisible ? (
 							<Text mr="auto" variant="dimmed">
 								NEW: {stats.createdHabitsCount}
 							</Text>
 						) : null}
+						<Button
+							variant="bare"
+							onClick={openDialog}
+							style={{background: "var(--gray-1)"}}
+							mb="6"
+							ml="auto"
+						>
+							Show day
+						</Button>
 					</Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
