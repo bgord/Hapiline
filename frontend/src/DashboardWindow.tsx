@@ -134,9 +134,12 @@ export const DashboardWindow = () => {
 				<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
 					{regressStreakStats.length > 0 && (
 						<>
-							<Header mt="24" mb="24" variant="extra-small">
-								Regress streaks
-							</Header>
+							<Row mt="24" mb="24" crossAxis="center">
+								<Header variant="extra-small">Regress streaks</Header>
+								<Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+									{regressStreakStats.length}
+								</Badge>
+							</Row>
 							<Column
 								style={{
 									borderTop: "1px solid var(--gray-1)",
@@ -168,9 +171,12 @@ export const DashboardWindow = () => {
 					)}
 					{progressStreakStats.length > 0 && (
 						<>
-							<Header mt="48" mb="24" variant="extra-small">
-								Progress streaks
-							</Header>
+							<Row mt="48" mb="24" crossAxis="center">
+								<Header variant="extra-small">Progress streaks</Header>
+								<Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+									{progressStreakStats.length}
+								</Badge>
+							</Row>
 							<Column style={{borderTop: "1px solid var(--gray-1)"}}>
 								<ExpandContractList max={5}>
 									{progressStreakStats.map(habit => (
