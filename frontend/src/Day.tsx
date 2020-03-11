@@ -49,7 +49,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			</Row>
 			{isDayDialogAvailable && (
 				<>
-					<Row mainAxis="end" p="6">
+					<Row mainAxis="end" p="6" my="auto">
 						{isNewTextVisible ? (
 							<Text mr="auto" variant="dimmed">
 								{stats.createdHabitsCount} NEW HABIT
@@ -71,7 +71,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			{isDayDialogAvailable && (
 				<DaySummaryChart
 					maximumVotes={howManyHabitsAvailableAtThisDay}
-					className="h-2"
 					day={formatDay(thisDay)}
 					{...stats}
 				/>
