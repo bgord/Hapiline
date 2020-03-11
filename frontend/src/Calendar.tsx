@@ -17,7 +17,7 @@ const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
 	gridTemplateColumns: "repeat(7, 200px)",
 	gridTemplateRows: "repeat(6, 120px)",
-	gridGap: "10px",
+	gridGap: "12px",
 };
 
 export const Calendar: React.FC = () => {
@@ -56,7 +56,7 @@ export const Calendar: React.FC = () => {
 
 	return (
 		<Column mt="24" crossAxis="center">
-			<Row px="72" py="12" style={{background: "var(--gray-2)"}} width="auto">
+			<Row mb="24" px="72" py="12" style={{background: "var(--gray-2)"}} width="auto">
 				<Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}

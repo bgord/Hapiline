@@ -40,13 +40,13 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const isNewTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
 
 	return (
-		<Column style={{background: "var(--gray-0)", ...styles}}>
+		<Column style={{background: "var(--gray-0)", border: "1px solid var(--gray-2)", ...styles}}>
 			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 				{day}
 			</Text>
 			{isDayDialogAvailable && (
 				<>
-					<Row mt="auto" mainAxis="end" style={{padding: "4px"}}>
+					<Row mt="auto" mainAxis="end" p="6">
 						{isNewTextVisible ? (
 							<Text mr="auto" variant="dimmed">
 								NEW: {stats.createdHabitsCount}
