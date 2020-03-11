@@ -1,11 +1,11 @@
-import {isFuture, isSameDay, isToday, format} from "date-fns";
+import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 
 import {Button, Row, Text, Column} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
-import {formatDay} from "./config/DATE_FORMATS";
+import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
@@ -48,7 +48,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 				<Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 					{day}
 				</Text>
-				<Text>{format(new Date(day), "E")}</Text>
+				<Text>{formatShortDayName(day)}</Text>
 			</Row>
 			{isDayDialogAvailable && (
 				<>

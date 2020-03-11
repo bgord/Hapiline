@@ -5,6 +5,7 @@ const DATE_FORMATS = {
 	time: "yyyy-MM-dd HH:mm",
 	month: "MMMM yyyy",
 	dayName: "iii",
+	shortDayName: "E",
 };
 
 export const formatDay = (value: number | Date | string): string =>
@@ -18,5 +19,8 @@ export const formatMonth = (value: number | Date | string): string =>
 
 export const formatDayName = (value: number | Date | string): string =>
 	format(new Date(value), DATE_FORMATS.dayName);
+
+export const formatShortDayName = (value: number | Date | string): string =>
+	format(new Date(value), DATE_FORMATS.shortDayName);
 
 export const formatToday = () => formatDay(new Date());
