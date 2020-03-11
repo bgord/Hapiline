@@ -3,10 +3,9 @@ import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
 
-import {Button, Row, Text, Column, Header, Divider, Card, ErrorBanner} from "./ui";
+import {Button, Row, Text, Column, Header, Card, ErrorBanner, Badge} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
-import {Loader} from "./Loader";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
@@ -84,7 +83,7 @@ export const DashboardWindow = () => {
 					</ErrorBanner>
 				</Async.IfRejected>
 				<Async.IfFulfilled state={getDashboardStatsRequestState}>
-					<Row mt="48" mb="48">
+					<Row mt="24" mb="48">
 						<MotivationalText
 							untracked={howManyUntrackedHabitsToday}
 							total={howManyHabitsToday}
@@ -97,7 +96,6 @@ export const DashboardWindow = () => {
 							<Row mb="48">
 								<DaySummaryChart
 									maximumVotes={todayStats?.maximumVotes ?? 0}
-									className="h-4"
 									day={currentDate}
 									{...statsForToday}
 								/>
@@ -110,7 +108,6 @@ export const DashboardWindow = () => {
 							<Row mb="48">
 								<DaySummaryChart
 									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-									className="h-4"
 									day={currentDate}
 									{...statsForLastWeek}
 								/>
@@ -123,7 +120,6 @@ export const DashboardWindow = () => {
 							<Row mb="48">
 								<DaySummaryChart
 									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-									className="h-4"
 									day={currentDate}
 									{...statsForLastMonth}
 								/>
@@ -132,30 +128,43 @@ export const DashboardWindow = () => {
 					)}
 				</Async.IfFulfilled>
 				<Async.IfPending state={getDashboardStreakStatsRequestState}>
-					<Loader />
+					<Text>Loading...</Text>
 				</Async.IfPending>
 				<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
 					{regressStreakStats.length > 0 && (
 						<>
-							<Divider mt="24" />
 							<Header mt="24" mb="24" variant="extra-small">
 								Regress streaks
 							</Header>
-							<ul className="mb-6">
+							<Column
+								style={{
+									borderTop: "1px solid var(--gray-1)",
+									borderBottom: "1px solid var(--gray-1)",
+								}}
+							>
 								{regressStreakStats.map(habit => (
-									<li key={habit.id}>
-										<Text>{habit.regress_streak} day(s) regress streak - </Text>
+									<Row
+										py="12"
+										style={{
+											borderTop: "1px solid var(--gray-1)",
+											borderBottom: "1px solid var(--gray-1)",
+										}}
+										key={habit.id}
+										mainAxis="between"
+									>
 										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
 											<Text>{habit.name}</Text>
 										</Link>
-									</li>
+										<Badge variant="negative">{`${habit.regress_streak} day${
+											habit.regress_streak > 1 ? "s" : ""
+										} regress streak`}</Badge>
+									</Row>
 								))}
-							</ul>
+							</Column>
 						</>
 					)}
 					{progressStreakStats.length > 0 && (
 						<>
-							<Divider />
 							<Header mt="24" mb="24" variant="extra-small">
 								Progress streaks
 							</Header>
