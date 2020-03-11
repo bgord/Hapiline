@@ -1,7 +1,8 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Header, Column} from "./ui";
+import {Button, Row, Column, Text, Card} from "./ui";
+import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
 import {RequestErrorMessage} from "./ErrorMessages";
@@ -15,8 +16,8 @@ import {useTrackedHabits} from "./contexts/habits-context";
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
 	gridTemplateColumns: "repeat(7, 200px)",
-	gridTemplateRows: "repeat(6, 120px)",
-	gridGap: "10px",
+	gridTemplateRows: "repeat(6, 100px)",
+	gridGap: "12px",
 };
 
 export const Calendar: React.FC = () => {
@@ -54,22 +55,27 @@ export const Calendar: React.FC = () => {
 	});
 
 	return (
-		<Column mt="72" crossAxis="center">
-			<Row mb="72" width="auto">
+		<Column mt="24" crossAxis="center">
+			<Row mb="24" px="72" py="12" style={{background: "var(--gray-2)"}} width="auto">
 				<Button
-					variant="secondary"
+					variant="outlined"
 					onClick={widget.setPreviousMonth}
 					disabled={getMonthRequestState.isPending}
+					style={{width: "100px"}}
+					mr="24"
 				>
 					Previous
 				</Button>
-				<Header mx="48" variant="small">
+				<CalendarIcon />
+				<Text ml="6" variant="bold">
 					{date}
-				</Header>
+				</Text>
 				<Button
-					variant="secondary"
+					ml="24"
+					variant="outlined"
 					onClick={widget.setNextMonth}
 					disabled={getMonthRequestState.isPending}
+					style={{width: "100px"}}
 				>
 					Next
 				</Button>
@@ -77,7 +83,7 @@ export const Calendar: React.FC = () => {
 			<Async.IfRejected state={getMonthRequestState}>
 				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 			</Async.IfRejected>
-			<ul style={habitDialogGrid}>
+			<Card data-testid="calendar" style={{...habitDialogGrid, background: "var(--gray-0)"}} p="12">
 				{days.map(props => (
 					<Day
 						key={props.day.toString()}
@@ -85,7 +91,7 @@ export const Calendar: React.FC = () => {
 						{...props}
 					/>
 				))}
-			</ul>
+			</Card>
 		</Column>
 	);
 };

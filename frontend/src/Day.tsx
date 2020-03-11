@@ -1,12 +1,11 @@
 import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
-import useHover from "@react-hook/hover";
 
-import {Button, Row, Text} from "./ui";
+import {Button, Row, Text, Column} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
-import {formatDay} from "./config/DATE_FORMATS";
+import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
@@ -18,7 +17,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	...stats
 }) => {
 	const habits = useHabits();
-	const [isHovering, ref] = useHover();
 	const [queryParams, updateQueryParams] = useQueryParams();
 
 	const previewDay = queryParams?.preview_day;
@@ -39,38 +37,50 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 		});
 	}
 
+	const isNewHabitsTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
+
+	const newHabitsText = `${stats.createdHabitsCount} new habit${
+		(stats.createdHabitsCount ?? 0) > 1 ? "s" : ""
+	}`;
+
 	return (
-		<li
-			className="flex flex-col bg-green-100 hover:bg-green-200"
-			style={styles}
-			ref={ref as React.Ref<HTMLLIElement>}
+		<Column
+			data-testid="day"
+			style={{background: "var(--gray-0)", border: "2px solid var(--gray-1)", ...styles}}
 		>
-			{isDayDialogAvailable && (
-				<DaySummaryChart
-					maximumVotes={howManyHabitsAvailableAtThisDay}
-					className="h-2"
-					day={formatDay(thisDay)}
-					{...stats}
-				/>
-			)}
-			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
-				{day}
-			</Text>
+			<Row mainAxis="between" px="6">
+				<Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
+					{day}
+				</Text>
+				<Text>{formatShortDayName(day)}</Text>
+			</Row>
 			{isDayDialogAvailable && (
 				<>
-					<Button mx="auto" my="6" variant="outlined" hidden={!isHovering} onClick={openDialog}>
-						Show day
-					</Button>
-					<Row mt="auto" mainAxis="end" style={{padding: "4px"}}>
-						{stats && stats.createdHabitsCount && stats.createdHabitsCount > 0 ? (
+					<Row mainAxis="end" p="6" my="auto">
+						{isNewHabitsTextVisible ? (
 							<Text mr="auto" variant="dimmed">
-								NEW: {stats.createdHabitsCount}
+								{newHabitsText}
 							</Text>
 						) : null}
+						<Button
+							variant="bare"
+							onClick={openDialog}
+							style={{background: "var(--gray-1)"}}
+							ml="auto"
+						>
+							Show
+						</Button>
 					</Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
 			)}
-		</li>
+			{isDayDialogAvailable && (
+				<DaySummaryChart
+					maximumVotes={howManyHabitsAvailableAtThisDay}
+					day={formatDay(thisDay)}
+					{...stats}
+				/>
+			)}
+		</Column>
 	);
 };
