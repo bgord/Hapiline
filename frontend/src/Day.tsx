@@ -52,7 +52,8 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					<Row mt="auto" mainAxis="end" p="6">
 						{isNewTextVisible ? (
 							<Text mr="auto" variant="dimmed">
-								NEW: {stats.createdHabitsCount}
+								{stats.createdHabitsCount} NEW HABIT
+								{(stats.createdHabitsCount ?? 0) > 1 ? "s" : null}
 							</Text>
 						) : null}
 						<Button
