@@ -83,7 +83,11 @@ export const Calendar: React.FC = () => {
 			<Async.IfRejected state={getMonthRequestState}>
 				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 			</Async.IfRejected>
-			<Card style={{...habitDialogGrid, background: "var(--gray-0)"}} data-p="12">
+			<Card
+				data-testid="calendar"
+				style={{...habitDialogGrid, background: "var(--gray-0)"}}
+				data-p="12"
+			>
 				{days.map(props => (
 					<Day
 						key={props.day.toString()}

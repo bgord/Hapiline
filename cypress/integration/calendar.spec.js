@@ -29,13 +29,13 @@ describe("Calendar", () => {
 
 		cy.findByText("Next").click();
 		cy.findByText(currentMonthString);
-		cy.get("ul").within(() => {
-			cy.get("li").should("have.length", daysInCurrentMonth);
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
 
-			cy.get("li")
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("NEW: 4");
+					cy.findByText("4 new habits");
 					cy.findByText("2 habits with progress votes");
 					cy.findByText("1 habits with plateau votes");
 					cy.findByText("1 habits with regress votes");
@@ -46,23 +46,23 @@ describe("Calendar", () => {
 		cy.findByText("Previous").click();
 		cy.findByText(previousMonthString);
 
-		cy.get("ul").within(() => {
-			cy.get("li").should("have.length", daysInPreviousMonth);
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day").should("have.length", daysInPreviousMonth);
 			cy.findByText("new:").should("not.exist");
 		});
 
 		cy.findByText("Next").click();
 		cy.findByText(currentMonthString);
-		cy.get("ul").within(() => {
-			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findByText("NEW: 4");
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
+			cy.findByText("4 new habits");
 		});
 
 		cy.findByText("Next").click();
 		cy.findByText(currentMonthString);
-		cy.get("ul").within(() => {
-			cy.get("li").should("have.length", daysInCurrentMonth);
-			cy.findByText("NEW: 4");
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
+			cy.findByText("4 new habits");
 		});
 	});
 
@@ -74,13 +74,13 @@ describe("Calendar", () => {
 
 		cy.findByText(currentMonthString);
 
-		cy.get("ul").within(() => {
-			cy.get("li").should("have.length", daysInCurrentMonth);
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
 
-			cy.get("li")
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("NEW: 4");
+					cy.findByText("4 new habits");
 					cy.findByText("2 habits with progress votes");
 					cy.findByText("1 habits with plateau votes");
 					cy.findByText("1 habits with regress votes");
@@ -103,13 +103,13 @@ describe("Calendar", () => {
 
 		cy.visit(CALENDAR_URL);
 
-		cy.get("ul").within(() => {
-			cy.get("li").should("have.length", daysInCurrentMonth);
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
 
-			cy.get("li")
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
 				.within(() => {
-					cy.findByText("NEW: 5");
+					cy.findByText("5 new habits");
 					cy.findByText("2 habits with progress votes");
 					cy.findByText("1 habits with plateau votes");
 					cy.findByText("1 habits with regress votes");
@@ -145,15 +145,15 @@ describe("Calendar", () => {
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
-		cy.get("ul").within(() => {
-			cy.get("li")
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
 				.within(() => {
 					cy.findByTitle("No votes: 6/10 (60.00%)");
 					cy.findByTitle("Regress: 1/10 (10.00%)");
 					cy.findByTitle("Plateau: 1/10 (10.00%)");
 					cy.findByTitle("Progress: 2/10 (20.00%)");
-					cy.findByText("Show day").click({force: true});
+					cy.findByText("Show").click();
 				});
 		});
 
@@ -247,12 +247,10 @@ describe("Calendar", () => {
 
 		cy.findByText("Calendar").click();
 
-		cy.get("ul").within(() => {
-			cy.get("li")
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
-				.within(() => {
-					cy.findByText("Show day").click({force: true});
-				});
+				.within(() => cy.findByText("Show").click());
 		});
 
 		cy.findByRole("dialog").within(() => {
@@ -276,12 +274,10 @@ describe("Calendar", () => {
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
-		cy.get("ul").within(() => {
-			cy.get("li")
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
-				.within(() => {
-					cy.findByText("Show day").click({force: true});
-				});
+				.within(() => cy.findByText("Show").click());
 		});
 
 		cy.findByRole("dialog").within(() => {
@@ -330,12 +326,10 @@ describe("Calendar", () => {
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
-		cy.get("ul").within(() => {
-			cy.get("li")
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
-				.within(() => {
-					cy.findByText("Show day").click({force: true});
-				});
+				.within(() => cy.findByText("Show").click());
 		});
 
 		cy.findByRole("dialog").within(() => {
@@ -377,12 +371,10 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
 
-		cy.get("ul").within(() => {
-			cy.get("li")
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
 				.eq(currentDate - 1)
-				.within(() => {
-					cy.findByText("Show day").click({force: true});
-				});
+				.within(() => cy.findByText("Show").click());
 		});
 
 		cy.findByRole("dialog").within(() => {

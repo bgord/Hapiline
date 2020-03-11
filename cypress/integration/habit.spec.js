@@ -442,7 +442,7 @@ describe("Habit", () => {
 			cy.findByDisplayValue("Go to sleep");
 			cy.findByText("2019-01-01 00:00");
 			cy.findByText("2019-02-01 00:00");
-			cy.findByText("1 days regress streak");
+			cy.findByText("1 day regress streak");
 			cy.findByDisplayValue("Last week");
 			cy.findByText("Charts unavailable, please try again.");
 		});
