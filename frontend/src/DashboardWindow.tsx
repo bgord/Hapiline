@@ -3,11 +3,11 @@ import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
 
-import {Button, Row, Text, Column, Header, Divider, Card} from "./ui";
+import {Button, Row, Text, Column, Header, Card, ErrorBanner, Badge} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
-import {ErrorMessage} from "./ErrorMessages";
-import {Loader} from "./Loader";
+import {ExpandContractList} from "./ui/ExpandContractList";
+import {HabitItemDialog} from "./HabitItemDialog";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
@@ -16,7 +16,7 @@ import {useErrorNotification} from "./contexts/notifications-context";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
-	const [{subview}, updateQueryParams] = useQueryParams();
+	const [{subview, preview_habit_id}, updateQueryParams] = useQueryParams();
 	const triggerErrorNotification = useErrorNotification();
 
 	const getDashboardStatsRequestState = Async.useAsync({
@@ -71,21 +71,21 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<Card mx="auto" mt="72" mb="24" p="24" style={{maxWidth: "750px"}}>
-			<Column>
-				<Row>
-					<Header variant="large">Hello!</Header>
-					<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>
-						View today
-					</Button>
-				</Row>
+		<Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "750px"}}>
+			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+				<Header variant="large">Hello!</Header>
+				<Button variant="primary" onClick={redirectToCurrentDay}>
+					View today
+				</Button>
+			</Row>
+			<Column p="24">
 				<Async.IfRejected state={getDashboardStatsRequestState}>
-					<ErrorMessage className="mt-8">
+					<ErrorBanner p="6" mt="24">
 						Cannot load dashboard stats now, please try again.
-					</ErrorMessage>
+					</ErrorBanner>
 				</Async.IfRejected>
 				<Async.IfFulfilled state={getDashboardStatsRequestState}>
-					<Row mt="48" mb="48">
+					<Row mt="24" mb="48">
 						<MotivationalText
 							untracked={howManyUntrackedHabitsToday}
 							total={howManyHabitsToday}
@@ -95,10 +95,9 @@ export const DashboardWindow = () => {
 					{howManyHabitsToday > 0 && (
 						<Column data-testid="chart-today">
 							<Text variant="dimmed">Votes today</Text>
-							<Row mb="48">
+							<Row mb="24">
 								<DaySummaryChart
 									maximumVotes={todayStats?.maximumVotes ?? 0}
-									className="h-4"
 									day={currentDate}
 									{...statsForToday}
 								/>
@@ -108,10 +107,9 @@ export const DashboardWindow = () => {
 					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
 						<Column data-testid="chart-last-week">
 							<Text variant="dimmed">Votes last week</Text>
-							<Row mb="48">
+							<Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-									className="h-4"
 									day={currentDate}
 									{...statsForLastWeek}
 								/>
@@ -121,10 +119,9 @@ export const DashboardWindow = () => {
 					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
 						<Column data-testid="chart-last-month">
 							<Text variant="dimmed">Votes last month</Text>
-							<Row mb="48">
+							<Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-									className="h-4"
 									day={currentDate}
 									{...statsForLastMonth}
 								/>
@@ -133,43 +130,86 @@ export const DashboardWindow = () => {
 					)}
 				</Async.IfFulfilled>
 				<Async.IfPending state={getDashboardStreakStatsRequestState}>
-					<Loader />
+					<Text>Loading...</Text>
 				</Async.IfPending>
 				<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
-					{progressStreakStats.length > 0 && (
-						<>
-							<Divider />
-							<Header mt="24" mb="24" variant="extra-small">
-								Progress streaks
-							</Header>
-							<ul>
-								{progressStreakStats.map(habit => (
-									<li key={habit.id}>
-										<Text>{habit.progress_streak} day(s) progress streak - </Text>
-										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-											<Text>{habit.name}</Text>
-										</Link>
-									</li>
-								))}
-							</ul>
-						</>
-					)}
 					{regressStreakStats.length > 0 && (
 						<>
-							<Divider mt="24" />
-							<Header mt="24" mb="24" variant="extra-small">
-								Regress streaks
-							</Header>
-							<ul className="mb-6">
-								{regressStreakStats.map(habit => (
-									<li key={habit.id}>
-										<Text>{habit.regress_streak} day(s) regress streak - </Text>
-										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-											<Text>{habit.name}</Text>
-										</Link>
-									</li>
-								))}
-							</ul>
+							<Row mt="24" mb="24" crossAxis="center">
+								<Header variant="extra-small">Regress streaks</Header>
+								<Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+									{regressStreakStats.length}
+								</Badge>
+							</Row>
+							<Column
+								style={{
+									borderTop: "1px solid var(--gray-1)",
+									borderBottom: "1px solid var(--gray-1)",
+								}}
+							>
+								<ExpandContractList max={5}>
+									{regressStreakStats.map(habit => (
+										<Row
+											py="12"
+											style={{
+												borderTop: "1px solid var(--gray-1)",
+												borderBottom: "1px solid var(--gray-1)",
+											}}
+											key={habit.id}
+											mainAxis="between"
+										>
+											<Link
+												to={constructUrl("dashboard", {
+													subview: "habit_preview",
+													preview_habit_id: habit.id.toString(),
+												})}
+											>
+												<Text>{habit.name}</Text>
+											</Link>
+											<Badge variant="negative">{`${habit.regress_streak} day${
+												habit.regress_streak > 1 ? "s" : ""
+											} regress streak`}</Badge>
+										</Row>
+									))}
+								</ExpandContractList>
+							</Column>
+						</>
+					)}
+					{progressStreakStats.length > 0 && (
+						<>
+							<Row mt="48" mb="24" crossAxis="center">
+								<Header variant="extra-small">Progress streaks</Header>
+								<Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+									{progressStreakStats.length}
+								</Badge>
+							</Row>
+							<Column style={{borderTop: "1px solid var(--gray-1)"}}>
+								<ExpandContractList max={5}>
+									{progressStreakStats.map(habit => (
+										<Row
+											py="12"
+											style={{
+												borderTop: "1px solid var(--gray-1)",
+												borderBottom: "1px solid var(--gray-1)",
+											}}
+											key={habit.id}
+											mainAxis="between"
+										>
+											<Link
+												to={constructUrl("dashboard", {
+													subview: "habit_preview",
+													preview_habit_id: habit.id.toString(),
+												})}
+											>
+												<Text>{habit.name}</Text>
+											</Link>
+											<Badge variant="positive">{`${habit.progress_streak} day${
+												habit.progress_streak > 1 ? "s" : ""
+											} progress streak`}</Badge>
+										</Row>
+									))}
+								</ExpandContractList>
+							</Column>
 						</>
 					)}
 				</Async.IfFulfilled>
@@ -178,6 +218,12 @@ export const DashboardWindow = () => {
 						day={currentDate}
 						onResolve={getDashboardStatsRequestState.reload}
 						{...statsForToday}
+					/>
+				)}
+				{subview === "habit_preview" && !isNaN(Number(preview_habit_id)) && (
+					<HabitItemDialog
+						habitId={Number(preview_habit_id)}
+						closeDialog={() => updateQueryParams("dashboard", {})}
 					/>
 				)}
 			</Column>

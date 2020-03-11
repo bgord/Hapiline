@@ -11,7 +11,7 @@
 	text-transform: uppercase;
 	font-size: 14px;
 	font-weight: 600;
-	color: var(--gray-6);
+	color: var(--gray-7);
 }
 .c-text[data-variant="semi-bold"] {
 	font-weight: 500;
