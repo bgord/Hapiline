@@ -8,18 +8,31 @@ import {
 	useEditableFieldValue,
 	useEditableFieldState,
 } from "./hooks/useEditableField";
-import {CloseIcon, Textarea, Field, Row, Label, Text, Header} from "./ui";
+import {
+	CloseIcon,
+	Textarea,
+	Field,
+	Row,
+	Label,
+	Text,
+	Header,
+	Badge,
+	InfoBanner,
+	Column,
+	Error,
+	ErrorBanner,
+} from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
-import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
 
@@ -29,6 +42,7 @@ interface HabitItemDialogProps {
 }
 
 export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeDialog}) => {
+	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
 
 	const triggerErrorNotification = useErrorNotification();
@@ -47,79 +61,99 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 	return (
 		<Dialog
-			className="max-w-screen-lg overflow-auto h-full"
 			onDismiss={dismissDialog}
 			aria-label="Show habit preview"
-			style={{maxHeight: "600px"}}
+			style={{maxHeight: "600px", overflow: "auto"}}
 		>
-			<Async.IfPending state={habitRequestState}>Loading details...</Async.IfPending>
-			<Async.IfRejected state={habitRequestState}>
-				<RequestErrorMessage>Couldn't fetch task details, please try again.</RequestErrorMessage>
-			</Async.IfRejected>
-			{habit?.id && (
-				<>
-					<Row mainAxis="between">
-						<Header variant="small">Habit preview</Header>
-						<CloseIcon onClick={dismissDialog} />
-					</Row>
-					<Row mt="24">
-						<EditableHabitScoreSelect
-							{...habit}
-							setHabitItem={habitRequestState.setData}
-							key={habit?.score}
-						/>
-						<EditableHabitStrengthSelect
-							{...habit}
-							setHabitItem={habitRequestState.setData}
-							key={habit?.strength}
-						/>
-						<EditableHabitNameInput
-							{...habit}
-							setHabitItem={habitRequestState.setData}
-							key={habit?.name}
-						/>
-					</Row>
-					{!habit.is_trackable && <div className="mt-8">This habit is not tracked.</div>}
-					{habit.is_trackable && (
-						<>
-							<Text mt="24" style={{textTransform: "uppercase"}}>
-								<div className="text-green-600" hidden={!habit.progress_streak}>
-									Progress streak: {habit.progress_streak} days
-								</div>
-								<div className="text-red-600" hidden={!habit.regress_streak}>
-									Regress streak: {habit.regress_streak} days
-								</div>
-								<div
-									className="text-gray-600"
-									hidden={Boolean(habit.regress_streak || habit.progress_streak)}
-								>
-									No streak today
-								</div>
-							</Text>
-							<HabitCharts id={habit.id} />
-						</>
-					)}
-					<EditableDescription
-						description={habit.description}
-						habitId={habit.id}
-						onResolve={habitRequestState.reload}
-					/>
-					{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-					<Row mainAxis="between">
-						<dl className="flex items-baseline py-8">
-							<dt>
+			<Column>
+				<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+					<Header variant="small">Habit preview</Header>
+					<CloseIcon onClick={dismissDialog} />
+				</Row>
+
+				<Async.IfPending state={habitRequestState}>
+					<Text ml="24" mt="48">
+						Loading details...
+					</Text>
+				</Async.IfPending>
+				<Async.IfRejected state={habitRequestState}>
+					<ErrorBanner>Couldn't fetch task details, please try again.</ErrorBanner>
+				</Async.IfRejected>
+
+				{habit?.id && (
+					<Column px="24">
+						<Row mt="24" style={{marginLeft: "-12px"}}>
+							<Row mr="6">
+								<EditableHabitNameInput
+									{...habit}
+									setHabitItem={habitRequestState.setData}
+									key={habit?.name}
+								/>
+							</Row>
+							<EditableHabitScoreSelect
+								{...habit}
+								setHabitItem={habitRequestState.setData}
+								key={habit?.score}
+							/>
+							<EditableHabitStrengthSelect
+								{...habit}
+								setHabitItem={habitRequestState.setData}
+								key={habit?.strength}
+							/>
+						</Row>
+						{!habit.is_trackable && (
+							<Row mt="24">
+								<Badge variant="neutral">Untracked</Badge>
+								<InfoBanner px="6" py="3" ml="24">
+									You cannot vote for an untracked habit.
+								</InfoBanner>
+							</Row>
+						)}
+						<Column mt="48">
+							{habit.is_trackable && (
+								<HabitCharts id={habit.id}>
+									<Badge hidden={!habit.progress_streak} variant="positive">
+										{habit.progress_streak} day{(habit.progress_streak ?? 0) > 1 ? "s " : " "}
+										progress streak
+									</Badge>
+									<Badge hidden={!habit.regress_streak} variant="negative">
+										{habit.regress_streak} day{(habit.regress_streak ?? 0) > 1 ? "s " : " "}
+										regress streak
+									</Badge>
+									<Badge
+										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
+										variant="neutral"
+									>
+										No streak today
+									</Badge>
+								</HabitCharts>
+							)}
+							<Column mt="24">
+								<EditableDescription
+									description={habit.description}
+									habitId={habit.id}
+									onResolve={habitRequestState.reload}
+								/>
+							</Column>
+							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
+							<Row my="48" mainAxis="between" crossAxis="center">
 								<Text variant="dimmed">Created at:</Text>
-							</dt>
-							<dd className="text-sm ml-1 mr-4 font-mono">{formatTime(habit?.created_at)}</dd>
-							<dt>
-								<Text variant="dimmed">Updated at:</Text>
-							</dt>
-							<dd className="text-sm ml-1 font-mono">{formatTime(habit?.updated_at)}</dd>
-						</dl>
-						<DeleteHabitButton {...habit} />
-					</Row>
-				</>
-			)}
+								<Text variant="monospaced" ml="6">
+									{formatTime(habit?.created_at)}
+								</Text>
+								<Text variant="dimmed" ml="24">
+									Last updated at:
+								</Text>
+								<Text variant="monospaced" ml="6">
+									{formatTime(habit?.updated_at)}
+								</Text>
+
+								<DeleteHabitButton {...habit} />
+							</Row>
+						</Column>
+					</Column>
+				)}
+			</Column>
 		</Dialog>
 	);
 };
@@ -166,7 +200,7 @@ const EditableDescription: React.FC<{
 				/>
 			</Field>
 			<Async.IfRejected state={updateDescriptionRequestState}>
-				<ErrorMessage>{descriptionInlineErrorMessage}</ErrorMessage>
+				<Error>{descriptionInlineErrorMessage}</Error>
 			</Async.IfRejected>
 			<Row>
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>

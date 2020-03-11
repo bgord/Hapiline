@@ -62,7 +62,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				crossAxis="center"
 				title={regressVotesCellTitle}
 				py="0"
-				px={stats.noVotesCountStats ? "3" : "0"}
+				px="3"
 				style={{
 					fontWeight: "bold",
 					flexBasis: `${regressVotesPercentage}%`,
@@ -81,7 +81,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				crossAxis="center"
 				title={plateauVotesCellTitle}
 				py="0"
-				px={stats.noVotesCountStats ? "3" : "0"}
+				px="3"
 				style={{
 					fontWeight: "bold",
 					flexBasis: `${plateauVotesPercentage}%`,
@@ -100,7 +100,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				crossAxis="center"
 				title={progressVotesCellTitle}
 				py="0"
-				px={stats.noVotesCountStats ? "3" : "0"}
+				px="3"
 				style={{
 					fontWeight: "bold",
 					flexBasis: `${progressVotesPercentage}%`,
@@ -156,7 +156,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{habitsAddedAtThisDay.map(habit => (
-							<CompantHabitItem key={habit.id} {...habit} />
+							<CompactHabitItem key={habit.id} {...habit} />
 						))}
 					</Column>
 				</TabPanel>
@@ -177,7 +177,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						mt="24"
 					>
 						{untrackedHabits.map(habit => (
-							<CompantHabitItem key={habit.id} {...habit} />
+							<CompactHabitItem key={habit.id} {...habit} />
 						))}
 					</Column>
 				</TabPanel>
@@ -195,7 +195,7 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 	});
 }
 
-const CompantHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
+const CompactHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
 	<Row
 		py="12"
 		style={{

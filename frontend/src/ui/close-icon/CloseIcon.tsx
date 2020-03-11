@@ -10,7 +10,9 @@ import {Close} from "../icons/Close";
 import {Button} from "../button/Button";
 import {Margins} from "../margins";
 
-export const CloseIcon: React.FC<JSX.IntrinsicElements["button"] & Margins> = props => (
+type CloseIconProps = React.ComponentPropsWithoutRef<"button"> & Margins;
+
+export const CloseIcon: React.FC<CloseIconProps> = props => (
 	<Button variant="bare" {...props}>
 		<VisuallyHidden>Close dialog</VisuallyHidden>
 		<Close />

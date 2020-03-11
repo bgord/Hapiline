@@ -3,9 +3,9 @@ import * as Async from "react-async";
 import React from "react";
 
 import {ErrorMessage} from "./ErrorMessages";
-import {Field, Select, Row, Label} from "./ui";
+import {Field, Select, Row, Label, Text} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
-import {IVoteChartItem, Vote} from "./interfaces/IDayVote";
+import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorNotification} from "./contexts/notifications-context";
@@ -18,13 +18,7 @@ const chartRanges: {[key in ChartRange]: string} = {
 	all_time: "all_time",
 };
 
-const voteToBgColor: {[key in NonNullable<Vote>]: string} = {
-	progress: "bg-green-300",
-	plateau: "bg-gray-300",
-	regress: "bg-red-300",
-};
-
-export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
+export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 	const [dateRange, setChartRange] = React.useState<ChartRange>("last_week");
 	const triggerErrorNotification = useErrorNotification();
 
@@ -36,29 +30,43 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 		onReject: () => triggerErrorNotification("Fetching chart data failed."),
 	});
 
-	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length;
+	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
+
+	const regressVotes =
+		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress").length ?? 0;
+	const plateauVotes =
+		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "plateau").length ?? 0;
+	const progressVotes =
+		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress").length ?? 0;
+
+	const regressVotesPrct = ((regressVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
+	const plateauVotesPrct = ((plateauVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
+	const progressVotesPrct = ((progressVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
 
 	return (
 		<>
-			<Field mt="48" variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
-				<Label mr="12" htmlFor="date_range">
-					Select date range:
-				</Label>
-				<Select
-					id="date_range"
-					value={dateRange}
-					onChange={event => {
-						const {value} = event.target;
-						if (isChartRange(value) && value !== dateRange) {
-							setChartRange(value);
-						}
-					}}
-				>
-					<option value="last_week">Last week</option>
-					<option value="last_month">Last month</option>
-					<option value="all_time">All time</option>
-				</Select>
-			</Field>
+			<Row mainAxis="between">
+				<Field variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
+					<Label mr="12" htmlFor="date_range">
+						Select date range:
+					</Label>
+					<Select
+						id="date_range"
+						value={dateRange}
+						onChange={event => {
+							const {value} = event.target;
+							if (isChartRange(value) && value !== dateRange) {
+								setChartRange(value);
+							}
+						}}
+					>
+						<option value="last_week">Last week</option>
+						<option value="last_month">Last month</option>
+						<option value="all_time">All time</option>
+					</Select>
+				</Field>
+				{children}
+			</Row>
 			<Async.IfFulfilled state={habitVoteChartRequestState}>
 				<Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
@@ -69,6 +77,29 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id}) => {
 							{...item}
 						/>
 					))}
+				</Row>
+				<Row mt="6" crossAxis="center">
+					<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
+					<Text>
+						{regressVotes} regress votes ({regressVotesPrct}%)
+					</Text>
+					<Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
+						·
+					</Text>
+					<Text>
+						{plateauVotes} plateau votes ({plateauVotesPrct}%)
+					</Text>
+					<Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
+						·
+					</Text>
+					<Text>
+						{progressVotes} progress votes ({progressVotesPrct}%)
+					</Text>
+
+					<Text ml="auto" variant="bold">
+						{howManyHabitVoteChartItems}
+					</Text>
+					<Text ml="6">in total</Text>
 				</Row>
 			</Async.IfFulfilled>
 			<Async.IfRejected state={habitVoteChartRequestState}>
@@ -85,15 +116,20 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit
 	...rest
 }) => {
 	const date = formatDay(day);
-	const bgColor = voteToBgColor[vote ?? "plateau"];
+	const backgroundColor = voteToBgColor.get(vote);
+
 	const title = `${date} - ${vote ?? "no vote"}`;
+
 	return (
 		<Link
 			to={`/calendar?preview_day=${date}&highlighted_habit_id=${habitId}`}
 			title={title}
 			key={day}
-			className={`h-8 border-r-2 border-gray-500 ${bgColor}`}
-			{...rest}
+			style={{
+				backgroundColor,
+				height: "24px",
+				...rest.style,
+			}}
 		/>
 	);
 };

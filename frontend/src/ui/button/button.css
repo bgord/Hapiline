@@ -105,3 +105,8 @@ button::-moz-focus-inner {
 	background: var(--gray-0);
 	border-radius: var(--radius-m);
 }
+
+.c-button[data-variant="danger"] {
+	border: 2px solid var(--red-dark);
+	color: var(--red-dark);
+}
