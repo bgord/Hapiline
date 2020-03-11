@@ -11,7 +11,7 @@ export const Text: React.FC<JSX.IntrinsicElements["div"] &
 		variant?: TextVariant;
 	}> = ({variant = "regular", m, mx, my, mt, mr, mb, ml, ...props}) => (
 	<span
-		data-m={mt}
+		data-m={m}
 		data-mx={mx}
 		data-my={my}
 		data-mt={mt}
