@@ -14,9 +14,10 @@ import {useUserProfile} from "./contexts/auth-context";
 export const ProfileWindow = () => {
 	return (
 		<Column ml="auto" mr="auto" mt="72" style={{maxWidth: "750px"}}>
-			<Card p="24">
-				<Header variant="large">Profile settings</Header>
-				<Divider mt="12" style={{width: "200px"}} />
+			<Card>
+				<Row mt="12" p="24" style={{background: "var(--gray-1)"}}>
+					<Header variant="large">Profile settings</Header>
+				</Row>
 				<ChangeEmail />
 				<ChangePassword />
 				<DeleteAccount />
