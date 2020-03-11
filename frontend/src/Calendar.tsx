@@ -1,7 +1,8 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Header, Column} from "./ui";
+import {Button, Row, Column, Text} from "./ui";
+import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
 import {RequestErrorMessage} from "./ErrorMessages";
@@ -54,22 +55,27 @@ export const Calendar: React.FC = () => {
 	});
 
 	return (
-		<Column mt="48" crossAxis="center">
-			<Row mb="24" width="auto">
+		<Column mt="24" crossAxis="center">
+			<Row px="72" py="12" style={{background: "var(--gray-2)"}} width="auto">
 				<Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
 					disabled={getMonthRequestState.isPending}
+					style={{width: "100px"}}
+					mr="24"
 				>
 					Previous
 				</Button>
-				<Header mx="24" variant="small">
+				<CalendarIcon />
+				<Text ml="6" variant="bold">
 					{date}
-				</Header>
+				</Text>
 				<Button
+					ml="24"
 					variant="outlined"
 					onClick={widget.setNextMonth}
 					disabled={getMonthRequestState.isPending}
+					style={{width: "100px"}}
 				>
 					Next
 				</Button>

@@ -9,8 +9,11 @@ type TextVariant = "regular" | "bold" | "dimmed" | "semi-bold" | "light" | "mono
 export const Text: React.FC<JSX.IntrinsicElements["div"] &
 	Margins & {
 		variant?: TextVariant;
-	}> = ({variant = "regular", mt, mr, mb, ml, ...props}) => (
+	}> = ({variant = "regular", m, mx, my, mt, mr, mb, ml, ...props}) => (
 	<span
+		data-m={mt}
+		data-mx={mx}
+		data-my={my}
 		data-mt={mt}
 		data-mr={mr}
 		data-mb={mb}
