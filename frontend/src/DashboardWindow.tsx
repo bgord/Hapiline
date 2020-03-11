@@ -165,19 +165,34 @@ export const DashboardWindow = () => {
 					)}
 					{progressStreakStats.length > 0 && (
 						<>
-							<Header mt="24" mb="24" variant="extra-small">
+							<Header mt="72" mb="24" variant="extra-small">
 								Progress streaks
 							</Header>
-							<ul>
+							<Column
+								style={{
+									borderTop: "1px solid var(--gray-1)",
+									borderBottom: "1px solid var(--gray-1)",
+								}}
+							>
 								{progressStreakStats.map(habit => (
-									<li key={habit.id}>
-										<Text>{habit.progress_streak} day(s) progress streak - </Text>
+									<Row
+										py="12"
+										style={{
+											borderTop: "1px solid var(--gray-1)",
+											borderBottom: "1px solid var(--gray-1)",
+										}}
+										key={habit.id}
+										mainAxis="between"
+									>
 										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
 											<Text>{habit.name}</Text>
 										</Link>
-									</li>
+										<Badge variant="positive">{`${habit.progress_streak} day${
+											habit.progress_streak > 1 ? "s" : ""
+										} progress streak`}</Badge>
+									</Row>
 								))}
-							</ul>
+							</Column>
 						</>
 					)}
 				</Async.IfFulfilled>
