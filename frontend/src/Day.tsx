@@ -59,7 +59,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 							mb="6"
 							ml="auto"
 						>
-							Show day
+							Show
 						</Button>
 					</Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
