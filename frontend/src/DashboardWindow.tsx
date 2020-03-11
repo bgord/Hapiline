@@ -136,24 +136,6 @@ export const DashboardWindow = () => {
 					<Loader />
 				</Async.IfPending>
 				<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
-					{progressStreakStats.length > 0 && (
-						<>
-							<Divider />
-							<Header mt="24" mb="24" variant="extra-small">
-								Progress streaks
-							</Header>
-							<ul>
-								{progressStreakStats.map(habit => (
-									<li key={habit.id}>
-										<Text>{habit.progress_streak} day(s) progress streak - </Text>
-										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-											<Text>{habit.name}</Text>
-										</Link>
-									</li>
-								))}
-							</ul>
-						</>
-					)}
 					{regressStreakStats.length > 0 && (
 						<>
 							<Divider mt="24" />
@@ -164,6 +146,24 @@ export const DashboardWindow = () => {
 								{regressStreakStats.map(habit => (
 									<li key={habit.id}>
 										<Text>{habit.regress_streak} day(s) regress streak - </Text>
+										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+											<Text>{habit.name}</Text>
+										</Link>
+									</li>
+								))}
+							</ul>
+						</>
+					)}
+					{progressStreakStats.length > 0 && (
+						<>
+							<Divider />
+							<Header mt="24" mb="24" variant="extra-small">
+								Progress streaks
+							</Header>
+							<ul>
+								{progressStreakStats.map(habit => (
+									<li key={habit.id}>
+										<Text>{habit.progress_streak} day(s) progress streak - </Text>
 										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
 											<Text>{habit.name}</Text>
 										</Link>
