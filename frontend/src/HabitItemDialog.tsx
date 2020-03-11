@@ -113,10 +113,12 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							{habit.is_trackable && (
 								<HabitCharts id={habit.id}>
 									<Badge hidden={!habit.progress_streak} variant="positive">
-										{habit.progress_streak} days progress streak
+										{habit.progress_streak} day{(habit.progress_streak ?? 0) > 1 ? "s " : " "}
+										progress streak
 									</Badge>
 									<Badge hidden={!habit.regress_streak} variant="negative">
-										{habit.regress_streak} days regress streak
+										{habit.regress_streak} day{(habit.regress_streak ?? 0) > 1 ? "s " : " "}
+										regress streak
 									</Badge>
 									<Badge
 										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
