@@ -3,10 +3,9 @@ import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
 
-import {Button, Row, Text, Column, Header, Divider, Card} from "./ui";
+import {Button, Row, Text, Column, Header, Divider, Card, ErrorBanner} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
-import {ErrorMessage} from "./ErrorMessages";
 import {Loader} from "./Loader";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
@@ -71,18 +70,18 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<Card mx="auto" mt="72" mb="24" style={{maxWidth: "750px"}}>
-			<Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+		<Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "750px"}}>
+			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
 				<Header variant="large">Hello!</Header>
-				<Button ml="auto" variant="primary" onClick={redirectToCurrentDay}>
+				<Button variant="primary" onClick={redirectToCurrentDay}>
 					View today
 				</Button>
 			</Row>
-			<Column>
+			<Column p="24">
 				<Async.IfRejected state={getDashboardStatsRequestState}>
-					<ErrorMessage className="mt-8">
+					<ErrorBanner p="6" mt="24">
 						Cannot load dashboard stats now, please try again.
-					</ErrorMessage>
+					</ErrorBanner>
 				</Async.IfRejected>
 				<Async.IfFulfilled state={getDashboardStatsRequestState}>
 					<Row mt="48" mb="48">

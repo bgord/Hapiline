@@ -1,11 +1,10 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Column, Text, Card} from "./ui";
+import {Button, Row, Column, Text, Card, ErrorBanner} from "./ui";
 import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
-import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -81,7 +80,9 @@ export const Calendar: React.FC = () => {
 				</Button>
 			</Row>
 			<Async.IfRejected state={getMonthRequestState}>
-				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
+				<ErrorBanner p="6" my="24">
+					{errorMessage}
+				</ErrorBanner>
 			</Async.IfRejected>
 			<Card data-testid="calendar" style={{...habitDialogGrid, background: "var(--gray-0)"}} p="12">
 				{days.map(props => (
