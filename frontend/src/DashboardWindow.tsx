@@ -11,6 +11,7 @@ import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification} from "./contexts/notifications-context";
+import {ExpandContractList} from "./ui/ExpandContractList";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
@@ -142,56 +143,55 @@ export const DashboardWindow = () => {
 									borderBottom: "1px solid var(--gray-1)",
 								}}
 							>
-								{regressStreakStats.map(habit => (
-									<Row
-										py="12"
-										style={{
-											borderTop: "1px solid var(--gray-1)",
-											borderBottom: "1px solid var(--gray-1)",
-										}}
-										key={habit.id}
-										mainAxis="between"
-									>
-										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-											<Text>{habit.name}</Text>
-										</Link>
-										<Badge variant="negative">{`${habit.regress_streak} day${
-											habit.regress_streak > 1 ? "s" : ""
-										} regress streak`}</Badge>
-									</Row>
-								))}
+								<ExpandContractList max={5}>
+									{regressStreakStats.map(habit => (
+										<Row
+											py="12"
+											style={{
+												borderTop: "1px solid var(--gray-1)",
+												borderBottom: "1px solid var(--gray-1)",
+											}}
+											key={habit.id}
+											mainAxis="between"
+										>
+											<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+												<Text>{habit.name}</Text>
+											</Link>
+											<Badge variant="negative">{`${habit.regress_streak} day${
+												habit.regress_streak > 1 ? "s" : ""
+											} regress streak`}</Badge>
+										</Row>
+									))}
+								</ExpandContractList>
 							</Column>
 						</>
 					)}
 					{progressStreakStats.length > 0 && (
 						<>
-							<Header mt="72" mb="24" variant="extra-small">
+							<Header mt="48" mb="24" variant="extra-small">
 								Progress streaks
 							</Header>
-							<Column
-								style={{
-									borderTop: "1px solid var(--gray-1)",
-									borderBottom: "1px solid var(--gray-1)",
-								}}
-							>
-								{progressStreakStats.map(habit => (
-									<Row
-										py="12"
-										style={{
-											borderTop: "1px solid var(--gray-1)",
-											borderBottom: "1px solid var(--gray-1)",
-										}}
-										key={habit.id}
-										mainAxis="between"
-									>
-										<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-											<Text>{habit.name}</Text>
-										</Link>
-										<Badge variant="positive">{`${habit.progress_streak} day${
-											habit.progress_streak > 1 ? "s" : ""
-										} progress streak`}</Badge>
-									</Row>
-								))}
+							<Column style={{borderTop: "1px solid var(--gray-1)"}}>
+								<ExpandContractList max={5}>
+									{progressStreakStats.map(habit => (
+										<Row
+											py="12"
+											style={{
+												borderTop: "1px solid var(--gray-1)",
+												borderBottom: "1px solid var(--gray-1)",
+											}}
+											key={habit.id}
+											mainAxis="between"
+										>
+											<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+												<Text>{habit.name}</Text>
+											</Link>
+											<Badge variant="positive">{`${habit.progress_streak} day${
+												habit.progress_streak > 1 ? "s" : ""
+											} progress streak`}</Badge>
+										</Row>
+									))}
+								</ExpandContractList>
 							</Column>
 						</>
 					)}
