@@ -45,14 +45,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			style={styles}
 			ref={ref as React.Ref<HTMLLIElement>}
 		>
-			{isDayDialogAvailable && (
-				<DaySummaryChart
-					maximumVotes={howManyHabitsAvailableAtThisDay}
-					className="h-2"
-					day={formatDay(thisDay)}
-					{...stats}
-				/>
-			)}
 			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 				{day}
 			</Text>
@@ -70,6 +62,14 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					</Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
+			)}
+			{isDayDialogAvailable && (
+				<DaySummaryChart
+					maximumVotes={howManyHabitsAvailableAtThisDay}
+					className="h-2"
+					day={formatDay(thisDay)}
+					{...stats}
+				/>
 			)}
 		</li>
 	);
