@@ -2,7 +2,7 @@ import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 import useHover from "@react-hook/hover";
 
-import {Button, Row, Text} from "./ui";
+import {Button, Row, Text, Column} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
@@ -40,11 +40,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	}
 
 	return (
-		<li
-			className="flex flex-col bg-green-100 hover:bg-green-200"
-			style={styles}
-			ref={ref as React.Ref<HTMLLIElement>}
-		>
+		<Column style={{background: "var(--gray-0)", ...styles}} ref={ref as React.Ref<HTMLDivElement>}>
 			<Text mt="6" variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 				{day}
 			</Text>
@@ -71,6 +67,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					{...stats}
 				/>
 			)}
-		</li>
+		</Column>
 	);
 };
