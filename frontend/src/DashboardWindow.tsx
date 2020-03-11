@@ -6,16 +6,17 @@ import deepEqual from "fast-deep-equal";
 import {Button, Row, Text, Column, Header, Card, ErrorBanner, Badge} from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
+import {ExpandContractList} from "./ui/ExpandContractList";
+import {HabitItemDialog} from "./HabitItemDialog";
 import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification} from "./contexts/notifications-context";
-import {ExpandContractList} from "./ui/ExpandContractList";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
-	const [{subview}, updateQueryParams] = useQueryParams();
+	const [{subview, preview_habit_id}, updateQueryParams] = useQueryParams();
 	const triggerErrorNotification = useErrorNotification();
 
 	const getDashboardStatsRequestState = Async.useAsync({
@@ -157,7 +158,12 @@ export const DashboardWindow = () => {
 											key={habit.id}
 											mainAxis="between"
 										>
-											<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+											<Link
+												to={constructUrl("dashboard", {
+													subview: "habit_preview",
+													preview_habit_id: habit.id.toString(),
+												})}
+											>
 												<Text>{habit.name}</Text>
 											</Link>
 											<Badge variant="negative">{`${habit.regress_streak} day${
@@ -189,7 +195,12 @@ export const DashboardWindow = () => {
 											key={habit.id}
 											mainAxis="between"
 										>
-											<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
+											<Link
+												to={constructUrl("dashboard", {
+													subview: "habit_preview",
+													preview_habit_id: habit.id.toString(),
+												})}
+											>
 												<Text>{habit.name}</Text>
 											</Link>
 											<Badge variant="positive">{`${habit.progress_streak} day${
@@ -207,6 +218,12 @@ export const DashboardWindow = () => {
 						day={currentDate}
 						onResolve={getDashboardStatsRequestState.reload}
 						{...statsForToday}
+					/>
+				)}
+				{subview === "habit_preview" && !isNaN(Number(preview_habit_id)) && (
+					<HabitItemDialog
+						habitId={Number(preview_habit_id)}
+						closeDialog={() => updateQueryParams("dashboard", {})}
 					/>
 				)}
 			</Column>
