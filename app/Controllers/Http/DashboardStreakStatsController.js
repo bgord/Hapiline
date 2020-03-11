@@ -28,10 +28,12 @@ class DashboardStreakStatsController {
 		}
 
 		return response.send({
-			progress_streaks: result.progress_streaks.sort(
-				(a, b) => a.progress_streak > b.progress_streak,
+			progress_streaks: Array.from(result.progress_streaks).sort((a, b) =>
+				a.progress_streak > b.progress_streak ? -1 : 1,
 			),
-			regress_streaks: result.regress_streaks.sort((a, b) => a.regress_streak > b.regress_streak),
+			regress_streaks: Array.from(result.regress_streaks).sort((a, b) =>
+				a.regress_streak > b.regress_streak ? -1 : 1,
+			),
 		});
 	}
 }
