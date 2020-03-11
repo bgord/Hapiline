@@ -37,7 +37,11 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 		});
 	}
 
-	const isNewTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
+	const isNewHabitsTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
+
+	const newHabitsText = `${stats.createdHabitsCount} new habit${
+		(stats.createdHabitsCount ?? 0) > 1 ? "s" : ""
+	}`;
 
 	return (
 		<Column
@@ -53,11 +57,9 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			{isDayDialogAvailable && (
 				<>
 					<Row mainAxis="end" p="6" my="auto">
-						{isNewTextVisible ? (
+						{isNewHabitsTextVisible ? (
 							<Text mr="auto" variant="dimmed">
-								{`${stats.createdHabitsCount} new habit${
-									(stats.createdHabitsCount ?? 0) > 1 ? "s" : ""
-								}`}
+								{newHabitsText}
 							</Text>
 						) : null}
 						<Button
