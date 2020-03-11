@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Column, Text} from "./ui";
+import {Button, Row, Column, Text, Card} from "./ui";
 import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
@@ -16,7 +16,7 @@ import {useTrackedHabits} from "./contexts/habits-context";
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
 	gridTemplateColumns: "repeat(7, 200px)",
-	gridTemplateRows: "repeat(6, 120px)",
+	gridTemplateRows: "repeat(6, 100px)",
 	gridGap: "12px",
 };
 
@@ -83,7 +83,7 @@ export const Calendar: React.FC = () => {
 			<Async.IfRejected state={getMonthRequestState}>
 				<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 			</Async.IfRejected>
-			<ul style={habitDialogGrid}>
+			<Card style={{...habitDialogGrid, background: "white"}} data-p="12">
 				{days.map(props => (
 					<Day
 						key={props.day.toString()}
@@ -91,7 +91,7 @@ export const Calendar: React.FC = () => {
 						{...props}
 					/>
 				))}
-			</ul>
+			</Card>
 		</Column>
 	);
 };

@@ -40,8 +40,8 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const isNewTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
 
 	return (
-		<Column style={{background: "var(--gray-0)", border: "1px solid var(--gray-2)", ...styles}}>
-			<Row mainAxis="between" mt="6" px="6">
+		<Column style={{background: "var(--gray-0)", border: "2px solid var(--gray-1)", ...styles}}>
+			<Row mainAxis="between" px="6">
 				<Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 					{day}
 				</Text>
@@ -49,7 +49,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			</Row>
 			{isDayDialogAvailable && (
 				<>
-					<Row mt="auto" mainAxis="end" p="6">
+					<Row mainAxis="end" p="6">
 						{isNewTextVisible ? (
 							<Text mr="auto" variant="dimmed">
 								{stats.createdHabitsCount} NEW HABIT
@@ -60,7 +60,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 							variant="bare"
 							onClick={openDialog}
 							style={{background: "var(--gray-1)"}}
-							mb="6"
 							ml="auto"
 						>
 							Show
