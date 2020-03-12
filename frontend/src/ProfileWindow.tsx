@@ -13,7 +13,7 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<Column ml="auto" mr="auto" mt="72" style={{maxWidth: "750px"}}>
+		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
 			<Card>
 				<Row mt="12" p="24" style={{background: "var(--gray-1)"}}>
 					<Header variant="large">Profile settings</Header>
@@ -68,7 +68,7 @@ const ChangeEmail: React.FC = () => {
 				changeEmailRequestState.run(newEmail, password);
 			}}
 		>
-			<Column>
+			<Column p="24">
 				<Header variant="extra-small" mt="48" mb="12">
 					Email change
 				</Header>
@@ -109,40 +109,40 @@ const ChangeEmail: React.FC = () => {
 						</Button>
 					)}
 				</Row>
+				{["editing", "pending", "error"].includes(status) && (
+					<Column mt="12">
+						<Field>
+							<Label htmlFor="password">Password</Label>
+							<Input
+								id="password"
+								pattern=".{6,}"
+								title="Password should contain at least 6 characters."
+								required
+								value={password}
+								onChange={event => setPassword(event.target.value)}
+								type="password"
+								placeholder="********"
+								disabled={status === "pending"}
+							/>
+						</Field>
+						{status === "error" && passwordInlineError && (
+							<ErrorMessage>{passwordInlineError}</ErrorMessage>
+						)}
+					</Column>
+				)}
 				{status === "error" && emailInlineError && <Text mt="12">{emailInlineError}</Text>}
+				<Text mt="24">
+					NOTE: You will have to confirm your new email adress and login back again.
+				</Text>
+
+				{status === "pending" && <Text mt="12">Email change pending...</Text>}
+				{status === "success" && (
+					<Column mt="6">
+						<Text>Email confirmation message has been sent!</Text>
+						<Text>You will be logged out in 5 seconds.</Text>
+					</Column>
+				)}
 			</Column>
-			{["editing", "pending", "error"].includes(status) && (
-				<Column mt="12">
-					<Field>
-						<Label htmlFor="password">Password</Label>
-						<Input
-							id="password"
-							pattern=".{6,}"
-							title="Password should contain at least 6 characters."
-							required
-							value={password}
-							onChange={event => setPassword(event.target.value)}
-							type="password"
-							placeholder="********"
-							disabled={status === "pending"}
-						/>
-					</Field>
-					{status === "error" && passwordInlineError && (
-						<ErrorMessage>{passwordInlineError}</ErrorMessage>
-					)}
-				</Column>
-			)}
-			<Text mt="24">
-				NOTE: You will have to confirm your new email adress and login back again.
-			</Text>
-			{status === "pending" && <Text mt="12">Email change pending...</Text>}
-			{status === "success" && (
-				<Column mt="6">
-					<Text>Email confirmation message has been sent!</Text>
-					<Text>You will be logged out in 5 seconds.</Text>
-				</Column>
-			)}
-			<Divider mt="48" />
 		</form>
 	);
 };
