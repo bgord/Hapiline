@@ -33,9 +33,7 @@ const ChangeEmail: React.FC = () => {
 	const history = useHistory();
 	const triggerErrorNotification = useErrorNotification();
 	const [userProfile] = useUserProfile();
-	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
-		"idle",
-	);
+	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 
 	const initialEmail = userProfile?.email;
 	const [newEmail, setNewEmail] = React.useState(initialEmail);
@@ -73,73 +71,60 @@ const ChangeEmail: React.FC = () => {
 				<Header variant="extra-small" mt="48" mb="12">
 					Email change
 				</Header>
-				<Row crossAxis="end">
-					<Field mt="24" mr="12" width="100%">
-						<Label htmlFor="email">Email</Label>
-						<Input
-							id="email"
-							value={newEmail}
-							onChange={event => setNewEmail(event.target.value)}
-							required
-							type="email"
-							disabled={["idle", "pending", "success"].includes(status)}
-							placeholder="user@example.com"
-						/>
-					</Field>
-					{status === "idle" && (
-						<Button variant="primary" onClick={() => setStatus("editing")}>
-							Edit email
-						</Button>
-					)}
-					{["editing", "error"].includes(status) && (
-						<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
-							Confirm email
-						</Button>
-					)}
-					{["editing", "error"].includes(status) && (
-						<Button
-							ml="6"
-							variant="outlined"
-							onClick={() => {
-								setStatus("idle");
-								setPassword("");
-								setNewEmail(initialEmail);
-							}}
-						>
-							Cancel
-						</Button>
-					)}
-				</Row>
-				{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
 
-				{["editing", "pending", "error"].includes(status) && (
-					<Field>
-						<Label htmlFor="password">Password</Label>
-						<Input
-							id="password"
-							pattern=".{6,}"
-							title="Password should contain at least 6 characters."
-							required
-							value={password}
-							onChange={event => setPassword(event.target.value)}
-							type="password"
-							placeholder="********"
-							disabled={status === "pending"}
-						/>
-					</Field>
-				)}
-				{status === "error" && passwordInlineError && <Error>{passwordInlineError}</Error>}
-
-				<InfoBanner mt="48" py="3" px="6">
+				<InfoBanner mt="12" py="3" px="6">
 					You will have to confirm your new email adress and login back again.
 				</InfoBanner>
 
+				{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
+
+				{["idle", "pending", "error"].includes(status) && (
+					<>
+						<Field mt="24" mr="12" width="100%">
+							<Label htmlFor="email">Email</Label>
+							<Input
+								id="email"
+								value={newEmail}
+								onChange={event => setNewEmail(event.target.value)}
+								required
+								type="email"
+								disabled={status === "pending"}
+								placeholder="user@example.com"
+							/>
+						</Field>
+						<Field mt="12">
+							<Label htmlFor="password">Password</Label>
+							<Input
+								id="password"
+								pattern=".{6,}"
+								title="Password should contain at least 6 characters."
+								required
+								value={password}
+								onChange={event => setPassword(event.target.value)}
+								type="password"
+								placeholder="********"
+								disabled={status === "pending"}
+							/>
+						</Field>
+					</>
+				)}
+				{status === "error" && passwordInlineError && <Error>{passwordInlineError}</Error>}
+
+				{["idle", "pending", "error"].includes(status) && (
+					<Row mt="12">
+						<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
+							Confirm email
+						</Button>
+					</Row>
+				)}
+
 				{status === "pending" && <Text mt="12">Email change pending...</Text>}
+
 				{status === "success" && (
-					<Column mt="6">
-						<Text>Email confirmation message has been sent!</Text>
-						<Text>You will be logged out in 5 seconds.</Text>
-					</Column>
+					<Banner variant="success" mt="12" py="6" px="12">
+						Email confirmation message has been sent!
+						<br /> You will be logged out in 5 seconds.
+					</Banner>
 				)}
 			</Column>
 		</form>
@@ -243,7 +228,11 @@ const ChangePassword = () => {
 					</>
 				)}
 				{status === "error" && internalServerError && <Error>{internalServerError}</Error>}
-				{status === "success" && <Banner variant="success">Password changed successfully!</Banner>}
+				{status === "success" && (
+					<Banner variant="success" mt="12" py="6" px="12">
+						Password changed successfully!
+					</Banner>
+				)}
 			</Column>
 		</form>
 	);
