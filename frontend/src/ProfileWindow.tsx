@@ -3,9 +3,21 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Column, Card, Header, Row, Text, Label, Input, Field, Error, Banner} from "./ui";
+import {
+	Button,
+	Column,
+	Card,
+	Header,
+	Row,
+	Text,
+	Label,
+	Input,
+	Field,
+	Error,
+	Banner,
+	ErrorBanner,
+} from "./ui";
 import {InfoBanner} from "./ui/banner/Banner";
-import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
@@ -14,7 +26,7 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<Column ml="auto" mr="auto" mt="48" style={{maxWidth: "750px"}}>
+		<Column ml="auto" mr="auto" my="48" style={{maxWidth: "750px"}}>
 			<Card>
 				<Row mt="12" p="24" style={{background: "var(--gray-1)"}}>
 					<Header variant="large">Profile settings</Header>
@@ -260,22 +272,27 @@ const DeleteAccount = () => {
 		deleteAccountRequestState.run();
 	}
 	return (
-		<>
-			<Header mt="24" variant="extra-small">
+		<Column p="24">
+			<Header mt="12" variant="extra-small">
 				Account deletion
 			</Header>
+			<ErrorBanner mt="24" p="6">
+				Your data will be removed pernamently, and you won't be able to recover your account.
+			</ErrorBanner>
 			<Button
-				mt="24"
-				variant="primary"
+				mt="48"
+				variant="danger"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}
 				mr="auto"
 			>
 				Delete account
 			</Button>
+
 			<Async.IfRejected state={deleteAccountRequestState}>
-				<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
+				<Error>An error occurred during account deletion.</Error>
 			</Async.IfRejected>
+
 			{status === "editing" && (
 				<AlertDialog
 					className="w-1/4"
@@ -285,7 +302,7 @@ const DeleteAccount = () => {
 						<Header variant="small">Do you really want to delete your account? </Header>
 					</AlertDialogLabel>
 					<Row mt="48" mainAxis="between">
-						<Button variant="outlined" onClick={confirmDeletion}>
+						<Button variant="danger" onClick={confirmDeletion}>
 							Yes, delete
 						</Button>
 						<Button
@@ -298,6 +315,6 @@ const DeleteAccount = () => {
 					</Row>
 				</AlertDialog>
 			)}
-		</>
+		</Column>
 	);
 };
