@@ -2,8 +2,20 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Card, Column, Header, Field, Input, Label, Row, Text} from "./ui";
-import {ErrorMessage, RequestErrorMessage} from "./ErrorMessages";
+import {
+	Button,
+	Card,
+	Column,
+	Header,
+	Field,
+	Input,
+	Label,
+	Row,
+	Text,
+	Error,
+	ErrorBanner,
+	Banner,
+} from "./ui";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
@@ -43,7 +55,7 @@ export const RegistrationWindow: React.FC = () => {
 							style={{width: "500px"}}
 						/>
 						<Async.IfRejected state={registrationRequestState}>
-							<ErrorMessage>{emailInlineErrorMessage}</ErrorMessage>
+							<Error>{emailInlineErrorMessage}</Error>
 						</Async.IfRejected>
 					</Field>
 					<Field mt="12">
@@ -86,16 +98,22 @@ export const RegistrationWindow: React.FC = () => {
 						</Button>
 					</Row>
 					<Async.IfFulfilled state={registrationRequestState}>
-						<Text>Account confirmation email has been sent!</Text>
-						<Row mt="24">
-							<span className="text-sm">You can </span>
-							<Link className="link ml-1" to="/login">
-								login now
-							</Link>
-						</Row>
+						<Banner p="12" mt="24" variant="success">
+							<Column>
+								<Text>Account confirmation email has been sent!</Text>
+								<Row mt="12">
+									<Text>You can</Text>
+									<Link data-ml="6" data-variant="link" className="c-text" to="/login">
+										login now
+									</Link>
+								</Row>
+							</Column>
+						</Banner>
 					</Async.IfFulfilled>
 					<Async.IfRejected state={registrationRequestState}>
-						<RequestErrorMessage>{responseStatus === 500 && errorMessage}</RequestErrorMessage>
+						<ErrorBanner mt="24" p="6">
+							{responseStatus === 500 && errorMessage}
+						</ErrorBanner>
 					</Async.IfRejected>
 				</Column>
 			</form>

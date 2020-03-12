@@ -23,3 +23,13 @@
 .c-text[data-variant="monospaced"] {
 	font-family: monospace;
 }
+
+.c-text[data-variant="link"] {
+	text-decoration: underline;
+	text-decoration-style: dotted;
+	color: #515d7b;
+}
+.c-text[data-variant="link"]:hover {
+	text-decoration-style: solid;
+	color: #515d7b;
+}

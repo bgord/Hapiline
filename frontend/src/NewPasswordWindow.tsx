@@ -2,8 +2,19 @@ import {useParams, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Card, Column, Header, Field, Label, Input, Row, Text} from "./ui";
-import {RequestErrorMessage} from "./ErrorMessages";
+import {
+	Button,
+	Card,
+	Column,
+	Header,
+	Field,
+	Label,
+	Input,
+	Row,
+	Text,
+	ErrorBanner,
+	Banner,
+} from "./ui";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
@@ -67,17 +78,25 @@ export const NewPasswordWindow: React.FC = () => {
 							{newPasswordRequestState.isPending ? "Loading..." : "Change password"}
 						</Button>
 					</Row>
+
 					<Async.IfFulfilled state={newPasswordRequestState}>
-						<Text>Password has been changed!</Text>
-						<Row mt="12">
-							<span className="text-sm">You can </span>
-							<Link className="link ml-1" to="/login">
-								login now
-							</Link>
-						</Row>
+						<Banner mt="24" variant="success" p="6">
+							<Column>
+								<Text>Password has been changed!</Text>
+								<Row mt="6">
+									<Text>You can</Text>
+									<Link data-ml="6" data-variant="link" className="c-text" to="/login">
+										login now
+									</Link>
+								</Row>
+							</Column>
+						</Banner>
 					</Async.IfFulfilled>
+
 					<Async.IfRejected state={newPasswordRequestState}>
-						<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
+						<ErrorBanner mt="24" p="6">
+							{errorMessage}
+						</ErrorBanner>
 					</Async.IfRejected>
 				</Column>
 			</form>

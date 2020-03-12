@@ -7,11 +7,10 @@ import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
 
-import {Button, Text, Row, Header, CloseIcon} from "./ui";
+import {Button, Text, Row, Header, CloseIcon, Error} from "./ui";
 import {api} from "./services/api";
 import {Calendar} from "./Calendar";
 import {DashboardWindow} from "./DashboardWindow";
-import {RequestErrorMessage} from "./ErrorMessages";
 import {HabitsProvider} from "./contexts/habits-context";
 import {HabitsWindow} from "./HabitsWindow";
 import {Logo} from "./Logo";
@@ -173,7 +172,7 @@ function NotificationDropdown() {
 						</ul>
 					</Async.IfFulfilled>
 					<Async.IfRejected state={getNotificationsRequestState}>
-						<RequestErrorMessage>Couldn't fetch notifications...</RequestErrorMessage>
+						<Error>Couldn't fetch notifications...</Error>
 					</Async.IfRejected>
 				</div>
 			)}

@@ -2,11 +2,10 @@ import {useHistory, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-import {Button, Column, Header, Label, Input, Row, Card, Text, Field} from "./ui";
+import {Button, Column, Header, Label, Input, Row, Card, Text, Field, ErrorBanner} from "./ui";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -71,15 +70,18 @@ export const LoginWindow: React.FC = () => {
 					</Row>
 					<Row mt="24">
 						<Text>Don't have an account?</Text>
-						<Link className="link ml-1" to="/register">
+						<Link data-variant="link" data-ml="6" className="c-text" to="/register">
 							Create now
 						</Link>
 					</Row>
-					<Link className="link" to="/forgot-password">
+					<Link data-mt="6" data-variant="link" className="c-text" to="/forgot-password">
 						Forgot password?
 					</Link>
+
 					<Async.IfRejected state={loginRequestState}>
-						<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
+						<ErrorBanner mt="24" p="6">
+							{errorMessage}
+						</ErrorBanner>
 					</Async.IfRejected>
 				</Column>
 			</form>
