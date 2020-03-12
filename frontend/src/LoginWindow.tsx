@@ -71,13 +71,14 @@ export const LoginWindow: React.FC = () => {
 					</Row>
 					<Row mt="24">
 						<Text>Don't have an account?</Text>
-						<Link className="link ml-1" to="/register">
+						<Link data-variant="link" data-ml="6" className="c-text" to="/register">
 							Create now
 						</Link>
 					</Row>
-					<Link className="link" to="/forgot-password">
+					<Link data-mt="6" data-variant="link" className="c-text" to="/forgot-password">
 						Forgot password?
 					</Link>
+
 					<Async.IfRejected state={loginRequestState}>
 						<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
 					</Async.IfRejected>
