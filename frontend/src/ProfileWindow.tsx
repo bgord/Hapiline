@@ -3,7 +3,7 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Column, Card, Header, Divider, Row, Text, Label, Input, Field, Error} from "./ui";
+import {Button, Column, Card, Header, Row, Text, Label, Input, Field, Error, Banner} from "./ui";
 import {InfoBanner} from "./ui/banner/Banner";
 import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
@@ -148,9 +148,7 @@ const ChangeEmail: React.FC = () => {
 
 const ChangePassword = () => {
 	const triggerErrorNotification = useErrorNotification();
-	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
-		"idle",
-	);
+	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 	const [oldPassword, setOldPassword] = React.useState("");
 	const [newPassword, setNewPassword] = React.useState("");
 	const [newPasswordConfirmation, setNewPasswordConfirmation] = React.useState("");
@@ -183,21 +181,15 @@ const ChangePassword = () => {
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			<Column>
+			<Column p="24">
 				<Header mt="24" mb="24" variant="extra-small">
 					Password change
 				</Header>
-				{["idle", "pending", "success"].includes(status) && (
-					<Button
-						variant="secondary"
-						onClick={() => setStatus("editing")}
-						style={{alignSelf: "flex-start"}}
-					>
-						Update password
-					</Button>
-				)}
-				{["editing", "pending", "error"].includes(status) && (
-					<Column>
+				<InfoBanner px="6" py="3" mb="48">
+					You won't be logged out, remember to input the new password the next time.
+				</InfoBanner>
+				{["idle", "pending", "error"].includes(status) && (
+					<>
 						<Field mb="12">
 							<Label htmlFor="old_password">Old password</Label>
 							<Input
@@ -211,10 +203,10 @@ const ChangePassword = () => {
 								pattern=".{6,}"
 								disabled={updatePasswordRequestState.isPending}
 							/>
+							{status === "error" && oldPasswordInlineError && (
+								<Error>{oldPasswordInlineError}</Error>
+							)}
 						</Field>
-						{status === "error" && oldPasswordInlineError && (
-							<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
-						)}
 						<Field mb="12">
 							<Label htmlFor="new_password">New password</Label>
 							<Input
@@ -245,28 +237,13 @@ const ChangePassword = () => {
 						</Field>
 						<Row>
 							<Button variant="primary" type="submit">
-								Submit
-							</Button>
-							<Button
-								ml="6"
-								variant="outlined"
-								onClick={() => {
-									setStatus("idle");
-									setOldPassword("");
-									setNewPassword("");
-									setNewPasswordConfirmation("");
-								}}
-							>
-								Cancel
+								Update password
 							</Button>
 						</Row>
-						{status === "error" && internalServerError && (
-							<RequestErrorMessage>{internalServerError}</RequestErrorMessage>
-						)}
-					</Column>
+					</>
 				)}
-				{status === "success" && <Text mt="12">Password changed successfully!</Text>}
-				<Divider mt="24" />
+				{status === "error" && internalServerError && <Error>{internalServerError}</Error>}
+				{status === "success" && <Banner variant="success">Password changed successfully!</Banner>}
 			</Column>
 		</form>
 	);
