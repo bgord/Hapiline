@@ -3,8 +3,21 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Column, Card, Header, Divider, Row, Text, Label, Input, Field} from "./ui";
-import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
+import {
+	Button,
+	Column,
+	Card,
+	Header,
+	Row,
+	Text,
+	Label,
+	Input,
+	Field,
+	Error,
+	Banner,
+	ErrorBanner,
+} from "./ui";
+import {InfoBanner} from "./ui/banner/Banner";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
@@ -13,10 +26,11 @@ import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
 	return (
-		<Column ml="auto" mr="auto" mt="72" style={{maxWidth: "750px"}}>
-			<Card p="24">
-				<Header variant="large">Profile settings</Header>
-				<Divider mt="12" style={{width: "200px"}} />
+		<Column ml="auto" mr="auto" my="48" style={{maxWidth: "750px"}}>
+			<Card>
+				<Row mt="12" p="24" style={{background: "var(--gray-1)"}}>
+					<Header variant="large">Profile settings</Header>
+				</Row>
 				<ChangeEmail />
 				<ChangePassword />
 				<DeleteAccount />
@@ -31,9 +45,7 @@ const ChangeEmail: React.FC = () => {
 	const history = useHistory();
 	const triggerErrorNotification = useErrorNotification();
 	const [userProfile] = useUserProfile();
-	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
-		"idle",
-	);
+	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 
 	const initialEmail = userProfile?.email;
 	const [newEmail, setNewEmail] = React.useState(initialEmail);
@@ -67,90 +79,73 @@ const ChangeEmail: React.FC = () => {
 				changeEmailRequestState.run(newEmail, password);
 			}}
 		>
-			<Column>
-				<Header variant="extra-small" mt="48" mb="12">
+			<Column p="24" style={{borderBottom: "2px solid var(--gray-2)"}}>
+				<Header variant="extra-small" mt="24" mb="12">
 					Email change
 				</Header>
-				<Row crossAxis="end">
-					<Field mt="24" mr="12" style={{flexGrow: 1}}>
-						<Label htmlFor="email">Email</Label>
-						<Input
-							id="email"
-							value={newEmail}
-							onChange={event => setNewEmail(event.target.value)}
-							required
-							type="email"
-							disabled={["idle", "pending", "success"].includes(status)}
-							placeholder="user@example.com"
-						/>
-					</Field>
-					{status === "idle" && (
-						<Button variant="primary" onClick={() => setStatus("editing")}>
-							Edit email
-						</Button>
-					)}
-					{["editing", "error"].includes(status) && (
+
+				<InfoBanner mt="12" py="3" px="6">
+					You will have to confirm your new email adress and login back again.
+				</InfoBanner>
+
+				{["idle", "pending", "error"].includes(status) && (
+					<>
+						<Field mt="24" mr="12" width="100%">
+							<Label htmlFor="email">Email</Label>
+							<Input
+								id="email"
+								value={newEmail}
+								onChange={event => setNewEmail(event.target.value)}
+								required
+								type="email"
+								disabled={status === "pending"}
+								placeholder="user@example.com"
+							/>
+							{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
+						</Field>
+
+						<Field mt="12">
+							<Label htmlFor="password">Password</Label>
+							<Input
+								id="password"
+								pattern=".{6,}"
+								title="Password should contain at least 6 characters."
+								required
+								value={password}
+								onChange={event => setPassword(event.target.value)}
+								type="password"
+								placeholder="********"
+								disabled={status === "pending"}
+							/>
+						</Field>
+					</>
+				)}
+				{status === "error" && passwordInlineError && <Error>{passwordInlineError}</Error>}
+
+				{["idle", "pending", "error"].includes(status) && (
+					<Row mt="12">
 						<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
 							Confirm email
 						</Button>
-					)}
-					{["editing", "error"].includes(status) && (
-						<Button
-							ml="6"
-							variant="outlined"
-							onClick={() => {
-								setStatus("idle");
-								setPassword("");
-								setNewEmail(initialEmail);
-							}}
-						>
-							Cancel
-						</Button>
-					)}
-				</Row>
-				{status === "error" && emailInlineError && <Text mt="12">{emailInlineError}</Text>}
+					</Row>
+				)}
+
+				{status === "pending" && <Text mt="12">Email change pending...</Text>}
+
+				{status === "success" && (
+					<Banner variant="success" mt="12" py="6" px="12">
+						Email confirmation message has been sent!
+						<br /> You will be logged out in 5 seconds.
+					</Banner>
+				)}
 			</Column>
-			{["editing", "pending", "error"].includes(status) && (
-				<Column mt="12">
-					<Field>
-						<Label htmlFor="password">Password</Label>
-						<Input
-							id="password"
-							pattern=".{6,}"
-							title="Password should contain at least 6 characters."
-							required
-							value={password}
-							onChange={event => setPassword(event.target.value)}
-							type="password"
-							placeholder="********"
-							disabled={status === "pending"}
-						/>
-					</Field>
-					{status === "error" && passwordInlineError && (
-						<ErrorMessage>{passwordInlineError}</ErrorMessage>
-					)}
-				</Column>
-			)}
-			<Text mt="24">
-				NOTE: You will have to confirm your new email adress and login back again.
-			</Text>
-			{status === "pending" && <Text mt="12">Email change pending...</Text>}
-			{status === "success" && (
-				<Column mt="6">
-					<Text>Email confirmation message has been sent!</Text>
-					<Text>You will be logged out in 5 seconds.</Text>
-				</Column>
-			)}
-			<Divider mt="48" />
 		</form>
 	);
 };
 
 const ChangePassword = () => {
 	const triggerErrorNotification = useErrorNotification();
-	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "success" | "error">(
-		"idle",
-	);
+	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 	const [oldPassword, setOldPassword] = React.useState("");
 	const [newPassword, setNewPassword] = React.useState("");
 	const [newPasswordConfirmation, setNewPasswordConfirmation] = React.useState("");
@@ -183,21 +178,15 @@ const ChangePassword = () => {
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			<Column>
-				<Header mt="24" mb="24" variant="extra-small">
+			<Column p="24" style={{borderBottom: "2px solid var(--gray-2)"}}>
+				<Header mt="12" mb="24" variant="extra-small">
 					Password change
 				</Header>
-				{["idle", "pending", "success"].includes(status) && (
-					<Button
-						variant="secondary"
-						onClick={() => setStatus("editing")}
-						style={{alignSelf: "flex-start"}}
-					>
-						Update password
-					</Button>
-				)}
-				{["editing", "pending", "error"].includes(status) && (
-					<Column>
+				<InfoBanner px="6" py="3" mb="48">
+					You won't be logged out, remember to input the new password the next time.
+				</InfoBanner>
+				{["idle", "pending", "error"].includes(status) && (
+					<>
 						<Field mb="12">
 							<Label htmlFor="old_password">Old password</Label>
 							<Input
@@ -211,10 +200,10 @@ const ChangePassword = () => {
 								pattern=".{6,}"
 								disabled={updatePasswordRequestState.isPending}
 							/>
+							{status === "error" && oldPasswordInlineError && (
+								<Error>{oldPasswordInlineError}</Error>
+							)}
 						</Field>
-						{status === "error" && oldPasswordInlineError && (
-							<RequestErrorMessage>{oldPasswordInlineError}</RequestErrorMessage>
-						)}
 						<Field mb="12">
 							<Label htmlFor="new_password">New password</Label>
 							<Input
@@ -245,28 +234,17 @@ const ChangePassword = () => {
 						</Field>
 						<Row>
 							<Button variant="primary" type="submit">
-								Submit
-							</Button>
-							<Button
-								ml="6"
-								variant="outlined"
-								onClick={() => {
-									setStatus("idle");
-									setOldPassword("");
-									setNewPassword("");
-									setNewPasswordConfirmation("");
-								}}
-							>
-								Cancel
+								Update password
 							</Button>
 						</Row>
-						{status === "error" && internalServerError && (
-							<RequestErrorMessage>{internalServerError}</RequestErrorMessage>
-						)}
-					</Column>
+					</>
 				)}
-				{status === "success" && <Text mt="12">Password changed successfully!</Text>}
-				<Divider mt="24" />
+				{status === "error" && internalServerError && <Error>{internalServerError}</Error>}
+				{status === "success" && (
+					<Banner variant="success" mt="12" py="6" px="12">
+						Password changed successfully!
+					</Banner>
+				)}
 			</Column>
 		</form>
 	);
@@ -294,22 +272,27 @@ const DeleteAccount = () => {
 		deleteAccountRequestState.run();
 	}
 	return (
-		<>
-			<Header mt="24" variant="extra-small">
+		<Column p="24">
+			<Header mt="12" variant="extra-small">
 				Account deletion
 			</Header>
+			<ErrorBanner mt="24" p="6">
+				Your data will be removed pernamently, and you won't be able to recover your account.
+			</ErrorBanner>
 			<Button
-				mt="24"
-				variant="primary"
+				mt="48"
+				variant="danger"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}
 				mr="auto"
 			>
 				Delete account
 			</Button>
+
 			<Async.IfRejected state={deleteAccountRequestState}>
-				<RequestErrorMessage>An error occurred during account deletion.</RequestErrorMessage>
+				<Error mt="12">An error occurred during account deletion.</Error>
 			</Async.IfRejected>
+
 			{status === "editing" && (
 				<AlertDialog
 					className="w-1/4"
@@ -319,7 +302,7 @@ const DeleteAccount = () => {
 						<Header variant="small">Do you really want to delete your account? </Header>
 					</AlertDialogLabel>
 					<Row mt="48" mainAxis="between">
-						<Button variant="outlined" onClick={confirmDeletion}>
+						<Button variant="danger" onClick={confirmDeletion}>
 							Yes, delete
 						</Button>
 						<Button
@@ -332,6 +315,6 @@ const DeleteAccount = () => {
 					</Row>
 				</AlertDialog>
 			)}
-		</>
+		</Column>
 	);
 };

@@ -13,6 +13,7 @@ button::-moz-focus-inner {
 	text-transform: uppercase;
 	letter-spacing: 0.5px;
 	border-radius: var(--radius-m);
+	white-space: nowrap;
 }
 
 .c-button:hover {
