@@ -3,8 +3,9 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Column, Card, Header, Divider, Row, Text, Label, Input, Field} from "./ui";
-import {RequestErrorMessage, ErrorMessage} from "./ErrorMessages";
+import {Button, Column, Card, Header, Divider, Row, Text, Label, Input, Field, Error} from "./ui";
+import {InfoBanner} from "./ui/banner/Banner";
+import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
@@ -73,7 +74,7 @@ const ChangeEmail: React.FC = () => {
 					Email change
 				</Header>
 				<Row crossAxis="end">
-					<Field mt="24" mr="12" style={{flexGrow: 1}}>
+					<Field mt="24" mr="12" width="100%">
 						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
@@ -109,31 +110,29 @@ const ChangeEmail: React.FC = () => {
 						</Button>
 					)}
 				</Row>
+				{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
+
 				{["editing", "pending", "error"].includes(status) && (
-					<Column mt="12">
-						<Field>
-							<Label htmlFor="password">Password</Label>
-							<Input
-								id="password"
-								pattern=".{6,}"
-								title="Password should contain at least 6 characters."
-								required
-								value={password}
-								onChange={event => setPassword(event.target.value)}
-								type="password"
-								placeholder="********"
-								disabled={status === "pending"}
-							/>
-						</Field>
-						{status === "error" && passwordInlineError && (
-							<ErrorMessage>{passwordInlineError}</ErrorMessage>
-						)}
-					</Column>
+					<Field>
+						<Label htmlFor="password">Password</Label>
+						<Input
+							id="password"
+							pattern=".{6,}"
+							title="Password should contain at least 6 characters."
+							required
+							value={password}
+							onChange={event => setPassword(event.target.value)}
+							type="password"
+							placeholder="********"
+							disabled={status === "pending"}
+						/>
+					</Field>
 				)}
-				{status === "error" && emailInlineError && <Text mt="12">{emailInlineError}</Text>}
-				<Text mt="24">
-					NOTE: You will have to confirm your new email adress and login back again.
-				</Text>
+				{status === "error" && passwordInlineError && <Error>{passwordInlineError}</Error>}
+
+				<InfoBanner mt="48" py="3" px="6">
+					You will have to confirm your new email adress and login back again.
+				</InfoBanner>
 
 				{status === "pending" && <Text mt="12">Email change pending...</Text>}
 				{status === "success" && (
