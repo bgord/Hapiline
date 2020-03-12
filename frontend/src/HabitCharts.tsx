@@ -2,8 +2,7 @@ import {Link, LinkProps} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {ErrorMessage} from "./ErrorMessages";
-import {Field, Select, Row, Label, Text} from "./ui";
+import {Field, Select, Row, Label, Text, Error} from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -103,7 +102,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 				</Row>
 			</Async.IfFulfilled>
 			<Async.IfRejected state={habitVoteChartRequestState}>
-				<ErrorMessage className="mt-8">Charts unavailable, please try again.</ErrorMessage>
+				<Error mt="24">Charts unavailable, please try again.</Error>
 			</Async.IfRejected>
 		</>
 	);

@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Text, Card, Column, Row, Field, Input, Header, Label} from "./ui";
+import {Button, Text, Card, Column, Row, Field, Input, Header, Label, Banner} from "./ui";
 import {api} from "./services/api";
 
 export const ForgotPasswordWindow: React.FC = () => {
@@ -45,7 +45,9 @@ export const ForgotPasswordWindow: React.FC = () => {
 						</Button>
 					</Row>
 					<Async.IfFulfilled state={forgotPasswordRequestState}>
-						<Text mt="24">Email sent if an account exists.</Text>
+						<Banner mt="24" variant="success" p="6">
+							<Text>Email sent if an account exists.</Text>
+						</Banner>
 					</Async.IfFulfilled>
 				</Column>
 			</form>

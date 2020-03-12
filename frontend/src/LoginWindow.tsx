@@ -2,11 +2,10 @@ import {useHistory, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {RequestErrorMessage} from "./ErrorMessages";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-import {Button, Column, Header, Label, Input, Row, Card, Text, Field} from "./ui";
+import {Button, Column, Header, Label, Input, Row, Card, Text, Field, ErrorBanner} from "./ui";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -80,7 +79,9 @@ export const LoginWindow: React.FC = () => {
 					</Link>
 
 					<Async.IfRejected state={loginRequestState}>
-						<RequestErrorMessage>{errorMessage}</RequestErrorMessage>
+						<ErrorBanner mt="24" p="6">
+							{errorMessage}
+						</ErrorBanner>
 					</Async.IfRejected>
 				</Column>
 			</form>
