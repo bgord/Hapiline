@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Loader} from "./Loader";
+import * as UI from "./ui";
 import {useIsLoggedIn} from "./contexts/auth-context";
 
 const AuthenticatedApp = React.lazy(() =>
@@ -13,7 +13,7 @@ const UnauthenticatedApp = React.lazy(() =>
 export function App() {
 	const isLoggedIn = useIsLoggedIn();
 	return (
-		<React.Suspense fallback={<Loader />}>
+		<React.Suspense fallback={<UI.Text>Loading...</UI.Text>}>
 			{isLoggedIn ? <AuthenticatedApp /> : <UnauthenticatedApp />}
 		</React.Suspense>
 	);

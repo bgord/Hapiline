@@ -111,7 +111,9 @@ export const RegistrationWindow: React.FC = () => {
 						</Banner>
 					</Async.IfFulfilled>
 					<Async.IfRejected state={registrationRequestState}>
-						<ErrorBanner>{responseStatus === 500 && errorMessage}</ErrorBanner>
+						<ErrorBanner mt="24" p="6">
+							{responseStatus === 500 && errorMessage}
+						</ErrorBanner>
 					</Async.IfRejected>
 				</Column>
 			</form>

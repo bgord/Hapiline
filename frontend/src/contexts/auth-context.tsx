@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Loader} from "../Loader";
+import * as UI from "../ui";
 import {UserProfileInterface} from "../interfaces/IUserProfile";
 import {api} from "../services/api";
 
@@ -28,7 +28,7 @@ export const AuthProvider: React.FC = props => {
 	}, [isSettled, data]);
 
 	if (!firstAttemptFinished && isPending) {
-		return <Loader />;
+		return <UI.Text>Loading...</UI.Text>;
 	}
 
 	if (!firstAttemptFinished && isRejected) {
