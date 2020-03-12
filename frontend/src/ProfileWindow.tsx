@@ -88,8 +88,6 @@ const ChangeEmail: React.FC = () => {
 					You will have to confirm your new email adress and login back again.
 				</InfoBanner>
 
-				{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
-
 				{["idle", "pending", "error"].includes(status) && (
 					<>
 						<Field mt="24" mr="12" width="100%">
@@ -103,7 +101,9 @@ const ChangeEmail: React.FC = () => {
 								disabled={status === "pending"}
 								placeholder="user@example.com"
 							/>
+							{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
 						</Field>
+
 						<Field mt="12">
 							<Label htmlFor="password">Password</Label>
 							<Input
@@ -290,7 +290,7 @@ const DeleteAccount = () => {
 			</Button>
 
 			<Async.IfRejected state={deleteAccountRequestState}>
-				<Error>An error occurred during account deletion.</Error>
+				<Error mt="12">An error occurred during account deletion.</Error>
 			</Async.IfRejected>
 
 			{status === "editing" && (
