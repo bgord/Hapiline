@@ -67,8 +67,8 @@ const ChangeEmail: React.FC = () => {
 				changeEmailRequestState.run(newEmail, password);
 			}}
 		>
-			<Column p="24">
-				<Header variant="extra-small" mt="48" mb="12">
+			<Column p="24" style={{borderBottom: "2px solid var(--gray-2)"}}>
+				<Header variant="extra-small" mt="24" mb="12">
 					Email change
 				</Header>
 
@@ -166,8 +166,8 @@ const ChangePassword = () => {
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
 		>
-			<Column p="24">
-				<Header mt="24" mb="24" variant="extra-small">
+			<Column p="24" style={{borderBottom: "2px solid var(--gray-2)"}}>
+				<Header mt="12" mb="24" variant="extra-small">
 					Password change
 				</Header>
 				<InfoBanner px="6" py="3" mb="48">
