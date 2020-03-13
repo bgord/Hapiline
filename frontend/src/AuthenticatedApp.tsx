@@ -63,54 +63,12 @@ function AuthenticatedNavbar() {
 				<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
 					<Logo />
 				</NavLink>
-				<NavLink
-					activeClassName="c-active-link"
-					data-variant="semi-bold"
-					className="c-text"
-					data-p="24"
-					exact
-					to="/dashboard"
-				>
-					Dashboard
-				</NavLink>
-				<NavLink
-					activeClassName="c-active-link"
-					data-variant="semi-bold"
-					className="c-text"
-					data-p="24"
-					exact
-					to="/habits"
-				>
-					Habits
-				</NavLink>
-				<NavLink
-					activeClassName="c-active-link"
-					data-variant="semi-bold"
-					className="c-text"
-					data-p="24"
-					to="/calendar"
-				>
-					Calendar
-				</NavLink>
-				<NavLink
-					activeClassName="c-active-link"
-					data-variant="bold"
-					className="c-text"
-					data-p="24"
-					to="/profile"
-				>
-					{profile?.email}
-				</NavLink>
+				<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
+				<UI.NavItem to="/habits">Habits</UI.NavItem>
+				<UI.NavItem to="/calendar">Calendar</UI.NavItem>
+				<UI.NavItem to="/profile">{profile?.email}</UI.NavItem>
 				<NotificationDropdown />
-				<NavLink
-					activeClassName="c-active-link"
-					data-variant="semi-bold"
-					className="c-text"
-					data-p="24"
-					to="/logout"
-				>
-					Logout
-				</NavLink>
+				<UI.NavItem to="/logout">Logout</UI.NavItem>
 			</UI.Row>
 		</nav>
 	);
