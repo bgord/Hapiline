@@ -58,26 +58,60 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 
 	return (
-		<nav className="flex justify-end py-1 bg-white shadow-md">
-			<NavLink className="ml-2 mr-auto p-2" exact activeClassName="text-blue-400" to="/dashboard">
-				<Logo />
-			</NavLink>
-			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/dashboard">
-				Dashboard
-			</NavLink>
-			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/habits">
-				Habits
-			</NavLink>
-			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">
-				Calendar
-			</NavLink>
-			<NavLink to="/profile" activeClassName="text-blue-400">
-				<h3 className="font-semibold p-4">{profile?.email}</h3>
-			</NavLink>
-			<NotificationDropdown />
-			<NavLink className="p-4" activeClassName="text-blue-400" to="/logout">
-				Logout
-			</NavLink>
+		<nav>
+			<Row style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
+				<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
+					<Logo />
+				</NavLink>
+				<NavLink
+					activeClassName="c-active-link"
+					data-variant="semi-bold"
+					className="c-text"
+					data-p="24"
+					exact
+					to="/dashboard"
+				>
+					Dashboard
+				</NavLink>
+				<NavLink
+					activeClassName="c-active-link"
+					data-variant="semi-bold"
+					className="c-text"
+					data-p="24"
+					exact
+					to="/habits"
+				>
+					Habits
+				</NavLink>
+				<NavLink
+					activeClassName="c-active-link"
+					data-variant="semi-bold"
+					className="c-text"
+					data-p="24"
+					to="/calendar"
+				>
+					Calendar
+				</NavLink>
+				<NavLink
+					activeClassName="c-active-link"
+					data-variant="bold"
+					className="c-text"
+					data-p="24"
+					to="/profile"
+				>
+					{profile?.email}
+				</NavLink>
+				<NotificationDropdown />
+				<NavLink
+					activeClassName="c-active-link"
+					data-variant="semi-bold"
+					className="c-text"
+					data-p="24"
+					to="/logout"
+				>
+					Logout
+				</NavLink>
+			</Row>
 		</nav>
 	);
 }

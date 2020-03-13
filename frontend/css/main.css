@@ -555,3 +555,8 @@ body {
 	background: var(--gray-1);
 	border: 3px solid var(--gray-3);
 }
+
+.c-active-link {
+	color: var(--brand-blue) !important;
+	text-decoration: underline;
+}
