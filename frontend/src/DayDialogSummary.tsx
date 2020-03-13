@@ -197,6 +197,7 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 
 const CompactHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
 	<Row
+		as="li"
 		py="12"
 		style={{
 			borderTop: "1px solid var(--gray-1)",
