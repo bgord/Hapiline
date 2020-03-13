@@ -14,10 +14,10 @@ import {RegistrationWindow} from "./RegistrationWindow";
 
 const unauthenticatedAppBrowserHistory = createBrowserHistory();
 
-function UnauthenticatedApp() {
-	return (
-		<Router history={unauthenticatedAppBrowserHistory}>
-			<main className="flex flex-col h-screen w-full">
+const UnauthenticatedApp = () => (
+	<Router history={unauthenticatedAppBrowserHistory}>
+		<main>
+			<UI.Column width="100%" style={{height: "100vh"}}>
 				<UnauthenticatedNavbar />
 				<Switch>
 					<Route exact path="/login">
@@ -40,10 +40,10 @@ function UnauthenticatedApp() {
 					</Route>
 					<Redirect to="/" />
 				</Switch>
-			</main>
-		</Router>
-	);
-}
+			</UI.Column>
+		</main>
+	</Router>
+);
 
 export default UnauthenticatedApp;
 
