@@ -147,37 +147,44 @@ function NotificationDropdown() {
 						</Async.IfPending>
 
 						<Async.IfFulfilled state={getNotificationsRequestState}>
-							<ul>
+							<UI.Column>
 								{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
 
 								{notifications.map(notification => (
-									<li key={notification.id}>
-										<UI.Row mainAxis="between">
-											<UI.Text>{notification.content}</UI.Text>
+									<UI.Row
+										style={{borderTop: "1px solid var(--gray-2)"}}
+										mainAxis="between"
+										crossAxis="center"
+										mt="12"
+										pt="6"
+										key={notification.id}
+									>
+										<UI.Text>{notification.content}</UI.Text>
 
-											{notification.status === "unread" && (
-												<UI.Button
-													variant="secondary"
-													disabled={updateNotificationRequestState.isPending}
-													onClick={() => markNotificationAsRead(notification.id)}
-												>
-													Mark as read
-												</UI.Button>
-											)}
+										{notification.status === "unread" && (
+											<UI.Button
+												variant="secondary"
+												style={{width: "100px"}}
+												disabled={updateNotificationRequestState.isPending}
+												onClick={() => markNotificationAsRead(notification.id)}
+											>
+												Read
+											</UI.Button>
+										)}
 
-											{notification.status === "read" && (
-												<UI.Button
-													variant="outlined"
-													onClick={() => markNotificationAsUnread(notification.id)}
-													disabled={updateNotificationRequestState.isPending}
-												>
-													Mark as unread
-												</UI.Button>
-											)}
-										</UI.Row>
-									</li>
+										{notification.status === "read" && (
+											<UI.Button
+												style={{width: "100px"}}
+												variant="outlined"
+												disabled={updateNotificationRequestState.isPending}
+												onClick={() => markNotificationAsUnread(notification.id)}
+											>
+												Unread
+											</UI.Button>
+										)}
+									</UI.Row>
 								))}
-							</ul>
+							</UI.Column>
 						</Async.IfFulfilled>
 
 						<Async.IfRejected state={getNotificationsRequestState}>
