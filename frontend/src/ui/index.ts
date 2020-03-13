@@ -1,7 +1,6 @@
 export * from "./badge/Badge";
 export * from "./banner/Banner";
 export * from "./button/Button";
-
 export * from "./card/Card";
 export * from "./checkbox/Checkbox";
 export * from "./close-icon/CloseIcon";
@@ -19,6 +18,7 @@ export * from "./textarea/Textarea";
 export * from "./error/Error";
 export * from "./emoji/Emoji";
 export * from "./nav-link/NavLink";
+export * from "./wrapper/Wrapper";
 
 export * from "./icons/Bell";
 export * from "./icons/Calendar";
