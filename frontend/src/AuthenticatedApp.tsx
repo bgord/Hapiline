@@ -65,7 +65,9 @@ function AuthenticatedNavbar() {
 				<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
 				<UI.NavItem to="/habits">Habits</UI.NavItem>
 				<UI.NavItem to="/calendar">Calendar</UI.NavItem>
-				<UI.NavItem to="/profile">{profile?.email}</UI.NavItem>
+				<UI.NavItem variant="bold" to="/profile">
+					{profile?.email}
+				</UI.NavItem>
 				<NotificationDropdown />
 				<UI.NavItem to="/logout">Logout</UI.NavItem>
 			</UI.Row>

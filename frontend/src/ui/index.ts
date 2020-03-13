@@ -17,7 +17,7 @@ export * from "./text/Text";
 export * from "./textarea/Textarea";
 export * from "./error/Error";
 export * from "./emoji/Emoji";
-export * from "./nav-link/NavLink";
+export * from "./nav-item/NavItem";
 export * from "./wrapper/Wrapper";
 
 export * from "./icons/Bell";
