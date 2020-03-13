@@ -4,13 +4,9 @@ import React from "react";
 
 // TODO: replace with heroicons, eventually delete FA
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {
-	faChevronUp,
-	faChevronDown,
-	faPlus,
-	faEquals,
-	faMinus,
-} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
+import {ChevronUpIcon} from "./ui/icons/ChevronUp";
+import {ChevronDownIcon} from "./ui/icons/ChevronDown";
 import VisuallyHidden from "@reach/visually-hidden";
 import {habitStrengthToBadgeVariant, IHabit} from "./interfaces/IHabit";
 import {Button, Text, Textarea, Field, Row, Column, Label, Badge} from "./ui";
@@ -111,18 +107,18 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					borderBottom: "1px solid var(--gray-1)",
 				}}
 			>
-				<Column data-width="100%">
+				<Column width="100%">
 					<Row pt="6">
 						{isCommentVisible && (
 							<Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
 								<VisuallyHidden>Hide vote comment</VisuallyHidden>
-								<FontAwesomeIcon icon={faChevronUp} />
+								<ChevronUpIcon />
 							</Button>
 						)}
 						{!isCommentVisible && (
 							<Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
 								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
-								<FontAwesomeIcon icon={faChevronDown} />
+								<ChevronDownIcon />
 							</Button>
 						)}
 						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
