@@ -26,9 +26,9 @@ describe("Dashboard", () => {
 		cy.go("back");
 
 		cy.get("div")
-			.eq(5)
+			.eq(6)
 			.should(
-				"have.text",
+				"include.text",
 				"You're on a good track!You have 6 tracked habits to vote for left out of 10 (and 0 untracked habits).",
 			);
 
@@ -100,9 +100,9 @@ describe("Dashboard", () => {
 		cy.wait(1000);
 
 		cy.get("div")
-			.eq(5)
+			.eq(6)
 			.should(
-				"have.text",
+				"include.text",
 				"Start your day well! You have 10 tracked habits to vote for. And 2 untracked habits.",
 			);
 
@@ -154,9 +154,9 @@ describe("Dashboard", () => {
 		cy.wait(1000);
 
 		cy.get("div")
-			.eq(5)
+			.eq(6)
 			.should(
-				"have.text",
+				"include.text",
 				"Congratulations! You voted for every one of 10 tracked habits today! You also have 3 untracked habits.",
 			);
 
@@ -239,19 +239,21 @@ describe("Dashboard", () => {
 		cy.findByText("Notifications dropdown").click({force: true});
 
 		cy.get("#notification-list").within(() => {
-			cy.findByText("Notifications (1)");
+			cy.findByText("Notifications");
+			cy.findByText("1");
 
-			cy.findByText("Mark as read");
-			cy.findByText("Mark as unread");
+			cy.findByText("Read");
+			cy.findByText("Unread");
 
 			cy.findAllByText("Congratulations! You did something good.").should("have.length", 2);
 
-			cy.findByText("Mark as read").click();
+			cy.findByText("Read").click();
 
-			cy.findByText("Mark as read").should("not.exist");
-			cy.findAllByText("Mark as unread").should("have.length", 2);
+			cy.findByText("Read").should("not.exist");
+			cy.findAllByText("Unread").should("have.length", 2);
 
-			cy.findByText("Notifications (0)");
+			cy.findByText("Notifications");
+			cy.findByText("0");
 
 			cy.findByText("Close dialog").click({force: true});
 		});
