@@ -79,11 +79,13 @@ export const Calendar: React.FC = () => {
 					Next
 				</Button>
 			</Row>
+
 			<Async.IfRejected state={getMonthRequestState}>
 				<ErrorBanner p="6" my="24">
 					{errorMessage}
 				</ErrorBanner>
 			</Async.IfRejected>
+
 			<Card data-testid="calendar" style={{...habitDialogGrid, background: "var(--gray-0)"}} p="12">
 				{days.map(props => (
 					<Day

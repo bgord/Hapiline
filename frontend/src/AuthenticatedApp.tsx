@@ -134,11 +134,12 @@ function NotificationDropdown() {
 						</Async.IfPending>
 
 						<Async.IfFulfilled state={getNotificationsRequestState}>
-							<UI.Column>
-								{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
+							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
 
+							<UI.Column as="ul">
 								{notifications.map(notification => (
 									<UI.Row
+										as="li"
 										style={{borderTop: "1px solid var(--gray-2)"}}
 										mainAxis="between"
 										crossAxis="center"

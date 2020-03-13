@@ -3,18 +3,7 @@ import {useLocation} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {
-	Button,
-	Row,
-	Header,
-	Text,
-	CloseIcon,
-	Column,
-	Banner,
-	InfoBanner,
-	Emoji,
-	labelToEmoji,
-} from "./ui";
+import * as UI from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
 import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
@@ -101,60 +90,64 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			onDismiss={dismissDialog}
 			style={{maxHeight: "700px", paddingBottom: "48px", overflow: "auto"}}
 		>
-			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
-				<Header variant="small">
+			<UI.Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+				<UI.Header variant="small">
 					{day} - {dayName}
-				</Header>
-				<CloseIcon onClick={dismissDialog} />
-			</Row>
-			<Column px="24">
+				</UI.Header>
+				<UI.CloseIcon onClick={dismissDialog} />
+			</UI.Row>
+			<UI.Column px="24">
 				{doesEveryHabitHasAVote && (
-					<Banner p="6" mt="24" variant="success">
-						<Text style={{color: "#025D26"}}>
-							<Emoji ariaLabel="Party emoji" mx="12">
-								{labelToEmoji.party}
-							</Emoji>
+					<UI.Banner p="6" mt="24" variant="success">
+						<UI.Text style={{color: "#025D26"}}>
+							<UI.Emoji ariaLabel="Party emoji" mx="12">
+								{UI.labelToEmoji.party}
+							</UI.Emoji>
 							Congratulations! You've voted for every habit.
-						</Text>
-					</Banner>
+						</UI.Text>
+					</UI.Banner>
 				)}
-				<Row mt="48">
+				<UI.Row mt="48">
 					<DaySummaryChart maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
-					<Text ml="12" style={{whiteSpace: "nowrap"}}>
-						<Text variant="bold">{trackedHabits.length}</Text>
+					<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
+						<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
 						{" in total"}
-					</Text>
-				</Row>
-				<Row mt="6" crossAxis="center">
-					<Button onClick={toggleIsChartLegendVisible} style={{marginLeft: "-12px"}} variant="bare">
+					</UI.Text>
+				</UI.Row>
+				<UI.Row mt="6" crossAxis="center">
+					<UI.Button
+						onClick={toggleIsChartLegendVisible}
+						style={{marginLeft: "-12px"}}
+						variant="bare"
+					>
 						<QuestionMarkIcon />
-					</Button>
+					</UI.Button>
 					{isChartLegendVisible && (
-						<Row mb="6">
-							<Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</Text>
-							<Text>no votes</Text>
-						</Row>
+						<UI.Row mb="6">
+							<UI.Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</UI.Text>
+							<UI.Text>no votes</UI.Text>
+						</UI.Row>
 					)}
 					{isChartLegendVisible && (
-						<Row mb="6">
-							<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
-							<Text>regress votes</Text>
-						</Row>
+						<UI.Row mb="6">
+							<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
+							<UI.Text>regress votes</UI.Text>
+						</UI.Row>
 					)}
 					{isChartLegendVisible && (
-						<Row mb="6">
-							<Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</Text>
-							<Text>plateau votes</Text>
-						</Row>
+						<UI.Row mb="6">
+							<UI.Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</UI.Text>
+							<UI.Text>plateau votes</UI.Text>
+						</UI.Row>
 					)}
 					{isChartLegendVisible && (
-						<Row mb="6">
-							<Text style={{fontSize: "72px", color: "#8bdb90"}}>·</Text>
-							<Text>progress votes</Text>
-						</Row>
+						<UI.Row mb="6">
+							<UI.Text style={{fontSize: "72px", color: "#8bdb90"}}>·</UI.Text>
+							<UI.Text>progress votes</UI.Text>
+						</UI.Row>
 					)}
-				</Row>
-				<Row mt="48" crossAxis="center">
+				</UI.Row>
+				<UI.Row mt="48" crossAxis="center">
 					<HabitVoteFilters.Voted.Input
 						value={habitVoteFilter.value}
 						onChange={habitVoteFilter.onChange}
@@ -179,7 +172,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					/>
 					<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
 
-					<Button
+					<UI.Button
 						ml="auto"
 						onClick={() => {
 							habitVoteFilter.reset();
@@ -192,11 +185,11 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						variant="outlined"
 					>
 						Reset filters
-					</Button>
-				</Row>
-				<Row mt="24" crossAxis="end">
+					</UI.Button>
+				</UI.Row>
+				<UI.Row mt="24" crossAxis="end">
 					<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-					<Button
+					<UI.Button
 						ml="12"
 						onClick={() => {
 							habitSearch.clearPhrase();
@@ -205,22 +198,26 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						variant="outlined"
 					>
 						Clear
-					</Button>
-					<Text ml="auto" data-testid="habit-search-result-count">
-						<Text variant="bold">{filteredHabitVotes.length}</Text> results
-					</Text>
-				</Row>
+					</UI.Button>
+					<UI.Text ml="auto" data-testid="habit-search-result-count">
+						<UI.Text variant="bold">{filteredHabitVotes.length}</UI.Text> results
+					</UI.Text>
+				</UI.Row>
 				{isThereNoTrackedHabits && (
-					<InfoBanner p="12" mt="48">
+					<UI.InfoBanner p="12" mt="48">
 						No habits available this day.
-					</InfoBanner>
+					</UI.InfoBanner>
 				)}
 				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
-					<Column pb="48">
-						<Header mt="48" mb="24" variant="extra-small">
+					<UI.Column pb="48">
+						<UI.Header mt="48" mb="24" variant="extra-small">
 							Tracked habits
-						</Header>
-						<ul data-testid="day-dialog-habits" style={{borderTop: "1px solid var(--gray-1)"}}>
+						</UI.Header>
+						<UI.Column
+							as="ul"
+							data-testid="day-dialog-habits"
+							style={{borderTop: "1px solid var(--gray-1)"}}
+						>
 							{filteredHabitVotes.map(entry => (
 								<DayDialogHabitVoteListItem
 									key={entry.habit.id}
@@ -233,11 +230,11 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 									{...entry}
 								/>
 							))}
-						</ul>
+						</UI.Column>
 						<DayDialogSummaryTabs day={day} />
-					</Column>
+					</UI.Column>
 				)}
-			</Column>
+			</UI.Column>
 		</Dialog>
 	);
 };
