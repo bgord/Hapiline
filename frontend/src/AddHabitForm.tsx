@@ -2,21 +2,7 @@ import {Dialog} from "@reach/dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {
-	Button,
-	Textarea,
-	Field,
-	Label,
-	Checkbox,
-	Row,
-	Select,
-	Header,
-	CloseIcon,
-	Column,
-	Error,
-	InfoBanner,
-	ErrorBanner,
-} from "./ui";
+import * as UI from "./ui";
 import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
@@ -70,120 +56,128 @@ export const AddHabitForm: React.FC = () => {
 
 	return (
 		<Dialog data-pt="12" data-pb="48" aria-label="Add new habit" onDismiss={hideAddFormDialog}>
-			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
-				<Header variant="small">New habit</Header>
-				<CloseIcon onClick={hideAddFormDialog} />
-			</Row>
-			<Column p="24">
-				<form
-					onSubmit={event => {
-						event.preventDefault();
-						addHabitRequestState.run(
-							name,
-							score,
-							strength,
-							profile?.id,
-							description || null,
-							isTrackable,
-						);
-					}}
-				>
-					<Row mt="48">
-						<Field style={{flexGrow: 1}}>
-							<Label htmlFor="name">Habit name</Label>
-							<HabitNameInput
-								id="name"
-								value={name}
-								onChange={event => setName(event.target.value)}
-							/>
-						</Field>
-						<Field ml="12">
-							<Label htmlFor="score">Score</Label>
-							<Select
-								id="score"
-								name="score"
-								required
-								value={score}
-								onChange={event => setScore(event.target.value)}
-								onBlur={event => setScore(event.target.value)}
-							>
-								<option value="positive">positive</option>
-								<option value="neutral">neutral</option>
-								<option value="negative">negative</option>
-							</Select>
-						</Field>
-						<Field ml="12">
-							<Label htmlFor="strength">Strength</Label>
-							<Select
-								id="strength"
-								name="strength"
-								required
-								value={strength}
-								onChange={event => setStrength(event.target.value)}
-								onBlur={event => setStrength(event.target.value)}
-							>
-								<option value="established">established</option>
-								<option value="developing">developing</option>
-								<option value="fresh">fresh</option>
-							</Select>
-						</Field>
-					</Row>
-					<Async.IfRejected state={addHabitRequestState}>
-						<Error mt="6">{nameInlineErrorMessage}</Error>
-					</Async.IfRejected>
-					<Row mt="48" crossAxis="center">
-						<Field variant="row">
-							<Checkbox
-								id="is_trackable"
-								name="is_trackable"
-								checked={isTrackable}
-								onChange={() => setIsTrackable(v => !v)}
-							/>
-							<Label ml="6" htmlFor="is_trackable">
-								Track this habit
-							</Label>
-						</Field>
-						<InfoBanner px="6" py="3" ml="24">
-							You won't be able to vote for an untracked habit.
-						</InfoBanner>
-					</Row>
-					<Field mt="24">
-						<Label htmlFor="description">Description</Label>
-						<Textarea
-							value={description}
-							onChange={event => setDescription(event.target.value)}
-							name="description"
-							placeholder="Write something..."
+			<UI.Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+				<UI.Header variant="small">New habit</UI.Header>
+				<UI.CloseIcon onClick={hideAddFormDialog} />
+			</UI.Row>
+
+			<UI.Column
+				as="form"
+				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+					event.preventDefault();
+					addHabitRequestState.run(
+						name,
+						score,
+						strength,
+						profile?.id,
+						description || null,
+						isTrackable,
+					);
+				}}
+				p="24"
+			>
+				<UI.Row mt="48">
+					<UI.Field style={{flexGrow: 1}}>
+						<UI.Label htmlFor="name">Habit name</UI.Label>
+						<HabitNameInput
+							id="name"
+							value={name}
+							onChange={event => setName(event.target.value)}
 						/>
-					</Field>
-					<Async.IfRejected state={addHabitRequestState}>
-						<Error mt="6">{descriptionInlineErrorMessage}</Error>
-					</Async.IfRejected>
-					<Button
-						style={{
-							display: "flex",
-							justifyContent: "center",
-							alignItems: "center",
-							width: "125px",
-						}}
-						ml="auto"
-						mt="48"
-						mb="24"
-						variant="primary"
-						type="submit"
-					>
-						<PlusCircleIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
-						Add habit
-					</Button>
-				</form>
+					</UI.Field>
+					<UI.Field ml="12">
+						<UI.Label htmlFor="score">Score</UI.Label>
+						<UI.Select
+							id="score"
+							name="score"
+							required
+							value={score}
+							onChange={event => setScore(event.target.value)}
+							onBlur={event => setScore(event.target.value)}
+						>
+							<option value="positive">positive</option>
+							<option value="neutral">neutral</option>
+							<option value="negative">negative</option>
+						</UI.Select>
+					</UI.Field>
+					<UI.Field ml="12">
+						<UI.Label htmlFor="strength">Strength</UI.Label>
+						<UI.Select
+							id="strength"
+							name="strength"
+							required
+							value={strength}
+							onChange={event => setStrength(event.target.value)}
+							onBlur={event => setStrength(event.target.value)}
+						>
+							<option value="established">established</option>
+							<option value="developing">developing</option>
+							<option value="fresh">fresh</option>
+						</UI.Select>
+					</UI.Field>
+				</UI.Row>
+
+				<Async.IfRejected state={addHabitRequestState}>
+					<UI.Error mt="6">{nameInlineErrorMessage}</UI.Error>
+				</Async.IfRejected>
+
+				<UI.Row mt="48" crossAxis="center">
+					<UI.Field variant="row">
+						<UI.Checkbox
+							id="is_trackable"
+							name="is_trackable"
+							checked={isTrackable}
+							onChange={() => setIsTrackable(v => !v)}
+						/>
+						<UI.Label ml="6" htmlFor="is_trackable">
+							Track this habit
+						</UI.Label>
+					</UI.Field>
+
+					<UI.InfoBanner px="6" py="3" ml="24">
+						You won't be able to vote for an untracked habit.
+					</UI.InfoBanner>
+				</UI.Row>
+
+				<UI.Field mt="24">
+					<UI.Label htmlFor="description">Description</UI.Label>
+					<UI.Textarea
+						value={description}
+						onChange={event => setDescription(event.target.value)}
+						name="description"
+						placeholder="Write something..."
+					/>
+				</UI.Field>
+
+				<Async.IfRejected state={addHabitRequestState}>
+					<UI.Error mt="6">{descriptionInlineErrorMessage}</UI.Error>
+				</Async.IfRejected>
+
+				<UI.Button
+					style={{
+						display: "flex",
+						justifyContent: "center",
+						alignItems: "center",
+						width: "125px",
+					}}
+					ml="auto"
+					mt="48"
+					mb="24"
+					variant="primary"
+					type="submit"
+				>
+					<PlusCircleIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
+					Add habit
+				</UI.Button>
+
 				<Async.IfRejected state={addHabitRequestState}>
 					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
-						<ErrorBanner p="12">
+						<UI.ErrorBanner p="12">
 							{errorMessage || "Something unexpected happened. Please try again later."}
-						</ErrorBanner>
+						</UI.ErrorBanner>
 					)}
 				</Async.IfRejected>
-			</Column>
+			</UI.Column>
 		</Dialog>
 	);
 };
