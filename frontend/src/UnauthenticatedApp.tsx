@@ -3,6 +3,7 @@ import * as React from "react";
 
 import {createBrowserHistory} from "history";
 
+import * as UI from "./ui";
 import {EmailVerificationWindow} from "./EmailVerificationWindow";
 import {ForgotPasswordWindow} from "./ForgotPasswordWindow";
 import {Home} from "./Home";
@@ -46,18 +47,14 @@ function UnauthenticatedApp() {
 
 export default UnauthenticatedApp;
 
-function UnauthenticatedNavbar() {
-	return (
-		<nav className="flex justify-end py-1 bg-white shadow-md">
+const UnauthenticatedNavbar = () => (
+	<nav>
+		<UI.Row style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
 			<NavLink className="ml-2 mr-auto px-4 py-2" exact activeClassName="text-blue-400" to="/">
 				<Logo className="h-10" />
 			</NavLink>
-			<NavLink className="p-4" activeClassName="text-blue-400" to="/register">
-				Register
-			</NavLink>
-			<NavLink className="p-4" activeClassName="text-blue-400" to="/login">
-				Login
-			</NavLink>
-		</nav>
-	);
-}
+			<UI.NavItem to="/register">Register</UI.NavItem>
+			<UI.NavItem to="/login">Login</UI.NavItem>
+		</UI.Row>
+	</nav>
+);
