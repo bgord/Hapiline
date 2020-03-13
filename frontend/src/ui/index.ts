@@ -1,7 +1,6 @@
 export * from "./badge/Badge";
 export * from "./banner/Banner";
 export * from "./button/Button";
-
 export * from "./card/Card";
 export * from "./checkbox/Checkbox";
 export * from "./close-icon/CloseIcon";
@@ -18,3 +17,16 @@ export * from "./text/Text";
 export * from "./textarea/Textarea";
 export * from "./error/Error";
 export * from "./emoji/Emoji";
+export * from "./nav-link/NavLink";
+export * from "./wrapper/Wrapper";
+
+export * from "./icons/Bell";
+export * from "./icons/Calendar";
+export * from "./icons/Close";
+export * from "./icons/Exclamation";
+export * from "./icons/Filter";
+export * from "./icons/Info";
+export * from "./icons/Plus";
+export * from "./icons/PlusCircle";
+export * from "./icons/QuestionMark";
+export * from "./icons/Trash";

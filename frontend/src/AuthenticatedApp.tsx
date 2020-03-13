@@ -1,13 +1,12 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
 import * as Async from "react-async";
 import * as React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell} from "@fortawesome/free-solid-svg-icons";
 import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
 
-import {Button, Text, Row, Header, CloseIcon, Error} from "./ui";
+import * as UI from "./ui";
+import {BellIcon} from "./ui/icons/Bell";
 import {api} from "./services/api";
 import {Calendar} from "./Calendar";
 import {DashboardWindow} from "./DashboardWindow";
@@ -58,26 +57,18 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 
 	return (
-		<nav className="flex justify-end py-1 bg-white shadow-md">
-			<NavLink className="ml-2 mr-auto p-2" exact activeClassName="text-blue-400" to="/dashboard">
-				<Logo />
-			</NavLink>
-			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/dashboard">
-				Dashboard
-			</NavLink>
-			<NavLink exact className="p-4" activeClassName="text-blue-400" to="/habits">
-				Habits
-			</NavLink>
-			<NavLink className="p-4" activeClassName="text-blue-400" to="/calendar">
-				Calendar
-			</NavLink>
-			<NavLink to="/profile" activeClassName="text-blue-400">
-				<h3 className="font-semibold p-4">{profile?.email}</h3>
-			</NavLink>
-			<NotificationDropdown />
-			<NavLink className="p-4" activeClassName="text-blue-400" to="/logout">
-				Logout
-			</NavLink>
+		<nav>
+			<UI.Row style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
+				<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
+					<Logo />
+				</NavLink>
+				<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
+				<UI.NavItem to="/habits">Habits</UI.NavItem>
+				<UI.NavItem to="/calendar">Calendar</UI.NavItem>
+				<UI.NavItem to="/profile">{profile?.email}</UI.NavItem>
+				<NotificationDropdown />
+				<UI.NavItem to="/logout">Logout</UI.NavItem>
+			</UI.Row>
 		</nav>
 	);
 }
@@ -112,70 +103,87 @@ function NotificationDropdown() {
 	}
 
 	return (
-		<>
-			<Button
-				variant="bare"
-				onClick={toggleNotifications}
-				style={{
-					position: "relative",
-					alignSelf: "center",
-					fontSize: "24px",
-				}}
-			>
+		<UI.Column>
+			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
 				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
-				<FontAwesomeIcon icon={faBell} />
-				<Text hidden={unreadNotifictionsNumber === 0} style={{position: "absolute", top: "-4px"}}>
+				<BellIcon />
+				<UI.Text
+					hidden={unreadNotifictionsNumber === 0}
+					style={{position: "absolute", top: "-3px", right: "3px"}}
+				>
 					{unreadNotifictionsNumber}
-				</Text>
-			</Button>
+				</UI.Text>
+			</UI.Button>
 			{areNotificationsVisible && (
-				<div
+				<UI.Card
+					mt="72"
 					id="notification-list"
 					style={{
 						width: "500px",
+						position: "absolute",
+						right: "12px",
 					}}
-					className="absolute h-64 bg-white mt-16 mr-2 p-3 shadow-lg overflow-auto"
 				>
-					<Async.IfPending state={getNotificationsRequestState}>Loading...</Async.IfPending>
-					<Async.IfFulfilled state={getNotificationsRequestState}>
-						<Row mainAxis="between" mb="24">
-							<Header variant="extra-small">Notifications ({unreadNotifictionsNumber})</Header>
-							<CloseIcon onClick={hideNotifications} />
-						</Row>
-						<ul>
-							{notifications.length === 0 && <Text>You don't have any notifications.</Text>}
-							{notifications.map(notification => (
-								<li key={notification.id}>
-									<Row mainAxis="between">
-										<Text>{notification.content}</Text>
+					<UI.Column p="24">
+						<UI.Row mainAxis="between" mb="24">
+							<UI.Header variant="extra-small">Notifications</UI.Header>
+							<UI.Badge ml="6" variant="neutral" style={{padding: "3px 6px"}}>
+								{unreadNotifictionsNumber}
+							</UI.Badge>
+							<UI.CloseIcon ml="auto" onClick={hideNotifications} />
+						</UI.Row>
+
+						<Async.IfPending state={getNotificationsRequestState}>
+							<UI.Text>Loading...</UI.Text>
+						</Async.IfPending>
+
+						<Async.IfFulfilled state={getNotificationsRequestState}>
+							<UI.Column>
+								{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
+
+								{notifications.map(notification => (
+									<UI.Row
+										style={{borderTop: "1px solid var(--gray-2)"}}
+										mainAxis="between"
+										crossAxis="center"
+										mt="12"
+										pt="6"
+										key={notification.id}
+									>
+										<UI.Text>{notification.content}</UI.Text>
+
 										{notification.status === "unread" && (
-											<Button
+											<UI.Button
 												variant="secondary"
+												style={{width: "100px"}}
 												disabled={updateNotificationRequestState.isPending}
 												onClick={() => markNotificationAsRead(notification.id)}
 											>
-												Mark as read
-											</Button>
+												Read
+											</UI.Button>
 										)}
+
 										{notification.status === "read" && (
-											<Button
+											<UI.Button
+												style={{width: "100px"}}
 												variant="outlined"
-												onClick={() => markNotificationAsUnread(notification.id)}
 												disabled={updateNotificationRequestState.isPending}
+												onClick={() => markNotificationAsUnread(notification.id)}
 											>
-												Mark as unread
-											</Button>
+												Unread
+											</UI.Button>
 										)}
-									</Row>
-								</li>
-							))}
-						</ul>
-					</Async.IfFulfilled>
-					<Async.IfRejected state={getNotificationsRequestState}>
-						<Error>Couldn't fetch notifications...</Error>
-					</Async.IfRejected>
-				</div>
+									</UI.Row>
+								))}
+							</UI.Column>
+						</Async.IfFulfilled>
+
+						<Async.IfRejected state={getNotificationsRequestState}>
+							<UI.Error>Couldn't fetch notifications...</UI.Error>
+						</Async.IfRejected>
+					</UI.Column>
+				</UI.Card>
 			)}
-		</>
+		</UI.Column>
 	);
 }

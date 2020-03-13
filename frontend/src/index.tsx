@@ -6,7 +6,7 @@ import "../css/main.css";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import {Button} from "./ui";
+import * as UI from "./ui";
 import {App} from "./App";
 import {AuthProvider} from "./contexts/auth-context";
 import {NotificationsProvider} from "./contexts/notifications-context";
@@ -24,15 +24,14 @@ class ErrorBoundary extends React.Component<{}, {hasError: boolean}> {
 	render() {
 		if (this.state.hasError) {
 			return (
-				<>
-					<h1 className="mt-10 text-center">Something went wrong :(</h1>
-					<div className="flex justify-center mt-4 items-baseline">
-						<Button variant="primary" onClick={() => window.location.reload(true)}>
+				<UI.Row mainAxis="center" mt="72">
+					<UI.Column>
+						<UI.Text variant="bold">Something went wrong ;(</UI.Text>
+						<UI.Button mt="24" variant="primary">
 							Refresh
-						</Button>
-						the page
-					</div>
-				</>
+						</UI.Button>
+					</UI.Column>
+				</UI.Row>
 			);
 		}
 

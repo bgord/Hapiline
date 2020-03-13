@@ -80,7 +80,7 @@ const ChangeEmail: React.FC = () => {
 			}}
 		>
 			<Column p="24" style={{borderBottom: "2px solid var(--gray-2)"}}>
-				<Header variant="extra-small" mt="24" mb="12">
+				<Header variant="extra-small" mt="12" mb="12">
 					Email change
 				</Header>
 
@@ -123,7 +123,7 @@ const ChangeEmail: React.FC = () => {
 				{status === "error" && passwordInlineError && <Error>{passwordInlineError}</Error>}
 
 				{["idle", "pending", "error"].includes(status) && (
-					<Row mt="12">
+					<Row mt="24">
 						<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
 							Confirm email
 						</Button>
@@ -182,7 +182,7 @@ const ChangePassword = () => {
 				<Header mt="12" mb="24" variant="extra-small">
 					Password change
 				</Header>
-				<InfoBanner px="6" py="3" mb="48">
+				<InfoBanner px="6" py="3" mb="24">
 					You won't be logged out, remember to input the new password the next time.
 				</InfoBanner>
 				{["idle", "pending", "error"].includes(status) && (
@@ -280,7 +280,7 @@ const DeleteAccount = () => {
 				Your data will be removed pernamently, and you won't be able to recover your account.
 			</ErrorBanner>
 			<Button
-				mt="48"
+				mt="24"
 				variant="danger"
 				disabled={deleteAccountRequestState.isPending}
 				onClick={() => setStatus("editing")}

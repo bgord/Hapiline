@@ -1,17 +1,15 @@
 import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
+
+// TODO: replace with heroicons, eventually delete FA
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {
-	faChevronUp,
-	faChevronDown,
-	faPlus,
-	faEquals,
-	faMinus,
-} from "@fortawesome/free-solid-svg-icons";
+import {faPlus, faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
+import {ChevronUpIcon} from "./ui/icons/ChevronUp";
+import {ChevronDownIcon} from "./ui/icons/ChevronDown";
 import VisuallyHidden from "@reach/visually-hidden";
 import {habitStrengthToBadgeVariant, IHabit} from "./interfaces/IHabit";
-import {Button, Text, Textarea, Field, Row, Column, Label, Badge} from "./ui";
+import * as UI from "./ui";
 import {Vote, IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {
@@ -101,7 +99,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<>
-			<Row
+			<UI.Row
 				pb="12"
 				width="100%"
 				style={{
@@ -109,27 +107,27 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 					borderBottom: "1px solid var(--gray-1)",
 				}}
 			>
-				<Column data-width="100%">
-					<Row pt="6">
+				<UI.Column width="100%">
+					<UI.Row pt="6">
 						{isCommentVisible && (
-							<Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
+							<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
 								<VisuallyHidden>Hide vote comment</VisuallyHidden>
-								<FontAwesomeIcon icon={faChevronUp} />
-							</Button>
+								<ChevronUpIcon />
+							</UI.Button>
 						)}
 						{!isCommentVisible && (
-							<Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
+							<UI.Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
 								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
-								<FontAwesomeIcon icon={faChevronDown} />
-							</Button>
+								<ChevronDownIcon />
+							</UI.Button>
 						)}
 						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-							<Text ml="12" variant="semi-bold">
+							<UI.Text ml="12" variant="semi-bold">
 								{habit.name}
-							</Text>
+							</UI.Text>
 						</Link>
-						<div data-ml="auto">
-							<Button
+						<UI.Wrapper ml="auto">
+							<UI.Button
 								style={{
 									background: vote === "progress" ? "var(--green-light)" : "var(--gray-0)",
 									color: vote === "progress" ? "var(--green-dark)" : "var(--gray-10)",
@@ -141,8 +139,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							>
 								<VisuallyHidden>Add progress vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faPlus} />
-							</Button>
-							<Button
+							</UI.Button>
+							<UI.Button
 								style={{
 									background: vote === "plateau" ? "var(--gray-2)" : "var(--gray-0)",
 									color: vote === "plateau" ? "var(--gray-9)" : "var(--gray-10)",
@@ -155,8 +153,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							>
 								<VisuallyHidden>Add plateau vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faEquals} />
-							</Button>
-							<Button
+							</UI.Button>
+							<UI.Button
 								style={{
 									background: vote === "regress" ? "var(--red-light)" : "var(--gray-0)",
 									color: vote === "regress" ? "var(--red-dark)" : "var(--gray-10)",
@@ -169,27 +167,27 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							>
 								<VisuallyHidden>Add regress vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faMinus} />
-							</Button>
-						</div>
-					</Row>
-					<Row mt="6">
-						<Badge ml="48" mr="6" variant={habit.score}>
+							</UI.Button>
+						</UI.Wrapper>
+					</UI.Row>
+					<UI.Row mt="6">
+						<UI.Badge ml="48" mr="6" variant={habit.score}>
 							{habit.score}
-						</Badge>
-						<Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
+						</UI.Badge>
+						<UI.Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
 							{habit.strength}
-						</Badge>
+						</UI.Badge>
 						{!vote && (
-							<Badge ml="auto" variant="neutral">
+							<UI.Badge ml="auto" variant="neutral">
 								No vote yet
-							</Badge>
+							</UI.Badge>
 						)}
-					</Row>
+					</UI.Row>
 					{isCommentVisible && (
-						<Column mt="24" pl="48">
-							<Field mb="12">
-								<Label htmlFor="vote_comment">Vote comment</Label>
-								<Textarea
+						<UI.Column mt="24" pl="48">
+							<UI.Field mb="12">
+								<UI.Label htmlFor="vote_comment">Vote comment</UI.Label>
+								<UI.Textarea
 									id="vote_comment"
 									key={comment ?? undefined}
 									onFocus={textarea.setFocused}
@@ -197,19 +195,19 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 									value={newComment ?? undefined}
 									onChange={newCommentHelpers.onChange}
 								/>
-							</Field>
-							<Row mb="12">
+							</UI.Field>
+							<UI.Row mb="12">
 								<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
 									Save
 								</SaveButton>
 								<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
 									Cancel
 								</CancelButton>
-							</Row>
-						</Column>
+							</UI.Row>
+						</UI.Column>
 					)}
-				</Column>
-			</Row>
+				</UI.Column>
+			</UI.Row>
 		</>
 	);
 };
