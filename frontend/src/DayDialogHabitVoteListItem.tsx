@@ -100,6 +100,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	return (
 		<>
 			<UI.Row
+				as="li"
 				pb="12"
 				width="100%"
 				style={{

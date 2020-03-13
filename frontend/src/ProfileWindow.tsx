@@ -72,74 +72,75 @@ const ChangeEmail: React.FC = () => {
 	const emailInlineError = getArgErrorMessage("email");
 
 	return (
-		<form
-			onSubmit={event => {
+		<Column
+			as="form"
+			onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 				event.preventDefault();
 				setStatus("pending");
 				changeEmailRequestState.run(newEmail, password);
 			}}
+			p="24"
+			style={{borderBottom: "2px solid var(--gray-2)"}}
 		>
-			<Column p="24" style={{borderBottom: "2px solid var(--gray-2)"}}>
-				<Header variant="extra-small" mt="12" mb="12">
-					Email change
-				</Header>
+			<Header variant="extra-small" mt="12" mb="12">
+				Email change
+			</Header>
 
-				<InfoBanner mt="12" py="3" px="6">
-					You will have to confirm your new email adress and login back again.
-				</InfoBanner>
+			<InfoBanner mt="12" py="3" px="6">
+				You will have to confirm your new email adress and login back again.
+			</InfoBanner>
 
-				{["idle", "pending", "error"].includes(status) && (
-					<>
-						<Field mt="24" mr="12" width="100%">
-							<Label htmlFor="email">Email</Label>
-							<Input
-								id="email"
-								value={newEmail}
-								onChange={event => setNewEmail(event.target.value)}
-								required
-								type="email"
-								disabled={status === "pending"}
-								placeholder="user@example.com"
-							/>
-							{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
-						</Field>
+			{["idle", "pending", "error"].includes(status) && (
+				<>
+					<Field mt="24" mr="12" width="100%">
+						<Label htmlFor="email">Email</Label>
+						<Input
+							id="email"
+							value={newEmail}
+							onChange={event => setNewEmail(event.target.value)}
+							required
+							type="email"
+							disabled={status === "pending"}
+							placeholder="user@example.com"
+						/>
+						{status === "error" && emailInlineError && <Error>{emailInlineError}</Error>}
+					</Field>
 
-						<Field mt="12">
-							<Label htmlFor="password">Password</Label>
-							<Input
-								id="password"
-								pattern=".{6,}"
-								title="Password should contain at least 6 characters."
-								required
-								value={password}
-								onChange={event => setPassword(event.target.value)}
-								type="password"
-								placeholder="********"
-								disabled={status === "pending"}
-							/>
-						</Field>
-					</>
-				)}
-				{status === "error" && passwordInlineError && <Error>{passwordInlineError}</Error>}
+					<Field mt="12">
+						<Label htmlFor="password">Password</Label>
+						<Input
+							id="password"
+							pattern=".{6,}"
+							title="Password should contain at least 6 characters."
+							required
+							value={password}
+							onChange={event => setPassword(event.target.value)}
+							type="password"
+							placeholder="********"
+							disabled={status === "pending"}
+						/>
+					</Field>
+				</>
+			)}
+			{status === "error" && passwordInlineError && <Error>{passwordInlineError}</Error>}
 
-				{["idle", "pending", "error"].includes(status) && (
-					<Row mt="24">
-						<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
-							Confirm email
-						</Button>
-					</Row>
-				)}
+			{["idle", "pending", "error"].includes(status) && (
+				<Row mt="24">
+					<Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
+						Confirm email
+					</Button>
+				</Row>
+			)}
 
-				{status === "pending" && <Text mt="12">Email change pending...</Text>}
+			{status === "pending" && <Text mt="12">Email change pending...</Text>}
 
-				{status === "success" && (
-					<Banner variant="success" mt="12" py="6" px="12">
-						Email confirmation message has been sent!
-						<br /> You will be logged out in 5 seconds.
-					</Banner>
-				)}
-			</Column>
-		</form>
+			{status === "success" && (
+				<Banner variant="success" mt="12" py="6" px="12">
+					Email confirmation message has been sent!
+					<br /> You will be logged out in 5 seconds.
+				</Banner>
+			)}
+		</Column>
 	);
 };
 
@@ -171,89 +172,90 @@ const ChangePassword = () => {
 			: null;
 
 	return (
-		<form
-			onSubmit={event => {
+		<Column
+			as="form"
+			onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 				event.preventDefault();
 				setStatus("pending");
 				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
 			}}
+			p="24"
+			style={{borderBottom: "2px solid var(--gray-2)"}}
 		>
-			<Column p="24" style={{borderBottom: "2px solid var(--gray-2)"}}>
-				<Header mt="12" mb="24" variant="extra-small">
-					Password change
-				</Header>
+			<Header mt="12" mb="24" variant="extra-small">
+				Password change
+			</Header>
 
-				<InfoBanner px="6" py="3" mb="24">
-					You won't be logged out, remember to input the new password the next time.
-				</InfoBanner>
+			<InfoBanner px="6" py="3" mb="24">
+				You won't be logged out, remember to input the new password the next time.
+			</InfoBanner>
 
-				{["idle", "pending", "error"].includes(status) && (
-					<>
-						<Field mb="12">
-							<Label htmlFor="old_password">Old password</Label>
-							<Input
-								id="old_password"
-								placeholder="********"
-								title="Password should contain at least 6 characters."
-								value={oldPassword}
-								onChange={event => setOldPassword(event.target.value)}
-								type="password"
-								required
-								pattern=".{6,}"
-								disabled={updatePasswordRequestState.isPending}
-							/>
-							{status === "error" && oldPasswordInlineError && (
-								<Error>{oldPasswordInlineError}</Error>
-							)}
-						</Field>
+			{["idle", "pending", "error"].includes(status) && (
+				<>
+					<Field mb="12">
+						<Label htmlFor="old_password">Old password</Label>
+						<Input
+							id="old_password"
+							placeholder="********"
+							title="Password should contain at least 6 characters."
+							value={oldPassword}
+							onChange={event => setOldPassword(event.target.value)}
+							type="password"
+							required
+							pattern=".{6,}"
+							disabled={updatePasswordRequestState.isPending}
+						/>
+						{status === "error" && oldPasswordInlineError && (
+							<Error>{oldPasswordInlineError}</Error>
+						)}
+					</Field>
 
-						<Field mb="12">
-							<Label htmlFor="new_password">New password</Label>
-							<Input
-								id="new_password"
-								placeholder="********"
-								title="Password should contain at least 6 characters."
-								value={newPassword}
-								onChange={event => setNewPassword(event.target.value)}
-								type="password"
-								required
-								pattern=".{6,}"
-								disabled={updatePasswordRequestState.isPending}
-							/>
-						</Field>
+					<Field mb="12">
+						<Label htmlFor="new_password">New password</Label>
+						<Input
+							id="new_password"
+							placeholder="********"
+							title="Password should contain at least 6 characters."
+							value={newPassword}
+							onChange={event => setNewPassword(event.target.value)}
+							type="password"
+							required
+							pattern=".{6,}"
+							disabled={updatePasswordRequestState.isPending}
+						/>
+					</Field>
 
-						<Field mb="24">
-							<Label htmlFor="password_confirmation">Repeat new password</Label>
-							<Input
-								id="password_confirmation"
-								type="password"
-								placeholder="********"
-								pattern={newPassword}
-								title="Passwords have to be equal"
-								value={newPasswordConfirmation}
-								onChange={event => setNewPasswordConfirmation(event.target.value)}
-								required
-								disabled={updatePasswordRequestState.isPending}
-							/>
-						</Field>
+					<Field mb="24">
+						<Label htmlFor="password_confirmation">Repeat new password</Label>
+						<Input
+							id="password_confirmation"
+							type="password"
+							placeholder="********"
+							pattern={newPassword}
+							title="Passwords have to be equal"
+							value={newPasswordConfirmation}
+							onChange={event => setNewPasswordConfirmation(event.target.value)}
+							required
+							disabled={updatePasswordRequestState.isPending}
+						/>
+					</Field>
 
-						<Row>
-							<Button variant="primary" type="submit">
-								Update password
-							</Button>
-						</Row>
-					</>
-				)}
+					<Row>
+						<Button variant="primary" type="submit">
+							Update password
+						</Button>
+					</Row>
+				</>
+			)}
 
-				{status === "error" && internalServerError && <Error>{internalServerError}</Error>}
+			{status === "error" && internalServerError && <Error>{internalServerError}</Error>}
 
-				{status === "success" && (
-					<Banner variant="success" mt="12" py="6" px="12">
-						Password changed successfully!
-					</Banner>
-				)}
-			</Column>
-		</form>
+			{status === "success" && (
+				<Banner variant="success" mt="12" py="6" px="12">
+					Password changed successfully!
+				</Banner>
+			)}
+		</Column>
 	);
 };
 
