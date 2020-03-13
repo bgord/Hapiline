@@ -19,3 +19,14 @@ export * from "./textarea/Textarea";
 export * from "./error/Error";
 export * from "./emoji/Emoji";
 export * from "./nav-link/NavLink";
+
+export * from "./icons/Bell";
+export * from "./icons/Calendar";
+export * from "./icons/Close";
+export * from "./icons/Exclamation";
+export * from "./icons/Filter";
+export * from "./icons/Info";
+export * from "./icons/Plus";
+export * from "./icons/PlusCircle";
+export * from "./icons/QuestionMark";
+export * from "./icons/Trash";
