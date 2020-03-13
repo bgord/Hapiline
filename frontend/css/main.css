@@ -1,6 +1,8 @@
 * {
 	box-sizing: border-box;
 	line-height: var(--spacing-m);
+	padding: 0;
+	margin: 0;
 }
 
 /* https://palx.jxnblk.com/ */
