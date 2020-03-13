@@ -17,12 +17,18 @@ const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
 	const removeNotification = () => dispatch({type: "remove", id});
 
 	return (
-		<Alert data-position="relative" style={{minWidth: "350px", background: typeToBgColor[type]}}>
-			<UI.Row mainAxis="between" width="100%" p="12" mt="12">
-				<UI.Text>{message}</UI.Text>
-				<UI.CloseIcon style={{background: "inherit"}} onClick={removeNotification} />
-			</UI.Row>
-		</Alert>
+		<UI.Row
+			as={Alert}
+			position="relative"
+			style={{minWidth: "350px", background: typeToBgColor[type]}}
+			mainAxis="between"
+			width="100%"
+			p="12"
+			mt="12"
+		>
+			<UI.Text>{message}</UI.Text>
+			<UI.CloseIcon style={{background: "inherit"}} onClick={removeNotification} />
+		</UI.Row>
 	);
 };
 

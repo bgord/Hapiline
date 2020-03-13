@@ -38,6 +38,7 @@ export const NewPasswordWindow: React.FC = () => {
 			>
 				<Column>
 					<Header>New password</Header>
+
 					<Field mt="48">
 						<Label htmlFor="password">Password</Label>
 						<Input
@@ -54,6 +55,7 @@ export const NewPasswordWindow: React.FC = () => {
 							style={{width: "500px"}}
 						/>
 					</Field>
+
 					<Field mt="12">
 						<Label htmlFor="password_confirmation">Repeat password</Label>
 						<Input
@@ -68,6 +70,7 @@ export const NewPasswordWindow: React.FC = () => {
 							disabled={newPasswordRequestState.isFulfilled}
 						/>
 					</Field>
+
 					<Row mainAxis="end" mt="24">
 						<Button
 							variant="primary"

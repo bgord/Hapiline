@@ -32,6 +32,7 @@ export const LoginWindow: React.FC = () => {
 			>
 				<Column>
 					<Header>Login</Header>
+
 					<Field mt="48">
 						<Label htmlFor="email">Email</Label>
 						<Input
@@ -44,6 +45,7 @@ export const LoginWindow: React.FC = () => {
 							style={{width: "500px"}}
 						/>
 					</Field>
+
 					<Field mt="12">
 						<Label htmlFor="password">Password</Label>
 						<Input
@@ -57,6 +59,7 @@ export const LoginWindow: React.FC = () => {
 							placeholder="*********"
 						/>
 					</Field>
+
 					<Row mt="24" mainAxis="end">
 						<Button
 							type="submit"
@@ -68,6 +71,7 @@ export const LoginWindow: React.FC = () => {
 							{loginRequestState.isPending ? "Loading..." : "Login"}
 						</Button>
 					</Row>
+
 					<Row mt="24">
 						<Text>Don't have an account?</Text>
 						<Link data-variant="link" data-ml="6" className="c-text" to="/register">

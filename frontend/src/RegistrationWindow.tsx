@@ -42,6 +42,7 @@ export const RegistrationWindow: React.FC = () => {
 			>
 				<Column>
 					<Header>Register</Header>
+
 					<Field mt="48">
 						<Label htmlFor="email">Email</Label>
 						<Input
@@ -58,6 +59,7 @@ export const RegistrationWindow: React.FC = () => {
 							<Error>{emailInlineErrorMessage}</Error>
 						</Async.IfRejected>
 					</Field>
+
 					<Field mt="12">
 						<Label htmlFor="password">Password</Label>
 						<Input
@@ -72,6 +74,7 @@ export const RegistrationWindow: React.FC = () => {
 							disabled={registrationRequestState.isFulfilled}
 						/>
 					</Field>
+
 					<Field mt="12">
 						<Label htmlFor="password_confirmation">Repeat password</Label>
 						<Input
@@ -86,6 +89,7 @@ export const RegistrationWindow: React.FC = () => {
 							disabled={registrationRequestState.isFulfilled}
 						/>
 					</Field>
+
 					<Row mt="24" mainAxis="end">
 						<Button
 							data-testid="registration-submit"
@@ -97,6 +101,7 @@ export const RegistrationWindow: React.FC = () => {
 							{registrationRequestState.isPending ? "Loading..." : "Register"}
 						</Button>
 					</Row>
+
 					<Async.IfFulfilled state={registrationRequestState}>
 						<Banner p="12" mt="24" variant="success">
 							<Column>
@@ -110,6 +115,7 @@ export const RegistrationWindow: React.FC = () => {
 							</Column>
 						</Banner>
 					</Async.IfFulfilled>
+
 					<Async.IfRejected state={registrationRequestState}>
 						<ErrorBanner mt="24" p="6">
 							{responseStatus === 500 && errorMessage}

@@ -182,9 +182,11 @@ const ChangePassword = () => {
 				<Header mt="12" mb="24" variant="extra-small">
 					Password change
 				</Header>
+
 				<InfoBanner px="6" py="3" mb="24">
 					You won't be logged out, remember to input the new password the next time.
 				</InfoBanner>
+
 				{["idle", "pending", "error"].includes(status) && (
 					<>
 						<Field mb="12">
@@ -204,6 +206,7 @@ const ChangePassword = () => {
 								<Error>{oldPasswordInlineError}</Error>
 							)}
 						</Field>
+
 						<Field mb="12">
 							<Label htmlFor="new_password">New password</Label>
 							<Input
@@ -218,6 +221,7 @@ const ChangePassword = () => {
 								disabled={updatePasswordRequestState.isPending}
 							/>
 						</Field>
+
 						<Field mb="24">
 							<Label htmlFor="password_confirmation">Repeat new password</Label>
 							<Input
@@ -232,6 +236,7 @@ const ChangePassword = () => {
 								disabled={updatePasswordRequestState.isPending}
 							/>
 						</Field>
+
 						<Row>
 							<Button variant="primary" type="submit">
 								Update password
@@ -239,7 +244,9 @@ const ChangePassword = () => {
 						</Row>
 					</>
 				)}
+
 				{status === "error" && internalServerError && <Error>{internalServerError}</Error>}
+
 				{status === "success" && (
 					<Banner variant="success" mt="12" py="6" px="12">
 						Password changed successfully!
@@ -276,9 +283,11 @@ const DeleteAccount = () => {
 			<Header mt="12" variant="extra-small">
 				Account deletion
 			</Header>
+
 			<ErrorBanner mt="24" p="6">
 				Your data will be removed pernamently, and you won't be able to recover your account.
 			</ErrorBanner>
+
 			<Button
 				mt="24"
 				variant="danger"

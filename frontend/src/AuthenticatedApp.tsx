@@ -57,21 +57,19 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 
 	return (
-		<nav>
-			<UI.Row style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
-				<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
-					<Logo />
-				</NavLink>
-				<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
-				<UI.NavItem to="/habits">Habits</UI.NavItem>
-				<UI.NavItem to="/calendar">Calendar</UI.NavItem>
-				<UI.NavItem variant="bold" to="/profile">
-					{profile?.email}
-				</UI.NavItem>
-				<NotificationDropdown />
-				<UI.NavItem to="/logout">Logout</UI.NavItem>
-			</UI.Row>
-		</nav>
+		<UI.Row as="nav" style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
+			<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
+				<Logo />
+			</NavLink>
+			<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
+			<UI.NavItem to="/habits">Habits</UI.NavItem>
+			<UI.NavItem to="/calendar">Calendar</UI.NavItem>
+			<UI.NavItem variant="bold" to="/profile">
+				{profile?.email}
+			</UI.NavItem>
+			<NotificationDropdown />
+			<UI.NavItem to="/logout">Logout</UI.NavItem>
+		</UI.Row>
 	);
 }
 

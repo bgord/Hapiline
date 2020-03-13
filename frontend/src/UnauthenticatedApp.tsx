@@ -48,13 +48,11 @@ const UnauthenticatedApp = () => (
 export default UnauthenticatedApp;
 
 const UnauthenticatedNavbar = () => (
-	<nav>
-		<UI.Row style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
-			<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
-				<Logo />
-			</NavLink>
-			<UI.NavItem to="/register">Register</UI.NavItem>
-			<UI.NavItem to="/login">Login</UI.NavItem>
-		</UI.Row>
-	</nav>
+	<UI.Row as="nav" style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
+		<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
+			<Logo />
+		</NavLink>
+		<UI.NavItem to="/register">Register</UI.NavItem>
+		<UI.NavItem to="/login">Login</UI.NavItem>
+	</UI.Row>
 );

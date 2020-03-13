@@ -7,8 +7,9 @@ import {Alignments} from "../alignments";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {Widths} from "../widths";
+import {Positions} from "../positions";
 
-type RowOwnProps = Margins & Alignments & Widths & Paddings;
+type RowOwnProps = Margins & Alignments & Widths & Paddings & Positions;
 
 export type RowProps<E extends React.ElementType> = PolymorphicComponentProps<E, RowOwnProps>;
 
@@ -32,6 +33,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 	pr,
 	pb,
 	pl,
+	position = "static",
 	...props
 }: RowProps<E>): JSX.Element {
 	return (
@@ -54,6 +56,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			data-mr={mr}
 			data-mb={mb}
 			data-ml={ml}
+			data-position={position}
 			className="c-row"
 			{...props}
 		/>
