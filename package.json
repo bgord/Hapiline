@@ -74,6 +74,7 @@
     "react-async": "^9.0.0",
     "react-beautiful-dnd": "^12.2.0",
     "react-dom": "^16.12.0",
+    "react-polymorphic-box": "^1.0.4",
     "react-router-dom": "^5.1.2",
     "react-spring": "^8.0.27",
     "shelljs": "^0.8.3",
