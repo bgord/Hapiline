@@ -1,6 +1,8 @@
 import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
+
+// TODO: replace with heroicons, eventually delete FA
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
 	faChevronUp,

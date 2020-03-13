@@ -87,6 +87,7 @@ export const AddHabitForm: React.FC = () => {
 							isTrackable,
 						);
 					}}
+					// TODO: remove className
 					className="flex flex-col w-full"
 				>
 					<Row mt="48">

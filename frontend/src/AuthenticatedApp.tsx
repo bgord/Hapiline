@@ -1,13 +1,12 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
 import * as Async from "react-async";
 import * as React from "react";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faBell} from "@fortawesome/free-solid-svg-icons";
 import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
 
 import * as UI from "./ui";
+import {BellIcon} from "./ui/icons/Bell";
 import {api} from "./services/api";
 import {Calendar} from "./Calendar";
 import {DashboardWindow} from "./DashboardWindow";
@@ -105,20 +104,12 @@ function NotificationDropdown() {
 
 	return (
 		<UI.Column>
-			<UI.Button
-				variant="bare"
-				onClick={toggleNotifications}
-				style={{
-					position: "relative",
-					alignSelf: "center",
-					fontSize: "24px",
-				}}
-			>
+			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
 				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
-				<FontAwesomeIcon icon={faBell} />
+				<BellIcon />
 				<UI.Text
 					hidden={unreadNotifictionsNumber === 0}
-					style={{position: "absolute", top: "-3px"}}
+					style={{position: "absolute", top: "-3px", right: "3px"}}
 				>
 					{unreadNotifictionsNumber}
 				</UI.Text>
