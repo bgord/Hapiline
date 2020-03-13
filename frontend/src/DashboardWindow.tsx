@@ -238,7 +238,7 @@ const MotivationalText: React.FC<{total: number; votedFor: number; untracked: nu
 }) => {
 	if (total === 0 && votedFor === 0) {
 		return (
-			<Link className="link" to="habits">
+			<Link className="c-link" to="habits">
 				Add your first tracked habit to start voting!
 			</Link>
 		);
