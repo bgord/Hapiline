@@ -3,6 +3,7 @@ import "./text.css";
 import React from "react";
 
 import {Margins} from "../margins";
+import {Positions} from "../positions";
 
 export type TextVariant =
 	| "regular"
@@ -13,10 +14,23 @@ export type TextVariant =
 	| "monospaced"
 	| "link";
 
-export const Text: React.FC<JSX.IntrinsicElements["div"] &
-	Margins & {
-		variant?: TextVariant;
-	}> = ({variant = "regular", m, mx, my, mt, mr, mb, ml, ...props}) => (
+type TextProps = JSX.IntrinsicElements["div"] & {
+	variant?: TextVariant;
+} & Margins &
+	Positions;
+
+export const Text: React.FC<TextProps> = ({
+	variant = "regular",
+	m,
+	mx,
+	my,
+	mt,
+	mr,
+	mb,
+	ml,
+	position = "static",
+	...props
+}) => (
 	<span
 		data-m={m}
 		data-mx={mx}
@@ -26,6 +40,7 @@ export const Text: React.FC<JSX.IntrinsicElements["div"] &
 		data-mb={mb}
 		data-ml={ml}
 		data-variant={variant}
+		data-position={position}
 		className="c-text"
 		{...props}
 	/>

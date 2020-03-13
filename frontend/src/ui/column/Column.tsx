@@ -6,8 +6,14 @@ import {Alignments} from "../alignments";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {Widths} from "../widths";
+import {Positions} from "../positions";
 
-type ColumnProps = React.ComponentPropsWithoutRef<"div"> & Margins & Alignments & Paddings & Widths;
+type ColumnProps = React.ComponentPropsWithoutRef<"div"> &
+	Margins &
+	Alignments &
+	Paddings &
+	Widths &
+	Positions;
 
 /* eslint-disable prefer-arrow-callback */
 export const Column = React.forwardRef(function _Column(
@@ -29,6 +35,7 @@ export const Column = React.forwardRef(function _Column(
 		mainAxis,
 		crossAxis,
 		width,
+		position = "static",
 		...props
 	}: ColumnProps,
 	ref: React.Ref<HTMLDivElement>,
@@ -53,6 +60,7 @@ export const Column = React.forwardRef(function _Column(
 			data-pb={pb}
 			data-pl={pl}
 			data-width={width}
+			data-position={position}
 			className="c-column"
 			{...props}
 		/>

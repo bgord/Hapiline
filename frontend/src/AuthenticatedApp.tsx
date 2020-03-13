@@ -109,22 +109,18 @@ function NotificationDropdown() {
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
 				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
 				<BellIcon />
-				<UI.Text
-					hidden={unreadNotifictionsNumber === 0}
-					style={{position: "absolute", top: "-3px", right: "3px"}}
-				>
-					{unreadNotifictionsNumber}
-				</UI.Text>
+				{unreadNotifictionsNumber > 0 && (
+					<UI.Text position="absolute" style={{top: "-3px", right: "3px"}}>
+						{unreadNotifictionsNumber}
+					</UI.Text>
+				)}
 			</UI.Button>
 			{areNotificationsVisible && (
 				<UI.Card
 					mt="72"
 					id="notification-list"
-					style={{
-						width: "500px",
-						position: "absolute",
-						right: "12px",
-					}}
+					position="absolute"
+					style={{width: "500px", right: "12px"}}
 				>
 					<UI.Column p="24">
 						<UI.Row mainAxis="between" mb="24">

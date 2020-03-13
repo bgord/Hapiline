@@ -4,8 +4,11 @@ import React from "react";
 
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
+import {Positions} from "../positions";
 
-export const Card: React.FC<JSX.IntrinsicElements["div"] & Paddings & Margins> = ({
+type CardProps = JSX.IntrinsicElements["div"] & Paddings & Margins & Positions;
+
+export const Card: React.FC<CardProps> = ({
 	p,
 	px,
 	py,
@@ -20,6 +23,7 @@ export const Card: React.FC<JSX.IntrinsicElements["div"] & Paddings & Margins> =
 	mr,
 	mb,
 	ml,
+	position = "static",
 	...props
 }) => (
 	<div
@@ -37,6 +41,7 @@ export const Card: React.FC<JSX.IntrinsicElements["div"] & Paddings & Margins> =
 		data-mr={mr}
 		data-mb={mb}
 		data-ml={ml}
+		data-position={position}
 		className="c-card"
 		{...props}
 	/>
