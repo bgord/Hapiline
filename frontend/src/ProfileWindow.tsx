@@ -294,10 +294,7 @@ const DeleteAccount = () => {
 			</Async.IfRejected>
 
 			{status === "editing" && (
-				<AlertDialog
-					className="w-1/4"
-					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
-				>
+				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
 					<AlertDialogLabel>
 						<Header variant="small">Do you really want to delete your account? </Header>
 					</AlertDialogLabel>
