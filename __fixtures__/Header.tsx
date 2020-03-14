@@ -25,13 +25,10 @@ export default {
 	"as a form header": (
 		<Demo>
 			<UI.Column
+				bg="white"
 				as="form"
 				p="24"
-				style={{
-					width: "300px",
-					background: "white",
-					boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-				}}
+				style={{width: "300px", boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"}}
 			>
 				<UI.Header mt="12">Login</UI.Header>
 				<UI.Field mt="48">

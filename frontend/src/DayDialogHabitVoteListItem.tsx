@@ -123,9 +123,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							</UI.Button>
 						)}
 						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-							<UI.Text ml="12" variant="semi-bold">
-								{habit.name}
-							</UI.Text>
+							<UI.Text variant="semi-bold">{habit.name}</UI.Text>
 						</Link>
 						<UI.Wrapper ml="auto">
 							<UI.Button

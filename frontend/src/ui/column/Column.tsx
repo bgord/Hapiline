@@ -8,8 +8,9 @@ import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {Widths} from "../widths";
 import {Positions} from "../positions";
+import {Backgrounds} from "../backgrounds";
 
-type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions;
+type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions & Backgrounds;
 
 export type ColumnProps<E extends React.ElementType> = PolymorphicComponentProps<E, ColumnOwnProps>;
 
@@ -36,6 +37,7 @@ export const Column = React.forwardRef(
 			mainAxis,
 			crossAxis,
 			width,
+			bg,
 			position = "static",
 			...props
 		}: ColumnProps<E>,
@@ -47,6 +49,9 @@ export const Column = React.forwardRef(
 				as={defaultElement}
 				data-main-axis={mainAxis}
 				data-cross-axis={crossAxis}
+				data-width={width}
+				data-position={position}
+				data-bg={bg}
 				data-m={m}
 				data-mx={mx}
 				data-my={my}
@@ -61,8 +66,6 @@ export const Column = React.forwardRef(
 				data-pr={pr}
 				data-pb={pb}
 				data-pl={pl}
-				data-width={width}
-				data-position={position}
 				className="c-column"
 				{...props}
 			/>
