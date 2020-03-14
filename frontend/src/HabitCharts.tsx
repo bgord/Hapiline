@@ -80,19 +80,21 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 				<UI.Row mt="6" crossAxis="center">
 					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
 					<UI.Text>
-						{regressVotes} regress votes ({regressVotesPrct}%)
+						{`${regressVotes} regress vote${regressVotes > 1 ? "s " : " "} (${regressVotesPrct}%)`}
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{plateauVotes} plateau votes ({plateauVotesPrct}%)
+						{`${plateauVotes} regress vote${plateauVotes > 1 ? "s " : " "} (${plateauVotesPrct}%)`}
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{progressVotes} progress votes ({progressVotesPrct}%)
+						{`${progressVotes} regress vote${
+							progressVotes > 1 ? "s " : " "
+						} (${progressVotesPrct}%)`}
 					</UI.Text>
 
 					<UI.Text ml="auto" variant="bold">
