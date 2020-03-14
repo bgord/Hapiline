@@ -23,13 +23,13 @@ export const EmailVerificationWindow = () => {
 
 			<Async.IfFulfilled state={emailVerificationRequestState}>
 				<UI.Row mt="48" width="100%" mainAxis="center">
-					<UI.Banner variant="success" size="big">
-						<UI.Text>Success! You can </UI.Text>
+					<UI.SuccessBanner size="big">
+						<UI.Text ml="12">Success! You can </UI.Text>
 						<Link data-mx="3" data-variant="link" className="c-text" to="/login">
 							login
 						</Link>
 						<UI.Text> now.</UI.Text>
-					</UI.Banner>
+					</UI.SuccessBanner>
 				</UI.Row>
 			</Async.IfFulfilled>
 

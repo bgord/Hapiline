@@ -121,12 +121,12 @@ const ChangeEmail: React.FC = () => {
 			{status === "pending" && <UI.Text mt="12">Email change pending...</UI.Text>}
 
 			{status === "success" && (
-				<UI.Banner style={{alignSelf: "flex-start"}} variant="success" mt="24" size="big">
-					<UI.Text>
+				<UI.SuccessBanner style={{alignSelf: "flex-start"}} mt="24" size="big">
+					<UI.Text ml="12">
 						Email confirmation message has been sent!
 						<br /> You will be logged out in 5 seconds.
 					</UI.Text>
-				</UI.Banner>
+				</UI.SuccessBanner>
 			)}
 		</UI.Column>
 	);
@@ -239,9 +239,9 @@ const ChangePassword = () => {
 			{status === "error" && internalServerError && <UI.Error>{internalServerError}</UI.Error>}
 
 			{status === "success" && (
-				<UI.Banner style={{alignSelf: "start"}} size="big" variant="success" mt="24">
-					<UI.Text>Password changed successfully!</UI.Text>
-				</UI.Banner>
+				<UI.SuccessBanner style={{alignSelf: "start"}} size="big" mt="24">
+					<UI.Text ml="6">Password changed successfully!</UI.Text>
+				</UI.SuccessBanner>
 			)}
 		</UI.Column>
 	);

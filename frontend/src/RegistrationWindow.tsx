@@ -90,17 +90,17 @@ export const RegistrationWindow: React.FC = () => {
 				</UI.Row>
 
 				<Async.IfFulfilled state={registrationRequestState}>
-					<UI.Banner size="big" mt="24" variant="success">
-						<UI.Column>
+					<UI.SuccessBanner size="big" mt="24">
+						<UI.Column ml="12">
 							<UI.Text>Account confirmation email has been sent!</UI.Text>
-							<UI.Row mt="12">
+							<UI.Row>
 								<UI.Text>You can</UI.Text>
 								<Link data-ml="6" data-variant="link" className="c-text" to="/login">
 									login now
 								</Link>
 							</UI.Row>
 						</UI.Column>
-					</UI.Banner>
+					</UI.SuccessBanner>
 				</Async.IfFulfilled>
 
 				<Async.IfRejected state={registrationRequestState}>

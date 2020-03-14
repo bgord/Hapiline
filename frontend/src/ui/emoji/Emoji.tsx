@@ -9,7 +9,7 @@ type EmojiProps = JSX.IntrinsicElements["span"] & {
 	ariaLabel: string;
 } & Margins;
 
-export const Emoji: React.FC<EmojiProps> = ({m, mx, my, mt, mr, mb, ml, ...props}) => (
+export const Emoji: React.FC<EmojiProps> = ({ariaLabel, m, mx, my, mt, mr, mb, ml, ...props}) => (
 	<span
 		data-m={m}
 		data-mx={mx}
@@ -19,6 +19,7 @@ export const Emoji: React.FC<EmojiProps> = ({m, mx, my, mt, mr, mb, ml, ...props
 		data-mb={mb}
 		data-ml={ml}
 		{...props}
+		aria-label={ariaLabel}
 		role="img"
 	/>
 );

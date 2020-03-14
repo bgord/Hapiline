@@ -5,6 +5,7 @@ import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {InfoIcon} from "../icons/Info";
 import {ExclamationIcon} from "../icons/Exclamation";
+import {CheckmarkIcon} from "../icons/Checkmark";
 import * as UI from "../";
 
 type BannerVariant = "info" | "error" | "success";
@@ -56,13 +57,13 @@ export const Banner: React.FC<BannerProps> = ({
 	/>
 );
 
-type InfoBannerProps = JSX.IntrinsicElements["div"] &
+type SpecificBannerProps = JSX.IntrinsicElements["div"] &
 	Margins &
 	Paddings & {
 		size?: BannerSize;
 	};
 
-export const InfoBanner: React.FC<InfoBannerProps> = ({children, ...props}) => (
+export const InfoBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="info">
 		<InfoIcon />
 		<UI.Text style={{fontSize: "14px"}} ml="12">
@@ -71,17 +72,18 @@ export const InfoBanner: React.FC<InfoBannerProps> = ({children, ...props}) => (
 	</Banner>
 );
 
-type ErrorBannerProps = JSX.IntrinsicElements["div"] &
-	Margins &
-	Paddings & {
-		size?: BannerSize;
-	};
-
-export const ErrorBanner: React.FC<ErrorBannerProps> = ({children, ...props}) => (
+export const ErrorBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="error">
 		<ExclamationIcon stroke="#682d36" />
 		<UI.Text style={{color: "#682d36"}} ml="12">
 			{children}
 		</UI.Text>
+	</Banner>
+);
+
+export const SuccessBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
+	<Banner {...props} variant="success">
+		<CheckmarkIcon />
+		<UI.Text style={{color: "#025D26"}}>{children}</UI.Text>
 	</Banner>
 );

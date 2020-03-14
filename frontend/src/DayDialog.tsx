@@ -98,14 +98,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			</UI.Row>
 			<UI.Column px="24">
 				{doesEveryHabitHasAVote && (
-					<UI.Banner mt="24" variant="success">
-						<UI.Text style={{color: "#025D26"}}>
-							<UI.Emoji ariaLabel="Party emoji" mx="12">
-								{UI.labelToEmoji.party}
-							</UI.Emoji>
+					<UI.SuccessBanner mt="24">
+						<UI.Text ml="12" style={{color: "#025D26"}}>
 							Congratulations! You've voted for every habit.
 						</UI.Text>
-					</UI.Banner>
+						<UI.Emoji ml="12" ariaLabel="Party emoji">
+							{UI.labelToEmoji.party}
+						</UI.Emoji>
+					</UI.SuccessBanner>
 				)}
 				<UI.Row mt="48">
 					<DaySummaryChart maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />

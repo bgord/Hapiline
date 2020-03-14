@@ -71,17 +71,17 @@ export const NewPasswordWindow: React.FC = () => {
 				</UI.Row>
 
 				<Async.IfFulfilled state={newPasswordRequestState}>
-					<UI.Banner mt="24" variant="success">
-						<UI.Column>
+					<UI.SuccessBanner mt="24" size="big">
+						<UI.Column ml="12">
 							<UI.Text>Password has been changed!</UI.Text>
-							<UI.Row mt="6">
+							<UI.Row>
 								<UI.Text>You can</UI.Text>
 								<Link data-ml="6" data-variant="link" className="c-text" to="/login">
 									login now
 								</Link>
 							</UI.Row>
 						</UI.Column>
-					</UI.Banner>
+					</UI.SuccessBanner>
 				</Async.IfFulfilled>
 
 				<Async.IfRejected state={newPasswordRequestState}>
