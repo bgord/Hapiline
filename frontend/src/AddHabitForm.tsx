@@ -166,7 +166,7 @@ export const AddHabitForm: React.FC = () => {
 					variant="primary"
 					type="submit"
 				>
-					<PlusCircleIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
+					<PlusCircleIcon mr="auto" />
 					Add habit
 				</UI.Button>
 
