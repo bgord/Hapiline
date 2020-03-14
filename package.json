@@ -140,8 +140,7 @@
       "react/no-multi-comp": 0,
       "jsx-a11y/no-onchange": 1,
       "no-bitwise": 0,
-      "sonarjs/cognitive-complexity": 0,
-      "prefer-template": 1
+      "sonarjs/cognitive-complexity": 0
     }
   }
 }
