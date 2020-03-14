@@ -56,7 +56,7 @@ export const AddHabitForm: React.FC = () => {
 
 	return (
 		<Dialog data-pt="12" data-pb="48" aria-label="Add new habit" onDismiss={hideAddFormDialog}>
-			<UI.Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="small">New habit</UI.Header>
 				<UI.CloseIcon onClick={hideAddFormDialog} />
 			</UI.Row>

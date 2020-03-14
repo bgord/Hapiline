@@ -55,7 +55,7 @@ export const Calendar: React.FC = () => {
 
 	return (
 		<UI.Column mt="24" crossAxis="center">
-			<UI.Row mb="24" px="72" py="12" style={{background: "var(--gray-2)"}} width="auto">
+			<UI.Row mb="24" bg="gray-2" px="72" py="12" width="auto">
 				<UI.Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
@@ -84,11 +84,7 @@ export const Calendar: React.FC = () => {
 				<UI.ErrorBanner my="24">{errorMessage}</UI.ErrorBanner>
 			</Async.IfRejected>
 
-			<UI.Card
-				data-testid="calendar"
-				style={{...habitDialogGrid, background: "var(--gray-0)"}}
-				p="12"
-			>
+			<UI.Card bg="gray-0" data-testid="calendar" style={{...habitDialogGrid}} p="12">
 				{days.map(props => (
 					<Day
 						key={props.day.toString()}

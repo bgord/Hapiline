@@ -5,8 +5,9 @@ import React from "react";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {Positions} from "../positions";
+import {Backgrounds} from "../backgrounds";
 
-type CardProps = JSX.IntrinsicElements["div"] & Paddings & Margins & Positions;
+type CardProps = JSX.IntrinsicElements["div"] & Paddings & Margins & Positions & Backgrounds;
 
 export const Card: React.FC<CardProps> = ({
 	p,
@@ -23,6 +24,7 @@ export const Card: React.FC<CardProps> = ({
 	mr,
 	mb,
 	ml,
+	bg,
 	position = "static",
 	...props
 }) => (
@@ -41,6 +43,7 @@ export const Card: React.FC<CardProps> = ({
 		data-mr={mr}
 		data-mb={mb}
 		data-ml={ml}
+		data-bg={bg}
 		data-position={position}
 		className="c-card"
 		{...props}

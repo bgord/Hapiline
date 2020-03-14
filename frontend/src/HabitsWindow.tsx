@@ -94,7 +94,7 @@ export const HabitsWindow = () => {
 
 			<Async.IfSettled state={getHabitsRequestState}>
 				<UI.Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
-					<UI.Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between">
 						<UI.Header variant="large">Habit list</UI.Header>
 						<UI.Button
 							disabled={filteredHabits.length === 0}
@@ -252,7 +252,8 @@ export const HabitsWindow = () => {
 									ref={provided.innerRef}
 									as="ul"
 									mt="48"
-									style={{borderTop: "1px solid var(--gray-1)", background: "var(--gray-3)"}}
+									bg="gray-3"
+									style={{borderTop: "1px solid var(--gray-1)"}}
 									{...provided.droppableProps}
 								>
 									{filteredHabits.map((habit, index) => (

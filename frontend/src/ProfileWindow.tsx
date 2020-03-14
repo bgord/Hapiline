@@ -14,7 +14,7 @@ export const ProfileWindow = () => {
 	return (
 		<UI.Column ml="auto" mr="auto" my="48" style={{maxWidth: "750px"}}>
 			<UI.Card>
-				<UI.Row mt="12" p="24" style={{background: "var(--gray-1)"}}>
+				<UI.Row bg="gray-1" mt="12" p="24">
 					<UI.Header variant="large">Profile settings</UI.Header>
 				</UI.Row>
 				<ChangeEmail />

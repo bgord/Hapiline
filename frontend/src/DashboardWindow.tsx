@@ -72,7 +72,7 @@ export const DashboardWindow = () => {
 
 	return (
 		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "750px"}}>
-			<UI.Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="large">Hello!</UI.Header>
 				<UI.Button variant="primary" onClick={redirectToCurrentDay}>
 					View today

@@ -7,6 +7,7 @@ import React from "react";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {Positions} from "../positions";
+import {Backgrounds} from "../backgrounds";
 
 type ButtonVariants = "secondary" | "primary" | "outlined" | "bare" | "danger";
 
@@ -14,13 +15,16 @@ type ButtonProps = React.ComponentPropsWithoutRef<"button"> & {
 	variant: ButtonVariants;
 } & Margins &
 	Paddings &
-	Positions;
+	Positions &
+	Backgrounds;
 
 /* eslint-disable prefer-arrow-callback */
 export const Button = React.forwardRef(function _Button(
 	{
 		type = "button",
+		position = "static",
 		variant,
+		bg,
 		m,
 		mx,
 		my,
@@ -35,7 +39,6 @@ export const Button = React.forwardRef(function _Button(
 		pr,
 		pb,
 		pl,
-		position = "static",
 		...props
 	}: ButtonProps,
 	ref: React.Ref<HTMLButtonElement>,
@@ -43,6 +46,10 @@ export const Button = React.forwardRef(function _Button(
 	return (
 		<button
 			ref={ref}
+			type={type}
+			data-variant={variant}
+			data-position={position}
+			data-bg={bg}
 			data-p={p}
 			data-px={px}
 			data-py={py}
@@ -57,9 +64,6 @@ export const Button = React.forwardRef(function _Button(
 			data-mr={mr}
 			data-mb={mb}
 			data-ml={ml}
-			data-variant={variant}
-			data-position={position}
-			type={type}
 			className="c-button"
 			{...props}
 		/>

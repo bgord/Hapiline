@@ -90,7 +90,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			onDismiss={dismissDialog}
 			style={{maxHeight: "700px", paddingBottom: "48px", overflow: "auto"}}
 		>
-			<UI.Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="small">
 					{day} - {dayName}
 				</UI.Header>

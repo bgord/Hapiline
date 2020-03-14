@@ -537,12 +537,36 @@ body {
 /* Backgrounds */
 /* ----------------------------------------------------- */
 
-*[data-bg="0"] {
-	background: var(--gray-0);
+*[data-bg="gray-0"] {
+	background: var(--gray-0) !important;
+}
+
+*[data-bg="gray-1"] {
+	background: var(--gray-1) !important;
+}
+
+*[data-bg="gray-2"] {
+	background: var(--gray-2) !important;
+}
+
+*[data-bg="gray-3"] {
+	background: var(--gray-3) !important;
+}
+
+*[data-bg="red"] {
+	background: var(--red-light) !important;
+}
+
+*[data-bg="green"] {
+	background: var(--green-light) !important;
 }
 
 *[data-bg="white"] {
-	background: white;
+	background: white !important;
+}
+
+*[data-bg="inherit"] {
+	background: inherit !important;
 }
 
 /* ----------------------------------------------------- */

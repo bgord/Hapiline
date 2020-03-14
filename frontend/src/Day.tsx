@@ -44,10 +44,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	}`;
 
 	return (
-		<UI.Column
-			data-testid="day"
-			style={{background: "var(--gray-0)", border: "2px solid var(--gray-1)", ...styles}}
-		>
+		<UI.Column data-testid="day" bg="gray-0" style={{border: "2px solid var(--gray-1)", ...styles}}>
 			<UI.Row mainAxis="between" px="6">
 				<UI.Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 					{day}
@@ -62,12 +59,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 								{newHabitsText}
 							</UI.Text>
 						) : null}
-						<UI.Button
-							variant="bare"
-							onClick={openDialog}
-							style={{background: "var(--gray-1)"}}
-							ml="auto"
-						>
+						<UI.Button variant="bare" bg="gray-1" ml="auto" onClick={openDialog}>
 							Show
 						</UI.Button>
 					</UI.Row>

@@ -8,8 +8,9 @@ import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {Widths} from "../widths";
 import {Positions} from "../positions";
+import {Backgrounds} from "../backgrounds";
 
-type RowOwnProps = Margins & Alignments & Widths & Paddings & Positions;
+type RowOwnProps = Margins & Alignments & Widths & Paddings & Positions & Backgrounds;
 
 export type RowProps<E extends React.ElementType> = PolymorphicComponentProps<E, RowOwnProps>;
 
@@ -19,6 +20,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 	mainAxis = "start",
 	crossAxis = "center",
 	width,
+	bg,
 	m,
 	mx,
 	my,
@@ -57,6 +59,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			data-mb={mb}
 			data-ml={ml}
 			data-position={position}
+			data-bg={bg}
 			className="c-row"
 			{...props}
 		/>

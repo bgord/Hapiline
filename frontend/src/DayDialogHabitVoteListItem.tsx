@@ -127,8 +127,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						</Link>
 						<UI.Wrapper ml="auto">
 							<UI.Button
+								bg={vote === "progress" ? "green" : "gray-0"}
 								style={{
-									background: vote === "progress" ? "var(--green-light)" : "var(--gray-0)",
 									color: vote === "progress" ? "var(--green-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
@@ -140,8 +140,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faPlus} />
 							</UI.Button>
 							<UI.Button
+								bg={vote === "plateau" ? "gray-2" : "gray-0"}
 								style={{
-									background: vote === "plateau" ? "var(--gray-2)" : "var(--gray-0)",
 									color: vote === "plateau" ? "var(--gray-9)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
@@ -154,8 +154,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faEquals} />
 							</UI.Button>
 							<UI.Button
+								bg={vote === "regress" ? "red" : "gray-0"}
 								style={{
-									background: vote === "regress" ? "var(--red-light)" : "var(--gray-0)",
 									color: vote === "regress" ? "var(--red-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}

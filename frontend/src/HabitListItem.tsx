@@ -38,7 +38,7 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					{...provided.dragHandleProps}
 					{...provided.draggableProps}
 					data-testid="draggable-habit-item"
-					data-bg="0"
+					bg="gray-0"
 					data-state={snapshot.isDragging ? "dragging" : "idle"}
 					ref={provided.innerRef}
 					as="li"
