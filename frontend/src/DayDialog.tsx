@@ -98,7 +98,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			</UI.Row>
 			<UI.Column px="24">
 				{doesEveryHabitHasAVote && (
-					<UI.Banner p="6" mt="24" variant="success">
+					<UI.Banner mt="24" variant="success">
 						<UI.Text style={{color: "#025D26"}}>
 							<UI.Emoji ariaLabel="Party emoji" mx="12">
 								{UI.labelToEmoji.party}
@@ -204,7 +204,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					</UI.Text>
 				</UI.Row>
 				{isThereNoTrackedHabits && (
-					<UI.InfoBanner p="12" mt="48">
+					<UI.InfoBanner size="big" mt="48">
 						No habits available this day.
 					</UI.InfoBanner>
 				)}

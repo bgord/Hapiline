@@ -23,7 +23,7 @@ export const EmailVerificationWindow = () => {
 
 			<Async.IfFulfilled state={emailVerificationRequestState}>
 				<UI.Row mt="48" width="100%" mainAxis="center">
-					<UI.Banner variant="success" py="12" px="48">
+					<UI.Banner variant="success" size="big">
 						<UI.Text>Success! You can </UI.Text>
 						<Link data-mx="3" data-variant="link" className="c-text" to="/login">
 							login
@@ -35,7 +35,7 @@ export const EmailVerificationWindow = () => {
 
 			<Async.IfRejected state={emailVerificationRequestState}>
 				<UI.Row mainAxis="center" width="100%">
-					<UI.ErrorBanner mt="48" py="12" px="24">
+					<UI.ErrorBanner mt="48" size="big">
 						Invalid or expired token
 					</UI.ErrorBanner>
 				</UI.Row>

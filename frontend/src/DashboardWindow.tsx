@@ -80,7 +80,7 @@ export const DashboardWindow = () => {
 			</UI.Row>
 			<UI.Column p="24">
 				<Async.IfRejected state={getDashboardStatsRequestState}>
-					<UI.ErrorBanner p="6" mt="24">
+					<UI.ErrorBanner mt="24">
 						Cannot load dashboard stats now, please try again.
 					</UI.ErrorBanner>
 				</Async.IfRejected>

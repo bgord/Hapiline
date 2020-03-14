@@ -81,9 +81,7 @@ export const Calendar: React.FC = () => {
 			</UI.Row>
 
 			<Async.IfRejected state={getMonthRequestState}>
-				<UI.ErrorBanner p="6" my="24">
-					{errorMessage}
-				</UI.ErrorBanner>
+				<UI.ErrorBanner my="24">{errorMessage}</UI.ErrorBanner>
 			</Async.IfRejected>
 
 			<UI.Card

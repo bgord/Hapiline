@@ -71,7 +71,7 @@ export const NewPasswordWindow: React.FC = () => {
 				</UI.Row>
 
 				<Async.IfFulfilled state={newPasswordRequestState}>
-					<UI.Banner mt="24" variant="success" p="6">
+					<UI.Banner mt="24" variant="success">
 						<UI.Column>
 							<UI.Text>Password has been changed!</UI.Text>
 							<UI.Row mt="6">
@@ -85,9 +85,7 @@ export const NewPasswordWindow: React.FC = () => {
 				</Async.IfFulfilled>
 
 				<Async.IfRejected state={newPasswordRequestState}>
-					<UI.ErrorBanner mt="24" p="6">
-						{errorMessage}
-					</UI.ErrorBanner>
+					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
 				</Async.IfRejected>
 			</UI.Column>
 		</UI.Card>

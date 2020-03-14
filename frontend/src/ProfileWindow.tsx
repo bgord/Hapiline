@@ -72,7 +72,7 @@ const ChangeEmail: React.FC = () => {
 				Email change
 			</UI.Header>
 
-			<UI.InfoBanner mt="12" p="6">
+			<UI.InfoBanner mt="12">
 				You will have to confirm your new email adress and login back again.
 			</UI.InfoBanner>
 
@@ -121,7 +121,7 @@ const ChangeEmail: React.FC = () => {
 			{status === "pending" && <UI.Text mt="12">Email change pending...</UI.Text>}
 
 			{status === "success" && (
-				<UI.Banner style={{alignSelf: "flex-start"}} variant="success" mt="24" p="12">
+				<UI.Banner style={{alignSelf: "flex-start"}} variant="success" mt="24" size="big">
 					<UI.Text>
 						Email confirmation message has been sent!
 						<br /> You will be logged out in 5 seconds.
@@ -174,7 +174,7 @@ const ChangePassword = () => {
 				Password change
 			</UI.Header>
 
-			<UI.InfoBanner p="6" mb="24">
+			<UI.InfoBanner mb="24">
 				You won't be logged out, remember to input the new password the next time.
 			</UI.InfoBanner>
 
@@ -239,7 +239,7 @@ const ChangePassword = () => {
 			{status === "error" && internalServerError && <UI.Error>{internalServerError}</UI.Error>}
 
 			{status === "success" && (
-				<UI.Banner style={{alignSelf: "start"}} variant="success" mt="24" p="12">
+				<UI.Banner style={{alignSelf: "start"}} size="big" variant="success" mt="24">
 					<UI.Text>Password changed successfully!</UI.Text>
 				</UI.Banner>
 			)}
@@ -274,7 +274,7 @@ const DeleteAccount = () => {
 				Account deletion
 			</UI.Header>
 
-			<UI.ErrorBanner mt="24" p="6">
+			<UI.ErrorBanner mt="24">
 				Your data will be removed pernamently, and you won't be able to recover your account.
 			</UI.ErrorBanner>
 

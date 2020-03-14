@@ -83,9 +83,7 @@ export const LoginWindow: React.FC = () => {
 				</Link>
 
 				<Async.IfRejected state={loginRequestState}>
-					<UI.ErrorBanner mt="24" p="6">
-						{errorMessage}
-					</UI.ErrorBanner>
+					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
 				</Async.IfRejected>
 			</UI.Column>
 		</UI.Card>

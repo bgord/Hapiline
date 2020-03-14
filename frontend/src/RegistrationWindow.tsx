@@ -90,7 +90,7 @@ export const RegistrationWindow: React.FC = () => {
 				</UI.Row>
 
 				<Async.IfFulfilled state={registrationRequestState}>
-					<UI.Banner p="12" mt="24" variant="success">
+					<UI.Banner size="big" mt="24" variant="success">
 						<UI.Column>
 							<UI.Text>Account confirmation email has been sent!</UI.Text>
 							<UI.Row mt="12">
@@ -105,9 +105,7 @@ export const RegistrationWindow: React.FC = () => {
 
 				<Async.IfRejected state={registrationRequestState}>
 					{responseStatus === 500 && errorMessage && (
-						<UI.ErrorBanner mt="24" p="6">
-							{errorMessage}
-						</UI.ErrorBanner>
+						<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
 					)}
 				</Async.IfRejected>
 			</UI.Column>

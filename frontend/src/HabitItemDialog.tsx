@@ -64,9 +64,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					</UI.Text>
 				</Async.IfPending>
 				<Async.IfRejected state={habitRequestState}>
-					<UI.ErrorBanner m="24" p="6">
-						Couldn't fetch task details, please try again.
-					</UI.ErrorBanner>
+					<UI.ErrorBanner m="24">Couldn't fetch task details, please try again.</UI.ErrorBanner>
 				</Async.IfRejected>
 
 				{habit?.id && (
@@ -93,7 +91,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						{!habit.is_trackable && (
 							<UI.Row mt="24">
 								<UI.Badge variant="neutral">Untracked</UI.Badge>
-								<UI.InfoBanner p="3" ml="24">
+								<UI.InfoBanner size="small" ml="24">
 									You cannot vote for an untracked habit.
 								</UI.InfoBanner>
 							</UI.Row>

@@ -232,13 +232,13 @@ export const HabitsWindow = () => {
 					</UI.Row>
 					<Async.IfFulfilled state={getHabitsRequestState}>
 						{filteredHabits.length === 0 && (
-							<UI.InfoBanner mt="48" mx="24" p="12">
+							<UI.InfoBanner size="big" mt="48" mx="24">
 								It seems you haven't added any habits yet.
 							</UI.InfoBanner>
 						)}
 					</Async.IfFulfilled>
 					<Async.IfRejected state={getHabitsRequestState}>
-						<UI.ErrorBanner mt="48" mx="24" p="12">
+						<UI.ErrorBanner size="big" mt="48" mx="24">
 							{errorMessage}
 							<UI.Button onClick={getHabitsRequestState.reload} ml="24" variant="outlined">
 								Retry
