@@ -41,7 +41,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	const isNewHabitsTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
 
 	const newHabitsText =
-		stats.createdHabitsCount + " " + pluralize("habit", stats.createdHabitsCount ?? 0);
+		stats.createdHabitsCount + " new " + pluralize("habit", stats.createdHabitsCount ?? 0);
 
 	return (
 		<UI.Column data-testid="day" bg="gray-0" bw="2" b="gray-1" style={styles}>
