@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Field, Label, Select} from "./ui";
+import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
@@ -32,9 +32,9 @@ export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> =
 	});
 
 	return (
-		<Field>
-			<Label htmlFor="habit_score">Score</Label>
-			<Select
+		<UI.Field>
+			<UI.Label htmlFor="habit_score">Score</UI.Label>
+			<UI.Select
 				id="habit_score"
 				value={newHabitScore}
 				disabled={editHabitRequestState.isPending}
@@ -49,8 +49,8 @@ export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> =
 				<option value="positive">positive</option>
 				<option value="neutral">neutral</option>
 				<option value="negative">negative</option>
-			</Select>
-		</Field>
+			</UI.Select>
+		</UI.Field>
 	);
 };
 

@@ -2,7 +2,7 @@ import {Link, LinkProps} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Field, Select, Row, Label, Text, Error} from "./ui";
+import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -44,12 +44,12 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 
 	return (
 		<>
-			<Row mainAxis="between">
-				<Field variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
-					<Label mr="12" htmlFor="date_range">
+			<UI.Row mainAxis="between">
+				<UI.Field variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
+					<UI.Label mr="12" htmlFor="date_range">
 						Select date range:
-					</Label>
-					<Select
+					</UI.Label>
+					<UI.Select
 						id="date_range"
 						value={dateRange}
 						onChange={event => {
@@ -62,12 +62,12 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 						<option value="last_week">Last week</option>
 						<option value="last_month">Last month</option>
 						<option value="all_time">All time</option>
-					</Select>
-				</Field>
+					</UI.Select>
+				</UI.Field>
 				{children}
-			</Row>
+			</UI.Row>
 			<Async.IfFulfilled state={habitVoteChartRequestState}>
-				<Row mt="24">
+				<UI.Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
 							key={item.day}
@@ -76,33 +76,33 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 							{...item}
 						/>
 					))}
-				</Row>
-				<Row mt="6" crossAxis="center">
-					<Text style={{fontSize: "72px", color: "#ef8790"}}>·</Text>
-					<Text>
+				</UI.Row>
+				<UI.Row mt="6" crossAxis="center">
+					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
+					<UI.Text>
 						{regressVotes} regress votes ({regressVotesPrct}%)
-					</Text>
-					<Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
+					</UI.Text>
+					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
 						·
-					</Text>
-					<Text>
+					</UI.Text>
+					<UI.Text>
 						{plateauVotes} plateau votes ({plateauVotesPrct}%)
-					</Text>
-					<Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
+					</UI.Text>
+					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
 						·
-					</Text>
-					<Text>
+					</UI.Text>
+					<UI.Text>
 						{progressVotes} progress votes ({progressVotesPrct}%)
-					</Text>
+					</UI.Text>
 
-					<Text ml="auto" variant="bold">
+					<UI.Text ml="auto" variant="bold">
 						{howManyHabitVoteChartItems}
-					</Text>
-					<Text ml="6">in total</Text>
-				</Row>
+					</UI.Text>
+					<UI.Text ml="6">in total</UI.Text>
+				</UI.Row>
 			</Async.IfFulfilled>
 			<Async.IfRejected state={habitVoteChartRequestState}>
-				<Error mt="24">Charts unavailable, please try again.</Error>
+				<UI.Error mt="24">Charts unavailable, please try again.</UI.Error>
 			</Async.IfRejected>
 		</>
 	);

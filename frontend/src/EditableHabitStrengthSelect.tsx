@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Field, Label, Select} from "./ui";
+import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
@@ -30,9 +30,9 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 	});
 
 	return (
-		<Field ml="12">
-			<Label htmlFor="habit_strength">Strength</Label>
-			<Select
+		<UI.Field ml="12">
+			<UI.Label htmlFor="habit_strength">Strength</UI.Label>
+			<UI.Select
 				id="habit_strength"
 				value={newHabitStrength}
 				disabled={editHabitRequestState.isPending}
@@ -47,8 +47,8 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 				<option value="established">established</option>
 				<option value="developing">developing</option>
 				<option value="fresh">fresh</option>
-			</Select>
-		</Field>
+			</UI.Select>
+		</UI.Field>
 	);
 };
 

@@ -2,7 +2,7 @@ import {Draggable} from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
 import React from "react";
 
-import {Badge, Row, Button, Column, Text} from "./ui/";
+import * as UI from "./ui/";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
 import {useQueryParam} from "./hooks/useQueryParam";
@@ -42,7 +42,7 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					data-bg="0"
 					data-state={snapshot.isDragging ? "dragging" : "idle"}
 				>
-					<Column
+					<UI.Column
 						px="24"
 						py="6"
 						pb="12"
@@ -52,26 +52,26 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 							cursor: "move",
 						}}
 					>
-						<Row mainAxis="between" crossAxis="baseline">
-							<Text variant="semi-bold">{habit.name}</Text>
-							<Button ml="auto" variant="outlined" onClick={openPreviewDialog}>
+						<UI.Row mainAxis="between" crossAxis="baseline">
+							<UI.Text variant="semi-bold">{habit.name}</UI.Text>
+							<UI.Button ml="auto" variant="outlined" onClick={openPreviewDialog}>
 								More
-							</Button>
-						</Row>
-						<Row mt="6">
-							<Badge mr="6" variant={habit.score}>
+							</UI.Button>
+						</UI.Row>
+						<UI.Row mt="6">
+							<UI.Badge mr="6" variant={habit.score}>
 								{habit.score}
-							</Badge>
-							<Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
+							</UI.Badge>
+							<UI.Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
 								{habit.strength}
-							</Badge>
+							</UI.Badge>
 							{!habit.is_trackable && (
-								<Badge ml="12" variant="neutral">
+								<UI.Badge ml="12" variant="neutral">
 									Untracked
-								</Badge>
+								</UI.Badge>
 							)}
-						</Row>
-					</Column>
+						</UI.Row>
+					</UI.Column>
 					{doesPreviewHabitIdMatch && (
 						<HabitItemDialog habitId={habit.id} closeDialog={closePreviewDialog} />
 					)}

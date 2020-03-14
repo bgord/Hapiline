@@ -1,6 +1,6 @@
 import {isSameDay} from "date-fns";
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
-import {Text, Row, Badge, Column} from "./ui/";
+import * as UI from "./ui/";
 import React from "react";
 import {Link} from "react-router-dom";
 import VisuallyHidden from "@reach/visually-hidden";
@@ -41,7 +41,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 
 	return (
 		<div style={{height: "18px", fontSize: "14px"}} className={`flex w-full ${className}`}>
-			<Row
+			<UI.Row
 				mainAxis="center"
 				crossAxis="center"
 				title={noVotesCellTitle}
@@ -56,8 +56,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 			>
 				<VisuallyHidden>{stats.noVotesCountStats} habits with no votes</VisuallyHidden>
 				{stats.noVotesCountStats > 0 && stats.noVotesCountStats}
-			</Row>
-			<Row
+			</UI.Row>
+			<UI.Row
 				mainAxis="center"
 				crossAxis="center"
 				title={regressVotesCellTitle}
@@ -74,9 +74,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					{stats.regressVotesCountStats ?? 0} habits with regress votes
 				</VisuallyHidden>
 				{stats.regressVotesCountStats ?? 0}
-			</Row>
+			</UI.Row>
 
-			<Row
+			<UI.Row
 				mainAxis="center"
 				crossAxis="center"
 				title={plateauVotesCellTitle}
@@ -93,9 +93,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					{stats.plateauVotesCountStats ?? 0} habits with plateau votes
 				</VisuallyHidden>
 				{stats.plateauVotesCountStats ?? 0}
-			</Row>
+			</UI.Row>
 
-			<Row
+			<UI.Row
 				mainAxis="center"
 				crossAxis="center"
 				title={progressVotesCellTitle}
@@ -112,7 +112,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					{stats.progressVotesCountStats ?? 0} habits with progress votes
 				</VisuallyHidden>
 				{stats.progressVotesCountStats ?? 0}
-			</Row>
+			</UI.Row>
 		</div>
 	);
 };
@@ -137,19 +137,19 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 			</TabList>
 			<TabPanels data-mt="12">
 				<TabPanel>
-					{habitsAddedAtThisDay.length === 0 && <Text>No habits added this day.</Text>}
+					{habitsAddedAtThisDay.length === 0 && <UI.Text>No habits added this day.</UI.Text>}
 					{habitsAddedAtThisDay.length === 1 && (
-						<Text>
-							<Text variant="bold">One</Text> habit added this day.
-						</Text>
+						<UI.Text>
+							<UI.Text variant="bold">One</UI.Text> habit added this day.
+						</UI.Text>
 					)}
 					{habitsAddedAtThisDay.length > 1 && (
 						<>
-							<Text variant="bold">{habitsAddedAtThisDay.length}</Text>{" "}
-							<Text>habits added this day</Text>.
+							<UI.Text variant="bold">{habitsAddedAtThisDay.length}</UI.Text>{" "}
+							<UI.Text>habits added this day</UI.Text>.
 						</>
 					)}
-					<Column
+					<UI.Column
 						style={{
 							borderTop: habitsAddedAtThisDay.length > 0 ? `1px solid var(--gray-1)` : undefined,
 						}}
@@ -158,19 +158,21 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						{habitsAddedAtThisDay.map(habit => (
 							<CompactHabitItem key={habit.id} {...habit} />
 						))}
-					</Column>
+					</UI.Column>
 				</TabPanel>
 				<TabPanel>
-					{untrackedHabits.length === 0 && <Text>No untracked habit available this day.</Text>}
+					{untrackedHabits.length === 0 && (
+						<UI.Text>No untracked habit available this day.</UI.Text>
+					)}
 					{untrackedHabits.length === 1 && (
-						<Text>
-							<Text variant="bold">One</Text> untracked habit available this day.
-						</Text>
+						<UI.Text>
+							<UI.Text variant="bold">One</UI.Text> untracked habit available this day.
+						</UI.Text>
 					)}
 					{untrackedHabits.length > 1 && (
-						<Text>{useUntrackedHabits.length} untracked habit available this day.</Text>
+						<UI.Text>{useUntrackedHabits.length} untracked habit available this day.</UI.Text>
 					)}
-					<Column
+					<UI.Column
 						style={{
 							borderTop: untrackedHabits.length > 0 ? `1px solid var(--gray-1)` : undefined,
 						}}
@@ -179,7 +181,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						{untrackedHabits.map(habit => (
 							<CompactHabitItem key={habit.id} {...habit} />
 						))}
-					</Column>
+					</UI.Column>
 				</TabPanel>
 			</TabPanels>
 		</Tabs>
@@ -196,7 +198,7 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 }
 
 const CompactHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
-	<Row
+	<UI.Row
 		as="li"
 		py="12"
 		style={{
@@ -205,18 +207,18 @@ const CompactHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_track
 		}}
 	>
 		<Link to={constructUrl("habits", {preview_habit_id: id.toString()})}>
-			<Text variant="semi-bold">{name}</Text>
+			<UI.Text variant="semi-bold">{name}</UI.Text>
 		</Link>
-		<Badge ml="auto" variant={score}>
+		<UI.Badge ml="auto" variant={score}>
 			{score}
-		</Badge>
-		<Badge ml="12" variant={habitStrengthToBadgeVariant[strength]}>
+		</UI.Badge>
+		<UI.Badge ml="12" variant={habitStrengthToBadgeVariant[strength]}>
 			{strength}
-		</Badge>
+		</UI.Badge>
 		{!is_trackable && (
-			<Badge ml="12" variant="neutral">
+			<UI.Badge ml="12" variant="neutral">
 				Untracked
-			</Badge>
+			</UI.Badge>
 		)}
-	</Row>
+	</UI.Row>
 );

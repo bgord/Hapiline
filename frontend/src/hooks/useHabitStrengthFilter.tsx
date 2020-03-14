@@ -1,7 +1,7 @@
 import React from "react";
 
 import {HabitStrengthType, IHabit, HABIT_STRENGTHS} from "../interfaces/IHabit";
-import {Label, Radio} from "../ui";
+import * as UI from "../ui";
 
 type HabitStrengthFilter = HabitStrengthType | "all-strengths";
 
@@ -41,7 +41,7 @@ interface IInput {
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const RadioButton: React.FC<IInput> = ({value, filter, ...props}) => (
-	<Radio
+	<UI.Radio
 		name="habit-strength-filter"
 		id={filter}
 		type="radio"
@@ -57,7 +57,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter={HABIT_STRENGTHS.established} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor={HABIT_STRENGTHS.established} {...props} />
+			<UI.Label ml="12" htmlFor={HABIT_STRENGTHS.established} {...props} />
 		),
 	},
 	Developing: {
@@ -65,7 +65,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter={HABIT_STRENGTHS.developing} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor={HABIT_STRENGTHS.developing} {...props} />
+			<UI.Label ml="12" htmlFor={HABIT_STRENGTHS.developing} {...props} />
 		),
 	},
 	Fresh: {
@@ -73,7 +73,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter={HABIT_STRENGTHS.fresh} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor={HABIT_STRENGTHS.fresh} {...props} />
+			<UI.Label ml="12" htmlFor={HABIT_STRENGTHS.fresh} {...props} />
 		),
 	},
 	All: {
@@ -81,7 +81,7 @@ export const HabitStrengthFilters = {
 			<RadioButton filter="all-strengths" {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor="all-strengths" {...props} />
+			<UI.Label ml="12" htmlFor="all-strengths" {...props} />
 		),
 	},
 };

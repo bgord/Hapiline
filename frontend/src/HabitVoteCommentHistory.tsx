@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Field, Header, Label, Textarea, Text, ErrorBanner, Badge, BadgeVariant, Row} from "./ui";
+import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {IVoteComment} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -23,14 +23,16 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 
 	return (
 		<div>
-			<Header mt="48" mb="24" variant="extra-small">
+			<UI.Header mt="48" mb="24" variant="extra-small">
 				Vote comments
-			</Header>
+			</UI.Header>
 			<Async.IfRejected state={getHabitVoteCommentsRequestState}>
-				<ErrorBanner>Couldn't fetch vote comments.</ErrorBanner>
+				<UI.ErrorBanner>Couldn't fetch vote comments.</UI.ErrorBanner>
 			</Async.IfRejected>
 			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>
-				{voteComments.length === 0 && <Text mt="24">Future vote comments will appear here.</Text>}
+				{voteComments.length === 0 && (
+					<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
+				)}
 				{voteComments.length > 0 && (
 					<>
 						{voteComments.map(voteComment => (
@@ -52,25 +54,25 @@ const HabitVoteComment: React.FC<IVoteComment> = ({day, habit_id, vote, comment}
 	const formattedDay = formatDay(day);
 	const formattedDayName = formatDayName(day);
 
-	const voteToBadgeVariant = new Map<typeof vote, BadgeVariant>();
+	const voteToBadgeVariant = new Map<typeof vote, UI.BadgeVariant>();
 	voteToBadgeVariant.set("progress", "positive");
 	voteToBadgeVariant.set("plateau", "neutral");
 	voteToBadgeVariant.set("regress", "negative");
 	voteToBadgeVariant.set(null, "neutral");
 
 	return (
-		<Field mt="24">
-			<Row mb="6" crossAxis="center">
-				<Label htmlFor={comment}>
+		<UI.Field mt="24">
+			<UI.Row mb="6" crossAxis="center">
+				<UI.Label htmlFor={comment}>
 					{formattedDay} ({formattedDayName})
-				</Label>
+				</UI.Label>
 				<Link to={voteUrl}>
-					<Badge ml="6" variant={voteToBadgeVariant.get(vote) ?? "neutral"}>
+					<UI.Badge ml="6" variant={voteToBadgeVariant.get(vote) ?? "neutral"}>
 						{vote ?? "NO VOTE"}
-					</Badge>
+					</UI.Badge>
 				</Link>
-			</Row>
-			<Textarea id={comment} value={comment} disabled />
-		</Field>
+			</UI.Row>
+			<UI.Textarea id={comment} value={comment} disabled />
+		</UI.Field>
 	);
 };

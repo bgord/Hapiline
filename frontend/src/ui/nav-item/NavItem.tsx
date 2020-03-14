@@ -2,9 +2,9 @@ import "./nav-item.css";
 
 import React from "react";
 import {NavLink, NavLinkProps} from "react-router-dom";
-import {TextVariant} from "../text/Text";
+import * as UI from "../";
 
-type NavItemProps = NavLinkProps & {variant?: TextVariant};
+type NavItemProps = NavLinkProps & {variant?: UI.TextVariant};
 
 export const NavItem: React.FC<NavItemProps> = ({variant = "semi-bold", ...props}) => (
 	<NavLink

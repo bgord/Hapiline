@@ -1,29 +1,29 @@
 import React from "react";
 
 import {Demo} from "./_Demo";
-import {Field, Label, Radio} from "../frontend/src/ui";
+import * as UI from "../frontend/src/ui";
 
 export default {
 	"all variants": (
 		<Demo>
-			<Field variant="row">
-				<Radio id="left" name="direction" value="left" />
-				<Label ml="6" htmlFor="left">
+			<UI.Field variant="row">
+				<UI.Radio id="left" name="direction" value="left" />
+				<UI.Label ml="6" htmlFor="left">
 					Left
-				</Label>
-			</Field>
-			<Field ml="24" variant="row">
-				<Radio id="medium" name="direction" value="medium" disabled />
-				<Label ml="6" htmlFor="medium">
+				</UI.Label>
+			</UI.Field>
+			<UI.Field ml="24" variant="row">
+				<UI.Radio id="medium" name="direction" value="medium" disabled />
+				<UI.Label ml="6" htmlFor="medium">
 					Medium
-				</Label>
-			</Field>
-			<Field ml="24" variant="row">
-				<Radio id="right" name="direction" value="right" />
-				<Label ml="6" htmlFor="right">
+				</UI.Label>
+			</UI.Field>
+			<UI.Field ml="24" variant="row">
+				<UI.Radio id="right" name="direction" value="right" />
+				<UI.Label ml="6" htmlFor="right">
 					Right
-				</Label>
-			</Field>
+				</UI.Label>
+			</UI.Field>
 		</Demo>
 	),
 };

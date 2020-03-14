@@ -4,7 +4,7 @@ import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {InfoBanner, ErrorBanner, Card, Button, Column, Text, Row, Header} from "./ui";
+import * as UI from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
@@ -89,14 +89,14 @@ export const HabitsWindow = () => {
 	}
 
 	return (
-		<Column>
+		<UI.Column>
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<Async.IfSettled state={getHabitsRequestState}>
-				<Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
-					<Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
-						<Header variant="large">Habit list</Header>
-						<Button
+				<UI.Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
+					<UI.Row mt="12" p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
+						<UI.Header variant="large">Habit list</UI.Header>
+						<UI.Button
 							disabled={filteredHabits.length === 0}
 							style={{
 								display: "flex",
@@ -112,13 +112,13 @@ export const HabitsWindow = () => {
 						>
 							<FilterIcon mr="auto" />
 							{areFiltersVisible ? "Hide filters" : "Show filters"}
-						</Button>
-					</Row>
+						</UI.Button>
+					</UI.Row>
 					{areFiltersVisible && (
-						<Row mt="48" px="24" crossAxis="start">
-							<Column pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
-								<Text variant="semi-bold">Scores</Text>
-								<Row mt="24" crossAxis="center">
+						<UI.Row mt="48" px="24" crossAxis="start">
+							<UI.Column pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
+								<UI.Text variant="semi-bold">Scores</UI.Text>
+								<UI.Row mt="24" crossAxis="center">
 									<HabitScoreFilters.Positive.Input
 										disabled={habitCounts.positive === 0}
 										value={habitScoreFilter.value}
@@ -127,8 +127,8 @@ export const HabitsWindow = () => {
 									<HabitScoreFilters.Positive.Label>
 										Positive ({habitCounts.positive})
 									</HabitScoreFilters.Positive.Label>
-								</Row>
-								<Row mt="12" crossAxis="center">
+								</UI.Row>
+								<UI.Row mt="12" crossAxis="center">
 									<HabitScoreFilters.Neutral.Input
 										disabled={habitCounts.neutral === 0}
 										value={habitScoreFilter.value}
@@ -137,8 +137,8 @@ export const HabitsWindow = () => {
 									<HabitScoreFilters.Neutral.Label>
 										Neutral ({habitCounts.neutral})
 									</HabitScoreFilters.Neutral.Label>
-								</Row>
-								<Row mt="12" crossAxis="center">
+								</UI.Row>
+								<UI.Row mt="12" crossAxis="center">
 									<HabitScoreFilters.Negative.Input
 										disabled={habitCounts.negative === 0}
 										value={habitScoreFilter.value}
@@ -147,8 +147,8 @@ export const HabitsWindow = () => {
 									<HabitScoreFilters.Negative.Label>
 										Negative ({habitCounts.negative})
 									</HabitScoreFilters.Negative.Label>
-								</Row>
-								<Row mt="12" crossAxis="center">
+								</UI.Row>
+								<UI.Row mt="12" crossAxis="center">
 									<HabitScoreFilters.All.Input
 										value={habitScoreFilter.value}
 										onChange={habitScoreFilter.onChange}
@@ -156,11 +156,11 @@ export const HabitsWindow = () => {
 									<HabitScoreFilters.All.Label>
 										All scores ({habitCounts.all})
 									</HabitScoreFilters.All.Label>
-								</Row>
-							</Column>
-							<Column ml="72">
-								<Text variant="semi-bold">Strengths</Text>
-								<Row mt="24">
+								</UI.Row>
+							</UI.Column>
+							<UI.Column ml="72">
+								<UI.Text variant="semi-bold">Strengths</UI.Text>
+								<UI.Row mt="24">
 									<HabitStrengthFilters.Established.Input
 										value={habitStrengthFilter.value}
 										onChange={habitStrengthFilter.onChange}
@@ -169,8 +169,8 @@ export const HabitsWindow = () => {
 									<HabitStrengthFilters.Established.Label>
 										Established ({habitCounts.established})
 									</HabitStrengthFilters.Established.Label>
-								</Row>
-								<Row mt="12">
+								</UI.Row>
+								<UI.Row mt="12">
 									<HabitStrengthFilters.Developing.Input
 										value={habitStrengthFilter.value}
 										onChange={habitStrengthFilter.onChange}
@@ -179,8 +179,8 @@ export const HabitsWindow = () => {
 									<HabitStrengthFilters.Developing.Label>
 										Developing ({habitCounts.developing})
 									</HabitStrengthFilters.Developing.Label>
-								</Row>
-								<Row mt="12">
+								</UI.Row>
+								<UI.Row mt="12">
 									<HabitStrengthFilters.Fresh.Input
 										value={habitStrengthFilter.value}
 										onChange={habitStrengthFilter.onChange}
@@ -189,8 +189,8 @@ export const HabitsWindow = () => {
 									<HabitStrengthFilters.Fresh.Label>
 										Fresh ({habitCounts.fresh})
 									</HabitStrengthFilters.Fresh.Label>
-								</Row>
-								<Row mt="12">
+								</UI.Row>
+								<UI.Row mt="12">
 									<HabitStrengthFilters.All.Input
 										value={habitStrengthFilter.value}
 										onChange={habitStrengthFilter.onChange}
@@ -198,19 +198,19 @@ export const HabitsWindow = () => {
 									<HabitStrengthFilters.All.Label>
 										All strengths ({habitCounts.all})
 									</HabitStrengthFilters.All.Label>
-								</Row>
-							</Column>
-							<Button ml="auto" mb="auto" variant="outlined" onClick={resetAllFilters}>
+								</UI.Row>
+							</UI.Column>
+							<UI.Button ml="auto" mb="auto" variant="outlined" onClick={resetAllFilters}>
 								Reset filters
-							</Button>
-						</Row>
+							</UI.Button>
+						</UI.Row>
 					)}
-					<Row px="24" mb="24" mt="48" crossAxis="end">
+					<UI.Row px="24" mb="24" mt="48" crossAxis="end">
 						<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-						<Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
+						<UI.Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
 							Clear
-						</Button>
-						<Button
+						</UI.Button>
+						<UI.Button
 							style={{
 								display: "flex",
 								justifyContent: "center",
@@ -223,27 +223,27 @@ export const HabitsWindow = () => {
 						>
 							<PlusIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
 							New habit
-						</Button>
-					</Row>
-					<Row mainAxis="end" mt="24" mb="24" px="24">
-						<Text data-testid="habit-search-result-count">
-							<Text variant="bold">{howManyResults}</Text> results
-						</Text>
-					</Row>
+						</UI.Button>
+					</UI.Row>
+					<UI.Row mainAxis="end" mt="24" mb="24" px="24">
+						<UI.Text data-testid="habit-search-result-count">
+							<UI.Text variant="bold">{howManyResults}</UI.Text> results
+						</UI.Text>
+					</UI.Row>
 					<Async.IfFulfilled state={getHabitsRequestState}>
 						{filteredHabits.length === 0 && (
-							<InfoBanner mt="48" mx="24" p="12">
+							<UI.InfoBanner mt="48" mx="24" p="12">
 								It seems you haven't added any habits yet.
-							</InfoBanner>
+							</UI.InfoBanner>
 						)}
 					</Async.IfFulfilled>
 					<Async.IfRejected state={getHabitsRequestState}>
-						<ErrorBanner mt="48" mx="24" p="12">
+						<UI.ErrorBanner mt="48" mx="24" p="12">
 							{errorMessage}
-							<Button onClick={getHabitsRequestState.reload} ml="24" variant="outlined">
+							<UI.Button onClick={getHabitsRequestState.reload} ml="24" variant="outlined">
 								Retry
-							</Button>
-						</ErrorBanner>
+							</UI.Button>
+						</UI.ErrorBanner>
 					</Async.IfRejected>
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="habits">
@@ -267,9 +267,9 @@ export const HabitsWindow = () => {
 							)}
 						</Droppable>
 					</DragDropContext>
-				</Card>
+				</UI.Card>
 			</Async.IfSettled>
-		</Column>
+		</UI.Column>
 	);
 };
 

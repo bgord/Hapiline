@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Text, Card, Column, Row, Field, Input, Header, Label, Banner} from "./ui";
+import * as UI from "./ui";
 import {api} from "./services/api";
 
 export const ForgotPasswordWindow: React.FC = () => {
@@ -13,19 +13,19 @@ export const ForgotPasswordWindow: React.FC = () => {
 	});
 
 	return (
-		<Card py="48" px="24" mx="auto" mt="72">
-			<Column
+		<UI.Card py="48" px="24" mx="auto" mt="72">
+			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
 					forgotPasswordRequestState.run(email);
 				}}
 			>
-				<Header>Forgot password</Header>
+				<UI.Header>Forgot password</UI.Header>
 
-				<Field mt="48">
-					<Label htmlFor="email">Email</Label>
-					<Input
+				<UI.Field mt="48">
+					<UI.Label htmlFor="email">Email</UI.Label>
+					<UI.Input
 						type="email"
 						id="email"
 						value={email}
@@ -34,25 +34,25 @@ export const ForgotPasswordWindow: React.FC = () => {
 						placeholder="john.brown@gmail.com"
 						style={{width: "500px"}}
 					/>
-				</Field>
+				</UI.Field>
 
-				<Row mt="24" mainAxis="end">
-					<Button
+				<UI.Row mt="24" mainAxis="end">
+					<UI.Button
 						variant="primary"
 						type="submit"
 						disabled={forgotPasswordRequestState.isPending}
 						style={{width: "125px"}}
 					>
 						{forgotPasswordRequestState.isPending ? "Loading..." : "Send email"}
-					</Button>
-				</Row>
+					</UI.Button>
+				</UI.Row>
 
 				<Async.IfFulfilled state={forgotPasswordRequestState}>
-					<Banner mt="24" variant="success" p="6">
-						<Text>Email sent if an account exists.</Text>
-					</Banner>
+					<UI.Banner mt="24" variant="success" p="6">
+						<UI.Text>Email sent if an account exists.</UI.Text>
+					</UI.Banner>
 				</Async.IfFulfilled>
-			</Column>
-		</Card>
+			</UI.Column>
+		</UI.Card>
 	);
 };

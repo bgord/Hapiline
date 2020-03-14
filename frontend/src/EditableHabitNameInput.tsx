@@ -7,7 +7,7 @@ import {
 	useEditableFieldState,
 	useEditableFieldValue,
 } from "./hooks/useEditableField";
-import {Field, Row, Label} from "./ui";
+import * as UI from "./ui";
 import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
@@ -51,9 +51,9 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	);
 
 	return (
-		<Row ml="12" crossAxis="end">
-			<Field width="100%" mr="12">
-				<Label htmlFor="habit_name">Habit name</Label>
+		<UI.Row ml="12" crossAxis="end">
+			<UI.Field width="100%" mr="12">
+				<UI.Label htmlFor="habit_name">Habit name</UI.Label>
 				<HabitNameInput
 					onKeyDown={event => {
 						if (event.keyCode === 13 && newHabitName !== name) {
@@ -64,13 +64,13 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 					value={newHabitName ?? undefined}
 					onChange={newHabitNameHelpers.onChange}
 				/>
-			</Field>
+			</UI.Field>
 			<SaveButton {...field} onClick={newHabitNameHelpers.onUpdate}>
 				Save
 			</SaveButton>
 			<CancelButton {...field} onClick={newHabitNameHelpers.onClear}>
 				Cancel
 			</CancelButton>
-		</Row>
+		</UI.Row>
 	);
 };

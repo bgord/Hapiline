@@ -1,27 +1,27 @@
 import React from "react";
 
 import {Demo} from "./_Demo";
-import {Badge} from "../frontend/src/ui";
+import * as UI from "../frontend/src/ui";
 
 export default {
 	"all variants": (
 		<Demo>
-			<Badge variant="positive">Positive</Badge>
-			<Badge ml="24" variant="negative">
+			<UI.Badge variant="positive">Positive</UI.Badge>
+			<UI.Badge ml="24" variant="negative">
 				Negative
-			</Badge>
-			<Badge ml="24" variant="neutral">
+			</UI.Badge>
+			<UI.Badge ml="24" variant="neutral">
 				Neutral
-			</Badge>
-			<Badge ml="24" variant="light">
+			</UI.Badge>
+			<UI.Badge ml="24" variant="light">
 				Fresh
-			</Badge>
-			<Badge ml="24" variant="normal">
+			</UI.Badge>
+			<UI.Badge ml="24" variant="normal">
 				Developing
-			</Badge>
-			<Badge ml="24" variant="strong">
+			</UI.Badge>
+			<UI.Badge ml="24" variant="strong">
 				Established
-			</Badge>
+			</UI.Badge>
 		</Demo>
 	),
 };

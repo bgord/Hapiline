@@ -1,7 +1,7 @@
 import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 
-import {Button, Row, Text, Column} from "./ui";
+import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
@@ -44,33 +44,33 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 	}`;
 
 	return (
-		<Column
+		<UI.Column
 			data-testid="day"
 			style={{background: "var(--gray-0)", border: "2px solid var(--gray-1)", ...styles}}
 		>
-			<Row mainAxis="between" px="6">
-				<Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
+			<UI.Row mainAxis="between" px="6">
+				<UI.Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 					{day}
-				</Text>
-				<Text>{formatShortDayName(day)}</Text>
-			</Row>
+				</UI.Text>
+				<UI.Text>{formatShortDayName(day)}</UI.Text>
+			</UI.Row>
 			{isDayDialogAvailable && (
 				<>
-					<Row mainAxis="end" p="6" my="auto">
+					<UI.Row mainAxis="end" p="6" my="auto">
 						{isNewHabitsTextVisible ? (
-							<Text mr="auto" variant="dimmed">
+							<UI.Text mr="auto" variant="dimmed">
 								{newHabitsText}
-							</Text>
+							</UI.Text>
 						) : null}
-						<Button
+						<UI.Button
 							variant="bare"
 							onClick={openDialog}
 							style={{background: "var(--gray-1)"}}
 							ml="auto"
 						>
 							Show
-						</Button>
-					</Row>
+						</UI.Button>
+					</UI.Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
 			)}
@@ -81,6 +81,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					{...stats}
 				/>
 			)}
-		</Column>
+		</UI.Column>
 	);
 };
