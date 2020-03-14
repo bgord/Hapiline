@@ -28,7 +28,9 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 			</UI.Header>
 
 			<Async.IfRejected state={getHabitVoteCommentsRequestState}>
-				<UI.ErrorBanner>Couldn't fetch vote comments.</UI.ErrorBanner>
+				<UI.ErrorBanner p="6" style={{alignSelf: "start"}}>
+					Couldn't fetch vote comments.
+				</UI.ErrorBanner>
 			</Async.IfRejected>
 
 			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>

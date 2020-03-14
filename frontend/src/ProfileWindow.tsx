@@ -72,7 +72,7 @@ const ChangeEmail: React.FC = () => {
 				Email change
 			</UI.Header>
 
-			<UI.InfoBanner mt="12" py="3" px="6">
+			<UI.InfoBanner mt="12" p="6">
 				You will have to confirm your new email adress and login back again.
 			</UI.InfoBanner>
 
@@ -121,9 +121,11 @@ const ChangeEmail: React.FC = () => {
 			{status === "pending" && <UI.Text mt="12">Email change pending...</UI.Text>}
 
 			{status === "success" && (
-				<UI.Banner variant="success" mt="12" py="6" px="12">
-					Email confirmation message has been sent!
-					<br /> You will be logged out in 5 seconds.
+				<UI.Banner style={{alignSelf: "flex-start"}} variant="success" mt="24" p="12">
+					<UI.Text>
+						Email confirmation message has been sent!
+						<br /> You will be logged out in 5 seconds.
+					</UI.Text>
 				</UI.Banner>
 			)}
 		</UI.Column>
@@ -172,7 +174,7 @@ const ChangePassword = () => {
 				Password change
 			</UI.Header>
 
-			<UI.InfoBanner px="6" py="3" mb="24">
+			<UI.InfoBanner p="6" mb="24">
 				You won't be logged out, remember to input the new password the next time.
 			</UI.InfoBanner>
 
@@ -237,8 +239,8 @@ const ChangePassword = () => {
 			{status === "error" && internalServerError && <UI.Error>{internalServerError}</UI.Error>}
 
 			{status === "success" && (
-				<UI.Banner variant="success" mt="12" py="6" px="12">
-					Password changed successfully!
+				<UI.Banner style={{alignSelf: "start"}} variant="success" mt="24" p="12">
+					<UI.Text>Password changed successfully!</UI.Text>
 				</UI.Banner>
 			)}
 		</UI.Column>
