@@ -2,6 +2,7 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
+import {pluralize} from "./services/pluralize";
 
 import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
@@ -166,9 +167,10 @@ export const DashboardWindow = () => {
 											>
 												<UI.Text>{habit.name}</UI.Text>
 											</Link>
-											<UI.Badge variant="negative">{`${habit.regress_streak} day${
-												habit.regress_streak > 1 ? "s" : ""
-											} regress streak`}</UI.Badge>
+											<UI.Badge variant="negative">
+												{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress
+												streak
+											</UI.Badge>
 										</UI.Row>
 									))}
 								</ExpandContractList>
@@ -203,9 +205,10 @@ export const DashboardWindow = () => {
 											>
 												<UI.Text>{habit.name}</UI.Text>
 											</Link>
-											<UI.Badge variant="positive">{`${habit.progress_streak} day${
-												habit.progress_streak > 1 ? "s" : ""
-											} progress streak`}</UI.Badge>
+											<UI.Badge variant="positive">
+												{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
+												streak
+											</UI.Badge>
 										</UI.Row>
 									))}
 								</ExpandContractList>

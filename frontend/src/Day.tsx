@@ -9,6 +9,7 @@ import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
+import {pluralize} from "./services/pluralize";
 
 export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
 	day,
@@ -39,9 +40,8 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 
 	const isNewHabitsTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
 
-	const newHabitsText = `${stats.createdHabitsCount} new habit${
-		(stats.createdHabitsCount ?? 0) > 1 ? "s" : ""
-	}`;
+	const newHabitsText =
+		stats.createdHabitsCount + " " + pluralize("habit", stats.createdHabitsCount ?? 0);
 
 	return (
 		<UI.Column data-testid="day" bg="gray-0" style={{border: "2px solid var(--gray-1)", ...styles}}>

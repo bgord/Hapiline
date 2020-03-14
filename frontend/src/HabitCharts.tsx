@@ -1,6 +1,7 @@
 import {Link, LinkProps} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
+import {pluralize} from "./services/pluralize";
 
 import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
@@ -80,21 +81,19 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 				<UI.Row mt="6" crossAxis="center">
 					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
 					<UI.Text>
-						{`${regressVotes} regress vote${regressVotes > 1 ? "s " : " "} (${regressVotesPrct}%)`}
+						{regressVotes} regress {pluralize("vote", regressVotes)} ({regressVotesPrct}%)
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{`${plateauVotes} regress vote${plateauVotes > 1 ? "s " : " "} (${plateauVotesPrct}%)`}
+						{plateauVotes} plateau {pluralize("vote", plateauVotes)} ({plateauVotesPrct}%)
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{`${progressVotes} regress vote${
-							progressVotes > 1 ? "s " : " "
-						} (${progressVotesPrct}%)`}
+						{progressVotes} progress {pluralize("vote", progressVotes)} ({progressVotesPrct}%)
 					</UI.Text>
 
 					<UI.Text ml="auto" variant="bold">

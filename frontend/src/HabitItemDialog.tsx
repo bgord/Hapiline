@@ -22,6 +22,7 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
+import {pluralize} from "./services/pluralize";
 
 interface HabitItemDialogProps {
 	habitId: IHabit["id"];
@@ -100,12 +101,12 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							{habit.is_trackable && (
 								<HabitCharts id={habit.id}>
 									<UI.Badge hidden={!habit.progress_streak} variant="positive">
-										{habit.progress_streak} day{(habit.progress_streak ?? 0) > 1 ? "s " : " "}
-										progress streak
+										{habit.progress_streak} {pluralize("day", habit.progress_streak ?? 0)} progress
+										streak
 									</UI.Badge>
 									<UI.Badge hidden={!habit.regress_streak} variant="negative">
-										{habit.regress_streak} day{(habit.regress_streak ?? 0) > 1 ? "s " : " "}
-										regress streak
+										{habit.regress_streak} {pluralize("day", habit.regress_streak ?? 0)} regress
+										streak
 									</UI.Badge>
 									<UI.Badge
 										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
