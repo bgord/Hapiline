@@ -248,9 +248,10 @@ export const HabitsWindow = () => {
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="habits">
 							{provided => (
-								<ul
-									data-mt="48"
+								<UI.Column
 									ref={provided.innerRef}
+									as="ul"
+									mt="48"
 									style={{borderTop: "1px solid var(--gray-1)", background: "var(--gray-3)"}}
 									{...provided.droppableProps}
 								>
@@ -263,7 +264,7 @@ export const HabitsWindow = () => {
 										/>
 									))}
 									{provided.placeholder}
-								</ul>
+								</UI.Column>
 							)}
 						</Droppable>
 					</DragDropContext>

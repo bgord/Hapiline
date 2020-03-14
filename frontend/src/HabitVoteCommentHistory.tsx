@@ -22,13 +22,15 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 	const voteComments = getHabitVoteCommentsRequestState?.data ?? [];
 
 	return (
-		<div>
+		<>
 			<UI.Header mt="48" mb="24" variant="extra-small">
 				Vote comments
 			</UI.Header>
+
 			<Async.IfRejected state={getHabitVoteCommentsRequestState}>
 				<UI.ErrorBanner>Couldn't fetch vote comments.</UI.ErrorBanner>
 			</Async.IfRejected>
+
 			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>
 				{voteComments.length === 0 && (
 					<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
@@ -41,7 +43,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 					</>
 				)}
 			</Async.IfFulfilled>
-		</div>
+		</>
 	);
 };
 

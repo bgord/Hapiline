@@ -571,5 +571,5 @@ body {
 
 *[data-state="dragging"] {
 	background: var(--gray-1);
-	border: 3px solid var(--gray-3);
+	border: 3px solid var(--gray-3) !important;
 }
