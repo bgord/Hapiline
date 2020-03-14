@@ -517,6 +517,13 @@ body {
 	align-items: flex-end;
 }
 
+*[data-cross-axis-self="start"] {
+	align-self: flex-start;
+}
+*[data-cross-axis-self="end"] {
+	align-self: flex-end;
+}
+
 /* ----------------------------------------------------- */
 /* Positions */
 /* ----------------------------------------------------- */
