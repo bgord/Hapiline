@@ -84,7 +84,7 @@ export const Calendar: React.FC = () => {
 				<UI.ErrorBanner my="24">{errorMessage}</UI.ErrorBanner>
 			</Async.IfRejected>
 
-			<UI.Card bg="gray-0" data-testid="calendar" style={{...habitDialogGrid}} p="12">
+			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">
 				{days.map(props => (
 					<Day
 						key={props.day.toString()}
