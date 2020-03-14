@@ -99,15 +99,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<>
-			<UI.Row
-				as="li"
-				pb="12"
-				width="100%"
-				style={{
-					borderTop: "1px solid var(--gray-1)",
-					borderBottom: "1px solid var(--gray-1)",
-				}}
-			>
+			<UI.Row as="li" pb="12" width="100%" by="gray-1">
 				<UI.Column width="100%">
 					<UI.Row pt="6">
 						{isCommentVisible && (

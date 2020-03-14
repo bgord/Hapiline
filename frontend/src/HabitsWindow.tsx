@@ -116,7 +116,7 @@ export const HabitsWindow = () => {
 					</UI.Row>
 					{areFiltersVisible && (
 						<UI.Row mt="48" px="24" crossAxis="start">
-							<UI.Column pr="72" style={{borderRight: "2px solid var(--gray-1)"}}>
+							<UI.Column pr="72" bw="2" br="gray-1">
 								<UI.Text variant="semi-bold">Scores</UI.Text>
 								<UI.Row mt="24" crossAxis="center">
 									<HabitScoreFilters.Positive.Input
@@ -253,7 +253,7 @@ export const HabitsWindow = () => {
 									as="ul"
 									mt="48"
 									bg="gray-3"
-									style={{borderTop: "1px solid var(--gray-1)"}}
+									bt="gray-1"
 									{...provided.droppableProps}
 								>
 									{filteredHabits.map((habit, index) => (

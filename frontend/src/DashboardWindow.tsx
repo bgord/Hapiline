@@ -142,23 +142,10 @@ export const DashboardWindow = () => {
 									{regressStreakStats.length}
 								</UI.Badge>
 							</UI.Row>
-							<UI.Column
-								style={{
-									borderTop: "1px solid var(--gray-1)",
-									borderBottom: "1px solid var(--gray-1)",
-								}}
-							>
+							<UI.Column by="gray-1">
 								<ExpandContractList max={5}>
 									{regressStreakStats.map(habit => (
-										<UI.Row
-											py="12"
-											style={{
-												borderTop: "1px solid var(--gray-1)",
-												borderBottom: "1px solid var(--gray-1)",
-											}}
-											key={habit.id}
-											mainAxis="between"
-										>
+										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
 											<Link
 												to={constructUrl("dashboard", {
 													subview: "habit_preview",
@@ -185,18 +172,10 @@ export const DashboardWindow = () => {
 									{progressStreakStats.length}
 								</UI.Badge>
 							</UI.Row>
-							<UI.Column style={{borderTop: "1px solid var(--gray-1)"}}>
+							<UI.Column bt="gray-1">
 								<ExpandContractList max={5}>
 									{progressStreakStats.map(habit => (
-										<UI.Row
-											py="12"
-											style={{
-												borderTop: "1px solid var(--gray-1)",
-												borderBottom: "1px solid var(--gray-1)",
-											}}
-											key={habit.id}
-											mainAxis="between"
-										>
+										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
 											<Link
 												to={constructUrl("dashboard", {
 													subview: "habit_preview",

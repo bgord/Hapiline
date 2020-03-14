@@ -48,7 +48,7 @@ const UnauthenticatedApp = () => (
 export default UnauthenticatedApp;
 
 const UnauthenticatedNavbar = () => (
-	<UI.Row as="nav" bg="gray-0" style={{borderBottom: "2px solid var(--gray-2)"}}>
+	<UI.Row as="nav" bg="gray-0" bw="2" bb="gray-2">
 		<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
 			<Logo />
 		</NavLink>

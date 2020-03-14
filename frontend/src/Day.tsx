@@ -44,7 +44,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 		stats.createdHabitsCount + " " + pluralize("habit", stats.createdHabitsCount ?? 0);
 
 	return (
-		<UI.Column data-testid="day" bg="gray-0" style={{border: "2px solid var(--gray-1)", ...styles}}>
+		<UI.Column data-testid="day" bg="gray-0" bw="2" b="gray-1" style={styles}>
 			<UI.Row mainAxis="between" px="6">
 				<UI.Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 					{day}

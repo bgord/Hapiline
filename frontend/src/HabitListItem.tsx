@@ -45,12 +45,8 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					px="24"
 					py="6"
 					pb="12"
-					style={{
-						borderTop: "1px solid var(--gray-1)",
-						borderBottom: "1px solid var(--gray-1)",
-						cursor: "move",
-						...provided.draggableProps.style,
-					}}
+					by="gray-1"
+					style={{cursor: "move", ...provided.draggableProps.style}}
 				>
 					<UI.Row mainAxis="between" crossAxis="baseline">
 						<UI.Text variant="semi-bold">{habit.name}</UI.Text>

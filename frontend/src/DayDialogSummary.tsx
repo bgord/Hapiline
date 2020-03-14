@@ -198,14 +198,7 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 }
 
 const CompactHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
-	<UI.Row
-		as="li"
-		py="12"
-		style={{
-			borderTop: "1px solid var(--gray-1)",
-			borderBottom: "1px solid var(--gray-1)",
-		}}
-	>
+	<UI.Row as="li" py="12" by="gray-1">
 		<Link to={constructUrl("habits", {preview_habit_id: id.toString()})}>
 			<UI.Text variant="semi-bold">{name}</UI.Text>
 		</Link>

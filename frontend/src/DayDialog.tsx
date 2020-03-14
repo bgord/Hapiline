@@ -213,11 +213,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						<UI.Header mt="48" mb="24" variant="extra-small">
 							Tracked habits
 						</UI.Header>
-						<UI.Column
-							as="ul"
-							data-testid="day-dialog-habits"
-							style={{borderTop: "1px solid var(--gray-1)"}}
-						>
+						<UI.Column as="ul" bt="gray-1" data-testid="day-dialog-habits">
 							{filteredHabitVotes.map(entry => (
 								<DayDialogHabitVoteListItem
 									key={entry.habit.id}

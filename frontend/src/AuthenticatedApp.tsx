@@ -57,7 +57,7 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 
 	return (
-		<UI.Row as="nav" bg="gray-0" style={{borderBottom: "2px solid var(--gray-2)"}}>
+		<UI.Row as="nav" bg="gray-0" bw="2" bb="gray-2">
 			<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
 				<Logo />
 			</NavLink>
@@ -140,7 +140,8 @@ function NotificationDropdown() {
 								{notifications.map(notification => (
 									<UI.Row
 										as="li"
-										style={{borderTop: "1px solid var(--gray-2)"}}
+										bw="2"
+										b="gray-2"
 										mainAxis="between"
 										crossAxis="center"
 										mt="12"
