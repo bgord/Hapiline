@@ -8,11 +8,16 @@ import {ExclamationIcon} from "../icons/Exclamation";
 import * as UI from "../";
 
 type BannerVariant = "info" | "error" | "success";
+type BannerSize = "normal" | "big" | "small";
 
-type BannerProps = JSX.IntrinsicElements["div"] & {variant: BannerVariant} & Margins & Paddings;
+type BannerProps = JSX.IntrinsicElements["div"] & {variant: BannerVariant} & {
+	size?: BannerSize;
+} & Margins &
+	Paddings;
 
 export const Banner: React.FC<BannerProps> = ({
 	variant,
+	size = "normal",
 	m,
 	mx,
 	my,
@@ -31,6 +36,7 @@ export const Banner: React.FC<BannerProps> = ({
 }) => (
 	<div
 		data-variant={variant}
+		data-size={size}
 		data-m={m}
 		data-mx={mx}
 		data-my={my}
@@ -50,7 +56,11 @@ export const Banner: React.FC<BannerProps> = ({
 	/>
 );
 
-type InfoBannerProps = JSX.IntrinsicElements["div"] & Margins & Paddings;
+type InfoBannerProps = JSX.IntrinsicElements["div"] &
+	Margins &
+	Paddings & {
+		size?: BannerSize;
+	};
 
 export const InfoBanner: React.FC<InfoBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="info">
@@ -61,7 +71,11 @@ export const InfoBanner: React.FC<InfoBannerProps> = ({children, ...props}) => (
 	</Banner>
 );
 
-type ErrorBannerProps = JSX.IntrinsicElements["div"] & Margins & Paddings;
+type ErrorBannerProps = JSX.IntrinsicElements["div"] &
+	Margins &
+	Paddings & {
+		size?: BannerSize;
+	};
 
 export const ErrorBanner: React.FC<ErrorBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="error">

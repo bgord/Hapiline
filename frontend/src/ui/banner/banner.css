@@ -15,3 +15,15 @@
 .c-banner[data-variant="success"] {
 	background: #80dba4e6;
 }
+
+.c-banner[data-size="small"] {
+	padding: var(--spacing-xxs);
+}
+
+.c-banner[data-size="normal"] {
+	padding: var(--spacing-xs);
+}
+
+.c-banner[data-size="big"] {
+	padding: var(--spacing-s);
+}
