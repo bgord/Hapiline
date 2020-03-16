@@ -98,12 +98,7 @@ export const HabitsWindow = () => {
 						<UI.Header variant="large">Habit list</UI.Header>
 						<UI.Button
 							disabled={filteredHabits.length === 0}
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								width: "145px",
-							}}
+							style={{width: "145px"}}
 							variant="secondary"
 							onClick={() => {
 								resetAllFilters();
@@ -211,12 +206,7 @@ export const HabitsWindow = () => {
 							Clear
 						</UI.Button>
 						<UI.Button
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center",
-								width: "125px",
-							}}
+							style={{width: "125px"}}
 							ml="auto"
 							variant="primary"
 							onClick={openAddFormDialog}

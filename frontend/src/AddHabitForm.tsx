@@ -154,12 +154,7 @@ export const AddHabitForm: React.FC = () => {
 				</Async.IfRejected>
 
 				<UI.Button
-					style={{
-						display: "flex",
-						justifyContent: "center",
-						alignItems: "center",
-						width: "125px",
-					}}
+					style={{width: "125px"}}
 					ml="auto"
 					mt="48"
 					mb="24"

@@ -36,12 +36,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 	return (
 		<>
 			<UI.Button
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					width: "125px",
-				}}
+				style={{width: "125px"}}
 				ml="auto"
 				variant="danger"
 				type="submit"
