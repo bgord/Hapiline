@@ -100,6 +100,7 @@ export const HabitsWindow = () => {
 							disabled={filteredHabits.length === 0}
 							style={{width: "145px"}}
 							variant="secondary"
+							layout="with-icon"
 							onClick={() => {
 								resetAllFilters();
 								toggleFilters();
@@ -209,6 +210,7 @@ export const HabitsWindow = () => {
 							style={{width: "125px"}}
 							ml="auto"
 							variant="primary"
+							layout="with-icon"
 							onClick={openAddFormDialog}
 						>
 							<PlusIcon mr="auto" style={{stroke: "var(--gray-1)"}} />

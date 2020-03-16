@@ -40,6 +40,7 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 				ml="auto"
 				variant="danger"
 				type="submit"
+				layout="with-icon"
 				onClick={openDialog}
 			>
 				<TrashIcon />

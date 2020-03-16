@@ -9,11 +9,21 @@ import {Paddings} from "../paddings";
 import {Positions} from "../positions";
 import {Backgrounds} from "../backgrounds";
 
-type ButtonVariants = "secondary" | "primary" | "outlined" | "bare" | "danger";
+type ButtonVariant = "secondary" | "primary" | "outlined" | "bare" | "danger";
+type ButtonLayout = "with-icon";
 
-type ButtonProps = React.ComponentPropsWithoutRef<"button"> & {
-	variant: ButtonVariants;
-} & Margins &
+type ButtonVariants = {
+	variant: ButtonVariant;
+};
+
+type ButtonLayouts = {
+	layout?: ButtonLayout;
+};
+
+type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
+	ButtonVariants &
+	ButtonLayouts &
+	Margins &
 	Paddings &
 	Positions &
 	Backgrounds;
@@ -24,6 +34,7 @@ export const Button = React.forwardRef(function _Button(
 		type = "button",
 		position = "static",
 		variant,
+		layout,
 		bg,
 		m,
 		mx,
@@ -49,6 +60,7 @@ export const Button = React.forwardRef(function _Button(
 			type={type}
 			data-variant={variant}
 			data-position={position}
+			data-layout={layout}
 			data-bg={bg}
 			data-p={p}
 			data-px={px}

@@ -111,3 +111,9 @@ button::-moz-focus-inner {
 	border: 2px solid var(--red-dark);
 	color: var(--red-dark);
 }
+
+.c-button[data-layout="with-icon"] {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}

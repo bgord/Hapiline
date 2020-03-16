@@ -159,6 +159,7 @@ export const AddHabitForm: React.FC = () => {
 					mt="48"
 					mb="24"
 					variant="primary"
+					layout="with-icon"
 					type="submit"
 				>
 					<PlusCircleIcon mr="auto" />
