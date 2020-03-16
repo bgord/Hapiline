@@ -1,50 +1,48 @@
 import React from "react";
 
-import {Button, Column, Header, Field, Label, Input} from "../frontend/src/ui";
+import * as UI from "../frontend/src/ui";
 import {Demo} from "./_Demo";
 
 export default {
 	"all variants": (
 		<Demo>
-			<Column>
-				<Header mt="24" variant="extra-small">
+			<UI.Column>
+				<UI.Header mt="24" variant="extra-small">
 					Habit list
-				</Header>
-				<Header mt="24" variant="small">
+				</UI.Header>
+				<UI.Header mt="24" variant="small">
 					Habit list
-				</Header>
-				<Header mt="24" variant="medium">
+				</UI.Header>
+				<UI.Header mt="24" variant="medium">
 					Habit list
-				</Header>
-				<Header mt="24" variant="large">
+				</UI.Header>
+				<UI.Header mt="24" variant="large">
 					Habit list
-				</Header>
-			</Column>
+				</UI.Header>
+			</UI.Column>
 		</Demo>
 	),
 	"as a form header": (
 		<Demo>
-			<form
-				data-p="24"
-				style={{
-					width: "300px",
-					background: "white",
-					boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-				}}
+			<UI.Column
+				bg="white"
+				as="form"
+				p="24"
+				style={{width: "300px", boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"}}
 			>
-				<Header mt="12">Login</Header>
-				<Field mt="48">
-					<Label htmlFor="email">Email</Label>
-					<Input id="email" placeholder="user@example.com" />
-				</Field>
-				<Field mt="12">
-					<Label htmlFor="password">Password</Label>
-					<Input id="password" type="password" placeholder="*********" />
-				</Field>
-				<Button data-width="100%" mt="24" variant="primary">
+				<UI.Header mt="12">Login</UI.Header>
+				<UI.Field mt="48">
+					<UI.Label htmlFor="email">Email</UI.Label>
+					<UI.Input id="email" placeholder="user@example.com" />
+				</UI.Field>
+				<UI.Field mt="12">
+					<UI.Label htmlFor="password">Password</UI.Label>
+					<UI.Input id="password" type="password" placeholder="*********" />
+				</UI.Field>
+				<UI.Button data-width="100%" mt="24" variant="primary">
 					Login
-				</Button>
-			</form>
+				</UI.Button>
+			</UI.Column>
 		</Demo>
 	),
 };

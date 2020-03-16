@@ -17,12 +17,18 @@ const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
 	const removeNotification = () => dispatch({type: "remove", id});
 
 	return (
-		<Alert style={{minWidth: "350px", position: "relative", background: typeToBgColor[type]}}>
-			<UI.Row mainAxis="between" width="100%" p="12" mt="12">
-				<UI.Text>{message}</UI.Text>
-				<UI.CloseIcon style={{background: "inherit"}} onClick={removeNotification} />
-			</UI.Row>
-		</Alert>
+		<UI.Row
+			as={Alert}
+			position="relative"
+			style={{minWidth: "350px", background: typeToBgColor[type]}}
+			mainAxis="between"
+			width="100%"
+			p="12"
+			mt="12"
+		>
+			<UI.Text>{message}</UI.Text>
+			<UI.CloseIcon bg="inherit" onClick={removeNotification} />
+		</UI.Row>
 	);
 };
 
@@ -36,12 +42,12 @@ export const Notifications = () => {
 	});
 
 	return (
-		<div className="fixed bottom-0 right-0 m-2 z-50">
+		<UI.Column position="fixed" m="12" style={{bottom: 0, right: 0}}>
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
 					<NotificationItem {...item}>{item.message}</NotificationItem>
 				</animated.div>
 			))}
-		</div>
+		</UI.Column>
 	);
 };

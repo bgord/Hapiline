@@ -2,7 +2,7 @@ import {useParams, Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
-import {Row, Text} from "./ui";
+import * as UI from "./ui";
 import {api} from "./services/api";
 
 export const EmailVerificationWindow = () => {
@@ -15,18 +15,30 @@ export const EmailVerificationWindow = () => {
 
 	return (
 		<>
-			<Async.IfPending state={emailVerificationRequestState}>Verifying...</Async.IfPending>
+			<Async.IfPending state={emailVerificationRequestState}>
+				<UI.Text mt="24" ml="12">
+					Verifying...
+				</UI.Text>
+			</Async.IfPending>
+
 			<Async.IfFulfilled state={emailVerificationRequestState}>
-				<Row>
-					<Text>Success! You can </Text>
-					<Link className="link mx-1 text-base" to="/login">
-						login
-					</Link>{" "}
-					<Text>now.</Text>
-				</Row>
+				<UI.Row mt="48" width="100%" mainAxis="center">
+					<UI.SuccessBanner size="big">
+						<UI.Text ml="12">Success! You can </UI.Text>
+						<Link data-mx="3" data-variant="link" className="c-text" to="/login">
+							login
+						</Link>
+						<UI.Text> now.</UI.Text>
+					</UI.SuccessBanner>
+				</UI.Row>
 			</Async.IfFulfilled>
+
 			<Async.IfRejected state={emailVerificationRequestState}>
-				Invalid or expired token.
+				<UI.Row mainAxis="center" width="100%">
+					<UI.ErrorBanner mt="48" size="big">
+						Invalid or expired token
+					</UI.ErrorBanner>
+				</UI.Row>
 			</Async.IfRejected>
 		</>
 	);

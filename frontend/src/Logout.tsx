@@ -2,6 +2,7 @@ import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
+import * as UI from "./ui";
 import {api} from "./services/api";
 import {useUserProfile} from "./contexts/auth-context";
 
@@ -15,5 +16,5 @@ export const Logout: React.FC = () => {
 			history.push("/");
 		},
 	});
-	return <div>Logging out...</div>;
+	return <UI.Text>Logging out</UI.Text>;
 };

@@ -57,19 +57,19 @@ function AuthenticatedNavbar() {
 	const [profile] = useUserProfile();
 
 	return (
-		<nav>
-			<UI.Row style={{background: "var(--gray-0)", borderBottom: "2px solid var(--gray-2)"}}>
-				<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
-					<Logo />
-				</NavLink>
-				<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
-				<UI.NavItem to="/habits">Habits</UI.NavItem>
-				<UI.NavItem to="/calendar">Calendar</UI.NavItem>
-				<UI.NavItem to="/profile">{profile?.email}</UI.NavItem>
-				<NotificationDropdown />
-				<UI.NavItem to="/logout">Logout</UI.NavItem>
-			</UI.Row>
-		</nav>
+		<UI.Row as="nav" bg="gray-0" bw="2" bb="gray-2">
+			<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
+				<Logo />
+			</NavLink>
+			<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
+			<UI.NavItem to="/habits">Habits</UI.NavItem>
+			<UI.NavItem to="/calendar">Calendar</UI.NavItem>
+			<UI.NavItem variant="bold" to="/profile">
+				{profile?.email}
+			</UI.NavItem>
+			<NotificationDropdown />
+			<UI.NavItem to="/logout">Logout</UI.NavItem>
+		</UI.Row>
 	);
 }
 
@@ -107,22 +107,18 @@ function NotificationDropdown() {
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
 				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
 				<BellIcon />
-				<UI.Text
-					hidden={unreadNotifictionsNumber === 0}
-					style={{position: "absolute", top: "-3px", right: "3px"}}
-				>
-					{unreadNotifictionsNumber}
-				</UI.Text>
+				{unreadNotifictionsNumber > 0 && (
+					<UI.Text position="absolute" style={{top: "-3px", right: "3px"}}>
+						{unreadNotifictionsNumber}
+					</UI.Text>
+				)}
 			</UI.Button>
 			{areNotificationsVisible && (
 				<UI.Card
 					mt="72"
 					id="notification-list"
-					style={{
-						width: "500px",
-						position: "absolute",
-						right: "12px",
-					}}
+					position="absolute"
+					style={{width: "500px", right: "12px"}}
 				>
 					<UI.Column p="24">
 						<UI.Row mainAxis="between" mb="24">
@@ -138,12 +134,14 @@ function NotificationDropdown() {
 						</Async.IfPending>
 
 						<Async.IfFulfilled state={getNotificationsRequestState}>
-							<UI.Column>
-								{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
+							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
 
+							<UI.Column as="ul">
 								{notifications.map(notification => (
 									<UI.Row
-										style={{borderTop: "1px solid var(--gray-2)"}}
+										as="li"
+										bw="2"
+										b="gray-2"
 										mainAxis="between"
 										crossAxis="center"
 										mt="12"

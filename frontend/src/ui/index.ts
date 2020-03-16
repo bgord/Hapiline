@@ -5,7 +5,6 @@ export * from "./card/Card";
 export * from "./checkbox/Checkbox";
 export * from "./close-icon/CloseIcon";
 export * from "./column/Column";
-export * from "./divider/Divider";
 export * from "./field/Field";
 export * from "./header/Header";
 export * from "./input/Input";
@@ -17,7 +16,7 @@ export * from "./text/Text";
 export * from "./textarea/Textarea";
 export * from "./error/Error";
 export * from "./emoji/Emoji";
-export * from "./nav-link/NavLink";
+export * from "./nav-item/NavItem";
 export * from "./wrapper/Wrapper";
 
 export * from "./icons/Bell";

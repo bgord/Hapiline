@@ -1,8 +1,8 @@
-import {Input} from "./ui";
+import * as UI from "./ui";
 import React from "react";
 
 export const HabitNameInput: React.FC<JSX.IntrinsicElements["input"]> = props => (
-	<Input
+	<UI.Input
 		required
 		pattern=".{1,255}"
 		title="Please, try to fit habit in 255 characters."

@@ -1,7 +1,7 @@
 import React from "react";
 
 import {HabitVote} from "../interfaces/IHabit";
-import {Label, Radio} from "../ui";
+import * as UI from "../ui";
 import {useQueryParam} from "./useQueryParam";
 
 type HabitVoteFilterTypes = "unvoted" | "voted" | "all";
@@ -46,7 +46,7 @@ interface IInput {
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const RadioButton: React.FC<IInput> = ({value, filter, ...props}) => (
-	<Radio
+	<UI.Radio
 		name="habit-vote-filter"
 		id={filter}
 		type="radio"
@@ -62,7 +62,7 @@ export const HabitVoteFilters = {
 			<RadioButton filter="voted" {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="6" mr="12" htmlFor="voted" {...props} />
+			<UI.Label ml="6" mr="12" htmlFor="voted" {...props} />
 		),
 	},
 	Unvoted: {
@@ -70,7 +70,7 @@ export const HabitVoteFilters = {
 			<RadioButton filter="unvoted" {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="6" mr="12" htmlFor="unvoted" {...props} />
+			<UI.Label ml="6" mr="12" htmlFor="unvoted" {...props} />
 		),
 	},
 	All: {
@@ -78,7 +78,7 @@ export const HabitVoteFilters = {
 			<RadioButton filter="all" {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="6" mr="12" htmlFor="all" {...props} />
+			<UI.Label ml="6" mr="12" htmlFor="all" {...props} />
 		),
 	},
 };

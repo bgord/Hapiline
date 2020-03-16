@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Button} from "../ui";
+import * as UI from "../ui";
 
 interface UseEditableFieldStateReturnType {
 	state: "idle" | "focused";
@@ -59,7 +59,7 @@ export const CancelButton: React.FC<UseEditableFieldStateReturnType &
 	React.ComponentPropsWithoutRef<"button">> = ({state, setIdle, setFocused, onClick, ...props}) => (
 	<>
 		{state === "focused" && (
-			<Button
+			<UI.Button
 				ml="6"
 				variant="outlined"
 				onClick={event => {
@@ -74,5 +74,5 @@ export const CancelButton: React.FC<UseEditableFieldStateReturnType &
 
 export const SaveButton: React.FC<UseEditableFieldStateReturnType &
 	React.ComponentPropsWithoutRef<"button">> = ({state, setIdle, setFocused, ...props}) => (
-	<>{state === "focused" && <Button variant="primary" {...props} />}</>
+	<>{state === "focused" && <UI.Button variant="primary" {...props} />}</>
 );

@@ -5,7 +5,7 @@ import React from "react";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-import {Button, Column, Header, Label, Input, Row, Card, Text, Field, ErrorBanner} from "./ui";
+import * as UI from "./ui";
 
 export const LoginWindow: React.FC = () => {
 	const history = useHistory();
@@ -23,68 +23,69 @@ export const LoginWindow: React.FC = () => {
 	const {errorMessage} = getRequestStateErrors(loginRequestState);
 
 	return (
-		<Card py="48" px="24" mx="auto" mt="72">
-			<form
+		<UI.Card py="48" px="24" mx="auto" mt="72">
+			<UI.Column
+				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
 					loginRequestState.run(email, password);
 				}}
 			>
-				<Column>
-					<Header>Login</Header>
-					<Field mt="48">
-						<Label htmlFor="email">Email</Label>
-						<Input
-							id="email"
-							value={email}
-							onChange={event => setEmail(event.target.value)}
-							required
-							type="email"
-							placeholder="john.brown@gmail.com"
-							style={{width: "500px"}}
-						/>
-					</Field>
-					<Field mt="12">
-						<Label htmlFor="password">Password</Label>
-						<Input
-							required
-							pattern=".{6,}"
-							title="Password should contain at least 6 characters."
-							value={password}
-							onChange={event => setPassword(event.target.value)}
-							type="password"
-							id="password"
-							placeholder="*********"
-						/>
-					</Field>
-					<Row mt="24" mainAxis="end">
-						<Button
-							type="submit"
-							variant="primary"
-							disabled={loginRequestState.isPending}
-							data-testid="login-submit"
-							style={{width: "125px"}}
-						>
-							{loginRequestState.isPending ? "Loading..." : "Login"}
-						</Button>
-					</Row>
-					<Row mt="24">
-						<Text>Don't have an account?</Text>
-						<Link data-variant="link" data-ml="6" className="c-text" to="/register">
-							Create now
-						</Link>
-					</Row>
-					<Link data-mt="6" data-variant="link" className="c-text" to="/forgot-password">
-						Forgot password?
-					</Link>
+				<UI.Header>Login</UI.Header>
 
-					<Async.IfRejected state={loginRequestState}>
-						<ErrorBanner mt="24" p="6">
-							{errorMessage}
-						</ErrorBanner>
-					</Async.IfRejected>
-				</Column>
-			</form>
-		</Card>
+				<UI.Field mt="48">
+					<UI.Label htmlFor="email">Email</UI.Label>
+					<UI.Input
+						id="email"
+						value={email}
+						onChange={event => setEmail(event.target.value)}
+						required
+						type="email"
+						placeholder="john.brown@gmail.com"
+						style={{width: "500px"}}
+					/>
+				</UI.Field>
+
+				<UI.Field mt="12">
+					<UI.Label htmlFor="password">Password</UI.Label>
+					<UI.Input
+						required
+						pattern=".{6,}"
+						title="Password should contain at least 6 characters."
+						value={password}
+						onChange={event => setPassword(event.target.value)}
+						type="password"
+						id="password"
+						placeholder="*********"
+					/>
+				</UI.Field>
+
+				<UI.Row mt="24" mainAxis="end">
+					<UI.Button
+						type="submit"
+						variant="primary"
+						disabled={loginRequestState.isPending}
+						data-testid="login-submit"
+						style={{width: "125px"}}
+					>
+						{loginRequestState.isPending ? "Loading..." : "Login"}
+					</UI.Button>
+				</UI.Row>
+
+				<UI.Row mt="24">
+					<UI.Text>Don't have an account?</UI.Text>
+					<Link data-variant="link" data-ml="6" className="c-text" to="/register">
+						Create now
+					</Link>
+				</UI.Row>
+				<Link data-mt="6" data-variant="link" className="c-text" to="/forgot-password">
+					Forgot password?
+				</Link>
+
+				<Async.IfRejected state={loginRequestState}>
+					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
+				</Async.IfRejected>
+			</UI.Column>
+		</UI.Card>
 	);
 };

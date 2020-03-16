@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Row, Column, Text, Card, ErrorBanner} from "./ui";
+import * as UI from "./ui";
 import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
 import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
@@ -54,9 +54,9 @@ export const Calendar: React.FC = () => {
 	});
 
 	return (
-		<Column mt="24" crossAxis="center">
-			<Row mb="24" px="72" py="12" style={{background: "var(--gray-2)"}} width="auto">
-				<Button
+		<UI.Column mt="24" crossAxis="center">
+			<UI.Row mb="24" bg="gray-2" px="72" py="12" width="auto">
+				<UI.Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
 					disabled={getMonthRequestState.isPending}
@@ -64,12 +64,12 @@ export const Calendar: React.FC = () => {
 					mr="24"
 				>
 					Previous
-				</Button>
+				</UI.Button>
 				<CalendarIcon />
-				<Text ml="6" variant="bold">
+				<UI.Text ml="6" variant="bold">
 					{date}
-				</Text>
-				<Button
+				</UI.Text>
+				<UI.Button
 					ml="24"
 					variant="outlined"
 					onClick={widget.setNextMonth}
@@ -77,14 +77,14 @@ export const Calendar: React.FC = () => {
 					style={{width: "100px"}}
 				>
 					Next
-				</Button>
-			</Row>
+				</UI.Button>
+			</UI.Row>
+
 			<Async.IfRejected state={getMonthRequestState}>
-				<ErrorBanner p="6" my="24">
-					{errorMessage}
-				</ErrorBanner>
+				<UI.ErrorBanner my="24">{errorMessage}</UI.ErrorBanner>
 			</Async.IfRejected>
-			<Card data-testid="calendar" style={{...habitDialogGrid, background: "var(--gray-0)"}} p="12">
+
+			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">
 				{days.map(props => (
 					<Day
 						key={props.day.toString()}
@@ -92,8 +92,8 @@ export const Calendar: React.FC = () => {
 						{...props}
 					/>
 				))}
-			</Card>
-		</Column>
+			</UI.Card>
+		</UI.Column>
 	);
 };
 

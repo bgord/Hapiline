@@ -2,7 +2,7 @@ import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Text, Row, Header} from "./ui";
+import * as UI from "./ui";
 import {TrashIcon} from "./ui/icons/Trash";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
@@ -35,13 +35,8 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	return (
 		<>
-			<Button
-				style={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					width: "125px",
-				}}
+			<UI.Button
+				style={{width: "125px"}}
 				ml="auto"
 				variant="danger"
 				type="submit"
@@ -49,25 +44,25 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 			>
 				<TrashIcon />
 				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
-			</Button>
+			</UI.Button>
 			{showDialog && (
 				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
 					<AlertDialogLabel>
-						<Header variant="small">Do you want to delete the following habit?</Header>
+						<UI.Header variant="small">Do you want to delete the following habit?</UI.Header>
 					</AlertDialogLabel>
-					<Text mt="48">{name}</Text>
-					<Row mt="48" mainAxis="between">
-						<Button variant="outlined" onClick={confirmDeletion}>
+					<UI.Text mt="48">{name}</UI.Text>
+					<UI.Row mt="48" mainAxis="between">
+						<UI.Button variant="outlined" onClick={confirmDeletion}>
 							Yes, delete
-						</Button>
-						<Button
+						</UI.Button>
+						<UI.Button
 							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={closeDialog}
 						>
 							Nevermind, don't delete
-						</Button>
-					</Row>
+						</UI.Button>
+					</UI.Row>
 				</AlertDialog>
 			)}
 		</>

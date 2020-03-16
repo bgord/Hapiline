@@ -1,7 +1,7 @@
 import React from "react";
 
 import {HABIT_SCORES, HabitScoreType, IHabit} from "../interfaces/IHabit";
-import {Label, Radio} from "../ui";
+import * as UI from "../ui";
 
 type HabitScoreFilter = HabitScoreType | "all-scores";
 
@@ -40,7 +40,7 @@ interface IInput {
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const InputButton: React.FC<IInput> = ({value, filter, ...props}) => (
-	<Radio
+	<UI.Radio
 		name="habit-score-filter"
 		id={filter}
 		type="radio"
@@ -56,7 +56,7 @@ export const HabitScoreFilters = {
 			<InputButton filter={HABIT_SCORES.positive} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor={HABIT_SCORES.positive} {...props} />
+			<UI.Label ml="12" htmlFor={HABIT_SCORES.positive} {...props} />
 		),
 	},
 	Neutral: {
@@ -64,7 +64,7 @@ export const HabitScoreFilters = {
 			<InputButton filter={HABIT_SCORES.neutral} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor={HABIT_SCORES.neutral} {...props} />
+			<UI.Label ml="12" htmlFor={HABIT_SCORES.neutral} {...props} />
 		),
 	},
 	Negative: {
@@ -72,7 +72,7 @@ export const HabitScoreFilters = {
 			<InputButton filter={HABIT_SCORES.negative} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor={HABIT_SCORES.negative} {...props} />
+			<UI.Label ml="12" htmlFor={HABIT_SCORES.negative} {...props} />
 		),
 	},
 	All: {
@@ -80,7 +80,7 @@ export const HabitScoreFilters = {
 			<InputButton filter="all-scores" {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<Label ml="12" htmlFor="all-scores" {...props} />
+			<UI.Label ml="12" htmlFor="all-scores" {...props} />
 		),
 	},
 };

@@ -1,7 +1,7 @@
 import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 
-import {Button, Row, Text, Column} from "./ui";
+import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
@@ -9,6 +9,7 @@ import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
+import {pluralize} from "./services/pluralize";
 
 export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
 	day,
@@ -39,38 +40,31 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 
 	const isNewHabitsTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
 
-	const newHabitsText = `${stats.createdHabitsCount} new habit${
-		(stats.createdHabitsCount ?? 0) > 1 ? "s" : ""
-	}`;
+	const newHabitsText = `${stats.createdHabitsCount} new ${pluralize(
+		"habit",
+		stats.createdHabitsCount ?? 0,
+	)}`;
 
 	return (
-		<Column
-			data-testid="day"
-			style={{background: "var(--gray-0)", border: "2px solid var(--gray-1)", ...styles}}
-		>
-			<Row mainAxis="between" px="6">
-				<Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
+		<UI.Column data-testid="day" bg="gray-0" bw="2" b="gray-1" style={styles}>
+			<UI.Row mainAxis="between" px="6">
+				<UI.Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 					{day}
-				</Text>
-				<Text>{formatShortDayName(day)}</Text>
-			</Row>
+				</UI.Text>
+				<UI.Text>{formatShortDayName(day)}</UI.Text>
+			</UI.Row>
 			{isDayDialogAvailable && (
 				<>
-					<Row mainAxis="end" p="6" my="auto">
+					<UI.Row crossAxis="end" mainAxis="end" p="6" my="auto">
 						{isNewHabitsTextVisible ? (
-							<Text mr="auto" variant="dimmed">
+							<UI.Text mr="auto" variant="dimmed">
 								{newHabitsText}
-							</Text>
+							</UI.Text>
 						) : null}
-						<Button
-							variant="bare"
-							onClick={openDialog}
-							style={{background: "var(--gray-1)"}}
-							ml="auto"
-						>
+						<UI.Button variant="bare" bg="gray-1" ml="auto" onClick={openDialog}>
 							Show
-						</Button>
-					</Row>
+						</UI.Button>
+					</UI.Row>
 					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
 				</>
 			)}
@@ -81,6 +75,6 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 					{...stats}
 				/>
 			)}
-		</Column>
+		</UI.Column>
 	);
 };

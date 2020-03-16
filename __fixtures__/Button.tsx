@@ -1,43 +1,43 @@
 import React from "react";
 import {Demo} from "./_Demo";
-import {Button} from "../frontend/src/ui";
+import * as UI from "../frontend/src/ui";
 
 export default {
 	"--secondary": (
 		<Demo>
-			<Button variant="secondary">Reset filters</Button>
-			<Button ml="24" variant="secondary" disabled>
+			<UI.Button variant="secondary">Reset filters</UI.Button>
+			<UI.Button ml="24" variant="secondary" disabled>
 				Reset filters
-			</Button>
+			</UI.Button>
 		</Demo>
 	),
 	"--primary": (
 		<Demo>
-			<Button variant="primary">New habit</Button>
-			<Button ml="24" variant="primary" disabled>
+			<UI.Button variant="primary">New habit</UI.Button>
+			<UI.Button ml="24" variant="primary" disabled>
 				New habit
-			</Button>
+			</UI.Button>
 		</Demo>
 	),
 	"--outlined": (
 		<Demo>
-			<Button ml="12" variant="outlined">
+			<UI.Button ml="12" variant="outlined">
 				Cancel
-			</Button>
-			<Button ml="12" variant="outlined" disabled>
+			</UI.Button>
+			<UI.Button ml="12" variant="outlined" disabled>
 				Cancel
-			</Button>
+			</UI.Button>
 		</Demo>
 	),
 	"side by side": (
 		<Demo>
-			<Button variant="primary">New habit</Button>
-			<Button ml="12" variant="secondary">
+			<UI.Button variant="primary">New habit</UI.Button>
+			<UI.Button ml="12" variant="secondary">
 				Show filters
-			</Button>
-			<Button ml="12" variant="outlined">
+			</UI.Button>
+			<UI.Button ml="12" variant="outlined">
 				Hide
-			</Button>
+			</UI.Button>
 		</Demo>
 	),
 };

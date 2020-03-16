@@ -99,14 +99,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	return (
 		<>
-			<UI.Row
-				pb="12"
-				width="100%"
-				style={{
-					borderTop: "1px solid var(--gray-1)",
-					borderBottom: "1px solid var(--gray-1)",
-				}}
-			>
+			<UI.Row as="li" pb="12" width="100%" by="gray-1">
 				<UI.Column width="100%">
 					<UI.Row pt="6">
 						{isCommentVisible && (
@@ -122,14 +115,12 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 							</UI.Button>
 						)}
 						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-							<UI.Text ml="12" variant="semi-bold">
-								{habit.name}
-							</UI.Text>
+							<UI.Text variant="semi-bold">{habit.name}</UI.Text>
 						</Link>
 						<UI.Wrapper ml="auto">
 							<UI.Button
+								bg={vote === "progress" ? "green" : "gray-0"}
 								style={{
-									background: vote === "progress" ? "var(--green-light)" : "var(--gray-0)",
 									color: vote === "progress" ? "var(--green-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
@@ -141,8 +132,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faPlus} />
 							</UI.Button>
 							<UI.Button
+								bg={vote === "plateau" ? "gray-2" : "gray-0"}
 								style={{
-									background: vote === "plateau" ? "var(--gray-2)" : "var(--gray-0)",
 									color: vote === "plateau" ? "var(--gray-9)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
@@ -155,8 +146,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faEquals} />
 							</UI.Button>
 							<UI.Button
+								bg={vote === "regress" ? "red" : "gray-0"}
 								style={{
-									background: vote === "regress" ? "var(--red-light)" : "var(--gray-0)",
 									color: vote === "regress" ? "var(--red-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}

@@ -2,8 +2,9 @@ import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
+import {pluralize} from "./services/pluralize";
 
-import {Button, Row, Text, Column, Header, Card, ErrorBanner, Badge} from "./ui";
+import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {ExpandContractList} from "./ui/ExpandContractList";
@@ -71,145 +72,126 @@ export const DashboardWindow = () => {
 		});
 
 	return (
-		<Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "750px"}}>
-			<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
-				<Header variant="large">Hello!</Header>
-				<Button variant="primary" onClick={redirectToCurrentDay}>
+		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "var(--view-width)"}}>
+			<UI.Row bg="gray-1" p="24" mainAxis="between">
+				<UI.Header variant="large">Hello!</UI.Header>
+				<UI.Button variant="primary" onClick={redirectToCurrentDay}>
 					View today
-				</Button>
-			</Row>
-			<Column p="24">
+				</UI.Button>
+			</UI.Row>
+			<UI.Column p="24">
 				<Async.IfRejected state={getDashboardStatsRequestState}>
-					<ErrorBanner p="6" mt="24">
+					<UI.ErrorBanner mt="24">
 						Cannot load dashboard stats now, please try again.
-					</ErrorBanner>
+					</UI.ErrorBanner>
 				</Async.IfRejected>
 				<Async.IfFulfilled state={getDashboardStatsRequestState}>
-					<Row mt="24" mb="48">
+					<UI.Row mt="24" mb="48">
 						<MotivationalText
 							untracked={howManyUntrackedHabitsToday}
 							total={howManyHabitsToday}
 							votedFor={howManyVotesToday}
 						/>
-					</Row>
+					</UI.Row>
 					{howManyHabitsToday > 0 && (
-						<Column data-testid="chart-today">
-							<Text variant="dimmed">Votes today</Text>
-							<Row mb="24">
+						<UI.Column data-testid="chart-today">
+							<UI.Text variant="dimmed">Votes today</UI.Text>
+							<UI.Row mb="24">
 								<DaySummaryChart
 									maximumVotes={todayStats?.maximumVotes ?? 0}
 									day={currentDate}
 									{...statsForToday}
 								/>
-							</Row>
-						</Column>
+							</UI.Row>
+						</UI.Column>
 					)}
 					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-						<Column data-testid="chart-last-week">
-							<Text variant="dimmed">Votes last week</Text>
-							<Row mb="24">
+						<UI.Column data-testid="chart-last-week">
+							<UI.Text variant="dimmed">Votes last week</UI.Text>
+							<UI.Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
 									day={currentDate}
 									{...statsForLastWeek}
 								/>
-							</Row>
-						</Column>
+							</UI.Row>
+						</UI.Column>
 					)}
 					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-						<Column data-testid="chart-last-month">
-							<Text variant="dimmed">Votes last month</Text>
-							<Row mb="24">
+						<UI.Column data-testid="chart-last-month">
+							<UI.Text variant="dimmed">Votes last month</UI.Text>
+							<UI.Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
 									day={currentDate}
 									{...statsForLastMonth}
 								/>
-							</Row>
-						</Column>
+							</UI.Row>
+						</UI.Column>
 					)}
 				</Async.IfFulfilled>
 				<Async.IfPending state={getDashboardStreakStatsRequestState}>
-					<Text>Loading...</Text>
+					<UI.Text>Loading...</UI.Text>
 				</Async.IfPending>
 				<Async.IfFulfilled state={getDashboardStreakStatsRequestState}>
 					{regressStreakStats.length > 0 && (
 						<>
-							<Row mt="24" mb="24" crossAxis="center">
-								<Header variant="extra-small">Regress streaks</Header>
-								<Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+							<UI.Row mt="24" mb="24" crossAxis="center">
+								<UI.Header variant="extra-small">Regress streaks</UI.Header>
+								<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
 									{regressStreakStats.length}
-								</Badge>
-							</Row>
-							<Column
-								style={{
-									borderTop: "1px solid var(--gray-1)",
-									borderBottom: "1px solid var(--gray-1)",
-								}}
-							>
+								</UI.Badge>
+							</UI.Row>
+							<UI.Column by="gray-1">
 								<ExpandContractList max={5}>
 									{regressStreakStats.map(habit => (
-										<Row
-											py="12"
-											style={{
-												borderTop: "1px solid var(--gray-1)",
-												borderBottom: "1px solid var(--gray-1)",
-											}}
-											key={habit.id}
-											mainAxis="between"
-										>
+										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
 											<Link
 												to={constructUrl("dashboard", {
 													subview: "habit_preview",
 													preview_habit_id: habit.id.toString(),
 												})}
 											>
-												<Text>{habit.name}</Text>
+												<UI.Text>{habit.name}</UI.Text>
 											</Link>
-											<Badge variant="negative">{`${habit.regress_streak} day${
-												habit.regress_streak > 1 ? "s" : ""
-											} regress streak`}</Badge>
-										</Row>
+											<UI.Badge variant="negative">
+												{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress
+												streak
+											</UI.Badge>
+										</UI.Row>
 									))}
 								</ExpandContractList>
-							</Column>
+							</UI.Column>
 						</>
 					)}
 					{progressStreakStats.length > 0 && (
 						<>
-							<Row mt="48" mb="24" crossAxis="center">
-								<Header variant="extra-small">Progress streaks</Header>
-								<Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+							<UI.Row mt="48" mb="24" crossAxis="center">
+								<UI.Header variant="extra-small">Progress streaks</UI.Header>
+								<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
 									{progressStreakStats.length}
-								</Badge>
-							</Row>
-							<Column style={{borderTop: "1px solid var(--gray-1)"}}>
+								</UI.Badge>
+							</UI.Row>
+							<UI.Column bt="gray-1">
 								<ExpandContractList max={5}>
 									{progressStreakStats.map(habit => (
-										<Row
-											py="12"
-											style={{
-												borderTop: "1px solid var(--gray-1)",
-												borderBottom: "1px solid var(--gray-1)",
-											}}
-											key={habit.id}
-											mainAxis="between"
-										>
+										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
 											<Link
 												to={constructUrl("dashboard", {
 													subview: "habit_preview",
 													preview_habit_id: habit.id.toString(),
 												})}
 											>
-												<Text>{habit.name}</Text>
+												<UI.Text>{habit.name}</UI.Text>
 											</Link>
-											<Badge variant="positive">{`${habit.progress_streak} day${
-												habit.progress_streak > 1 ? "s" : ""
-											} progress streak`}</Badge>
-										</Row>
+											<UI.Badge variant="positive">
+												{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
+												streak
+											</UI.Badge>
+										</UI.Row>
 									))}
 								</ExpandContractList>
-							</Column>
+							</UI.Column>
 						</>
 					)}
 				</Async.IfFulfilled>
@@ -226,8 +208,8 @@ export const DashboardWindow = () => {
 						closeDialog={() => updateQueryParams("dashboard", {})}
 					/>
 				)}
-			</Column>
-		</Card>
+			</UI.Column>
+		</UI.Card>
 	);
 };
 
@@ -238,41 +220,42 @@ const MotivationalText: React.FC<{total: number; votedFor: number; untracked: nu
 }) => {
 	if (total === 0 && votedFor === 0) {
 		return (
-			<Link className="link" to="habits">
+			<Link className="c-link" to="habits">
 				Add your first tracked habit to start voting!
 			</Link>
 		);
 	}
 	if (votedFor === 0) {
 		return (
-			<Text>
-				Start your day well! You have <Text variant="bold">{total}</Text> tracked habits to vote
-				for. And {untracked} untracked habits.
-			</Text>
+			<UI.Text>
+				Start your day well! You have <UI.Text variant="bold">{total}</UI.Text> tracked habits to
+				vote for. And {untracked} untracked habits.
+			</UI.Text>
 		);
 	}
 	if (votedFor > 0 && votedFor < total) {
 		return (
-			<Column>
-				<Text>You're on a good track!</Text>
-				<Text>
-					You have <Text variant="bold">{total - votedFor}</Text> tracked habits to vote for left
-					out of <Text variant="bold">{total}</Text> (and {untracked} untracked habits).
-				</Text>
-			</Column>
+			<UI.Column>
+				<UI.Text>You're on a good track!</UI.Text>
+				<UI.Text>
+					You have <UI.Text variant="bold">{total - votedFor}</UI.Text> tracked habits to vote for
+					left out of <UI.Text variant="bold">{total}</UI.Text> (and {untracked} untracked habits).
+				</UI.Text>
+			</UI.Column>
 		);
 	}
 	if (votedFor === total) {
 		return (
-			<Column>
-				<Row>
-					<Text variant="bold">Congratulations! </Text>
-					<Text ml="6">
-						You voted for every one of <Text variant="bold">{total}</Text> tracked habits today!
-					</Text>
-				</Row>
-				<Text> You also have {untracked} untracked habits.</Text>
-			</Column>
+			<UI.Column>
+				<UI.Row>
+					<UI.Text variant="bold">Congratulations! </UI.Text>
+					<UI.Text ml="6">
+						You voted for every one of <UI.Text variant="bold">{total}</UI.Text> tracked habits
+						today!
+					</UI.Text>
+				</UI.Row>
+				<UI.Text> You also have {untracked} untracked habits.</UI.Text>
+			</UI.Column>
 		);
 	}
 	return null;

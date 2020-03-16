@@ -8,20 +8,7 @@ import {
 	useEditableFieldValue,
 	useEditableFieldState,
 } from "./hooks/useEditableField";
-import {
-	CloseIcon,
-	Textarea,
-	Field,
-	Row,
-	Label,
-	Text,
-	Header,
-	Badge,
-	InfoBanner,
-	Column,
-	Error,
-	ErrorBanner,
-} from "./ui";
+import * as UI from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
 import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
@@ -35,6 +22,7 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 import {useHabitsState} from "./contexts/habits-context";
+import {pluralize} from "./services/pluralize";
 
 interface HabitItemDialogProps {
 	habitId: IHabit["id"];
@@ -65,31 +53,31 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			aria-label="Show habit preview"
 			style={{maxHeight: "600px", overflow: "auto"}}
 		>
-			<Column>
-				<Row p="24" mainAxis="between" style={{background: "var(--gray-1)"}}>
-					<Header variant="small">Habit preview</Header>
-					<CloseIcon onClick={dismissDialog} />
-				</Row>
+			<UI.Column>
+				<UI.Row bg="gray-1" p="24" mainAxis="between">
+					<UI.Header variant="small">Habit preview</UI.Header>
+					<UI.CloseIcon onClick={dismissDialog} />
+				</UI.Row>
 
 				<Async.IfPending state={habitRequestState}>
-					<Text ml="24" mt="48">
+					<UI.Text ml="24" mt="48">
 						Loading details...
-					</Text>
+					</UI.Text>
 				</Async.IfPending>
 				<Async.IfRejected state={habitRequestState}>
-					<ErrorBanner>Couldn't fetch task details, please try again.</ErrorBanner>
+					<UI.ErrorBanner m="24">Couldn't fetch task details, please try again.</UI.ErrorBanner>
 				</Async.IfRejected>
 
 				{habit?.id && (
-					<Column px="24">
-						<Row mt="24" style={{marginLeft: "-12px"}}>
-							<Row mr="6">
+					<UI.Column px="24">
+						<UI.Row mt="24" style={{marginLeft: "-12px"}}>
+							<UI.Row mr="6">
 								<EditableHabitNameInput
 									{...habit}
 									setHabitItem={habitRequestState.setData}
 									key={habit?.name}
 								/>
-							</Row>
+							</UI.Row>
 							<EditableHabitScoreSelect
 								{...habit}
 								setHabitItem={habitRequestState.setData}
@@ -100,60 +88,59 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								setHabitItem={habitRequestState.setData}
 								key={habit?.strength}
 							/>
-						</Row>
+						</UI.Row>
 						{!habit.is_trackable && (
-							<Row mt="24">
-								<Badge variant="neutral">Untracked</Badge>
-								<InfoBanner px="6" py="3" ml="24">
+							<UI.Row mt="24">
+								<UI.Badge variant="neutral">Untracked</UI.Badge>
+								<UI.InfoBanner size="small" ml="24">
 									You cannot vote for an untracked habit.
-								</InfoBanner>
-							</Row>
+								</UI.InfoBanner>
+							</UI.Row>
 						)}
-						<Column mt="48">
+						<UI.Column mt="48">
 							{habit.is_trackable && (
 								<HabitCharts id={habit.id}>
-									<Badge hidden={!habit.progress_streak} variant="positive">
-										{habit.progress_streak} day{(habit.progress_streak ?? 0) > 1 ? "s " : " "}
-										progress streak
-									</Badge>
-									<Badge hidden={!habit.regress_streak} variant="negative">
-										{habit.regress_streak} day{(habit.regress_streak ?? 0) > 1 ? "s " : " "}
-										regress streak
-									</Badge>
-									<Badge
+									<UI.Badge hidden={!habit.progress_streak} variant="positive">
+										{habit.progress_streak} {pluralize("day", habit.progress_streak ?? 0)} progress
+										streak
+									</UI.Badge>
+									<UI.Badge hidden={!habit.regress_streak} variant="negative">
+										{habit.regress_streak} {pluralize("day", habit.regress_streak ?? 0)} regress
+										streak
+									</UI.Badge>
+									<UI.Badge
 										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
 										variant="neutral"
 									>
 										No streak today
-									</Badge>
+									</UI.Badge>
 								</HabitCharts>
 							)}
-							<Column mt="24">
+							<UI.Column mt="24">
 								<EditableDescription
 									description={habit.description}
 									habitId={habit.id}
 									onResolve={habitRequestState.reload}
 								/>
-							</Column>
+							</UI.Column>
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-							<Row my="48" mainAxis="between" crossAxis="center">
-								<Text variant="dimmed">Created at:</Text>
-								<Text variant="monospaced" ml="6">
+							<UI.Row my="48" mainAxis="between" crossAxis="center">
+								<UI.Text variant="dimmed">Created at:</UI.Text>
+								<UI.Text variant="monospaced" ml="6">
 									{formatTime(habit?.created_at)}
-								</Text>
-								<Text variant="dimmed" ml="24">
+								</UI.Text>
+								<UI.Text variant="dimmed" ml="24">
 									Last updated at:
-								</Text>
-								<Text variant="monospaced" ml="6">
+								</UI.Text>
+								<UI.Text variant="monospaced" ml="6">
 									{formatTime(habit?.updated_at)}
-								</Text>
-
+								</UI.Text>
 								<DeleteHabitButton {...habit} />
-							</Row>
-						</Column>
-					</Column>
+							</UI.Row>
+						</UI.Column>
+					</UI.Column>
 				)}
-			</Column>
+			</UI.Column>
 		</Dialog>
 	);
 };
@@ -189,27 +176,27 @@ const EditableDescription: React.FC<{
 
 	return (
 		<>
-			<Field mt="24" mb="12">
-				<Label htmlFor="description">Description</Label>
-				<Textarea
+			<UI.Field mt="24" mb="12">
+				<UI.Label htmlFor="description">Description</UI.Label>
+				<UI.Textarea
 					id="description"
 					onFocus={textarea.setFocused}
 					placeholder="Write something..."
 					value={newDescription ?? undefined}
 					onChange={newDescriptionHelpers.onChange}
 				/>
-			</Field>
+			</UI.Field>
 			<Async.IfRejected state={updateDescriptionRequestState}>
-				<Error>{descriptionInlineErrorMessage}</Error>
+				<UI.Error>{descriptionInlineErrorMessage}</UI.Error>
 			</Async.IfRejected>
-			<Row>
+			<UI.Row>
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
 					Save
 				</SaveButton>
 				<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
 					Cancel
 				</CancelButton>
-			</Row>
+			</UI.Row>
 		</>
 	);
 };

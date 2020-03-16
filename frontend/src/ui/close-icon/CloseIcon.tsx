@@ -7,14 +7,15 @@ import VisuallyHidden from "@reach/visually-hidden";
 
 import {Close} from "../icons/Close";
 
-import {Button} from "../button/Button";
+import * as UI from "../button/Button";
 import {Margins} from "../margins";
+import {Backgrounds} from "../backgrounds";
 
-type CloseIconProps = React.ComponentPropsWithoutRef<"button"> & Margins;
+type CloseIconProps = React.ComponentPropsWithoutRef<"button"> & Margins & Backgrounds;
 
-export const CloseIcon: React.FC<CloseIconProps> = props => (
-	<Button variant="bare" {...props}>
+export const CloseIcon: React.FC<CloseIconProps> = ({bg, ...props}) => (
+	<UI.Button data-bg={bg} variant="bare" {...props}>
 		<VisuallyHidden>Close dialog</VisuallyHidden>
 		<Close />
-	</Button>
+	</UI.Button>
 );

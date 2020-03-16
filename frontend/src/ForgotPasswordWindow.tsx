@@ -1,7 +1,7 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {Button, Text, Card, Column, Row, Field, Input, Header, Label, Banner} from "./ui";
+import * as UI from "./ui";
 import {api} from "./services/api";
 
 export const ForgotPasswordWindow: React.FC = () => {
@@ -13,44 +13,46 @@ export const ForgotPasswordWindow: React.FC = () => {
 	});
 
 	return (
-		<Card py="48" px="24" mx="auto" mt="72">
-			<form
-				onSubmit={event => {
+		<UI.Card py="48" px="24" mx="auto" mt="72">
+			<UI.Column
+				as="form"
+				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
 					forgotPasswordRequestState.run(email);
 				}}
 			>
-				<Column>
-					<Header>Forgot password</Header>
-					<Field mt="48">
-						<Label htmlFor="email">Email</Label>
-						<Input
-							type="email"
-							id="email"
-							value={email}
-							required
-							onChange={event => setEmail(event.target.value)}
-							placeholder="john.brown@gmail.com"
-							style={{width: "500px"}}
-						/>
-					</Field>
-					<Row mt="24" mainAxis="end">
-						<Button
-							variant="primary"
-							type="submit"
-							disabled={forgotPasswordRequestState.isPending}
-							style={{width: "125px"}}
-						>
-							{forgotPasswordRequestState.isPending ? "Loading..." : "Send email"}
-						</Button>
-					</Row>
-					<Async.IfFulfilled state={forgotPasswordRequestState}>
-						<Banner mt="24" variant="success" p="6">
-							<Text>Email sent if an account exists.</Text>
-						</Banner>
-					</Async.IfFulfilled>
-				</Column>
-			</form>
-		</Card>
+				<UI.Header>Forgot password</UI.Header>
+
+				<UI.Field mt="48">
+					<UI.Label htmlFor="email">Email</UI.Label>
+					<UI.Input
+						type="email"
+						id="email"
+						value={email}
+						required
+						onChange={event => setEmail(event.target.value)}
+						placeholder="john.brown@gmail.com"
+						style={{width: "500px"}}
+					/>
+				</UI.Field>
+
+				<UI.Row mt="24" mainAxis="end">
+					<UI.Button
+						variant="primary"
+						type="submit"
+						disabled={forgotPasswordRequestState.isPending}
+						style={{width: "125px"}}
+					>
+						{forgotPasswordRequestState.isPending ? "Loading..." : "Send email"}
+					</UI.Button>
+				</UI.Row>
+
+				<Async.IfFulfilled state={forgotPasswordRequestState}>
+					<UI.SuccessBanner mt="24">
+						<UI.Text ml="12">Email sent if an account exists.</UI.Text>
+					</UI.SuccessBanner>
+				</Async.IfFulfilled>
+			</UI.Column>
+		</UI.Card>
 	);
 };
