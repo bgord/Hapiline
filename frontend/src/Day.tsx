@@ -55,7 +55,7 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			</UI.Row>
 			{isDayDialogAvailable && (
 				<>
-					<UI.Row mainAxis="end" p="6" my="auto">
+					<UI.Row crossAxis="end" mainAxis="end" p="6" my="auto">
 						{isNewHabitsTextVisible ? (
 							<UI.Text mr="auto" variant="dimmed">
 								{newHabitsText}
