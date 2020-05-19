@@ -42,7 +42,7 @@ export const Notifications = () => {
 	});
 
 	return (
-		<UI.Column position="fixed" m="12" style={{bottom: 0, right: 0}}>
+		<UI.Column position="fixed" m="12" style={{bottom: 0, right: 0, zIndex: 1}}>
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
 					<NotificationItem {...item}>{item.message}</NotificationItem>
