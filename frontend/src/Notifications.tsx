@@ -27,7 +27,7 @@ const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
 			mt="12"
 		>
 			<UI.Text>{message}</UI.Text>
-			<UI.CloseIcon bg="inherit" onClick={removeNotification} />
+			<UI.CloseIcon bg="transparent" onClick={removeNotification} />
 		</UI.Row>
 	);
 };
