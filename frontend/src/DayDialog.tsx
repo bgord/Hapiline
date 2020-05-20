@@ -108,6 +108,14 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					</UI.SuccessBanner>
 				)}
 				<UI.Row mt="48">
+					<UI.Button
+						onClick={toggleIsChartLegendVisible}
+						style={{marginLeft: "-12px"}}
+						mr="12"
+						variant="bare"
+					>
+						<QuestionMarkIcon />
+					</UI.Button>
 					<DaySummaryChart maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
 					<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
 						<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
@@ -115,33 +123,26 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					</UI.Text>
 				</UI.Row>
 				<UI.Row mt="6" crossAxis="center">
-					<UI.Button
-						onClick={toggleIsChartLegendVisible}
-						style={{marginLeft: "-12px"}}
-						variant="bare"
-					>
-						<QuestionMarkIcon />
-					</UI.Button>
 					{isChartLegendVisible && (
-						<UI.Row mb="6">
+						<UI.Row mb="6" mainAxis="center">
 							<UI.Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</UI.Text>
 							<UI.Text>no votes</UI.Text>
 						</UI.Row>
 					)}
 					{isChartLegendVisible && (
-						<UI.Row mb="6">
+						<UI.Row mb="6" mainAxis="center">
 							<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
 							<UI.Text>regress votes</UI.Text>
 						</UI.Row>
 					)}
 					{isChartLegendVisible && (
-						<UI.Row mb="6">
+						<UI.Row mb="6" mainAxis="center">
 							<UI.Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</UI.Text>
 							<UI.Text>plateau votes</UI.Text>
 						</UI.Row>
 					)}
 					{isChartLegendVisible && (
-						<UI.Row mb="6">
+						<UI.Row mb="6" mainAxis="center">
 							<UI.Text style={{fontSize: "72px", color: "#8bdb90"}}>·</UI.Text>
 							<UI.Text>progress votes</UI.Text>
 						</UI.Row>
