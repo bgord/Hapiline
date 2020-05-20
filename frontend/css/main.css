@@ -582,6 +582,10 @@ body {
 	background: inherit !important;
 }
 
+*[data-bg="transparent"] {
+	background: transparent !important;
+}
+
 /* ----------------------------------------------------- */
 /* Borders  */
 /* ----------------------------------------------------- */

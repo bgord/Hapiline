@@ -27,7 +27,7 @@ const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
 			mt="12"
 		>
 			<UI.Text>{message}</UI.Text>
-			<UI.CloseIcon bg="inherit" onClick={removeNotification} />
+			<UI.CloseIcon bg="transparent" onClick={removeNotification} />
 		</UI.Row>
 	);
 };
@@ -42,7 +42,7 @@ export const Notifications = () => {
 	});
 
 	return (
-		<UI.Column position="fixed" m="12" style={{bottom: 0, right: 0}}>
+		<UI.Column position="fixed" m="12" style={{bottom: 0, right: 0, zIndex: 1}}>
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
 					<NotificationItem {...item}>{item.message}</NotificationItem>
