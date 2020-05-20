@@ -108,13 +108,6 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					</UI.SuccessBanner>
 				)}
 				<UI.Row mt="48">
-					<DaySummaryChart maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
-					<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
-						<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
-						{" in total"}
-					</UI.Text>
-				</UI.Row>
-				<UI.Row mt="6" crossAxis="center">
 					<UI.Button
 						onClick={toggleIsChartLegendVisible}
 						style={{marginLeft: "-12px"}}
@@ -122,6 +115,13 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 					>
 						<QuestionMarkIcon />
 					</UI.Button>
+					<DaySummaryChart maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
+					<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
+						<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
+						{" in total"}
+					</UI.Text>
+				</UI.Row>
+				<UI.Row mt="6" crossAxis="center">
 					{isChartLegendVisible && (
 						<UI.Row mb="6">
 							<UI.Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</UI.Text>
