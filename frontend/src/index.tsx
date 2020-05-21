@@ -1,3 +1,4 @@
+import "../css/normalize.css";
 import "@reach/dialog/styles.css";
 import "@reach/tabs/styles.css";
 import "../css/main.css";
