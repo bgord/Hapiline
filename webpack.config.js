@@ -40,7 +40,7 @@ module.exports = (_env, argv) => {
 			new CheckerPlugin(),
 			new Dotenv({path: ".env-frontend"}),
 		],
-		devtool: "source-map",
+		devtool: dev ? "source-map" : "",
 		devServer: {
 			host: "0.0.0.0",
 			port: 4444,
