@@ -1,0 +1,10 @@
+# DEVELOPMENT OVERRIDES
+
+# The file that gets automatically merged into docker-compose.yml
+# while running `docker-compose up`.
+
+version: "3.7"
+services:
+  app:
+    volumes:
+      - .:/usr/src/app
