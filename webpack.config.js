@@ -4,7 +4,7 @@ const Dotenv = require("dotenv-webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {CheckerPlugin} = require("awesome-typescript-loader");
 
-module.exports = (env, argv) => {
+module.exports = (_env, argv) => {
 	const dev = argv.mode !== "production";
 
 	return {
@@ -46,6 +46,14 @@ module.exports = (env, argv) => {
 			port: 4444,
 			historyApiFallback: true,
 			contentBase: "./",
+		},
+
+		// Allow for 300kb of max asset and an initial bundle
+		// that's downloaded by the browser.
+		performance: {
+			maxAssetSize: 300000,
+			maxEntrypointSize: 300000,
+			hints: "warning",
 		},
 	};
 };
