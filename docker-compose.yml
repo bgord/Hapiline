@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile-app
     ports:
       - "3333:3333"
+    depends_on:
+      - db
   db:
     container_name: "hapiline_db"
     restart: always
