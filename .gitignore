@@ -8,6 +8,7 @@ tmp
 .env
 .env-docker
 .env-frontend
+.env-prod
 
 # Frontend
 .awcache/
