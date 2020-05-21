@@ -18,7 +18,6 @@ type DayDialogSummaryProps = DayVoteStats & {
 
 export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElements["div"]> = ({
 	maximumVotes,
-	className = "",
 	...stats
 }) => {
 	const noVotesPercentage = Number(((stats.noVotesCountStats ?? 0) / maximumVotes) * 100).toFixed(
@@ -40,7 +39,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${maximumVotes} (${progressVotesPercentage}%)`;
 
 	return (
-		<div style={{height: "18px", fontSize: "14px"}} className={`flex w-full ${className}`}>
+		<UI.Row width="100%">
 			<UI.Row
 				mainAxis="center"
 				crossAxis="center"
@@ -52,6 +51,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					backgroundColor: voteToBgColor.get(null),
 					fontWeight: "bold",
 					color: "var(--gray-3)",
+					height: "18px",
+					fontSize: "14px",
 				}}
 			>
 				<VisuallyHidden>{stats.noVotesCountStats} habits with no votes</VisuallyHidden>
@@ -68,6 +69,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					flexBasis: `${regressVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("regress"),
 					color: "#720A13",
+					height: "18px",
+					fontSize: "14px",
 				}}
 			>
 				<VisuallyHidden>
@@ -87,6 +90,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					flexBasis: `${plateauVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get("plateau"),
 					color: "var(--gray-9)",
+					height: "18px",
+					fontSize: "14px",
 				}}
 			>
 				<VisuallyHidden>
@@ -106,6 +111,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					flexBasis: `${progressVotesPercentage}%`,
 					background: voteToBgColor.get("progress"),
 					color: "#106015",
+					height: "18px",
+					fontSize: "14px",
 				}}
 			>
 				<VisuallyHidden>
@@ -113,7 +120,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				</VisuallyHidden>
 				{stats.progressVotesCountStats ?? 0}
 			</UI.Row>
-		</div>
+		</UI.Row>
 	);
 };
 
