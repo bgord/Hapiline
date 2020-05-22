@@ -1,3 +1,5 @@
+// TODO create a separate file with overrides for production?
+
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 
@@ -38,7 +40,7 @@ module.exports = (_env, argv) => {
 				template: "./frontend/index.html",
 			}),
 			new CheckerPlugin(),
-			new Dotenv({path: ".env-frontend"}),
+			new Dotenv({path: dev ? ".env-frontend" : ".env-frontend.prod"}),
 		],
 		devtool: dev ? "source-map" : "",
 		devServer: {

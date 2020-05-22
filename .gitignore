@@ -6,9 +6,10 @@ tmp
 
 # Environment variables, never commit these file
 .env
-.env-docker
 .env-frontend
+
 .env-prod
+.env-frontend.prod
 
 # Frontend
 .awcache/
