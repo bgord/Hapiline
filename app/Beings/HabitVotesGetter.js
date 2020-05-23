@@ -8,29 +8,28 @@ class HabitVotesGetter {
 	}
 
 	async get({from}) {
-		// TODO: Optimize this request
-		// .whereIn("day", days);
+		const days = datefns.eachDayOfInterval({
+			start: from,
+			end: new Date(),
+		});
+
 		const habitVotes = await Database.select("vote", "day")
 			.from("habit_votes")
 			.where({
 				habit_id: this.habit.id,
 			})
+			.whereIn("day", days)
 			.orderBy("day");
 
-		const days = datefns
-			.eachDayOfInterval({
-				start: from,
-				end: new Date(),
-			})
+		return days
 			.map(day => {
 				const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
 				return {
 					day,
 					vote: dayVote ? dayVote.vote : null,
 				};
-			});
-
-		return [...days].reverse();
+			})
+			.reverse();
 	}
 }
 
