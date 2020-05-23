@@ -1,8 +1,6 @@
 const Habit = use("Habit");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const Database = use("Database");
-const datefns = require("date-fns");
-const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const {
 	NextGreatestUserHabitOrderCalculator,
 } = require("../../Beings/NextGreatestUserHabitOrderCalculator");
@@ -69,6 +67,7 @@ class HabitsController {
 		// Habit doesn't belong to the currently autenticated user
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
+		// We use different strategies to display trackable/untrackable habits
 		const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
 		const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit);
 
@@ -83,6 +82,7 @@ class HabitsController {
 				.delete();
 
 			if (!deletedItemsCounter) throw error;
+
 			return response.send();
 		} catch (error) {
 			return response.accessDenied();
@@ -90,46 +90,24 @@ class HabitsController {
 	}
 
 	async update({request, response, params, auth}) {
-		const payload = request.only(["name", "score", "strength", "description"]);
+		const updatedHabitPayload = request.only(["name", "score", "strength", "description"]);
 
 		const habit = await Habit.find(params.id);
 
+		// Habit doesn't belong to the currently autenticated user
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
 		try {
-			await habit.merge(payload);
+			await habit.merge(updatedHabitPayload);
 			await habit.save();
 
-			const habitVotes = await Database.select("vote", "day")
-				.from("habit_votes")
-				.where({
-					habit_id: habit.id,
-				})
-				.orderBy("day");
+			const updatedHabit = habit.toJSON();
 
-			const days = datefns
-				.eachDayOfInterval({
-					start: new Date(habit.created_at),
-					end: new Date(),
-				})
-				.map(day => {
-					const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
-					return {
-						day,
-						vote: dayVote ? dayVote.vote : null,
-					};
-				});
+			// We use different strategies to display trackable/untrackable habits
+			const strategy = updatedHabit.is_trackable ? "trackable_habit" : "untrackable_habit";
+			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(updatedHabit);
 
-			const votes = [...days].reverse().map(day => day.vote);
-
-			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, votes);
-			const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, votes);
-
-			return response.send({
-				...habit.toJSON(),
-				progress_streak,
-				regress_streak,
-			});
+			return response.send(detailedHabit);
 		} catch (error) {
 			if (error.message.includes("duplicate key value violates unique constraint")) {
 				return response.validationError({
@@ -148,17 +126,3 @@ class HabitsController {
 }
 
 module.exports = HabitsController;
-
-function getVoteTypeStreak(type, votes) {
-	let streak = 0;
-
-	for (const [index, vote] of votes.entries()) {
-		if (index === 0 && vote !== HABIT_VOTE_TYPES[type]) {
-			break;
-		} else if (vote === HABIT_VOTE_TYPES[type]) {
-			streak++;
-		} else break;
-	}
-
-	return streak;
-}
