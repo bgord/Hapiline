@@ -1,4 +1,3 @@
-import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
@@ -20,7 +19,7 @@ export const RegistrationWindow: React.FC = () => {
 	const emailInlineErrorMessage = getArgErrorMessage("email");
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72">
+		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -40,7 +39,6 @@ export const RegistrationWindow: React.FC = () => {
 						type="email"
 						disabled={registrationRequestState.isFulfilled}
 						placeholder="john.brown@gmail.com"
-						style={{width: "500px"}}
 					/>
 					<Async.IfRejected state={registrationRequestState}>
 						<UI.Error>{emailInlineErrorMessage}</UI.Error>
@@ -82,7 +80,7 @@ export const RegistrationWindow: React.FC = () => {
 						data-testid="registration-submit"
 						type="submit"
 						variant="primary"
-						disabled={registrationRequestState.isFulfilled}
+						disabled={registrationRequestState.isFulfilled || registrationRequestState.isPending}
 						style={{width: "125px"}}
 					>
 						{registrationRequestState.isPending ? "Loading..." : "Register"}
@@ -93,12 +91,7 @@ export const RegistrationWindow: React.FC = () => {
 					<UI.SuccessBanner size="big" mt="24">
 						<UI.Column ml="12">
 							<UI.Text>Account confirmation email has been sent!</UI.Text>
-							<UI.Row>
-								<UI.Text>You can</UI.Text>
-								<Link data-ml="6" data-variant="link" className="c-text" to="/login">
-									login now
-								</Link>
-							</UI.Row>
+							<UI.Text>Please, check your inbox.</UI.Text>
 						</UI.Column>
 					</UI.SuccessBanner>
 				</Async.IfFulfilled>
@@ -108,6 +101,13 @@ export const RegistrationWindow: React.FC = () => {
 						<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
 					)}
 				</Async.IfRejected>
+				{registrationRequestState.status !== "fulfilled" && (
+					<UI.InfoBanner mt="48">
+						<UI.Text>
+							You will receive an account confirmation email with further instructions.
+						</UI.Text>
+					</UI.InfoBanner>
+				)}
 			</UI.Column>
 		</UI.Card>
 	);
