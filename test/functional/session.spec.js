@@ -89,7 +89,7 @@ test("/login --- auth restrictions (guest only)", async ({client}) => {
 	assertGuestOnly(response);
 });
 
-test("/login --- auth restrictions (active/pending account status)", async ({client}) => {
+test("/login --- auth restrictions (active account status)", async ({client}) => {
 	const user = await User.findBy("email", "jim@example.com");
 
 	user.merge({
@@ -102,12 +102,24 @@ test("/login --- auth restrictions (active/pending account status)", async ({cli
 		password: "123456",
 	};
 
-	const response = await client
+	const deletedAccountResponse = await client
 		.post(LOGIN_URL)
 		.send(payload)
 		.end();
 
-	assertAccessDenied(response);
+	assertAccessDenied(deletedAccountResponse);
+
+	user.merge({
+		account_status: ACCOUNT_STATUSES.pending,
+	});
+	await user.save();
+
+	const pendingAccountResponse = await client
+		.post(LOGIN_URL)
+		.send(payload)
+		.end();
+
+	assertAccessDenied(pendingAccountResponse);
 });
 
 test("/login --- full flow", async ({client}) => {

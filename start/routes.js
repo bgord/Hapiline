@@ -7,7 +7,7 @@ const execa = require("execa");
 Route.group(() => {
 	Route.post("/login", "SessionController.store")
 		.validator("StoreSession")
-		.middleware("reject-deleted-account");
+		.middleware("reject-inactive-account");
 
 	Route.post("/register", "RegistrationIntentionController.store").validator(
 		"StoreRegistrationIntention",

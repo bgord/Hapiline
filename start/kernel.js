@@ -40,7 +40,7 @@ const namedMiddleware = {
 	can: "Adonis/Acl/Can",
 	"password-auth": "App/Middleware/PasswordAuth",
 	"account-status": "App/Middleware/AccountStatus",
-	"reject-deleted-account": "App/Middleware/RejectDeletedAccount",
+	"reject-inactive-account": "App/Middleware/RejectInactiveAccount",
 	"match-auth-user-id": "App/Middleware/MatchAuthUserId",
 	"params-resource-exists": "App/Middleware/ParamsResourceExists",
 	"check-habit-ids": "App/Middleware/CheckHabitIds",
