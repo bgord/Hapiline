@@ -1,0 +1,22 @@
+# PRODUCTION OVERRIDES
+
+# The file that gets automatically merged into docker-compose.yml
+# while running `docker-compose up -f docker-compose.yml -f docker-compose.prod.yml`.
+
+version: "3.7"
+services:
+  app:
+    env_file:
+      - ./.env-prod
+    build:
+      context: .
+      dockerfile: Dockerfile-app.prod
+  db:
+    env_file:
+      - ./.env-prod
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    volumes:
+      - /usr/src/hapiline_backups/:/backups

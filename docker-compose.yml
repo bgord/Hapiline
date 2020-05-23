@@ -1,25 +1,18 @@
 version: "3.7"
 services:
   app:
+    restart: "always"
     container_name: "hapiline_app"
     build:
       context: .
       dockerfile: Dockerfile-app
     ports:
       - "3333:3333"
-      - "4444:4444"
-    volumes:
-      - .:/usr/src/app
+    depends_on:
+      - db
   db:
     container_name: "hapiline_db"
     restart: always
     image: "postgres:11.5-alpine"
     volumes:
-      - ./data/postgre/db:/data/db
-      - ./pg-init-scripts:/docker-entrypoint-initdb.d
-    env_file:
-      - ./.env
-    environment:
-      - POSTGRES_MULTIPLE_DATABASES=${DB_DATABASE},${DB_DATABASE}_test
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - /usr/src/postgres_hapiline/:/var/lib/postgresql/data

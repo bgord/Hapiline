@@ -1,0 +1,21 @@
+# DEVELOPMENT OVERRIDES
+
+# The file that gets automatically merged into docker-compose.yml
+# while running `docker-compose up`.
+
+version: "3.7"
+services:
+  app:
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - ./.env
+  db:
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    env_file:
+      - ./.env
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=${DB_DATABASE},${DB_DATABASE}_test
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}

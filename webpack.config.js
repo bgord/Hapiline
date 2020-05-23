@@ -1,10 +1,12 @@
+// TODO create a separate file with overrides for production?
+
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {CheckerPlugin} = require("awesome-typescript-loader");
 
-module.exports = (env, argv) => {
+module.exports = (_env, argv) => {
 	const dev = argv.mode !== "production";
 
 	return {
@@ -38,14 +40,22 @@ module.exports = (env, argv) => {
 				template: "./frontend/index.html",
 			}),
 			new CheckerPlugin(),
-			new Dotenv({path: ".env-frontend"}),
+			new Dotenv({path: dev ? ".env-frontend" : ".env-frontend.prod"}),
 		],
-		devtool: "source-map",
+		devtool: dev ? "source-map" : "",
 		devServer: {
 			host: "0.0.0.0",
 			port: 4444,
 			historyApiFallback: true,
 			contentBase: "./",
+		},
+
+		// Allow for 300kb of max asset and an initial bundle
+		// that's downloaded by the browser.
+		performance: {
+			maxAssetSize: 300000,
+			maxEntrypointSize: 300000,
+			hints: "warning",
 		},
 	};
 };
