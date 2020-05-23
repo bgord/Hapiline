@@ -158,7 +158,7 @@ test("full flow", async ({client, assert}) => {
 	assert.equal(response.body[6].vote, HABIT_VOTE_TYPES.plateau);
 });
 
-test("check if habit is trackable", async ({client, assert}) => {
+test("check if habit is trackable", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const payload = {

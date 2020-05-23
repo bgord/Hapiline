@@ -2,7 +2,7 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 class VotesStreakCalculator {
 	constructor(votes) {
-		this.votes = votes;
+		this.votes = votes.map(entry => entry.vote);
 	}
 
 	calculate(type) {

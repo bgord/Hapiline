@@ -11,8 +11,7 @@ const DetailedHabitViewStrategies = {
 	trackable_habit: {
 		async execute(habit) {
 			const habitVotesGetter = new HabitVotesGetter(habit);
-
-			const habitVotes = await habitVotesGetter.get();
+			const habitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
 
 			const votesStreakCalculator = new VotesStreakCalculator(habitVotes);
 

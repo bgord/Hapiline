@@ -7,7 +7,9 @@ class HabitVotesGetter {
 		this.habit = habit;
 	}
 
-	async get() {
+	async get({from}) {
+		// TODO: Optimize this request
+		// .whereIn("day", days);
 		const habitVotes = await Database.select("vote", "day")
 			.from("habit_votes")
 			.where({
@@ -17,7 +19,7 @@ class HabitVotesGetter {
 
 		const days = datefns
 			.eachDayOfInterval({
-				start: new Date(this.habit.created_at),
+				start: from,
 				end: new Date(),
 			})
 			.map(day => {
@@ -28,7 +30,7 @@ class HabitVotesGetter {
 				};
 			});
 
-		return [...days].reverse().map(day => day.vote);
+		return [...days].reverse();
 	}
 }
 
