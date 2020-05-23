@@ -34,18 +34,6 @@ $ ./run.sh adonis migration:run
 $ ./run.sh adonis seed
 ```
 
-**Build CSS**
-
-```bash
-$ ./npm.sh run css:build:dev
-```
-
-Or start it in watch mode:
-
-```bash
-$ ./npm.sh run css:watch
-```
-
 **Start frontend app**
 
 ```bash
