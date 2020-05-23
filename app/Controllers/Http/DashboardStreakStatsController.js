@@ -1,6 +1,6 @@
 const Database = use("Database");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
-const datefns = require("date-fns");
+const {HabitVotesGetter} = require("../../Beings/HabitVotesGetter");
 
 class DashboardStreakStatsController {
 	async index({auth, response}) {
@@ -14,7 +14,8 @@ class DashboardStreakStatsController {
 		};
 
 		for (const habit of habits) {
-			const habitVotes = await getVotesForHabit(habit);
+			const habitVotesGetter = new HabitVotesGetter(habit);
+			const habitVotes = await habitVotesGetter.get();
 
 			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, habitVotes);
 			if (progress_streak > 0) {
@@ -52,28 +53,4 @@ function getVoteTypeStreak(type, votes) {
 	}
 
 	return streak;
-}
-
-async function getVotesForHabit(habit) {
-	const habitVotes = await Database.select("vote", "day")
-		.from("habit_votes")
-		.where({
-			habit_id: habit.id,
-		})
-		.orderBy("day");
-
-	const days = datefns
-		.eachDayOfInterval({
-			start: new Date(habit.created_at),
-			end: new Date(),
-		})
-		.map(day => {
-			const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
-			return {
-				day,
-				vote: dayVote ? dayVote.vote : null,
-			};
-		});
-
-	return [...days].reverse().map(day => day.vote);
 }

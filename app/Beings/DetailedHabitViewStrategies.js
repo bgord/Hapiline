@@ -1,17 +1,18 @@
-const datefns = require("date-fns");
-
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
-const Database = use("Database");
+
+const {HabitVotesGetter} = require("./HabitVotesGetter");
 
 // This is a variation of the Strategy pattern (without the class bloat)
 // Basing on habit being trackable, we won't to display it in a different way.
 const DetailedHabitViewStrategies = {
 	trackable_habit: {
 		async execute(habit) {
-			const votes = await getVotesForHabit(habit);
+			const habitVotesGetter = new HabitVotesGetter(habit);
 
-			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, votes);
-			const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, votes);
+			const habitVotes = await habitVotesGetter.get();
+
+			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, habitVotes);
+			const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, habitVotes);
 
 			return {
 				...habit,
@@ -30,30 +31,6 @@ const DetailedHabitViewStrategies = {
 		},
 	},
 };
-
-async function getVotesForHabit(habit) {
-	const habitVotes = await Database.select("vote", "day")
-		.from("habit_votes")
-		.where({
-			habit_id: habit.id,
-		})
-		.orderBy("day");
-
-	const days = datefns
-		.eachDayOfInterval({
-			start: new Date(habit.created_at),
-			end: new Date(),
-		})
-		.map(day => {
-			const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
-			return {
-				day,
-				vote: dayVote ? dayVote.vote : null,
-			};
-		});
-
-	return [...days].reverse().map(day => day.vote);
-}
 
 function getVoteTypeStreak(type, votes) {
 	let streak = 0;
