@@ -1,6 +1,7 @@
 const Database = use("Database");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const {HabitVotesGetter} = require("../../Beings/HabitVotesGetter");
+const {VotesStreakCalculator} = require("../../Beings/VotesStreakCalculator");
 
 class DashboardStreakStatsController {
 	async index({auth, response}) {
@@ -17,12 +18,14 @@ class DashboardStreakStatsController {
 			const habitVotesGetter = new HabitVotesGetter(habit);
 			const habitVotes = await habitVotesGetter.get();
 
-			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, habitVotes);
+			const votesStreakCalculator = new VotesStreakCalculator(habitVotes);
+
+			const progress_streak = votesStreakCalculator.calculate(HABIT_VOTE_TYPES.progress);
 			if (progress_streak > 0) {
 				result.progress_streaks.push({...habit, progress_streak});
 			}
 
-			const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, habitVotes);
+			const regress_streak = votesStreakCalculator.calculate(HABIT_VOTE_TYPES.regress);
 			if (regress_streak > 0) {
 				result.regress_streaks.push({...habit, regress_streak});
 			}
@@ -40,17 +43,3 @@ class DashboardStreakStatsController {
 }
 
 module.exports = DashboardStreakStatsController;
-
-function getVoteTypeStreak(type, votes) {
-	let streak = 0;
-
-	for (const [index, vote] of votes.entries()) {
-		if (index === 0 && vote !== HABIT_VOTE_TYPES[type]) {
-			break;
-		} else if (vote === HABIT_VOTE_TYPES[type]) {
-			streak++;
-		} else break;
-	}
-
-	return streak;
-}

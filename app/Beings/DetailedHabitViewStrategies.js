@@ -1,9 +1,12 @@
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 const {HabitVotesGetter} = require("./HabitVotesGetter");
+const {VotesStreakCalculator} = require("./VotesStreakCalculator");
 
 // This is a variation of the Strategy pattern (without the class bloat)
 // Basing on habit being trackable, we won't to display it in a different way.
+
+// To the basic habit model, we append 'progress_streak' and 'regress_streak'.
 const DetailedHabitViewStrategies = {
 	trackable_habit: {
 		async execute(habit) {
@@ -11,8 +14,10 @@ const DetailedHabitViewStrategies = {
 
 			const habitVotes = await habitVotesGetter.get();
 
-			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, habitVotes);
-			const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, habitVotes);
+			const votesStreakCalculator = new VotesStreakCalculator(habitVotes);
+
+			const progress_streak = votesStreakCalculator.calculate(HABIT_VOTE_TYPES.progress);
+			const regress_streak = votesStreakCalculator.calculate(HABIT_VOTE_TYPES.regress);
 
 			return {
 				...habit,
@@ -31,20 +36,6 @@ const DetailedHabitViewStrategies = {
 		},
 	},
 };
-
-function getVoteTypeStreak(type, votes) {
-	let streak = 0;
-
-	for (const [index, vote] of votes.entries()) {
-		if (index === 0 && vote !== HABIT_VOTE_TYPES[type]) {
-			break;
-		} else if (vote === HABIT_VOTE_TYPES[type]) {
-			streak++;
-		} else break;
-	}
-
-	return streak;
-}
 
 module.exports = {
 	DetailedHabitViewStrategies,
