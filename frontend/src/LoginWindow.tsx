@@ -23,7 +23,7 @@ export const LoginWindow: React.FC = () => {
 	const {errorMessage} = getRequestStateErrors(loginRequestState);
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72">
+		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -42,7 +42,6 @@ export const LoginWindow: React.FC = () => {
 						required
 						type="email"
 						placeholder="john.brown@gmail.com"
-						style={{width: "500px"}}
 					/>
 				</UI.Field>
 

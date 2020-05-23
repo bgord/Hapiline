@@ -19,7 +19,7 @@ export const RegistrationWindow: React.FC = () => {
 	const emailInlineErrorMessage = getArgErrorMessage("email");
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72">
+		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -39,7 +39,6 @@ export const RegistrationWindow: React.FC = () => {
 						type="email"
 						disabled={registrationRequestState.isFulfilled}
 						placeholder="john.brown@gmail.com"
-						style={{width: "500px"}}
 					/>
 					<Async.IfRejected state={registrationRequestState}>
 						<UI.Error>{emailInlineErrorMessage}</UI.Error>
@@ -102,6 +101,13 @@ export const RegistrationWindow: React.FC = () => {
 						<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
 					)}
 				</Async.IfRejected>
+				{registrationRequestState.status !== "fulfilled" && (
+					<UI.InfoBanner mt="48">
+						<UI.Text>
+							You will receive an account confirmation email with further instructions.
+						</UI.Text>
+					</UI.InfoBanner>
+				)}
 			</UI.Column>
 		</UI.Card>
 	);
