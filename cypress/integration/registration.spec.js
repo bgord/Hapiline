@@ -1,4 +1,3 @@
-const LOGIN_URL = "/login";
 const REGISTRATION_URL = "/register";
 
 const validNewCredentials = {
@@ -23,21 +22,28 @@ describe("Registration", () => {
 	it("full flow", () => {
 		cy.visit(REGISTRATION_URL);
 
+		cy.findByText("You will receive an account confirmation email with further instructions.");
+
 		cy.findByLabelText("Email").type(validNewCredentials.email);
 		cy.findByLabelText("Password").type(validNewCredentials.password);
 		cy.findByLabelText("Repeat password").type(validNewCredentials.password);
+
 		cy.findByTestId("registration-submit").click();
 
 		cy.findByText("Account confirmation email has been sent!");
-		cy.findByText("You can");
-		cy.findByText("login now");
+		cy.findByText("Please, check your inbox.");
 
-		cy.findByLabelText("Email").should("be.disabled");
-		cy.findByLabelText("Password").should("be.disabled");
-		cy.findByLabelText("Repeat password").should("be.disabled");
+		cy.findByLabelText("Email")
+			.should("be.disabled")
+			.should("have.value", validNewCredentials.email);
 
-		cy.findByText("login now").click();
-		cy.url().should("contain", LOGIN_URL);
+		cy.findByLabelText("Password")
+			.should("be.disabled")
+			.should("have.value", validNewCredentials.password);
+
+		cy.findByLabelText("Repeat password")
+			.should("be.disabled")
+			.should("have.value", validNewCredentials.password);
 	});
 
 	it("validation", () => {

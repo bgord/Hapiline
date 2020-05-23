@@ -3,7 +3,7 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 
 // This middleware is very similar to `account-status` middleware.
 
-// The difference is that `account-status` check the `account_status`
+// The difference is that `account-status` checks the `account_status`
 // of an account that is already authenticated.
 
 // This middleware checks the `account_status` of an account that is
