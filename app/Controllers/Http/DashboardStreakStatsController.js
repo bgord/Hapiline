@@ -1,6 +1,7 @@
 const Database = use("Database");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
-const datefns = require("date-fns");
+const {HabitVotesGetter} = require("../../Beings/HabitVotesGetter");
+const {VotesStreakCalculator} = require("../../Beings/VotesStreakCalculator");
 
 class DashboardStreakStatsController {
 	async index({auth, response}) {
@@ -14,14 +15,17 @@ class DashboardStreakStatsController {
 		};
 
 		for (const habit of habits) {
-			const habitVotes = await getVotesForHabit(habit);
+			const habitVotesGetter = new HabitVotesGetter(habit);
+			const habitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
 
-			const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, habitVotes);
+			const votesStreakCalculator = new VotesStreakCalculator(habitVotes);
+
+			const progress_streak = votesStreakCalculator.calculate(HABIT_VOTE_TYPES.progress);
 			if (progress_streak > 0) {
 				result.progress_streaks.push({...habit, progress_streak});
 			}
 
-			const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, habitVotes);
+			const regress_streak = votesStreakCalculator.calculate(HABIT_VOTE_TYPES.regress);
 			if (regress_streak > 0) {
 				result.regress_streaks.push({...habit, regress_streak});
 			}
@@ -39,41 +43,3 @@ class DashboardStreakStatsController {
 }
 
 module.exports = DashboardStreakStatsController;
-
-function getVoteTypeStreak(type, votes) {
-	let streak = 0;
-
-	for (const [index, vote] of votes.entries()) {
-		if (index === 0 && vote !== HABIT_VOTE_TYPES[type]) {
-			break;
-		} else if (vote === HABIT_VOTE_TYPES[type]) {
-			streak++;
-		} else break;
-	}
-
-	return streak;
-}
-
-async function getVotesForHabit(habit) {
-	const habitVotes = await Database.select("vote", "day")
-		.from("habit_votes")
-		.where({
-			habit_id: habit.id,
-		})
-		.orderBy("day");
-
-	const days = datefns
-		.eachDayOfInterval({
-			start: new Date(habit.created_at),
-			end: new Date(),
-		})
-		.map(day => {
-			const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
-			return {
-				day,
-				vote: dayVote ? dayVote.vote : null,
-			};
-		});
-
-	return [...days].reverse().map(day => day.vote);
-}

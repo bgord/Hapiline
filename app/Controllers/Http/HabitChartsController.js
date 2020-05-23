@@ -1,9 +1,10 @@
 const Habit = use("Habit");
 const datefns = require("date-fns");
 const CHART_DATE_RANGES = use("CHART_DATE_RANGES");
-const Database = use("Database");
 
-class HabitsController {
+const {HabitVotesGetter} = require("../../Beings/HabitVotesGetter");
+
+class HabitChartsController {
 	async show({params, request, response, auth}) {
 		const {dateRange} = request.only(["dateRange"]);
 		const id = Number(params.id);
@@ -19,29 +20,14 @@ class HabitsController {
 		const chartDateRangeToStartDate = {
 			[CHART_DATE_RANGES.last_week]: datefns.subDays(today, 6),
 			[CHART_DATE_RANGES.last_month]: datefns.subDays(today, 30),
-			[CHART_DATE_RANGES.all_time]: habit.created_at,
+			[CHART_DATE_RANGES.all_time]: new Date(habit.created_at),
 		};
 
-		const days = datefns.eachDayOfInterval({
-			start: chartDateRangeToStartDate[dateRange],
-			end: today,
-		});
+		const habitVotesGetter = new HabitVotesGetter(habit);
+		const habitVotes = await habitVotesGetter.get({from: chartDateRangeToStartDate[dateRange]});
 
-		const votes = await Database.select("day", "vote")
-			.from("habit_votes")
-			.where("habit_id", habit.id)
-			.whereIn("day", days);
-
-		const result = days.map(day => {
-			const voteFromDay = votes.find(vote => datefns.isSameDay(vote.day, day));
-			return {
-				day,
-				vote: voteFromDay ? voteFromDay.vote : null,
-			};
-		});
-
-		return response.send(result);
+		return response.send(habitVotes.reverse());
 	}
 }
 
-module.exports = HabitsController;
+module.exports = HabitChartsController;
