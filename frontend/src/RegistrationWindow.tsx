@@ -82,7 +82,7 @@ export const RegistrationWindow: React.FC = () => {
 						data-testid="registration-submit"
 						type="submit"
 						variant="primary"
-						disabled={registrationRequestState.isFulfilled}
+						disabled={registrationRequestState.isFulfilled || registrationRequestState.isPending}
 						style={{width: "125px"}}
 					>
 						{registrationRequestState.isPending ? "Loading..." : "Register"}
