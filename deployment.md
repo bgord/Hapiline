@@ -7,7 +7,14 @@ Prerequisites:
 
 ## Deployment checklist (about to be automated)
 
+[] check the latest git tag
+
+```bash
+$ git describe --tags
+```
+
 [] check if all entries in the `.env-prod` are defined and correct
+
 [] check if all entries in the `.env-frontend.prod` are defined and correct
 
 [] run app on your local machine
