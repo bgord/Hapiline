@@ -1,4 +1,3 @@
-import {Link} from "react-router-dom";
 import * as Async from "react-async";
 import React from "react";
 
@@ -93,12 +92,7 @@ export const RegistrationWindow: React.FC = () => {
 					<UI.SuccessBanner size="big" mt="24">
 						<UI.Column ml="12">
 							<UI.Text>Account confirmation email has been sent!</UI.Text>
-							<UI.Row>
-								<UI.Text>You can</UI.Text>
-								<Link data-ml="6" data-variant="link" className="c-text" to="/login">
-									login now
-								</Link>
-							</UI.Row>
+							<UI.Text>Please, check your inbox.</UI.Text>
 						</UI.Column>
 					</UI.SuccessBanner>
 				</Async.IfFulfilled>
