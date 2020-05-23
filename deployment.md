@@ -7,10 +7,18 @@ Prerequisites:
 
 ## Deployment checklist (about to be automated)
 
+[] ensure you're on the `master` branch and have all the changes you want to deploy synced with origin
+
 [] check the latest git tag
 
 ```bash
 $ git describe --tags
+```
+
+[] apply a new tag (remember about semver)
+
+```bash
+$ git tag <new-tag>
 ```
 
 [] check if all entries in the `.env-prod` are defined and correct
@@ -41,6 +49,12 @@ $ docker-compose down
 $ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
 ```
 
+[] stop production containers
+
+```bash
+$ docker-compose down
+```
+
 [] start docker-compose
 
 ```bash
@@ -56,7 +70,7 @@ $ docker-compose logs
 [] check if healthcheck responds correctly from local
 
 ```bash
-http GET bgord.tech:3333/healthcheck
+$ http GET bgord.tech:3333/healthcheck
 ```
 
 [] go to the URL to inspect the app
@@ -71,4 +85,10 @@ $ ./run.sh adonis migration:run --force
 
 ```bash
 $ unset DOCKER_HOST
+```
+
+[] push the latest tag
+
+```bash
+$ git push --tags
 ```
