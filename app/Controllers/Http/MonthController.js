@@ -19,8 +19,8 @@ class MonthsController {
 				Database.raw('count(*)::integer as "createdHabits"'),
 			)
 			.where("user_id", auth.user.id)
-			.whereRaw(`created_at::date >= ?`, [startOfGivenMonth])
-			.whereRaw(`created_at::date <= ?`, [endOfGivenMonth])
+			.whereRaw(`created_at::date >= :startOfGivenMonth`, {startOfGivenMonth})
+			.whereRaw(`created_at::date <= :endOfGivenMonth`, {endOfGivenMonth})
 			.groupBy("day")
 			.orderBy("day");
 
@@ -30,8 +30,8 @@ class MonthsController {
 			"vote as voteType",
 		)
 			.from("habit_votes")
-			.whereRaw(`day::date >= ?`, [startOfGivenMonth])
-			.whereRaw(`day::date <= ?`, [endOfGivenMonth])
+			.whereRaw(`day::date >= :startOfGivenMonth`, {startOfGivenMonth})
+			.whereRaw(`day::date <= :endOfGivenMonth`, {endOfGivenMonth})
 			.whereIn(
 				"habit_id",
 				Database.select("id")
