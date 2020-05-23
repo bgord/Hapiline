@@ -3,10 +3,13 @@ const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const Database = use("Database");
 const datefns = require("date-fns");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
+const {
+	NextGreatestUserHabitOrderCalculator,
+} = require("../../Beings/NextGreatestUserHabitOrderCalculator");
 
 class HabitsController {
 	async store({request, response, auth}) {
-		const payload = request.only([
+		const newHabitPayload = request.only([
 			"name",
 			"score",
 			"strength",
@@ -14,16 +17,19 @@ class HabitsController {
 			"description",
 			"is_trackable",
 		]);
+
 		try {
-			const {maxOrderValue} = await Database.table("habits")
-				.max("order as maxOrderValue")
-				.where("user_id", auth.user.id)
-				.first();
+			const nextOrderCalculator = new NextGreatestUserHabitOrderCalculator({
+				userId: auth.user.id,
+			});
+
+			const order = await nextOrderCalculator.calculate();
 
 			const result = await Habit.create({
-				...payload,
-				order: Number(maxOrderValue) + 1,
+				...newHabitPayload,
+				order,
 			});
+
 			return response.status(201).send(result);
 		} catch (error) {
 			if (error.message.includes("duplicate key value violates unique constraint")) {
@@ -46,6 +52,7 @@ class HabitsController {
 			.habits()
 			.orderBy("order")
 			.fetch();
+
 		return response.send(result);
 	}
 
