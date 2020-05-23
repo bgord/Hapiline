@@ -6,6 +6,7 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const {
 	NextGreatestUserHabitOrderCalculator,
 } = require("../../Beings/NextGreatestUserHabitOrderCalculator");
+const {DetailedHabitViewStrategies} = require("../../Beings/DetailedHabitViewStrategies");
 
 class HabitsController {
 	async store({request, response, auth}) {
@@ -57,31 +58,21 @@ class HabitsController {
 	}
 
 	async show({params, response, auth}) {
+		// Just try to get the habit, doesn't really matter
+		// if it belongs to `auth.user` or if it exists.
 		const habit = await Database.table("habits")
 			.where("id", params.id)
 			.first();
 
 		if (!habit) return response.notFound();
+
+		// Habit doesn't belong to the currently autenticated user
 		if (habit.user_id !== auth.user.id) return response.accessDenied();
 
-		if (!habit.is_trackable) {
-			return response.send({
-				...habit,
-				progress_streak: 0,
-				regress_streak: 0,
-			});
-		}
+		const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
+		const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit);
 
-		const votes = await getVotesForHabit(habit);
-
-		const progress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.progress, votes);
-		const regress_streak = getVoteTypeStreak(HABIT_VOTE_TYPES.regress, votes);
-
-		return response.send({
-			...habit,
-			progress_streak,
-			regress_streak,
-		});
+		return response.send(detailedHabit);
 	}
 
 	async delete({params, response, auth}) {
@@ -170,28 +161,4 @@ function getVoteTypeStreak(type, votes) {
 	}
 
 	return streak;
-}
-
-async function getVotesForHabit(habit) {
-	const habitVotes = await Database.select("vote", "day")
-		.from("habit_votes")
-		.where({
-			habit_id: habit.id,
-		})
-		.orderBy("day");
-
-	const days = datefns
-		.eachDayOfInterval({
-			start: new Date(habit.created_at),
-			end: new Date(),
-		})
-		.map(day => {
-			const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
-			return {
-				day,
-				vote: dayVote ? dayVote.vote : null,
-			};
-		});
-
-	return [...days].reverse().map(day => day.vote);
 }
