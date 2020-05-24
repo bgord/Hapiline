@@ -2,6 +2,7 @@ import * as Async from "react-async";
 
 import {IDayVote, IVoteChartItem, IVoteComment} from "../interfaces/IDayVote";
 import {IHabit} from "../interfaces/IHabit";
+import {NewHabitPayload} from "../interfaces/index";
 import {_internal_api} from "./api";
 import {constructUrl} from "../hooks/useQueryParam";
 
@@ -11,24 +12,8 @@ export const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
 export const getHabitRequest: Async.PromiseFn<IHabit> = ({id}) =>
 	_internal_api.get<IHabit>(`/habit/${id}`).then(response => response.data);
 
-export const addHabitRequest: Async.DeferFn<IHabit> = ([
-	name,
-	score,
-	strength,
-	user_id,
-	description,
-	is_trackable,
-]: string[]) =>
-	_internal_api
-		.post<IHabit>("/habit", {
-			name,
-			score,
-			strength,
-			user_id,
-			description,
-			is_trackable,
-		})
-		.then(response => response.data);
+export const addHabitRequest: Async.DeferFn<IHabit> = ([newHabitPayload]: NewHabitPayload[]) =>
+	_internal_api.post<IHabit>("/habit", newHabitPayload).then(response => response.data);
 
 export const deleteHabitRequest: Async.DeferFn<void> = ([id]: number[]) =>
 	_internal_api.delete(`/habit/${id}`).then(response => response.data);
