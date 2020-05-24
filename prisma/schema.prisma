@@ -33,6 +33,12 @@ enum HabitStrength {
 	fresh
 }
 
+enum HabitScore {
+	positive
+	neutral
+	negative
+}
+
 model habits {
   created_at   DateTime?
   description  String?
@@ -40,7 +46,7 @@ model habits {
   is_trackable Boolean?      @default(true)
   name         String
   order        Int
-  score        String
+  score        HabitScore
   strength     HabitStrength
   updated_at   DateTime?
   user_id      Int

@@ -12,7 +12,7 @@ import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
 
-import {NewHabitPayload, isHabitStrength} from "./interfaces/index";
+import {NewHabitPayload, isHabitStrength, isHabitScore} from "./interfaces/index";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
@@ -96,8 +96,16 @@ export const AddHabitForm: React.FC = () => {
 							name="score"
 							required
 							value={score}
-							onChange={event => setScore(event.target.value)}
-							onBlur={event => setScore(event.target.value)}
+							onChange={event => {
+								if (isHabitScore(event.target.value)) {
+									setScore(event.target.value);
+								}
+							}}
+							onBlur={event => {
+								if (isHabitScore(event.target.value)) {
+									setScore(event.target.value);
+								}
+							}}
 						>
 							<option value="positive">positive</option>
 							<option value="neutral">neutral</option>

@@ -1,19 +1,21 @@
 import React from "react";
 
-import {HABIT_SCORES, HabitScoreType, IHabit} from "../interfaces/IHabit";
+import {IHabit} from "../interfaces/IHabit";
 import * as UI from "../ui";
+
+import {HabitScores, HabitScoreType} from "../interfaces/index";
 
 type HabitScoreFilter = HabitScoreType | "all-scores";
 
 const scoreFilterToFunction: {[key in HabitScoreFilter]: (habit: IHabit) => boolean} = {
 	"all-scores": () => true,
-	positive: habit => habit.score === HABIT_SCORES.positive,
-	neutral: habit => habit.score === HABIT_SCORES.neutral,
-	negative: habit => habit.score === HABIT_SCORES.negative,
+	positive: habit => habit.score === HabitScores.positive,
+	neutral: habit => habit.score === HabitScores.neutral,
+	negative: habit => habit.score === HabitScores.negative,
 };
 
 function isHabitScoreFilter(value: string): value is HabitScoreFilter {
-	return [...Object.keys(HABIT_SCORES), "all-scores"].includes(value);
+	return [...Object.keys(HabitScores), "all-scores"].includes(value);
 }
 
 export const useHabitScoreFilter = (defaultValue: HabitScoreFilter = "all-scores") => {
@@ -53,26 +55,26 @@ const InputButton: React.FC<IInput> = ({value, filter, ...props}) => (
 export const HabitScoreFilters = {
 	Positive: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<InputButton filter={HABIT_SCORES.positive} {...props} />
+			<InputButton filter={HabitScores.positive} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<UI.Label ml="12" htmlFor={HABIT_SCORES.positive} {...props} />
+			<UI.Label ml="12" htmlFor={HabitScores.positive} {...props} />
 		),
 	},
 	Neutral: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<InputButton filter={HABIT_SCORES.neutral} {...props} />
+			<InputButton filter={HabitScores.neutral} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<UI.Label ml="12" htmlFor={HABIT_SCORES.neutral} {...props} />
+			<UI.Label ml="12" htmlFor={HabitScores.neutral} {...props} />
 		),
 	},
 	Negative: {
 		Input: (props: Omit<IInput, "filter"> & JSX.IntrinsicElements["input"]) => (
-			<InputButton filter={HABIT_SCORES.negative} {...props} />
+			<InputButton filter={HabitScores.negative} {...props} />
 		),
 		Label: (props: JSX.IntrinsicElements["label"]) => (
-			<UI.Label ml="12" htmlFor={HABIT_SCORES.negative} {...props} />
+			<UI.Label ml="12" htmlFor={HabitScores.negative} {...props} />
 		),
 	},
 	All: {

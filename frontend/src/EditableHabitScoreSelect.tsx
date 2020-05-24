@@ -3,10 +3,9 @@ import React from "react";
 
 import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
+import {isHabitScore} from "./interfaces/index";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
-
-const HABIT_SCORE_TYPES = ["positive", "neutral", "negative"];
 
 type EditableHabitScoreSelectProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
@@ -53,7 +52,3 @@ export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> =
 		</UI.Field>
 	);
 };
-
-function isHabitScore(value: string): value is IHabit["score"] {
-	return HABIT_SCORE_TYPES.includes(value);
-}

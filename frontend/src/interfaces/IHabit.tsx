@@ -1,9 +1,7 @@
 import {IDayVote, Vote} from "./IDayVote";
 import {BadgeVariant} from "../ui/badge/Badge";
 
-import type {HabitStrengthType} from "./index";
-
-export type HabitScoreType = "positive" | "neutral" | "negative";
+import type {HabitStrengthType, HabitScoreType} from "./index";
 
 export type HabitVote = {
 	habit: IHabit;
@@ -11,12 +9,6 @@ export type HabitVote = {
 	comment: IDayVote["comment"];
 	day: string;
 	vote_id: IDayVote["vote_id"] | undefined;
-};
-
-export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {
-	positive: "positive",
-	neutral: "neutral",
-	negative: "negative",
 };
 
 export interface IHabit {
