@@ -14,6 +14,12 @@ model adonis_schema {
   name           String?
 }
 
+enum HabitVote {
+	progress
+	plateau
+	regress
+}
+
 model habit_votes {
   comment    String?
   created_at DateTime?
@@ -21,7 +27,7 @@ model habit_votes {
   habit_id   Int
   id         Int       @default(autoincrement()) @id
   updated_at DateTime?
-  vote       String?
+  vote       HabitVote?
   habits     habits    @relation(fields: [habit_id], references: [id])
 
   @@unique([habit_id, day], name: "habit_votes_habit_id_day_unique")

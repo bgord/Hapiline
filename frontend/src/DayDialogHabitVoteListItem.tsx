@@ -10,7 +10,8 @@ import {ChevronDownIcon} from "./ui/icons/ChevronDown";
 import VisuallyHidden from "@reach/visually-hidden";
 import {habitStrengthToBadgeVariant, IHabit} from "./interfaces/IHabit";
 import * as UI from "./ui";
-import {Vote, IDayVote} from "./interfaces/IDayVote";
+import {IDayVote} from "./interfaces/IDayVote";
+import {HabitVoteType} from "./interfaces/index";
 import {api} from "./services/api";
 import {
 	useEditableFieldState,
@@ -89,7 +90,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 		true,
 	);
 
-	function changeVote(type: NonNullable<Vote>) {
+	function changeVote(type: NonNullable<HabitVoteType>) {
 		addHabitDayVoteRequestState.run({
 			day: new Date(day),
 			habit_id: habit.id,

@@ -1,11 +1,11 @@
-import {IDayVote, Vote} from "./IDayVote";
+import {IDayVote} from "./IDayVote";
 import {BadgeVariant} from "../ui/badge/Badge";
 
-import type {HabitStrengthType, HabitScoreType} from "./index";
+import type {HabitStrengthType, HabitScoreType, HabitVoteType} from "./index";
 
 export type HabitVote = {
 	habit: IHabit;
-	vote: Vote | undefined;
+	vote: HabitVoteType | undefined;
 	comment: IDayVote["comment"];
 	day: string;
 	vote_id: IDayVote["vote_id"] | undefined;

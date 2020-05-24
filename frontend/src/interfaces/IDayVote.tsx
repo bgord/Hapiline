@@ -1,28 +1,27 @@
 import {IHabit} from "./IHabit";
-
-export type Vote = "progress" | "plateau" | "regress" | null;
+import {HabitVoteType} from "./index";
 
 export interface IDayVote {
 	vote_id: number;
 	habit_id: IHabit["id"];
-	vote: Vote;
+	vote: HabitVoteType;
 	comment: string | null | undefined;
 }
 
 export interface IVoteChartItem {
-	vote: Vote;
+	vote: HabitVoteType;
 	day: string;
 }
 
 export interface IVoteComment {
 	id: number;
-	vote: Vote;
+	vote: HabitVoteType;
 	day: string;
 	comment: string;
 	habit_id: IHabit["id"];
 }
 
-export const voteToBgColor = new Map<Vote, string>();
+export const voteToBgColor = new Map<HabitVoteType, string>();
 voteToBgColor.set("progress", "#8bdb90");
 voteToBgColor.set("plateau", "var(--gray-3)");
 voteToBgColor.set("regress", "#ef8790");

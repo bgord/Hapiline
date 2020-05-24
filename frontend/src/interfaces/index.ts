@@ -1,10 +1,12 @@
 import { users, habits, notifications } from "@prisma/client";
+
 /* eslint-disable no-duplicate-imports */
 import type {
   HabitStrength as HabitStrengthType,
   HabitScore as HabitScoreType,
   NotificationStatus,
   NotificationType,
+  HabitVote,
 } from "@prisma/client";
 
 // Users
@@ -53,3 +55,7 @@ export type Notification = notifications;
 export type DraftNotificationPayload = Pick<Notification, "id" | "status">;
 export type NotificationStatusType = NotificationStatus;
 export type NotificationTypeStatus = NotificationType;
+
+// Votes
+
+export type HabitVoteType = Nullable<HabitVote>;
