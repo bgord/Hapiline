@@ -2,14 +2,15 @@ import { users, habits } from "@prisma/client";
 import type { HabitStrength as HabitStrengthType } from "@prisma/client";
 import type { HabitScore as HabitScoreType } from "@prisma/client";
 
+// Users
 export type User = users;
+export type UserProfile = Pick<User, "id" | "email">;
+
+// =============
 
 // Habits
 export type Habit = habits;
-export type NewHabitPayload = Omit<
-  Habit,
-  "id" | "created_at" | "updated_at" | "order"
->;
+export type NewHabitPayload = Omit<Habit, "id" | "created_at" | "updated_at" | "order">;
 
 export type { HabitStrength as HabitStrengthType } from "@prisma/client";
 export const HabitStrengths: { [key in HabitStrengthType]: HabitStrengthType } =

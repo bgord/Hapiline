@@ -2,18 +2,18 @@ import * as Async from "react-async";
 import React from "react";
 
 import * as UI from "../ui";
-import {UserProfileInterface} from "../interfaces/IUserProfile";
+import {UserProfile} from "../interfaces/index";
 import {api} from "../services/api";
 
 type UserProfileContext = [
-	UserProfileInterface | null,
-	React.Dispatch<React.SetStateAction<UserProfileInterface | null>>?,
+	UserProfile | null,
+	React.Dispatch<React.SetStateAction<UserProfile | null>>?,
 ];
 
 const AuthContext = React.createContext<UserProfileContext>([null]);
 
 export const AuthProvider: React.FC = props => {
-	const [userProfile, setUserProfile] = React.useState<UserProfileInterface | null>(null);
+	const [userProfile, setUserProfile] = React.useState<UserProfile | null>(null);
 	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
 
 	const {isSettled, data, isPending, isRejected} = Async.useAsync({
