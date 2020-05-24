@@ -69,14 +69,16 @@ export const AddHabitForm: React.FC = () => {
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
 
-					addHabitRequestState.run({
+					const payload: NewHabitPayload = {
 						name,
 						score,
 						strength,
 						user_id: profile?.id || 0,
 						description: description || null,
 						is_trackable: isTrackable,
-					} as NewHabitPayload);
+					};
+
+					addHabitRequestState.run(payload);
 				}}
 				p="24"
 			>

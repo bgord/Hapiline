@@ -1,6 +1,10 @@
-import { users, habits } from "@prisma/client";
-import type { HabitStrength as HabitStrengthType } from "@prisma/client";
-import type { HabitScore as HabitScoreType } from "@prisma/client";
+import { users, habits, notifications } from "@prisma/client";
+import type {
+  HabitStrength as HabitStrengthType,
+  HabitScore as HabitScoreType,
+  NotificationStatus,
+  NotificationType,
+} from "@prisma/client";
 
 // Users
 export type User = users;
@@ -10,7 +14,10 @@ export type UserProfile = Pick<User, "id" | "email">;
 
 // Habits
 export type Habit = habits;
-export type NewHabitPayload = Omit<Habit, "id" | "created_at" | "updated_at" | "order">;
+export type NewHabitPayload = Omit<
+  Habit,
+  "id" | "created_at" | "updated_at" | "order"
+>;
 
 export type { HabitStrength as HabitStrengthType } from "@prisma/client";
 export const HabitStrengths: { [key in HabitStrengthType]: HabitStrengthType } =
@@ -20,20 +27,28 @@ export const HabitStrengths: { [key in HabitStrengthType]: HabitStrengthType } =
     fresh: "fresh",
   };
 export function isHabitStrength(value: any): value is Habit["strength"] {
-  const possibleHabitStrengthValues = Object.keys(HabitStrengths)
+  const possibleHabitStrengthValues = Object.keys(HabitStrengths);
 
   return possibleHabitStrengthValues.includes(value);
 }
 
 export type { HabitScore as HabitScoreType } from "@prisma/client";
-export const HabitScores: { [key in HabitScoreType]: HabitScoreType } =
-  {
-    positive: "positive",
-    neutral: "neutral",
-    negative: "negative"
-  };
+export const HabitScores: { [key in HabitScoreType]: HabitScoreType } = {
+  positive: "positive",
+  neutral: "neutral",
+  negative: "negative",
+};
 export function isHabitScore(value: any): value is Habit["score"] {
-  const possibleHabitScoresValues = Object.keys(HabitScores)
+  const possibleHabitScoresValues = Object.keys(HabitScores);
 
   return possibleHabitScoresValues.includes(value);
 }
+
+// =============
+
+// Notifications
+
+export type Notification = notifications;
+export type DraftNotificationPayload = Pick<Notification, "id" | "status">;
+export type NotificationStatusType = NotificationStatus;
+export type NotificationTypeStatus = NotificationType;

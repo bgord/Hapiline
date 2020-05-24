@@ -56,12 +56,21 @@ model habits {
   @@unique([name, user_id], name: "habits_name_user_id_unique")
 }
 
+enum NotificationType {
+  regular
+}
+
+enum NotificationStatus {
+  unread
+  read
+}
+
 model notifications {
   content    String
   created_at DateTime?
   id         Int       @default(autoincrement()) @id
-  status     String
-  type       String
+  status     NotificationStatus
+  type       NotificationType
   updated_at DateTime?
   user_id    Int
   users      users     @relation(fields: [user_id], references: [id])

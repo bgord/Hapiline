@@ -4,6 +4,7 @@ import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
+import {Notification, DraftNotificationPayload} from "./interfaces/index";
 
 import * as UI from "./ui";
 import {BellIcon} from "./ui/icons/Bell";
@@ -94,12 +95,20 @@ function NotificationDropdown() {
 		notification => notification.status === "unread",
 	).length;
 
-	function markNotificationAsRead(id: number) {
-		updateNotificationRequestState.run(id, {status: "read"});
+	function markNotificationAsRead(id: Notification["id"]) {
+		const payload: DraftNotificationPayload = {
+			id,
+			status: "read",
+		};
+		updateNotificationRequestState.run(payload);
 	}
 
-	function markNotificationAsUnread(id: number) {
-		updateNotificationRequestState.run(id, {status: "unread"});
+	function markNotificationAsUnread(id: Notification["id"]) {
+		const payload: DraftNotificationPayload = {
+			id,
+			status: "read",
+		};
+		updateNotificationRequestState.run(payload);
 	}
 
 	return (
