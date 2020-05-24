@@ -1,8 +1,9 @@
 import {IDayVote, Vote} from "./IDayVote";
 import {BadgeVariant} from "../ui/badge/Badge";
 
+import type {HabitStrengthType} from "./index";
+
 export type HabitScoreType = "positive" | "neutral" | "negative";
-export type HabitStrengthType = "established" | "developing" | "fresh";
 
 export type HabitVote = {
 	habit: IHabit;
@@ -18,12 +19,6 @@ export const HABIT_SCORES: {[key in HabitScoreType]: HabitScoreType} = {
 	negative: "negative",
 };
 
-export const HABIT_STRENGTHS: {[key in HabitStrengthType]: HabitStrengthType} = {
-	established: "established",
-	developing: "developing",
-	fresh: "fresh",
-};
-
 export interface IHabit {
 	id: number;
 	name: string;
@@ -37,18 +32,6 @@ export interface IHabit {
 	regress_streak?: number;
 	is_trackable: boolean;
 }
-
-export const scoreToBgColor: {[key in HabitScoreType]: string} = {
-	positive: "bg-green-300",
-	neutral: "bg-gray-300",
-	negative: "bg-red-300",
-};
-
-export const strengthToBgColor: {[key in HabitStrengthType]: string} = {
-	established: "bg-blue-300",
-	developing: "bg-blue-200",
-	fresh: "bg-blue-100",
-};
 
 export const habitStrengthToBadgeVariant: {
 	[key in IHabit["strength"]]: BadgeVariant;

@@ -27,6 +27,12 @@ model habit_votes {
   @@unique([habit_id, day], name: "habit_votes_habit_id_day_unique")
 }
 
+enum HabitStrength {
+	established
+	developing
+	fresh
+}
+
 model habits {
   created_at   DateTime?
   description  String?
@@ -35,7 +41,7 @@ model habits {
   name         String
   order        Int
   score        String
-  strength     String
+  strength     HabitStrength
   updated_at   DateTime?
   user_id      Int
   users        users         @relation(fields: [user_id], references: [id])

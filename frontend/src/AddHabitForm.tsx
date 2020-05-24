@@ -12,7 +12,7 @@ import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
 
-import {NewHabitPayload} from "./interfaces/index";
+import {NewHabitPayload, isHabitStrength} from "./interfaces/index";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
@@ -111,8 +111,16 @@ export const AddHabitForm: React.FC = () => {
 							name="strength"
 							required
 							value={strength}
-							onChange={event => setStrength(event.target.value)}
-							onBlur={event => setStrength(event.target.value)}
+							onChange={event => {
+								if (isHabitStrength(event.target.value)) {
+									setStrength(event.target.value);
+								}
+							}}
+							onBlur={event => {
+								if (isHabitStrength(event.target.value)) {
+									setStrength(event.target.value);
+								}
+							}}
 						>
 							<option value="established">established</option>
 							<option value="developing">developing</option>

@@ -3,6 +3,7 @@ import React from "react";
 
 import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
+import {isHabitStrength} from "./interfaces/index";
 import {api} from "./services/api";
 import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
 
@@ -51,8 +52,3 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 		</UI.Field>
 	);
 };
-
-function isHabitStrength(value: string): value is IHabit["strength"] {
-	const HABIT_SCORE_STRENGTHS = ["established", "developing", "fresh"];
-	return HABIT_SCORE_STRENGTHS.includes(value);
-}
