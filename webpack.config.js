@@ -53,8 +53,8 @@ module.exports = (_env, argv) => {
 		// Allow for 300kb of max asset and an initial bundle
 		// that's downloaded by the browser.
 		performance: {
-			maxAssetSize: 300000,
-			maxEntrypointSize: 300000,
+			maxAssetSize: dev ? 3000000 : 300000,
+			maxEntrypointSize: dev ? 3000000 : 300000,
 			hints: "warning",
 		},
 	};
