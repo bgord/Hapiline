@@ -5,7 +5,7 @@ import * as UI from "./ui";
 import {IHabit} from "./interfaces/IHabit";
 import {isHabitScore} from "./interfaces/index";
 import {api} from "./services/api";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
 type EditableHabitScoreSelectProps = IHabit & {
 	setHabitItem: (habit: IHabit) => void;
@@ -18,8 +18,8 @@ export const EditableHabitScoreSelect: React.FC<EditableHabitScoreSelectProps> =
 }) => {
 	const [newHabitScore, setNewHabitScore] = React.useState<IHabit["score"]>(score);
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,

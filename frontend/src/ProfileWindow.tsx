@@ -7,7 +7,7 @@ import * as UI from "./ui";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 import {useUserProfile} from "./contexts/auth-context";
 
 export const ProfileWindow = () => {
@@ -29,7 +29,7 @@ const ChangeEmail: React.FC = () => {
 	useDocumentTitle("Hapiline - profile");
 
 	const history = useHistory();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 	const [userProfile] = useUserProfile();
 	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 
@@ -134,7 +134,7 @@ const ChangeEmail: React.FC = () => {
 };
 
 const ChangePassword = () => {
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 	const [oldPassword, setOldPassword] = React.useState("");
 	const [newPassword, setNewPassword] = React.useState("");
@@ -254,7 +254,7 @@ const DeleteAccount = () => {
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 	const history = useHistory();
 
 	const deleteAccountRequestState = Async.useAsync({

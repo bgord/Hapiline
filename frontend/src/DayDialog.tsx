@@ -13,7 +13,7 @@ import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
@@ -31,7 +31,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const trackedHabits = useTrackedHabits();
 	const [isChartLegendVisible, , , toggleIsChartLegendVisible] = useToggle();
 
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 	const getDayVotesRequestState = Async.useAsync({
 		promiseFn: api.calendar.getDay,
 		day,

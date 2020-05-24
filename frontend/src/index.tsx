@@ -9,7 +9,7 @@ import * as ReactDOM from "react-dom";
 import * as UI from "./ui";
 import {App} from "./App";
 import {AuthProvider} from "./contexts/auth-context";
-import {NotificationsProvider} from "./contexts/notifications-context";
+import {ToastsProvider} from "./contexts/toasts-context";
 
 class ErrorBoundary extends React.Component<{}, {hasError: boolean}> {
 	constructor(props: {}) {
@@ -42,11 +42,11 @@ class ErrorBoundary extends React.Component<{}, {hasError: boolean}> {
 ReactDOM.render(
 	<React.StrictMode>
 		<ErrorBoundary>
-			<NotificationsProvider>
+			<ToastsProvider>
 				<AuthProvider>
 					<App />
 				</AuthProvider>
-			</NotificationsProvider>
+			</ToastsProvider>
 		</ErrorBoundary>
 	</React.StrictMode>,
 	document.getElementById("root"),

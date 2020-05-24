@@ -9,7 +9,7 @@ import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
@@ -29,8 +29,8 @@ export const HabitsWindow = () => {
 
 	const habits = useHabits();
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const reorderHabitsRequestState = Async.useAsync({
 		deferFn: api.habit.reorder,

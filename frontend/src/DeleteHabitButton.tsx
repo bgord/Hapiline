@@ -6,7 +6,7 @@ import * as UI from "./ui";
 import {TrashIcon} from "./ui/icons/Trash";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useToggle} from "./hooks/useToggle";
 
@@ -16,8 +16,8 @@ export const DeleteHabitButton: React.FC<IHabit> = ({id, name}) => {
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const deleteHabitRequestState = Async.useAsync({
 		deferFn: api.habit.delete,

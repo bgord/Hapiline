@@ -8,7 +8,7 @@ import {IHabit} from "./interfaces/IHabit";
 import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 
 type ChartRange = "last_week" | "last_month" | "all_time";
 
@@ -20,7 +20,7 @@ const chartRanges: {[key in ChartRange]: string} = {
 
 export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 	const [dateRange, setChartRange] = React.useState<ChartRange>("last_week");
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 
 	const habitVoteChartRequestState = Async.useAsync({
 		promiseFn: api.habit.getHabitVoteChart,

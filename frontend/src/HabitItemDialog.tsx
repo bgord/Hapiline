@@ -20,7 +20,7 @@ import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {pluralize} from "./services/pluralize";
 
@@ -33,7 +33,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
 
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 
 	const habitRequestState = Async.useAsync({
 		promiseFn: api.habit.show,
@@ -152,8 +152,8 @@ const EditableDescription: React.FC<{
 }> = ({description, habitId, onResolve}) => {
 	const textarea = useEditableFieldState();
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const updateDescriptionRequestState = Async.useAsync({
 		deferFn: api.habit.patch,

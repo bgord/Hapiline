@@ -3,13 +3,13 @@ import Alert from "@reach/alert";
 import React from "react";
 
 import * as UI from "./ui";
-import {INotification, NotificationType} from "./interfaces/INotification";
-import {useNotificationDispatch, useNotificationState} from "./contexts/notifications-context";
+import {Toast, ToastType} from "./interfaces/Toast";
+import {useToastDispatch, useToastsState} from "./contexts/toasts-context";
 
-const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
-	const dispatch = useNotificationDispatch();
+const ToastItem: React.FC<Toast> = ({id, type, message}) => {
+	const dispatch = useToastDispatch();
 
-	const typeToBgColor: {[key in NotificationType]: string} = {
+	const typeToBgColor: {[key in ToastType]: string} = {
 		success: "var(--green-light)",
 		error: "var(--red-light)",
 	};
@@ -32,8 +32,8 @@ const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
 	);
 };
 
-export const Notifications = () => {
-	const notifications = useNotificationState();
+export const Toasts = () => {
+	const notifications = useToastsState();
 
 	const transitions = useTransition(notifications, notification => notification.id, {
 		from: {opacity: 0, right: -50, position: "relative"},
@@ -45,7 +45,7 @@ export const Notifications = () => {
 		<UI.Column position="fixed" m="12" style={{bottom: 0, right: 0, zIndex: 1}}>
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
-					<NotificationItem {...item}>{item.message}</NotificationItem>
+					<ToastItem {...item}>{item.message}</ToastItem>
 				</animated.div>
 			))}
 		</UI.Column>

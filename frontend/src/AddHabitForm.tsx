@@ -7,7 +7,7 @@ import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
 import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
@@ -24,8 +24,8 @@ export const AddHabitForm: React.FC = () => {
 	const [description, setDescription] = React.useState<NewHabitPayload["description"]>("");
 	const [isTrackable, setIsTrackable] = React.useState<NewHabitPayload["is_trackable"]>(true);
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerUnexpectedErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerUnexpectedErrorNotification = useErrorToast();
 
 	const [, updateQueryParams] = useQueryParams();
 

@@ -12,7 +12,7 @@ import {HabitNameInput} from "./HabitNameInput";
 import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 
 type EditableHabitNameInputProps = IHabit & {
@@ -27,8 +27,8 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 	const field = useEditableFieldState();
 	const getHabitsRequestState = useHabitsState();
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,

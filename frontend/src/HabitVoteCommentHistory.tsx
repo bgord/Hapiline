@@ -8,10 +8,10 @@ import {IVoteComment} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 
 export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habitId}) => {
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 
 	const getHabitVoteCommentsRequestState = Async.useAsync({
 		promiseFn: api.habit.getHabitVoteComments,

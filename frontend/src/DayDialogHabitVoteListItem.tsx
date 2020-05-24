@@ -18,7 +18,7 @@ import {
 	CancelButton,
 	SaveButton,
 } from "./hooks/useEditableField";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 
@@ -42,8 +42,8 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 	const textarea = useEditableFieldState();
 	const [isCommentVisible, , , toggleComment] = useToggle();
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const addHabitDayVoteRequestState = Async.useAsync({
 		deferFn: api.habit.addHabitDayVote,

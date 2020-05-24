@@ -1,4 +1,5 @@
 import { users, habits, notifications } from "@prisma/client";
+/* eslint-disable no-duplicate-imports */
 import type {
   HabitStrength as HabitStrengthType,
   HabitScore as HabitScoreType,
