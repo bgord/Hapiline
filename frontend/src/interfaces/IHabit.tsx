@@ -26,7 +26,7 @@ export interface IHabit {
 }
 
 export const habitStrengthToBadgeVariant: {
-	[key in IHabit["strength"]]: BadgeVariant;
+	[key in HabitStrengthType]: BadgeVariant;
 } = {
 	fresh: "light",
 	developing: "normal",
