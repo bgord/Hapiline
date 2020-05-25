@@ -8,6 +8,7 @@ import type {
   NotificationType,
   HabitVote as _HabitVoteType,
 } from "@prisma/client";
+import {BadgeVariant} from "../ui/badge/Badge";
 
 // Users
 export type User = users;
@@ -38,6 +39,13 @@ export function isHabitStrength(value: any): value is Habit["strength"] {
 
   return possibleHabitStrengthValues.includes(value);
 }
+export const habitStrengthToBadgeVariant: {
+	[key in HabitStrengthType]: BadgeVariant;
+} = {
+	fresh: "light",
+	developing: "normal",
+	established: "strong",
+};
 
 export type { HabitScore as HabitScoreType } from "@prisma/client";
 export const HabitScores: { [key in HabitScoreType]: HabitScoreType } = {
