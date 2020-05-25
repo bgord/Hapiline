@@ -1,11 +1,11 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {IHabit} from "../interfaces/IHabit";
 import {api} from "../services/api";
 import {useErrorToast} from "./toasts-context";
+import {Habit} from "../interfaces/index";
 
-type HabitsContext = Async.AsyncState<IHabit[]> | undefined;
+type HabitsContext = Async.AsyncState<Habit[]> | undefined;
 
 const HabitsContext = React.createContext<HabitsContext>(undefined);
 

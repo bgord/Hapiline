@@ -3,14 +3,14 @@ import * as Async from "react-async";
 import React from "react";
 
 import * as UI from "./ui";
-import {IHabit} from "./interfaces/IHabit";
+import {Habit} from "./interfaces/index";
 import {IVoteComment} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";
 
-export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habitId}) => {
+export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habitId}) => {
 	const triggerErrorNotification = useErrorToast();
 
 	const getHabitVoteCommentsRequestState = Async.useAsync({

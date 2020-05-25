@@ -8,10 +8,10 @@ import {faPlus, faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {ChevronUpIcon} from "./ui/icons/ChevronUp";
 import {ChevronDownIcon} from "./ui/icons/ChevronDown";
 import VisuallyHidden from "@reach/visually-hidden";
-import {habitStrengthToBadgeVariant, IHabit} from "./interfaces/IHabit";
+import {habitStrengthToBadgeVariant} from "./interfaces/IHabit";
+import {Habit, HabitVoteType} from "./interfaces/index";
 import * as UI from "./ui";
 import {IDayVote} from "./interfaces/IDayVote";
-import {HabitVoteType} from "./interfaces/index";
 import {api} from "./services/api";
 import {
 	useEditableFieldState,
@@ -24,7 +24,7 @@ import {constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 
 interface DayDialogHabitVoteListProps {
-	habit: IHabit;
+	habit: Habit;
 	day: string;
 	vote: IDayVote["vote"] | undefined;
 	vote_id: IDayVote["vote_id"] | undefined;

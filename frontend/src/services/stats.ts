@@ -1,6 +1,6 @@
 import * as Async from "react-async";
 
-import {IHabit} from "../interfaces/IHabit";
+import {Habit} from "../interfaces/index";
 import {_internal_api} from "./api";
 
 interface IDateRangeStats {
@@ -23,16 +23,16 @@ export const getDashboardStats: Async.PromiseFn<IDashboardStats> = () =>
 
 interface IDashboardStreakStats {
 	progress_streaks: {
-		id: IHabit["id"];
-		name: IHabit["name"];
-		created_at: IHabit["created_at"];
+		id: Habit["id"];
+		name: Habit["name"];
+		created_at: Habit["created_at"];
 		progress_streak: number;
 	}[];
 
 	regress_streaks: {
-		id: IHabit["id"];
-		name: IHabit["name"];
-		created_at: IHabit["created_at"];
+		id: Habit["id"];
+		name: Habit["name"];
+		created_at: Habit["created_at"];
 		regress_streak: number;
 	}[];
 }

@@ -6,7 +6,8 @@ import {Link} from "react-router-dom";
 import VisuallyHidden from "@reach/visually-hidden";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
-import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
+import {habitStrengthToBadgeVariant} from "./interfaces/IHabit";
+import {Habit} from "./interfaces/index";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
 import {voteToBgColor} from "./interfaces/IDayVote";
@@ -195,8 +196,10 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 	);
 };
 
-function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[] {
+function getHabitsAddedAtThisDay(habits: Habit[], day: string | Date): Habit[] {
 	return habits.filter(habit => {
+		// TODO: make {created,updated}_at required
+		if (!habit.created_at) return false;
 		const createdAtDate = new Date(habit.created_at);
 		const dayDate = new Date(day);
 
@@ -204,7 +207,7 @@ function getHabitsAddedAtThisDay(habits: IHabit[], day: string | Date): IHabit[]
 	});
 }
 
-const CompactHabitItem: React.FC<IHabit> = ({name, id, score, strength, is_trackable}) => (
+const CompactHabitItem: React.FC<Habit> = ({name, id, score, strength, is_trackable}) => (
 	<UI.Row as="li" py="12" by="gray-1">
 		<Link to={constructUrl("habits", {preview_habit_id: id.toString()})}>
 			<UI.Text variant="semi-bold">{name}</UI.Text>

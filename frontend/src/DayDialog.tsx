@@ -8,7 +8,8 @@ import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
 import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
 import {DayVoteStats} from "./interfaces/IMonthDay";
-import {HabitVote, IHabit} from "./interfaces/IHabit";
+import {HabitVote} from "./interfaces/IHabit";
+import {Habit} from "./interfaces/index";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
@@ -238,7 +239,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 
 function getDayVoteForHabit(
 	getDayVotesRequestState: Async.AsyncState<IDayVote[]>,
-	habit: IHabit,
+	habit: Habit,
 ): IDayVote | undefined {
 	const dayVotes = getDayVotesRequestState.data ?? [];
 	return dayVotes.find(vote => vote.habit_id === habit.id);

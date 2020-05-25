@@ -2,13 +2,12 @@ import * as Async from "react-async";
 import React from "react";
 
 import * as UI from "./ui";
-import {IHabit} from "./interfaces/IHabit";
-import {isHabitStrength} from "./interfaces/index";
+import {DetailedHabit, HabitStrengthType, isHabitStrength} from "./interfaces/index";
 import {api} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
-type EditableHabitStrengthSelectProps = IHabit & {
-	setHabitItem: (habit: IHabit) => void;
+type EditableHabitStrengthSelectProps = DetailedHabit & {
+	setHabitItem: (habit: DetailedHabit) => void;
 };
 
 export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectProps> = ({
@@ -16,7 +15,7 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 	strength,
 	setHabitItem,
 }) => {
-	const [newHabitStrength, setNewHabitStrength] = React.useState<IHabit["strength"]>(strength);
+	const [newHabitStrength, setNewHabitStrength] = React.useState<HabitStrengthType>(strength);
 
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();

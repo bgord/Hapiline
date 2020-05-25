@@ -7,7 +7,6 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import * as UI from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
-import {IHabit} from "./interfaces/IHabit";
 import {api} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
@@ -18,6 +17,7 @@ import {useToggle} from "./hooks/useToggle";
 import {FilterIcon} from "./ui/icons/Filter";
 import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
+import {Habit} from "./interfaces/index";
 
 export const HabitsWindow = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -267,18 +267,18 @@ export const HabitsWindow = () => {
 	);
 };
 
-function reorder(habits: IHabit[], fromIndex: number, toIndex: number): IHabit[] {
+function reorder(habits: Habit[], fromIndex: number, toIndex: number): Habit[] {
 	const result = Array.from(habits);
 	const [removed] = result.splice(fromIndex, 1);
 	result.splice(toIndex, 0, removed);
 	return result;
 }
 
-function getHabitCounts(habits: IHabit[]) {
-	const countByScore = (score: IHabit["score"]): number =>
+function getHabitCounts(habits: Habit[]) {
+	const countByScore = (score: Habit["score"]): number =>
 		habits.filter(habit => habit.score === score).length;
 
-	const countByStrength = (strength: IHabit["strength"]): number =>
+	const countByStrength = (strength: Habit["strength"]): number =>
 		habits.filter(habit => habit.strength === strength).length;
 
 	return {

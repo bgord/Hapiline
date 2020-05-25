@@ -4,7 +4,7 @@ import React from "react";
 import {pluralize} from "./services/pluralize";
 
 import * as UI from "./ui";
-import {IHabit} from "./interfaces/IHabit";
+import {Habit} from "./interfaces/index";
 import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
@@ -18,7 +18,7 @@ const chartRanges: {[key in ChartRange]: string} = {
 	all_time: "all_time",
 };
 
-export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
+export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 	const [dateRange, setChartRange] = React.useState<ChartRange>("last_week");
 	const triggerErrorNotification = useErrorToast();
 
@@ -109,7 +109,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 	);
 };
 
-const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit["id"]}> = ({
+const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: Habit["id"]}> = ({
 	day,
 	vote,
 	habitId,

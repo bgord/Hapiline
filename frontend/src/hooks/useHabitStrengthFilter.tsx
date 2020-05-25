@@ -1,12 +1,11 @@
 import React from "react";
 
-import {HabitStrengthType, HabitStrengths} from "../interfaces/index";
-import {IHabit} from "../interfaces/IHabit";
+import {Habit, HabitStrengthType, HabitStrengths} from "../interfaces/index";
 import * as UI from "../ui";
 
 type HabitStrengthFilter = HabitStrengthType | "all-strengths";
 
-const strengthFilterToFunction: {[key in HabitStrengthFilter]: (habit: IHabit) => boolean} = {
+const strengthFilterToFunction: {[key in HabitStrengthFilter]: (habit: Habit) => boolean} = {
 	"all-strengths": () => true,
 	established: habit => habit.strength === HabitStrengths.established,
 	developing: habit => habit.strength === HabitStrengths.developing,

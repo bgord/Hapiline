@@ -1,9 +1,8 @@
-import {IHabit} from "./IHabit";
-import {HabitVoteType} from "./index";
+import {Habit, HabitVoteType} from "./index";
 
 export interface IDayVote {
 	vote_id: number;
-	habit_id: IHabit["id"];
+	habit_id: Habit["id"];
 	vote: HabitVoteType;
 	comment: string | null | undefined;
 }
@@ -18,7 +17,7 @@ export interface IVoteComment {
 	vote: HabitVoteType;
 	day: string;
 	comment: string;
-	habit_id: IHabit["id"];
+	habit_id: Habit["id"];
 }
 
 export const voteToBgColor = new Map<HabitVoteType, string>();

@@ -17,6 +17,10 @@ export type UserProfile = Pick<User, "id" | "email">;
 
 // Habits
 export type Habit = habits;
+export type DetailedHabit = habits & {
+  progress_streak: number;
+  regress_streak: number;
+};
 export type NewHabitPayload = Omit<
   Habit,
   "id" | "created_at" | "updated_at" | "order"
