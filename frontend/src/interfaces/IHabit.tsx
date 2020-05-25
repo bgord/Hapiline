@@ -9,4 +9,3 @@ export type HabitVote = {
 	day: string;
 	vote_id: IDayVote["vote_id"] | undefined;
 };
-

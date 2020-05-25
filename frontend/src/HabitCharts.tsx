@@ -4,8 +4,7 @@ import React from "react";
 import {pluralize} from "./services/pluralize";
 
 import * as UI from "./ui";
-import {Habit, DayVote} from "./interfaces/index";
-import {voteToBgColor} from "./interfaces/IDayVote";
+import {Habit, DayVote, voteToBgColor} from "./interfaces/index";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";

@@ -9,9 +9,8 @@ import {DayVoteStats} from "./interfaces/IMonthDay";
 import {Habit} from "./interfaces/index";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
-import {voteToBgColor} from "./interfaces/IDayVote";
 import {constructUrl} from "./hooks/useQueryParam";
-import {habitStrengthToBadgeVariant} from "./interfaces/index";
+import {habitStrengthToBadgeVariant, voteToBgColor} from "./interfaces/index";
 
 type DayDialogSummaryProps = DayVoteStats & {
 	maximumVotes: number;
