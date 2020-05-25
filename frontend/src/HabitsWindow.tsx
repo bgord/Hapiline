@@ -51,7 +51,7 @@ export const HabitsWindow = () => {
 	const filteredHabits = habits
 		.filter(habitScoreFilter.filterFunction)
 		.filter(habitStrengthFilter.filterFunction)
-		.filter(habitSearch.filterFn);
+		.filter(habit => habitSearch.filterFn(habit.name));
 	const howManyResults = filteredHabits.length;
 
 	function onDragEnd(result: DropResult) {

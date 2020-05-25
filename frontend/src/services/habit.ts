@@ -1,9 +1,9 @@
 import * as Async from "react-async";
 
-import {IDayVote, IVoteComment} from "../interfaces/IDayVote";
+import {IVoteComment} from "../interfaces/IDayVote";
 import {_internal_api} from "./api";
 import {constructUrl} from "../hooks/useQueryParam";
-import {Habit, DetailedHabit, NewHabitPayload, DayVote} from "../interfaces/index";
+import {Habit, DetailedHabit, NewHabitPayload, DayVote, HabitVote} from "../interfaces/index";
 
 export const getHabitsRequest: Async.PromiseFn<Habit[]> = () =>
 	_internal_api.get<Habit[]>("/habits").then(response => response.data);
@@ -31,9 +31,9 @@ export const getHabitVoteChartRequest: Async.PromiseFn<DayVote[]> = ({id, dateRa
 		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange}))
 		.then(response => response.data);
 
-export const updateVoteCommentRequest: Async.DeferFn<IDayVote> = ([id, comment]) =>
+export const updateVoteCommentRequest: Async.DeferFn<HabitVote> = ([id, comment]) =>
 	_internal_api
-		.patch<IDayVote>(`vote/${id}/comment`, {comment})
+		.patch<HabitVote>(`vote/${id}/comment`, {comment})
 		.then(response => response.data);
 
 export const getHabitVoteCommentsRequest: Async.PromiseFn<IVoteComment[]> = ({habitId}) =>

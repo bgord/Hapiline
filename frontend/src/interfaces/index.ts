@@ -18,6 +18,9 @@ export type UserProfile = Pick<User, "id" | "email">;
 
 // Habits
 export type Habit = habits;
+export type HabitWithPossibleHabitVote = Habit & {
+  vote: Nullable<HabitVote>
+}
 export type DetailedHabit = habits & {
   progress_streak: number;
   regress_streak: number;
