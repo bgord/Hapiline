@@ -7,11 +7,6 @@ export interface IDayVote {
 	comment: string | null | undefined;
 }
 
-export interface IVoteChartItem {
-	vote: HabitVoteType;
-	day: string;
-}
-
 export interface IVoteComment {
 	id: number;
 	vote: HabitVoteType;

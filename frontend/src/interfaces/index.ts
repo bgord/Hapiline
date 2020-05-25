@@ -66,3 +66,7 @@ export type NotificationTypeStatus = NotificationType;
 
 export type HabitVote = habit_votes;
 export type HabitVoteType = Nullable<_HabitVoteType>;
+export type DayVote = {
+  day: HabitVote["day"];
+  vote: HabitVoteType;
+}

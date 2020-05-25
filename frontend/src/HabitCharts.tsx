@@ -4,8 +4,8 @@ import React from "react";
 import {pluralize} from "./services/pluralize";
 
 import * as UI from "./ui";
-import {Habit} from "./interfaces/index";
-import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
+import {Habit, DayVote} from "./interfaces/index";
+import {voteToBgColor} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";
@@ -71,7 +71,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 				<UI.Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
-							key={item.day}
+							key={String(item.day)}
 							habitId={id}
 							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
 							{...item}
@@ -109,7 +109,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 	);
 };
 
-const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: Habit["id"]}> = ({
+const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}> = ({
 	day,
 	vote,
 	habitId,
@@ -124,7 +124,7 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: Habit[
 		<Link
 			to={`/calendar?preview_day=${date}&highlighted_habit_id=${habitId}`}
 			title={title}
-			key={day}
+			key={String(day)}
 			style={{
 				backgroundColor,
 				height: "24px",
