@@ -1,6 +1,5 @@
 import * as Async from "react-async";
 
-import {IVoteComment} from "../interfaces/IDayVote";
 import {_internal_api} from "./api";
 import {constructUrl} from "../hooks/useQueryParam";
 import {Habit, DetailedHabit, NewHabitPayload, DayVote, HabitVote} from "../interfaces/index";
@@ -36,7 +35,7 @@ export const updateVoteCommentRequest: Async.DeferFn<HabitVote> = ([id, comment]
 		.patch<HabitVote>(`vote/${id}/comment`, {comment})
 		.then(response => response.data);
 
-export const getHabitVoteCommentsRequest: Async.PromiseFn<IVoteComment[]> = ({habitId}) =>
+export const getHabitVoteCommentsRequest: Async.PromiseFn<HabitVote[]> = ({habitId}) =>
 	_internal_api
-		.get<IVoteComment[]>(constructUrl("/comments", {habitId}))
+		.get<HabitVote[]>(constructUrl("/comments", {habitId}))
 		.then(response => response.data);

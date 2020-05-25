@@ -6,11 +6,10 @@ import {Link} from "react-router-dom";
 import VisuallyHidden from "@reach/visually-hidden";
 
 import {DayVoteStats} from "./interfaces/IMonthDay";
-import {Habit} from "./interfaces/index";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
 import {constructUrl} from "./hooks/useQueryParam";
-import {habitStrengthToBadgeVariant, voteToBgColor} from "./interfaces/index";
+import {Habit, habitStrengthToBadgeVariant, voteToBgColor} from "./interfaces/index";
 
 type DayDialogSummaryProps = DayVoteStats & {
 	maximumVotes: number;
