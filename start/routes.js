@@ -103,9 +103,9 @@ Route.post("/api/v1/vote", "VoteController.update")
 	.middleware(["auth", "is:(regular)", "account-status:active"])
 	.validator("UpdateVote");
 
-Route.get("/api/v1/day-votes", "DayVoteController.show")
+Route.get("/api/v1/day-votes", "HabitVotesForDayController.show")
 	.middleware(["auth", "is:(regular)", "account-status:active"])
-	.validator("ShowDayVotes");
+	.validator("ShowHabitVotesForDay");
 
 Route.get("/api/v1/habit-chart/:id", "HabitChartsController.show")
 	.middleware(["auth", "is:(regular)", "account-status:active", "params-resource-exists:habits,id"])
