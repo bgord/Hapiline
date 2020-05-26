@@ -3,8 +3,7 @@ import Alert from "@reach/alert";
 import React from "react";
 
 import * as UI from "./ui";
-import {Toast, ToastType} from "./interfaces/Toast";
-import {useToastDispatch, useToastsState} from "./contexts/toasts-context";
+import {Toast, ToastType, useToastDispatch, useToastsState} from "./contexts/toasts-context";
 
 const ToastItem: React.FC<Toast> = ({id, type, message}) => {
 	const dispatch = useToastDispatch();
@@ -14,7 +13,7 @@ const ToastItem: React.FC<Toast> = ({id, type, message}) => {
 		error: "var(--red-light)",
 	};
 
-	const removeNotification = () => dispatch({type: "remove", id});
+	const removeToast = () => dispatch({type: "remove", id});
 
 	return (
 		<UI.Row
@@ -27,15 +26,15 @@ const ToastItem: React.FC<Toast> = ({id, type, message}) => {
 			mt="12"
 		>
 			<UI.Text>{message}</UI.Text>
-			<UI.CloseIcon bg="transparent" onClick={removeNotification} />
+			<UI.CloseIcon bg="transparent" onClick={removeToast} />
 		</UI.Row>
 	);
 };
 
 export const Toasts = () => {
-	const notifications = useToastsState();
+	const toasts = useToastsState();
 
-	const transitions = useTransition(notifications, notification => notification.id, {
+	const transitions = useTransition(toasts, toast => toast.id, {
 		from: {opacity: 0, right: -50, position: "relative"},
 		enter: {opacity: 1, right: 0},
 		leave: {opacity: 0, right: -50},
