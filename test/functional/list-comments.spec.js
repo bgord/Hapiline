@@ -132,11 +132,19 @@ test("full flow", async ({client, assert}) => {
 		.end();
 
 	response.body.forEach(entry =>
-		assert.hasAllKeys(entry, ["id", "vote", "day", "comment", "habit_id"]),
+		assert.hasAllKeys(entry, [
+			"id",
+			"habit_id",
+			"vote",
+			"day",
+			"created_at",
+			"updated_at",
+			"comment",
+		]),
 	);
 });
 
-test("check if habit is tracked", async ({client, assert}) => {
+test("check if habit is tracked", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const payload = {

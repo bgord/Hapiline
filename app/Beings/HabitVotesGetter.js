@@ -25,7 +25,7 @@ class HabitVotesGetter {
 			.map(day => {
 				const dayVote = habitVotes.find(vote => datefns.isSameDay(vote.day, day));
 				return {
-					day: vote.day,
+					day,
 					vote: dayVote ? dayVote.vote : null,
 				};
 			})
