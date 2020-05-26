@@ -22,7 +22,7 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 	const deleteHabitRequestState = Async.useAsync({
 		deferFn: api.habit.delete,
 		onResolve: () => {
-			getHabitsRequestState.reload();
+			getHabitsRequestState.refetch();
 			triggerSuccessNotification("Habit successfully deleted!");
 		},
 		onReject: () => triggerErrorNotification("Couldn't delete habit."),

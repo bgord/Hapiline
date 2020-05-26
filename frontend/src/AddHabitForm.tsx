@@ -38,7 +38,7 @@ export const AddHabitForm: React.FC = () => {
 			setDescription("");
 			setIsTrackable(true);
 
-			getHabitsRequestState.reload();
+			getHabitsRequestState.refetch();
 			triggerSuccessNotification("Habit successfully addedd!");
 		},
 		onReject: error => {

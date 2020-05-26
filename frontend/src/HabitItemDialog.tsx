@@ -44,7 +44,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 	function dismissDialog() {
 		closeDialog();
-		getHabitsRequestState.reload();
+		getHabitsRequestState.refetch();
 	}
 
 	return (

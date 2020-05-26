@@ -1,9 +1,10 @@
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
 import * as Async from "react-async";
+import {queryCache} from "react-query";
 import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
-import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {_getRequestStateErrors} from "./selectors/getRequestErrors";
 import * as UI from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
@@ -23,7 +24,7 @@ export const HabitsWindow = () => {
 	const getHabitsRequestState = useHabitsState();
 	const [subview] = useQueryParam("subview");
 
-	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
+	const {errorMessage} = _getRequestStateErrors(getHabitsRequestState);
 
 	useDocumentTitle("Hapiline - habit list");
 
@@ -70,7 +71,8 @@ export const HabitsWindow = () => {
 		}));
 
 		reorderHabitsRequestState.run({habits: reorderHabitsPayload});
-		getHabitsRequestState.setData(reorderedHabits);
+
+		queryCache.setQueryData("all_habits", reorderedHabits);
 	}
 
 	const isDragDisabled =
@@ -91,8 +93,7 @@ export const HabitsWindow = () => {
 	return (
 		<UI.Column>
 			{subview === "add_habit" && <AddHabitForm />}
-
-			<Async.IfSettled state={getHabitsRequestState}>
+			{["error", "success"].includes(getHabitsRequestState.status) && (
 				<UI.Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
 					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between">
 						<UI.Header variant="large">Habit list</UI.Header>
@@ -222,21 +223,19 @@ export const HabitsWindow = () => {
 							<UI.Text variant="bold">{howManyResults}</UI.Text> results
 						</UI.Text>
 					</UI.Row>
-					<Async.IfFulfilled state={getHabitsRequestState}>
-						{filteredHabits.length === 0 && (
-							<UI.InfoBanner size="big" mt="48" mx="24">
-								It seems you haven't added any habits yet.
-							</UI.InfoBanner>
-						)}
-					</Async.IfFulfilled>
-					<Async.IfRejected state={getHabitsRequestState}>
+					{getHabitsRequestState.status === "success" && filteredHabits.length === 0 && (
+						<UI.InfoBanner size="big" mt="48" mx="24">
+							It seems you haven't added any habits yet.
+						</UI.InfoBanner>
+					)}
+					{getHabitsRequestState.status === "error" && (
 						<UI.ErrorBanner size="big" mt="48" mx="24">
 							{errorMessage}
-							<UI.Button onClick={getHabitsRequestState.reload} ml="24" variant="outlined">
+							<UI.Button onClick={() => getHabitsRequestState.refetch()} ml="24" variant="outlined">
 								Retry
 							</UI.Button>
 						</UI.ErrorBanner>
-					</Async.IfRejected>
+					)}
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="habits">
 							{provided => (
@@ -262,7 +261,7 @@ export const HabitsWindow = () => {
 						</Droppable>
 					</DragDropContext>
 				</UI.Card>
-			</Async.IfSettled>
+			)}
 		</UI.Column>
 	);
 };

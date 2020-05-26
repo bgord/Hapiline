@@ -36,7 +36,7 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 			field.setIdle();
 			triggerSuccessNotification("Name updated successfully!");
 			setHabitItem(habit);
-			getHabitsRequestState.reload();
+			getHabitsRequestState.refetch();
 		},
 		onReject: _error => {
 			const {getArgErrorMessage} = getRequestErrors(_error);

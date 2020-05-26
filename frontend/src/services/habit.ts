@@ -4,7 +4,7 @@ import {_internal_api} from "./api";
 import {constructUrl} from "../hooks/useQueryParam";
 import {Habit, DetailedHabit, NewHabitPayload, DayVote, HabitVote} from "../interfaces/index";
 
-export const getHabitsRequest: Async.PromiseFn<Habit[]> = () =>
+export const getHabitsRequest = async (_key: "all_habits") =>
 	_internal_api.get<Habit[]>("/habits").then(response => response.data);
 
 export const getHabitRequest: Async.PromiseFn<DetailedHabit> = ({id}) =>
