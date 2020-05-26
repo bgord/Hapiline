@@ -1,12 +1,16 @@
 import React from "react";
 
-import {HabitVote} from "../interfaces/IHabit";
 import * as UI from "../ui";
 import {useQueryParam} from "./useQueryParam";
+import {HabitWithPossibleHabitVote} from "../interfaces/index";
 
 type HabitVoteFilterTypes = "unvoted" | "voted" | "all";
 
-const filterToFunction: {[key in HabitVoteFilterTypes]: (habitVote: HabitVote) => boolean} = {
+const filterToFunction: {
+	[key in HabitVoteFilterTypes]: (
+		habitWithPossibleHabitVote: HabitWithPossibleHabitVote,
+	) => boolean;
+} = {
 	all: () => true,
 	unvoted: ({vote}) => !vote,
 	voted: ({vote}) => vote !== null && vote !== undefined,
@@ -17,7 +21,7 @@ export const useHabitVoteFilter = (
 ): {
 	value: HabitVoteFilterTypes;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	filterFunction: (habitVote: HabitVote) => boolean;
+	filterFunction: (habitWithPossibleHabitVote: HabitWithPossibleHabitVote) => boolean;
 	reset: VoidFunction;
 } => {
 	const [habitVoteFilterParam, updateHabitVoteFilterParam] = useQueryParam("habit_vote_filter");

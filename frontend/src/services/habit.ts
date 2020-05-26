@@ -1,40 +1,23 @@
 import * as Async from "react-async";
 
-import {IDayVote, IVoteChartItem, IVoteComment} from "../interfaces/IDayVote";
-import {IHabit} from "../interfaces/IHabit";
 import {_internal_api} from "./api";
 import {constructUrl} from "../hooks/useQueryParam";
+import {Habit, DetailedHabit, NewHabitPayload, DayVote, HabitVote} from "../interfaces/index";
 
-export const getHabitsRequest: Async.PromiseFn<IHabit[]> = () =>
-	_internal_api.get<IHabit[]>("/habits").then(response => response.data);
+export const getHabitsRequest: Async.PromiseFn<Habit[]> = () =>
+	_internal_api.get<Habit[]>("/habits").then(response => response.data);
 
-export const getHabitRequest: Async.PromiseFn<IHabit> = ({id}) =>
-	_internal_api.get<IHabit>(`/habit/${id}`).then(response => response.data);
+export const getHabitRequest: Async.PromiseFn<DetailedHabit> = ({id}) =>
+	_internal_api.get<DetailedHabit>(`/habit/${id}`).then(response => response.data);
 
-export const addHabitRequest: Async.DeferFn<IHabit> = ([
-	name,
-	score,
-	strength,
-	user_id,
-	description,
-	is_trackable,
-]: string[]) =>
-	_internal_api
-		.post<IHabit>("/habit", {
-			name,
-			score,
-			strength,
-			user_id,
-			description,
-			is_trackable,
-		})
-		.then(response => response.data);
+export const addHabitRequest: Async.DeferFn<Habit> = ([newHabitPayload]: NewHabitPayload[]) =>
+	_internal_api.post<Habit>("/habit", newHabitPayload).then(response => response.data);
 
 export const deleteHabitRequest: Async.DeferFn<void> = ([id]: number[]) =>
 	_internal_api.delete(`/habit/${id}`).then(response => response.data);
 
-export const patchHabitRequest: Async.DeferFn<IHabit> = ([id, payload]) =>
-	_internal_api.patch<IHabit>(`/habit/${id}`, payload).then(response => response.data);
+export const patchHabitRequest: Async.DeferFn<DetailedHabit> = ([id, payload]) =>
+	_internal_api.patch<DetailedHabit>(`/habit/${id}`, payload).then(response => response.data);
 
 export const reorderHabitsRequest: Async.DeferFn<void> = ([reorderHabitsPayload]) =>
 	_internal_api.patch("/reorder-habits", reorderHabitsPayload).then(response => response.data);
@@ -42,17 +25,17 @@ export const reorderHabitsRequest: Async.DeferFn<void> = ([reorderHabitsPayload]
 export const addHabitDayVoteRequest: Async.DeferFn<void> = ([habitDayVotePayload]) =>
 	_internal_api.post("/vote", habitDayVotePayload).then(response => response.data);
 
-export const getHabitVoteChartRequest: Async.PromiseFn<IVoteChartItem[]> = ({id, dateRange}) =>
+export const getHabitVoteChartRequest: Async.PromiseFn<DayVote[]> = ({id, dateRange}) =>
 	_internal_api
-		.get<IVoteChartItem[]>(constructUrl(`/habit-chart/${id}`, {dateRange}))
+		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange}))
 		.then(response => response.data);
 
-export const updateVoteCommentRequest: Async.DeferFn<IDayVote> = ([id, comment]) =>
+export const updateVoteCommentRequest: Async.DeferFn<HabitVote> = ([id, comment]) =>
 	_internal_api
-		.patch<IDayVote>(`vote/${id}/comment`, {comment})
+		.patch<HabitVote>(`vote/${id}/comment`, {comment})
 		.then(response => response.data);
 
-export const getHabitVoteCommentsRequest: Async.PromiseFn<IVoteComment[]> = ({habitId}) =>
+export const getHabitVoteCommentsRequest: Async.PromiseFn<HabitVote[]> = ({habitId}) =>
 	_internal_api
-		.get<IVoteComment[]>(constructUrl("/comments", {habitId}))
+		.get<HabitVote[]>(constructUrl("/comments", {habitId}))
 		.then(response => response.data);

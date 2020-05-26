@@ -4,13 +4,13 @@ import React from "react";
 import * as UI from "./ui";
 import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
-import {FullDayWithVoteStats, FullDayWithVoteStatsFromAPI} from "./interfaces/IMonthDay";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
+import {DayCellWithFullStats} from "./interfaces/index";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -32,23 +32,35 @@ export const Calendar: React.FC = () => {
 	});
 	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
-	const days: FullDayWithVoteStats[] = widget.givenMonthDays.map(entry => {
-		const givenDay = new Date(entry.day);
+	const dayStatsFromServer = getMonthRequestState.data;
 
-		const fullDayWithVoteStatsFromAPI: FullDayWithVoteStatsFromAPI = {
-			...entry,
-			...getMonthRequestState.data?.find(item => item.day === entry.day),
-		};
+	const dayCellsWithStats: DayCellWithFullStats[] = widget.daysOfTheMonth.map(dayCell => {
+		const day = new Date(dayCell.day);
 
-		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(trackedHabits, givenDay)
-			.length;
-		const noVotesCountStats = getNoVotesCountStats(
-			habitsAvailableAtThisDayCount,
-			fullDayWithVoteStatsFromAPI,
-		);
+		const statsForTheDay = dayStatsFromServer?.find(item => item.day === dayCell.day);
+
+		const createdHabitsCount = statsForTheDay?.createdHabitsCount || 0;
+		const progressVotesCountStats = statsForTheDay?.progressVotesCountStats || 0;
+		const plateauVotesCountStats = statsForTheDay?.plateauVotesCountStats || 0;
+		const regressVotesCountStats = statsForTheDay?.regressVotesCountStats || 0;
+		const nullVotesCountStats = statsForTheDay?.nullVotesCountStats || 0;
+
+		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(trackedHabits, day).length;
+
+		const noVotesCountStats =
+			habitsAvailableAtThisDayCount -
+			progressVotesCountStats -
+			plateauVotesCountStats -
+			regressVotesCountStats;
 
 		return {
-			...fullDayWithVoteStatsFromAPI,
+			day: dayCell.day,
+			styles: dayCell.styles,
+			createdHabitsCount,
+			progressVotesCountStats,
+			plateauVotesCountStats,
+			regressVotesCountStats,
+			nullVotesCountStats,
 			noVotesCountStats,
 		};
 	});
@@ -85,7 +97,7 @@ export const Calendar: React.FC = () => {
 			</Async.IfRejected>
 
 			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">
-				{days.map(props => (
+				{dayCellsWithStats.map(props => (
 					<Day
 						key={props.day.toString()}
 						refreshCalendar={getMonthRequestState.reload}
@@ -96,15 +108,3 @@ export const Calendar: React.FC = () => {
 		</UI.Column>
 	);
 };
-
-function getNoVotesCountStats(
-	habitsAvailableAtGivenDayCount: number,
-	stats: Omit<FullDayWithVoteStatsFromAPI, "day" | "styles">,
-): number {
-	return (
-		habitsAvailableAtGivenDayCount -
-		(stats.progressVotesCountStats ?? 0) -
-		(stats.plateauVotesCountStats ?? 0) -
-		(stats.regressVotesCountStats ?? 0)
-	);
-}

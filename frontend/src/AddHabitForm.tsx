@@ -7,23 +7,25 @@ import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
 import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
+
+import {NewHabitPayload, isHabitStrength, isHabitScore} from "./interfaces/index";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
 	const getHabitsRequestState = useHabitsState();
 
-	const [name, setName] = React.useState("");
-	const [score, setScore] = React.useState("positive");
-	const [strength, setStrength] = React.useState("established");
-	const [description, setDescription] = React.useState("");
-	const [isTrackable, setIsTrackable] = React.useState(true);
+	const [name, setName] = React.useState<NewHabitPayload["name"]>("");
+	const [score, setScore] = React.useState<NewHabitPayload["score"]>("positive");
+	const [strength, setStrength] = React.useState<NewHabitPayload["strength"]>("established");
+	const [description, setDescription] = React.useState<NewHabitPayload["description"]>("");
+	const [isTrackable, setIsTrackable] = React.useState<NewHabitPayload["is_trackable"]>(true);
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerUnexpectedErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerUnexpectedErrorNotification = useErrorToast();
 
 	const [, updateQueryParams] = useQueryParams();
 
@@ -35,6 +37,7 @@ export const AddHabitForm: React.FC = () => {
 			setStrength("established");
 			setDescription("");
 			setIsTrackable(true);
+
 			getHabitsRequestState.reload();
 			triggerSuccessNotification("Habit successfully addedd!");
 		},
@@ -65,14 +68,17 @@ export const AddHabitForm: React.FC = () => {
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					addHabitRequestState.run(
+
+					const payload: NewHabitPayload = {
 						name,
 						score,
 						strength,
-						profile?.id,
-						description || null,
-						isTrackable,
-					);
+						user_id: profile?.id || 0,
+						description: description || null,
+						is_trackable: isTrackable,
+					};
+
+					addHabitRequestState.run(payload);
 				}}
 				p="24"
 			>
@@ -92,8 +98,16 @@ export const AddHabitForm: React.FC = () => {
 							name="score"
 							required
 							value={score}
-							onChange={event => setScore(event.target.value)}
-							onBlur={event => setScore(event.target.value)}
+							onChange={event => {
+								if (isHabitScore(event.target.value)) {
+									setScore(event.target.value);
+								}
+							}}
+							onBlur={event => {
+								if (isHabitScore(event.target.value)) {
+									setScore(event.target.value);
+								}
+							}}
 						>
 							<option value="positive">positive</option>
 							<option value="neutral">neutral</option>
@@ -107,8 +121,16 @@ export const AddHabitForm: React.FC = () => {
 							name="strength"
 							required
 							value={strength}
-							onChange={event => setStrength(event.target.value)}
-							onBlur={event => setStrength(event.target.value)}
+							onChange={event => {
+								if (isHabitStrength(event.target.value)) {
+									setStrength(event.target.value);
+								}
+							}}
+							onBlur={event => {
+								if (isHabitStrength(event.target.value)) {
+									setStrength(event.target.value);
+								}
+							}}
 						>
 							<option value="established">established</option>
 							<option value="developing">developing</option>
@@ -126,7 +148,7 @@ export const AddHabitForm: React.FC = () => {
 						<UI.Checkbox
 							id="is_trackable"
 							name="is_trackable"
-							checked={isTrackable}
+							checked={Boolean(isTrackable)}
 							onChange={() => setIsTrackable(v => !v)}
 						/>
 						<UI.Label ml="6" htmlFor="is_trackable">
@@ -142,7 +164,7 @@ export const AddHabitForm: React.FC = () => {
 				<UI.Field mt="24">
 					<UI.Label htmlFor="description">Description</UI.Label>
 					<UI.Textarea
-						value={description}
+						value={String(description)}
 						onChange={event => setDescription(event.target.value)}
 						name="description"
 						placeholder="Write something..."

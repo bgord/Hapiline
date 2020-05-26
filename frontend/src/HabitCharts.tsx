@@ -4,11 +4,10 @@ import React from "react";
 import {pluralize} from "./services/pluralize";
 
 import * as UI from "./ui";
-import {IHabit} from "./interfaces/IHabit";
-import {IVoteChartItem, voteToBgColor} from "./interfaces/IDayVote";
+import {Habit, DayVote, voteToBgColor} from "./interfaces/index";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 
 type ChartRange = "last_week" | "last_month" | "all_time";
 
@@ -18,9 +17,9 @@ const chartRanges: {[key in ChartRange]: string} = {
 	all_time: "all_time",
 };
 
-export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
+export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 	const [dateRange, setChartRange] = React.useState<ChartRange>("last_week");
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 
 	const habitVoteChartRequestState = Async.useAsync({
 		promiseFn: api.habit.getHabitVoteChart,
@@ -71,7 +70,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 				<UI.Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
 						<ChartCell
-							key={item.day}
+							key={String(item.day)}
 							habitId={id}
 							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
 							{...item}
@@ -109,7 +108,7 @@ export const HabitCharts: React.FC<{id: IHabit["id"]}> = ({id, children}) => {
 	);
 };
 
-const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit["id"]}> = ({
+const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}> = ({
 	day,
 	vote,
 	habitId,
@@ -124,7 +123,7 @@ const ChartCell: React.FC<IVoteChartItem & Partial<LinkProps> & {habitId: IHabit
 		<Link
 			to={`/calendar?preview_day=${date}&highlighted_habit_id=${habitId}`}
 			title={title}
-			key={day}
+			key={String(day)}
 			style={{
 				backgroundColor,
 				height: "24px",

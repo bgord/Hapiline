@@ -7,13 +7,16 @@ import * as UI from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
 import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
-import {DayVoteStats} from "./interfaces/IMonthDay";
-import {HabitVote, IHabit} from "./interfaces/IHabit";
+import {
+	Habit,
+	HabitVote,
+	HabitWithPossibleHabitVote,
+	DayCellWithFullStats,
+} from "./interfaces/index";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
-import {IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
@@ -21,8 +24,11 @@ import {format} from "date-fns";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useToggle} from "./hooks/useToggle";
 
-type DayDialogProps = DayVoteStats & {
-	onResolve?: VoidFunction;
+type DayDialogProps = Omit<
+	DayCellWithFullStats,
+	"styles" | "createdHabitsCount" | "nullVotesCountStats"
+> & {
+	onResolve: VoidFunction;
 };
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) => {
@@ -31,7 +37,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const trackedHabits = useTrackedHabits();
 	const [isChartLegendVisible, , , toggleIsChartLegendVisible] = useToggle();
 
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 	const getDayVotesRequestState = Async.useAsync({
 		promiseFn: api.calendar.getDay,
 		day,
@@ -50,22 +56,24 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day);
 
-	const habitVotes: HabitVote[] = habitsAvailableAtThisDay.map(habit => {
-		const voteForHabit = getDayVoteForHabit(getDayVotesRequestState, habit);
-		return {
-			habit,
-			day,
-			vote: voteForHabit?.vote,
-			comment: voteForHabit?.comment,
-			vote_id: voteForHabit?.vote_id,
-		};
-	});
+	const habitsWithPossibleVote: HabitWithPossibleHabitVote[] = habitsAvailableAtThisDay.map(
+		habit => {
+			const habitVoteForGivenDay: Nullable<HabitVote> = getDayVoteForHabit(
+				getDayVotesRequestState,
+				habit,
+			);
+			return {
+				...habit,
+				vote: habitVoteForGivenDay,
+			};
+		},
+	);
 
 	const isThereNoTrackedHabits = habitsAvailableAtThisDay.length === 0;
 
-	const howManyHabitsAtAll = habitVotes.length;
-	const howManyUnvotedHabits = habitVotes.filter(({vote}) => !vote).length;
-	const howManyVotedHabits = habitVotes.filter(({vote}) => vote).length;
+	const howManyHabitsAtAll = habitsWithPossibleVote.length;
+	const howManyUnvotedHabits = habitsWithPossibleVote.filter(({vote}) => !vote).length;
+	const howManyVotedHabits = habitsWithPossibleVote.filter(({vote}) => vote).length;
 
 	const doesEveryHabitHasAVote = howManyUnvotedHabits === 0 && howManyHabitsAtAll > 0;
 
@@ -80,9 +88,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 
 	const dayName = format(new Date(day), "iiii");
 
-	const filteredHabitVotes = habitVotes
+	const filteredHabitsWithPossibleVote = habitsWithPossibleVote
 		.filter(habitVoteFilter.filterFunction)
-		.filter(entry => habitSearch.filterFn(entry.habit));
+		.filter(habitWithPossibleVote => habitSearch.filterFn(habitWithPossibleVote.name));
 
 	return (
 		<Dialog
@@ -201,7 +209,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						Clear
 					</UI.Button>
 					<UI.Text ml="auto" data-testid="habit-search-result-count">
-						<UI.Text variant="bold">{filteredHabitVotes.length}</UI.Text> results
+						<UI.Text variant="bold">{filteredHabitsWithPossibleVote.length}</UI.Text> results
 					</UI.Text>
 				</UI.Row>
 				{isThereNoTrackedHabits && (
@@ -209,19 +217,18 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						No habits available this day.
 					</UI.InfoBanner>
 				)}
-				{!isThereNoTrackedHabits && filteredHabitVotes.length > 0 && (
+				{!isThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
 					<UI.Column pb="48">
 						<UI.Header mt="48" mb="24" variant="extra-small">
 							Tracked habits
 						</UI.Header>
 						<UI.Column as="ul" bt="gray-1" data-testid="day-dialog-habits">
-							{filteredHabitVotes.map(entry => (
+							{filteredHabitsWithPossibleVote.map(entry => (
 								<DayDialogHabitVoteListItem
-									key={entry.habit.id}
+									day={day}
+									key={entry.id}
 									onResolve={() => {
-										if (onResolve) {
-											onResolve();
-										}
+										onResolve();
 										getDayVotesRequestState.reload();
 									}}
 									{...entry}
@@ -237,9 +244,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 };
 
 function getDayVoteForHabit(
-	getDayVotesRequestState: Async.AsyncState<IDayVote[]>,
-	habit: IHabit,
-): IDayVote | undefined {
-	const dayVotes = getDayVotesRequestState.data ?? [];
-	return dayVotes.find(vote => vote.habit_id === habit.id);
+	getDayVotesRequestState: Async.AsyncState<HabitVote[]>,
+	habit: Habit,
+): Nullable<HabitVote> {
+	const votesFromGivenDay = getDayVotesRequestState.data ?? [];
+
+	return votesFromGivenDay.find(vote => vote.habit_id === habit.id) ?? null;
 }

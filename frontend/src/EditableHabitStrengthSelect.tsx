@@ -2,12 +2,12 @@ import * as Async from "react-async";
 import React from "react";
 
 import * as UI from "./ui";
-import {IHabit} from "./interfaces/IHabit";
+import {DetailedHabit, HabitStrengthType, isHabitStrength} from "./interfaces/index";
 import {api} from "./services/api";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
-type EditableHabitStrengthSelectProps = IHabit & {
-	setHabitItem: (habit: IHabit) => void;
+type EditableHabitStrengthSelectProps = DetailedHabit & {
+	setHabitItem: (habit: DetailedHabit) => void;
 };
 
 export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectProps> = ({
@@ -15,10 +15,10 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 	strength,
 	setHabitItem,
 }) => {
-	const [newHabitStrength, setNewHabitStrength] = React.useState<IHabit["strength"]>(strength);
+	const [newHabitStrength, setNewHabitStrength] = React.useState<HabitStrengthType>(strength);
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const editHabitRequestState = Async.useAsync({
 		deferFn: api.habit.patch,
@@ -51,8 +51,3 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 		</UI.Field>
 	);
 };
-
-function isHabitStrength(value: string): value is IHabit["strength"] {
-	const HABIT_SCORE_STRENGTHS = ["established", "developing", "fresh"];
-	return HABIT_SCORE_STRENGTHS.includes(value);
-}

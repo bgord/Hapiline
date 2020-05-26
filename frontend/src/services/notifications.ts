@@ -1,21 +1,14 @@
 import * as Async from "react-async";
 
 import {_internal_api} from "./api";
+import {Notification, DraftNotificationPayload} from "../interfaces/index";
 
-export interface AppNotification {
-	id: number;
-	type: "regular";
-	status: "unread" | "read";
-	content: string;
-	user_id: number;
-	created_at: string;
-	updated_at: string;
-}
+export const getNotificationsRequest: Async.PromiseFn<Notification[]> = () =>
+	_internal_api.get<Notification[]>("/notifications").then(response => response.data);
 
-export const getNotificationsRequest: Async.PromiseFn<AppNotification[]> = () =>
-	_internal_api.get<AppNotification[]>("/notifications").then(response => response.data);
-
-export const updateNotificationRequest: Async.DeferFn<AppNotification> = ([id, payload]) =>
+export const updateNotificationRequest: Async.DeferFn<Notification> = ([
+	{id, status},
+]: DraftNotificationPayload[]) =>
 	_internal_api
-		.patch<AppNotification>(`/notification/${id}`, payload)
+		.patch<Notification>(`/notification/${id}`, {status})
 		.then(response => response.data);

@@ -4,6 +4,7 @@ import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
+import {Notification, DraftNotificationPayload} from "./interfaces/index";
 
 import * as UI from "./ui";
 import {BellIcon} from "./ui/icons/Bell";
@@ -14,10 +15,10 @@ import {HabitsProvider} from "./contexts/habits-context";
 import {HabitsWindow} from "./HabitsWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
-import {Notifications} from "./Notifications";
+import {Toasts} from "./Toasts";
 import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 import {ProfileWindow} from "./ProfileWindow";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -27,7 +28,7 @@ function AuthenticatedApp() {
 		<HabitsProvider>
 			<Router history={authenticatedAppBrowserHistory}>
 				<AuthenticatedNavbar />
-				<Notifications />
+				<Toasts />
 				<Switch>
 					<Route exact path="/logout">
 						<Logout />
@@ -74,7 +75,7 @@ function AuthenticatedNavbar() {
 }
 
 function NotificationDropdown() {
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 	const [areNotificationsVisible, , hideNotifications, toggleNotifications] = useToggle();
 
 	const getNotificationsRequestState = Async.useAsync({
@@ -94,12 +95,20 @@ function NotificationDropdown() {
 		notification => notification.status === "unread",
 	).length;
 
-	function markNotificationAsRead(id: number) {
-		updateNotificationRequestState.run(id, {status: "read"});
+	function markNotificationAsRead(id: Notification["id"]) {
+		const payload: DraftNotificationPayload = {
+			id,
+			status: "read",
+		};
+		updateNotificationRequestState.run(payload);
 	}
 
-	function markNotificationAsUnread(id: number) {
-		updateNotificationRequestState.run(id, {status: "unread"});
+	function markNotificationAsUnread(id: Notification["id"]) {
+		const payload: DraftNotificationPayload = {
+			id,
+			status: "unread",
+		};
+		updateNotificationRequestState.run(payload);
 	}
 
 	return (

@@ -16,3 +16,5 @@ services:
     image: "postgres:11.5-alpine"
     volumes:
       - /usr/src/postgres_hapiline/:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"

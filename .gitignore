@@ -30,3 +30,5 @@ cypress/screenshots
 cypress.env.json
 
 data/
+
+.vscode

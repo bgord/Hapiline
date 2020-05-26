@@ -3,18 +3,17 @@ import Alert from "@reach/alert";
 import React from "react";
 
 import * as UI from "./ui";
-import {INotification, NotificationType} from "./interfaces/INotification";
-import {useNotificationDispatch, useNotificationState} from "./contexts/notifications-context";
+import {Toast, ToastType, useToastDispatch, useToastsState} from "./contexts/toasts-context";
 
-const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
-	const dispatch = useNotificationDispatch();
+const ToastItem: React.FC<Toast> = ({id, type, message}) => {
+	const dispatch = useToastDispatch();
 
-	const typeToBgColor: {[key in NotificationType]: string} = {
+	const typeToBgColor: {[key in ToastType]: string} = {
 		success: "var(--green-light)",
 		error: "var(--red-light)",
 	};
 
-	const removeNotification = () => dispatch({type: "remove", id});
+	const removeToast = () => dispatch({type: "remove", id});
 
 	return (
 		<UI.Row
@@ -27,15 +26,15 @@ const NotificationItem: React.FC<INotification> = ({id, type, message}) => {
 			mt="12"
 		>
 			<UI.Text>{message}</UI.Text>
-			<UI.CloseIcon bg="transparent" onClick={removeNotification} />
+			<UI.CloseIcon bg="transparent" onClick={removeToast} />
 		</UI.Row>
 	);
 };
 
-export const Notifications = () => {
-	const notifications = useNotificationState();
+export const Toasts = () => {
+	const toasts = useToastsState();
 
-	const transitions = useTransition(notifications, notification => notification.id, {
+	const transitions = useTransition(toasts, toast => toast.id, {
 		from: {opacity: 0, right: -50, position: "relative"},
 		enter: {opacity: 1, right: 0},
 		leave: {opacity: 0, right: -50},
@@ -45,7 +44,7 @@ export const Notifications = () => {
 		<UI.Column position="fixed" m="12" style={{bottom: 0, right: 0, zIndex: 1}}>
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
-					<NotificationItem {...item}>{item.message}</NotificationItem>
+					<ToastItem {...item}>{item.message}</ToastItem>
 				</animated.div>
 			))}
 		</UI.Column>

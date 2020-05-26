@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model adonis_schema {
+  batch          Int?
+  id             Int       @default(autoincrement()) @id
+  migration_time DateTime? @default(now())
+  name           String?
+}
+
+enum HabitVote {
+	progress
+	plateau
+	regress
+}
+
+model habit_votes {
+  comment    String?
+  created_at DateTime?
+  day        DateTime
+  habit_id   Int
+  id         Int       @default(autoincrement()) @id
+  updated_at DateTime?
+  vote       HabitVote?
+  habits     habits    @relation(fields: [habit_id], references: [id])
+
+  @@unique([habit_id, day], name: "habit_votes_habit_id_day_unique")
+}
+
+enum HabitStrength {
+	established
+	developing
+	fresh
+}
+
+enum HabitScore {
+	positive
+	neutral
+	negative
+}
+
+model habits {
+  created_at   DateTime?
+  description  String?
+  id           Int           @default(autoincrement()) @id
+  is_trackable Boolean?      @default(true)
+  name         String
+  order        Int
+  score        HabitScore
+  strength     HabitStrength
+  updated_at   DateTime?
+  user_id      Int
+  users        users         @relation(fields: [user_id], references: [id])
+  habit_votes  habit_votes[]
+
+  @@unique([name, user_id], name: "habits_name_user_id_unique")
+}
+
+enum NotificationType {
+  regular
+}
+
+enum NotificationStatus {
+  unread
+  read
+}
+
+model notifications {
+  content    String
+  created_at DateTime?
+  id         Int       @default(autoincrement()) @id
+  status     NotificationStatus
+  type       NotificationType
+  updated_at DateTime?
+  user_id    Int
+  users      users     @relation(fields: [user_id], references: [id])
+}
+
+model permission_role {
+  created_at    DateTime?
+  id            Int          @default(autoincrement()) @id
+  permission_id Int?
+  role_id       Int?
+  updated_at    DateTime?
+  permissions   permissions? @relation(fields: [permission_id], references: [id])
+  roles         roles?       @relation(fields: [role_id], references: [id])
+
+  @@index([permission_id], name: "permission_role_permission_id_index")
+  @@index([role_id], name: "permission_role_role_id_index")
+}
+
+model permission_user {
+  created_at    DateTime?
+  id            Int          @default(autoincrement()) @id
+  permission_id Int?
+  updated_at    DateTime?
+  user_id       Int?
+  permissions   permissions? @relation(fields: [permission_id], references: [id])
+  users         users?       @relation(fields: [user_id], references: [id])
+
+  @@index([permission_id], name: "permission_user_permission_id_index")
+  @@index([user_id], name: "permission_user_user_id_index")
+}
+
+model permissions {
+  created_at      DateTime?
+  description     String?
+  id              Int               @default(autoincrement()) @id
+  name            String            @unique
+  slug            String            @unique
+  updated_at      DateTime?
+  permission_role permission_role[]
+  permission_user permission_user[]
+}
+
+model role_user {
+  created_at DateTime?
+  id         Int       @default(autoincrement()) @id
+  role_id    Int?
+  updated_at DateTime?
+  user_id    Int?
+  roles      roles?    @relation(fields: [role_id], references: [id])
+  users      users?    @relation(fields: [user_id], references: [id])
+
+  @@index([role_id], name: "role_user_role_id_index")
+  @@index([user_id], name: "role_user_user_id_index")
+}
+
+model roles {
+  created_at      DateTime?
+  description     String?
+  id              Int               @default(autoincrement()) @id
+  name            String            @unique
+  slug            String            @unique
+  updated_at      DateTime?
+  permission_role permission_role[]
+  role_user       role_user[]
+}
+
+model tokens {
+  created_at DateTime?
+  id         Int       @default(autoincrement()) @id
+  is_revoked Boolean?  @default(false)
+  token      String    @unique
+  type       String
+  updated_at DateTime?
+  user_id    Int?
+  users      users?    @relation(fields: [user_id], references: [id])
+
+  @@index([token], name: "tokens_token_index")
+}
+
+model users {
+  account_status  String
+  created_at      DateTime?
+  email           String            @unique
+  id              Int               @default(autoincrement()) @id
+  password        String
+  updated_at      DateTime?
+  habits          habits[]
+  notifications   notifications[]
+  permission_user permission_user[]
+  role_user       role_user[]
+  tokens          tokens[]
+}

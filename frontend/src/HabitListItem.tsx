@@ -4,11 +4,11 @@ import React from "react";
 
 import * as UI from "./ui/";
 import {HabitItemDialog} from "./HabitItemDialog";
-import {IHabit, habitStrengthToBadgeVariant} from "./interfaces/IHabit";
 import {useQueryParam} from "./hooks/useQueryParam";
+import {Habit, habitStrengthToBadgeVariant} from "./interfaces/index";
 
 interface HabitListItemProps {
-	habit: IHabit;
+	habit: Habit;
 	index: number;
 	isDragDisabled: boolean;
 }

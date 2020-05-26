@@ -3,7 +3,7 @@ const datefns = require("date-fns");
 const BaseHttpValidator = use("BaseHttpValidator");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
-class ShowDayVotes extends BaseHttpValidator {
+class ShowHabitVotesForDay extends BaseHttpValidator {
 	get rules() {
 		const tomorrow = datefns.addDays(new Date(), 1);
 		return {
@@ -20,4 +20,4 @@ class ShowDayVotes extends BaseHttpValidator {
 	}
 }
 
-module.exports = ShowDayVotes;
+module.exports = ShowHabitVotesForDay;

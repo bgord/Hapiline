@@ -1,14 +1,14 @@
 import React from "react";
 
 import * as UI from "../ui";
-import {IHabit} from "../interfaces/IHabit";
+import {Habit} from "../interfaces/index";
 
 export const useHabitSearch = (defaultValue = "") => {
 	const [habitSearchPhrase, setHabitSearchPhrase] = React.useState(defaultValue);
 
-	const habitSearchFilterFn = (habit: IHabit): boolean => {
+	const habitSearchFilterFn = (habitName: Habit["name"]): boolean => {
 		if (!habitSearchPhrase) return true;
-		return habit.name.toLowerCase().includes(habitSearchPhrase.toLowerCase());
+		return habitName.toLowerCase().includes(habitSearchPhrase.toLowerCase());
 	};
 
 	const clearHabitSearchPhrase = () => setHabitSearchPhrase("");

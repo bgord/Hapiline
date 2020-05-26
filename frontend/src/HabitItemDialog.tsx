@@ -15,17 +15,17 @@ import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
-import {IHabit} from "./interfaces/IHabit";
+import {Habit, DetailedHabit} from "./interfaces/index";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {pluralize} from "./services/pluralize";
 
 interface HabitItemDialogProps {
-	habitId: IHabit["id"];
+	habitId: Habit["id"];
 	closeDialog: VoidFunction;
 }
 
@@ -33,14 +33,14 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
 
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 
 	const habitRequestState = Async.useAsync({
 		promiseFn: api.habit.show,
 		id: habitId,
 		onReject: () => triggerErrorNotification("Fetching task details failed."),
 	});
-	const habit = habitRequestState?.data as IHabit;
+	const habit = habitRequestState?.data as DetailedHabit;
 
 	function dismissDialog() {
 		closeDialog();
@@ -127,13 +127,14 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							<UI.Row my="48" mainAxis="between" crossAxis="center">
 								<UI.Text variant="dimmed">Created at:</UI.Text>
 								<UI.Text variant="monospaced" ml="6">
-									{formatTime(habit?.created_at)}
+									{/* TODO: make {created,updated}_at required */}
+									{habit.created_at && formatTime(habit?.created_at)}
 								</UI.Text>
 								<UI.Text variant="dimmed" ml="24">
 									Last updated at:
 								</UI.Text>
 								<UI.Text variant="monospaced" ml="6">
-									{formatTime(habit?.updated_at)}
+									{habit.updated_at && formatTime(habit?.updated_at)}
 								</UI.Text>
 								<DeleteHabitButton {...habit} />
 							</UI.Row>
@@ -146,14 +147,14 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 };
 
 const EditableDescription: React.FC<{
-	description: IHabit["description"];
-	habitId: IHabit["id"];
+	description: Habit["description"];
+	habitId: Habit["id"];
 	onResolve: VoidFunction;
 }> = ({description, habitId, onResolve}) => {
 	const textarea = useEditableFieldState();
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
 
 	const updateDescriptionRequestState = Async.useAsync({
 		deferFn: api.habit.patch,

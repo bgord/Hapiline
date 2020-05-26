@@ -8,9 +8,12 @@ import {faPlus, faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {ChevronUpIcon} from "./ui/icons/ChevronUp";
 import {ChevronDownIcon} from "./ui/icons/ChevronDown";
 import VisuallyHidden from "@reach/visually-hidden";
-import {habitStrengthToBadgeVariant, IHabit} from "./interfaces/IHabit";
+import {
+	HabitVoteType,
+	habitStrengthToBadgeVariant,
+	HabitWithPossibleHabitVote,
+} from "./interfaces/index";
 import * as UI from "./ui";
-import {Vote, IDayVote} from "./interfaces/IDayVote";
 import {api} from "./services/api";
 import {
 	useEditableFieldState,
@@ -18,32 +21,21 @@ import {
 	CancelButton,
 	SaveButton,
 } from "./hooks/useEditableField";
-import {useErrorNotification, useSuccessNotification} from "./contexts/notifications-context";
+import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
 
-interface DayDialogHabitVoteListProps {
-	habit: IHabit;
-	day: string;
-	vote: IDayVote["vote"] | undefined;
-	vote_id: IDayVote["vote_id"] | undefined;
-	comment: IDayVote["comment"] | undefined;
+export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
-}
-
-export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> = ({
-	onResolve,
-	vote,
-	comment,
-	habit,
-	day,
-	vote_id,
-}) => {
+	day: string;
+}> = ({onResolve, day, ...habitWithPossibleVote}) => {
 	const textarea = useEditableFieldState();
 	const [isCommentVisible, , , toggleComment] = useToggle();
 
-	const triggerSuccessNotification = useSuccessNotification();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerSuccessNotification = useSuccessToast();
+	const triggerErrorNotification = useErrorToast();
+
+	const currentVoteType = habitWithPossibleVote.vote?.vote;
 
 	const addHabitDayVoteRequestState = Async.useAsync({
 		deferFn: api.habit.addHabitDayVote,
@@ -75,25 +67,25 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 
 	const [newComment, newCommentHelpers] = useEditableFieldValue(
 		changedComment => {
-			if (vote_id) {
-				updateVoteCommentRequestState.run(vote_id, changedComment);
+			if (habitWithPossibleVote.vote?.id) {
+				updateVoteCommentRequestState.run(habitWithPossibleVote.vote.id, changedComment);
 			} else {
 				addEmptyHabitDayVoteRequestState.run({
 					day: new Date(day),
-					habit_id: habit.id,
+					habit_id: habitWithPossibleVote.id,
 					vote: null,
 				});
 			}
 		},
-		comment,
+		habitWithPossibleVote.vote?.comment,
 		true,
 	);
 
-	function changeVote(type: NonNullable<Vote>) {
+	function changeVote(type: NonNullable<HabitVoteType>) {
 		addHabitDayVoteRequestState.run({
 			day: new Date(day),
-			habit_id: habit.id,
-			vote: vote === type ? null : type,
+			habit_id: habitWithPossibleVote.id,
+			vote: currentVoteType === type ? null : type,
 		});
 	}
 
@@ -114,14 +106,16 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<ChevronDownIcon />
 							</UI.Button>
 						)}
-						<Link to={constructUrl("habits", {preview_habit_id: habit.id.toString()})}>
-							<UI.Text variant="semi-bold">{habit.name}</UI.Text>
+						<Link
+							to={constructUrl("habits", {preview_habit_id: habitWithPossibleVote.id.toString()})}
+						>
+							<UI.Text variant="semi-bold">{habitWithPossibleVote.name}</UI.Text>
 						</Link>
 						<UI.Wrapper ml="auto">
 							<UI.Button
-								bg={vote === "progress" ? "green" : "gray-0"}
+								bg={currentVoteType === "progress" ? "green" : "gray-0"}
 								style={{
-									color: vote === "progress" ? "var(--green-dark)" : "var(--gray-10)",
+									color: currentVoteType === "progress" ? "var(--green-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
 								variant="bare"
@@ -132,9 +126,9 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faPlus} />
 							</UI.Button>
 							<UI.Button
-								bg={vote === "plateau" ? "gray-2" : "gray-0"}
+								bg={currentVoteType === "plateau" ? "gray-2" : "gray-0"}
 								style={{
-									color: vote === "plateau" ? "var(--gray-9)" : "var(--gray-10)",
+									color: currentVoteType === "plateau" ? "var(--gray-9)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
 								ml="6"
@@ -146,9 +140,9 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<FontAwesomeIcon icon={faEquals} />
 							</UI.Button>
 							<UI.Button
-								bg={vote === "regress" ? "red" : "gray-0"}
+								bg={currentVoteType === "regress" ? "red" : "gray-0"}
 								style={{
-									color: vote === "regress" ? "var(--red-dark)" : "var(--gray-10)",
+									color: currentVoteType === "regress" ? "var(--red-dark)" : "var(--gray-10)",
 									borderRadius: "var(--radius-half)",
 								}}
 								ml="6"
@@ -162,13 +156,13 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 						</UI.Wrapper>
 					</UI.Row>
 					<UI.Row mt="6">
-						<UI.Badge ml="48" mr="6" variant={habit.score}>
-							{habit.score}
+						<UI.Badge ml="48" mr="6" variant={habitWithPossibleVote.score}>
+							{habitWithPossibleVote.score}
 						</UI.Badge>
-						<UI.Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
-							{habit.strength}
+						<UI.Badge ml="6" variant={habitStrengthToBadgeVariant[habitWithPossibleVote.strength]}>
+							{habitWithPossibleVote.strength}
 						</UI.Badge>
-						{!vote && (
+						{!currentVoteType && (
 							<UI.Badge ml="auto" variant="neutral">
 								No vote yet
 							</UI.Badge>
@@ -180,7 +174,7 @@ export const DayDialogHabitVoteListItem: React.FC<DayDialogHabitVoteListProps> =
 								<UI.Label htmlFor="vote_comment">Vote comment</UI.Label>
 								<UI.Textarea
 									id="vote_comment"
-									key={comment ?? undefined}
+									key={habitWithPossibleVote.vote?.comment ?? undefined}
 									onFocus={textarea.setFocused}
 									placeholder="Write something..."
 									value={newComment ?? undefined}

@@ -1,14 +1,14 @@
 import * as Async from "react-async";
 
-import {UserProfileInterface} from "../interfaces/IUserProfile";
+import {UserProfile} from "../interfaces/index";
 import {_internal_api} from "./api";
 
-export const loginRequest: Async.DeferFn<UserProfileInterface> = (
+export const loginRequest: Async.DeferFn<UserProfile> = (
 	[email, password]: string[],
 	{history, setUserProfile},
 ) =>
 	_internal_api
-		.post<UserProfileInterface>("/login", {
+		.post<UserProfile>("/login", {
 			email,
 			password,
 		})
@@ -50,7 +50,7 @@ export const registrationRequest: Async.DeferFn<void> = ([
 		password_confirmation: passwordConfirmation,
 	});
 
-export const isLoggedInRequest: Async.PromiseFn<UserProfileInterface> = () =>
+export const isLoggedInRequest: Async.PromiseFn<UserProfile> = () =>
 	_internal_api.get("/me").then(response => response.data);
 
 export const deleteAccountRequest: Async.DeferFn<void> = () => _internal_api.delete("/account");

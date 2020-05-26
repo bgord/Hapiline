@@ -13,12 +13,12 @@ import {api} from "./services/api";
 import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
 	const [{subview, preview_habit_id}, updateQueryParams] = useQueryParams();
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 
 	const getDashboardStatsRequestState = Async.useAsync({
 		promiseFn: api.stats.dashboard,

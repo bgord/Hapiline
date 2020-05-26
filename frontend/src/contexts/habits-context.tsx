@@ -1,16 +1,16 @@
 import * as Async from "react-async";
 import React from "react";
 
-import {IHabit} from "../interfaces/IHabit";
 import {api} from "../services/api";
-import {useErrorNotification} from "./notifications-context";
+import {useErrorToast} from "./toasts-context";
+import {Habit} from "../interfaces/index";
 
-type HabitsContext = Async.AsyncState<IHabit[]> | undefined;
+type HabitsContext = Async.AsyncState<Habit[]> | undefined;
 
 const HabitsContext = React.createContext<HabitsContext>(undefined);
 
 export const HabitsProvider: React.FC = props => {
-	const triggerErrorNotification = useErrorNotification();
+	const triggerErrorNotification = useErrorToast();
 
 	const getHabitsRequestState = Async.useAsync({
 		promiseFn: api.habit.get,

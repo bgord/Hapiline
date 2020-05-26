@@ -3,15 +3,14 @@ import * as Async from "react-async";
 import React from "react";
 
 import * as UI from "./ui";
-import {IHabit} from "./interfaces/IHabit";
-import {IVoteComment} from "./interfaces/IDayVote";
+import {Habit, HabitVote} from "./interfaces/index";
 import {api} from "./services/api";
 import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";
-import {useErrorNotification} from "./contexts/notifications-context";
+import {useErrorToast} from "./contexts/toasts-context";
 
-export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habitId}) => {
-	const triggerErrorNotification = useErrorNotification();
+export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habitId}) => {
+	const triggerErrorNotification = useErrorToast();
 
 	const getHabitVoteCommentsRequestState = Async.useAsync({
 		promiseFn: api.habit.getHabitVoteComments,
@@ -47,7 +46,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: IHabit["id"]}> = ({habi
 	);
 };
 
-const HabitVoteComment: React.FC<IVoteComment> = ({day, habit_id, vote, comment}) => {
+const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) => {
 	const voteUrl = constructUrl("calendar", {
 		preview_day: formatDay(day),
 		highlighted_habit_id: habit_id?.toString(),
@@ -65,7 +64,7 @@ const HabitVoteComment: React.FC<IVoteComment> = ({day, habit_id, vote, comment}
 	return (
 		<UI.Field mt="24">
 			<UI.Row mb="6" crossAxis="center">
-				<UI.Label htmlFor={comment}>
+				<UI.Label htmlFor={comment ?? undefined}>
 					{formattedDay} ({formattedDayName})
 				</UI.Label>
 				<Link to={voteUrl}>
@@ -74,7 +73,7 @@ const HabitVoteComment: React.FC<IVoteComment> = ({day, habit_id, vote, comment}
 					</UI.Badge>
 				</Link>
 			</UI.Row>
-			<UI.Textarea id={comment} value={comment} disabled />
+			<UI.Textarea id={comment ?? undefined} value={comment ?? undefined} disabled />
 		</UI.Field>
 	);
 };
