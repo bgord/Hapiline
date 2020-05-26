@@ -92,7 +92,12 @@ voteToBgColor.set(null, "var(--gray-9)");
 
 // Stats
 
-export interface DayStats {
+export interface DayCell {
+	day: string;
+	styles: {gridColumnStart: React.CSSProperties["gridColumnStart"]};
+}
+
+export interface DayStatsFromServer {
 	day: string;
 	createdHabitsCount: number;
 	progressVotesCountStats: number;
@@ -101,3 +106,6 @@ export interface DayStats {
 	nullVotesCountStats: number;
 }
 
+export type DayCellWithFullStats = DayCell & DayStatsFromServer & {
+  noVotesCountStats: number;
+};

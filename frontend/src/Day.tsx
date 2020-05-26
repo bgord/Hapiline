@@ -4,19 +4,16 @@ import React from "react";
 import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
-import {FullDayWithVoteStats} from "./interfaces/IMonthDay";
+import {DayCellWithFullStats} from "./interfaces/index";
 import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {pluralize} from "./services/pluralize";
 
-export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction}> = ({
-	day,
-	styles,
-	refreshCalendar,
-	...stats
-}) => {
+export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction}> = props => {
+	const {day, styles, refreshCalendar, ...stats} = props;
+
 	const habits = useHabits();
 	const [queryParams, updateQueryParams] = useQueryParams();
 
@@ -56,11 +53,11 @@ export const Day: React.FC<FullDayWithVoteStats & {refreshCalendar: VoidFunction
 			{isDayDialogAvailable && (
 				<>
 					<UI.Row crossAxis="end" mainAxis="end" p="6" my="auto">
-						{isNewHabitsTextVisible ? (
+						{isNewHabitsTextVisible && (
 							<UI.Text mr="auto" variant="dimmed">
 								{newHabitsText}
 							</UI.Text>
-						) : null}
+						)}
 						<UI.Button variant="bare" bg="gray-1" ml="auto" onClick={openDialog}>
 							Show
 						</UI.Button>

@@ -5,13 +5,20 @@ import React from "react";
 import {Link} from "react-router-dom";
 import VisuallyHidden from "@reach/visually-hidden";
 
-import {DayVoteStats} from "./interfaces/IMonthDay";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
 import {constructUrl} from "./hooks/useQueryParam";
-import {Habit, habitStrengthToBadgeVariant, voteToBgColor} from "./interfaces/index";
+import {
+	Habit,
+	habitStrengthToBadgeVariant,
+	voteToBgColor,
+	DayCellWithFullStats,
+} from "./interfaces/index";
 
-type DayDialogSummaryProps = DayVoteStats & {
+type DayDialogSummaryProps = Omit<
+	DayCellWithFullStats,
+	"styles" | "createdHabitsCount" | "nullVotesCountStats"
+> & {
 	maximumVotes: number;
 };
 

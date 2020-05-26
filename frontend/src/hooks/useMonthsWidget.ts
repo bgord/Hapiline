@@ -1,12 +1,12 @@
 import {eachDayOfInterval, endOfMonth, startOfMonth, subMonths} from "date-fns";
 import React from "react";
 
-import {IMonthDay} from "../interfaces/IMonthDay";
+import {DayCell} from "../interfaces/index";
 import {formatDay, formatMonth} from "../config/DATE_FORMATS";
 
 type MonthsWidgetProps = [
 	{
-		givenMonthDays: IMonthDay[];
+		daysOfTheMonth: DayCell[];
 		setPreviousMonth: VoidFunction;
 		setNextMonth: VoidFunction;
 	},
@@ -32,7 +32,7 @@ export const useMonthsWidget = (): MonthsWidgetProps => {
 
 	const offset = startOfGivenMonthDay === 0 ? 7 : startOfGivenMonthDay;
 
-	const givenMonthDays = eachDayOfInterval({
+	const daysOfTheMonth = eachDayOfInterval({
 		start: startOfGivenMonth,
 		end: endOfGivenMonth,
 	}).map((day, index) => ({
@@ -42,7 +42,7 @@ export const useMonthsWidget = (): MonthsWidgetProps => {
 
 	return [
 		{
-			givenMonthDays,
+			daysOfTheMonth,
 			setPreviousMonth,
 			setNextMonth,
 		},

@@ -7,8 +7,12 @@ import * as UI from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
 import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
-import {DayVoteStats} from "./interfaces/IMonthDay";
-import {Habit, HabitVote, HabitWithPossibleHabitVote} from "./interfaces/index";
+import {
+	Habit,
+	HabitVote,
+	HabitWithPossibleHabitVote,
+	DayCellWithFullStats,
+} from "./interfaces/index";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
@@ -20,8 +24,11 @@ import {format} from "date-fns";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useToggle} from "./hooks/useToggle";
 
-type DayDialogProps = DayVoteStats & {
-	onResolve?: VoidFunction;
+type DayDialogProps = Omit<
+	DayCellWithFullStats,
+	"styles" | "createdHabitsCount" | "nullVotesCountStats"
+> & {
+	onResolve: VoidFunction;
 };
 
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) => {
@@ -221,9 +228,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 									day={day}
 									key={entry.id}
 									onResolve={() => {
-										if (onResolve) {
-											onResolve();
-										}
+										onResolve();
 										getDayVotesRequestState.reload();
 									}}
 									{...entry}
