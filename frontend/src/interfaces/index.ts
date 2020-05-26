@@ -87,3 +87,17 @@ voteToBgColor.set("progress", "#8bdb90");
 voteToBgColor.set("plateau", "var(--gray-3)");
 voteToBgColor.set("regress", "#ef8790");
 voteToBgColor.set(null, "var(--gray-9)");
+
+// =============
+
+// Stats
+
+export interface DayStats {
+	day: string;
+	createdHabitsCount: number;
+	progressVotesCountStats: number;
+	plateauVotesCountStats: number;
+	regressVotesCountStats: number;
+	nullVotesCountStats: number;
+}
+

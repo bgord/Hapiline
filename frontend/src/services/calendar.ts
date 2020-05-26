@@ -1,13 +1,12 @@
 import * as Async from "react-async";
 
-import {IDayVoteStatsFromAPI} from "../interfaces/IMonthDay";
 import {_internal_api} from "./api";
 import {constructUrl} from "../hooks/useQueryParam";
-import {HabitVote} from "../interfaces/index";
+import {HabitVote, DayStats} from "../interfaces/index";
 
-export const getMonthRequest: Async.PromiseFn<IDayVoteStatsFromAPI[]> = ({monthOffset}) =>
+export const getMonthRequest: Async.PromiseFn<DayStats[]> = ({monthOffset}) =>
 	_internal_api
-		.get<IDayVoteStatsFromAPI[]>(constructUrl("/month", {monthOffset}))
+		.get<DayStats[]>(constructUrl("/month", {monthOffset}))
 		.then(response => response.data);
 
 export const getDayRequest: Async.PromiseFn<HabitVote[]> = ({day}) =>

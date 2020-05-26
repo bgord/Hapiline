@@ -32,7 +32,7 @@ export const Calendar: React.FC = () => {
 	});
 	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
-	const days: FullDayWithVoteStats[] = widget.givenMonthDays.map(entry => {
+	const allDaysOfaMonth: FullDayWithVoteStats[] = widget.givenMonthDays.map(entry => {
 		const givenDay = new Date(entry.day);
 
 		const fullDayWithVoteStatsFromAPI: FullDayWithVoteStatsFromAPI = {
@@ -85,7 +85,7 @@ export const Calendar: React.FC = () => {
 			</Async.IfRejected>
 
 			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">
-				{days.map(props => (
+				{allDaysOfaMonth.map(props => (
 					<Day
 						key={props.day.toString()}
 						refreshCalendar={getMonthRequestState.reload}
