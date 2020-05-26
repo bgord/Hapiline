@@ -7,7 +7,7 @@ import {Habit, DetailedHabit, NewHabitPayload, DayVote, HabitVote} from "../inte
 export const getHabitsRequest = async (_key: "all_habits") =>
 	_internal_api.get<Habit[]>("/habits").then(response => response.data);
 
-export const getHabitRequest: Async.PromiseFn<DetailedHabit> = ({id}) =>
+export const getHabitRequest = async (_key: "single_habit", id: Habit["id"]) =>
 	_internal_api.get<DetailedHabit>(`/habit/${id}`).then(response => response.data);
 
 export const addHabitRequest: Async.DeferFn<Habit> = ([newHabitPayload]: NewHabitPayload[]) =>

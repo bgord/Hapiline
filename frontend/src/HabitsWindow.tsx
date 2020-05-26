@@ -8,7 +8,7 @@ import {_getRequestStateErrors} from "./selectors/getRequestErrors";
 import * as UI from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
-import {api} from "./services/api";
+import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
 import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
@@ -72,7 +72,8 @@ export const HabitsWindow = () => {
 
 		reorderHabitsRequestState.run({habits: reorderHabitsPayload});
 
-		queryCache.setQueryData("all_habits", reorderedHabits);
+		const _reorderedHabits: AsyncReturnType<typeof api.habit.get> = reorderedHabits;
+		queryCache.setQueryData("all_habits", _reorderedHabits);
 	}
 
 	const isDragDisabled =

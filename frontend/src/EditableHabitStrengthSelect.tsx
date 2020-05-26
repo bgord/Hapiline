@@ -1,20 +1,13 @@
 import * as Async from "react-async";
+import {queryCache} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
 import {DetailedHabit, HabitStrengthType, isHabitStrength} from "./interfaces/index";
-import {api} from "./services/api";
+import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
-type EditableHabitStrengthSelectProps = DetailedHabit & {
-	setHabitItem: (habit: DetailedHabit) => void;
-};
-
-export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectProps> = ({
-	id,
-	strength,
-	setHabitItem,
-}) => {
+export const EditableHabitStrengthSelect: React.FC<DetailedHabit> = ({id, strength}) => {
 	const [newHabitStrength, setNewHabitStrength] = React.useState<HabitStrengthType>(strength);
 
 	const triggerSuccessNotification = useSuccessToast();
@@ -24,7 +17,9 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 		deferFn: api.habit.patch,
 		onResolve: habit => {
 			triggerSuccessNotification("Habit strength changed successfully!");
-			setHabitItem(habit);
+
+			const _habit: AsyncReturnType<typeof api.habit.show> = habit;
+			queryCache.setQueryData("single_habit", _habit);
 		},
 		onReject: () => triggerErrorNotification("Habit strength couldn't be changed."),
 	});

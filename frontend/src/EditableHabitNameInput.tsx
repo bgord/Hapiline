@@ -1,4 +1,5 @@
 import * as Async from "react-async";
+import {queryCache} from "react-query";
 import React from "react";
 
 import {
@@ -10,20 +11,12 @@ import {
 import * as UI from "./ui";
 import {HabitNameInput} from "./HabitNameInput";
 import {DetailedHabit} from "./interfaces/index";
-import {api} from "./services/api";
+import {api, AsyncReturnType} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 
-type EditableHabitNameInputProps = DetailedHabit & {
-	setHabitItem: (habit: DetailedHabit) => void;
-};
-
-export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
-	name,
-	id,
-	setHabitItem,
-}) => {
+export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 	const field = useEditableFieldState();
 	const getHabitsRequestState = useHabitsState();
 
@@ -35,8 +28,10 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 		onResolve: habit => {
 			field.setIdle();
 			triggerSuccessNotification("Name updated successfully!");
-			setHabitItem(habit);
 			getHabitsRequestState.refetch();
+
+			const _habit: AsyncReturnType<typeof api.habit.show> = habit;
+			queryCache.setQueryData("single_habit", _habit);
 		},
 		onReject: _error => {
 			const {getArgErrorMessage} = getRequestErrors(_error);
