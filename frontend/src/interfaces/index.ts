@@ -88,6 +88,15 @@ voteToBgColor.set("plateau", "var(--gray-3)");
 voteToBgColor.set("regress", "#ef8790");
 voteToBgColor.set(null, "var(--gray-9)");
 
+export type ChartDateRangeType = "last_week" | "last_month" | "all_time";
+
+export const ChartDateRanges: {[key in ChartDateRangeType]: ChartDateRangeType} = {
+	last_week: "last_week",
+	last_month: "last_month",
+	all_time: "all_time",
+};
+
+
 // =============
 
 // Stats

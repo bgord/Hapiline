@@ -1,32 +1,33 @@
 import {Link, LinkProps} from "react-router-dom";
-import * as Async from "react-async";
+import {useQuery} from "react-query";
 import React from "react";
 import {pluralize} from "./services/pluralize";
 
 import * as UI from "./ui";
-import {Habit, DayVote, voteToBgColor} from "./interfaces/index";
+import {
+	Habit,
+	DayVote,
+	voteToBgColor,
+	ChartDateRangeType,
+	ChartDateRanges,
+} from "./interfaces/index";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";
 
-type ChartRange = "last_week" | "last_month" | "all_time";
-
-const chartRanges: {[key in ChartRange]: string} = {
-	last_week: "last_week",
-	last_month: "last_month",
-	all_time: "all_time",
-};
-
 export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
-	const [dateRange, setChartRange] = React.useState<ChartRange>("last_week");
+	const [dateRange, setChartRange] = React.useState<ChartDateRangeType>("last_week");
 	const triggerErrorNotification = useErrorToast();
 
-	const habitVoteChartRequestState = Async.useAsync({
-		promiseFn: api.habit.getHabitVoteChart,
-		id,
-		dateRange,
-		watch: dateRange,
-		onReject: () => triggerErrorNotification("Fetching chart data failed."),
+	const habitVoteChartRequestState = useQuery<
+		DayVote[],
+		["habit_chart", Habit["id"], ChartDateRangeType]
+	>({
+		queryKey: ["habit_chart", id, dateRange],
+		queryFn: api.habit.getHabitVoteChart,
+		config: {
+			onError: () => triggerErrorNotification("Fetching chart data failed."),
+		},
 	});
 
 	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
@@ -66,44 +67,47 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 				</UI.Field>
 				{children}
 			</UI.Row>
-			<Async.IfFulfilled state={habitVoteChartRequestState}>
-				<UI.Row mt="24">
-					{habitVoteChartRequestState.data?.map(item => (
-						<ChartCell
-							key={String(item.day)}
-							habitId={id}
-							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
-							{...item}
-						/>
-					))}
-				</UI.Row>
-				<UI.Row mt="6" crossAxis="center">
-					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
-					<UI.Text>
-						{regressVotes} regress {pluralize("vote", regressVotes)} ({regressVotesPrct}%)
-					</UI.Text>
-					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
-						·
-					</UI.Text>
-					<UI.Text>
-						{plateauVotes} plateau {pluralize("vote", plateauVotes)} ({plateauVotesPrct}%)
-					</UI.Text>
-					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
-						·
-					</UI.Text>
-					<UI.Text>
-						{progressVotes} progress {pluralize("vote", progressVotes)} ({progressVotesPrct}%)
-					</UI.Text>
+			{habitVoteChartRequestState.status === "success" && (
+				<>
+					<UI.Row mt="24">
+						{habitVoteChartRequestState.data?.map(item => (
+							<ChartCell
+								key={String(item.day)}
+								habitId={id}
+								style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
+								{...item}
+							/>
+						))}
+					</UI.Row>
+					<UI.Row mt="6" crossAxis="center">
+						<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
+						<UI.Text>
+							{regressVotes} regress {pluralize("vote", regressVotes)} ({regressVotesPrct}%)
+						</UI.Text>
+						<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
+							·
+						</UI.Text>
+						<UI.Text>
+							{plateauVotes} plateau {pluralize("vote", plateauVotes)} ({plateauVotesPrct}%)
+						</UI.Text>
+						<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
+							·
+						</UI.Text>
+						<UI.Text>
+							{progressVotes} progress {pluralize("vote", progressVotes)} ({progressVotesPrct}%)
+						</UI.Text>
 
-					<UI.Text ml="auto" variant="bold">
-						{howManyHabitVoteChartItems}
-					</UI.Text>
-					<UI.Text ml="6">in total</UI.Text>
-				</UI.Row>
-			</Async.IfFulfilled>
-			<Async.IfRejected state={habitVoteChartRequestState}>
+						<UI.Text ml="auto" variant="bold">
+							{howManyHabitVoteChartItems}
+						</UI.Text>
+						<UI.Text ml="6">in total</UI.Text>
+					</UI.Row>
+				</>
+			)}
+
+			{habitVoteChartRequestState.status === "error" && (
 				<UI.Error mt="24">Charts unavailable, please try again.</UI.Error>
-			</Async.IfRejected>
+			)}
 		</>
 	);
 };
@@ -133,6 +137,6 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 	);
 };
 
-function isChartRange(value: string): value is ChartRange {
-	return Object.keys(chartRanges).includes(value);
+function isChartRange(value: string): value is ChartDateRangeType {
+	return Object.keys(ChartDateRanges).includes(value);
 }

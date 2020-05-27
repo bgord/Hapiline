@@ -2,7 +2,14 @@ import * as Async from "react-async";
 
 import {_internal_api} from "./api";
 import {constructUrl} from "../hooks/useQueryParam";
-import {Habit, DetailedHabit, NewHabitPayload, DayVote, HabitVote} from "../interfaces/index";
+import {
+	Habit,
+	DetailedHabit,
+	NewHabitPayload,
+	DayVote,
+	HabitVote,
+	ChartDateRangeType,
+} from "../interfaces/index";
 
 export const getHabitsRequest = async (_key: "all_habits") =>
 	_internal_api.get<Habit[]>("/habits").then(response => response.data);
@@ -25,9 +32,14 @@ export const reorderHabitsRequest: Async.DeferFn<void> = ([reorderHabitsPayload]
 export const addHabitDayVoteRequest: Async.DeferFn<void> = ([habitDayVotePayload]) =>
 	_internal_api.post("/vote", habitDayVotePayload).then(response => response.data);
 
-export const getHabitVoteChartRequest: Async.PromiseFn<DayVote[]> = ({id, dateRange}) =>
+export const getHabitVoteChartRequest = (
+	_key: "habit_chart",
+	id: Habit["id"],
+	chartDateRange: ChartDateRangeType,
+) =>
 	_internal_api
-		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange}))
+		// TODO: Refactor the endpoint so that it accepts `chartDateRange` in place of `dateRange`
+		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange: chartDateRange}))
 		.then(response => response.data);
 
 export const updateVoteCommentRequest: Async.DeferFn<HabitVote> = ([id, comment]) =>
