@@ -20,7 +20,7 @@ export const getHabitRequest = async (_key: "single_habit", id: Habit["id"]) =>
 export const addHabitRequest = (newHabitPayload: NewHabitPayload) =>
 	_internal_api.post<Habit>("/habit", newHabitPayload).then(response => response.data);
 
-export const deleteHabitRequest: Async.DeferFn<void> = ([id]: number[]) =>
+export const deleteHabitRequest = (id: Habit["id"]) =>
 	_internal_api.delete(`/habit/${id}`).then(response => response.data);
 
 export const patchHabitRequest: Async.DeferFn<DetailedHabit> = ([id, payload]) =>

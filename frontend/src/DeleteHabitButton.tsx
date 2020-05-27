@@ -1,5 +1,5 @@
 import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
@@ -19,18 +19,20 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const deleteHabitRequestState = Async.useAsync({
-		deferFn: api.habit.delete,
-		onResolve: () => {
-			getHabitsRequestState.refetch();
-			triggerSuccessNotification("Habit successfully deleted!");
+	const [deleteHabit, deleteHabitRequestState] = useMutation<unknown, Habit["id"]>(
+		api.habit.delete,
+		{
+			onSuccess: () => {
+				getHabitsRequestState.refetch();
+				triggerSuccessNotification("Habit successfully deleted!");
+			},
+			onError: () => triggerErrorNotification("Couldn't delete habit."),
 		},
-		onReject: () => triggerErrorNotification("Couldn't delete habit."),
-	});
+	);
 
 	function confirmDeletion() {
 		closeDialog();
-		deleteHabitRequestState.run(id);
+		deleteHabit(id);
 	}
 
 	return (
@@ -44,7 +46,7 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 				onClick={openDialog}
 			>
 				<TrashIcon />
-				{deleteHabitRequestState.isPending ? "Loading" : "Delete"}
+				{deleteHabitRequestState.status === "loading" ? "Loading" : "Delete"}
 			</UI.Button>
 			{showDialog && (
 				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
