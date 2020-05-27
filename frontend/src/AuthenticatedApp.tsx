@@ -1,6 +1,5 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
-import * as Async from "react-async";
-import {useQuery} from "react-query";
+import {useQuery, useMutation} from "react-query";
 import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 
@@ -87,10 +86,14 @@ function NotificationDropdown() {
 		},
 	});
 
-	const updateNotificationRequestState = Async.useAsync({
-		deferFn: api.notifications.update,
-		onResolve: () => getNotificationsRequestState.refetch(),
-		onReject: () => triggerErrorNotification("Couldn't change notification status."),
+	const [updateNotification, updateNotificationRequestState] = useMutation<
+		Notification,
+		DraftNotificationPayload
+	>(api.notifications.update, {
+		onSuccess: () => {
+			getNotificationsRequestState.refetch();
+		},
+		onError: () => triggerErrorNotification("Couldn't change notification status."),
 	});
 
 	const notifications = getNotificationsRequestState.data ?? [];
@@ -104,7 +107,7 @@ function NotificationDropdown() {
 			id,
 			status: "read",
 		};
-		updateNotificationRequestState.run(payload);
+		updateNotification(payload);
 	}
 
 	function markNotificationAsUnread(id: Notification["id"]) {
@@ -112,7 +115,7 @@ function NotificationDropdown() {
 			id,
 			status: "unread",
 		};
-		updateNotificationRequestState.run(payload);
+		updateNotification(payload);
 	}
 
 	return (
@@ -165,7 +168,7 @@ function NotificationDropdown() {
 												<UI.Button
 													variant="secondary"
 													style={{width: "100px"}}
-													disabled={updateNotificationRequestState.isPending}
+													disabled={updateNotificationRequestState.status === "loading"}
 													onClick={() => markNotificationAsRead(notification.id)}
 												>
 													Read
@@ -176,7 +179,7 @@ function NotificationDropdown() {
 												<UI.Button
 													style={{width: "100px"}}
 													variant="outlined"
-													disabled={updateNotificationRequestState.isPending}
+													disabled={updateNotificationRequestState.status === "loading"}
 													onClick={() => markNotificationAsUnread(notification.id)}
 												>
 													Unread
