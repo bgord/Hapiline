@@ -23,6 +23,11 @@ export type NewPasswordPayload = {
   passwordConfirmation: User["password"],
 }
 
+export type NewEmailPayload = {
+  newEmail: User["email"],
+  password: User["password"],
+}
+
 // =============
 
 // Habits

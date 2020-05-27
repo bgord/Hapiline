@@ -7,6 +7,7 @@ import {
 	LoginPayload,
 	Token,
 	NewPasswordPayload,
+	NewEmailPayload,
 } from "../interfaces/index";
 import {_internal_api} from "./api";
 
@@ -34,11 +35,8 @@ export const isLoggedInRequest = (_key: "is_logged_in") =>
 
 export const deleteAccountRequest = async () => _internal_api.delete("/account");
 
-export const changeEmailRequest: Async.DeferFn<void> = ([newEmail, password]: string[]) =>
-	_internal_api.post("/change-email", {
-		newEmail,
-		password,
-	});
+export const changeEmailRequest = (newEmailPayload: NewEmailPayload) =>
+	_internal_api.post("/change-email", newEmailPayload);
 
 export const updatePasswordRequst: Async.DeferFn<void> = ([
 	old_password,

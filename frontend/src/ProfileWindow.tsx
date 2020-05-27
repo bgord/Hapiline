@@ -1,15 +1,16 @@
 import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import {useHistory} from "react-router-dom";
-import * as Async from "react-async";
 import {useMutation} from "react-query";
+import * as Async from "react-async";
 import React from "react";
 
-import * as UI from "./ui";
 import {api} from "./services/api";
-import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {_getRequestStateErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useUserProfile} from "./contexts/auth-context";
+import * as UI from "./ui";
+import {NewEmailPayload} from "./interfaces/index";
 
 export const ProfileWindow = () => {
 	return (
@@ -35,25 +36,27 @@ const ChangeEmail: React.FC = () => {
 	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 
 	const initialEmail = userProfile?.email;
-	const [newEmail, setNewEmail] = React.useState(initialEmail);
-	const [password, setPassword] = React.useState("");
+	const [newEmail, setNewEmail] = React.useState<NewEmailPayload["newEmail"]>(initialEmail ?? "");
+	const [password, setPassword] = React.useState<NewEmailPayload["password"]>("");
 
 	if (!userProfile?.email) return null;
 
-	const changeEmailRequestState = Async.useAsync({
-		deferFn: api.auth.changeEmail,
-		onResolve: () => {
-			setStatus("success");
-			setTimeout(() => history.push("/logout"), 5000);
+	const [changeEmail, changeEmailRequestState] = useMutation<unknown, NewEmailPayload>(
+		api.auth.changeEmail,
+		{
+			onSuccess: () => {
+				setStatus("success");
+				setTimeout(() => history.push("/logout"), 5000);
+			},
+			onError: () => {
+				setStatus("error");
+				triggerErrorNotification("Couldn't change email.");
+			},
 		},
-		onReject: () => {
-			setStatus("error");
-			triggerErrorNotification("Couldn't change email.");
-		},
-	});
+	);
 
 	const isNewEmailDifferent = newEmail !== "" && newEmail !== initialEmail;
-	const {errorCode, getArgErrorMessage} = getRequestStateErrors(changeEmailRequestState);
+	const {errorCode, getArgErrorMessage} = _getRequestStateErrors(changeEmailRequestState);
 
 	const passwordInlineError = errorCode === "E_ACCESS_DENIED" ? "Invalid password." : null;
 	const emailInlineError = getArgErrorMessage("email");
@@ -64,7 +67,7 @@ const ChangeEmail: React.FC = () => {
 			onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 				event.preventDefault();
 				setStatus("pending");
-				changeEmailRequestState.run(newEmail, password);
+				changeEmail({newEmail, password});
 			}}
 			p="24"
 			bw="2"
