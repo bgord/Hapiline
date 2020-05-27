@@ -17,6 +17,11 @@ export type NewUserPayload = Pick<User, "email" | "password"> & {
 };
 export type UserProfile = Pick<User, "id" | "email">;
 export type LoginPayload = Pick<User, "email" | "password">;
+export type NewPasswordPayload = {
+  token: Token,
+  password: User["password"],
+  passwordConfirmation: User["password"],
+}
 
 // =============
 
