@@ -1,18 +1,17 @@
 import {Dialog} from "@reach/dialog";
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
 import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
-import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestErrors, _getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
-
-import {NewHabitPayload, isHabitStrength, isHabitScore} from "./interfaces/index";
+import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./interfaces/index";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
@@ -29,9 +28,8 @@ export const AddHabitForm: React.FC = () => {
 
 	const [, updateQueryParams] = useQueryParams();
 
-	const addHabitRequestState = Async.useAsync({
-		deferFn: api.habit.post,
-		onResolve: () => {
+	const [addHabit, addHabitRequestState] = useMutation<Habit, NewHabitPayload>(api.habit.post, {
+		onSuccess: () => {
 			setName("");
 			setScore("positive");
 			setStrength("established");
@@ -41,15 +39,15 @@ export const AddHabitForm: React.FC = () => {
 			getHabitsRequestState.refetch();
 			triggerSuccessNotification("Habit successfully addedd!");
 		},
-		onReject: error => {
-			const {responseStatus} = getRequestErrors(error);
+		onError: error => {
+			const {responseStatus} = getRequestErrors(error as Error);
 			if (responseStatus === 500) {
 				triggerUnexpectedErrorNotification("Habit couldn't be added.");
 			}
 		},
 	});
 
-	const {getArgErrorMessage, errorMessage} = getRequestStateErrors(addHabitRequestState);
+	const {getArgErrorMessage, errorMessage} = _getRequestStateErrors(addHabitRequestState);
 	const nameInlineErrorMessage = getArgErrorMessage("name");
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
@@ -69,16 +67,14 @@ export const AddHabitForm: React.FC = () => {
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
 
-					const payload: NewHabitPayload = {
+					addHabit({
 						name,
 						score,
 						strength,
 						user_id: profile?.id || 0,
 						description: description || null,
 						is_trackable: isTrackable,
-					};
-
-					addHabitRequestState.run(payload);
+					});
 				}}
 				p="24"
 			>
@@ -139,9 +135,9 @@ export const AddHabitForm: React.FC = () => {
 					</UI.Field>
 				</UI.Row>
 
-				<Async.IfRejected state={addHabitRequestState}>
+				{addHabitRequestState.status === "error" && (
 					<UI.Error mt="6">{nameInlineErrorMessage}</UI.Error>
-				</Async.IfRejected>
+				)}
 
 				<UI.Row mt="48" crossAxis="center">
 					<UI.Field variant="row">
@@ -171,9 +167,9 @@ export const AddHabitForm: React.FC = () => {
 					/>
 				</UI.Field>
 
-				<Async.IfRejected state={addHabitRequestState}>
+				{addHabitRequestState.status === "error" && (
 					<UI.Error mt="6">{descriptionInlineErrorMessage}</UI.Error>
-				</Async.IfRejected>
+				)}
 
 				<UI.Button
 					style={{width: "125px"}}
@@ -188,13 +184,15 @@ export const AddHabitForm: React.FC = () => {
 					Add habit
 				</UI.Button>
 
-				<Async.IfRejected state={addHabitRequestState}>
-					{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
-						<UI.ErrorBanner size="big">
-							{errorMessage || "Something unexpected happened. Please try again later."}
-						</UI.ErrorBanner>
-					)}
-				</Async.IfRejected>
+				{addHabitRequestState.status === "error" && (
+					<>
+						{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
+							<UI.ErrorBanner size="big">
+								{errorMessage || "Something unexpected happened. Please try again later."}
+							</UI.ErrorBanner>
+						)}
+					</>
+				)}
 			</UI.Column>
 		</Dialog>
 	);

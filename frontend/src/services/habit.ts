@@ -17,7 +17,7 @@ export const getHabitsRequest = async (_key: "all_habits") =>
 export const getHabitRequest = async (_key: "single_habit", id: Habit["id"]) =>
 	_internal_api.get<DetailedHabit>(`/habit/${id}`).then(response => response.data);
 
-export const addHabitRequest: Async.DeferFn<Habit> = ([newHabitPayload]: NewHabitPayload[]) =>
+export const addHabitRequest = (newHabitPayload: NewHabitPayload) =>
 	_internal_api.post<Habit>("/habit", newHabitPayload).then(response => response.data);
 
 export const deleteHabitRequest: Async.DeferFn<void> = ([id]: number[]) =>
@@ -38,7 +38,7 @@ export const getHabitVoteChartRequest = (
 	habitVoteChartDateRange: HabitVoteChartDateRangeType,
 ) =>
 	_internal_api
-		// TODO: Refactor the endpoint so that it accepts `chartDateRange` in place of `dateRange`
+		// TODO: Refactor the endpoint so that it accepts `habitVoteChartDateRange` in place of `dateRange`
 		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange: habitVoteChartDateRange}))
 		.then(response => response.data);
 

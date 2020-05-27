@@ -12,6 +12,9 @@ import {BadgeVariant} from "../ui/badge/Badge";
 
 // Users
 export type User = users;
+export type NewUserPayload = Pick<User, "email" | "password"> & {
+  passwordConfirmation: User["password"];
+};
 export type UserProfile = Pick<User, "id" | "email">;
 
 // =============

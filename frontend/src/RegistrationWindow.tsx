@@ -1,19 +1,21 @@
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
 import {api} from "./services/api";
-import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {User, NewUserPayload} from "./interfaces/index";
 
 export const RegistrationWindow: React.FC = () => {
-	const [email, setEmail] = React.useState("");
-	const [password, setPassword] = React.useState("");
-	const [passwordConfirmation, setPasswordConfirmation] = React.useState("");
+	const [email, setEmail] = React.useState<User["email"]>("");
+	const [password, setPassword] = React.useState<User["password"]>("");
+	const [passwordConfirmation, setPasswordConfirmation] = React.useState<User["password"]>("");
 
-	const registrationRequestState = Async.useAsync({
-		deferFn: api.auth.register,
-	});
-	const {responseStatus, errorMessage, getArgErrorMessage} = getRequestStateErrors(
+	const [register, registrationRequestState] = useMutation<unknown, NewUserPayload>(
+		api.auth.register,
+	);
+
+	const {responseStatus, errorMessage, getArgErrorMessage} = _getRequestStateErrors(
 		registrationRequestState,
 	);
 	const emailInlineErrorMessage = getArgErrorMessage("email");
@@ -24,7 +26,7 @@ export const RegistrationWindow: React.FC = () => {
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					registrationRequestState.run(email, password, passwordConfirmation);
+					register({email, password, passwordConfirmation});
 				}}
 			>
 				<UI.Header>Register</UI.Header>
@@ -37,12 +39,12 @@ export const RegistrationWindow: React.FC = () => {
 						onChange={event => setEmail(event.target.value)}
 						required
 						type="email"
-						disabled={registrationRequestState.isFulfilled}
+						disabled={registrationRequestState.status === "success"}
 						placeholder="john.brown@gmail.com"
 					/>
-					<Async.IfRejected state={registrationRequestState}>
+					{registrationRequestState.status === "error" && (
 						<UI.Error>{emailInlineErrorMessage}</UI.Error>
-					</Async.IfRejected>
+					)}
 				</UI.Field>
 
 				<UI.Field mt="12">
@@ -56,7 +58,7 @@ export const RegistrationWindow: React.FC = () => {
 						type="password"
 						required
 						pattern=".{6,}"
-						disabled={registrationRequestState.isFulfilled}
+						disabled={registrationRequestState.status === "success"}
 					/>
 				</UI.Field>
 
@@ -71,7 +73,7 @@ export const RegistrationWindow: React.FC = () => {
 						title="Passwords have to be equal"
 						value={passwordConfirmation}
 						onChange={event => setPasswordConfirmation(event.target.value)}
-						disabled={registrationRequestState.isFulfilled}
+						disabled={registrationRequestState.status === "success"}
 					/>
 				</UI.Field>
 
@@ -80,28 +82,27 @@ export const RegistrationWindow: React.FC = () => {
 						data-testid="registration-submit"
 						type="submit"
 						variant="primary"
-						disabled={registrationRequestState.isFulfilled || registrationRequestState.isPending}
+						disabled={["success", "loading"].includes(registrationRequestState.status)}
 						style={{width: "125px"}}
 					>
-						{registrationRequestState.isPending ? "Loading..." : "Register"}
+						{registrationRequestState.status === "loading" ? "Loading..." : "Register"}
 					</UI.Button>
 				</UI.Row>
 
-				<Async.IfFulfilled state={registrationRequestState}>
+				{registrationRequestState.status === "success" && (
 					<UI.SuccessBanner size="big" mt="24">
 						<UI.Column ml="12">
 							<UI.Text>Account confirmation email has been sent!</UI.Text>
 							<UI.Text>Please, check your inbox.</UI.Text>
 						</UI.Column>
 					</UI.SuccessBanner>
-				</Async.IfFulfilled>
+				)}
 
-				<Async.IfRejected state={registrationRequestState}>
-					{responseStatus === 500 && errorMessage && (
-						<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
-					)}
-				</Async.IfRejected>
-				{registrationRequestState.status !== "fulfilled" && (
+				{registrationRequestState.status === "error" && responseStatus === 500 && errorMessage && (
+					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
+				)}
+
+				{registrationRequestState.status !== "success" && (
 					<UI.InfoBanner mt="48">
 						<UI.Text>
 							You will receive an account confirmation email with further instructions.
