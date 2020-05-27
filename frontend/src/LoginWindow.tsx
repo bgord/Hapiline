@@ -1,10 +1,11 @@
 import {useHistory, Link} from "react-router-dom";
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import {api} from "./services/api";
-import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {_getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
+import {UserProfile, LoginPayload} from "./interfaces/index";
 import * as UI from "./ui";
 
 export const LoginWindow: React.FC = () => {
@@ -15,12 +16,14 @@ export const LoginWindow: React.FC = () => {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 
-	const loginRequestState = Async.useAsync({
-		deferFn: api.auth.login,
-		history,
-		setUserProfile,
+	const [login, loginRequestState] = useMutation<UserProfile, LoginPayload>(api.auth.login, {
+		onSuccess: userProfile => {
+			setUserProfile?.(userProfile);
+			history.push("/dashboard");
+		},
 	});
-	const {errorMessage} = getRequestStateErrors(loginRequestState);
+
+	const {errorMessage} = _getRequestStateErrors(loginRequestState);
 
 	return (
 		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>
@@ -28,7 +31,7 @@ export const LoginWindow: React.FC = () => {
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					loginRequestState.run(email, password);
+					login({email, password});
 				}}
 			>
 				<UI.Header>Login</UI.Header>
@@ -63,11 +66,11 @@ export const LoginWindow: React.FC = () => {
 					<UI.Button
 						type="submit"
 						variant="primary"
-						disabled={loginRequestState.isPending}
+						disabled={loginRequestState.status === "loading"}
 						data-testid="login-submit"
 						style={{width: "125px"}}
 					>
-						{loginRequestState.isPending ? "Loading..." : "Login"}
+						{loginRequestState.status === "loading" ? "Loading..." : "Login"}
 					</UI.Button>
 				</UI.Row>
 
@@ -81,9 +84,9 @@ export const LoginWindow: React.FC = () => {
 					Forgot password?
 				</Link>
 
-				<Async.IfRejected state={loginRequestState}>
+				{loginRequestState.status === "error" && (
 					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
-				</Async.IfRejected>
+				)}
 			</UI.Column>
 		</UI.Card>
 	);

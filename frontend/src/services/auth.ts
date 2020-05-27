@@ -1,22 +1,10 @@
 import * as Async from "react-async";
 
-import {User, NewUserPayload, UserProfile} from "../interfaces/index";
+import {User, NewUserPayload, UserProfile, LoginPayload} from "../interfaces/index";
 import {_internal_api} from "./api";
 
-export const loginRequest: Async.DeferFn<UserProfile> = (
-	[email, password]: string[],
-	{history, setUserProfile},
-) =>
-	_internal_api
-		.post<UserProfile>("/login", {
-			email,
-			password,
-		})
-		.then(response => {
-			setUserProfile(response.data);
-			history.push("/dashboard");
-			return response.data;
-		});
+export const loginRequest = (loginPayload: LoginPayload) =>
+	_internal_api.post<UserProfile>("/login", loginPayload).then(response => response.data);
 
 export const verifyEmailRequest: Async.PromiseFn<void> = async ({token}) =>
 	_internal_api.post("/verify-email", {token: decodeURIComponent(token)});
