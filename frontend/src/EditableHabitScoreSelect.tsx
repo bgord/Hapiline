@@ -1,9 +1,8 @@
-import * as Async from "react-async";
-import {queryCache} from "react-query";
+import {queryCache, useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {DetailedHabit, HabitScoreType, isHabitScore} from "./interfaces/index";
+import {DetailedHabit, HabitScoreType, isHabitScore, DraftHabitPayload} from "./interfaces/index";
 import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
@@ -13,15 +12,17 @@ export const EditableHabitScoreSelect: React.FC<DetailedHabit> = ({id, score}) =
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const editHabitRequestState = Async.useAsync({
-		deferFn: api.habit.patch,
-		onResolve: habit => {
+	const [updateHabitScore, updateHabitScoreRequestState] = useMutation<
+		DetailedHabit,
+		DraftHabitPayload
+	>(api.habit.patch, {
+		onSuccess: habit => {
 			triggerSuccessNotification("Habit score changed successfully!");
 
 			const _habit: AsyncReturnType<typeof api.habit.show> = habit;
 			queryCache.setQueryData("single_habit", _habit);
 		},
-		onReject: () => triggerErrorNotification("Habit score couldn't be changed."),
+		onError: () => triggerErrorNotification("Habit score couldn't be changed."),
 	});
 
 	return (
@@ -30,12 +31,12 @@ export const EditableHabitScoreSelect: React.FC<DetailedHabit> = ({id, score}) =
 			<UI.Select
 				id="habit_score"
 				value={newHabitScore}
-				disabled={editHabitRequestState.isPending}
+				disabled={updateHabitScoreRequestState.status === "loading"}
 				onChange={event => {
 					const {value} = event.target;
 					if (isHabitScore(value) && value !== score) {
 						setNewHabitScore(value);
-						editHabitRequestState.run(id, {score: value});
+						updateHabitScore({id, score: value});
 					}
 				}}
 			>

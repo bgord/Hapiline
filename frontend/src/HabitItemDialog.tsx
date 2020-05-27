@@ -1,6 +1,5 @@
 import {Dialog} from "@reach/dialog";
-import * as Async from "react-async";
-import {useQuery} from "react-query";
+import {useQuery, useMutation} from "react-query";
 import React from "react";
 
 import {
@@ -16,10 +15,10 @@ import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
-import {Habit, DetailedHabit} from "./interfaces/index";
+import {Habit, DetailedHabit, DraftHabitPayload} from "./interfaces/index";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
-import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {_getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
@@ -149,23 +148,28 @@ const EditableDescription: React.FC<{
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const updateDescriptionRequestState = Async.useAsync({
-		deferFn: api.habit.patch,
-		onResolve: () => {
+	const [updateHabitDescription, updateHabitDescriptionRequestState] = useMutation<
+		DetailedHabit,
+		DraftHabitPayload
+	>(api.habit.patch, {
+		onSuccess: () => {
 			triggerSuccessNotification("Comment added successfully!");
 			textarea.setIdle();
 			onResolve();
 		},
-		onReject: () => triggerErrorNotification("Habit description couldn't be changed"),
+		onError: () => triggerErrorNotification("Habit description couldn't be changed"),
 	});
 
 	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(
 		updateDescription =>
-			updateDescriptionRequestState.run(habitId, {description: updateDescription}),
+			updateHabitDescription({
+				id: habitId,
+				description: updateDescription,
+			}),
 		description,
 	);
 
-	const {getArgErrorMessage} = getRequestStateErrors(updateDescriptionRequestState);
+	const {getArgErrorMessage} = _getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
 	return (
@@ -180,9 +184,11 @@ const EditableDescription: React.FC<{
 					onChange={newDescriptionHelpers.onChange}
 				/>
 			</UI.Field>
-			<Async.IfRejected state={updateDescriptionRequestState}>
+
+			{updateHabitDescriptionRequestState.status === "error" && (
 				<UI.Error>{descriptionInlineErrorMessage}</UI.Error>
-			</Async.IfRejected>
+			)}
+
 			<UI.Row>
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
 					Save

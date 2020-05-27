@@ -9,6 +9,7 @@ import {
 	DayVote,
 	HabitVote,
 	HabitVoteChartDateRangeType,
+	DraftHabitPayload,
 } from "../interfaces/index";
 
 export const getHabitsRequest = async (_key: "all_habits") =>
@@ -23,7 +24,7 @@ export const addHabitRequest = (newHabitPayload: NewHabitPayload) =>
 export const deleteHabitRequest = (id: Habit["id"]) =>
 	_internal_api.delete(`/habit/${id}`).then(response => response.data);
 
-export const patchHabitRequest: Async.DeferFn<DetailedHabit> = ([id, payload]) =>
+export const patchHabitRequest = ({id, ...payload}: DraftHabitPayload) =>
 	_internal_api.patch<DetailedHabit>(`/habit/${id}`, payload).then(response => response.data);
 
 export const reorderHabitsRequest: Async.DeferFn<void> = ([reorderHabitsPayload]) =>
