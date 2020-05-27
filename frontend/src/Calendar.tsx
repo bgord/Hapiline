@@ -1,4 +1,4 @@
-import * as Async from "react-async";
+import {useQuery} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
@@ -6,11 +6,11 @@ import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
-import {getRequestStateErrors} from "./selectors/getRequestErrors";
+import {_getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {useMonthsWidget} from "./hooks/useMonthsWidget";
+import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
-import {DayCellWithFullStats} from "./interfaces/index";
+import {DayCellWithFullStats, DayStatsFromServer} from "./interfaces/index";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -25,12 +25,12 @@ export const Calendar: React.FC = () => {
 	const [widget, date, monthOffset] = useMonthsWidget();
 	const trackedHabits = useTrackedHabits();
 
-	const getMonthRequestState = Async.useAsync({
-		promiseFn: api.calendar.getMonth,
-		monthOffset,
-		watch: monthOffset,
+	const getMonthRequestState = useQuery<DayStatsFromServer[], ["month", MonthOffset]>({
+		queryKey: ["month", monthOffset],
+		queryFn: api.calendar.getMonth,
 	});
-	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
+
+	const {errorMessage} = _getRequestStateErrors(getMonthRequestState);
 
 	const dayStatsFromServer = getMonthRequestState.data;
 
@@ -71,7 +71,7 @@ export const Calendar: React.FC = () => {
 				<UI.Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
-					disabled={getMonthRequestState.isPending}
+					disabled={getMonthRequestState.status === "loading"}
 					style={{width: "100px"}}
 					mr="24"
 				>
@@ -85,22 +85,22 @@ export const Calendar: React.FC = () => {
 					ml="24"
 					variant="outlined"
 					onClick={widget.setNextMonth}
-					disabled={getMonthRequestState.isPending}
+					disabled={getMonthRequestState.status === "loading"}
 					style={{width: "100px"}}
 				>
 					Next
 				</UI.Button>
 			</UI.Row>
 
-			<Async.IfRejected state={getMonthRequestState}>
+			{getMonthRequestState.status === "error" && (
 				<UI.ErrorBanner my="24">{errorMessage}</UI.ErrorBanner>
-			</Async.IfRejected>
+			)}
 
 			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">
 				{dayCellsWithStats.map(props => (
 					<Day
 						key={props.day.toString()}
-						refreshCalendar={getMonthRequestState.reload}
+						refreshCalendar={getMonthRequestState.refetch}
 						{...props}
 					/>
 				))}
