@@ -1,6 +1,5 @@
 import {Link} from "react-router-dom";
 import {useQuery} from "react-query";
-import * as Async from "react-async";
 import React from "react";
 import deepEqual from "fast-deep-equal";
 
@@ -14,7 +13,7 @@ import {formatToday} from "./config/DATE_FORMATS";
 import {pluralize} from "./services/pluralize";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
-import {DashboardStreakStats} from "./interfaces/index";
+import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "./interfaces/index";
 import * as UI from "./ui";
 
 export const DashboardWindow = () => {
@@ -22,9 +21,15 @@ export const DashboardWindow = () => {
 	const [{subview, preview_habit_id}, updateQueryParams] = useQueryParams();
 	const triggerErrorNotification = useErrorToast();
 
-	const getDashboardStatsRequestState = Async.useAsync({
-		promiseFn: api.stats.dashboard,
-		onReject: () => triggerErrorNotification("Couldn't fetch dashboard stats."),
+	const getDashboardStatsRequestState = useQuery<
+		DashboardHabitVoteStatsForDateRanges,
+		"dashboard_stats"
+	>({
+		queryKey: "dashboard_stats",
+		queryFn: api.stats.dashboard,
+		config: {
+			onError: () => triggerErrorNotification("Couldn't fetch dashboard stats."),
+		},
 	});
 
 	const getDashboardStreakStatsRequestState = useQuery<
@@ -88,57 +93,62 @@ export const DashboardWindow = () => {
 				</UI.Button>
 			</UI.Row>
 			<UI.Column p="24">
-				<Async.IfRejected state={getDashboardStatsRequestState}>
+				{getDashboardStatsRequestState.status === "error" && (
 					<UI.ErrorBanner mt="24">
 						Cannot load dashboard stats now, please try again.
 					</UI.ErrorBanner>
-				</Async.IfRejected>
-				<Async.IfFulfilled state={getDashboardStatsRequestState}>
-					<UI.Row mt="24" mb="48">
-						<MotivationalText
-							untracked={howManyUntrackedHabitsToday}
-							total={howManyHabitsToday}
-							votedFor={howManyVotesToday}
-						/>
-					</UI.Row>
-					{howManyHabitsToday > 0 && (
-						<UI.Column data-testid="chart-today">
-							<UI.Text variant="dimmed">Votes today</UI.Text>
-							<UI.Row mb="24">
-								<DaySummaryChart
-									maximumVotes={todayStats?.maximumVotes ?? 0}
-									day={currentDate}
-									{...statsForToday}
-								/>
-							</UI.Row>
-						</UI.Column>
-					)}
-					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-						<UI.Column data-testid="chart-last-week">
-							<UI.Text variant="dimmed">Votes last week</UI.Text>
-							<UI.Row mb="24">
-								<DaySummaryChart
-									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-									day={currentDate}
-									{...statsForLastWeek}
-								/>
-							</UI.Row>
-						</UI.Column>
-					)}
-					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-						<UI.Column data-testid="chart-last-month">
-							<UI.Text variant="dimmed">Votes last month</UI.Text>
-							<UI.Row mb="24">
-								<DaySummaryChart
-									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-									day={currentDate}
-									{...statsForLastMonth}
-								/>
-							</UI.Row>
-						</UI.Column>
-					)}
-				</Async.IfFulfilled>
+				)}
+
+				{getDashboardStatsRequestState.status === "success" && (
+					<>
+						<UI.Row mt="24" mb="48">
+							<MotivationalText
+								untracked={howManyUntrackedHabitsToday}
+								total={howManyHabitsToday}
+								votedFor={howManyVotesToday}
+							/>
+						</UI.Row>
+						{howManyHabitsToday > 0 && (
+							<UI.Column data-testid="chart-today">
+								<UI.Text variant="dimmed">Votes today</UI.Text>
+								<UI.Row mb="24">
+									<DaySummaryChart
+										maximumVotes={todayStats?.maximumVotes ?? 0}
+										day={currentDate}
+										{...statsForToday}
+									/>
+								</UI.Row>
+							</UI.Column>
+						)}
+						{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
+							<UI.Column data-testid="chart-last-week">
+								<UI.Text variant="dimmed">Votes last week</UI.Text>
+								<UI.Row mb="24">
+									<DaySummaryChart
+										maximumVotes={lastWeekStats?.maximumVotes ?? 0}
+										day={currentDate}
+										{...statsForLastWeek}
+									/>
+								</UI.Row>
+							</UI.Column>
+						)}
+						{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
+							<UI.Column data-testid="chart-last-month">
+								<UI.Text variant="dimmed">Votes last month</UI.Text>
+								<UI.Row mb="24">
+									<DaySummaryChart
+										maximumVotes={lastMonthStats?.maximumVotes ?? 0}
+										day={currentDate}
+										{...statsForLastMonth}
+									/>
+								</UI.Row>
+							</UI.Column>
+						)}
+					</>
+				)}
+
 				{getDashboardStreakStatsRequestState.status === "loading" && <UI.Text>Loading...</UI.Text>}
+
 				{getDashboardStreakStatsRequestState.status === "success" && (
 					<>
 						{regressStreakStats.length > 0 && (
@@ -206,7 +216,7 @@ export const DashboardWindow = () => {
 				{subview === "day_preview" && (
 					<DayDialog
 						day={currentDate}
-						onResolve={getDashboardStatsRequestState.reload}
+						onResolve={getDashboardStatsRequestState.refetch}
 						{...statsForToday}
 					/>
 				)}

@@ -142,3 +142,18 @@ export type DashboardStreakStats = {
 		regress_streak: HabitStreaks["regress_streak"];
 	}[];
 }
+
+type DashboardHabitVoteStats =  {
+	progressVotes: number;
+	plateauVotes: number;
+	regressVotes: number;
+	noVotes: number;
+	allVotes: number;
+	maximumVotes: number;
+}
+
+export type DashboardHabitVoteStatsForDateRanges = {
+	today: DashboardHabitVoteStats & {untrackedHabits: number};
+	lastWeek: DashboardHabitVoteStats;
+	lastMonth: DashboardHabitVoteStats;
+}
