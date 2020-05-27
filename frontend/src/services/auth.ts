@@ -1,5 +1,3 @@
-import * as Async from "react-async";
-
 import {
 	User,
 	NewUserPayload,
@@ -8,6 +6,7 @@ import {
 	Token,
 	NewPasswordPayload,
 	NewEmailPayload,
+	UpdatePasswordPayload,
 } from "../interfaces/index";
 import {_internal_api} from "./api";
 
@@ -38,13 +37,5 @@ export const deleteAccountRequest = async () => _internal_api.delete("/account")
 export const changeEmailRequest = (newEmailPayload: NewEmailPayload) =>
 	_internal_api.post("/change-email", newEmailPayload);
 
-export const updatePasswordRequst: Async.DeferFn<void> = ([
-	old_password,
-	password,
-	password_confirmation,
-]: string[]) =>
-	_internal_api.patch("/update-password", {
-		old_password,
-		password,
-		password_confirmation,
-	});
+export const updatePasswordRequst = (updatePasswordPayload: UpdatePasswordPayload) =>
+	_internal_api.patch("/update-password", updatePasswordPayload);

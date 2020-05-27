@@ -16,16 +16,21 @@ export type NewUserPayload = Pick<User, "email" | "password"> & {
   passwordConfirmation: User["password"];
 };
 export type UserProfile = Pick<User, "id" | "email">;
+
 export type LoginPayload = Pick<User, "email" | "password">;
 export type NewPasswordPayload = {
-  token: Token,
-  password: User["password"],
-  passwordConfirmation: User["password"],
+  token: Token;
+  password: User["password"];
+  passwordConfirmation: User["password"];
 }
-
 export type NewEmailPayload = {
-  newEmail: User["email"],
-  password: User["password"],
+  newEmail: User["email"];
+  password: User["password"];
+}
+export type UpdatePasswordPayload = {
+	old_password: User["password"];
+	password: User["password"];
+	password_confirmation: User["password"];
 }
 
 // =============

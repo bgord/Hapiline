@@ -1,16 +1,15 @@
 import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import {useHistory} from "react-router-dom";
 import {useMutation} from "react-query";
-import * as Async from "react-async";
 import React from "react";
 
 import {api} from "./services/api";
-import {_getRequestStateErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
+import {_getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useUserProfile} from "./contexts/auth-context";
 import * as UI from "./ui";
-import {NewEmailPayload} from "./interfaces/index";
+import {NewEmailPayload, UpdatePasswordPayload} from "./interfaces/index";
 
 export const ProfileWindow = () => {
 	return (
@@ -38,8 +37,6 @@ const ChangeEmail: React.FC = () => {
 	const initialEmail = userProfile?.email;
 	const [newEmail, setNewEmail] = React.useState<NewEmailPayload["newEmail"]>(initialEmail ?? "");
 	const [password, setPassword] = React.useState<NewEmailPayload["password"]>("");
-
-	if (!userProfile?.email) return null;
 
 	const [changeEmail, changeEmailRequestState] = useMutation<unknown, NewEmailPayload>(
 		api.auth.changeEmail,
@@ -139,23 +136,23 @@ const ChangeEmail: React.FC = () => {
 
 const ChangePassword = () => {
 	const triggerErrorNotification = useErrorToast();
-	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
-	const [oldPassword, setOldPassword] = React.useState("");
-	const [newPassword, setNewPassword] = React.useState("");
-	const [newPasswordConfirmation, setNewPasswordConfirmation] = React.useState("");
 
-	const updatePasswordRequestState = Async.useAsync({
-		deferFn: api.auth.updatePassword,
-		onResolve: () => {
-			setStatus("success");
-		},
-		onReject: () => {
-			setStatus("error");
-			triggerErrorNotification("Couldn't update password.");
-		},
-	});
+	const [oldPassword, setOldPassword] = React.useState<UpdatePasswordPayload["old_password"]>("");
+	const [newPassword, setNewPassword] = React.useState<UpdatePasswordPayload["password"]>("");
+	const [newPasswordConfirmation, setNewPasswordConfirmation] = React.useState<
+		UpdatePasswordPayload["password_confirmation"]
+	>("");
 
-	const {getArgErrorMessage, errorCode} = getRequestStateErrors(updatePasswordRequestState);
+	const [updatePassword, updatePasswordRequestState] = useMutation<unknown, UpdatePasswordPayload>(
+		api.auth.updatePassword,
+		{
+			onError: () => {
+				triggerErrorNotification("Couldn't update password.");
+			},
+		},
+	);
+
+	const {getArgErrorMessage, errorCode} = _getRequestStateErrors(updatePasswordRequestState);
 
 	const oldPasswordInlineError = getArgErrorMessage("old_password");
 
@@ -169,8 +166,11 @@ const ChangePassword = () => {
 			as="form"
 			onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 				event.preventDefault();
-				setStatus("pending");
-				updatePasswordRequestState.run(oldPassword, newPassword, newPasswordConfirmation);
+				updatePassword({
+					old_password: oldPassword,
+					password: newPassword,
+					password_confirmation: newPasswordConfirmation,
+				});
 			}}
 			p="24"
 			bw="2"
@@ -184,7 +184,7 @@ const ChangePassword = () => {
 				You won't be logged out, remember to input the new password the next time.
 			</UI.InfoBanner>
 
-			{["idle", "pending", "error"].includes(status) && (
+			{["idle", "loading", "error"].includes(updatePasswordRequestState.status) && (
 				<>
 					<UI.Field mb="12">
 						<UI.Label htmlFor="old_password">Old password</UI.Label>
@@ -197,9 +197,9 @@ const ChangePassword = () => {
 							type="password"
 							required
 							pattern=".{6,}"
-							disabled={updatePasswordRequestState.isPending}
+							disabled={updatePasswordRequestState.status === "loading"}
 						/>
-						{status === "error" && oldPasswordInlineError && (
+						{updatePasswordRequestState.status === "error" && oldPasswordInlineError && (
 							<UI.Error>{oldPasswordInlineError}</UI.Error>
 						)}
 					</UI.Field>
@@ -215,7 +215,7 @@ const ChangePassword = () => {
 							type="password"
 							required
 							pattern=".{6,}"
-							disabled={updatePasswordRequestState.isPending}
+							disabled={updatePasswordRequestState.status === "loading"}
 						/>
 					</UI.Field>
 
@@ -230,7 +230,7 @@ const ChangePassword = () => {
 							value={newPasswordConfirmation}
 							onChange={event => setNewPasswordConfirmation(event.target.value)}
 							required
-							disabled={updatePasswordRequestState.isPending}
+							disabled={updatePasswordRequestState.status === "loading"}
 						/>
 					</UI.Field>
 
@@ -242,9 +242,11 @@ const ChangePassword = () => {
 				</>
 			)}
 
-			{status === "error" && internalServerError && <UI.Error>{internalServerError}</UI.Error>}
+			{updatePasswordRequestState.status === "error" && internalServerError && (
+				<UI.Error>{internalServerError}</UI.Error>
+			)}
 
-			{status === "success" && (
+			{updatePasswordRequestState.status === "success" && (
 				<UI.SuccessBanner crossAxisSelf="start" size="big" mt="24">
 					<UI.Text ml="6">Password changed successfully!</UI.Text>
 				</UI.SuccessBanner>
