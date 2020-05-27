@@ -161,3 +161,9 @@ export type DashboardHabitVoteStatsForDateRanges = {
 	lastWeek: DashboardHabitVoteStats;
 	lastMonth: DashboardHabitVoteStats;
 }
+
+// ===========
+
+// Token
+
+export type Token = string;
