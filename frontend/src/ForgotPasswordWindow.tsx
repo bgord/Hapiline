@@ -1,16 +1,21 @@
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
 import {api} from "./services/api";
+import {User} from "./interfaces/index";
 
 export const ForgotPasswordWindow: React.FC = () => {
-	const [email, setEmail] = React.useState("");
+	const [email, setEmail] = React.useState<User["email"]>("");
 
-	const forgotPasswordRequestState = Async.useAsync({
-		deferFn: api.auth.forgotPassword,
-		onResolve: () => setEmail(""),
-	});
+	const [forgotPassword, forgotPasswordRequestState] = useMutation<unknown, User["email"]>(
+		api.auth.forgotPassword,
+		{onSuccess: resetEmailField},
+	);
+
+	function resetEmailField() {
+		setEmail("");
+	}
 
 	return (
 		<UI.Card py="48" px="24" mx="auto" mt="72">
@@ -18,7 +23,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					forgotPasswordRequestState.run(email);
+					forgotPassword(email);
 				}}
 			>
 				<UI.Header>Forgot password</UI.Header>
@@ -40,18 +45,18 @@ export const ForgotPasswordWindow: React.FC = () => {
 					<UI.Button
 						variant="primary"
 						type="submit"
-						disabled={forgotPasswordRequestState.isPending}
+						disabled={forgotPasswordRequestState.status === "loading"}
 						style={{width: "125px"}}
 					>
-						{forgotPasswordRequestState.isPending ? "Loading..." : "Send email"}
+						{forgotPasswordRequestState.status === "loading" ? "Loading..." : "Send email"}
 					</UI.Button>
 				</UI.Row>
 
-				<Async.IfFulfilled state={forgotPasswordRequestState}>
+				{forgotPasswordRequestState.status === "success" && (
 					<UI.SuccessBanner mt="24">
 						<UI.Text ml="12">Email sent if an account exists.</UI.Text>
 					</UI.SuccessBanner>
-				</Async.IfFulfilled>
+				)}
 			</UI.Column>
 		</UI.Card>
 	);
