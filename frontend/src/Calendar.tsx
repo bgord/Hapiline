@@ -28,6 +28,9 @@ export const Calendar: React.FC = () => {
 	const getMonthRequestState = useQuery<DayStatsFromServer[], ["month", MonthOffset]>({
 		queryKey: ["month", monthOffset],
 		queryFn: api.calendar.getMonth,
+		config: {
+			staleTime: 60 * 1000, // 1 minute
+		},
 	});
 
 	const {errorMessage} = _getRequestStateErrors(getMonthRequestState);
@@ -100,7 +103,7 @@ export const Calendar: React.FC = () => {
 				{dayCellsWithStats.map(props => (
 					<Day
 						key={props.day.toString()}
-						refreshCalendar={getMonthRequestState.refetch}
+						refreshCalendar={() => getMonthRequestState.refetch({force: true})}
 						{...props}
 					/>
 				))}
