@@ -8,7 +8,7 @@ import {
 	NewHabitPayload,
 	DayVote,
 	HabitVote,
-	ChartDateRangeType,
+	HabitVoteChartDateRangeType,
 } from "../interfaces/index";
 
 export const getHabitsRequest = async (_key: "all_habits") =>
@@ -35,11 +35,11 @@ export const addHabitDayVoteRequest: Async.DeferFn<void> = ([habitDayVotePayload
 export const getHabitVoteChartRequest = (
 	_key: "habit_chart",
 	id: Habit["id"],
-	chartDateRange: ChartDateRangeType,
+	habitVoteChartDateRange: HabitVoteChartDateRangeType,
 ) =>
 	_internal_api
 		// TODO: Refactor the endpoint so that it accepts `chartDateRange` in place of `dateRange`
-		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange: chartDateRange}))
+		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange: habitVoteChartDateRange}))
 		.then(response => response.data);
 
 export const updateVoteCommentRequest: Async.DeferFn<HabitVote> = ([id, comment]) =>

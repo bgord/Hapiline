@@ -8,20 +8,20 @@ import {
 	Habit,
 	DayVote,
 	voteToBgColor,
-	ChartDateRangeType,
-	ChartDateRanges,
+	HabitVoteChartDateRangeType,
+	HabitVoteChartDateRanges,
 } from "./interfaces/index";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";
 
 export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
-	const [dateRange, setChartRange] = React.useState<ChartDateRangeType>("last_week");
+	const [dateRange, setChartRange] = React.useState<HabitVoteChartDateRangeType>("last_week");
 	const triggerErrorNotification = useErrorToast();
 
 	const habitVoteChartRequestState = useQuery<
 		DayVote[],
-		["habit_chart", Habit["id"], ChartDateRangeType]
+		["habit_chart", Habit["id"], HabitVoteChartDateRangeType]
 	>({
 		queryKey: ["habit_chart", id, dateRange],
 		queryFn: api.habit.getHabitVoteChart,
@@ -137,6 +137,6 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 	);
 };
 
-function isChartRange(value: string): value is ChartDateRangeType {
-	return Object.keys(ChartDateRanges).includes(value);
+function isChartRange(value: string): value is HabitVoteChartDateRangeType {
+	return Object.keys(HabitVoteChartDateRanges).includes(value);
 }
