@@ -21,10 +21,14 @@ export type Habit = habits;
 export type HabitWithPossibleHabitVote = Habit & {
   vote: Nullable<HabitVote>;
 }
-export type DetailedHabit = habits & {
+
+export type HabitStreaks = {
   progress_streak: number;
   regress_streak: number;
-};
+}
+
+export type DetailedHabit = Habit & HabitStreaks;
+
 export type NewHabitPayload = Omit<
   Habit,
   "id" | "created_at" | "updated_at" | "order"
@@ -118,3 +122,23 @@ export interface DayStatsFromServer {
 export type DayCellWithFullStats = DayCell & DayStatsFromServer & {
   noVotesCountStats: number;
 };
+
+// ===========
+
+// Dashboard
+
+export type DashboardStreakStats = {
+	progress_streaks: {
+		id: Habit["id"];
+		name: Habit["name"];
+		created_at: Habit["created_at"];
+		progress_streak: HabitStreaks["progress_streak"];
+	}[];
+
+	regress_streaks: {
+		id: Habit["id"];
+		name: Habit["name"];
+		created_at: Habit["created_at"];
+		regress_streak: HabitStreaks["regress_streak"];
+	}[];
+}
