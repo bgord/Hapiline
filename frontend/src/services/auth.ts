@@ -29,8 +29,8 @@ export const newPasswordRequest = async (newPasswordPayload: NewPasswordPayload)
 export const registrationRequest = (newUserPayload: NewUserPayload) =>
 	_internal_api.post("/register", newUserPayload);
 
-export const isLoggedInRequest: Async.PromiseFn<UserProfile> = () =>
-	_internal_api.get("/me").then(response => response.data);
+export const isLoggedInRequest = (_key: "is_logged_in") =>
+	_internal_api.get<UserProfile>("/me").then(response => response.data);
 
 export const deleteAccountRequest: Async.DeferFn<void> = () => _internal_api.delete("/account");
 

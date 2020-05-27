@@ -1,4 +1,4 @@
-import * as Async from "react-async";
+import {useQuery} from "react-query";
 import React from "react";
 
 import * as UI from "../ui";
@@ -16,22 +16,23 @@ export const AuthProvider: React.FC = props => {
 	const [userProfile, setUserProfile] = React.useState<UserProfile | null>(null);
 	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
 
-	const {isSettled, data, isPending, isRejected} = Async.useAsync({
-		promiseFn: api.auth.isLoggedIn,
+	const isLoggedInRequest = useQuery<UserProfile, "is_logged_in">({
+		queryKey: "is_logged_in",
+		queryFn: api.auth.isLoggedIn,
 	});
 
 	React.useLayoutEffect(() => {
-		if (isSettled) {
+		if (["success", "error"].includes(isLoggedInRequest.status)) {
 			setFirstAttemptFinished(true);
-			setUserProfile(data || null);
+			setUserProfile(isLoggedInRequest.data ?? null);
 		}
-	}, [isSettled, data]);
+	}, [isLoggedInRequest.status, isLoggedInRequest.data]);
 
-	if (!firstAttemptFinished && isPending) {
+	if (!firstAttemptFinished && isLoggedInRequest.status === "loading") {
 		return <UI.Text>Loading...</UI.Text>;
 	}
 
-	if (!firstAttemptFinished && isRejected) {
+	if (!firstAttemptFinished && isLoggedInRequest.status === "error") {
 		return <div>Something went wrong</div>;
 	}
 
