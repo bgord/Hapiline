@@ -35,7 +35,7 @@ export const updateVoteCommentRequest: Async.DeferFn<HabitVote> = ([id, comment]
 		.patch<HabitVote>(`vote/${id}/comment`, {comment})
 		.then(response => response.data);
 
-export const getHabitVoteCommentsRequest: Async.PromiseFn<HabitVote[]> = ({habitId}) =>
+export const getHabitVoteCommentsRequest = (_key: "comments", habitId: Habit["id"]) =>
 	_internal_api
-		.get<HabitVote[]>(constructUrl("/comments", {habitId}))
+		.get<HabitVote[]>(constructUrl("/comments", {habitId: String(habitId)}))
 		.then(response => response.data);
