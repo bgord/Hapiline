@@ -1,6 +1,7 @@
 import {AlertDialog, AlertDialogLabel} from "@reach/alert-dialog";
 import {useHistory} from "react-router-dom";
 import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
@@ -257,10 +258,9 @@ const DeleteAccount = () => {
 	const triggerErrorNotification = useErrorToast();
 	const history = useHistory();
 
-	const deleteAccountRequestState = Async.useAsync({
-		deferFn: api.auth.deleteAccount,
-		onResolve: () => history.push("/logout"),
-		onReject: () => {
+	const [deleteAccount, deleteAccountRequestState] = useMutation(api.auth.deleteAccount, {
+		onSuccess: () => history.push("/logout"),
+		onError: () => {
 			setStatus("error");
 			triggerErrorNotification("Couldn't delete account.");
 		},
@@ -268,7 +268,7 @@ const DeleteAccount = () => {
 
 	function confirmDeletion() {
 		setStatus("pending");
-		deleteAccountRequestState.run();
+		deleteAccount();
 	}
 	return (
 		<UI.Column p="24">
@@ -283,16 +283,16 @@ const DeleteAccount = () => {
 			<UI.Button
 				mt="24"
 				variant="danger"
-				disabled={deleteAccountRequestState.isPending}
+				disabled={deleteAccountRequestState.status === "loading"}
 				onClick={() => setStatus("editing")}
 				mr="auto"
 			>
 				Delete account
 			</UI.Button>
 
-			<Async.IfRejected state={deleteAccountRequestState}>
+			{deleteAccountRequestState.status === "error" && (
 				<UI.Error mt="12">An error occurred during account deletion.</UI.Error>
-			</Async.IfRejected>
+			)}
 
 			{status === "editing" && (
 				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>

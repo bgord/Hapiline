@@ -32,7 +32,7 @@ export const registrationRequest = (newUserPayload: NewUserPayload) =>
 export const isLoggedInRequest = (_key: "is_logged_in") =>
 	_internal_api.get<UserProfile>("/me").then(response => response.data);
 
-export const deleteAccountRequest: Async.DeferFn<void> = () => _internal_api.delete("/account");
+export const deleteAccountRequest = async () => _internal_api.delete("/account");
 
 export const changeEmailRequest: Async.DeferFn<void> = ([newEmail, password]: string[]) =>
 	_internal_api.post("/change-email", {
