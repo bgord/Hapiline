@@ -3,7 +3,7 @@ import * as Async from "react-async";
 import {_internal_api} from "./api";
 import {Notification, DraftNotificationPayload} from "../interfaces/index";
 
-export const getNotificationsRequest: Async.PromiseFn<Notification[]> = () =>
+export const getNotificationsRequest = (_key: "notifications") =>
 	_internal_api.get<Notification[]>("/notifications").then(response => response.data);
 
 export const updateNotificationRequest: Async.DeferFn<Notification> = ([
