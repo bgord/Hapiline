@@ -14,7 +14,7 @@ export const forgotPasswordRequest = (email: User["email"]) =>
 		email,
 	});
 
-export const logoutRequest: Async.PromiseFn<void> = async () => _internal_api.post("/logout");
+export const logoutRequest = async () => _internal_api.post("/logout");
 
 export const newPasswordRequest: Async.DeferFn<void> = async ([
 	token,

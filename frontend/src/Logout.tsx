@@ -1,5 +1,5 @@
 import {useHistory} from "react-router-dom";
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
@@ -9,12 +9,17 @@ import {useUserProfile} from "./contexts/auth-context";
 export const Logout: React.FC = () => {
 	const history = useHistory();
 	const [, setUserProfile] = useUserProfile();
-	Async.useAsync({
-		promiseFn: api.auth.logout,
-		onResolve: () => {
-			if (setUserProfile) setUserProfile(null);
+
+	const [logout] = useMutation(api.auth.logout, {
+		onSettled: () => {
+			setUserProfile?.(null);
 			history.push("/");
 		},
 	});
+
+	React.useEffect(() => {
+		logout();
+	}, []);
+
 	return <UI.Text>Logging out</UI.Text>;
 };
