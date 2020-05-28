@@ -29,24 +29,22 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 				Vote comments
 			</UI.Header>
 
-			{getHabitVoteCommentsRequestState.status === "error" && (
+			<UI.ShowIf request={getHabitVoteCommentsRequestState} is="error">
 				<UI.ErrorBanner crossAxisSelf="start">Couldn't fetch vote comments.</UI.ErrorBanner>
-			)}
+			</UI.ShowIf>
 
-			{getHabitVoteCommentsRequestState.status === "success" && (
-				<>
-					{voteComments.length === 0 && (
-						<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
-					)}
-					{voteComments.length > 0 && (
-						<>
-							{voteComments.map(voteComment => (
-								<HabitVoteComment key={voteComment.id} {...voteComment} />
-							))}
-						</>
-					)}
-				</>
-			)}
+			<UI.ShowIf request={getHabitVoteCommentsRequestState} is="success">
+				{voteComments.length === 0 && (
+					<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
+				)}
+				{voteComments.length > 0 && (
+					<>
+						{voteComments.map(voteComment => (
+							<HabitVoteComment key={voteComment.id} {...voteComment} />
+						))}
+					</>
+				)}
+			</UI.ShowIf>
 		</>
 	);
 };
