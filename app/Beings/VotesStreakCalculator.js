@@ -6,14 +6,24 @@ class VotesStreakCalculator {
 	}
 
 	calculate(type) {
+		// By default, there's no streak
 		let streak = 0;
 
+		// The votes array looks like that (sorted by day)
+		// [
+		//  { day: 2020-05-28T00:00:00.000Z, vote: null},
+		//  { day: 2020-05-27T00:00:00.000Z, vote: 'progress'},
+		// ...
+		// ]
 		for (const [index, vote] of this.votes.entries()) {
+			//
 			if (index === 0 && vote !== HABIT_VOTE_TYPES[type]) {
 				break;
 			} else if (vote === HABIT_VOTE_TYPES[type]) {
 				streak++;
-			} else break;
+			} else {
+				break;
+			}
 		}
 
 		return streak;
