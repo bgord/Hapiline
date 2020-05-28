@@ -104,7 +104,7 @@ export const RegistrationWindow: React.FC = () => {
 					</UI.ErrorBanner>
 				</UI.ShowIf>
 
-				<UI.ShowIf request={registrationRequestState} is="success">
+				<UI.ShowIf request={registrationRequestState} is={["idle", "loading", "error"]}>
 					<UI.InfoBanner mt="48">
 						<UI.Text>
 							You will receive an account confirmation email with further instructions.
