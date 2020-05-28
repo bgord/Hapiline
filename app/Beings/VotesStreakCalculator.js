@@ -15,14 +15,18 @@ class VotesStreakCalculator {
 		//  { day: 2020-05-27T00:00:00.000Z, vote: 'progress'},
 		// ...
 		// ]
-		for (const [index, vote] of this.votes.entries()) {
-			//
-			if (index === 0 && vote !== HABIT_VOTE_TYPES[type]) {
-				break;
-			} else if (vote === HABIT_VOTE_TYPES[type]) {
+
+		// The algorithm is simple:
+		// - given streak counts if there are only votes of given type in a row,
+		//   without any interruptions
+		//
+		// - `null` and `plateau` votes reset the streaks
+		//
+		for (const vote of this.votes) {
+			if (vote === HABIT_VOTE_TYPES[type]) {
 				streak++;
 			} else {
-				break;
+				streak = 0;
 			}
 		}
 
