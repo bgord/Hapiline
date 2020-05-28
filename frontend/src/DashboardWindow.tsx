@@ -95,13 +95,12 @@ export const DashboardWindow = () => {
 				</UI.Button>
 			</UI.Row>
 			<UI.Column p="24">
-				{getDashboardStatsRequestState.status === "error" && (
+				<UI.ShowIf request={getDashboardStatsRequestState} is="error">
 					<UI.ErrorBanner mt="24">
 						Cannot load dashboard stats now, please try again.
 					</UI.ErrorBanner>
-				)}
-
-				{getDashboardStatsRequestState.status === "success" && (
+				</UI.ShowIf>
+				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<>
 						<UI.Row mt="24" mb="48">
 							<MotivationalText
@@ -147,11 +146,13 @@ export const DashboardWindow = () => {
 							</UI.Column>
 						)}
 					</>
-				)}
+				</UI.ShowIf>
 
-				{getDashboardStreakStatsRequestState.status === "loading" && <UI.Text>Loading...</UI.Text>}
+				<UI.ShowIf request={getDashboardStatsRequestState} is="loading">
+					<UI.Text>Loading...</UI.Text>
+				</UI.ShowIf>
 
-				{getDashboardStreakStatsRequestState.status === "success" && (
+				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<>
 						{regressStreakStats.length > 0 && (
 							<>
@@ -214,7 +215,8 @@ export const DashboardWindow = () => {
 							</>
 						)}
 					</>
-				)}
+				</UI.ShowIf>
+
 				{subview === "day_preview" && (
 					<DayDialog
 						day={currentDate}
