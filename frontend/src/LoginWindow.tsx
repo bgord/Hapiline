@@ -18,7 +18,9 @@ export const LoginWindow: React.FC = () => {
 
 	const [login, loginRequestState] = useMutation<UserProfile, LoginPayload>(api.auth.login, {
 		onSuccess: userProfile => {
-			setUserProfile?.(userProfile);
+			if (setUserProfile) {
+				setUserProfile(userProfile);
+			}
 			history.push("/dashboard");
 		},
 	});

@@ -17,7 +17,7 @@ export const EmailVerificationWindow = () => {
 	// as it shouldn't be updated manually via URL.
 	React.useEffect(() => {
 		verifyEmail(token ?? "");
-	}, []);
+	}, [verifyEmail, token]);
 
 	return (
 		<>

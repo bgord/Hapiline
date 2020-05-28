@@ -69,6 +69,8 @@ export const HabitStrengths: { [key in HabitStrengthType]: HabitStrengthType } =
     developing: "developing",
     fresh: "fresh",
   };
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function isHabitStrength(value: any): value is Habit["strength"] {
   const possibleHabitStrengthValues = Object.keys(HabitStrengths);
 
@@ -88,6 +90,8 @@ export const HabitScores: { [key in HabitScoreType]: HabitScoreType } = {
   neutral: "neutral",
   negative: "negative",
 };
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function isHabitScore(value: any): value is Habit["score"] {
   const possibleHabitScoresValues = Object.keys(HabitScores);
 

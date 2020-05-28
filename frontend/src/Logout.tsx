@@ -12,14 +12,16 @@ export const Logout: React.FC = () => {
 
 	const [logout] = useMutation(api.auth.logout, {
 		onSettled: () => {
-			setUserProfile?.(null);
+			if (setUserProfile) {
+				setUserProfile(null);
+			}
 			history.push("/");
 		},
 	});
 
 	React.useEffect(() => {
 		logout();
-	}, []);
+	}, [logout]);
 
 	return <UI.Text>Logging out</UI.Text>;
 };

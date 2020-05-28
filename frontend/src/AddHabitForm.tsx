@@ -55,6 +55,18 @@ export const AddHabitForm: React.FC = () => {
 		updateQueryParams("habits", {});
 	}
 
+	function safeSetScore(event: React.ChangeEvent<HTMLSelectElement>) {
+		if (isHabitScore(event.target.value)) {
+			setScore(event.target.value);
+		}
+	}
+
+	function safeSetStrength(event: React.ChangeEvent<HTMLSelectElement>) {
+		if (isHabitStrength(event.target.value)) {
+			setStrength(event.target.value);
+		}
+	}
+
 	return (
 		<Dialog data-pt="12" data-pb="48" aria-label="Add new habit" onDismiss={hideAddFormDialog}>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
@@ -94,16 +106,8 @@ export const AddHabitForm: React.FC = () => {
 							name="score"
 							required
 							value={score}
-							onChange={event => {
-								if (isHabitScore(event.target.value)) {
-									setScore(event.target.value);
-								}
-							}}
-							onBlur={event => {
-								if (isHabitScore(event.target.value)) {
-									setScore(event.target.value);
-								}
-							}}
+							onChange={safeSetScore}
+							onBlur={safeSetScore}
 						>
 							<option value="positive">positive</option>
 							<option value="neutral">neutral</option>
@@ -117,16 +121,8 @@ export const AddHabitForm: React.FC = () => {
 							name="strength"
 							required
 							value={strength}
-							onChange={event => {
-								if (isHabitStrength(event.target.value)) {
-									setStrength(event.target.value);
-								}
-							}}
-							onBlur={event => {
-								if (isHabitStrength(event.target.value)) {
-									setStrength(event.target.value);
-								}
-							}}
+							onChange={safeSetStrength}
+							onBlur={safeSetStrength}
 						>
 							<option value="established">established</option>
 							<option value="developing">developing</option>
