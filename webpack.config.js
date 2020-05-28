@@ -2,6 +2,7 @@
 
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
+const webpack = require("webpack");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {CheckerPlugin} = require("awesome-typescript-loader");
@@ -41,6 +42,11 @@ module.exports = (_env, argv) => {
 			}),
 			new CheckerPlugin(),
 			new Dotenv({path: dev ? ".env-frontend" : ".env-frontend.prod"}),
+			new webpack.DefinePlugin({
+				__BUILD_VERSION__: JSON.stringify(process.env.npm_package_version),
+				__BUILD_DATE__: JSON.stringify(new Date()),
+				__ENVIRONMENT__: JSON.stringify(dev ? "development" : "production"),
+			}),
 		],
 		devtool: dev ? "source-map" : "",
 		devServer: {
