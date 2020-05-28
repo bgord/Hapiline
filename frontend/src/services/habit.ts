@@ -11,6 +11,7 @@ import {
 	HabitVoteChartDateRangeType,
 	DraftHabitPayload,
 	HabitVotePayload,
+	HabitVoteCommentPayload,
 } from "../interfaces/index";
 
 export const getHabitsRequest = async (_key: "all_habits") =>
@@ -44,7 +45,7 @@ export const getHabitVoteChartRequest = (
 		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange: habitVoteChartDateRange}))
 		.then(response => response.data);
 
-export const updateVoteCommentRequest: Async.DeferFn<HabitVote> = ([id, comment]) =>
+export const updateVoteCommentRequest = ({id, comment}: HabitVoteCommentPayload) =>
 	_internal_api
 		.patch<HabitVote>(`vote/${id}/comment`, {comment})
 		.then(response => response.data);

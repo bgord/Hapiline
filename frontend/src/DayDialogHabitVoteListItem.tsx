@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom";
-import * as Async from "react-async";
 import {useMutation} from "react-query";
 import React from "react";
 
@@ -15,6 +14,7 @@ import {
 	HabitWithPossibleHabitVote,
 	HabitVotePayload,
 	HabitVote,
+	HabitVoteCommentPayload,
 } from "./interfaces/index";
 import * as UI from "./ui";
 import {api} from "./services/api";
@@ -53,31 +53,28 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	);
 
 	const upsertCommentResponseHandlers = {
-		onResolve: () => {
+		onSuccess: () => {
 			triggerSuccessNotification("Comment added successfully!");
 			textarea.setIdle();
 			onResolve();
 		},
-		onReject: () => triggerErrorNotification("Couldn't add comment"),
+		onError: () => triggerErrorNotification("Couldn't add comment"),
 	};
 
-	const updateVoteCommentRequestState = Async.useAsync({
-		deferFn: api.habit.updateVoteComment,
-		...upsertCommentResponseHandlers,
-	});
+	const [updateVoteComment] = useMutation<HabitVote, HabitVoteCommentPayload>(
+		api.habit.updateVoteComment,
+		upsertCommentResponseHandlers,
+	);
 
 	const [addEmptyHabitDayVote] = useMutation<HabitVote, HabitVotePayload>(
 		api.habit.addHabitDayVote,
-		{
-			onSuccess: upsertCommentResponseHandlers.onResolve,
-			onError: upsertCommentResponseHandlers.onReject,
-		},
+		upsertCommentResponseHandlers,
 	);
 
 	const [newComment, newCommentHelpers] = useEditableFieldValue(
 		changedComment => {
 			if (habitWithPossibleVote.vote?.id) {
-				updateVoteCommentRequestState.run(habitWithPossibleVote.vote.id, changedComment);
+				updateVoteComment({id: habitWithPossibleVote.vote.id, comment: changedComment});
 			} else {
 				addEmptyHabitDayVote({
 					day: new Date(day),
