@@ -1,6 +1,5 @@
 import {DragDropContext, Droppable, DropResult} from "react-beautiful-dnd";
-import * as Async from "react-async";
-import {queryCache} from "react-query";
+import {queryCache, useMutation} from "react-query";
 import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
@@ -18,7 +17,7 @@ import {useToggle} from "./hooks/useToggle";
 import {FilterIcon} from "./ui/icons/Filter";
 import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {Habit} from "./interfaces/index";
+import {Habit, ReorderHabitPayload} from "./interfaces/index";
 
 export const HabitsWindow = () => {
 	const getHabitsRequestState = useHabitsState();
@@ -33,10 +32,9 @@ export const HabitsWindow = () => {
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const reorderHabitsRequestState = Async.useAsync({
-		deferFn: api.habit.reorder,
-		onResolve: () => triggerSuccessNotification("Habits reordered successfully!"),
-		onReject: () => triggerErrorNotification("Error while changing order."),
+	const [reorderHabits] = useMutation<unknown, ReorderHabitPayload[]>(api.habit.reorder, {
+		onSuccess: () => triggerSuccessNotification("Habits reordered successfully!"),
+		onError: () => triggerErrorNotification("Error while changing order."),
 	});
 
 	const [, updateSubviewQueryParam] = useQueryParam("subview");
@@ -70,7 +68,7 @@ export const HabitsWindow = () => {
 			index,
 		}));
 
-		reorderHabitsRequestState.run({habits: reorderHabitsPayload});
+		reorderHabits(reorderHabitsPayload);
 
 		const _reorderedHabits: AsyncReturnType<typeof api.habit.get> = reorderedHabits;
 		queryCache.setQueryData("all_habits", _reorderedHabits);

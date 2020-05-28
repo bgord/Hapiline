@@ -52,13 +52,14 @@ export type NewHabitPayload = Omit<
   Habit,
   "id" | "created_at" | "updated_at" | "order"
 >;
-// export type DraftHabitPayload = Pick<
-//   Habit,
-//   "id" | "description" | "name" | "score" | "strength"
-// >;
 
 export type DraftHabitPayload = Partial<Pick<Habit, "id" | "description" | "name" | "score" | "strength">> & {
   id: Habit["id"];
+}
+
+export type ReorderHabitPayload = {
+  id: Habit["id"];
+  index: Habit["order"];
 }
 
 export type { HabitStrength as HabitStrengthType } from "@prisma/client";
