@@ -24,10 +24,10 @@ test("it works as expected", async ({assert}) => {
 			HABIT_VOTE_TYPES.regress,
 		],
 
-		// `null` vote resets the streak if today has a non-null vote
+		// `null` vote resets the streak if today has a non-null breaking vote
 		[
-			[HABIT_VOTE_TYPES.progress, null, HABIT_VOTE_TYPES.progress, HABIT_VOTE_TYPES.progress],
-			1,
+			[HABIT_VOTE_TYPES.regress, null, HABIT_VOTE_TYPES.progress, HABIT_VOTE_TYPES.progress],
+			0,
 			HABIT_VOTE_TYPES.progress,
 		],
 
@@ -51,6 +51,76 @@ test("it works as expected", async ({assert}) => {
 			[null, null, HABIT_VOTE_TYPES.progress, HABIT_VOTE_TYPES.progress],
 			0,
 			HABIT_VOTE_TYPES.progress,
+		],
+
+		// One `null` in between desired values doesn't break the streak
+		[
+			[HABIT_VOTE_TYPES.progress, null, HABIT_VOTE_TYPES.progress, HABIT_VOTE_TYPES.progress],
+			3,
+			HABIT_VOTE_TYPES.progress,
+		],
+
+		// Two `null`s in between desired values break the streak
+		[
+			[HABIT_VOTE_TYPES.progress, null, null, HABIT_VOTE_TYPES.progress],
+			1,
+			HABIT_VOTE_TYPES.progress,
+		],
+
+		// Two `null`s in between desired values break the streak
+		[
+			[HABIT_VOTE_TYPES.regress, null, null, HABIT_VOTE_TYPES.progress],
+			0,
+			HABIT_VOTE_TYPES.progress,
+		],
+
+		// One `plateau` in between desired values doesn't break the streak
+		[
+			[
+				HABIT_VOTE_TYPES.progress,
+				HABIT_VOTE_TYPES.plateau,
+				HABIT_VOTE_TYPES.progress,
+				HABIT_VOTE_TYPES.progress,
+			],
+			3,
+			HABIT_VOTE_TYPES.progress,
+		],
+
+		// Two `plateau`s in between desired values break the streak
+		[
+			[
+				HABIT_VOTE_TYPES.progress,
+				HABIT_VOTE_TYPES.plateau,
+				HABIT_VOTE_TYPES.plateau,
+				HABIT_VOTE_TYPES.progress,
+			],
+			1,
+			HABIT_VOTE_TYPES.progress,
+		],
+
+		// Two `plateau`s in between desired values break the streak
+		[
+			[
+				HABIT_VOTE_TYPES.regress,
+				HABIT_VOTE_TYPES.plateau,
+				HABIT_VOTE_TYPES.plateau,
+				HABIT_VOTE_TYPES.progress,
+			],
+			0,
+			HABIT_VOTE_TYPES.progress,
+		],
+
+		[
+			[HABIT_VOTE_TYPES.regress, null, HABIT_VOTE_TYPES.plateau, HABIT_VOTE_TYPES.regress],
+			1,
+			HABIT_VOTE_TYPES.regress,
+		],
+
+		// `null` today doesn't break the streak if there's a correct vote the day before
+		[
+			[null, HABIT_VOTE_TYPES.plateau, HABIT_VOTE_TYPES.regress, HABIT_VOTE_TYPES.regress],
+			0,
+			HABIT_VOTE_TYPES.regress,
 		],
 	];
 

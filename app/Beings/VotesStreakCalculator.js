@@ -18,20 +18,30 @@ class VotesStreakCalculator {
 		// ...
 		// ]
 
-		// The algorithm is simple:
+		// The algorithm:
 		// - given streak counts if there are only votes of given type in a row,
 		//   without any interruptions
 		//
 		// - `null` and `plateau` votes reset the streaks with a few exceptions:
-		//    - if today's vote is `null`
+		//    - if today's vote is `null` and the previous vote was correct
+		//    - PROGRESS null PROGRESS
+		//    - PROGRESS PLATEAU PROGRESS
 		//
 		for (const [index, vote] of this.votes.entries()) {
 			// If todays' vote is `null`, it doesn't reset the streak
-			const isNullVoteForToday = index === this.votes.length - 1 && vote === null;
+			const isNullVoteForToday =
+				index === this.votes.length - 1 && vote === null && this.votes[index - 1] === type;
+
+			// don't break PROGRESS null PROGRESS
+			const nullIsAfterDesiredType = vote === null && this.votes[index - 1] === type;
+
+			// don't break PROGRESS PLATEAU PROGRESS
+			const plateauIsAfterDesiredType =
+				vote === HABIT_VOTE_TYPES.plateau && this.votes[index - 1] === type;
 
 			if (vote === HABIT_VOTE_TYPES[type]) {
 				streak++;
-			} else if (isNullVoteForToday) {
+			} else if (isNullVoteForToday || nullIsAfterDesiredType || plateauIsAfterDesiredType) {
 				continue;
 			} else {
 				streak = 0;
