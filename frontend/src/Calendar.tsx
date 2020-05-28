@@ -96,9 +96,9 @@ export const Calendar: React.FC = () => {
 				</UI.Button>
 			</UI.Row>
 
-			{getMonthRequestState.status === "error" && (
+			<UI.ShowIf request={getMonthRequestState} is="error">
 				<UI.ErrorBanner my="24">{errorMessage}</UI.ErrorBanner>
-			)}
+			</UI.ShowIf>
 
 			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">
 				{dayCellsWithStats.map(props => (
