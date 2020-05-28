@@ -7,7 +7,6 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 test("it works as expected", async ({assert}) => {
 	const cases = [
 		// Votes are for: today, yesterday, day before yesterday, etc...
-
 		[[null, null, null], 0, HABIT_VOTE_TYPES.progress],
 
 		// Basic 3 straight days
