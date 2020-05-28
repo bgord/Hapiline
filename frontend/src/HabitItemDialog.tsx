@@ -18,7 +18,7 @@ import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {Habit, DetailedHabit, DraftHabitPayload} from "./interfaces/index";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
-import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
@@ -169,7 +169,7 @@ const EditableDescription: React.FC<{
 		description,
 	);
 
-	const {getArgErrorMessage} = _getRequestStateErrors(updateHabitDescriptionRequestState);
+	const {getArgErrorMessage} = getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
 	return (

@@ -3,7 +3,7 @@ import {useMutation} from "react-query";
 import React from "react";
 
 import {api} from "./services/api";
-import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
 import {UserProfile, LoginPayload} from "./interfaces/index";
 import * as UI from "./ui";
@@ -23,7 +23,7 @@ export const LoginWindow: React.FC = () => {
 		},
 	});
 
-	const {errorMessage} = _getRequestStateErrors(loginRequestState);
+	const {errorMessage} = getRequestStateErrors(loginRequestState);
 
 	return (
 		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>

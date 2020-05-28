@@ -4,7 +4,7 @@ import {useMutation} from "react-query";
 import React from "react";
 
 import {api} from "./services/api";
-import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useUserProfile} from "./contexts/auth-context";
@@ -53,7 +53,7 @@ const ChangeEmail: React.FC = () => {
 	);
 
 	const isNewEmailDifferent = newEmail !== "" && newEmail !== initialEmail;
-	const {errorCode, getArgErrorMessage} = _getRequestStateErrors(changeEmailRequestState);
+	const {errorCode, getArgErrorMessage} = getRequestStateErrors(changeEmailRequestState);
 
 	const passwordInlineError = errorCode === "E_ACCESS_DENIED" ? "Invalid password." : null;
 	const emailInlineError = getArgErrorMessage("email");
@@ -152,7 +152,7 @@ const ChangePassword = () => {
 		},
 	);
 
-	const {getArgErrorMessage, errorCode} = _getRequestStateErrors(updatePasswordRequestState);
+	const {getArgErrorMessage, errorCode} = getRequestStateErrors(updatePasswordRequestState);
 
 	const oldPasswordInlineError = getArgErrorMessage("old_password");
 

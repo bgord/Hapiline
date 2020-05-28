@@ -3,7 +3,7 @@ import React from "react";
 
 import * as UI from "./ui";
 import {api} from "./services/api";
-import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {User, NewUserPayload} from "./interfaces/index";
 
 export const RegistrationWindow: React.FC = () => {
@@ -15,7 +15,7 @@ export const RegistrationWindow: React.FC = () => {
 		api.auth.register,
 	);
 
-	const {responseStatus, errorMessage, getArgErrorMessage} = _getRequestStateErrors(
+	const {responseStatus, errorMessage, getArgErrorMessage} = getRequestStateErrors(
 		registrationRequestState,
 	);
 	const emailInlineErrorMessage = getArgErrorMessage("email");

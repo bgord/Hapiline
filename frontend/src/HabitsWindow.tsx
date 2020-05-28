@@ -3,7 +3,7 @@ import {queryCache, useMutation} from "react-query";
 import React from "react";
 
 import {AddHabitForm} from "./AddHabitForm";
-import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import * as UI from "./ui";
 import {HabitListItem} from "./HabitListItem";
 import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStrengthFilter";
@@ -23,7 +23,7 @@ export const HabitsWindow = () => {
 	const getHabitsRequestState = useHabitsState();
 	const [subview] = useQueryParam("subview");
 
-	const {errorMessage} = _getRequestStateErrors(getHabitsRequestState);
+	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
 
 	useDocumentTitle("Hapiline - habit list");
 

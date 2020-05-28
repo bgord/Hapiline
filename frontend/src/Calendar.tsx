@@ -6,7 +6,7 @@ import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
-import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
@@ -33,7 +33,7 @@ export const Calendar: React.FC = () => {
 		},
 	});
 
-	const {errorMessage} = _getRequestStateErrors(getMonthRequestState);
+	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
 	const dayStatsFromServer = getMonthRequestState.data;
 

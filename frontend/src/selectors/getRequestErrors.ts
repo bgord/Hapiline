@@ -1,5 +1,4 @@
 import {AxiosResponse, AxiosError} from "axios";
-import * as Async from "react-async";
 import {QueryResult, MutationResult} from "react-query";
 
 type ApiError = AxiosError<IApiErrorInterface>;
@@ -49,11 +48,7 @@ export function getRequestErrors(_error: Error | undefined): IResponseError {
 	};
 }
 
-export function getRequestStateErrors<T>(state: Async.AsyncState<T>): IResponseError {
-	return getRequestErrors(state.error);
-}
-
-export function _getRequestStateErrors<T>(
+export function getRequestStateErrors<T>(
 	state: QueryResult<T> | MutationResult<T>,
 ): IResponseError {
 	return getRequestErrors(state.error as Error);

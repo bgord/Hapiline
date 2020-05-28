@@ -5,7 +5,7 @@ import React from "react";
 import * as UI from "./ui";
 import {NewPasswordPayload} from "./interfaces/index";
 import {api} from "./services/api";
-import {_getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
 export const NewPasswordWindow: React.FC = () => {
 	const {token} = useParams();
@@ -16,7 +16,7 @@ export const NewPasswordWindow: React.FC = () => {
 		api.auth.newPassword,
 	);
 
-	const {errorMessage} = _getRequestStateErrors(newPasswordRequestState);
+	const {errorMessage} = getRequestStateErrors(newPasswordRequestState);
 
 	return (
 		<UI.Card py="48" px="24" mx="auto" mt="72">

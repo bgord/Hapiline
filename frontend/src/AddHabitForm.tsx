@@ -6,7 +6,7 @@ import * as UI from "./ui";
 import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
-import {getRequestErrors, _getRequestStateErrors} from "./selectors/getRequestErrors";
+import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
@@ -47,7 +47,7 @@ export const AddHabitForm: React.FC = () => {
 		},
 	});
 
-	const {getArgErrorMessage, errorMessage} = _getRequestStateErrors(addHabitRequestState);
+	const {getArgErrorMessage, errorMessage} = getRequestStateErrors(addHabitRequestState);
 	const nameInlineErrorMessage = getArgErrorMessage("name");
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
