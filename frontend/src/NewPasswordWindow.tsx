@@ -72,7 +72,7 @@ export const NewPasswordWindow: React.FC = () => {
 					</UI.Button>
 				</UI.Row>
 
-				{newPasswordRequestState.status === "success" && (
+				<UI.ShowIf request={newPasswordRequestState} is="success">
 					<UI.SuccessBanner mt="24" size="big">
 						<UI.Column ml="12">
 							<UI.Text>Password has been changed!</UI.Text>
@@ -84,11 +84,11 @@ export const NewPasswordWindow: React.FC = () => {
 							</UI.Row>
 						</UI.Column>
 					</UI.SuccessBanner>
-				)}
+				</UI.ShowIf>
 
-				{newPasswordRequestState.status === "error" && (
+				<UI.ShowIf request={newPasswordRequestState} is="error">
 					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
-				)}
+				</UI.ShowIf>
 			</UI.Column>
 		</UI.Card>
 	);
