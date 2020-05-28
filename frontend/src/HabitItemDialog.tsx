@@ -63,15 +63,15 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					<UI.CloseIcon onClick={dismissDialog} />
 				</UI.Row>
 
-				{habitRequestState.status === "loading" && (
+				<UI.ShowIf request={habitRequestState} is="loading">
 					<UI.Text ml="24" mt="48">
 						Loading details...
 					</UI.Text>
-				)}
+				</UI.ShowIf>
 
-				{habitRequestState.status === "error" && (
+				<UI.ShowIf request={habitRequestState} is="error">
 					<UI.ErrorBanner m="24">Couldn't fetch task details, please try again.</UI.ErrorBanner>
-				)}
+				</UI.ShowIf>
 
 				{habit?.id && (
 					<UI.Column px="24">
