@@ -92,7 +92,8 @@ export const HabitsWindow = () => {
 	return (
 		<UI.Column>
 			{subview === "add_habit" && <AddHabitForm />}
-			{["error", "success"].includes(getHabitsRequestState.status) && (
+
+			<UI.ShowIf request={getHabitsRequestState} is={["error", "success"]}>
 				<UI.Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
 					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between">
 						<UI.Header variant="large">Habit list</UI.Header>
@@ -110,6 +111,7 @@ export const HabitsWindow = () => {
 							{areFiltersVisible ? "Hide filters" : "Show filters"}
 						</UI.Button>
 					</UI.Row>
+
 					{areFiltersVisible && (
 						<UI.Row mt="48" px="24" crossAxis="start">
 							<UI.Column pr="72" bw="2" br="gray-1">
@@ -201,6 +203,7 @@ export const HabitsWindow = () => {
 							</UI.Button>
 						</UI.Row>
 					)}
+
 					<UI.Row px="24" mb="24" mt="48" crossAxis="end">
 						<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
 						<UI.Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
@@ -217,24 +220,30 @@ export const HabitsWindow = () => {
 							New habit
 						</UI.Button>
 					</UI.Row>
+
 					<UI.Row mainAxis="end" mt="24" mb="24" px="24">
 						<UI.Text data-testid="habit-search-result-count">
 							<UI.Text variant="bold">{howManyResults}</UI.Text> results
 						</UI.Text>
 					</UI.Row>
-					{getHabitsRequestState.status === "success" && filteredHabits.length === 0 && (
-						<UI.InfoBanner size="big" mt="48" mx="24">
-							It seems you haven't added any habits yet.
-						</UI.InfoBanner>
-					)}
-					{getHabitsRequestState.status === "error" && (
+
+					<UI.ShowIf request={getHabitsRequestState} is="success">
+						{filteredHabits.length === 0 && (
+							<UI.InfoBanner size="big" mt="48" mx="24">
+								It seems you haven't added any habits yet.
+							</UI.InfoBanner>
+						)}
+					</UI.ShowIf>
+
+					<UI.ShowIf request={getHabitsRequestState} is="error">
 						<UI.ErrorBanner size="big" mt="48" mx="24">
 							{errorMessage}
 							<UI.Button onClick={() => getHabitsRequestState.refetch()} ml="24" variant="outlined">
 								Retry
 							</UI.Button>
 						</UI.ErrorBanner>
-					)}
+					</UI.ShowIf>
+
 					<DragDropContext onDragEnd={onDragEnd}>
 						<Droppable droppableId="habits">
 							{provided => (
@@ -254,13 +263,14 @@ export const HabitsWindow = () => {
 											index={index}
 										/>
 									))}
+
 									{provided.placeholder}
 								</UI.Column>
 							)}
 						</Droppable>
 					</DragDropContext>
 				</UI.Card>
-			)}
+			</UI.ShowIf>
 		</UI.Column>
 	);
 };

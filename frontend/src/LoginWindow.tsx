@@ -86,9 +86,9 @@ export const LoginWindow: React.FC = () => {
 					Forgot password?
 				</Link>
 
-				{loginRequestState.status === "error" && (
+				<UI.ShowIf request={loginRequestState} is="error">
 					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
-				)}
+				</UI.ShowIf>
 			</UI.Column>
 		</UI.Card>
 	);
