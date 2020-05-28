@@ -19,6 +19,9 @@ export const AuthProvider: React.FC = props => {
 	const isLoggedInRequest = useQuery<UserProfile, "is_logged_in">({
 		queryKey: "is_logged_in",
 		queryFn: api.auth.isLoggedIn,
+		config: {
+			retry: false,
+		},
 	});
 
 	React.useLayoutEffect(() => {

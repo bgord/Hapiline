@@ -17,6 +17,7 @@ export const HabitsProvider: React.FC = props => {
 		queryFn: api.habit.get,
 		config: {
 			onError: () => triggerErrorNotification("Couldn't fetch habit list."),
+			retry: false,
 		},
 	});
 

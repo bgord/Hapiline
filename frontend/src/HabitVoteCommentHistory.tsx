@@ -17,6 +17,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 		queryFn: api.habit.getHabitVoteComments,
 		config: {
 			onError: () => triggerErrorNotification("Couldn't fetch vote comments."),
+			retry: false,
 		},
 	});
 

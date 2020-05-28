@@ -32,7 +32,7 @@ export const HabitsWindow = () => {
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const [reorderHabits] = useMutation<unknown, ReorderHabitPayload[]>(api.habit.reorder, {
+	const [reorderHabits] = useMutation<unknown, {habits: ReorderHabitPayload[]}>(api.habit.reorder, {
 		onSuccess: () => triggerSuccessNotification("Habits reordered successfully!"),
 		onError: () => triggerErrorNotification("Error while changing order."),
 	});
@@ -68,7 +68,7 @@ export const HabitsWindow = () => {
 			index,
 		}));
 
-		reorderHabits(reorderHabitsPayload);
+		reorderHabits({habits: reorderHabitsPayload});
 
 		const _reorderedHabits: AsyncReturnType<typeof api.habit.get> = reorderedHabits;
 		queryCache.setQueryData("all_habits", _reorderedHabits);

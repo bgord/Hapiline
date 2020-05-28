@@ -26,7 +26,7 @@ export const RegistrationWindow: React.FC = () => {
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					register({email, password, passwordConfirmation});
+					register({email, password, password_confirmation: passwordConfirmation});
 				}}
 			>
 				<UI.Header>Register</UI.Header>

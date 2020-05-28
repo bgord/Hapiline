@@ -29,6 +29,7 @@ export const DashboardWindow = () => {
 		queryFn: api.stats.dashboard,
 		config: {
 			onError: () => triggerErrorNotification("Couldn't fetch dashboard stats."),
+			retry: false,
 		},
 	});
 
@@ -40,6 +41,7 @@ export const DashboardWindow = () => {
 		queryFn: api.stats.dashboardStreak,
 		config: {
 			onError: () => triggerErrorNotification("Couldn't fetch dashboard streak stats."),
+			retry: false,
 		},
 	});
 

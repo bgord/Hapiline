@@ -30,6 +30,7 @@ export const Calendar: React.FC = () => {
 		queryFn: api.calendar.getMonth,
 		config: {
 			staleTime: 60 * 1000, // 1 minute
+			retry: false,
 		},
 	});
 

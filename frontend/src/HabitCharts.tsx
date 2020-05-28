@@ -27,6 +27,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 		queryFn: api.habit.getHabitVoteChart,
 		config: {
 			onError: () => triggerErrorNotification("Fetching chart data failed."),
+			retry: false,
 		},
 	});
 

@@ -40,6 +40,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 		queryFn: api.habit.show,
 		config: {
 			onError: () => triggerErrorNotification("Fetching task details failed."),
+			retry: false,
 		},
 	});
 
