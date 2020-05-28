@@ -1,27 +1,33 @@
 import {useParams, Link} from "react-router-dom";
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
+import {Token} from "./interfaces/index";
 import * as UI from "./ui";
 import {api} from "./services/api";
 
 export const EmailVerificationWindow = () => {
 	const {token} = useParams();
 
-	const emailVerificationRequestState = Async.useAsync({
-		promiseFn: api.auth.verifyEmail,
-		token,
-	});
+	const [verifyEmail, emailVerificationRequestState] = useMutation<unknown, Token>(
+		api.auth.verifyEmail,
+	);
+
+	// Execute only on the first mount, and ignore all token changes
+	// as it shouldn't be updated manually via URL.
+	React.useEffect(() => {
+		verifyEmail(token ?? "");
+	}, [verifyEmail, token]);
 
 	return (
 		<>
-			<Async.IfPending state={emailVerificationRequestState}>
+			{emailVerificationRequestState.status === "loading" && (
 				<UI.Text mt="24" ml="12">
 					Verifying...
 				</UI.Text>
-			</Async.IfPending>
+			)}
 
-			<Async.IfFulfilled state={emailVerificationRequestState}>
+			{emailVerificationRequestState.status === "success" && (
 				<UI.Row mt="48" width="100%" mainAxis="center">
 					<UI.SuccessBanner size="big">
 						<UI.Text ml="12">Success! You can </UI.Text>
@@ -31,15 +37,15 @@ export const EmailVerificationWindow = () => {
 						<UI.Text> now.</UI.Text>
 					</UI.SuccessBanner>
 				</UI.Row>
-			</Async.IfFulfilled>
+			)}
 
-			<Async.IfRejected state={emailVerificationRequestState}>
+			{emailVerificationRequestState.status === "error" && (
 				<UI.Row mainAxis="center" width="100%">
 					<UI.ErrorBanner mt="48" size="big">
 						Invalid or expired token
 					</UI.ErrorBanner>
 				</UI.Row>
-			</Async.IfRejected>
+			)}
 		</>
 	);
 };

@@ -12,7 +12,26 @@ import {BadgeVariant} from "../ui/badge/Badge";
 
 // Users
 export type User = users;
+export type NewUserPayload = Pick<User, "email" | "password"> & {
+  password_confirmation: User["password"];
+};
 export type UserProfile = Pick<User, "id" | "email">;
+
+export type LoginPayload = Pick<User, "email" | "password">;
+export type NewPasswordPayload = {
+  token: Token;
+  password: User["password"];
+  passwordConfirmation: User["password"];
+}
+export type NewEmailPayload = {
+  newEmail: User["email"];
+  password: User["password"];
+}
+export type UpdatePasswordPayload = {
+	old_password: User["password"];
+	password: User["password"];
+	password_confirmation: User["password"];
+}
 
 // =============
 
@@ -21,14 +40,27 @@ export type Habit = habits;
 export type HabitWithPossibleHabitVote = Habit & {
   vote: Nullable<HabitVote>;
 }
-export type DetailedHabit = habits & {
+
+export type HabitStreaks = {
   progress_streak: number;
   regress_streak: number;
-};
+}
+
+export type DetailedHabit = Habit & HabitStreaks;
+
 export type NewHabitPayload = Omit<
   Habit,
   "id" | "created_at" | "updated_at" | "order"
 >;
+
+export type DraftHabitPayload = Partial<Pick<Habit, "id" | "description" | "name" | "score" | "strength">> & {
+  id: Habit["id"];
+}
+
+export type ReorderHabitPayload = {
+  id: Habit["id"];
+  index: Habit["order"];
+}
 
 export type { HabitStrength as HabitStrengthType } from "@prisma/client";
 export const HabitStrengths: { [key in HabitStrengthType]: HabitStrengthType } =
@@ -37,6 +69,8 @@ export const HabitStrengths: { [key in HabitStrengthType]: HabitStrengthType } =
     developing: "developing",
     fresh: "fresh",
   };
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function isHabitStrength(value: any): value is Habit["strength"] {
   const possibleHabitStrengthValues = Object.keys(HabitStrengths);
 
@@ -56,6 +90,8 @@ export const HabitScores: { [key in HabitScoreType]: HabitScoreType } = {
   neutral: "neutral",
   negative: "negative",
 };
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function isHabitScore(value: any): value is Habit["score"] {
   const possibleHabitScoresValues = Object.keys(HabitScores);
 
@@ -76,7 +112,13 @@ export type NotificationTypeStatus = NotificationType;
 // Votes
 
 export type HabitVote = habit_votes;
+
 export type HabitVoteType = Nullable<_HabitVoteType>;
+
+export type HabitVotePayload = Pick<HabitVote, "habit_id" | "vote" | "day" | "comment">
+
+export type HabitVoteCommentPayload = Pick<HabitVote, "id" | "comment">;
+
 export type DayVote = {
   day: HabitVote["day"];
   vote: HabitVoteType;
@@ -87,6 +129,15 @@ voteToBgColor.set("progress", "#8bdb90");
 voteToBgColor.set("plateau", "var(--gray-3)");
 voteToBgColor.set("regress", "#ef8790");
 voteToBgColor.set(null, "var(--gray-9)");
+
+export type HabitVoteChartDateRangeType = "last_week" | "last_month" | "all_time";
+
+export const HabitVoteChartDateRanges: {[key in HabitVoteChartDateRangeType]: HabitVoteChartDateRangeType} = {
+	last_week: "last_week",
+	last_month: "last_month",
+	all_time: "all_time",
+};
+
 
 // =============
 
@@ -109,3 +160,44 @@ export interface DayStatsFromServer {
 export type DayCellWithFullStats = DayCell & DayStatsFromServer & {
   noVotesCountStats: number;
 };
+
+// ===========
+
+// Dashboard
+
+export type DashboardStreakStats = {
+	progress_streaks: {
+		id: Habit["id"];
+		name: Habit["name"];
+		created_at: Habit["created_at"];
+		progress_streak: HabitStreaks["progress_streak"];
+	}[];
+
+	regress_streaks: {
+		id: Habit["id"];
+		name: Habit["name"];
+		created_at: Habit["created_at"];
+		regress_streak: HabitStreaks["regress_streak"];
+	}[];
+}
+
+type DashboardHabitVoteStats =  {
+	progressVotes: number;
+	plateauVotes: number;
+	regressVotes: number;
+	noVotes: number;
+	allVotes: number;
+	maximumVotes: number;
+}
+
+export type DashboardHabitVoteStatsForDateRanges = {
+	today: DashboardHabitVoteStats & {untrackedHabits: number};
+	lastWeek: DashboardHabitVoteStats;
+	lastMonth: DashboardHabitVoteStats;
+}
+
+// ===========
+
+// Token
+
+export type Token = string;

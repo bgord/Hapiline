@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import * as Async from "react-async";
+import {useQuery} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
@@ -12,10 +12,13 @@ import {useErrorToast} from "./contexts/toasts-context";
 export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habitId}) => {
 	const triggerErrorNotification = useErrorToast();
 
-	const getHabitVoteCommentsRequestState = Async.useAsync({
-		promiseFn: api.habit.getHabitVoteComments,
-		habitId,
-		onReject: () => triggerErrorNotification("Couldn't fetch vote comments."),
+	const getHabitVoteCommentsRequestState = useQuery<HabitVote[], ["comments", Habit["id"]]>({
+		queryKey: ["comments", habitId],
+		queryFn: api.habit.getHabitVoteComments,
+		config: {
+			onError: () => triggerErrorNotification("Couldn't fetch vote comments."),
+			retry: false,
+		},
 	});
 
 	const voteComments = getHabitVoteCommentsRequestState?.data ?? [];
@@ -26,22 +29,24 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 				Vote comments
 			</UI.Header>
 
-			<Async.IfRejected state={getHabitVoteCommentsRequestState}>
+			{getHabitVoteCommentsRequestState.status === "error" && (
 				<UI.ErrorBanner crossAxisSelf="start">Couldn't fetch vote comments.</UI.ErrorBanner>
-			</Async.IfRejected>
+			)}
 
-			<Async.IfFulfilled state={getHabitVoteCommentsRequestState}>
-				{voteComments.length === 0 && (
-					<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
-				)}
-				{voteComments.length > 0 && (
-					<>
-						{voteComments.map(voteComment => (
-							<HabitVoteComment key={voteComment.id} {...voteComment} />
-						))}
-					</>
-				)}
-			</Async.IfFulfilled>
+			{getHabitVoteCommentsRequestState.status === "success" && (
+				<>
+					{voteComments.length === 0 && (
+						<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
+					)}
+					{voteComments.length > 0 && (
+						<>
+							{voteComments.map(voteComment => (
+								<HabitVoteComment key={voteComment.id} {...voteComment} />
+							))}
+						</>
+					)}
+				</>
+			)}
 		</>
 	);
 };

@@ -1,5 +1,5 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
-import * as Async from "react-async";
+import {useQuery, useMutation} from "react-query";
 import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 
@@ -78,15 +78,22 @@ function NotificationDropdown() {
 	const triggerErrorNotification = useErrorToast();
 	const [areNotificationsVisible, , hideNotifications, toggleNotifications] = useToggle();
 
-	const getNotificationsRequestState = Async.useAsync({
-		promiseFn: api.notifications.get,
-		onReject: () => triggerErrorNotification("Couldn't fetch notifications."),
+	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
+		queryKey: "notifications",
+		queryFn: api.notifications.get,
+		config: {
+			onError: () => triggerErrorNotification("Couldn't fetch notifications."),
+		},
 	});
 
-	const updateNotificationRequestState = Async.useAsync({
-		deferFn: api.notifications.update,
-		onResolve: getNotificationsRequestState.reload,
-		onReject: () => triggerErrorNotification("Couldn't change notification status."),
+	const [updateNotification, updateNotificationRequestState] = useMutation<
+		Notification,
+		DraftNotificationPayload
+	>(api.notifications.update, {
+		onSuccess: () => {
+			getNotificationsRequestState.refetch();
+		},
+		onError: () => triggerErrorNotification("Couldn't change notification status."),
 	});
 
 	const notifications = getNotificationsRequestState.data ?? [];
@@ -100,7 +107,7 @@ function NotificationDropdown() {
 			id,
 			status: "read",
 		};
-		updateNotificationRequestState.run(payload);
+		updateNotification(payload);
 	}
 
 	function markNotificationAsUnread(id: Notification["id"]) {
@@ -108,7 +115,7 @@ function NotificationDropdown() {
 			id,
 			status: "unread",
 		};
-		updateNotificationRequestState.run(payload);
+		updateNotification(payload);
 	}
 
 	return (
@@ -138,56 +145,55 @@ function NotificationDropdown() {
 							<UI.CloseIcon ml="auto" onClick={hideNotifications} />
 						</UI.Row>
 
-						<Async.IfPending state={getNotificationsRequestState}>
-							<UI.Text>Loading...</UI.Text>
-						</Async.IfPending>
+						{getNotificationsRequestState.status === "loading" && <UI.Text>Loading...</UI.Text>}
 
-						<Async.IfFulfilled state={getNotificationsRequestState}>
-							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
+						{getNotificationsRequestState.status === "success" && (
+							<>
+								{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
+								<UI.Column as="ul">
+									{notifications.map(notification => (
+										<UI.Row
+											as="li"
+											bw="2"
+											b="gray-2"
+											mainAxis="between"
+											crossAxis="center"
+											mt="12"
+											pt="6"
+											key={notification.id}
+										>
+											<UI.Text>{notification.content}</UI.Text>
 
-							<UI.Column as="ul">
-								{notifications.map(notification => (
-									<UI.Row
-										as="li"
-										bw="2"
-										b="gray-2"
-										mainAxis="between"
-										crossAxis="center"
-										mt="12"
-										pt="6"
-										key={notification.id}
-									>
-										<UI.Text>{notification.content}</UI.Text>
+											{notification.status === "unread" && (
+												<UI.Button
+													variant="secondary"
+													style={{width: "100px"}}
+													disabled={updateNotificationRequestState.status === "loading"}
+													onClick={() => markNotificationAsRead(notification.id)}
+												>
+													Read
+												</UI.Button>
+											)}
 
-										{notification.status === "unread" && (
-											<UI.Button
-												variant="secondary"
-												style={{width: "100px"}}
-												disabled={updateNotificationRequestState.isPending}
-												onClick={() => markNotificationAsRead(notification.id)}
-											>
-												Read
-											</UI.Button>
-										)}
+											{notification.status === "read" && (
+												<UI.Button
+													style={{width: "100px"}}
+													variant="outlined"
+													disabled={updateNotificationRequestState.status === "loading"}
+													onClick={() => markNotificationAsUnread(notification.id)}
+												>
+													Unread
+												</UI.Button>
+											)}
+										</UI.Row>
+									))}
+								</UI.Column>
+							</>
+						)}
 
-										{notification.status === "read" && (
-											<UI.Button
-												style={{width: "100px"}}
-												variant="outlined"
-												disabled={updateNotificationRequestState.isPending}
-												onClick={() => markNotificationAsUnread(notification.id)}
-											>
-												Unread
-											</UI.Button>
-										)}
-									</UI.Row>
-								))}
-							</UI.Column>
-						</Async.IfFulfilled>
-
-						<Async.IfRejected state={getNotificationsRequestState}>
+						{getNotificationsRequestState.status === "error" && (
 							<UI.Error>Couldn't fetch notifications...</UI.Error>
-						</Async.IfRejected>
+						)}
 					</UI.Column>
 				</UI.Card>
 			)}

@@ -1,5 +1,5 @@
 import {Dialog} from "@reach/dialog";
-import * as Async from "react-async";
+import {useQuery, useMutation} from "react-query";
 import React from "react";
 
 import {
@@ -15,7 +15,7 @@ import {EditableHabitScoreSelect} from "./EditableHabitScoreSelect";
 import {EditableHabitStrengthSelect} from "./EditableHabitStrengthSelect";
 import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
-import {Habit, DetailedHabit} from "./interfaces/index";
+import {Habit, DetailedHabit, DraftHabitPayload} from "./interfaces/index";
 import {api} from "./services/api";
 import {formatTime} from "./config/DATE_FORMATS";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -35,16 +35,20 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 	const triggerErrorNotification = useErrorToast();
 
-	const habitRequestState = Async.useAsync({
-		promiseFn: api.habit.show,
-		id: habitId,
-		onReject: () => triggerErrorNotification("Fetching task details failed."),
+	const habitRequestState = useQuery<DetailedHabit, ["single_habit", Habit["id"]]>({
+		queryKey: ["single_habit", habitId],
+		queryFn: api.habit.show,
+		config: {
+			onError: () => triggerErrorNotification("Fetching task details failed."),
+			retry: false,
+		},
 	});
+
 	const habit = habitRequestState?.data as DetailedHabit;
 
 	function dismissDialog() {
 		closeDialog();
-		getHabitsRequestState.reload();
+		getHabitsRequestState.refetch();
 	}
 
 	return (
@@ -59,35 +63,24 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 					<UI.CloseIcon onClick={dismissDialog} />
 				</UI.Row>
 
-				<Async.IfPending state={habitRequestState}>
+				{habitRequestState.status === "loading" && (
 					<UI.Text ml="24" mt="48">
 						Loading details...
 					</UI.Text>
-				</Async.IfPending>
-				<Async.IfRejected state={habitRequestState}>
+				)}
+
+				{habitRequestState.status === "error" && (
 					<UI.ErrorBanner m="24">Couldn't fetch task details, please try again.</UI.ErrorBanner>
-				</Async.IfRejected>
+				)}
 
 				{habit?.id && (
 					<UI.Column px="24">
 						<UI.Row mt="24" style={{marginLeft: "-12px"}}>
 							<UI.Row mr="6">
-								<EditableHabitNameInput
-									{...habit}
-									setHabitItem={habitRequestState.setData}
-									key={habit?.name}
-								/>
+								<EditableHabitNameInput {...habit} key={habit?.name} />
 							</UI.Row>
-							<EditableHabitScoreSelect
-								{...habit}
-								setHabitItem={habitRequestState.setData}
-								key={habit?.score}
-							/>
-							<EditableHabitStrengthSelect
-								{...habit}
-								setHabitItem={habitRequestState.setData}
-								key={habit?.strength}
-							/>
+							<EditableHabitScoreSelect {...habit} key={habit?.score} />
+							<EditableHabitStrengthSelect {...habit} key={habit?.strength} />
 						</UI.Row>
 						{!habit.is_trackable && (
 							<UI.Row mt="24">
@@ -120,7 +113,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								<EditableDescription
 									description={habit.description}
 									habitId={habit.id}
-									onResolve={habitRequestState.reload}
+									onResolve={habitRequestState.refetch}
 								/>
 							</UI.Column>
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
@@ -156,23 +149,28 @@ const EditableDescription: React.FC<{
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const updateDescriptionRequestState = Async.useAsync({
-		deferFn: api.habit.patch,
-		onResolve: () => {
+	const [updateHabitDescription, updateHabitDescriptionRequestState] = useMutation<
+		DetailedHabit,
+		DraftHabitPayload
+	>(api.habit.patch, {
+		onSuccess: () => {
 			triggerSuccessNotification("Comment added successfully!");
 			textarea.setIdle();
 			onResolve();
 		},
-		onReject: () => triggerErrorNotification("Habit description couldn't be changed"),
+		onError: () => triggerErrorNotification("Habit description couldn't be changed"),
 	});
 
 	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(
 		updateDescription =>
-			updateDescriptionRequestState.run(habitId, {description: updateDescription}),
+			updateHabitDescription({
+				id: habitId,
+				description: updateDescription,
+			}),
 		description,
 	);
 
-	const {getArgErrorMessage} = getRequestStateErrors(updateDescriptionRequestState);
+	const {getArgErrorMessage} = getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
 	return (
@@ -187,9 +185,11 @@ const EditableDescription: React.FC<{
 					onChange={newDescriptionHelpers.onChange}
 				/>
 			</UI.Field>
-			<Async.IfRejected state={updateDescriptionRequestState}>
+
+			{updateHabitDescriptionRequestState.status === "error" && (
 				<UI.Error>{descriptionInlineErrorMessage}</UI.Error>
-			</Async.IfRejected>
+			)}
+
 			<UI.Row>
 				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
 					Save

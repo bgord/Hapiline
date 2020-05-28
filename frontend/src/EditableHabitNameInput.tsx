@@ -1,4 +1,4 @@
-import * as Async from "react-async";
+import {queryCache, useMutation} from "react-query";
 import React from "react";
 
 import {
@@ -9,44 +9,37 @@ import {
 } from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {HabitNameInput} from "./HabitNameInput";
-import {DetailedHabit} from "./interfaces/index";
-import {api} from "./services/api";
+import {DetailedHabit, DraftHabitPayload} from "./interfaces/index";
+import {api, AsyncReturnType} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 
-type EditableHabitNameInputProps = DetailedHabit & {
-	setHabitItem: (habit: DetailedHabit) => void;
-};
-
-export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
-	name,
-	id,
-	setHabitItem,
-}) => {
+export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 	const field = useEditableFieldState();
 	const getHabitsRequestState = useHabitsState();
 
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const editHabitRequestState = Async.useAsync({
-		deferFn: api.habit.patch,
-		onResolve: habit => {
+	const [updateHabitName] = useMutation<DetailedHabit, DraftHabitPayload>(api.habit.patch, {
+		onSuccess: habit => {
 			field.setIdle();
 			triggerSuccessNotification("Name updated successfully!");
-			setHabitItem(habit);
-			getHabitsRequestState.reload();
+			getHabitsRequestState.refetch();
+
+			const _habit: AsyncReturnType<typeof api.habit.show> = habit;
+			queryCache.setQueryData("single_habit", _habit);
 		},
-		onReject: _error => {
-			const {getArgErrorMessage} = getRequestErrors(_error);
+		onError: _error => {
+			const {getArgErrorMessage} = getRequestErrors(_error as Error);
 			const inlineNameErrorMessage = getArgErrorMessage("name");
 			triggerErrorNotification(inlineNameErrorMessage || "Error while chaning name.");
 		},
 	});
 
 	const [newHabitName, newHabitNameHelpers] = useEditableFieldValue(
-		newName => editHabitRequestState.run(id, {name: newName}),
+		newName => updateHabitName({id, name: newName}),
 		name,
 	);
 
@@ -56,8 +49,8 @@ export const EditableHabitNameInput: React.FC<EditableHabitNameInputProps> = ({
 				<UI.Label htmlFor="habit_name">Habit name</UI.Label>
 				<HabitNameInput
 					onKeyDown={event => {
-						if (event.keyCode === 13 && newHabitName !== name) {
-							editHabitRequestState.run(id, {name: newHabitName});
+						if (event.keyCode === 13 && newHabitName !== name && newHabitName) {
+							updateHabitName({id, name: newHabitName});
 						}
 					}}
 					onFocus={field.setFocused}

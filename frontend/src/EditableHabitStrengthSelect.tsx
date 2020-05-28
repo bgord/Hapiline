@@ -1,32 +1,33 @@
-import * as Async from "react-async";
+import {queryCache, useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {DetailedHabit, HabitStrengthType, isHabitStrength} from "./interfaces/index";
-import {api} from "./services/api";
+import {
+	DetailedHabit,
+	HabitStrengthType,
+	isHabitStrength,
+	DraftHabitPayload,
+} from "./interfaces/index";
+import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
-type EditableHabitStrengthSelectProps = DetailedHabit & {
-	setHabitItem: (habit: DetailedHabit) => void;
-};
-
-export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectProps> = ({
-	id,
-	strength,
-	setHabitItem,
-}) => {
+export const EditableHabitStrengthSelect: React.FC<DetailedHabit> = ({id, strength}) => {
 	const [newHabitStrength, setNewHabitStrength] = React.useState<HabitStrengthType>(strength);
 
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
 
-	const editHabitRequestState = Async.useAsync({
-		deferFn: api.habit.patch,
-		onResolve: habit => {
+	const [updateHabitStrength, updateHabitStrengthRequestState] = useMutation<
+		DetailedHabit,
+		DraftHabitPayload
+	>(api.habit.patch, {
+		onSuccess: habit => {
 			triggerSuccessNotification("Habit strength changed successfully!");
-			setHabitItem(habit);
+
+			const _habit: AsyncReturnType<typeof api.habit.show> = habit;
+			queryCache.setQueryData("single_habit", _habit);
 		},
-		onReject: () => triggerErrorNotification("Habit strength couldn't be changed."),
+		onError: () => triggerErrorNotification("Habit strength couldn't be changed."),
 	});
 
 	return (
@@ -35,12 +36,12 @@ export const EditableHabitStrengthSelect: React.FC<EditableHabitStrengthSelectPr
 			<UI.Select
 				id="habit_strength"
 				value={newHabitStrength}
-				disabled={editHabitRequestState.isPending}
+				disabled={updateHabitStrengthRequestState.status === "loading"}
 				onChange={event => {
 					const {value} = event.target;
 					if (isHabitStrength(value) && value !== strength) {
 						setNewHabitStrength(value);
-						editHabitRequestState.run(id, {strength: value});
+						updateHabitStrength({id, strength: value});
 					}
 				}}
 			>

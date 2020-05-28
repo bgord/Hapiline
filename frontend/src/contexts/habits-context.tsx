@@ -1,21 +1,26 @@
-import * as Async from "react-async";
+import {useQuery, QueryResult} from "react-query";
 import React from "react";
 
 import {api} from "../services/api";
 import {useErrorToast} from "./toasts-context";
 import {Habit} from "../interfaces/index";
 
-type HabitsContext = Async.AsyncState<Habit[]> | undefined;
+type HabitsContext = QueryResult<Habit[]> | undefined;
 
 const HabitsContext = React.createContext<HabitsContext>(undefined);
 
 export const HabitsProvider: React.FC = props => {
 	const triggerErrorNotification = useErrorToast();
 
-	const getHabitsRequestState = Async.useAsync({
-		promiseFn: api.habit.get,
-		onReject: () => triggerErrorNotification("Couldn't fetch habit list."),
+	const getHabitsRequestState = useQuery<Habit[], "all_habits">({
+		queryKey: "all_habits",
+		queryFn: api.habit.get,
+		config: {
+			onError: () => triggerErrorNotification("Couldn't fetch habit list."),
+			retry: false,
+		},
 	});
+
 	return <HabitsContext.Provider value={getHabitsRequestState} {...props} />;
 };
 

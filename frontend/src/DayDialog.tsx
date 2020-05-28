@@ -1,6 +1,6 @@
 import {Dialog} from "@reach/dialog";
 import {useLocation} from "react-router-dom";
-import * as Async from "react-async";
+import {useQuery, QueryResult} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
@@ -38,10 +38,13 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const [isChartLegendVisible, , , toggleIsChartLegendVisible] = useToggle();
 
 	const triggerErrorNotification = useErrorToast();
-	const getDayVotesRequestState = Async.useAsync({
-		promiseFn: api.calendar.getDay,
-		day,
-		onReject: () => triggerErrorNotification("Couldn't fetch habit votes."),
+
+	const getDayVotesRequestState = useQuery<HabitVote[], ["day", Date]>({
+		queryKey: ["day", new Date(day)],
+		queryFn: api.calendar.getDay,
+		config: {
+			onError: () => triggerErrorNotification("Couldn't fetch habit votes."),
+		},
 	});
 
 	const [queryParams, updateQueryParams] = useQueryParams();
@@ -72,8 +75,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const isThereNoTrackedHabits = habitsAvailableAtThisDay.length === 0;
 
 	const howManyHabitsAtAll = habitsWithPossibleVote.length;
-	const howManyUnvotedHabits = habitsWithPossibleVote.filter(({vote}) => !vote).length;
-	const howManyVotedHabits = habitsWithPossibleVote.filter(({vote}) => vote).length;
+	const howManyUnvotedHabits = habitsWithPossibleVote.filter(({vote}) => !vote?.vote).length;
+	const howManyVotedHabits = habitsWithPossibleVote.filter(({vote}) => vote?.vote).length;
 
 	const doesEveryHabitHasAVote = howManyUnvotedHabits === 0 && howManyHabitsAtAll > 0;
 
@@ -229,7 +232,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 									key={entry.id}
 									onResolve={() => {
 										onResolve();
-										getDayVotesRequestState.reload();
+										getDayVotesRequestState.refetch();
 									}}
 									{...entry}
 								/>
@@ -244,7 +247,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 };
 
 function getDayVoteForHabit(
-	getDayVotesRequestState: Async.AsyncState<HabitVote[]>,
+	getDayVotesRequestState: QueryResult<HabitVote[]>,
 	habit: Habit,
 ): Nullable<HabitVote> {
 	const votesFromGivenDay = getDayVotesRequestState.data ?? [];

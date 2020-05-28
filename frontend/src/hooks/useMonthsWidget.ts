@@ -4,6 +4,8 @@ import React from "react";
 import {DayCell} from "../interfaces/index";
 import {formatDay, formatMonth} from "../config/DATE_FORMATS";
 
+export type MonthOffset = number;
+
 type MonthsWidgetProps = [
 	{
 		daysOfTheMonth: DayCell[];
@@ -11,11 +13,11 @@ type MonthsWidgetProps = [
 		setNextMonth: VoidFunction;
 	},
 	string,
-	number,
+	MonthOffset,
 ];
 
 export const useMonthsWidget = (): MonthsWidgetProps => {
-	const [monthOffset, setMonthOffset] = React.useState(0);
+	const [monthOffset, setMonthOffset] = React.useState<MonthOffset>(0);
 
 	const setPreviousMonth = () => setMonthOffset(x => x + 1);
 	const setNextMonth = () => setMonthOffset(x => (x <= 0 ? 0 : x - 1));

@@ -1,8 +1,9 @@
 import {useParams, Link} from "react-router-dom";
-import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
+import {NewPasswordPayload} from "./interfaces/index";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
@@ -11,9 +12,10 @@ export const NewPasswordWindow: React.FC = () => {
 	const [password, setPassword] = React.useState("");
 	const [passwordConfirmation, setPasswordConfirmation] = React.useState("");
 
-	const newPasswordRequestState = Async.useAsync({
-		deferFn: api.auth.newPassword,
-	});
+	const [setNewPassword, newPasswordRequestState] = useMutation<unknown, NewPasswordPayload>(
+		api.auth.newPassword,
+	);
+
 	const {errorMessage} = getRequestStateErrors(newPasswordRequestState);
 
 	return (
@@ -22,7 +24,7 @@ export const NewPasswordWindow: React.FC = () => {
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					newPasswordRequestState.run(token, password, passwordConfirmation);
+					setNewPassword({token: token ?? "", password, passwordConfirmation});
 				}}
 			>
 				<UI.Header>New password</UI.Header>
@@ -39,7 +41,7 @@ export const NewPasswordWindow: React.FC = () => {
 						type="password"
 						required
 						pattern=".{6,}"
-						disabled={newPasswordRequestState.isFulfilled}
+						disabled={newPasswordRequestState.status === "success"}
 						style={{width: "500px"}}
 					/>
 				</UI.Field>
@@ -55,7 +57,7 @@ export const NewPasswordWindow: React.FC = () => {
 						value={passwordConfirmation}
 						onChange={event => setPasswordConfirmation(event.target.value)}
 						required
-						disabled={newPasswordRequestState.isFulfilled}
+						disabled={newPasswordRequestState.status === "success"}
 					/>
 				</UI.Field>
 
@@ -63,14 +65,14 @@ export const NewPasswordWindow: React.FC = () => {
 					<UI.Button
 						variant="primary"
 						type="submit"
-						disabled={newPasswordRequestState.isFulfilled}
+						disabled={newPasswordRequestState.status === "success"}
 						data-testid="registration-submit"
 					>
-						{newPasswordRequestState.isPending ? "Loading..." : "Change password"}
+						{newPasswordRequestState.status === "loading" ? "Loading..." : "Change password"}
 					</UI.Button>
 				</UI.Row>
 
-				<Async.IfFulfilled state={newPasswordRequestState}>
+				{newPasswordRequestState.status === "success" && (
 					<UI.SuccessBanner mt="24" size="big">
 						<UI.Column ml="12">
 							<UI.Text>Password has been changed!</UI.Text>
@@ -82,11 +84,11 @@ export const NewPasswordWindow: React.FC = () => {
 							</UI.Row>
 						</UI.Column>
 					</UI.SuccessBanner>
-				</Async.IfFulfilled>
+				)}
 
-				<Async.IfRejected state={newPasswordRequestState}>
+				{newPasswordRequestState.status === "error" && (
 					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
-				</Async.IfRejected>
+				)}
 			</UI.Column>
 		</UI.Card>
 	);

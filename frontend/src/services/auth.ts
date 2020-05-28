@@ -1,73 +1,41 @@
-import * as Async from "react-async";
-
-import {UserProfile} from "../interfaces/index";
+import {
+	User,
+	NewUserPayload,
+	UserProfile,
+	LoginPayload,
+	Token,
+	NewPasswordPayload,
+	NewEmailPayload,
+	UpdatePasswordPayload,
+} from "../interfaces/index";
 import {_internal_api} from "./api";
 
-export const loginRequest: Async.DeferFn<UserProfile> = (
-	[email, password]: string[],
-	{history, setUserProfile},
-) =>
-	_internal_api
-		.post<UserProfile>("/login", {
-			email,
-			password,
-		})
-		.then(response => {
-			setUserProfile(response.data);
-			history.push("/dashboard");
-			return response.data;
-		});
+export const loginRequest = (loginPayload: LoginPayload) =>
+	_internal_api.post<UserProfile>("/login", loginPayload).then(response => response.data);
 
-export const verifyEmailRequest: Async.PromiseFn<void> = async ({token}) =>
+export const verifyEmailRequest = async (token: Token) =>
 	_internal_api.post("/verify-email", {token: decodeURIComponent(token)});
 
-export const forgotPasswordRequest: Async.DeferFn<void> = ([email]: string[]) =>
+export const forgotPasswordRequest = (email: User["email"]) =>
 	_internal_api.post("/forgot-password", {
 		email,
 	});
 
-export const logoutRequest: Async.PromiseFn<void> = async () => _internal_api.post("/logout");
+export const logoutRequest = async () => _internal_api.post("/logout");
 
-export const newPasswordRequest: Async.DeferFn<void> = async ([
-	token,
-	password,
-	passwordConfirmation,
-]: string[]) =>
-	_internal_api.post("/new-password", {
-		token: decodeURIComponent(token),
-		password,
-		password_confirmation: passwordConfirmation,
-	});
+export const newPasswordRequest = async (newPasswordPayload: NewPasswordPayload) =>
+	_internal_api.post("/new-password", newPasswordPayload);
 
-export const registrationRequest: Async.DeferFn<void> = ([
-	email,
-	password,
-	passwordConfirmation,
-]: string[]) =>
-	_internal_api.post("/register", {
-		email,
-		password,
-		password_confirmation: passwordConfirmation,
-	});
+export const registrationRequest = (newUserPayload: NewUserPayload) =>
+	_internal_api.post("/register", newUserPayload);
 
-export const isLoggedInRequest: Async.PromiseFn<UserProfile> = () =>
-	_internal_api.get("/me").then(response => response.data);
+export const isLoggedInRequest = (_key: "is_logged_in") =>
+	_internal_api.get<UserProfile>("/me").then(response => response.data);
 
-export const deleteAccountRequest: Async.DeferFn<void> = () => _internal_api.delete("/account");
+export const deleteAccountRequest = async () => _internal_api.delete("/account");
 
-export const changeEmailRequest: Async.DeferFn<void> = ([newEmail, password]: string[]) =>
-	_internal_api.post("/change-email", {
-		newEmail,
-		password,
-	});
+export const changeEmailRequest = (newEmailPayload: NewEmailPayload) =>
+	_internal_api.post("/change-email", newEmailPayload);
 
-export const updatePasswordRequst: Async.DeferFn<void> = ([
-	old_password,
-	password,
-	password_confirmation,
-]: string[]) =>
-	_internal_api.patch("/update-password", {
-		old_password,
-		password,
-		password_confirmation,
-	});
+export const updatePasswordRequst = (updatePasswordPayload: UpdatePasswordPayload) =>
+	_internal_api.patch("/update-password", updatePasswordPayload);

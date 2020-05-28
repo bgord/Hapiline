@@ -171,8 +171,8 @@ describe("Calendar", () => {
 			cy.findByText("habits added this day");
 			cy.findByText("Show untracked habits").click();
 
-			cy.findByLabelText("Show voted (5)").should("not.be.checked");
-			cy.findByLabelText("Show unvoted (5)").should("be.checked");
+			cy.findByLabelText("Show voted (4)").should("not.be.checked");
+			cy.findByLabelText("Show unvoted (6)").should("be.checked");
 			cy.findByLabelText("Show all (10)").should("not.be.checked");
 
 			cy.findByLabelText("Show all (10)").click();
@@ -204,22 +204,22 @@ describe("Calendar", () => {
 				.children()
 				.should("have.length", 10);
 
-			cy.findByLabelText("Show voted (5)").check();
+			cy.findByLabelText("Show voted (4)").check();
 			cy.findByTestId("day-dialog-habits")
 				.children()
-				.should("have.length", 5);
+				.should("have.length", 4);
 
-			cy.findByLabelText("Show unvoted (5)").check();
+			cy.findByLabelText("Show unvoted (6)").check();
 			cy.findByTestId("day-dialog-habits")
 				.children()
-				.should("have.length", 5);
+				.should("have.length", 6);
 
 			cy.findByPlaceholderText("Search for habits...").type("xxx");
 
 			cy.findByText("Reset filters").click();
 			cy.findByPlaceholderText("Search for habits...").should("have.value", "");
-			cy.findByLabelText("Show voted (5)").should("not.be.checked");
-			cy.findByLabelText("Show unvoted (5)").should("not.be.checked");
+			cy.findByLabelText("Show voted (4)").should("not.be.checked");
+			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
 			cy.findByLabelText("Show all (10)").should("be.checked");
 
 			cy.findByText("Close dialog").click({force: true});
