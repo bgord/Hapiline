@@ -18,7 +18,19 @@ $ git describe --tags
 [] apply a new tag (remember about semver)
 
 ```bash
-$ git tag <new-tag>
+$ npm version <major | minor | patch>
+```
+
+[] push the latest tag
+
+```bash
+$ git push --tags
+```
+
+[] push the commit with the version change (package(-lock).json)
+
+```bash
+$ git push --tags
 ```
 
 [] check if all entries in the `.env-prod` are defined and correct
@@ -47,6 +59,12 @@ $ docker-compose down
 
 ```bash
 $ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
+```
+
+[] create a backup
+
+```
+$ ./scripts/backup_db.sh
 ```
 
 [] stop production containers
@@ -85,10 +103,4 @@ $ ./run.sh adonis migration:run --force
 
 ```bash
 $ unset DOCKER_HOST
-```
-
-[] push the latest tag
-
-```bash
-$ git push --tags
 ```
