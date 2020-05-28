@@ -1,14 +1,9 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
-import {useQuery, useMutation} from "react-query";
 import * as React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
-import {Notification, DraftNotificationPayload} from "./interfaces/index";
 
 import * as UI from "./ui";
-import {BellIcon} from "./ui/icons/Bell";
-import {api} from "./services/api";
 import {Calendar} from "./Calendar";
 import {DashboardWindow} from "./DashboardWindow";
 import {HabitsProvider} from "./contexts/habits-context";
@@ -16,9 +11,7 @@ import {HabitsWindow} from "./HabitsWindow";
 import {Logo} from "./Logo";
 import {Logout} from "./Logout";
 import {Toasts} from "./Toasts";
-import {useToggle} from "./hooks/useToggle";
 import {useUserProfile} from "./contexts/auth-context";
-import {useErrorToast} from "./contexts/toasts-context";
 import {ProfileWindow} from "./ProfileWindow";
 import {NotificationDropdown} from "./NotificationsDropdown";
 

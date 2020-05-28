@@ -222,6 +222,19 @@ describe("Calendar", () => {
 			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
 			cy.findByLabelText("Show all (10)").should("be.checked");
 
+			// Collapsing tracked habits section
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 10);
+			cy.findByText("Hide tracked habits").click({force: true});
+
+			cy.findByTestId("day-dialog-habits").should("not.exist");
+
+			cy.findByText("Show tracked habits").click({force: true});
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 10);
+
 			cy.findByText("Close dialog").click({force: true});
 		});
 		cy.findByRole("dialog").should("not.exist");

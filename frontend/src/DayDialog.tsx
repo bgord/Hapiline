@@ -2,6 +2,10 @@ import {Dialog} from "@reach/dialog";
 import {useLocation} from "react-router-dom";
 import {useQuery, QueryResult} from "react-query";
 import React from "react";
+import VisuallyHidden from "@reach/visually-hidden";
+
+import {ChevronUpIcon} from "./ui/icons/ChevronUp";
+import {ChevronDownIcon} from "./ui/icons/ChevronDown";
 
 import * as UI from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
@@ -36,6 +40,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const location = useLocation<{from: string | undefined}>();
 	const trackedHabits = useTrackedHabits();
 	const [isChartLegendVisible, , , toggleIsChartLegendVisible] = useToggle();
+	const [areTrackedHabitsVisible, , , toggleAreTrackedHabitsVisible] = useToggle(true);
 
 	const triggerErrorNotification = useErrorToast();
 
@@ -222,22 +227,48 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				)}
 				{!isThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
 					<UI.Column pb="48">
-						<UI.Header mt="48" mb="24" variant="extra-small">
-							Tracked habits
-						</UI.Header>
-						<UI.Column as="ul" bt="gray-1" data-testid="day-dialog-habits">
-							{filteredHabitsWithPossibleVote.map(entry => (
-								<DayDialogHabitVoteListItem
-									day={day}
-									key={entry.id}
-									onResolve={() => {
-										onResolve();
-										getDayVotesRequestState.refetch();
-									}}
-									{...entry}
-								/>
-							))}
-						</UI.Column>
+						<UI.Row mainAxis="between" crossAxis="center" mt="48" mb="24">
+							<UI.Header variant="extra-small">Tracked habits</UI.Header>
+
+							{areTrackedHabitsVisible && (
+								<UI.Button
+									variant="bare"
+									title="Hide tracked habits"
+									onClick={toggleAreTrackedHabitsVisible}
+								>
+									<VisuallyHidden>Hide tracked habits</VisuallyHidden>
+									<ChevronUpIcon />
+								</UI.Button>
+							)}
+
+							{!areTrackedHabitsVisible && (
+								<UI.Button
+									variant="bare"
+									title="Show tracked habits"
+									onClick={toggleAreTrackedHabitsVisible}
+								>
+									<VisuallyHidden>Show tracked habits</VisuallyHidden>
+									<ChevronDownIcon />
+								</UI.Button>
+							)}
+						</UI.Row>
+
+						{areTrackedHabitsVisible && (
+							<UI.Column as="ul" bt="gray-1" data-testid="day-dialog-habits">
+								{filteredHabitsWithPossibleVote.map(entry => (
+									<DayDialogHabitVoteListItem
+										day={day}
+										key={entry.id}
+										onResolve={() => {
+											onResolve();
+											getDayVotesRequestState.refetch();
+										}}
+										{...entry}
+									/>
+								))}
+							</UI.Column>
+						)}
+
 						<DayDialogSummaryTabs day={day} />
 					</UI.Column>
 				)}

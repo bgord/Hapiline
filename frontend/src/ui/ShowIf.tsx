@@ -4,6 +4,7 @@ import {QueryResult, MutationResult} from "react-query";
 type RequestState = "idle" | "loading" | "error" | "success";
 
 type ShowIfProps = {
+	/* eslint-disable @typescript-eslint/no-explicit-any */
 	request: QueryResult<any> | MutationResult<any>;
 	is: RequestState[] | RequestState;
 };
