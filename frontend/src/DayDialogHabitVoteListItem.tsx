@@ -1,5 +1,6 @@
 import {Link} from "react-router-dom";
 import * as Async from "react-async";
+import {useMutation} from "react-query";
 import React from "react";
 
 // TODO: replace with heroicons, eventually delete FA
@@ -12,6 +13,8 @@ import {
 	HabitVoteType,
 	habitStrengthToBadgeVariant,
 	HabitWithPossibleHabitVote,
+	HabitVotePayload,
+	HabitVote,
 } from "./interfaces/index";
 import * as UI from "./ui";
 import {api} from "./services/api";
@@ -37,14 +40,17 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 
 	const currentVoteType = habitWithPossibleVote.vote?.vote;
 
-	const addHabitDayVoteRequestState = Async.useAsync({
-		deferFn: api.habit.addHabitDayVote,
-		onResolve: () => {
-			triggerSuccessNotification("Habit vote added successfully!");
-			onResolve();
+	const [addHabitDayVote, addHabitDayVoteRequestState] = useMutation<HabitVote, HabitVotePayload>(
+		api.habit.addHabitDayVote,
+		{
+			onSuccess: () => {
+				triggerSuccessNotification("Habit vote added successfully!");
+				onResolve();
+			},
+
+			onError: () => triggerErrorNotification("Error while changing habit vote."),
 		},
-		onReject: () => triggerErrorNotification("Error while changing habit vote."),
-	});
+	);
 
 	const upsertCommentResponseHandlers = {
 		onResolve: () => {
@@ -60,20 +66,24 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		...upsertCommentResponseHandlers,
 	});
 
-	const addEmptyHabitDayVoteRequestState = Async.useAsync({
-		deferFn: api.habit.addHabitDayVote,
-		...upsertCommentResponseHandlers,
-	});
+	const [addEmptyHabitDayVote] = useMutation<HabitVote, HabitVotePayload>(
+		api.habit.addHabitDayVote,
+		{
+			onSuccess: upsertCommentResponseHandlers.onResolve,
+			onError: upsertCommentResponseHandlers.onReject,
+		},
+	);
 
 	const [newComment, newCommentHelpers] = useEditableFieldValue(
 		changedComment => {
 			if (habitWithPossibleVote.vote?.id) {
 				updateVoteCommentRequestState.run(habitWithPossibleVote.vote.id, changedComment);
 			} else {
-				addEmptyHabitDayVoteRequestState.run({
+				addEmptyHabitDayVote({
 					day: new Date(day),
 					habit_id: habitWithPossibleVote.id,
 					vote: null,
+					comment: habitWithPossibleVote.vote?.comment ?? null,
 				});
 			}
 		},
@@ -82,10 +92,11 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	);
 
 	function changeVote(type: NonNullable<HabitVoteType>) {
-		addHabitDayVoteRequestState.run({
+		addHabitDayVote({
 			day: new Date(day),
 			habit_id: habitWithPossibleVote.id,
 			vote: currentVoteType === type ? null : type,
+			comment: habitWithPossibleVote.vote?.comment ?? null,
 		});
 	}
 
@@ -120,7 +131,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								}}
 								variant="bare"
 								onClick={() => changeVote("progress")}
-								disabled={addHabitDayVoteRequestState.isPending}
+								disabled={addHabitDayVoteRequestState.status === "loading"}
 							>
 								<VisuallyHidden>Add progress vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faPlus} />
@@ -134,7 +145,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("plateau")}
-								disabled={addHabitDayVoteRequestState.isPending}
+								disabled={addHabitDayVoteRequestState.status === "loading"}
 							>
 								<VisuallyHidden>Add plateau vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faEquals} />
@@ -148,7 +159,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("regress")}
-								disabled={addHabitDayVoteRequestState.isPending}
+								disabled={addHabitDayVoteRequestState.status === "loading"}
 							>
 								<VisuallyHidden>Add regress vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faMinus} />

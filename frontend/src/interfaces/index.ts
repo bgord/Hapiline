@@ -107,7 +107,11 @@ export type NotificationTypeStatus = NotificationType;
 // Votes
 
 export type HabitVote = habit_votes;
+
 export type HabitVoteType = Nullable<_HabitVoteType>;
+
+export type HabitVotePayload = Pick<HabitVote, "habit_id" | "vote" | "day" | "comment">
+
 export type DayVote = {
   day: HabitVote["day"];
   vote: HabitVoteType;
