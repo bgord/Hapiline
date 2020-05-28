@@ -32,7 +32,6 @@ const ChangeEmail: React.FC = () => {
 	const history = useHistory();
 	const triggerErrorNotification = useErrorToast();
 	const [userProfile] = useUserProfile();
-	const [status, setStatus] = React.useState<"idle" | "pending" | "success" | "error">("idle");
 
 	const initialEmail = userProfile?.email;
 	const [newEmail, setNewEmail] = React.useState<NewEmailPayload["newEmail"]>(initialEmail ?? "");
@@ -42,13 +41,9 @@ const ChangeEmail: React.FC = () => {
 		api.auth.changeEmail,
 		{
 			onSuccess: () => {
-				setStatus("success");
 				setTimeout(() => history.push("/logout"), 5000);
 			},
-			onError: () => {
-				setStatus("error");
-				triggerErrorNotification("Couldn't change email.");
-			},
+			onError: () => triggerErrorNotification("Couldn't change email."),
 		},
 	);
 
@@ -63,7 +58,6 @@ const ChangeEmail: React.FC = () => {
 			as="form"
 			onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 				event.preventDefault();
-				setStatus("pending");
 				changeEmail({newEmail, password});
 			}}
 			p="24"
@@ -78,58 +72,63 @@ const ChangeEmail: React.FC = () => {
 				You will have to confirm your new email adress and login back again.
 			</UI.InfoBanner>
 
-			{["idle", "pending", "error"].includes(status) && (
-				<>
-					<UI.Field mt="24" mr="12" width="100%">
-						<UI.Label htmlFor="email">Email</UI.Label>
-						<UI.Input
-							id="email"
-							value={newEmail}
-							onChange={event => setNewEmail(event.target.value)}
-							required
-							type="email"
-							disabled={status === "pending"}
-							placeholder="user@example.com"
-						/>
-						{status === "error" && emailInlineError && <UI.Error>{emailInlineError}</UI.Error>}
-					</UI.Field>
+			<UI.ShowIf request={changeEmailRequestState} is={["idle", "loading", "error"]}>
+				<UI.Field mt="24" mr="12" width="100%">
+					<UI.Label htmlFor="email">Email</UI.Label>
+					<UI.Input
+						id="email"
+						value={newEmail}
+						onChange={event => setNewEmail(event.target.value)}
+						required
+						type="email"
+						disabled={changeEmailRequestState.status === "loading"}
+						placeholder="user@example.com"
+					/>
+					<UI.ShowIf request={changeEmailRequestState} is="error">
+						{emailInlineError && <UI.Error>{emailInlineError}</UI.Error>}
+					</UI.ShowIf>
+				</UI.Field>
 
-					<UI.Field mt="12">
-						<UI.Label htmlFor="password">Password</UI.Label>
-						<UI.Input
-							id="password"
-							pattern=".{6,}"
-							title="Password should contain at least 6 characters."
-							required
-							value={password}
-							onChange={event => setPassword(event.target.value)}
-							type="password"
-							placeholder="********"
-							disabled={status === "pending"}
-						/>
-					</UI.Field>
-				</>
-			)}
-			{status === "error" && passwordInlineError && <UI.Error>{passwordInlineError}</UI.Error>}
+				<UI.Field mt="12">
+					<UI.Label htmlFor="password">Password</UI.Label>
+					<UI.Input
+						id="password"
+						pattern=".{6,}"
+						title="Password should contain at least 6 characters."
+						required
+						value={password}
+						onChange={event => setPassword(event.target.value)}
+						type="password"
+						placeholder="********"
+						disabled={changeEmailRequestState.status === "loading"}
+					/>
+				</UI.Field>
+			</UI.ShowIf>
 
-			{["idle", "pending", "error"].includes(status) && (
+			<UI.ShowIf request={changeEmailRequestState} is="error">
+				{passwordInlineError && <UI.Error>{passwordInlineError}</UI.Error>}
+			</UI.ShowIf>
+
+			<UI.ShowIf request={changeEmailRequestState} is={["idle", "loading", "error"]}>
 				<UI.Row mt="24">
 					<UI.Button type="submit" variant="primary" disabled={!isNewEmailDifferent}>
 						Confirm email
 					</UI.Button>
 				</UI.Row>
-			)}
+			</UI.ShowIf>
 
-			{status === "pending" && <UI.Text mt="12">Email change pending...</UI.Text>}
+			<UI.ShowIf request={changeEmailRequestState} is="loading">
+				<UI.Text mt="12">Email change pending...</UI.Text>
+			</UI.ShowIf>
 
-			{status === "success" && (
+			<UI.ShowIf request={changeEmailRequestState} is="success">
 				<UI.SuccessBanner crossAxisSelf="start" mt="24" size="big">
 					<UI.Text ml="12">
 						Email confirmation message has been sent!
 						<br /> You will be logged out in 5 seconds.
 					</UI.Text>
 				</UI.SuccessBanner>
-			)}
+			</UI.ShowIf>
 		</UI.Column>
 	);
 };
@@ -146,9 +145,7 @@ const ChangePassword = () => {
 	const [updatePassword, updatePasswordRequestState] = useMutation<unknown, UpdatePasswordPayload>(
 		api.auth.updatePassword,
 		{
-			onError: () => {
-				triggerErrorNotification("Couldn't update password.");
-			},
+			onError: () => triggerErrorNotification("Couldn't update password."),
 		},
 	);
 
@@ -184,79 +181,77 @@ const ChangePassword = () => {
 				You won't be logged out, remember to input the new password the next time.
 			</UI.InfoBanner>
 
-			{["idle", "loading", "error"].includes(updatePasswordRequestState.status) && (
-				<>
-					<UI.Field mb="12">
-						<UI.Label htmlFor="old_password">Old password</UI.Label>
-						<UI.Input
-							id="old_password"
-							placeholder="********"
-							title="Password should contain at least 6 characters."
-							value={oldPassword}
-							onChange={event => setOldPassword(event.target.value)}
-							type="password"
-							required
-							pattern=".{6,}"
-							disabled={updatePasswordRequestState.status === "loading"}
-						/>
-						{updatePasswordRequestState.status === "error" && oldPasswordInlineError && (
-							<UI.Error>{oldPasswordInlineError}</UI.Error>
-						)}
-					</UI.Field>
+			<UI.ShowIf request={updatePasswordRequestState} is={["idle", "loading", "error"]}>
+				<UI.Field mb="12">
+					<UI.Label htmlFor="old_password">Old password</UI.Label>
+					<UI.Input
+						id="old_password"
+						placeholder="********"
+						title="Password should contain at least 6 characters."
+						value={oldPassword}
+						onChange={event => setOldPassword(event.target.value)}
+						type="password"
+						required
+						pattern=".{6,}"
+						disabled={updatePasswordRequestState.status === "loading"}
+					/>
+					<UI.ShowIf request={updatePasswordRequestState} is="error">
+						oldPasswordInlineError && (<UI.Error>{oldPasswordInlineError}</UI.Error>)
+					</UI.ShowIf>
+				</UI.Field>
 
-					<UI.Field mb="12">
-						<UI.Label htmlFor="new_password">New password</UI.Label>
-						<UI.Input
-							id="new_password"
-							placeholder="********"
-							title="Password should contain at least 6 characters."
-							value={newPassword}
-							onChange={event => setNewPassword(event.target.value)}
-							type="password"
-							required
-							pattern=".{6,}"
-							disabled={updatePasswordRequestState.status === "loading"}
-						/>
-					</UI.Field>
+				<UI.Field mb="12">
+					<UI.Label htmlFor="new_password">New password</UI.Label>
+					<UI.Input
+						id="new_password"
+						placeholder="********"
+						title="Password should contain at least 6 characters."
+						value={newPassword}
+						onChange={event => setNewPassword(event.target.value)}
+						type="password"
+						required
+						pattern=".{6,}"
+						disabled={updatePasswordRequestState.status === "loading"}
+					/>
+				</UI.Field>
 
-					<UI.Field mb="24">
-						<UI.Label htmlFor="password_confirmation">Repeat new password</UI.Label>
-						<UI.Input
-							id="password_confirmation"
-							type="password"
-							placeholder="********"
-							pattern={newPassword}
-							title="Passwords have to be equal"
-							value={newPasswordConfirmation}
-							onChange={event => setNewPasswordConfirmation(event.target.value)}
-							required
-							disabled={updatePasswordRequestState.status === "loading"}
-						/>
-					</UI.Field>
+				<UI.Field mb="24">
+					<UI.Label htmlFor="password_confirmation">Repeat new password</UI.Label>
+					<UI.Input
+						id="password_confirmation"
+						type="password"
+						placeholder="********"
+						pattern={newPassword}
+						title="Passwords have to be equal"
+						value={newPasswordConfirmation}
+						onChange={event => setNewPasswordConfirmation(event.target.value)}
+						required
+						disabled={updatePasswordRequestState.status === "loading"}
+					/>
+				</UI.Field>
 
-					<UI.Row>
-						<UI.Button variant="primary" type="submit">
-							Update password
-						</UI.Button>
-					</UI.Row>
-				</>
-			)}
+				<UI.Row>
+					<UI.Button variant="primary" type="submit">
+						Update password
+					</UI.Button>
+				</UI.Row>
+			</UI.ShowIf>
 
-			{updatePasswordRequestState.status === "error" && internalServerError && (
-				<UI.Error>{internalServerError}</UI.Error>
-			)}
+			<UI.ShowIf request={updatePasswordRequestState} is="error">
+				{internalServerError && <UI.Error>{internalServerError}</UI.Error>}
+			</UI.ShowIf>
 
-			{updatePasswordRequestState.status === "success" && (
+			<UI.ShowIf request={updatePasswordRequestState} is="success">
 				<UI.SuccessBanner crossAxisSelf="start" size="big" mt="24">
 					<UI.Text ml="6">Password changed successfully!</UI.Text>
 				</UI.SuccessBanner>
-			)}
+			</UI.ShowIf>
 		</UI.Column>
 	);
 };
 
 const DeleteAccount = () => {
-	const [status, setStatus] = React.useState<"idle" | "editing" | "pending" | "error">("idle");
+	const [modalStatus, setModalStatus] = React.useState<"idle" | "editing">("idle");
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
@@ -265,14 +260,11 @@ const DeleteAccount = () => {
 
 	const [deleteAccount, deleteAccountRequestState] = useMutation(api.auth.deleteAccount, {
 		onSuccess: () => history.push("/logout"),
-		onError: () => {
-			setStatus("error");
-			triggerErrorNotification("Couldn't delete account.");
-		},
+		onError: () => triggerErrorNotification("Couldn't delete account."),
 	});
 
 	function confirmDeletion() {
-		setStatus("pending");
+		setModalStatus("idle");
 		deleteAccount();
 	}
 	return (
@@ -289,17 +281,17 @@ const DeleteAccount = () => {
 				mt="24"
 				variant="danger"
 				disabled={deleteAccountRequestState.status === "loading"}
-				onClick={() => setStatus("editing")}
+				onClick={() => setModalStatus("editing")}
 				mr="auto"
 			>
 				Delete account
 			</UI.Button>
 
-			{deleteAccountRequestState.status === "error" && (
+			<UI.ShowIf request={deleteAccountRequestState} is="error">
 				<UI.Error mt="12">An error occurred during account deletion.</UI.Error>
-			)}
+			</UI.ShowIf>
 
-			{status === "editing" && (
+			{modalStatus === "editing" && (
 				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
 					<AlertDialogLabel>
 						<UI.Header variant="small">Do you really want to delete your account? </UI.Header>
@@ -311,7 +303,7 @@ const DeleteAccount = () => {
 						<UI.Button
 							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
-							onClick={() => setStatus("idle")}
+							onClick={() => setModalStatus("idle")}
 						>
 							Nevermind, don't delete
 						</UI.Button>
