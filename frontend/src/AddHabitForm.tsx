@@ -76,9 +76,9 @@ export const AddHabitForm: React.FC = () => {
 
 			<UI.Column
 				as="form"
+				p="24"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-
 					addHabit({
 						name,
 						score,
@@ -88,7 +88,6 @@ export const AddHabitForm: React.FC = () => {
 						is_trackable: isTrackable,
 					});
 				}}
-				p="24"
 			>
 				<UI.Row mt="48">
 					<UI.Field style={{flexGrow: 1}}>
@@ -131,9 +130,9 @@ export const AddHabitForm: React.FC = () => {
 					</UI.Field>
 				</UI.Row>
 
-				{addHabitRequestState.status === "error" && (
+				<UI.ShowIf request={addHabitRequestState} is="error">
 					<UI.Error mt="6">{nameInlineErrorMessage}</UI.Error>
-				)}
+				</UI.ShowIf>
 
 				<UI.Row mt="48" crossAxis="center">
 					<UI.Field variant="row">
@@ -163,9 +162,9 @@ export const AddHabitForm: React.FC = () => {
 					/>
 				</UI.Field>
 
-				{addHabitRequestState.status === "error" && (
+				<UI.ShowIf request={addHabitRequestState} is="error">
 					<UI.Error mt="6">{descriptionInlineErrorMessage}</UI.Error>
-				)}
+				</UI.ShowIf>
 
 				<UI.Button
 					style={{width: "125px"}}
@@ -180,15 +179,11 @@ export const AddHabitForm: React.FC = () => {
 					Add habit
 				</UI.Button>
 
-				{addHabitRequestState.status === "error" && (
-					<>
-						{!nameInlineErrorMessage && !descriptionInlineErrorMessage && (
-							<UI.ErrorBanner size="big">
-								{errorMessage || "Something unexpected happened. Please try again later."}
-							</UI.ErrorBanner>
-						)}
-					</>
-				)}
+				<UI.ShowIf request={addHabitRequestState} is="error">
+					<UI.ErrorBanner size="big">
+						{errorMessage || "Something unexpected happened. Please try again later."}
+					</UI.ErrorBanner>
+				</UI.ShowIf>
 			</UI.Column>
 		</Dialog>
 	);
