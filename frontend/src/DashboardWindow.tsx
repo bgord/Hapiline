@@ -95,13 +95,12 @@ export const DashboardWindow = () => {
 				</UI.Button>
 			</UI.Row>
 			<UI.Column p="24">
-				{getDashboardStatsRequestState.status === "error" && (
+				<UI.ShowIf request={getDashboardStatsRequestState} is="error">
 					<UI.ErrorBanner mt="24">
 						Cannot load dashboard stats now, please try again.
 					</UI.ErrorBanner>
-				)}
-
-				{getDashboardStatsRequestState.status === "success" && (
+				</UI.ShowIf>
+				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<>
 						<UI.Row mt="24" mb="48">
 							<MotivationalText
@@ -147,74 +146,75 @@ export const DashboardWindow = () => {
 							</UI.Column>
 						)}
 					</>
-				)}
+				</UI.ShowIf>
 
-				{getDashboardStreakStatsRequestState.status === "loading" && <UI.Text>Loading...</UI.Text>}
+				<UI.ShowIf request={getDashboardStatsRequestState} is="loading">
+					<UI.Text>Loading...</UI.Text>
+				</UI.ShowIf>
 
-				{getDashboardStreakStatsRequestState.status === "success" && (
-					<>
-						{regressStreakStats.length > 0 && (
-							<>
-								<UI.Row mt="24" mb="24" crossAxis="center">
-									<UI.Header variant="extra-small">Regress streaks</UI.Header>
-									<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
-										{regressStreakStats.length}
-									</UI.Badge>
-								</UI.Row>
-								<UI.Column by="gray-1">
-									<ExpandContractList max={5}>
-										{regressStreakStats.map(habit => (
-											<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
-												<Link
-													to={constructUrl("dashboard", {
-														subview: "habit_preview",
-														preview_habit_id: habit.id.toString(),
-													})}
-												>
-													<UI.Text>{habit.name}</UI.Text>
-												</Link>
-												<UI.Badge variant="negative">
-													{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress
-													streak
-												</UI.Badge>
-											</UI.Row>
-										))}
-									</ExpandContractList>
-								</UI.Column>
-							</>
-						)}
-						{progressStreakStats.length > 0 && (
-							<>
-								<UI.Row mt="48" mb="24" crossAxis="center">
-									<UI.Header variant="extra-small">Progress streaks</UI.Header>
-									<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
-										{progressStreakStats.length}
-									</UI.Badge>
-								</UI.Row>
-								<UI.Column bt="gray-1">
-									<ExpandContractList max={5}>
-										{progressStreakStats.map(habit => (
-											<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
-												<Link
-													to={constructUrl("dashboard", {
-														subview: "habit_preview",
-														preview_habit_id: habit.id.toString(),
-													})}
-												>
-													<UI.Text>{habit.name}</UI.Text>
-												</Link>
-												<UI.Badge variant="positive">
-													{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
-													streak
-												</UI.Badge>
-											</UI.Row>
-										))}
-									</ExpandContractList>
-								</UI.Column>
-							</>
-						)}
-					</>
-				)}
+				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
+					{regressStreakStats.length > 0 && (
+						<>
+							<UI.Row mt="24" mb="24" crossAxis="center">
+								<UI.Header variant="extra-small">Regress streaks</UI.Header>
+								<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+									{regressStreakStats.length}
+								</UI.Badge>
+							</UI.Row>
+							<UI.Column by="gray-1">
+								<ExpandContractList max={5}>
+									{regressStreakStats.map(habit => (
+										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
+											<Link
+												to={constructUrl("dashboard", {
+													subview: "habit_preview",
+													preview_habit_id: habit.id.toString(),
+												})}
+											>
+												<UI.Text>{habit.name}</UI.Text>
+											</Link>
+											<UI.Badge variant="negative">
+												{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress
+												streak
+											</UI.Badge>
+										</UI.Row>
+									))}
+								</ExpandContractList>
+							</UI.Column>
+						</>
+					)}
+					{progressStreakStats.length > 0 && (
+						<>
+							<UI.Row mt="48" mb="24" crossAxis="center">
+								<UI.Header variant="extra-small">Progress streaks</UI.Header>
+								<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+									{progressStreakStats.length}
+								</UI.Badge>
+							</UI.Row>
+							<UI.Column bt="gray-1">
+								<ExpandContractList max={5}>
+									{progressStreakStats.map(habit => (
+										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
+											<Link
+												to={constructUrl("dashboard", {
+													subview: "habit_preview",
+													preview_habit_id: habit.id.toString(),
+												})}
+											>
+												<UI.Text>{habit.name}</UI.Text>
+											</Link>
+											<UI.Badge variant="positive">
+												{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
+												streak
+											</UI.Badge>
+										</UI.Row>
+									))}
+								</ExpandContractList>
+							</UI.Column>
+						</>
+					)}
+				</UI.ShowIf>
+
 				{subview === "day_preview" && (
 					<DayDialog
 						day={currentDate}

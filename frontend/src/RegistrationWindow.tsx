@@ -42,9 +42,9 @@ export const RegistrationWindow: React.FC = () => {
 						disabled={registrationRequestState.status === "success"}
 						placeholder="john.brown@gmail.com"
 					/>
-					{registrationRequestState.status === "error" && (
+					<UI.ShowIf request={registrationRequestState} is="error">
 						<UI.Error>{emailInlineErrorMessage}</UI.Error>
-					)}
+					</UI.ShowIf>
 				</UI.Field>
 
 				<UI.Field mt="12">
@@ -89,26 +89,28 @@ export const RegistrationWindow: React.FC = () => {
 					</UI.Button>
 				</UI.Row>
 
-				{registrationRequestState.status === "success" && (
+				<UI.ShowIf request={registrationRequestState} is="success">
 					<UI.SuccessBanner size="big" mt="24">
 						<UI.Column ml="12">
 							<UI.Text>Account confirmation email has been sent!</UI.Text>
 							<UI.Text>Please, check your inbox.</UI.Text>
 						</UI.Column>
 					</UI.SuccessBanner>
-				)}
+				</UI.ShowIf>
 
-				{registrationRequestState.status === "error" && responseStatus === 500 && errorMessage && (
-					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
-				)}
+				<UI.ShowIf request={registrationRequestState} is="error">
+					<UI.ErrorBanner mt="24">
+						{responseStatus === 500 && errorMessage && errorMessage}
+					</UI.ErrorBanner>
+				</UI.ShowIf>
 
-				{registrationRequestState.status !== "success" && (
+				<UI.ShowIf request={registrationRequestState} is="success">
 					<UI.InfoBanner mt="48">
 						<UI.Text>
 							You will receive an account confirmation email with further instructions.
 						</UI.Text>
 					</UI.InfoBanner>
-				)}
+				</UI.ShowIf>
 			</UI.Column>
 		</UI.Card>
 	);

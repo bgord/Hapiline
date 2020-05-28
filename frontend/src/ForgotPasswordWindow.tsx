@@ -52,11 +52,11 @@ export const ForgotPasswordWindow: React.FC = () => {
 					</UI.Button>
 				</UI.Row>
 
-				{forgotPasswordRequestState.status === "success" && (
+				<UI.ShowIf request={forgotPasswordRequestState} is="success">
 					<UI.SuccessBanner mt="24">
 						<UI.Text ml="12">Email sent if an account exists.</UI.Text>
 					</UI.SuccessBanner>
-				)}
+				</UI.ShowIf>
 			</UI.Column>
 		</UI.Card>
 	);

@@ -145,55 +145,55 @@ function NotificationDropdown() {
 							<UI.CloseIcon ml="auto" onClick={hideNotifications} />
 						</UI.Row>
 
-						{getNotificationsRequestState.status === "loading" && <UI.Text>Loading...</UI.Text>}
+						<UI.ShowIf request={getNotificationsRequestState} is="loading">
+							<UI.Text>Loading...</UI.Text>
+						</UI.ShowIf>
 
-						{getNotificationsRequestState.status === "success" && (
-							<>
-								{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
-								<UI.Column as="ul">
-									{notifications.map(notification => (
-										<UI.Row
-											as="li"
-											bw="2"
-											b="gray-2"
-											mainAxis="between"
-											crossAxis="center"
-											mt="12"
-											pt="6"
-											key={notification.id}
-										>
-											<UI.Text>{notification.content}</UI.Text>
+						<UI.ShowIf request={getNotificationsRequestState} is="success">
+							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
+							<UI.Column as="ul">
+								{notifications.map(notification => (
+									<UI.Row
+										as="li"
+										bw="2"
+										b="gray-2"
+										mainAxis="between"
+										crossAxis="center"
+										mt="12"
+										pt="6"
+										key={notification.id}
+									>
+										<UI.Text>{notification.content}</UI.Text>
 
-											{notification.status === "unread" && (
-												<UI.Button
-													variant="secondary"
-													style={{width: "100px"}}
-													disabled={updateNotificationRequestState.status === "loading"}
-													onClick={() => markNotificationAsRead(notification.id)}
-												>
-													Read
-												</UI.Button>
-											)}
+										{notification.status === "unread" && (
+											<UI.Button
+												variant="secondary"
+												style={{width: "100px"}}
+												disabled={updateNotificationRequestState.status === "loading"}
+												onClick={() => markNotificationAsRead(notification.id)}
+											>
+												Read
+											</UI.Button>
+										)}
 
-											{notification.status === "read" && (
-												<UI.Button
-													style={{width: "100px"}}
-													variant="outlined"
-													disabled={updateNotificationRequestState.status === "loading"}
-													onClick={() => markNotificationAsUnread(notification.id)}
-												>
-													Unread
-												</UI.Button>
-											)}
-										</UI.Row>
-									))}
-								</UI.Column>
-							</>
-						)}
+										{notification.status === "read" && (
+											<UI.Button
+												style={{width: "100px"}}
+												variant="outlined"
+												disabled={updateNotificationRequestState.status === "loading"}
+												onClick={() => markNotificationAsUnread(notification.id)}
+											>
+												Unread
+											</UI.Button>
+										)}
+									</UI.Row>
+								))}
+							</UI.Column>
+						</UI.ShowIf>
 
-						{getNotificationsRequestState.status === "error" && (
+						<UI.ShowIf request={getNotificationsRequestState} is="error">
 							<UI.Error>Couldn't fetch notifications...</UI.Error>
-						)}
+						</UI.ShowIf>
 					</UI.Column>
 				</UI.Card>
 			)}

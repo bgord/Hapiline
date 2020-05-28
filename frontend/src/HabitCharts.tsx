@@ -68,47 +68,46 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 				</UI.Field>
 				{children}
 			</UI.Row>
-			{habitVoteChartRequestState.status === "success" && (
-				<>
-					<UI.Row mt="24">
-						{habitVoteChartRequestState.data?.map(item => (
-							<ChartCell
-								key={String(item.day)}
-								habitId={id}
-								style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
-								{...item}
-							/>
-						))}
-					</UI.Row>
-					<UI.Row mt="6" crossAxis="center">
-						<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
-						<UI.Text>
-							{regressVotes} regress {pluralize("vote", regressVotes)} ({regressVotesPrct}%)
-						</UI.Text>
-						<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
-							·
-						</UI.Text>
-						<UI.Text>
-							{plateauVotes} plateau {pluralize("vote", plateauVotes)} ({plateauVotesPrct}%)
-						</UI.Text>
-						<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
-							·
-						</UI.Text>
-						<UI.Text>
-							{progressVotes} progress {pluralize("vote", progressVotes)} ({progressVotesPrct}%)
-						</UI.Text>
 
-						<UI.Text ml="auto" variant="bold">
-							{howManyHabitVoteChartItems}
-						</UI.Text>
-						<UI.Text ml="6">in total</UI.Text>
-					</UI.Row>
-				</>
-			)}
+			<UI.ShowIf request={habitVoteChartRequestState} is="success">
+				<UI.Row mt="24">
+					{habitVoteChartRequestState.data?.map(item => (
+						<ChartCell
+							key={String(item.day)}
+							habitId={id}
+							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
+							{...item}
+						/>
+					))}
+				</UI.Row>
+				<UI.Row mt="6" crossAxis="center">
+					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
+					<UI.Text>
+						{regressVotes} regress {pluralize("vote", regressVotes)} ({regressVotesPrct}%)
+					</UI.Text>
+					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
+						·
+					</UI.Text>
+					<UI.Text>
+						{plateauVotes} plateau {pluralize("vote", plateauVotes)} ({plateauVotesPrct}%)
+					</UI.Text>
+					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
+						·
+					</UI.Text>
+					<UI.Text>
+						{progressVotes} progress {pluralize("vote", progressVotes)} ({progressVotesPrct}%)
+					</UI.Text>
 
-			{habitVoteChartRequestState.status === "error" && (
+					<UI.Text ml="auto" variant="bold">
+						{howManyHabitVoteChartItems}
+					</UI.Text>
+					<UI.Text ml="6">in total</UI.Text>
+				</UI.Row>
+			</UI.ShowIf>
+
+			<UI.ShowIf request={habitVoteChartRequestState} is="error">
 				<UI.Error mt="24">Charts unavailable, please try again.</UI.Error>
-			)}
+			</UI.ShowIf>
 		</>
 	);
 };
