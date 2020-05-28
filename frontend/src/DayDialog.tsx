@@ -75,8 +75,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const isThereNoTrackedHabits = habitsAvailableAtThisDay.length === 0;
 
 	const howManyHabitsAtAll = habitsWithPossibleVote.length;
-	const howManyUnvotedHabits = habitsWithPossibleVote.filter(({vote}) => !vote).length;
-	const howManyVotedHabits = habitsWithPossibleVote.filter(({vote}) => vote).length;
+	const howManyUnvotedHabits = habitsWithPossibleVote.filter(({vote}) => !vote?.vote).length;
+	const howManyVotedHabits = habitsWithPossibleVote.filter(({vote}) => vote?.vote).length;
 
 	const doesEveryHabitHasAVote = howManyUnvotedHabits === 0 && howManyHabitsAtAll > 0;
 

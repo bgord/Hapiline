@@ -12,8 +12,8 @@ const filterToFunction: {
 	) => boolean;
 } = {
 	all: () => true,
-	unvoted: ({vote}) => !vote,
-	voted: ({vote}) => vote !== null && vote !== undefined,
+	unvoted: ({vote}) => !vote?.vote,
+	voted: ({vote}) => vote?.vote !== null && vote?.vote !== undefined,
 };
 
 export const useHabitVoteFilter = (
