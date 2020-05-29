@@ -81,7 +81,7 @@
     "css-loader": "^3.4.0",
     "cypress": "^4.7.0",
     "eslint": "^6.8.0",
-    "eslint-config-bgord": "^2.1.2",
+    "eslint-config-bgord": "^2.2.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-jest": "^22.21.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
