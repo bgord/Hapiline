@@ -104,3 +104,5 @@ $ ./run.sh adonis migration:run --force
 ```bash
 $ unset DOCKER_HOST
 ```
+
+[] merge `master` to `develop`
