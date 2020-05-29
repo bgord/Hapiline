@@ -14,8 +14,6 @@
     "api:test:specific": "adonis test --grep",
     "frontend:dev": "webpack --mode development",
     "frontend:prod": "webpack --mode production",
-    "frontend:test": "jest --passWithNoTests",
-    "frontend:test:watch": "jest --watch",
     "e2e:test": "./node_modules/.bin/cypress open",
     "cosmos": "cosmos",
     "cosmos:export": "cosmos-export"
@@ -48,7 +46,6 @@
     "@reach/dialog": "^0.6.4",
     "@reach/tabs": "^0.8.6",
     "@reach/visually-hidden": "^0.6.2",
-    "@types/jest": "^24.0.25",
     "@types/qs": "^6.9.0",
     "@types/react": "^16.9.17",
     "@types/react-beautiful-dnd": "^11.0.4",
@@ -70,20 +67,19 @@
     "react-polymorphic-box": "^1.0.4",
     "react-query": "^1.5.2",
     "react-router-dom": "^5.1.2",
-    "react-spring": "^8.0.27",
-    "ts-jest": "^24.2.0"
+    "react-spring": "^8.0.27"
   },
   "devDependencies": {
     "@prisma/cli": "^2.0.0-beta.5",
     "@testing-library/cypress": "^5.0.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
-    "@types/testing-library__cypress": "^5.0.1",
+    "@types/testing-library__cypress": "^5.0.5",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
     "@typescript-eslint/parser": "^2.13.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.4.0",
-    "cypress": "^4.0.1",
+    "cypress": "^4.7.0",
     "eslint": "^6.8.0",
     "eslint-config-bgord": "^2.1.2",
     "eslint-config-prettier": "^6.9.0",
@@ -95,7 +91,6 @@
     "eslint-plugin-sonarjs": "^0.4.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^3.1.0",
-    "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^1.11.1",
     "react-cosmos": "^5.0.7",
@@ -103,7 +98,7 @@
     "typescript": "^3.9.3",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
+    "webpack-dev-server": "^3.11.0"
   },
   "autoload": {
     "App": "./app"
@@ -112,7 +107,6 @@
     "extends": "bgord",
     "rules": {
       "ramda/prefer-ramda-boolean": 0,
-      "jest/valid-expect": 0,
       "sonarjs/no-duplicate-string": 0,
       "@typescript-eslint/no-empty-function": 0,
       "@typescript-eslint/no-unused-vars": [
