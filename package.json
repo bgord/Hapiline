@@ -78,12 +78,12 @@
     "@testing-library/cypress": "^5.0.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
-    "@types/testing-library__cypress": "^5.0.1",
+    "@types/testing-library__cypress": "^5.0.5",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
     "@typescript-eslint/parser": "^2.13.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.4.0",
-    "cypress": "^4.0.1",
+    "cypress": "^4.7.0",
     "eslint": "^6.8.0",
     "eslint-config-bgord": "^2.1.2",
     "eslint-config-prettier": "^6.9.0",
@@ -103,7 +103,7 @@
     "typescript": "^3.9.3",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1"
+    "webpack-dev-server": "^3.11.0"
   },
   "autoload": {
     "App": "./app"
