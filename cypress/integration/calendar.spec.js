@@ -398,4 +398,51 @@ describe("Calendar", () => {
 			cy.findByDisplayValue("nonono");
 		});
 	});
+
+	it("add a comment to a habit with no vote", () => {
+		cy.viewport(1200, 1200);
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
+				.eq(currentDate - 1)
+				.within(() => cy.findByText("Show").click());
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("Show and edit vote comment")
+				.eq(1)
+				.click({force: true});
+
+			cy.findByPlaceholderText("Write something...").type("where are the turtles");
+
+			cy.findByText("Save").click();
+
+			cy.findByText("Close dialog").click({force: true});
+		});
+
+		cy.findByText("Comment added successfully!");
+
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
+				.eq(currentDate - 1)
+				.within(() => cy.findByText("Show").click());
+		});
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Close dialog").click({force: true});
+		});
+
+		cy.findAllByTestId("calendar").within(() => {
+			cy.findAllByTestId("day")
+				.eq(currentDate - 1)
+				.within(() => cy.findByText("Show").click());
+		});
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("Show and edit vote comment")
+				.eq(1)
+				.click({force: true});
+			cy.findByPlaceholderText("Write something...").should("have.value", "where are the turtles");
+		});
+	});
 });

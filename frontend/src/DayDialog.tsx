@@ -261,7 +261,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 										key={entry.id}
 										onResolve={() => {
 											onResolve();
-											getDayVotesRequestState.refetch();
+											getDayVotesRequestState.refetch({force: true});
 										}}
 										{...entry}
 									/>
