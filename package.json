@@ -81,7 +81,7 @@
     "css-loader": "^3.4.0",
     "cypress": "^4.7.0",
     "eslint": "^6.8.0",
-    "eslint-config-bgord": "^2.1.2",
+    "eslint-config-bgord": "^2.2.0",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-jest": "^22.21.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
@@ -104,30 +104,6 @@
     "App": "./app"
   },
   "eslintConfig": {
-    "extends": "bgord",
-    "rules": {
-      "ramda/prefer-ramda-boolean": 0,
-      "sonarjs/no-duplicate-string": 0,
-      "@typescript-eslint/no-empty-function": 0,
-      "@typescript-eslint/no-unused-vars": [
-        2,
-        {
-          "args": "none",
-          "ignoreRestSiblings": true
-        }
-      ],
-      "no-unused-vars": [
-        2,
-        {
-          "args": "none",
-          "ignoreRestSiblings": true
-        }
-      ],
-      "sonarjs/no-identical-functions": 1,
-      "react/no-multi-comp": 0,
-      "jsx-a11y/no-onchange": 1,
-      "no-bitwise": 0,
-      "sonarjs/cognitive-complexity": 0
-    }
+    "extends": "bgord"
   }
 }
