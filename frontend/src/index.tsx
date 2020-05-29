@@ -6,42 +6,48 @@ import "../css/main.css";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import Bugsnag from "@bugsnag/js";
+import BugsnagPluginReact from "@bugsnag/plugin-react";
+
+declare const __BUILD_VERSION__: string;
+declare const __ENVIRONMENT__: string;
+
+declare const process: {
+	env: {
+		BUGSNAG_API_KEY: string;
+	};
+};
+
+Bugsnag.start({
+	apiKey: process.env.BUGSNAG_API_KEY,
+	plugins: [new BugsnagPluginReact()],
+	collectUserIp: false,
+	enabledReleaseStages: ["production"],
+	appVersion: __BUILD_VERSION__,
+	releaseStage: __ENVIRONMENT__,
+});
+
 import * as UI from "./ui";
 import {App} from "./App";
 import {AuthProvider} from "./contexts/auth-context";
 import {ToastsProvider} from "./contexts/toasts-context";
 
-class ErrorBoundary extends React.Component<{}, {hasError: boolean}> {
-	constructor(props: {}) {
-		super(props);
-		this.state = {hasError: false};
-	}
+const ErrorBoundary = Bugsnag!.getPlugin("react")!.createErrorBoundary(React);
 
-	componentDidCatch() {
-		this.setState({hasError: true});
-	}
-
-	render() {
-		if (this.state.hasError) {
-			return (
-				<UI.Row mainAxis="center" mt="72">
-					<UI.Column>
-						<UI.Text variant="bold">Something went wrong ;(</UI.Text>
-						<UI.Button mt="24" variant="primary">
-							Refresh
-						</UI.Button>
-					</UI.Column>
-				</UI.Row>
-			);
-		}
-
-		return this.props.children;
-	}
-}
+const FallbackComponent = () => (
+	<UI.Row mainAxis="center" mt="72">
+		<UI.Column>
+			<UI.Text variant="bold">Something went wrong ;(</UI.Text>
+			<UI.Button mt="24" variant="primary">
+				Refresh
+			</UI.Button>
+		</UI.Column>
+	</UI.Row>
+);
 
 ReactDOM.render(
 	<React.StrictMode>
-		<ErrorBoundary>
+		<ErrorBoundary FallbackComponent={FallbackComponent}>
 			<ToastsProvider>
 				<AuthProvider>
 					<App />

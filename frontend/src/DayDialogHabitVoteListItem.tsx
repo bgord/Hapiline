@@ -80,7 +80,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 					day: new Date(day),
 					habit_id: habitWithPossibleVote.id,
 					vote: null,
-					comment: habitWithPossibleVote.vote?.comment ?? null,
+					comment: changedComment,
 				});
 			}
 		},
@@ -109,7 +109,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 							</UI.Button>
 						)}
 						{!isCommentVisible && (
-							<UI.Button variant="bare" title="Show and edit comment" onClick={toggleComment}>
+							<UI.Button variant="bare" title="Show and edit vote comment" onClick={toggleComment}>
 								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
 								<ChevronDownIcon />
 							</UI.Button>

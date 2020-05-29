@@ -31,13 +31,12 @@ class UserSeeder {
 		Event.fake();
 
 		const roles = await Database.table("roles");
-		const roleNameToId = roles.reduce(
-			(result, role) => ({
-				...result,
-				[role.name]: role.id,
-			}),
-			{},
-		);
+
+		const roleNameToId = {};
+
+		for (const role of roles) {
+			roleNameToId[role.name] = role.id;
+		}
 
 		for (let {username, roleName} of userEntries) {
 			const user = await Persona.register({

@@ -218,7 +218,10 @@ export const DashboardWindow = () => {
 				{subview === "day_preview" && (
 					<DayDialog
 						day={currentDate}
-						onResolve={getDashboardStatsRequestState.refetch}
+						onResolve={() => {
+							getDashboardStatsRequestState.refetch({force: true});
+							getDashboardStreakStatsRequestState.refetch({force: true});
+						}}
 						{...statsForToday}
 					/>
 				)}

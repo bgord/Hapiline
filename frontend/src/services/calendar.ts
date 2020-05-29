@@ -8,7 +8,5 @@ export const getMonthRequest = (_key: "month", monthOffset: MonthOffset) =>
 		.get<DayStatsFromServer[]>(constructUrl("/month", {monthOffset: String(monthOffset)}))
 		.then(response => response.data);
 
-export const getDayRequest = (_key: "day", day: Date) =>
-	_internal_api
-		.get<HabitVote[]>(constructUrl("/day-votes", {day: String(day)}))
-		.then(response => response.data);
+export const getDayRequest = (_key: "day", day: string) =>
+	_internal_api.get<HabitVote[]>(constructUrl("/day-votes", {day})).then(response => response.data);

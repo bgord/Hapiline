@@ -44,8 +44,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 
 	const triggerErrorNotification = useErrorToast();
 
-	const getDayVotesRequestState = useQuery<HabitVote[], ["day", Date]>({
-		queryKey: ["day", new Date(day)],
+	const getDayVotesRequestState = useQuery<HabitVote[], ["day", string]>({
+		queryKey: ["day", day],
 		queryFn: api.calendar.getDay,
 		config: {
 			onError: () => triggerErrorNotification("Couldn't fetch habit votes."),
@@ -261,7 +261,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 										key={entry.id}
 										onResolve={() => {
 											onResolve();
-											getDayVotesRequestState.refetch();
+											getDayVotesRequestState.refetch({force: true});
 										}}
 										{...entry}
 									/>
