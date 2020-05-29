@@ -38,22 +38,6 @@ export function NotificationDropdown() {
 		notification => notification.status === "unread",
 	).length;
 
-	function markNotificationAsRead(id: Notification["id"]) {
-		const payload: DraftNotificationPayload = {
-			id,
-			status: "read",
-		};
-		updateNotification(payload);
-	}
-
-	function markNotificationAsUnread(id: Notification["id"]) {
-		const payload: DraftNotificationPayload = {
-			id,
-			status: "unread",
-		};
-		updateNotification(payload);
-	}
-
 	return (
 		<UI.Column>
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
@@ -75,9 +59,11 @@ export function NotificationDropdown() {
 					<UI.Column p="24">
 						<UI.Row mainAxis="between" mb="24">
 							<UI.Header variant="extra-small">Notifications</UI.Header>
+
 							<UI.Badge ml="6" variant="neutral" style={{padding: "3px 6px"}}>
 								{unreadNotifictionsNumber}
 							</UI.Badge>
+
 							<UI.CloseIcon ml="auto" onClick={hideNotifications} />
 						</UI.Row>
 
@@ -87,6 +73,7 @@ export function NotificationDropdown() {
 
 						<UI.ShowIf request={getNotificationsRequestState} is="success">
 							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
+
 							<UI.Column as="ul">
 								{notifications.map(notification => (
 									<UI.Row
@@ -106,7 +93,7 @@ export function NotificationDropdown() {
 												variant="secondary"
 												style={{width: "100px"}}
 												disabled={updateNotificationRequestState.status === "loading"}
-												onClick={() => markNotificationAsRead(notification.id)}
+												onClick={() => updateNotification({id: notification.id, status: "read"})}
 											>
 												Read
 											</UI.Button>
@@ -117,7 +104,7 @@ export function NotificationDropdown() {
 												style={{width: "100px"}}
 												variant="outlined"
 												disabled={updateNotificationRequestState.status === "loading"}
-												onClick={() => markNotificationAsUnread(notification.id)}
+												onClick={() => updateNotification({id: notification.id, status: "unread"})}
 											>
 												Unread
 											</UI.Button>
