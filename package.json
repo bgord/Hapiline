@@ -104,30 +104,6 @@
     "App": "./app"
   },
   "eslintConfig": {
-    "extends": "bgord",
-    "rules": {
-      "ramda/prefer-ramda-boolean": 0,
-      "sonarjs/no-duplicate-string": 0,
-      "@typescript-eslint/no-empty-function": 0,
-      "@typescript-eslint/no-unused-vars": [
-        2,
-        {
-          "args": "none",
-          "ignoreRestSiblings": true
-        }
-      ],
-      "no-unused-vars": [
-        2,
-        {
-          "args": "none",
-          "ignoreRestSiblings": true
-        }
-      ],
-      "sonarjs/no-identical-functions": 1,
-      "react/no-multi-comp": 0,
-      "jsx-a11y/no-onchange": 1,
-      "no-bitwise": 0,
-      "sonarjs/cognitive-complexity": 0
-    }
+    "extends": "bgord"
   }
 }
