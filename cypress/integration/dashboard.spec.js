@@ -328,4 +328,27 @@ describe("Dashboard", () => {
 
 		cy.findByText("Couldn't fetch dashboard streak stats.");
 	});
+
+	it("Dashboard streaks get refreshed after a vote from the View Today modal", () => {
+		cy.login("jim");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("1 day progress streak");
+		cy.findByText("2 days progress streak").should("not.exist");
+
+		cy.findByText("View today").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("Show voted (2)").click();
+
+			cy.findAllByText("Add progress vote")
+				.first()
+				.click({force: true});
+
+			cy.findByText("Close dialog").click({force: true});
+		});
+
+		cy.findByText("1 day progress streak").should("not.exist");
+		cy.findByText("2 days progress streak");
+	});
 });
