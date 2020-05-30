@@ -78,6 +78,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@types/testing-library__cypress": "^5.0.5",
+    "@types/yup": "^0.29.1",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
     "@typescript-eslint/parser": "^2.13.0",
     "awesome-typescript-loader": "^5.2.1",
@@ -103,7 +104,8 @@
     "typescript": "^3.9.3",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "yup": "^0.29.1"
   },
   "autoload": {
     "App": "./app"
