@@ -33,9 +33,15 @@ $ git push --tags
 $ git push --tags
 ```
 
-[] check if all entries in the `.env-prod` are defined and correct
+[] run the env validation script
 
-[] check if all entries in the `.env-frontend.prod` are defined and correct
+```bash
+$ npm run env:validate
+```
+
+[] check if all entries in the `.env-prod` are correct
+
+[] check if all entries in the `.env-frontend.prod` are correct
 
 [] run app on your local machine
 
