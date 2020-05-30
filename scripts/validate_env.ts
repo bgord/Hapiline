@@ -5,20 +5,23 @@ import * as yup from "yup";
 const envFrontendDevFilename = ".env-frontend";
 const envFrontendProductionFilename = ".env-frontend.prod";
 
-const envFrontendSchema = yup.object().shape({
-	NODE_ENV: yup
-		.mixed()
-		.oneOf(["development", "production"])
-		.required(),
-	API_URL: yup
-		.string()
-		.url()
-		.required(),
-	BUGSNAG_API_KEY: yup
-		.string()
-		.length(32)
-		.required(),
-});
+const envFrontendSchema = yup
+	.object()
+	.shape({
+		NODE_ENV: yup
+			.mixed()
+			.oneOf(["development", "production"])
+			.required(),
+		API_URL: yup
+			.string()
+			.url()
+			.required(),
+		BUGSNAG_API_KEY: yup
+			.string()
+			.length(32)
+			.required(),
+	})
+	.noUnknown();
 
 async function main() {
 	console.log("⌛ Checking frontend env variables");
@@ -29,10 +32,10 @@ async function main() {
 	const envFrontendExample = dotenv.parse(envFrontendExampleString);
 	console.log(`\n✓ Loaded and parsed the development frontend env file: ${envFrontendDevFilename}`);
 	try {
-		await envFrontendSchema.validate(envFrontendExample);
+		await envFrontendSchema.validate(envFrontendExample, {strict: true});
 		console.log(`👍 Frontend development env file seems correct!`);
 	} catch (error) {
-		console.error({error});
+		console.error(error);
 		process.exit(1);
 	}
 
@@ -43,6 +46,13 @@ async function main() {
 	console.log(
 		`\n✓ Loaded and parsed the production frontend env file: ${envFrontendProductionFilename}`,
 	);
+	try {
+		await envFrontendSchema.validate(envFrontendProduction, {strict: true});
+		console.log(`👍 Frontend production env file seems correct!`);
+	} catch (error) {
+		console.error(error);
+		process.exit(1);
+	}
 }
 
 main();
