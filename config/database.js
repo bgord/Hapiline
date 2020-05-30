@@ -1,7 +1,7 @@
 const Env = use("Env");
 
 module.exports = {
-	connection: Env.getOrFail("DB_CONNECTION", "pg"),
+	connection: "pg",
 	pg: {
 		client: "pg",
 		connection: {

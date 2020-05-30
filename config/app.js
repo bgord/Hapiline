@@ -103,7 +103,7 @@ module.exports = {
     | production to optimize view loading time.
     |
     */
-		cache: Env.getOrFail("CACHE_VIEWS", true),
+		cache: false,
 	},
 
 	static: {
