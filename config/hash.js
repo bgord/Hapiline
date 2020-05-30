@@ -1,5 +1,3 @@
-const Env = use("Env");
-
 module.exports = {
 	/*
   |--------------------------------------------------------------------------
@@ -10,7 +8,7 @@ module.exports = {
   | auth module too.
   |
   */
-	driver: Env.getOrFail("HASH_DRIVER", "bcrypt"),
+	driver: "bcrypt",
 
 	/*
   |--------------------------------------------------------------------------

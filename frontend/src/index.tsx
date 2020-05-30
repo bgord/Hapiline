@@ -32,6 +32,7 @@ import {App} from "./App";
 import {AuthProvider} from "./contexts/auth-context";
 import {ToastsProvider} from "./contexts/toasts-context";
 
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 const ErrorBoundary = Bugsnag!.getPlugin("react")!.createErrorBoundary(React);
 
 const FallbackComponent = () => (

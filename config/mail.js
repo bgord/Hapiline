@@ -10,7 +10,7 @@ module.exports = {
   | define a driver too.
   |
   */
-	connection: Env.getOrFail("MAIL_CONNECTION", "smtp"),
+	connection: "smtp",
 
 	/*
   |--------------------------------------------------------------------------

@@ -16,7 +16,8 @@
     "frontend:prod": "webpack --mode production",
     "e2e:test": "./node_modules/.bin/cypress open",
     "cosmos": "cosmos",
-    "cosmos:export": "cosmos-export"
+    "cosmos:export": "cosmos-export",
+    "env:validate": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts"
   },
   "author": "Bartosz Gordon",
   "license": "UNLICENSED",
@@ -77,11 +78,13 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@types/testing-library__cypress": "^5.0.5",
+    "@types/yup": "^0.29.1",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
     "@typescript-eslint/parser": "^2.13.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.4.0",
     "cypress": "^4.7.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-bgord": "^2.2.0",
     "eslint-config-prettier": "^6.9.0",
@@ -97,10 +100,12 @@
     "pretty-quick": "^1.11.1",
     "react-cosmos": "^5.0.7",
     "style-loader": "^1.1.2",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.3",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "yup": "^0.29.1"
   },
   "autoload": {
     "App": "./app"

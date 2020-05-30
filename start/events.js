@@ -3,9 +3,10 @@ const Mail = use("Mail");
 const MAIL_TEMPLATES = use("MAIL_TEMPLATES");
 const Env = use("Env");
 
+const HOST_PATH = Env.get("HOST_PATH");
+
 Event.on("user::created", async ({user, token}) => {
 	const {email} = user.toJSON();
-	const HOST_PATH = Env.get("HOST_PATH");
 
 	await Mail.send(
 		MAIL_TEMPLATES.registration.template,
@@ -20,7 +21,6 @@ Event.on("user::created", async ({user, token}) => {
 
 Event.on("forgot::password", async ({user, token}) => {
 	const {email} = user.toJSON();
-	const HOST_PATH = Env.get("HOST_PATH");
 
 	await Mail.send(
 		MAIL_TEMPLATES.forgotPassword.template,
@@ -35,7 +35,6 @@ Event.on("forgot::password", async ({user, token}) => {
 
 Event.on("email::changed", async ({user, token}) => {
 	const {email} = user.toJSON();
-	const HOST_PATH = Env.get("HOST_PATH");
 
 	await Mail.send(
 		MAIL_TEMPLATES.newEmailAddressVerification.template,
