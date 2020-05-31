@@ -7,11 +7,12 @@ const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 class UpdateVote extends BaseHttpValidator {
 	get rules() {
 		const tomorrow = datefns.addDays(new Date(), 1);
+		const twoDaysAgo = datefns.subDays(new Date(), 2);
 
 		return {
 			habit_id: "required|integer|above:0|exists:habits,id",
 			vote: `in:${Object.keys(HABIT_VOTE_TYPES)}`,
-			day: `required|date|before:${tomorrow}`,
+			day: `required|date|before:${tomorrow}|after:${twoDaysAgo}`,
 		};
 	}
 
@@ -24,6 +25,7 @@ class UpdateVote extends BaseHttpValidator {
 			"habit_id.exists": VALIDATION_MESSAGES.non_existent_resource("habit_id"),
 			"vote.in": VALIDATION_MESSAGES.invalid_vote,
 			"day.before": VALIDATION_MESSAGES.before("day", "tomorrow"),
+			"day.after": VALIDATION_MESSAGES.after("day", "2 days ago"),
 		};
 	}
 
