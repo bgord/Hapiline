@@ -422,7 +422,7 @@ describe("Calendar", () => {
 			cy.findByText("Close dialog").click({force: true});
 		});
 
-		cy.findByText("Comment added successfully!");
+		cy.findAllByText("Comment added successfully!");
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
