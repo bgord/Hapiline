@@ -42,7 +42,7 @@ $ git push --tags
 [] push the commit with the version change (package(-lock).json)
 
 ```bash
-$ git push --tags
+$ git push
 ```
 
 [] run the env validation script
