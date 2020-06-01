@@ -9,6 +9,18 @@ Prerequisites:
 
 [] ensure you're on the `master` branch and have all the changes you want to deploy synced with origin
 
+[] run backend tests
+
+```bash
+./run.sh npm run api:test
+```
+
+[] run e2e tests
+
+```bash
+./run.sh npm run e2e:test
+```
+
 [] check the latest git tag
 
 ```bash
