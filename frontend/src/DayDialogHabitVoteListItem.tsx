@@ -5,6 +5,7 @@ import React from "react";
 // TODO: replace with heroicons, eventually delete FA
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus, faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
+import {subDays, isBefore} from "date-fns";
 import {ChevronUpIcon} from "./ui/icons/ChevronUp";
 import {ChevronDownIcon} from "./ui/icons/ChevronDown";
 import VisuallyHidden from "@reach/visually-hidden";
@@ -88,6 +89,9 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		true,
 	);
 
+	const dayBeforeYesterday = subDays(new Date(), 2);
+	const isBeforeDayBeforeYesterday = isBefore(new Date(day), dayBeforeYesterday);
+
 	function changeVote(type: NonNullable<HabitVoteType>) {
 		addHabitDayVote({
 			day: new Date(day),
@@ -128,7 +132,9 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								}}
 								variant="bare"
 								onClick={() => changeVote("progress")}
-								disabled={addHabitDayVoteRequestState.status === "loading"}
+								disabled={
+									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
+								}
 							>
 								<VisuallyHidden>Add progress vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faPlus} />
@@ -142,7 +148,9 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("plateau")}
-								disabled={addHabitDayVoteRequestState.status === "loading"}
+								disabled={
+									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
+								}
 							>
 								<VisuallyHidden>Add plateau vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faEquals} />
@@ -156,7 +164,9 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("regress")}
-								disabled={addHabitDayVoteRequestState.status === "loading"}
+								disabled={
+									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
+								}
 							>
 								<VisuallyHidden>Add regress vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faMinus} />

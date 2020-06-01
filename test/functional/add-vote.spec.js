@@ -102,6 +102,11 @@ test("validation", async ({client}) => {
 					field: "day",
 					validation: "before",
 				},
+				{
+					message: VALIDATION_MESSAGES.after("day", "2 days ago"),
+					field: "day",
+					validation: "after",
+				},
 			],
 		],
 		[
@@ -121,6 +126,16 @@ test("validation", async ({client}) => {
 					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
 					field: "day",
 					validation: "before",
+				},
+			],
+		],
+		[
+			{habit_id: 1, vote: HABIT_VOTE_TYPES.positive, day: datefns.subDays(new Date(), 3)},
+			[
+				{
+					message: VALIDATION_MESSAGES.after("day", "2 days ago"),
+					field: "day",
+					validation: "after",
 				},
 			],
 		],
@@ -187,7 +202,7 @@ test("user cannot add votes to day before habit creation", async ({client}) => {
 
 	const payload = {
 		habit_id: 5,
-		day: datefns.subDays(new Date(), 50),
+		day: datefns.subDays(new Date(), 2),
 	};
 
 	const response = await client
