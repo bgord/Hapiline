@@ -35,7 +35,7 @@ async function main() {
 		const envFrontendDevelopmentSchema = yup
 			.object()
 			.shape({
-				API_URL: URL,
+				API_URL: yup.string().required(),
 				BUGSNAG_API_KEY: yup
 					.string()
 					.length(32)
