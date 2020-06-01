@@ -35,7 +35,7 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 		});
 	}
 
-	const isNewHabitsTextVisible = stats && stats.createdHabitsCount && stats.createdHabitsCount > 0;
+	const isNewHabitsTextVisible = stats && stats.createdHabitsCount > 0;
 
 	const newHabitsText = `${stats.createdHabitsCount} new ${pluralize(
 		"habit",
