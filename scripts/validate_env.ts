@@ -16,11 +16,6 @@ const PORT = yup
 	.integer()
 	.required();
 
-const URL = yup
-	.string()
-	.url()
-	.required();
-
 async function main() {
 	console.log("⌛ Checking frontend env variables");
 
