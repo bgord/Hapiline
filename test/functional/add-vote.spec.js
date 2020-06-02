@@ -16,6 +16,7 @@ const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
+const Database = use("Database");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -316,4 +317,36 @@ test("checks if habit is trackable", async ({client}) => {
 		.end();
 
 	assertUnprocessableEntity(response);
+});
+
+test("emits notification after 5 consecutive progress votes", async ({client}) => {
+	const jim = await User.find(users.jim.id);
+
+	const habitPayload = {
+		name: "Get up and do something",
+		score: HABIT_SCORE_TYPES.positive,
+		strength: HABIT_STRENGTH_TYPES.fresh,
+		order: 50,
+		user_id: jim.id,
+		created_at: datefns.subDays(new Date(), 6),
+	};
+
+	const [habit] = await Database.into("habits")
+		.insert(habitPayload)
+		.returning("*");
+
+	const payload = {
+		habit_id: habit.id,
+		day: new Date(),
+		vote: HABIT_VOTE_TYPES.progress,
+		comment: "The worst thing about the prison was the Dementors",
+	};
+
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	console.log(response.body);
 });

@@ -46,3 +46,7 @@ Event.on("email::changed", async ({user, token}) => {
 		},
 	);
 });
+
+Event.on("vote::updated", async ({strategy, vote, user_id}) => {
+	console.log({strategy, vote, user_id});
+});

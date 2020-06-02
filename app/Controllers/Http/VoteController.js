@@ -2,6 +2,7 @@ const HabitVote = use("HabitVote");
 const Habit = use("Habit");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const datefns = require("date-fns");
+const Event = use("Event");
 
 class VoteController {
 	async update({request, response, auth}) {
@@ -43,6 +44,12 @@ class VoteController {
 				comment,
 			});
 
+			Event.fire("vote::updated", {
+				strategy: "new_vote",
+				vote: habitVote.toJSON(),
+				user_id: auth.user.id,
+			});
+
 			return response.send(habitVote);
 		}
 
@@ -50,6 +57,12 @@ class VoteController {
 			vote,
 		});
 		await habitVoteForGivenDate.save();
+
+		Event.fire("vote::updated", {
+			strategy: "existing_vote",
+			vote: habitVoteForGivenDate,
+			user_id: auth.user.id,
+		});
 
 		return response.send(habitVoteForGivenDate);
 	}
