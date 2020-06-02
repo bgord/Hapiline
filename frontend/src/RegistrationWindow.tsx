@@ -99,9 +99,9 @@ export const RegistrationWindow: React.FC = () => {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={registrationRequestState} is="error">
-					<UI.ErrorBanner mt="24">
-						{responseStatus === 500 && errorMessage && errorMessage}
-					</UI.ErrorBanner>
+					{responseStatus === 500 && errorMessage && (
+						<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>
+					)}
 				</UI.ShowIf>
 
 				<UI.ShowIf request={registrationRequestState} is={["idle", "loading", "error"]}>
