@@ -2,6 +2,12 @@ const Event = use("Event");
 const Mail = use("Mail");
 const MAIL_TEMPLATES = use("MAIL_TEMPLATES");
 const Env = use("Env");
+const NOTIFICATION_TYPES = use("NOTIFICATION_TYPES");
+const NOTIFICATION_STATUSES = use("NOTIFICATION_STATUSES");
+const Notification = use("Notification");
+const {HabitVotesGetter} = require("../app/Beings/HabitVotesGetter");
+const {VotesStreakCalculator} = require("../app/Beings/VotesStreakCalculator");
+const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 const HOST_PATH = Env.get("HOST_PATH");
 
@@ -47,6 +53,23 @@ Event.on("email::changed", async ({user, token}) => {
 	);
 });
 
-Event.on("vote::updated", async ({strategy, vote, user_id}) => {
-	console.log({strategy, vote, user_id});
+Event.on("vote::updated", async ({vote, habit}) => {
+	if (vote.vote !== HABIT_VOTE_TYPES.progress) return;
+
+	const notificationPayload = {
+		content: `You have 5 progress votes for '${habit.name}'!`,
+		type: NOTIFICATION_TYPES.regular,
+		status: NOTIFICATION_STATUSES.unread,
+		user_id: habit.user_id,
+	};
+
+	const habitVotesGetter = new HabitVotesGetter(habit);
+	const allHabitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
+
+	const streaksCalculator = new VotesStreakCalculator(allHabitVotes);
+	const progressStreak = streaksCalculator.calculate(HABIT_VOTE_TYPES.progress);
+
+	if (progressStreak === 5) {
+		await Notification.create(notificationPayload);
+	}
 });

@@ -319,7 +319,7 @@ test("checks if habit is trackable", async ({client}) => {
 	assertUnprocessableEntity(response);
 });
 
-test("emits notification after 5 consecutive progress votes", async ({client}) => {
+test("emits notification after 5 consecutive progress votes", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
 	const habitPayload = {
@@ -335,18 +335,36 @@ test("emits notification after 5 consecutive progress votes", async ({client}) =
 		.insert(habitPayload)
 		.returning("*");
 
-	const payload = {
-		habit_id: habit.id,
-		day: new Date(),
-		vote: HABIT_VOTE_TYPES.progress,
-		comment: "The worst thing about the prison was the Dementors",
-	};
+	// Add votes for days TODAY - x, where 1 >= x <= 4
+	// via Database, so we don't get rejected by two days
+	// before today vote update policy.
+	for (let i = 1; i <= 4; i++) {
+		await Database.into("habit_votes").insert({
+			habit_id: habit.id,
+			day: datefns.subDays(new Date(), i),
+			vote: HABIT_VOTE_TYPES.progress,
+		});
+	}
 
+	// Add a vote for today, so that an vote::updated event
+	// is emitted.
 	const response = await client
 		.post(ADD_VOTE_URL)
-		.send(payload)
+		.send({
+			habit_id: habit.id,
+			day: new Date(),
+			vote: HABIT_VOTE_TYPES.progress,
+		})
 		.loginVia(jim)
 		.end();
+	response.assertStatus(200);
 
-	console.log(response.body);
+	await new Promise(resolve => setTimeout(resolve, 1000));
+
+	const [notification] = await Database.select("*")
+		.from("notifications")
+		.where({
+			content: `You have 5 progress votes for '${habitPayload.name}'!`,
+		});
+	assert.ok(notification);
 });

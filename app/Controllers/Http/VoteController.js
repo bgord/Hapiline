@@ -47,7 +47,7 @@ class VoteController {
 			Event.fire("vote::updated", {
 				strategy: "new_vote",
 				vote: habitVote.toJSON(),
-				user_id: auth.user.id,
+				habit,
 			});
 
 			return response.send(habitVote);
@@ -61,7 +61,7 @@ class VoteController {
 		Event.fire("vote::updated", {
 			strategy: "existing_vote",
 			vote: habitVoteForGivenDate,
-			user_id: auth.user.id,
+			habit,
 		});
 
 		return response.send(habitVoteForGivenDate);
