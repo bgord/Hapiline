@@ -45,7 +45,6 @@ class VoteController {
 			});
 
 			Event.fire("vote::updated", {
-				strategy: "new_vote",
 				vote: habitVote.toJSON(),
 				habit,
 			});
@@ -57,12 +56,6 @@ class VoteController {
 			vote,
 		});
 		await habitVoteForGivenDate.save();
-
-		Event.fire("vote::updated", {
-			strategy: "existing_vote",
-			vote: habitVoteForGivenDate,
-			habit,
-		});
 
 		return response.send(habitVoteForGivenDate);
 	}
