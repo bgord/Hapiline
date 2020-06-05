@@ -15,7 +15,7 @@ export type User = users;
 export type NewUserPayload = Pick<User, "email" | "password"> & {
   password_confirmation: User["password"];
 };
-export type UserProfile = Pick<User, "id" | "email">;
+export type UserProfile = Pick<User, "id" | "email"| "created_at">;
 
 export type LoginPayload = Pick<User, "email" | "password">;
 export type NewPasswordPayload = {
