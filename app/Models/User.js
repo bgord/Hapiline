@@ -21,6 +21,10 @@ class User extends Model {
 		return ["password"];
 	}
 
+	static formatDates(_field, value) {
+		return new Date(value).toISOString();
+	}
+
 	/**
 	 * A relationship on tokens is required for auth to
 	 * work. Since features like `refreshTokens` or
