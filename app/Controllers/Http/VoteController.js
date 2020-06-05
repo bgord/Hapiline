@@ -2,6 +2,7 @@ const HabitVote = use("HabitVote");
 const Habit = use("Habit");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const datefns = require("date-fns");
+const Event = use("Event");
 
 class VoteController {
 	async update({request, response, auth}) {
@@ -41,6 +42,11 @@ class VoteController {
 				day,
 				vote,
 				comment,
+			});
+
+			Event.fire("vote::updated", {
+				vote: habitVote.toJSON(),
+				habit,
 			});
 
 			return response.send(habitVote);
