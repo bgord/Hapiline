@@ -8,6 +8,7 @@ const {
 	assertUnprocessableEntity,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
+const Utils = use("Utils");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Add vote");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
@@ -337,7 +338,7 @@ test("emits notification after 5 consecutive progress votes", async ({client, as
 		.insert(habitPayload)
 		.returning("*");
 
-	// Add votes for days TODAY - x, where 1 >= x <= 4
+	// Add votes for days TODAY - x, where 1 =< x <= 4
 	// via Database, so we don't get rejected by two days
 	// before today vote update policy.
 	for (let i = 1; i <= 4; i++) {
@@ -361,9 +362,9 @@ test("emits notification after 5 consecutive progress votes", async ({client, as
 		.end();
 	response.assertStatus(200);
 
-	await new Promise(resolve => setTimeout(resolve, 1000));
+	await Utils.sleep(1000);
 
-	const [notification] = await Database.select("*")
+	const notification = await Database.first("*")
 		.from("notifications")
 		.where({
 			content: `You have 5 progress votes for '${habitPayload.name}'!`,
