@@ -3,7 +3,6 @@ const datefns = require("date-fns");
 const Database = use("Database");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
-const Habit = use("Habit");
 
 const today = Date.now();
 
@@ -16,7 +15,7 @@ class HabitsSeeder {
 
 			const payload = Array.from({length: howManyHabits}).map((_, index) => {
 				const ts = datefns.subDays(today, index % 3).setHours(index & 3);
-				const date = new Date(ts);
+				const date = new Date(ts).toISOString();
 
 				return {
 					user_id: user.id,
@@ -31,7 +30,9 @@ class HabitsSeeder {
 				};
 			});
 
-			await Habit.createMany(payload);
+			// Using Database.insert here because we want to override the
+			// default {created,updated}_at dates (which are set to "now").
+			await Database.into("habits").insert(payload);
 		}
 	}
 }
