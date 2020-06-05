@@ -80,6 +80,7 @@ describe("Registration", () => {
 		cy.findByTestId("registration-submit").click();
 
 		cy.findByText("Given email address already exists.");
+		cy.get('div.c-banner[data-variant="error"]').should("not.exist");
 	});
 
 	it("500", () => {

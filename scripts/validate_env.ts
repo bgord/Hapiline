@@ -16,11 +16,6 @@ const PORT = yup
 	.integer()
 	.required();
 
-const URL = yup
-	.string()
-	.url()
-	.required();
-
 async function main() {
 	console.log("⌛ Checking frontend env variables");
 
@@ -35,7 +30,7 @@ async function main() {
 		const envFrontendDevelopmentSchema = yup
 			.object()
 			.shape({
-				API_URL: URL,
+				API_URL: yup.string().required(),
 				BUGSNAG_API_KEY: yup
 					.string()
 					.length(32)

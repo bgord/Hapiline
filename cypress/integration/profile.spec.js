@@ -25,6 +25,8 @@ describe("Profile", () => {
 		cy.findByText(
 			"Your data will be removed pernamently, and you won't be able to recover your account.",
 		);
+		cy.findByText("Created at:");
+
 		cy.findByText("Delete account").click();
 		cy.findByText("Nevermind, don't delete").click();
 

@@ -229,7 +229,7 @@ test("full flow for non-existant habit vote", async ({client, assert}) => {
 
 	const payload = {
 		habit_id: 5,
-		day: datefns.subDays(new Date(), 1),
+		day: new Date(),
 	};
 
 	const response = await client
@@ -237,6 +237,8 @@ test("full flow for non-existant habit vote", async ({client, assert}) => {
 		.send(payload)
 		.loginVia(jim)
 		.end();
+
+	response.assertStatus(200);
 
 	assert.equal(response.body.habit_id, payload.habit_id);
 	assert.ok(datefns.isEqual(new Date(response.body.day), payload.day));

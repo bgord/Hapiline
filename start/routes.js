@@ -31,7 +31,9 @@ Route.group(() => {
 Route.group(() => {
 	Route.post("/logout", "SessionController.destroy");
 
-	Route.get("/me", ({response, auth}) => response.send({email: auth.user.email, id: auth.user.id}));
+	Route.get("/me", ({response, auth}) =>
+		response.send({email: auth.user.email, id: auth.user.id, created_at: auth.user.created_at}),
+	);
 
 	Route.patch("/update-password", "PasswordController.update")
 		.validator("UpdatePassword")
