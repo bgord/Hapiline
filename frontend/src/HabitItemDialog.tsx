@@ -121,7 +121,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								<UI.Text variant="dimmed">Created at:</UI.Text>
 								<UI.Text variant="monospaced" ml="6">
 									{/* TODO: make {created,updated}_at required */}
-									{habit.created_at && formatTime(habit?.created_at)}
+									{habit.created_at && formatTime(habit.created_at)}
 								</UI.Text>
 								<UI.Text variant="dimmed" ml="24">
 									Last updated at:
