@@ -10,8 +10,11 @@ import {useErrorToast} from "./contexts/toasts-context";
 import {useUserProfile} from "./contexts/auth-context";
 import * as UI from "./ui";
 import {NewEmailPayload, UpdatePasswordPayload} from "./interfaces/index";
+import {formatTime} from "./config/DATE_FORMATS";
 
 export const ProfileWindow = () => {
+	const [profile] = useUserProfile();
+
 	return (
 		<UI.Column ml="auto" mr="auto" my="48" style={{maxWidth: "var(--view-width)"}}>
 			<UI.Card>
@@ -21,6 +24,12 @@ export const ProfileWindow = () => {
 				<ChangeEmail />
 				<ChangePassword />
 				<DeleteAccount />
+				<UI.Row mainAxis="end" p="12" mt="12">
+					<UI.Text variant="dimmed">Created at:</UI.Text>
+					<UI.Text variant="monospaced" ml="6">
+						{profile?.created_at && formatTime(profile.created_at)}
+					</UI.Text>
+				</UI.Row>
 			</UI.Card>
 		</UI.Column>
 	);
