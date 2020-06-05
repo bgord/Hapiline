@@ -2,6 +2,7 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
 const {HabitVotesGetter} = require("./HabitVotesGetter");
 const {VotesStreakCalculator} = require("./VotesStreakCalculator");
+const Database = use("Database");
 
 // This is a variation of the Strategy pattern (without the class bloat)
 // Basing on habit being trackable, we won't to display it in a different way.
@@ -9,7 +10,11 @@ const {VotesStreakCalculator} = require("./VotesStreakCalculator");
 // To the basic habit model, we append 'progress_streak' and 'regress_streak'.
 const DetailedHabitViewStrategies = {
 	trackable_habit: {
-		async execute(habit) {
+		async execute(habitId) {
+			const habit = await Database.table("habits")
+				.where("id", habitId)
+				.first();
+
 			const habitVotesGetter = new HabitVotesGetter(habit);
 			const habitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
 
@@ -26,7 +31,11 @@ const DetailedHabitViewStrategies = {
 		},
 	},
 	untrackable_habit: {
-		async execute(habit) {
+		async execute(habitId) {
+			const habit = await Database.table("habits")
+				.where("id", habitId)
+				.first();
+
 			return {
 				...habit,
 				progress_streak: 0,

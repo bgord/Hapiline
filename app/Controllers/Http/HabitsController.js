@@ -69,7 +69,7 @@ class HabitsController {
 
 		// We use different strategies to display trackable/untrackable habits
 		const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
-		const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit);
+		const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id);
 
 		return response.send(detailedHabit);
 	}
@@ -101,11 +101,9 @@ class HabitsController {
 			await habit.merge(updatedHabitPayload);
 			await habit.save();
 
-			const updatedHabit = habit.toJSON();
-
 			// We use different strategies to display trackable/untrackable habits
-			const strategy = updatedHabit.is_trackable ? "trackable_habit" : "untrackable_habit";
-			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(updatedHabit);
+			const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
+			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id);
 
 			return response.send(detailedHabit);
 		} catch (error) {
