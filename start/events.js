@@ -69,7 +69,9 @@ Event.on("vote::updated", async ({vote, habit}) => {
 	const streaksCalculator = new VotesStreakCalculator(allHabitVotes);
 	const progressStreak = streaksCalculator.calculate(HABIT_VOTE_TYPES.progress);
 
-	if (progressStreak === 5) {
+	const milestones = [5, 10, 15, 25, 50, 100];
+
+	if (milestones.includes(progressStreak)) {
 		await Notification.create(notificationPayload);
 	}
 });
