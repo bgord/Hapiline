@@ -3,6 +3,7 @@ const datefns = require("date-fns");
 const Database = use("Database");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
+const Habit = use("Habit");
 
 const today = Date.now();
 
@@ -30,7 +31,7 @@ class HabitsSeeder {
 				};
 			});
 
-			await Database.table("habits").insert(payload);
+			await Habit.createMany(payload);
 		}
 	}
 }
