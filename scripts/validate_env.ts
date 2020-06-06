@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import fs from "fs";
 import * as yup from "yup";
 
+const MODE = process.argv[2] === "--with-prod" ? "production" : "development";
+
+if (MODE === "development") console.log(`Validating only development env files.`);
+if (MODE === "production") console.log(`Validating both development and production env files.`);
+
 const envFrontendDevelopmentFilename = ".env-frontend";
 const envFrontendProductionFilename = ".env-frontend.prod";
 
@@ -17,15 +22,62 @@ const PORT = yup
 	.required();
 
 async function main() {
-	console.log("⌛ Checking frontend env variables");
-
+	// =========== frontend development =========== //
 	const envFrontendDevelopmentString = await fs.promises.readFile(envFrontendDevelopmentFilename, {
 		encoding: "utf8",
 	});
 	const envFrontendDevelopment = dotenv.parse(envFrontendDevelopmentString);
 	console.log(
-		`\n✓ Loaded and parsed the development frontend env file: ${envFrontendDevelopmentFilename}`,
+		`\n✓  Loaded and parsed the development frontend env file: ${envFrontendDevelopmentFilename}`,
 	);
+	console.log("⌛ Checking frontend development env variables");
+	await validateEnvFrontendDevelopment(envFrontendDevelopment);
+	console.log(`👍 Frontend development env file seems correct!`);
+
+	// =========== frontend production =========== //
+	if (MODE === "production") {
+		const envFrontendProductionString = await fs.promises.readFile(envFrontendProductionFilename, {
+			encoding: "utf8",
+		});
+		const envFrontendProduction = dotenv.parse(envFrontendProductionString);
+		console.log(
+			`\n✓  Loaded and parsed the production frontend env file: ${envFrontendProductionFilename}`,
+		);
+		console.log("⌛ Checking frontend production env variables");
+		await validateEnvFrontendProduction(envFrontendProduction, envFrontendDevelopment);
+		console.log(`👍 Frontend production env file seems correct!`);
+	}
+
+	// =========== server development =========== //
+	const envServerDevelopmentString = await fs.promises.readFile(envServerDevelopmentFilename, {
+		encoding: "utf8",
+	});
+	const envServerDevelopment = dotenv.parse(envServerDevelopmentString);
+	console.log(
+		`\n✓  Loaded and parsed the development server env file: ${envServerDevelopmentFilename}`,
+	);
+	console.log("⌛ Checking server development env variables");
+	await validateEnvServerDevelopment(envServerDevelopment);
+	console.log(`👍 Server development env file seems correct!`);
+
+	// =========== server production =========== //
+	if (MODE === "production") {
+		const envServerProductionString = await fs.promises.readFile(envServerProductionFilename, {
+			encoding: "utf8",
+		});
+		const envServerProduction = dotenv.parse(envServerProductionString);
+		console.log(
+			`\n✓  Loaded and parsed the production server env file: ${envServerProductionFilename}`,
+		);
+		console.log("⌛ Checking server production env variables");
+		await validateEnvServerProduction(envServerProduction, envServerDevelopment);
+		console.log(`👍 Server production env file seems correct!`);
+	}
+}
+
+main();
+
+async function validateEnvFrontendDevelopment(envFrontendDevelopment: dotenv.DotenvParseOutput) {
 	try {
 		const envFrontendDevelopmentSchema = yup
 			.object()
@@ -38,19 +90,16 @@ async function main() {
 			})
 			.noUnknown();
 		await envFrontendDevelopmentSchema.validate(envFrontendDevelopment, {strict: true});
-		console.log(`👍 Frontend development env file seems correct!`);
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
 	}
+}
 
-	const envFrontendProductionString = await fs.promises.readFile(envFrontendProductionFilename, {
-		encoding: "utf8",
-	});
-	const envFrontendProduction = dotenv.parse(envFrontendProductionString);
-	console.log(
-		`\n✓ Loaded and parsed the production frontend env file: ${envFrontendProductionFilename}`,
-	);
+async function validateEnvFrontendProduction(
+	envFrontendProduction: dotenv.DotenvParseOutput,
+	envFrontendDevelopment: dotenv.DotenvParseOutput,
+) {
 	try {
 		const envFrontendProductionSchema = yup
 			.object()
@@ -74,22 +123,13 @@ async function main() {
 			})
 			.noUnknown();
 		await envFrontendProductionSchema.validate(envFrontendProduction, {strict: true});
-		console.log(`👍 Frontend production env file seems correct!`);
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
 	}
+}
 
-	console.log("\n⌛ Checking server env variables");
-
-	const envServerDevelopmentString = await fs.promises.readFile(envServerDevelopmentFilename, {
-		encoding: "utf8",
-	});
-	const envServerDevelopment = dotenv.parse(envServerDevelopmentString);
-	console.log(
-		`\n✓ Loaded and parsed the development server env file: ${envServerDevelopmentFilename}`,
-	);
-
+async function validateEnvServerDevelopment(envServerDevelopment: dotenv.DotenvParseOutput) {
 	try {
 		const envServerDevelopmentSchema = yup
 			.object()
@@ -128,20 +168,16 @@ async function main() {
 			})
 			.noUnknown();
 		await envServerDevelopmentSchema.validate(envServerDevelopment);
-		console.log(`👍 Server production env file seems correct!`);
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
 	}
+}
 
-	const envServerProductionString = await fs.promises.readFile(envServerProductionFilename, {
-		encoding: "utf8",
-	});
-	const envServerProduction = dotenv.parse(envServerProductionString);
-	console.log(
-		`\n✓ Loaded and parsed the production server env file: ${envServerProductionFilename}`,
-	);
-
+async function validateEnvServerProduction(
+	envServerProduction: dotenv.DotenvParseOutput,
+	envServerDevelopment: dotenv.DotenvParseOutput,
+) {
 	try {
 		const envServerProductionSchema = yup
 			.object()
@@ -192,11 +228,8 @@ async function main() {
 			})
 			.noUnknown();
 		await envServerProductionSchema.validate(envServerProduction);
-		console.log(`👍 Server production env file seems correct!`);
 	} catch (error) {
 		console.error(error);
 		process.exit(1);
 	}
 }
-
-main();

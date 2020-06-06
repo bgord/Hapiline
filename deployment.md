@@ -48,7 +48,7 @@ $ git push --no-verify
 [] run the env validation script
 
 ```bash
-$ npm run env:validate
+$ npm run env:validate:all
 ```
 
 [] check if all entries in the `.env-prod` are correct

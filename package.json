@@ -17,7 +17,8 @@
     "e2e:test": "./node_modules/.bin/cypress open",
     "cosmos": "cosmos",
     "cosmos:export": "cosmos-export",
-    "env:validate": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts"
+    "env:validate:dev": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts",
+    "env:validate:all": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts --with-prod"
   },
   "author": "Bartosz Gordon",
   "license": "UNLICENSED",

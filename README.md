@@ -87,3 +87,19 @@ E2E tests:
 
 $ npm run e2e:test
 ```
+
+**Env validation**
+
+To validate the development env files (server and frontend):
+
+```bash
+$ npm run validate:env:dev
+```
+
+To validate both development and production env files (server and frontend):
+
+```bash
+$ npm run validate:env:all
+```
+
+---
