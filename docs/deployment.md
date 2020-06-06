@@ -49,13 +49,13 @@ Steps:
 ./run.sh npm run e2e:test
 ```
 
-[-] apply a new tag (remember about semver)
+[+] apply a new tag (remember about semver)
 
 ```bash
 $ npm version <major | minor | patch>
 ```
 
-[-] push the latest tag
+[+] push the latest tag
 
 ```bash
 $ git push --tags --no-verify
