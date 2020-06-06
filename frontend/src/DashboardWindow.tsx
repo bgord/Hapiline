@@ -101,51 +101,53 @@ export const DashboardWindow = () => {
 					</UI.ErrorBanner>
 				</UI.ShowIf>
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
-					<>
-						<UI.Row mt="24" mb="48">
-							<MotivationalText
-								untracked={howManyUntrackedHabitsToday}
-								total={howManyHabitsToday}
-								votedFor={howManyVotesToday}
-							/>
-						</UI.Row>
-						{howManyHabitsToday > 0 && (
-							<UI.Column data-testid="chart-today">
-								<UI.Text variant="dimmed">Votes today</UI.Text>
-								<UI.Row mb="24">
-									<DaySummaryChart
-										maximumVotes={todayStats?.maximumVotes ?? 0}
-										day={currentDate}
-										{...statsForToday}
-									/>
-								</UI.Row>
-							</UI.Column>
-						)}
-						{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-							<UI.Column data-testid="chart-last-week">
-								<UI.Text variant="dimmed">Votes last week</UI.Text>
-								<UI.Row mb="24">
-									<DaySummaryChart
-										maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-										day={currentDate}
-										{...statsForLastWeek}
-									/>
-								</UI.Row>
-							</UI.Column>
-						)}
-						{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-							<UI.Column data-testid="chart-last-month">
-								<UI.Text variant="dimmed">Votes last month</UI.Text>
-								<UI.Row mb="24">
-									<DaySummaryChart
-										maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-										day={currentDate}
-										{...statsForLastMonth}
-									/>
-								</UI.Row>
-							</UI.Column>
-						)}
-					</>
+					<UI.Row mt="24" mb="48">
+						<MotivationalText
+							untracked={howManyUntrackedHabitsToday}
+							total={howManyHabitsToday}
+							votedFor={howManyVotesToday}
+						/>
+					</UI.Row>
+
+					{howManyHabitsToday > 0 && (
+						<UI.Column data-testid="chart-today">
+							<UI.Text variant="dimmed">Votes today</UI.Text>
+
+							<UI.Row mb="24">
+								<DaySummaryChart
+									maximumVotes={todayStats?.maximumVotes ?? 0}
+									day={currentDate}
+									{...statsForToday}
+								/>
+							</UI.Row>
+						</UI.Column>
+					)}
+
+					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
+						<UI.Column data-testid="chart-last-week">
+							<UI.Text variant="dimmed">Votes last week</UI.Text>
+							<UI.Row mb="24">
+								<DaySummaryChart
+									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
+									day={currentDate}
+									{...statsForLastWeek}
+								/>
+							</UI.Row>
+						</UI.Column>
+					)}
+
+					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
+						<UI.Column data-testid="chart-last-month">
+							<UI.Text variant="dimmed">Votes last month</UI.Text>
+							<UI.Row mb="24">
+								<DaySummaryChart
+									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
+									day={currentDate}
+									{...statsForLastMonth}
+								/>
+							</UI.Row>
+						</UI.Column>
+					)}
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="loading">
@@ -236,29 +238,34 @@ export const DashboardWindow = () => {
 	);
 };
 
-// TODO: Apply the strategy pattern
-const MotivationalText: React.FC<{total: number; votedFor: number; untracked: number}> = ({
-	total,
-	votedFor,
-	untracked,
-}) => {
-	if (total === 0 && votedFor === 0) {
-		return (
+type MotivationalTextProps = {
+	total: DashboardHabitVoteStatsForDateRanges["today"]["maximumVotes"];
+	votedFor: DashboardHabitVoteStatsForDateRanges["today"]["allVotes"];
+	untracked: DashboardHabitVoteStatsForDateRanges["today"]["untrackedHabits"];
+};
+
+const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, untracked}) => {
+	function selectStrategy() {
+		if (total === 0) return "no_habits";
+		if (votedFor === 0) return "no_votes_today";
+		if (votedFor > 0 && votedFor < total) return "not_all_voted";
+		if (votedFor === total) return "all_voted";
+		return null;
+	}
+
+	const strategyToText = {
+		no_habits: (
 			<Link className="c-link" to="habits">
 				Add your first tracked habit to start voting!
 			</Link>
-		);
-	}
-	if (votedFor === 0) {
-		return (
+		),
+		no_votes_today: (
 			<UI.Text>
 				Start your day well! You have <UI.Text variant="bold">{total}</UI.Text> tracked habits to
 				vote for. And {untracked} untracked habits.
 			</UI.Text>
-		);
-	}
-	if (votedFor > 0 && votedFor < total) {
-		return (
+		),
+		not_all_voted: (
 			<UI.Column>
 				<UI.Text>You're on a good track!</UI.Text>
 				<UI.Text>
@@ -266,10 +273,8 @@ const MotivationalText: React.FC<{total: number; votedFor: number; untracked: nu
 					left out of <UI.Text variant="bold">{total}</UI.Text> (and {untracked} untracked habits).
 				</UI.Text>
 			</UI.Column>
-		);
-	}
-	if (votedFor === total) {
-		return (
+		),
+		all_voted: (
 			<UI.Column>
 				<UI.Row>
 					<UI.Text variant="bold">Congratulations! </UI.Text>
@@ -280,7 +285,11 @@ const MotivationalText: React.FC<{total: number; votedFor: number; untracked: nu
 				</UI.Row>
 				<UI.Text> You also have {untracked} untracked habits.</UI.Text>
 			</UI.Column>
-		);
-	}
-	return null;
+		),
+	};
+
+	const strategy = selectStrategy();
+
+	if (!strategy) return null;
+	return strategyToText[strategy];
 };
