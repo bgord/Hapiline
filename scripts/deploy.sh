@@ -50,11 +50,14 @@ echo "Running backend tests..."
 echo "Running e2e tests..."
 ./run.sh npm run e2e:test:headless
 
-echo "Pushing latest tag"
+echo "Pushing latest tag..."
 git push --tags --no-verify
 
-echo "Pushing latest package(-lock).json version changes"
+echo "Pushing latest package(-lock).json version changes..."
 git push --no-verify
 
-echo "Validating env files"
+echo "Validating env files..."
 npm run env:validate:all
+
+printf "\nRunning the app locally...\n\n"
+docker-compose up -d

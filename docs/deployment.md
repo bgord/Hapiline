@@ -73,7 +73,7 @@ $ git push --no-verify
 $ npm run env:validate:all
 ```
 
-[-] run app on your local machine
+[+] run app on your local machine
 
 ```bash
 $ docker-compose up
