@@ -8,14 +8,23 @@ CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 echo "Your current branch: $CURRENT_BRANCH"
 
 if [ $ALLOWED_BRANCH == "$CURRENT_BRANCH" ]; then
-  echo "Deployment is required from your branch, proceeding.";
+  printf "Correct branch, proceeding\n\n";
 else
   echo "The deployment script is required to be run on branch \`master\`";
   echo "Quitting..."
   exit 1
 fi
 
-printf '\nDeployment procedure will be started in 5 seconds.\n'
+VERSION_CHANGE=$1
+echo "Requested version change: $VERSION_CHANGE"
+
+if [[ $VERSION_CHANGE != "major" && $VERSION_CHANGE != "minor" && $VERSION_CHANGE != "patch" ]]; then
+  echo "Incorrect requested version, must be one of: major, minor, or patch."
+else
+  echo "Correct version change, proceeding"
+fi
+
+printf '\nDeployment procedure will be started in 5 seconds\n'
 printf 'Press Ctrl-C (or Command-C) is you want to quit.\n\n'
 
 echo '5'
