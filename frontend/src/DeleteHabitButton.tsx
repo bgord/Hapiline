@@ -11,7 +11,8 @@ import {useHabitsState} from "./contexts/habits-context";
 import {useToggle} from "./hooks/useToggle";
 
 export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
-	const [showDialog, openDialog, closeDialog] = useToggle();
+	const {on: showDialog, setOn: openDialog, setOff: closeDialog} = useToggle();
+
 	const getHabitsRequestState = useHabitsState();
 
 	const cancelRef = React.useRef<HTMLButtonElement>();

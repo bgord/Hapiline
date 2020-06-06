@@ -12,8 +12,11 @@ import {useErrorToast} from "./contexts/toasts-context";
 
 export function NotificationDropdown() {
 	const triggerErrorNotification = useErrorToast();
-	const [areNotificationsVisible, , hideNotifications, toggleNotifications] = useToggle();
-
+	const {
+		on: areNotificationsVisible,
+		setOff: hideNotifications,
+		toggle: toggleNotifications,
+	} = useToggle();
 	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
 		queryKey: "notifications",
 		queryFn: api.notifications.get,

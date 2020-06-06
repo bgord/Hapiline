@@ -39,7 +39,7 @@ export const HabitsWindow = () => {
 
 	const [, updateSubviewQueryParam] = useQueryParam("subview");
 
-	const [areFiltersVisible, , , toggleFilters] = useToggle();
+	const {on: areFiltersVisible, toggle: toggleFilters} = useToggle();
 
 	const habitStrengthFilter = useHabitStrengthFilter();
 	const habitScoreFilter = useHabitScoreFilter();

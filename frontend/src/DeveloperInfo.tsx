@@ -8,7 +8,7 @@ declare const __BUILD_VERSION__: string;
 declare const __BUILD_DATE__: string;
 
 export const DeveloperInfo = () => {
-	const [isVisible, , , toggleVisibility] = useToggle();
+	const {on: isVisible, toggle: toggleVisibility} = useToggle();
 
 	return (
 		<UI.Row position="fixed" style={{bottom: 0, height: "20px"}} onClick={toggleVisibility}>

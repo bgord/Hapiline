@@ -34,7 +34,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	day: string;
 }> = ({onResolve, day, ...habitWithPossibleVote}) => {
 	const textarea = useEditableFieldState();
-	const [isCommentVisible, , , toggleComment] = useToggle();
+	const {on: isCommentVisible, toggle: toggleComment} = useToggle();
 
 	const triggerSuccessNotification = useSuccessToast();
 	const triggerErrorNotification = useErrorToast();
