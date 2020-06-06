@@ -56,7 +56,7 @@ export function NotificationDropdown() {
 					position="absolute"
 					style={{width: "500px", right: "12px"}}
 				>
-					<UI.Column p="24">
+					<UI.Column py="24" px="12">
 						<UI.Row mainAxis="between" mb="24">
 							<UI.Header variant="extra-small">Notifications</UI.Header>
 
@@ -78,20 +78,21 @@ export function NotificationDropdown() {
 								{notifications.map(notification => (
 									<UI.Row
 										as="li"
-										bw="2"
-										b="gray-2"
 										mainAxis="between"
+										style={{
+											borderLeftWidth: "var(--border-width-l)",
+											borderLeftColor: "var(--gray-2)",
+										}}
 										crossAxis="center"
-										mt="12"
-										pt="6"
+										mt="24"
 										key={notification.id}
 									>
-										<UI.Text>{notification.content}</UI.Text>
+										<UI.Text ml="6">{notification.content}</UI.Text>
 
 										{notification.status === "unread" && (
 											<UI.Button
 												variant="secondary"
-												style={{width: "100px"}}
+												style={{width: "85px"}}
 												disabled={updateNotificationRequestState.status === "loading"}
 												onClick={() => updateNotification({id: notification.id, status: "read"})}
 											>
@@ -101,7 +102,7 @@ export function NotificationDropdown() {
 
 										{notification.status === "read" && (
 											<UI.Button
-												style={{width: "100px"}}
+												style={{width: "85px"}}
 												variant="outlined"
 												disabled={updateNotificationRequestState.status === "loading"}
 												onClick={() => updateNotification({id: notification.id, status: "unread"})}
