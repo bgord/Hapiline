@@ -44,7 +44,7 @@ module.exports = (_env, argv) => {
 			new Dotenv({path: dev ? ".env-frontend" : ".env-frontend.prod"}),
 			new webpack.DefinePlugin({
 				__BUILD_VERSION__: JSON.stringify(process.env.npm_package_version),
-				__BUILD_DATE__: JSON.stringify(new Date()),
+				__BUILD_DATE__: JSON.stringify(new Date().toISOString()),
 				__ENVIRONMENT__: JSON.stringify(dev ? "development" : "production"),
 			}),
 		],
