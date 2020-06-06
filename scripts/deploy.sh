@@ -61,3 +61,6 @@ npm run env:validate:all
 
 printf "\nRunning the app locally...\n\n"
 docker-compose up -d
+
+printf "\nBuilding frontend bundle...\n"
+./run.sh npm run frontend:prod

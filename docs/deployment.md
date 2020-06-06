@@ -79,7 +79,7 @@ $ npm run env:validate:all
 $ docker-compose up
 ```
 
-[-] build frontend bundle
+[+] build frontend bundle
 
 ```bash
 $ ./run.sh npm run frontend:prod
