@@ -4,6 +4,11 @@ import dotenv from "dotenv";
 import fs from "fs";
 import * as yup from "yup";
 
+const MODE = process.argv[2] === "--with-prod" ? "production" : "development";
+
+if (MODE === "development") console.log(`Validating only development env files.`);
+if (MODE === "production") console.log(`Validating both development and production env files.`);
+
 const envFrontendDevelopmentFilename = ".env-frontend";
 const envFrontendProductionFilename = ".env-frontend.prod";
 
@@ -17,7 +22,7 @@ const PORT = yup
 	.required();
 
 async function main() {
-	console.log("⌛ Checking frontend env variables");
+	console.log("\n⌛ Checking frontend env variables");
 
 	const envFrontendDevelopmentString = await fs.promises.readFile(envFrontendDevelopmentFilename, {
 		encoding: "utf8",
