@@ -244,25 +244,28 @@ type MotivationalTextProps = {
 	untracked: DashboardHabitVoteStatsForDateRanges["today"]["untrackedHabits"];
 };
 
-// TODO: Apply the strategy pattern
 const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, untracked}) => {
-	if (total === 0 && votedFor === 0) {
-		return (
+	function selectStrategy() {
+		if (total === 0) return "no_habits";
+		if (votedFor === 0) return "no_votes_today";
+		if (votedFor > 0 && votedFor < total) return "not_all_voted";
+		if (votedFor === total) return "all_voted";
+		return null;
+	}
+
+	const strategyToText = {
+		no_habits: (
 			<Link className="c-link" to="habits">
 				Add your first tracked habit to start voting!
 			</Link>
-		);
-	}
-	if (votedFor === 0) {
-		return (
+		),
+		no_votes_today: (
 			<UI.Text>
 				Start your day well! You have <UI.Text variant="bold">{total}</UI.Text> tracked habits to
 				vote for. And {untracked} untracked habits.
 			</UI.Text>
-		);
-	}
-	if (votedFor > 0 && votedFor < total) {
-		return (
+		),
+		not_all_voted: (
 			<UI.Column>
 				<UI.Text>You're on a good track!</UI.Text>
 				<UI.Text>
@@ -270,10 +273,8 @@ const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, unt
 					left out of <UI.Text variant="bold">{total}</UI.Text> (and {untracked} untracked habits).
 				</UI.Text>
 			</UI.Column>
-		);
-	}
-	if (votedFor === total) {
-		return (
+		),
+		all_voted: (
 			<UI.Column>
 				<UI.Row>
 					<UI.Text variant="bold">Congratulations! </UI.Text>
@@ -284,7 +285,11 @@ const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, unt
 				</UI.Row>
 				<UI.Text> You also have {untracked} untracked habits.</UI.Text>
 			</UI.Column>
-		);
-	}
-	return null;
+		),
+	};
+
+	const strategy = selectStrategy();
+
+	if (!strategy) return null;
+	return strategyToText[strategy];
 };
