@@ -15,6 +15,7 @@
     "frontend:dev": "webpack --mode development",
     "frontend:prod": "webpack --mode production",
     "e2e:test": "./node_modules/.bin/cypress open",
+    "e2e:test:headless": "./node_modules/.bin/cypress run",
     "cosmos": "cosmos",
     "cosmos:export": "cosmos-export",
     "env:validate:dev": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts",
