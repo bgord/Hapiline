@@ -8,6 +8,7 @@ class DashboardStatsController {
         COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
         COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
         COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes",
+
         (
           SELECT COUNT(*)
           FROM habits as h
@@ -16,6 +17,7 @@ class DashboardStatsController {
             AND h.user_id = :user_id
             AND h.is_trackable IS TRUE
         )::integer as "maximumVotes",
+
         (
           SELECT COUNT(*)
           FROM habits as h
@@ -24,6 +26,7 @@ class DashboardStatsController {
             AND h.user_id = :user_id
             AND h.is_trackable IS FALSE
         )::integer as "untrackedHabits"
+
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE hv.day::date = NOW()::date AND h.user_id = :user_id
@@ -58,8 +61,8 @@ class DashboardStatsController {
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE
         h.user_id = :user_id AND
-        hv.created_at::date >= NOW()::date - '6 days'::interval AND
-        hv.created_at::date <= NOW()::date
+        hv.day::date >= NOW()::date - '6 days'::interval AND
+        hv.day::date <= NOW()::date
 		`,
 			{user_id: auth.user.id},
 		);
@@ -91,8 +94,8 @@ class DashboardStatsController {
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE
         h.user_id = :user_id AND
-        hv.created_at::date >= NOW()::date - '29 days'::interval AND
-        hv.created_at::date <= NOW()::date
+        hv.day::date >= NOW()::date - '29 days'::interval AND
+        hv.day::date <= NOW()::date
 		`,
 			{user_id: auth.user.id},
 		);
