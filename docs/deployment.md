@@ -61,7 +61,7 @@ $ npm version <major | minor | patch>
 $ git push --tags --no-verify
 ```
 
-[-] push the commit with the version change (package(-lock).json)
+[+] push the commit with the version change (package(-lock).json)
 
 ```bash
 $ git push --no-verify

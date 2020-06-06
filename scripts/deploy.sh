@@ -55,3 +55,7 @@ echo "Running e2e tests..."
 echo "Pushing latest tag"
 
 git push --tags --no-verify
+
+echo "Pushing latest package(-lock).json version changes"
+
+git push --no-verify
