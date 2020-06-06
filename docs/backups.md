@@ -5,6 +5,7 @@
 ```bash
 $ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
 $ ./scripts/backup_db.sh
+$ unset DOCKER_HOST
 ```
 
 - Accessing the backup file:
@@ -29,5 +30,6 @@ $ scp <user>@<ip>:/usr/src/hapiline_backups some/local/dir
 - Apply the backup file
 
 ```bash
+$ ./run.sh adonis migration:refresh
 $ docker-compose exec -T db psql -U docker -w hapiline < hapiline_backup_<timestamp>
 ```
