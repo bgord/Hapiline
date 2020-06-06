@@ -238,12 +238,14 @@ export const DashboardWindow = () => {
 	);
 };
 
+type MotivationalTextProps = {
+	total: DashboardHabitVoteStatsForDateRanges["today"]["maximumVotes"];
+	votedFor: DashboardHabitVoteStatsForDateRanges["today"]["allVotes"];
+	untracked: DashboardHabitVoteStatsForDateRanges["today"]["untrackedHabits"];
+};
+
 // TODO: Apply the strategy pattern
-const MotivationalText: React.FC<{total: number; votedFor: number; untracked: number}> = ({
-	total,
-	votedFor,
-	untracked,
-}) => {
+const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, untracked}) => {
 	if (total === 0 && votedFor === 0) {
 		return (
 			<Link className="c-link" to="habits">
