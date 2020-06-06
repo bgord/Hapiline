@@ -45,17 +45,16 @@ sleep 1s
 printf '\nDeployment procedure started!\n\n'
 
 echo "Running backend tests..."
-
 ./run.sh npm run api:test
 
 echo "Running e2e tests..."
-
 ./run.sh npm run e2e:test:headless
 
 echo "Pushing latest tag"
-
 git push --tags --no-verify
 
 echo "Pushing latest package(-lock).json version changes"
-
 git push --no-verify
+
+echo "Validating env files"
+npm run env:validate:all

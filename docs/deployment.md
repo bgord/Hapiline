@@ -67,7 +67,7 @@ $ git push --tags --no-verify
 $ git push --no-verify
 ```
 
-[-] run the env validation script
+[+] run the env validation script
 
 ```bash
 $ npm run env:validate:all
