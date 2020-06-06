@@ -8,12 +8,27 @@
 $ cp .env.example .env
 ```
 
-Fill missing values for the following keys: `APP_KEY`, `SMTP_HOST`, `SMTP_PORT`, and `DB_PASSWORD` in `.env`.
+Fill missing value for `DB_PASSWORD` in `.env` with whatever password (it's just for local database).
+
+Ask for credentials for the following SMTP/EMAIL values:
+
+`SMTP_HOST`
+`SMTP_PORT`
+`MAIL_USERNAME`
+`MAIL_PASSWORD`
 
 **Create `.env-frontend` file**
 
+```bash
+$ cp .env-frontend.example .env-frontend
 ```
-$ cp .env.example .env
+
+Ask for `BUGSNAG_API_KEY` value.
+
+**Generate APP_KEY in .env file**
+
+```bash
+$ adonis key:generate
 ```
 
 **Run server and db containers**
@@ -21,6 +36,16 @@ $ cp .env.example .env
 ```bash
 $ docker-compose up
 ```
+
+In case the `npm install` step doesn't work (which seems to sometimes happen due to a npm bug),
+do the following:
+
+```bash
+$ docker-compose up -d
+$ ./run.sh npm install
+```
+
+---
 
 **Run migrations**
 
@@ -48,21 +73,14 @@ The app should be already up and running at `localhost:3333`.
 
 Ensure the Docker containers are up before running tests (`docker-compose up`).
 
-API
+API tests:
 
 ```bash
 $ ./npm.sh run api:test
 $ ./npm.sh run api:test:specific "some test description"
 ```
 
-Frontend
-
-```
-$ ./npm.sh run frontend:test
-$ ./npm.sh run frontend:test:watch
-```
-
-E2E
+E2E tests:
 
 ```
 # Ensure the containers are up: (docker-compose up)
