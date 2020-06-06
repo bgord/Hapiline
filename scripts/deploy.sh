@@ -33,3 +33,10 @@ else
   exit 1
 fi
 
+echo "Running backend tests..."
+
+./run.sh npm run api:test
+
+echo "Running e2e tests..."
+
+./run.sh npm run e2e:test:headless
