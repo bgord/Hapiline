@@ -101,51 +101,53 @@ export const DashboardWindow = () => {
 					</UI.ErrorBanner>
 				</UI.ShowIf>
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
-					<>
-						<UI.Row mt="24" mb="48">
-							<MotivationalText
-								untracked={howManyUntrackedHabitsToday}
-								total={howManyHabitsToday}
-								votedFor={howManyVotesToday}
-							/>
-						</UI.Row>
-						{howManyHabitsToday > 0 && (
-							<UI.Column data-testid="chart-today">
-								<UI.Text variant="dimmed">Votes today</UI.Text>
-								<UI.Row mb="24">
-									<DaySummaryChart
-										maximumVotes={todayStats?.maximumVotes ?? 0}
-										day={currentDate}
-										{...statsForToday}
-									/>
-								</UI.Row>
-							</UI.Column>
-						)}
-						{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
-							<UI.Column data-testid="chart-last-week">
-								<UI.Text variant="dimmed">Votes last week</UI.Text>
-								<UI.Row mb="24">
-									<DaySummaryChart
-										maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-										day={currentDate}
-										{...statsForLastWeek}
-									/>
-								</UI.Row>
-							</UI.Column>
-						)}
-						{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
-							<UI.Column data-testid="chart-last-month">
-								<UI.Text variant="dimmed">Votes last month</UI.Text>
-								<UI.Row mb="24">
-									<DaySummaryChart
-										maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-										day={currentDate}
-										{...statsForLastMonth}
-									/>
-								</UI.Row>
-							</UI.Column>
-						)}
-					</>
+					<UI.Row mt="24" mb="48">
+						<MotivationalText
+							untracked={howManyUntrackedHabitsToday}
+							total={howManyHabitsToday}
+							votedFor={howManyVotesToday}
+						/>
+					</UI.Row>
+
+					{howManyHabitsToday > 0 && (
+						<UI.Column data-testid="chart-today">
+							<UI.Text variant="dimmed">Votes today</UI.Text>
+
+							<UI.Row mb="24">
+								<DaySummaryChart
+									maximumVotes={todayStats?.maximumVotes ?? 0}
+									day={currentDate}
+									{...statsForToday}
+								/>
+							</UI.Row>
+						</UI.Column>
+					)}
+
+					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
+						<UI.Column data-testid="chart-last-week">
+							<UI.Text variant="dimmed">Votes last week</UI.Text>
+							<UI.Row mb="24">
+								<DaySummaryChart
+									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
+									day={currentDate}
+									{...statsForLastWeek}
+								/>
+							</UI.Row>
+						</UI.Column>
+					)}
+
+					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
+						<UI.Column data-testid="chart-last-month">
+							<UI.Text variant="dimmed">Votes last month</UI.Text>
+							<UI.Row mb="24">
+								<DaySummaryChart
+									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
+									day={currentDate}
+									{...statsForLastMonth}
+								/>
+							</UI.Row>
+						</UI.Column>
+					)}
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="loading">
