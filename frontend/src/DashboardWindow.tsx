@@ -236,6 +236,7 @@ export const DashboardWindow = () => {
 	);
 };
 
+// TODO: Apply the strategy pattern
 const MotivationalText: React.FC<{total: number; votedFor: number; untracked: number}> = ({
 	total,
 	votedFor,
