@@ -39,8 +39,9 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
 	const trackedHabits = useTrackedHabits();
-	const [isChartLegendVisible, , , toggleIsChartLegendVisible] = useToggle();
-	const [areTrackedHabitsVisible, , , toggleAreTrackedHabitsVisible] = useToggle(true);
+
+	const {on: isChartLegendVisible, toggle: toggleIsChartLegendVisible} = useToggle();
+	const {on: areTrackedHabitsVisible, toggle: toggleAreTrackedHabitsVisible} = useToggle(true);
 
 	const triggerErrorNotification = useErrorToast();
 
