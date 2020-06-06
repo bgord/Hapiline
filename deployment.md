@@ -36,13 +36,13 @@ $ npm version <major | minor | patch>
 [] push the latest tag
 
 ```bash
-$ git push --tags
+$ git push --tags --no-verify
 ```
 
 [] push the commit with the version change (package(-lock).json)
 
 ```bash
-$ git push
+$ git push --no-verify
 ```
 
 [] run the env validation script
