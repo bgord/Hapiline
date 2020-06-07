@@ -1,128 +1,67 @@
-# Deployment
+# Automated Deployment
 
 Prerequisites:
 
 - you have to be able to `ssh` to your VPS/remote server
 - you have to have `Docker` installed on your remote machine
 
-## Deployment checklist (about to be automated)
+## Deployment process
 
-**Before:**
+**Before**
 
-[x] check if all entries in the `.env-prod` are correct
+[] Check if all entries in the `.env-prod` are correct
 
-[x] check if all entries in the `.env-frontend.prod` are correct
+[] Check if all entries in the `.env-frontend.prod` are correct
 
-[x] check the latest version in `package.json` and decide how you want to bump it
+> Don't proceed if you're unsure of some of the values
 
-**After:**
+[] Check the latest version in `package.json` and decide how you want to bump it
 
-[x] check if services are running
+> Remember about semantic versioning: https://semver.org/
 
-```bash
-$ docker-compose logs
-```
+**Running the script**
 
-[x] go to the URL to inspect the app
-
-[x] run migrations if needed
+> Ensure you're on the master branch, and in the root directory of the app
 
 ```bash
-$ ./run.sh adonis migration:run --force
+$ ./scripts/deploy.sh <version_bump: major | minor | patch>
+
+# For example:
+
+$ ./scripts/deploy.sh minor
 ```
 
-[x] merge `master` to `develop`
+> The script will try to open the app with the Firefox browser
 
-**Automated steps:**
+**After**
 
-[+] ensure you're on the `master` branch and have all the changes you want to deploy synced with origin
+After the script has run correctly, it's advisable to perform the following steps:
 
-[+] run the env validation script
+[] Perform some anecdotal tests on the app:
 
-```bash
-$ npm run env:validate:all
-```
+- check the developer info
+- try to login/logout
+- observe the dashboard stats
+- observe the calendar
 
-[+] run app on your local machine
+- click through the new functionalities that you've deployed
 
-```bash
-$ docker-compose up
-```
+etc.
 
-[+] run backend tests
-
-```bash
-./run.sh npm run api:test
-```
-
-[+] run e2e tests
-
-```bash
-./run.sh npm run e2e:test
-```
-
-[+] apply a new tag (remember about semver)
-
-```bash
-$ npm version <major | minor | patch>
-```
-
-[+] push the latest tag
-
-```bash
-$ git push --tags --no-verify
-```
-
-[+] push the commit with the version change (package(-lock).json)
-
-```bash
-$ git push --no-verify
-```
-
-[+] build frontend bundle
-
-```bash
-$ ./run.sh npm run frontend:prod
-```
-
-[+] stop app on your local machine
-
-```bash
-$ docker-compose down
-```
-
-[+] use production Docker host
+[] Check if the production services are running
 
 ```bash
 $ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
-```
-
-[+] create a backup
-
-```
-$ ./scripts/backup_db.sh
-```
-
-[+] stop production containers
-
-```bash
-$ docker-compose down
-```
-
-[+] start docker-compose
-
-```bash
-$ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --detach --build --force-recreate
-```
-
-[+] unset DOCKER_HOST
-
-```bash
+$ docker-compose logs
 $ unset DOCKER_HOST
 ```
 
-[+] check if healthcheck responds correctly from local
+[] Run migrations if needed
 
 ```bash
-$ http GET bgord.tech:3333/healthcheck
+$ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
+$ ./run.sh adonis migration:run --force
+$ unset DOCKER_HOST
 ```
+
+[] Merge the `master` branch to the `develop` if the deployment process has been successful.

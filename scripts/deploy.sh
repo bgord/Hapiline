@@ -124,4 +124,7 @@ printf "\n🛈  Checking if healthcheck responds correctly from localhost  in 5s
 sleep 5s
 http GET bgord.tech:3333/healthcheck
 
-echo "✓  Everything seems to be fine!"
+printf "\n✓  Everything seems to be fine!\n\n"
+
+echo "🛈  Trying to open the Firefox browser with the deployed app..."
+firefox bgord.tech:3333
