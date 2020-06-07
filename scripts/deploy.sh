@@ -68,44 +68,48 @@ printf '\nDeployment procedure started!\n\n'
 echo "Validating env files..."
 npm run env:validate:all
 
-echo "Running backend tests..."
+printf "\nRunning the app locally...\n\n"
+docker-compose up --detach
+
+printf "\nRunning backend tests..."
 ./run.sh npm run api:test
 
-echo "Running e2e tests..."
+printf "\nRunning e2e tests..."
 npm run e2e:test:headless
 
-printf "\nRunning the app locally...\n\n"
-docker-compose up -d
+printf "\nApplying new version"
+npm version "$VERSION_CHANGE"
+
+printf "\nPushing latest tag..."
+git push --tags --no-verify
+
+printf "\nPushing latest package(-lock).json version changes..."
+git push --no-verify
 
 printf "\nBuilding frontend bundle...\n"
 ./run.sh npm run frontend:prod
 
-echo "Stopping app on your local machine..."
+printf "\nStopping app on your local machine..."
 docker-compose down
 
-echo "Applying new version"
-npm version "$VERSION_CHANGE"
-
-echo "Pushing latest tag..."
-git push --tags --no-verify
-
-echo "Pushing latest package(-lock).json version changes..."
-git push --no-verify
-
-echo "Setting production docker host..."
+printf "\nSetting production docker host..."
 export DOCKER_HOST="ssh://deploy@137.74.192.86:25"
 
-echo "Creating a backup..."
+printf "\nCreating a backup..."
 ./scripts/backup_db.sh
 
-echo "Stopping production containers..."
-docker-compose down
+printf "\nStopping production containers..."
+if docker-compose down; then
+ echo "Production containers stopped"
+else
+ echo "Production containers stopped, but docker threw a connection lost error, proceeding"
+fi
 
-echo "Starting docker-compose..."
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --detach --build --force-recreate
+printf "\nStarting docker-compose..."
+docker-compose --file docker-compose.yml --file docker-compose.prod.yml up --detach --build --force-recreate
 
-echo "Changin docker host to local"
+printf "\nChanging docker host to local"
 unset DOCKER_HOST
 
-echo "Checking if healthcheck responds correctly from local..."
+printf "\nChecking if healthcheck responds correctly from localhost..."
 http GET bgord.tech:3333/healthcheck
