@@ -158,11 +158,11 @@ model tokens {
 
 model users {
   account_status  String
-  created_at      DateTime?
+  created_at      DateTime          @default(now())
   email           String            @unique
   id              Int               @default(autoincrement()) @id
   password        String
-  updated_at      DateTime?
+  updated_at      DateTime          @default(now())
   habits          habits[]
   notifications   notifications[]
   permission_user permission_user[]
