@@ -103,25 +103,25 @@ $ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
 $ ./scripts/backup_db.sh
 ```
 
-[-] stop production containers
+[+] stop production containers
 
 ```bash
 $ docker-compose down
 ```
 
-[-] start docker-compose
+[+] start docker-compose
 
 ```bash
 $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --detach --build --force-recreate
 ```
 
-[-] check if healthcheck responds correctly from local
+[+] check if healthcheck responds correctly from local
 
 ```bash
 $ http GET bgord.tech:3333/healthcheck
 ```
 
-[-] unset DOCKER_HOST
+[+] unset DOCKER_HOST
 
 ```bash
 $ unset DOCKER_HOST

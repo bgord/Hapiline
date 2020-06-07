@@ -71,8 +71,20 @@ printf "\nBuilding frontend bundle...\n"
 echo "Stopping app on your local machine..."
 docker-compose down
 
-echo "Setting docker host..."
+echo "Setting production docker host..."
 export DOCKER_HOST="ssh://deploy@137.74.192.86:25"
 
 echo "Creating a backup..."
 ./scripts/backup_db.sh
+
+echo "Stopping production containers..."
+docker-compose down
+
+echo "Starting docker-compose..."
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --detach --build --force-recreate
+
+echo "Changin docker host to local"
+unset DOCKER_HOST
+
+echo "Checking if healthcheck responds correctly from local..."
+http GET bgord.tech:3333/healthcheck
