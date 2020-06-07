@@ -7,7 +7,7 @@ Prerequisites:
 
 ## Deployment checklist (about to be automated)
 
-Before:
+**Before:**
 
 [x] check if all entries in the `.env-prod` are correct
 
@@ -15,7 +15,7 @@ Before:
 
 [x] check the latest version in `package.json` and decide how you want to bump it
 
-After:
+**After:**
 
 [x] check if services are running
 
@@ -33,7 +33,7 @@ $ ./run.sh adonis migration:run --force
 
 [x] merge `master` to `develop`
 
-Steps:
+**Automated steps:**
 
 [+] ensure you're on the `master` branch and have all the changes you want to deploy synced with origin
 
@@ -115,14 +115,14 @@ $ docker-compose down
 $ docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --detach --build --force-recreate
 ```
 
-[+] check if healthcheck responds correctly from local
-
-```bash
-$ http GET bgord.tech:3333/healthcheck
-```
-
 [+] unset DOCKER_HOST
 
 ```bash
 $ unset DOCKER_HOST
+```
+
+[+] check if healthcheck responds correctly from local
+
+```bash
+$ http GET bgord.tech:3333/healthcheck
 ```
