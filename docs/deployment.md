@@ -97,7 +97,7 @@ $ docker-compose down
 $ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
 ```
 
-[-] create a backup
+[+] create a backup
 
 ```
 $ ./scripts/backup_db.sh

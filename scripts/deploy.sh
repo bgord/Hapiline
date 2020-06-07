@@ -71,5 +71,8 @@ printf "\nBuilding frontend bundle...\n"
 echo "Stopping app on your local machine..."
 docker-compose down
 
-echo "Setting docker host"
+echo "Setting docker host..."
 export DOCKER_HOST="ssh://deploy@137.74.192.86:25"
+
+echo "Creating a backup..."
+./scripts/backup_db.sh
