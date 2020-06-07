@@ -22,7 +22,7 @@ class PermissionRoleTableSchema extends Schema {
 				.references("id")
 				.on("roles")
 				.onDelete("cascade");
-			table.timestamps();
+			table.timestamps(true, true);
 		});
 	}
 

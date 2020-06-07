@@ -22,7 +22,7 @@ class PermissionUserTableSchema extends Schema {
 				.references("id")
 				.on("users")
 				.onDelete("cascade");
-			table.timestamps();
+			table.timestamps(true, true);
 		});
 	}
 

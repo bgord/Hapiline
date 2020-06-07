@@ -22,13 +22,13 @@ enum HabitVote {
 
 model habit_votes {
   comment    String?
-  created_at DateTime?
+  created_at DateTime @default(now())
   day        DateTime
   habit_id   Int
-  id         Int       @default(autoincrement()) @id
-  updated_at DateTime?
+  id         Int      @default(autoincrement()) @id
+  updated_at DateTime @default(now())
   vote       HabitVote?
-  habits     habits    @relation(fields: [habit_id], references: [id])
+  habits     habits   @relation(fields: [habit_id], references: [id])
 
   @@unique([habit_id, day], name: "habit_votes_habit_id_day_unique")
 }
@@ -46,7 +46,7 @@ enum HabitScore {
 }
 
 model habits {
-  created_at   DateTime?
+  created_at   DateTime      @default(now())
   description  String?
   id           Int           @default(autoincrement()) @id
   is_trackable Boolean?      @default(true)
@@ -54,7 +54,7 @@ model habits {
   order        Int
   score        HabitScore
   strength     HabitStrength
-  updated_at   DateTime?
+  updated_at   DateTime      @default(now())
   user_id      Int
   users        users         @relation(fields: [user_id], references: [id])
   habit_votes  habit_votes[]
@@ -73,21 +73,21 @@ enum NotificationStatus {
 
 model notifications {
   content    String
-  created_at DateTime?
-  id         Int       @default(autoincrement()) @id
+  created_at DateTime @default(now())
+  id         Int      @default(autoincrement()) @id
   status     NotificationStatus
   type       NotificationType
-  updated_at DateTime?
+  updated_at DateTime @default(now())
   user_id    Int
-  users      users     @relation(fields: [user_id], references: [id])
+  users      users    @relation(fields: [user_id], references: [id])
 }
 
 model permission_role {
-  created_at    DateTime?
+  created_at    DateTime     @default(now())
   id            Int          @default(autoincrement()) @id
   permission_id Int?
   role_id       Int?
-  updated_at    DateTime?
+  updated_at    DateTime     @default(now())
   permissions   permissions? @relation(fields: [permission_id], references: [id])
   roles         roles?       @relation(fields: [role_id], references: [id])
 
@@ -96,10 +96,10 @@ model permission_role {
 }
 
 model permission_user {
-  created_at    DateTime?
+  created_at    DateTime     @default(now())
   id            Int          @default(autoincrement()) @id
   permission_id Int?
-  updated_at    DateTime?
+  updated_at    DateTime     @default(now())
   user_id       Int?
   permissions   permissions? @relation(fields: [permission_id], references: [id])
   users         users?       @relation(fields: [user_id], references: [id])
@@ -109,49 +109,49 @@ model permission_user {
 }
 
 model permissions {
-  created_at      DateTime?
+  created_at      DateTime          @default(now())
   description     String?
   id              Int               @default(autoincrement()) @id
   name            String            @unique
   slug            String            @unique
-  updated_at      DateTime?
+  updated_at      DateTime          @default(now())
   permission_role permission_role[]
   permission_user permission_user[]
 }
 
 model role_user {
-  created_at DateTime?
-  id         Int       @default(autoincrement()) @id
+  created_at DateTime @default(now())
+  id         Int      @default(autoincrement()) @id
   role_id    Int?
-  updated_at DateTime?
+  updated_at DateTime @default(now())
   user_id    Int?
-  roles      roles?    @relation(fields: [role_id], references: [id])
-  users      users?    @relation(fields: [user_id], references: [id])
+  roles      roles?   @relation(fields: [role_id], references: [id])
+  users      users?   @relation(fields: [user_id], references: [id])
 
   @@index([role_id], name: "role_user_role_id_index")
   @@index([user_id], name: "role_user_user_id_index")
 }
 
 model roles {
-  created_at      DateTime?
+  created_at      DateTime          @default(now())
   description     String?
   id              Int               @default(autoincrement()) @id
   name            String            @unique
   slug            String            @unique
-  updated_at      DateTime?
+  updated_at      DateTime          @default(now())
   permission_role permission_role[]
   role_user       role_user[]
 }
 
 model tokens {
-  created_at DateTime?
-  id         Int       @default(autoincrement()) @id
-  is_revoked Boolean?  @default(false)
-  token      String    @unique
+  created_at DateTime @default(now())
+  id         Int      @default(autoincrement()) @id
+  is_revoked Boolean? @default(false)
+  token      String   @unique
   type       String
-  updated_at DateTime?
+  updated_at DateTime @default(now())
   user_id    Int?
-  users      users?    @relation(fields: [user_id], references: [id])
+  users      users?   @relation(fields: [user_id], references: [id])
 
   @@index([token], name: "tokens_token_index")
 }
