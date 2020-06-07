@@ -65,6 +65,9 @@ sleep 1s
 
 printf '\nDeployment procedure started!\n\n'
 
+echo "Validating env files..."
+npm run env:validate:all
+
 echo "Running backend tests..."
 ./run.sh npm run api:test
 
@@ -79,9 +82,6 @@ git push --tags --no-verify
 
 echo "Pushing latest package(-lock).json version changes..."
 git push --no-verify
-
-echo "Validating env files..."
-npm run env:validate:all
 
 printf "\nRunning the app locally...\n\n"
 docker-compose up -d

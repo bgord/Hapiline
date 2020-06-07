@@ -37,6 +37,12 @@ Steps:
 
 [+] ensure you're on the `master` branch and have all the changes you want to deploy synced with origin
 
+[+] run the env validation script
+
+```bash
+$ npm run env:validate:all
+```
+
 [+] run backend tests
 
 ```bash
@@ -65,12 +71,6 @@ $ git push --tags --no-verify
 
 ```bash
 $ git push --no-verify
-```
-
-[+] run the env validation script
-
-```bash
-$ npm run env:validate:all
 ```
 
 [+] run app on your local machine
