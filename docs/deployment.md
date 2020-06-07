@@ -91,7 +91,7 @@ $ ./run.sh npm run frontend:prod
 $ docker-compose down
 ```
 
-[-] use production Docker host
+[+] use production Docker host
 
 ```bash
 $ export DOCKER_HOST="ssh://<user>@<ip>:<optional port>"
