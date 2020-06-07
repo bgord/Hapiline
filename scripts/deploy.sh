@@ -69,7 +69,7 @@ echo "Running backend tests..."
 ./run.sh npm run api:test
 
 echo "Running e2e tests..."
-./run.sh npm run e2e:test:headless
+npm run e2e:test:headless
 
 echo "Applying new version"
 npm version "$VERSION_CHANGE"
