@@ -99,7 +99,11 @@ echo "Creating a backup..."
 ./scripts/backup_db.sh
 
 echo "Stopping production containers..."
-docker-compose down
+if docker-compose down; then
+ echo "Production containers stopped"
+else
+ echo "Production containers stopped, but docker threw a connection lost error, proceeding"
+fi
 
 echo "Starting docker-compose..."
 docker-compose --file docker-compose.yml --file docker-compose.prod.yml up --detach --build --force-recreate
