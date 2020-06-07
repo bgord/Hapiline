@@ -16,7 +16,7 @@ class HabitVotesSchema extends Schema {
 				.onDelete("cascade");
 			table.enum("vote", votes);
 			table.date("day").notNullable();
-			table.timestamps();
+			table.timestamps(true, true);
 
 			table.unique(["habit_id", "day"]);
 		});

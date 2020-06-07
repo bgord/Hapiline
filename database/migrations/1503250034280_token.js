@@ -16,7 +16,7 @@ class TokensSchema extends Schema {
 				.index();
 			table.string("type", 80).notNullable();
 			table.boolean("is_revoked").defaultTo(false);
-			table.timestamps();
+			table.timestamps(true, true);
 		});
 	}
 

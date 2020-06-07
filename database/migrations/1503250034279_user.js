@@ -10,7 +10,7 @@ class UserSchema extends Schema {
 				.unique();
 			table.string("account_status").notNullable();
 			table.string("password", 60).notNullable();
-			table.timestamps();
+			table.timestamps(true, true);
 		});
 	}
 

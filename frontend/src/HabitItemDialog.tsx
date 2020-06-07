@@ -120,14 +120,13 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 							<UI.Row my="48" mainAxis="between" crossAxis="center">
 								<UI.Text variant="dimmed">Created at:</UI.Text>
 								<UI.Text variant="monospaced" ml="6">
-									{/* TODO: make {created,updated}_at required */}
-									{habit.created_at && formatTime(habit.created_at)}
+									{formatTime(habit.created_at)}
 								</UI.Text>
 								<UI.Text variant="dimmed" ml="24">
 									Last updated at:
 								</UI.Text>
 								<UI.Text variant="monospaced" ml="6">
-									{habit.updated_at && formatTime(habit?.updated_at)}
+									{formatTime(habit.updated_at)}
 								</UI.Text>
 								<DeleteHabitButton {...habit} />
 							</UI.Row>

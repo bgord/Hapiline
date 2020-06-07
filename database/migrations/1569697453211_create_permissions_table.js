@@ -13,7 +13,7 @@ class PermissionsTableSchema extends Schema {
 				.notNullable()
 				.unique();
 			table.text("description").nullable();
-			table.timestamps();
+			table.timestamps(true, true);
 		});
 	}
 

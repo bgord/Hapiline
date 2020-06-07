@@ -22,7 +22,7 @@ class HabitsSchema extends Schema {
 				.inTable("users")
 				.unsigned()
 				.notNullable();
-			table.timestamps();
+			table.timestamps(true, true);
 
 			table.unique(["name", "user_id"]);
 		});

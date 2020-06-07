@@ -17,7 +17,7 @@ class NotificationsSchema extends Schema {
 				.unsigned()
 				.notNullable();
 
-			table.timestamps();
+			table.timestamps(true, true);
 		});
 	}
 

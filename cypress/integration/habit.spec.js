@@ -315,7 +315,7 @@ describe("Habit", () => {
 	});
 
 	it("inspecting habit details in modal", () => {
-		const response = [
+		const habitsResponse = [
 			{
 				id: 1,
 				name: "Watch The Office",
@@ -345,13 +345,13 @@ describe("Habit", () => {
 			method: "GET",
 			url: "/api/v1/habits",
 			status: 200,
-			response,
+			response: habitsResponse,
 		});
 		cy.route({
 			method: "GET",
 			url: "/api/v1/habit/1",
 			status: 200,
-			response: response[0],
+			response: habitsResponse[0],
 		});
 
 		const chartResponse = [
@@ -386,7 +386,7 @@ describe("Habit", () => {
 		];
 		cy.route({
 			method: "GET",
-			url: "/api/v1/habit-chart/1?dateRange=last_week",
+			url: "/api/v1/habit-chart/1?habitVoteChartDateRange=last_week",
 			status: 200,
 			response: chartResponse,
 		});
@@ -395,11 +395,11 @@ describe("Habit", () => {
 			method: "GET",
 			url: "/api/v1/habit/2",
 			status: 200,
-			response: response[1],
+			response: habitsResponse[1],
 		});
 		cy.route({
 			method: "GET",
-			url: "/api/v1/habit-chart/2?dateRange=last_week",
+			url: "/api/v1/habit-chart/2?habitVoteChartDateRange=last_week",
 			status: 500,
 			response: [],
 		});
