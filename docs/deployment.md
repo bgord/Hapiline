@@ -33,6 +33,14 @@ $ ./scripts/deploy.sh minor
 
 > The script will try to open the app with the Firefox browser
 
+**Troubleshooting**
+
+Problem: End-to-end tests are failing one after another.
+
+Possible cause: The end-to-end tests are running against the production frontend build.
+
+Possible solution: Run: `$ ./run.sh npm run frontend:dev`, kill it, and run the deployment script once again.
+
 **After**
 
 After the script has run correctly, it's advisable to perform the following steps:

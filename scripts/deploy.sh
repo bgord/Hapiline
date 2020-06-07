@@ -2,7 +2,7 @@
 
 # `set -e` means that the script will quit/abort after the first failed command.
 #
-# REASONING: We want to ensure all steps defined in this script have been successful.
+# REASONING: We want to ensure all steps defined in this script have been run successfully.
 #
 set -e
 
@@ -21,7 +21,7 @@ ALLOWED_BRANCH_ORIGIN="origin/$ALLOWED_BRANCH"
 # Checking if there're any uncommited changes.
 #
 # The `git status --porcelain` command returns an empty string
-#  if there're no changes
+# if there're no changes.
 #
 # REASONING: Otherwise, npm version bump won't work.
 #
@@ -155,13 +155,13 @@ npm version "$VERSION_CHANGE"
 
 
 # Pushing the tags created by `npm version`.
-# We use `--no-verify` to skip running api tests in a git pre-push hook.
+# We use `--no-verify` to skip running api tests in the git pre-push hook.
 printf "\n🛈  Pushing latest tag...\n\n"
 git push --tags --no-verify
 
 
 # Pushing the package(-lock).json changes created by `npm version`.
-# We use `--no-verify` to skip running api tests in a git pre-push hook.
+# We use `--no-verify` to skip running api tests in the git pre-push hook.
 printf "\n🛈  Pushing latest package(-lock).json version changes...\n\n"
 git push --no-verify
 
@@ -241,7 +241,7 @@ printf "\n✓  Everything seems to be fine!\n\n"
 # Opening the production app with the Firefox browser.
 #
 # REASONING: We chose Firefox because it's preinstalled on most Linux
-#            distros. And it's the only operating system (for now!)
+#            distributions. And it's the only operating system (for now!)
 #            that we deploy from.
 #
 echo "🛈  Trying to open the Firefox browser with the deployed app..."
