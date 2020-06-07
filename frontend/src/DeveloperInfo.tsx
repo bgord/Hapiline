@@ -6,6 +6,7 @@ import {formatTime} from "./config/DATE_FORMATS";
 
 declare const __BUILD_VERSION__: string;
 declare const __BUILD_DATE__: string;
+declare const __ENVIRONMENT__: string;
 
 export const DeveloperInfo = () => {
 	const {on: isVisible, toggle: toggleVisibility} = useToggle();
@@ -14,7 +15,8 @@ export const DeveloperInfo = () => {
 		<UI.Row position="fixed" style={{bottom: 0, height: "20px"}} onClick={toggleVisibility}>
 			{isVisible && (
 				<UI.Text variant="light">
-					Version {__BUILD_VERSION__} built at {formatTime(__BUILD_DATE__)}
+					{String(__ENVIRONMENT__).toUpperCase()} v{__BUILD_VERSION__} built at{" "}
+					{formatTime(__BUILD_DATE__)}
 				</UI.Text>
 			)}
 		</UI.Row>
