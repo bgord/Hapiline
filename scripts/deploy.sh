@@ -69,7 +69,7 @@ echo "Validating env files..."
 npm run env:validate:all
 
 printf "\nRunning the app locally...\n\n"
-docker-compose up -d
+docker-compose up --detach
 
 echo "Running backend tests..."
 ./run.sh npm run api:test
@@ -102,7 +102,7 @@ echo "Stopping production containers..."
 docker-compose down
 
 echo "Starting docker-compose..."
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --detach --build --force-recreate
+docker-compose --file docker-compose.yml --file docker-compose.prod.yml up --detach --build --force-recreate
 
 echo "Changing docker host to local"
 unset DOCKER_HOST

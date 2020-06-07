@@ -43,6 +43,12 @@ $ ./run.sh adonis migration:run --force
 $ npm run env:validate:all
 ```
 
+[+] run app on your local machine
+
+```bash
+$ docker-compose up
+```
+
 [+] run backend tests
 
 ```bash
@@ -53,12 +59,6 @@ $ npm run env:validate:all
 
 ```bash
 ./run.sh npm run e2e:test
-```
-
-[+] run app on your local machine
-
-```bash
-$ docker-compose up
 ```
 
 [+] build frontend bundle
