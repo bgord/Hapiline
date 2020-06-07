@@ -20,6 +20,7 @@ echo "Requested version change: $VERSION_CHANGE"
 
 if [[ $VERSION_CHANGE != "major" && $VERSION_CHANGE != "minor" && $VERSION_CHANGE != "patch" ]]; then
   echo "Incorrect requested version, must be one of: major, minor, or patch."
+  exit 1
 else
   echo "Correct version change, proceeding"
 fi
