@@ -11,7 +11,7 @@ const users = require("../fixtures/users.json");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Show habit chart");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
-const CHART_DATE_RANGES = use("CHART_DATE_RANGES");
+const HABIT_VOTE_CHART_DATE_RANGE = use("HABIT_VOTE_CHART_DATE_RANGE");
 const User = use("User");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const datefns = require("date-fns");
@@ -77,7 +77,7 @@ test("user can only access their own habit's chart", async ({client}) => {
 	const jim = await User.find(users.jim.id);
 
 	const response = await client
-		.get(`${SHOW_HABIT_CHART_URL}/6?dateRange=last_week`)
+		.get(`${SHOW_HABIT_CHART_URL}/6?habitVoteChartDateRange=last_week`)
 		.loginVia(jim)
 		.end();
 
@@ -92,18 +92,18 @@ test("validation", async ({client}) => {
 			{},
 			[
 				{
-					message: VALIDATION_MESSAGES.required("dateRange"),
-					field: "dateRange",
+					message: VALIDATION_MESSAGES.required("habitVoteChartDateRange"),
+					field: "habitVoteChartDateRange",
 					validation: "required",
 				},
 			],
 		],
 		[
-			{dateRange: "xxx"},
+			{habitVoteChartDateRange: "xxx"},
 			[
 				{
-					message: VALIDATION_MESSAGES.invalid_chart_date_range,
-					field: "dateRange",
+					message: VALIDATION_MESSAGES.invalid_habit_vote_chart_date_range,
+					field: "habitVoteChartDateRange",
 					validation: "in",
 				},
 			],
@@ -126,7 +126,7 @@ test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
 	const queryString = qs.stringify({
-		dateRange: CHART_DATE_RANGES.last_week,
+		habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week,
 	});
 
 	const response = await client
@@ -181,7 +181,7 @@ test("check if habit is trackable", async ({client}) => {
 	const habitId = addHabitResponse.body.id;
 
 	const queryString = qs.stringify({
-		dateRange: CHART_DATE_RANGES.last_week,
+		habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week,
 	});
 
 	const response = await client

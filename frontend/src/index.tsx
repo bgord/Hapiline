@@ -8,7 +8,7 @@ import * as ReactDOM from "react-dom";
 
 import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
-import {__BUILD_VERSION__, __ENVIRONMENT__, process} from "./interfaces/build_vars";
+import type {__BUILD_VERSION__, __ENVIRONMENT__, process} from "./interfaces/build_vars";
 
 import * as UI from "./ui";
 import {App} from "./App";

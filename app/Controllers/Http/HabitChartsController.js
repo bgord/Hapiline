@@ -1,12 +1,12 @@
 const Habit = use("Habit");
 const datefns = require("date-fns");
-const CHART_DATE_RANGES = use("CHART_DATE_RANGES");
+const HABIT_VOTE_CHART_DATE_RANGE = use("HABIT_VOTE_CHART_DATE_RANGE");
 
 const {HabitVotesGetter} = require("../../Beings/HabitVotesGetter");
 
 class HabitChartsController {
 	async show({params, request, response, auth}) {
-		const {dateRange} = request.only(["dateRange"]);
+		const {habitVoteChartDateRange} = request.only(["habitVoteChartDateRange"]);
 		const id = Number(params.id);
 
 		const today = new Date();
@@ -17,14 +17,17 @@ class HabitChartsController {
 
 		if (!habit.is_trackable) return response.unprocessableEntity();
 
-		const chartDateRangeToStartDate = {
-			[CHART_DATE_RANGES.last_week]: datefns.subDays(today, 6),
-			[CHART_DATE_RANGES.last_month]: datefns.subDays(today, 30),
-			[CHART_DATE_RANGES.all_time]: new Date(habit.created_at),
+		const habitVoteChartDateRangeToStartDate = {
+			[HABIT_VOTE_CHART_DATE_RANGE.last_week]: datefns.subDays(today, 6),
+			[HABIT_VOTE_CHART_DATE_RANGE.last_month]: datefns.subDays(today, 30),
+			[HABIT_VOTE_CHART_DATE_RANGE.all_time]: new Date(habit.created_at),
 		};
 
 		const habitVotesGetter = new HabitVotesGetter(habit);
-		const habitVotes = await habitVotesGetter.get({from: chartDateRangeToStartDate[dateRange]});
+
+		const habitVotes = await habitVotesGetter.get({
+			from: habitVoteChartDateRangeToStartDate[habitVoteChartDateRange],
+		});
 
 		return response.send(habitVotes.reverse());
 	}
