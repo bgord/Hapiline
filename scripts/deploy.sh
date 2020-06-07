@@ -25,7 +25,7 @@ else
 fi
 
 printf '\nDeployment procedure will be started in 5 seconds\n'
-printf 'Press Ctrl-C (or Command-C) is you want to quit.\n\n'
+printf 'Press Ctrl-C (or Command-C) if you want to quit.\n\n'
 
 echo '5'
 sleep 1s
@@ -64,3 +64,6 @@ docker-compose up -d
 
 printf "\nBuilding frontend bundle...\n"
 ./run.sh npm run frontend:prod
+
+echo "Stopping app on your local machine..."
+docker-compose down

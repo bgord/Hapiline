@@ -85,7 +85,7 @@ $ docker-compose up
 $ ./run.sh npm run frontend:prod
 ```
 
-[-] stop app on your local machine
+[+] stop app on your local machine
 
 ```bash
 $ docker-compose down
