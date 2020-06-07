@@ -55,24 +55,6 @@ $ npm run env:validate:all
 ./run.sh npm run e2e:test
 ```
 
-[+] apply a new tag (remember about semver)
-
-```bash
-$ npm version <major | minor | patch>
-```
-
-[+] push the latest tag
-
-```bash
-$ git push --tags --no-verify
-```
-
-[+] push the commit with the version change (package(-lock).json)
-
-```bash
-$ git push --no-verify
-```
-
 [+] run app on your local machine
 
 ```bash
@@ -89,6 +71,24 @@ $ ./run.sh npm run frontend:prod
 
 ```bash
 $ docker-compose down
+```
+
+[+] apply a new tag (remember about semver)
+
+```bash
+$ npm version <major | minor | patch>
+```
+
+[+] push the latest tag
+
+```bash
+$ git push --tags --no-verify
+```
+
+[+] push the commit with the version change (package(-lock).json)
+
+```bash
+$ git push --no-verify
 ```
 
 [+] use production Docker host

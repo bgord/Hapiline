@@ -74,15 +74,6 @@ echo "Running backend tests..."
 echo "Running e2e tests..."
 npm run e2e:test:headless
 
-echo "Applying new version"
-npm version "$VERSION_CHANGE"
-
-echo "Pushing latest tag..."
-git push --tags --no-verify
-
-echo "Pushing latest package(-lock).json version changes..."
-git push --no-verify
-
 printf "\nRunning the app locally...\n\n"
 docker-compose up -d
 
@@ -91,6 +82,15 @@ printf "\nBuilding frontend bundle...\n"
 
 echo "Stopping app on your local machine..."
 docker-compose down
+
+echo "Applying new version"
+npm version "$VERSION_CHANGE"
+
+echo "Pushing latest tag..."
+git push --tags --no-verify
+
+echo "Pushing latest package(-lock).json version changes..."
+git push --no-verify
 
 echo "Setting production docker host..."
 export DOCKER_HOST="ssh://deploy@137.74.192.86:25"
