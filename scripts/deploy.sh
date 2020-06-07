@@ -4,6 +4,9 @@ set -e
 
 printf "You're about to deploy Hapiline!\n\n"
 
+ALLOWED_BRANCH="master"
+ALLOWED_BRANCH_ORIGIN="origin/$ALLOWED_BRANCH"
+
 if [ -z "$(git status --porcelain)" ]; then
   echo "Clean working directory, quitting..."
 else
@@ -12,7 +15,6 @@ else
   exit 1
 fi
 
-ALLOWED_BRANCH="master"
 CURRENT_BRANCH=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)
 
 echo "Your current branch: $CURRENT_BRANCH"
@@ -23,6 +25,14 @@ else
   echo "The deployment script is required to be run on branch \`master\`";
   echo "Quitting..."
   exit 1
+fi
+
+if [ "$(git rev-parse $ALLOWED_BRANCH)" == "$(git rev-parse $ALLOWED_BRANCH_ORIGIN)" ]; then
+    echo "Your current branch is in sync with it's origin, proceeding..."
+else
+    echo "Your current branch is not with sync with it's origin"
+    echo "Quitting..."
+    exit 1
 fi
 
 VERSION_CHANGE=$1
