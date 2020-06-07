@@ -3,10 +3,7 @@ import {useToggle} from "./hooks/useToggle";
 
 import * as UI from "./ui";
 import {formatTime} from "./config/DATE_FORMATS";
-
-declare const __BUILD_VERSION__: string;
-declare const __BUILD_DATE__: string;
-declare const __ENVIRONMENT__: string;
+import {__ENVIRONMENT__, __BUILD_VERSION__, __BUILD_DATE__} from "./interfaces/build_vars";
 
 export const DeveloperInfo = () => {
 	const {on: isVisible, toggle: toggleVisibility} = useToggle();
