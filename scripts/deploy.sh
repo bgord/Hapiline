@@ -68,14 +68,14 @@ printf '\nDeployment procedure started!\n\n'
 echo "Validating env files..."
 npm run env:validate:all
 
+printf "\nRunning the app locally...\n\n"
+docker-compose up -d
+
 echo "Running backend tests..."
 ./run.sh npm run api:test
 
 echo "Running e2e tests..."
 npm run e2e:test:headless
-
-printf "\nRunning the app locally...\n\n"
-docker-compose up -d
 
 printf "\nBuilding frontend bundle...\n"
 ./run.sh npm run frontend:prod
@@ -104,7 +104,7 @@ docker-compose down
 echo "Starting docker-compose..."
 docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --detach --build --force-recreate
 
-echo "Changin docker host to local"
+echo "Changing docker host to local"
 unset DOCKER_HOST
 
 echo "Checking if healthcheck responds correctly from local..."
