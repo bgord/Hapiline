@@ -82,6 +82,12 @@ $ ./npm.sh run api:test:specific "some test description"
 
 E2E tests:
 
+> Cypress tests are run from the host, not inside the containers, so before the first test run, you need to install the dependencies on the host machine.
+
+```bash
+$ npm install
+```
+
 ```
 # Ensure the containers are up: (docker-compose up)
 
