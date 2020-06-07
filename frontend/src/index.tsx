@@ -8,13 +8,15 @@ import * as ReactDOM from "react-dom";
 
 import Bugsnag from "@bugsnag/js";
 import BugsnagPluginReact from "@bugsnag/plugin-react";
-import {__BUILD_VERSION__, __ENVIRONMENT__, process} from "./interfaces/build_vars";
 
-import * as UI from "./ui";
-import {App} from "./App";
-import {AuthProvider} from "./contexts/auth-context";
-import {ToastsProvider} from "./contexts/toasts-context";
-import {DeveloperInfo} from "./DeveloperInfo";
+declare const __BUILD_VERSION__: string;
+declare const __ENVIRONMENT__: string;
+
+declare const process: {
+	env: {
+		BUGSNAG_API_KEY: string;
+	};
+};
 
 Bugsnag.start({
 	apiKey: process.env.BUGSNAG_API_KEY,
@@ -24,6 +26,12 @@ Bugsnag.start({
 	appVersion: __BUILD_VERSION__,
 	releaseStage: __ENVIRONMENT__,
 });
+
+import * as UI from "./ui";
+import {App} from "./App";
+import {AuthProvider} from "./contexts/auth-context";
+import {ToastsProvider} from "./contexts/toasts-context";
+import {DeveloperInfo} from "./DeveloperInfo";
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 const ErrorBoundary = Bugsnag!.getPlugin("react")!.createErrorBoundary(React);

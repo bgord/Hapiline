@@ -27,7 +27,13 @@ import {
 import {getDayRequest, getMonthRequest} from "./calendar";
 import {getDashboardStats, getDashboardStreakStats} from "./stats";
 import {getNotificationsRequest, updateNotificationRequest} from "./notifications";
-import {process} from "../interfaces/build_vars";
+
+// TODO: centralize definitions for process and __*__ variables
+declare const process: {
+	env: {
+		API_URL: string;
+	};
+};
 
 export const _internal_api = axios.create({
 	baseURL: process.env.API_URL,
