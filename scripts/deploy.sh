@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 printf "You're about to deploy Hapiline!\n\n"
 
 ALLOWED_BRANCH="master"
