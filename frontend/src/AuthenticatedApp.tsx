@@ -14,7 +14,6 @@ import {Toasts} from "./Toasts";
 import {useUserProfile} from "./contexts/auth-context";
 import {ProfileWindow} from "./ProfileWindow";
 import {NotificationDropdown} from "./NotificationsDropdown";
-import {DeveloperInfo} from "./DeveloperInfo";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
 
@@ -43,7 +42,6 @@ function AuthenticatedApp() {
 					<Redirect to="/dashboard" />
 				</Switch>
 			</Router>
-			<DeveloperInfo />
 		</HabitsProvider>
 	);
 }

@@ -31,6 +31,7 @@ import * as UI from "./ui";
 import {App} from "./App";
 import {AuthProvider} from "./contexts/auth-context";
 import {ToastsProvider} from "./contexts/toasts-context";
+import {DeveloperInfo} from "./DeveloperInfo";
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 const ErrorBoundary = Bugsnag!.getPlugin("react")!.createErrorBoundary(React);
@@ -52,6 +53,7 @@ ReactDOM.render(
 			<ToastsProvider>
 				<AuthProvider>
 					<App />
+					<DeveloperInfo />
 				</AuthProvider>
 			</ToastsProvider>
 		</ErrorBoundary>
