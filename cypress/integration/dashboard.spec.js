@@ -351,4 +351,17 @@ describe("Dashboard", () => {
 		cy.findByText("1 day progress streak").should("not.exist");
 		cy.findByText("2 days progress streak");
 	});
+
+	it("Journal textarea is available in a day dialog", () => {
+		cy.login("jim");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("View today").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("Journal")
+				.first()
+				.click();
+		});
+	});
 });
