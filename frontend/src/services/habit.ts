@@ -40,8 +40,7 @@ export const getHabitVoteChartRequest = (
 	habitVoteChartDateRange: HabitVoteChartDateRangeType,
 ) =>
 	_internal_api
-		// TODO: Refactor the endpoint so that it accepts `habitVoteChartDateRange` in place of `dateRange`
-		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {dateRange: habitVoteChartDateRange}))
+		.get<DayVote[]>(constructUrl(`/habit-chart/${id}`, {habitVoteChartDateRange}))
 		.then(response => response.data);
 
 export const updateVoteCommentRequest = ({id, comment}: HabitVoteCommentPayload) =>
