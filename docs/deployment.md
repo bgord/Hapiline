@@ -61,18 +61,6 @@ $ docker-compose up
 ./run.sh npm run e2e:test
 ```
 
-[+] build frontend bundle
-
-```bash
-$ ./run.sh npm run frontend:prod
-```
-
-[+] stop app on your local machine
-
-```bash
-$ docker-compose down
-```
-
 [+] apply a new tag (remember about semver)
 
 ```bash
@@ -89,6 +77,18 @@ $ git push --tags --no-verify
 
 ```bash
 $ git push --no-verify
+```
+
+[+] build frontend bundle
+
+```bash
+$ ./run.sh npm run frontend:prod
+```
+
+[+] stop app on your local machine
+
+```bash
+$ docker-compose down
 ```
 
 [+] use production Docker host
