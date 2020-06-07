@@ -28,9 +28,17 @@ else
 fi
 
 if [ "$(git rev-parse $ALLOWED_BRANCH)" == "$(git rev-parse $ALLOWED_BRANCH_ORIGIN)" ]; then
-    echo "Your current branch is in sync with it's origin, proceeding..."
+    echo "Your current branch is in sync with it's origin, proceeding"
 else
     echo "Your current branch is not with sync with it's origin"
+    echo "Quitting..."
+    exit 1
+fi
+
+if [ "$(git rev-parse $ALLOWED_BRANCH)" == "$(git rev-parse develop)" ]; then
+    echo "Your current branch is in sync with develop branch, proceeding"
+else
+    echo "Your current branch is not with sync with develop branch"
     echo "Quitting..."
     exit 1
 fi
