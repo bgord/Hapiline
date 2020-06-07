@@ -50,6 +50,9 @@ echo "Running backend tests..."
 echo "Running e2e tests..."
 ./run.sh npm run e2e:test:headless
 
+echo "Applying new version"
+npm version "$VERSION_CHANGE"
+
 echo "Pushing latest tag..."
 git push --tags --no-verify
 
