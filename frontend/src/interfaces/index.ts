@@ -171,13 +171,15 @@ export type DashboardStreakStats = {
 		name: Habit["name"];
 		created_at: Habit["created_at"];
 		progress_streak: HabitStreaks["progress_streak"];
-	}[];
+		has_vote_for_today: boolean;
+  }[];
 
 	regress_streaks: {
 		id: Habit["id"];
 		name: Habit["name"];
 		created_at: Habit["created_at"];
 		regress_streak: HabitStreaks["regress_streak"];
+		has_vote_for_today: boolean;
 	}[];
 }
 
