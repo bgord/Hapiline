@@ -1,5 +1,6 @@
 import {useQuery} from "react-query";
 import React from "react";
+import {isSameMonth, subMonths} from "date-fns";
 
 import * as UI from "./ui";
 import {CalendarIcon} from "./ui/icons/Calendar";
@@ -10,7 +11,7 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
-import {DayCellWithFullStats, DayStatsFromServer} from "./interfaces/index";
+import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./interfaces/index";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -69,28 +70,64 @@ export const Calendar: React.FC = () => {
 		};
 	});
 
+	const isCurrentMonth = monthOffset === 0;
+	const isNextButtonDisabled = getMonthRequestState.status === "loading" || isCurrentMonth;
+
+	function getNextButtonTitle() {
+		if (getMonthRequestState.status === "loading") return "Loading...";
+		if (isCurrentMonth) return "You cannot access the next month yet";
+		return "Go to next month";
+	}
+
+	// Get the date of month that's currently displayed,
+	// convert firstAddedHabit?.created_at to a format that date-fns understands,
+	// and check if they are the same month
+	const currentlyDisplayedMonth = subMonths(new Date(), monthOffset);
+
+	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
+	const firstAddedHabitDate = new Date(firstAddedHabit?.created_at);
+
+	const isCurrentMonthTheMonthFirstHabbitWasAdded = isSameMonth(
+		currentlyDisplayedMonth,
+		firstAddedHabitDate,
+	);
+
+	const isPreviousButtonDisabled =
+		getMonthRequestState.status === "loading" || isCurrentMonthTheMonthFirstHabbitWasAdded;
+
+	function getPreviousButtonTitle() {
+		if (getMonthRequestState.status === "loading") return "Loading...";
+		if (isCurrentMonthTheMonthFirstHabbitWasAdded)
+			return "There are no habits added in the previous month";
+		return "Go to previous month";
+	}
+
 	return (
 		<UI.Column mt="24" crossAxis="center">
 			<UI.Row mb="24" bg="gray-2" px="72" py="12" width="auto">
 				<UI.Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
-					disabled={getMonthRequestState.status === "loading"}
+					disabled={isPreviousButtonDisabled}
 					style={{width: "100px"}}
+					title={getPreviousButtonTitle()}
 					mr="24"
 				>
 					Previous
 				</UI.Button>
+
 				<CalendarIcon />
 				<UI.Text ml="6" variant="bold">
 					{date}
 				</UI.Text>
+
 				<UI.Button
 					ml="24"
 					variant="outlined"
 					onClick={widget.setNextMonth}
-					disabled={getMonthRequestState.status === "loading"}
+					disabled={isNextButtonDisabled}
 					style={{width: "100px"}}
+					title={getNextButtonTitle()}
 				>
 					Next
 				</UI.Button>
@@ -112,3 +149,11 @@ export const Calendar: React.FC = () => {
 		</UI.Column>
 	);
 };
+
+function getFirstAddedHabit(trackedHabits: Habit[]): Habit {
+	const [firstAddedHabit] = [...trackedHabits].sort((a, b) =>
+		a.created_at.toString().localeCompare(b.created_at.toString()),
+	);
+
+	return firstAddedHabit;
+}
