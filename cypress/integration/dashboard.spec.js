@@ -362,6 +362,7 @@ describe("Dashboard", () => {
 			cy.findAllByText("Journal")
 				.first()
 				.click();
+			cy.findAllByLabelText("Journal");
 		});
 	});
 });
