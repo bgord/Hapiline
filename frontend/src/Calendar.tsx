@@ -82,18 +82,23 @@ export const Calendar: React.FC = () => {
 	// Get the date of month that's currently displayed,
 	// convert firstAddedHabit?.created_at to a format that date-fns understands,
 	// and check if they are the same month
-	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
+	const currentlyDisplayedMonth = subMonths(new Date(), monthOffset);
 
-	const isTheMonthFirstHabbitWasAdded = isSameMonth(
-		subMonths(new Date(), monthOffset),
-		new Date(firstAddedHabit?.created_at),
+	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
+	const firstAddedHabitDate = new Date(firstAddedHabit?.created_at);
+
+	const isCurrentMonthTheMonthFirstHabbitWasAdded = isSameMonth(
+		currentlyDisplayedMonth,
+		firstAddedHabitDate,
 	);
+
 	const isPreviousButtonDisabled =
-		getMonthRequestState.status === "loading" || isTheMonthFirstHabbitWasAdded;
+		getMonthRequestState.status === "loading" || isCurrentMonthTheMonthFirstHabbitWasAdded;
 
 	function getPreviousButtonTitle() {
 		if (getMonthRequestState.status === "loading") return "Loading...";
-		if (isTheMonthFirstHabbitWasAdded) return "There are no habits added in the previous month";
+		if (isCurrentMonthTheMonthFirstHabbitWasAdded)
+			return "There are no habits added in the previous month";
 		return "Go to previous month";
 	}
 
