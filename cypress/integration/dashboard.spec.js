@@ -294,24 +294,36 @@ describe("Dashboard", () => {
 		cy.findByText("2 days regress streak");
 		cy.findByText("1 day regress streak");
 
-		cy.findByText("first")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=1");
-		cy.findByText("second")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=2");
-		cy.findByText("third")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=3");
-		cy.findByText("fourth")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=4");
-		cy.findByText("fifth")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=5");
-		cy.findByText("sixth")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=6");
+		cy.findByText("first").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=1",
+		);
+		cy.findByText("second").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=2",
+		);
+		cy.findByText("third").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=3",
+		);
+		cy.findByText("fourth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=4",
+		);
+		cy.findByText("fifth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=5",
+		);
+		cy.findByText("sixth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=6",
+		);
 	});
 
 	it("streak stats error", () => {

@@ -13,6 +13,7 @@ export const UrlBuilder = {
 		habit: {
 			preview: (habitId: Habit["id"]): string =>
 				constructUrl("dashboard", {
+					subview: "habit_preview",
 					preview_habit_id: habitId.toString(),
 				}),
 		},
@@ -20,7 +21,10 @@ export const UrlBuilder = {
 	calendar: {
 		day: {
 			habit: ({day, habitId}: {day: Date; habitId: Habit["id"]}): string =>
-				constructUrl("calendar", {day: formatDay(day), highlighted_habit_id: habitId.toString()}),
+				constructUrl("calendar", {
+					preview_day: formatDay(day),
+					highlighted_habit_id: habitId.toString(),
+				}),
 		},
 	},
 };
