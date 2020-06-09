@@ -339,7 +339,7 @@ describe("Dashboard", () => {
 		cy.findByText("View today").click();
 
 		cy.findByRole("dialog").within(() => {
-			cy.findByText("Show voted (2)").click();
+			cy.findByText("Show voted (2)").click({force: true});
 
 			cy.findAllByText("Add progress vote")
 				.first()
