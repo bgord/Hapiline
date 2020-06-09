@@ -167,8 +167,9 @@ export const DashboardWindow = () => {
 							<UI.Column by="gray-1">
 								<ExpandContractList max={5}>
 									{regressStreakStats.map(habit => (
-										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
+										<UI.Row py="12" by="gray-1" key={habit.id}>
 											<Link
+												data-mr="auto"
 												to={constructUrl("dashboard", {
 													subview: "habit_preview",
 													preview_habit_id: habit.id.toString(),
@@ -176,6 +177,13 @@ export const DashboardWindow = () => {
 											>
 												<UI.Text>{habit.name}</UI.Text>
 											</Link>
+
+											{!habit.has_vote_for_today && (
+												<UI.Badge variant="neutral" mx="12">
+													No vote
+												</UI.Badge>
+											)}
+
 											<UI.Badge variant="negative">
 												{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress
 												streak
@@ -197,8 +205,9 @@ export const DashboardWindow = () => {
 							<UI.Column bt="gray-1">
 								<ExpandContractList max={5}>
 									{progressStreakStats.map(habit => (
-										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
+										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="end">
 											<Link
+												data-mr="auto"
 												to={constructUrl("dashboard", {
 													subview: "habit_preview",
 													preview_habit_id: habit.id.toString(),
@@ -206,6 +215,13 @@ export const DashboardWindow = () => {
 											>
 												<UI.Text>{habit.name}</UI.Text>
 											</Link>
+
+											{!habit.has_vote_for_today && (
+												<UI.Badge variant="neutral" mx="12">
+													No vote
+												</UI.Badge>
+											)}
+
 											<UI.Badge variant="positive">
 												{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
 												streak
