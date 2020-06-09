@@ -89,14 +89,14 @@ export const Calendar: React.FC = () => {
 			? "Loading..."
 			: isTheMonthFirstHabbitWasAdded
 			? "There are no habits added in the previous month"
-			: undefined;
+			: "Go to previous month";
 
 	const disabledNextButtonTitle =
 		getMonthRequestState.status === "loading"
 			? "Loading..."
 			: isCurrentMonth
 			? "You cannot access the next month yet"
-			: undefined;
+			: "Go to next month";
 
 	return (
 		<UI.Column mt="24" crossAxis="center">

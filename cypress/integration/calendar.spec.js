@@ -6,20 +6,104 @@ const CALENDAR_URL = "/calendar";
 
 const today = Date.now();
 
+// E.g 31 for May
+const numberOfDaysInCurrentMonth = getDaysInMonth(today);
+
+// Today's day, e.g 9 for May 9th
+const dayOfTheMonthToday = getDate(today);
+
+// Today's day index, e.g 8 for May 9th
+const dayOfTheMonthTodayIndex = dayOfTheMonthToday - 1;
+
+// A current month string like `May 2020`
 const currentMonthString = format(today, "MMMM yyyy");
-const daysInCurrentMonth = getDaysInMonth(today);
-
-const previousMonthString = format(subMonths(today, 1), "MMMM yyyy");
-const daysInPreviousMonth = getDaysInMonth(new Date(previousMonthString));
-
-const currentDate = getDate(today);
 
 describe("Calendar", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
 	});
 
-	it("navigating through months", () => {
+	it("disabling previous/next buttons", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response: [
+				{
+					id: 1,
+					name: "Watch The Office",
+					score: "positive",
+					strength: "established",
+					is_trackable: true,
+					created_at: today,
+				},
+			],
+		});
+
+		cy.viewport(1200, 1200);
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		// The "next" button is disabled by default, because
+		// we land on the current month.
+		cy.findByText("Next")
+			.should("be.disabled")
+			.should("have.attr", "title", "You cannot access the next month yet");
+
+		// The "previous" button is disabled, because
+		// the only habit that exists is created today,
+		// so there're no other habits accessible the month before.
+		cy.findByText("Previous")
+			.should("be.disabled")
+			.should("have.attr", "title", "There are no habits added in the previous month");
+
+		// Another scenario, the only habit is created a month ago.
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 200,
+			response: [
+				{
+					id: 1,
+					name: "Watch The Office",
+					score: "positive",
+					strength: "established",
+					is_trackable: true,
+					created_at: subMonths(today, 1),
+				},
+			],
+		});
+
+		cy.reload();
+
+		// The "next" button is disabled by default, because
+		// we land on the current month.
+		cy.findByText("Next")
+			.should("be.disabled")
+			.should("have.attr", "title", "You cannot access the next month yet");
+
+		// The "previous" button is enabled, because
+		// the only habit that exists is created a month ago,
+		cy.findByText("Previous")
+			.should("not.be.disabled")
+			.should("have.attr", "title", "Go to previous month");
+
+		// Going to the previous month
+		cy.findByText("Previous").click();
+
+		// We can still go back to the current month.
+		cy.findByText("Next")
+			.should("not.be.disabled")
+			.should("have.attr", "title", "Go to next month");
+
+		// We can't go any earlier
+		cy.findByText("Previous")
+			.should("be.disabled")
+			.should("have.attr", "title", "There are no habits added in the previous month");
+	});
+
+	it("content of the latest day tile", () => {
 		cy.viewport(1700, 1700);
 
 		cy.login("dwight");
@@ -27,42 +111,23 @@ describe("Calendar", () => {
 
 		cy.findByText(currentMonthString);
 
-		cy.findByText("Next").click();
-		cy.findByText(currentMonthString);
 		cy.findAllByTestId("calendar").within(() => {
-			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
+			cy.findAllByTestId("day").should("have.length", numberOfDaysInCurrentMonth);
 
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => {
 					cy.findByText("4 new habits");
+
+					// Assert the text values of the chart at the bottom of the day tile
+					// which are `ViuallyHidden`.
 					cy.findByText("2 habits with progress votes");
 					cy.findByText("1 habits with plateau votes");
 					cy.findByText("1 habits with regress votes");
 					cy.findByText("6 habits with no votes");
 				});
-		});
 
-		cy.findByText("Previous").click();
-		cy.findByText(previousMonthString);
-
-		cy.findAllByTestId("calendar").within(() => {
-			cy.findAllByTestId("day").should("have.length", daysInPreviousMonth);
-			cy.findByText("new:").should("not.exist");
-		});
-
-		cy.findByText("Next").click();
-		cy.findByText(currentMonthString);
-		cy.findAllByTestId("calendar").within(() => {
-			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
-			cy.findByText("4 new habits");
-		});
-
-		cy.findByText("Next").click();
-		cy.findByText(currentMonthString);
-		cy.findAllByTestId("calendar").within(() => {
-			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
-			cy.findByText("4 new habits");
+			cy.findAllByTestId("day").should("have.length", numberOfDaysInCurrentMonth);
 		});
 	});
 
@@ -75,10 +140,10 @@ describe("Calendar", () => {
 		cy.findByText(currentMonthString);
 
 		cy.findAllByTestId("calendar").within(() => {
-			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
+			cy.findAllByTestId("day").should("have.length", numberOfDaysInCurrentMonth);
 
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => {
 					cy.findByText("4 new habits");
 					cy.findByText("2 habits with progress votes");
@@ -104,10 +169,10 @@ describe("Calendar", () => {
 		cy.visit(CALENDAR_URL);
 
 		cy.findAllByTestId("calendar").within(() => {
-			cy.findAllByTestId("day").should("have.length", daysInCurrentMonth);
+			cy.findAllByTestId("day").should("have.length", numberOfDaysInCurrentMonth);
 
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => {
 					cy.findByText("5 new habits");
 					cy.findByText("2 habits with progress votes");
@@ -147,7 +212,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => {
 					cy.findByTitle("No votes: 6/10 (60.00%)");
 					cy.findByTitle("Regress: 1/10 (10.00%)");
@@ -262,7 +327,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => cy.findByText("Show").click());
 		});
 
@@ -289,7 +354,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => cy.findByText("Show").click());
 		});
 
@@ -341,7 +406,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => cy.findByText("Show").click());
 		});
 
@@ -386,7 +451,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => cy.findByText("Show").click());
 		});
 
@@ -406,7 +471,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => cy.findByText("Show").click());
 		});
 
@@ -426,7 +491,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => cy.findByText("Show").click());
 		});
 		cy.findByRole("dialog").within(() => {
@@ -435,7 +500,7 @@ describe("Calendar", () => {
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
-				.eq(currentDate - 1)
+				.eq(dayOfTheMonthTodayIndex)
 				.within(() => cy.findByText("Show").click());
 		});
 		cy.findByRole("dialog").within(() => {
