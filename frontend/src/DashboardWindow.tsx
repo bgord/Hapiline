@@ -94,6 +94,7 @@ export const DashboardWindow = () => {
 					View today
 				</UI.Button>
 			</UI.Row>
+
 			<UI.Column p="24">
 				<UI.ShowIf request={getDashboardStatsRequestState} is="error">
 					<UI.ErrorBanner mt="24">
