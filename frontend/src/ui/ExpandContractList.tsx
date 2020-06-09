@@ -2,6 +2,7 @@ import React from "react";
 
 import * as UI from "./";
 
+// TODO: Document the logic of this component
 export const ExpandContractList: React.FC<{max: number}> = ({children, max}) => {
 	const [state, setState] = React.useState<"contracted" | "expanded">();
 
