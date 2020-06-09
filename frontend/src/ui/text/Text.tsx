@@ -1,6 +1,7 @@
 import "./text.css";
 
 import React from "react";
+import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
 import {Margins} from "../margins";
 import {Positions} from "../positions";
@@ -14,12 +15,16 @@ export type TextVariant =
 	| "monospaced"
 	| "link";
 
-type TextProps = JSX.IntrinsicElements["div"] & {
+type TextOwnProps = JSX.IntrinsicElements["span"] & {
 	variant?: TextVariant;
 } & Margins &
 	Positions;
 
-export const Text: React.FC<TextProps> = ({
+export type TextProps<E extends React.ElementType> = PolymorphicComponentProps<E, TextOwnProps>;
+
+const defaultElement = "span";
+
+export function Text<E extends React.ElementType = typeof defaultElement>({
 	variant = "regular",
 	m,
 	mx,
@@ -30,18 +35,21 @@ export const Text: React.FC<TextProps> = ({
 	ml,
 	position = "static",
 	...props
-}) => (
-	<span
-		data-m={m}
-		data-mx={mx}
-		data-my={my}
-		data-mt={mt}
-		data-mr={mr}
-		data-mb={mb}
-		data-ml={ml}
-		data-variant={variant}
-		data-position={position}
-		className="c-text"
-		{...props}
-	/>
-);
+}: TextProps<E>): JSX.Element {
+	return (
+		<Box
+			as={defaultElement}
+			data-m={m}
+			data-mx={mx}
+			data-my={my}
+			data-mt={mt}
+			data-mr={mr}
+			data-mb={mb}
+			data-ml={ml}
+			data-variant={variant}
+			data-position={position}
+			className="c-text"
+			{...props}
+		/>
+	);
+}
