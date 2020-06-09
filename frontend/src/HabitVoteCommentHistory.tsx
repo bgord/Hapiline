@@ -70,12 +70,12 @@ const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) =
 				<UI.Label htmlFor={comment ?? undefined}>
 					{formattedDay} ({formattedDayName})
 				</UI.Label>
-				<Link to={voteUrl}>
-					<UI.Badge ml="6" variant={voteToBadgeVariant.get(vote) ?? "neutral"}>
-						{vote ?? "NO VOTE"}
-					</UI.Badge>
-				</Link>
+
+				<UI.Badge as={Link} to={voteUrl} ml="6" variant={voteToBadgeVariant.get(vote) ?? "neutral"}>
+					{vote ?? "NO VOTE"}
+				</UI.Badge>
 			</UI.Row>
+
 			<UI.Textarea id={comment ?? undefined} value={comment ?? undefined} disabled />
 		</UI.Field>
 	);

@@ -112,17 +112,22 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								<ChevronUpIcon />
 							</UI.Button>
 						)}
+
 						{!isCommentVisible && (
 							<UI.Button variant="bare" title="Show and edit vote comment" onClick={toggleComment}>
 								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
 								<ChevronDownIcon />
 							</UI.Button>
 						)}
-						<Link
+
+						<UI.Text
+							as={Link}
 							to={constructUrl("habits", {preview_habit_id: habitWithPossibleVote.id.toString()})}
+							variant="semi-bold"
 						>
-							<UI.Text variant="semi-bold">{habitWithPossibleVote.name}</UI.Text>
-						</Link>
+							{habitWithPossibleVote.name}
+						</UI.Text>
+
 						<UI.Wrapper ml="auto">
 							<UI.Button
 								bg={currentVoteType === "progress" ? "green" : "gray-0"}

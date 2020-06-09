@@ -29,9 +29,9 @@ export const EmailVerificationWindow = () => {
 				<UI.Row mt="48" width="100%" mainAxis="center">
 					<UI.SuccessBanner size="big">
 						<UI.Text ml="12">Success! You can </UI.Text>
-						<Link data-mx="3" data-variant="link" className="c-text" to="/login">
+						<UI.Text variant="link" mx="3" as={Link} to="/login">
 							login
-						</Link>
+						</UI.Text>
 						<UI.Text> now.</UI.Text>
 					</UI.SuccessBanner>
 				</UI.Row>

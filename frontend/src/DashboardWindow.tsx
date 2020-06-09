@@ -199,15 +199,16 @@ const ProgressStreakList: React.FC<{
 				<ExpandContractList max={5}>
 					{progressStreakStats.map(habit => (
 						<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="end">
-							<Link
-								data-mr="auto"
+							<UI.Text
+								mr="auto"
+								as={Link}
 								to={constructUrl("dashboard", {
 									subview: "habit_preview",
 									preview_habit_id: habit.id.toString(),
 								})}
 							>
-								<UI.Text>{habit.name}</UI.Text>
-							</Link>
+								{habit.name}
+							</UI.Text>
 
 							{!habit.has_vote_for_today && (
 								<UI.Badge variant="neutral" mx="12">
@@ -244,15 +245,16 @@ const RegressStreakList: React.FC<{
 				<ExpandContractList max={5}>
 					{regressStreakStats.map(habit => (
 						<UI.Row py="12" by="gray-1" key={habit.id}>
-							<Link
-								data-mr="auto"
+							<UI.Text
+								mr="auto"
+								as={Link}
 								to={constructUrl("dashboard", {
 									subview: "habit_preview",
 									preview_habit_id: habit.id.toString(),
 								})}
 							>
-								<UI.Text>{habit.name}</UI.Text>
-							</Link>
+								{habit.name}
+							</UI.Text>
 
 							{!habit.has_vote_for_today && (
 								<UI.Badge variant="neutral" mx="12">

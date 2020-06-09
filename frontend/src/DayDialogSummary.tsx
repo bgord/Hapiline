@@ -212,15 +212,22 @@ function getHabitsAddedAtThisDay(habits: Habit[], day: string | Date): Habit[] {
 
 const CompactHabitItem: React.FC<Habit> = ({name, id, score, strength, is_trackable}) => (
 	<UI.Row as="li" py="12" by="gray-1">
-		<Link to={constructUrl("habits", {preview_habit_id: id.toString()})}>
-			<UI.Text variant="semi-bold">{name}</UI.Text>
-		</Link>
+		<UI.Text
+			as={Link}
+			to={constructUrl("habits", {preview_habit_id: id.toString()})}
+			variant="semi-bold"
+		>
+			{name}
+		</UI.Text>
+
 		<UI.Badge ml="auto" variant={score}>
 			{score}
 		</UI.Badge>
+
 		<UI.Badge ml="12" variant={habitStrengthToBadgeVariant[strength]}>
 			{strength}
 		</UI.Badge>
+
 		{!is_trackable && (
 			<UI.Badge ml="12" variant="neutral">
 				Untracked

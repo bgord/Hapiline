@@ -78,9 +78,9 @@ export const NewPasswordWindow: React.FC = () => {
 							<UI.Text>Password has been changed!</UI.Text>
 							<UI.Row>
 								<UI.Text>You can</UI.Text>
-								<Link data-ml="6" data-variant="link" className="c-text" to="/login">
+								<UI.Text ml="6" variant="link" as={Link} to="/login">
 									login now
-								</Link>
+								</UI.Text>
 							</UI.Row>
 						</UI.Column>
 					</UI.SuccessBanner>
