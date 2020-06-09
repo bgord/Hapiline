@@ -8,12 +8,13 @@ import {DaySummaryChart} from "./DayDialogSummary";
 import {ExpandContractList} from "./ui/ExpandContractList";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {api} from "./services/api";
-import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
+import {useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
 import {pluralize} from "./services/pluralize";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "./interfaces/index";
+import {UrlBuilder} from "./services/url-builder";
 import * as UI from "./ui";
 
 export const DashboardWindow = () => {
@@ -199,24 +200,14 @@ const ProgressStreakList: React.FC<{
 				<ExpandContractList max={5}>
 					{progressStreakStats.map(habit => (
 						<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="end">
-							<UI.Text
-								mr="auto"
-								as={Link}
-								to={constructUrl("dashboard", {
-									subview: "habit_preview",
-									preview_habit_id: habit.id.toString(),
-								})}
-							>
+							<UI.Text mr="auto" as={Link} to={UrlBuilder.dashboard.habit.preview(habit.id)}>
 								{habit.name}
 							</UI.Text>
 
 							{!habit.has_vote_for_today && (
 								<UI.Badge
 									as={Link}
-									to={constructUrl("calendar", {
-										preview_day: formatToday(),
-										highlighted_habit_id: habit.id?.toString(),
-									})}
+									to={UrlBuilder.calendar.day.habit({day: new Date(), habitId: habit.id})}
 									variant="neutral"
 									mx="12"
 									title="Vote for this habit"
@@ -254,23 +245,16 @@ const RegressStreakList: React.FC<{
 				<ExpandContractList max={5}>
 					{regressStreakStats.map(habit => (
 						<UI.Row py="12" by="gray-1" key={habit.id}>
-							<UI.Text
-								mr="auto"
-								as={Link}
-								to={constructUrl("dashboard", {
-									subview: "habit_preview",
-									preview_habit_id: habit.id.toString(),
-								})}
-							>
+							<UI.Text mr="auto" as={Link} to={UrlBuilder.dashboard.habit.preview(habit.id)}>
 								{habit.name}
 							</UI.Text>
 
 							{!habit.has_vote_for_today && (
 								<UI.Badge
 									as={Link}
-									to={constructUrl("calendar", {
-										preview_day: formatToday(),
-										highlighted_habit_id: habit.id?.toString(),
+									to={UrlBuilder.calendar.day.habit({
+										day: new Date(),
+										habitId: habit.id,
 									})}
 									variant="neutral"
 									mx="12"

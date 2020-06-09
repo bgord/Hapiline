@@ -2,6 +2,7 @@ import {Link, LinkProps} from "react-router-dom";
 import {useQuery} from "react-query";
 import React from "react";
 import {pluralize} from "./services/pluralize";
+import {UrlBuilder} from "./services/url-builder";
 
 import * as UI from "./ui";
 import {
@@ -125,7 +126,10 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 
 	return (
 		<Link
-			to={`/calendar?preview_day=${date}&highlighted_habit_id=${habitId}`}
+			to={UrlBuilder.calendar.day.habit({
+				day,
+				habitId,
+			})}
 			title={title}
 			key={String(day)}
 			style={{

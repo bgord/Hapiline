@@ -26,8 +26,8 @@ import {
 	SaveButton,
 } from "./hooks/useEditableField";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
-import {constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
+import {UrlBuilder} from "./services/url-builder";
 
 export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
@@ -122,7 +122,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 
 						<UI.Text
 							as={Link}
-							to={constructUrl("habits", {preview_habit_id: habitWithPossibleVote.id.toString()})}
+							to={UrlBuilder.habits.preview(habitWithPossibleVote.id)}
 							variant="semi-bold"
 						>
 							{habitWithPossibleVote.name}
