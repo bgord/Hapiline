@@ -59,6 +59,13 @@ const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) =
 	voteToBadgeVariant.set("regress", "negative");
 	voteToBadgeVariant.set(null, "neutral");
 
+	const voteUrl = UrlBuilder.calendar.day.habit({
+		day,
+		habitId: habit_id,
+	});
+
+	const badgeVariant = voteToBadgeVariant.get(vote) ?? "neutral";
+
 	return (
 		<UI.Field mt="24">
 			<UI.Row mb="6" crossAxis="center">
@@ -66,15 +73,7 @@ const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) =
 					{formattedDay} ({formattedDayName})
 				</UI.Label>
 
-				<UI.Badge
-					as={Link}
-					to={UrlBuilder.calendar.day.habit({
-						day,
-						habitId: habit_id,
-					})}
-					ml="6"
-					variant={voteToBadgeVariant.get(vote) ?? "neutral"}
-				>
+				<UI.Badge as={Link} to={voteUrl} ml="6" variant={badgeVariant}>
 					{vote ?? "NO VOTE"}
 				</UI.Badge>
 			</UI.Row>

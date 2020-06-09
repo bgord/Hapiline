@@ -64,7 +64,7 @@ test("full flow", async ({client, assert}) => {
 	for (const habit of response.body.progress_streaks) {
 		assert.hasAllKeys(habit, ["id", "name", "created_at", "progress_streak", "has_vote_for_today"]);
 
-		const voteForHabitToday = await Database.first("*")
+		const voteForHabitToday = await Database.first("vote")
 			.from("habit_votes")
 			.where({habit_id: habit.id, day: new Date()});
 
@@ -78,7 +78,7 @@ test("full flow", async ({client, assert}) => {
 	for (const habit of response.body.regress_streaks) {
 		assert.hasAllKeys(habit, ["id", "name", "created_at", "regress_streak", "has_vote_for_today"]);
 
-		const voteForHabitToday = await Database.first("*")
+		const voteForHabitToday = await Database.first("vote")
 			.from("habit_votes")
 			.where({habit_id: habit.id, day: new Date()});
 
