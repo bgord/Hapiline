@@ -11,7 +11,7 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
-import {DayCellWithFullStats, DayStatsFromServer} from "./interfaces/index";
+import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./interfaces/index";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -79,12 +79,11 @@ export const Calendar: React.FC = () => {
 		return "Go to next month";
 	}
 
-	const [firstAddedHabit] = [...trackedHabits].sort((a, b) =>
-		a.created_at.toString().localeCompare(b.created_at.toString()),
-	);
 	// Get the date of month that's currently displayed,
 	// convert firstAddedHabit?.created_at to a format that date-fns understands,
 	// and check if they are the same month
+	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
+
 	const isTheMonthFirstHabbitWasAdded = isSameMonth(
 		subMonths(new Date(), monthOffset),
 		new Date(firstAddedHabit?.created_at),
@@ -145,3 +144,11 @@ export const Calendar: React.FC = () => {
 		</UI.Column>
 	);
 };
+
+function getFirstAddedHabit(trackedHabits: Habit[]): Habit {
+	const [firstAddedHabit] = [...trackedHabits].sort((a, b) =>
+		a.created_at.toString().localeCompare(b.created_at.toString()),
+	);
+
+	return firstAddedHabit;
+}
