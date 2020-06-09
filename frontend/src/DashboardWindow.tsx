@@ -211,7 +211,16 @@ const ProgressStreakList: React.FC<{
 							</UI.Text>
 
 							{!habit.has_vote_for_today && (
-								<UI.Badge variant="neutral" mx="12">
+								<UI.Badge
+									as={Link}
+									to={constructUrl("calendar", {
+										preview_day: formatToday(),
+										highlighted_habit_id: habit.id?.toString(),
+									})}
+									variant="neutral"
+									mx="12"
+									title="Vote for this habit"
+								>
 									No vote
 								</UI.Badge>
 							)}
@@ -257,7 +266,16 @@ const RegressStreakList: React.FC<{
 							</UI.Text>
 
 							{!habit.has_vote_for_today && (
-								<UI.Badge variant="neutral" mx="12">
+								<UI.Badge
+									as={Link}
+									to={constructUrl("calendar", {
+										preview_day: formatToday(),
+										highlighted_habit_id: habit.id?.toString(),
+									})}
+									variant="neutral"
+									mx="12"
+									title="Vote for this habit"
+								>
 									No vote
 								</UI.Badge>
 							)}
