@@ -71,11 +71,17 @@ export const Calendar: React.FC = () => {
 	});
 
 	const isCurrentMonth = monthOffset === 0;
+	const isNextButtonDisabled = getMonthRequestState.status === "loading" || isCurrentMonth;
+
+	function getNextButtonTitle() {
+		if (getMonthRequestState.status === "loading") return "Loading...";
+		if (isCurrentMonth) return "You cannot access the next month yet";
+		return "Go to next month";
+	}
 
 	const [firstAddedHabit] = [...trackedHabits].sort((a, b) =>
 		a.created_at.toString().localeCompare(b.created_at.toString()),
 	);
-
 	// Get the date of month that's currently displayed,
 	// convert firstAddedHabit?.created_at to a format that date-fns understands,
 	// and check if they are the same month
@@ -83,20 +89,14 @@ export const Calendar: React.FC = () => {
 		subMonths(new Date(), monthOffset),
 		new Date(firstAddedHabit?.created_at),
 	);
+	const isPreviousButtonDisabled =
+		getMonthRequestState.status === "loading" || isTheMonthFirstHabbitWasAdded;
 
-	const disabledPreviousButtonTitle =
-		getMonthRequestState.status === "loading"
-			? "Loading..."
-			: isTheMonthFirstHabbitWasAdded
-			? "There are no habits added in the previous month"
-			: "Go to previous month";
-
-	const disabledNextButtonTitle =
-		getMonthRequestState.status === "loading"
-			? "Loading..."
-			: isCurrentMonth
-			? "You cannot access the next month yet"
-			: "Go to next month";
+	function getPreviousButtonTitle() {
+		if (getMonthRequestState.status === "loading") return "Loading...";
+		if (isTheMonthFirstHabbitWasAdded) return "There are no habits added in the previous month";
+		return "Go to previous month";
+	}
 
 	return (
 		<UI.Column mt="24" crossAxis="center">
@@ -104,9 +104,9 @@ export const Calendar: React.FC = () => {
 				<UI.Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
-					disabled={getMonthRequestState.status === "loading" || isTheMonthFirstHabbitWasAdded}
+					disabled={isPreviousButtonDisabled}
 					style={{width: "100px"}}
-					title={disabledPreviousButtonTitle}
+					title={getPreviousButtonTitle()}
 					mr="24"
 				>
 					Previous
@@ -121,9 +121,9 @@ export const Calendar: React.FC = () => {
 					ml="24"
 					variant="outlined"
 					onClick={widget.setNextMonth}
-					disabled={getMonthRequestState.status === "loading" || isCurrentMonth}
+					disabled={isNextButtonDisabled}
 					style={{width: "100px"}}
-					title={disabledNextButtonTitle}
+					title={getNextButtonTitle()}
 				>
 					Next
 				</UI.Button>
