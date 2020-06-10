@@ -292,9 +292,10 @@ const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, unt
 
 	const strategyToText = {
 		no_habits: (
-			<Link className="c-link" to="habits">
+			// TODO: Improve it display a text and a button separately
+			<UI.Text as={Link} variant="link" to="habits">
 				Add your first tracked habit to start voting!
-			</Link>
+			</UI.Text>
 		),
 		no_votes_today: (
 			<UI.Text>
