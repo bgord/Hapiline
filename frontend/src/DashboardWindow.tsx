@@ -212,7 +212,7 @@ const ProgressStreakList: React.FC<{
 									mx="12"
 									title="Vote for this habit"
 								>
-									No vote
+									No vote yet
 								</UI.Badge>
 							)}
 
@@ -260,7 +260,7 @@ const RegressStreakList: React.FC<{
 									mx="12"
 									title="Vote for this habit"
 								>
-									No vote
+									No vote yet
 								</UI.Badge>
 							)}
 

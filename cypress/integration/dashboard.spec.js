@@ -419,14 +419,14 @@ describe("Dashboard", () => {
 			},
 		});
 
-		cy.findAllByText("No vote").should("have.length", 2);
-		cy.findAllByText("No vote").should("have.attr", "title", "Vote for this habit");
+		cy.findAllByText("No vote yet").should("have.length", 2);
+		cy.findAllByText("No vote yet").should("have.attr", "title", "Vote for this habit");
 
-		cy.findAllByText("No vote")
+		cy.findAllByText("No vote yet")
 			.eq(0)
 			.should("have.attr", "href", `/calendar?preview_day=${today}&highlighted_habit_id=3`);
 
-		cy.findAllByText("No vote")
+		cy.findAllByText("No vote yet")
 			.eq(1)
 			.should("have.attr", "href", `/calendar?preview_day=${today}&highlighted_habit_id=2`);
 	});
