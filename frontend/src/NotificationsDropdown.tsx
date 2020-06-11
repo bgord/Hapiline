@@ -94,8 +94,9 @@ export function NotificationDropdown() {
 
 										{notification.status === "unread" && (
 											<UI.Button
+												ml="12"
+												style={{minWidth: "85px"}}
 												variant="secondary"
-												style={{width: "85px"}}
 												disabled={updateNotificationRequestState.status === "loading"}
 												onClick={() => updateNotification({id: notification.id, status: "read"})}
 											>
@@ -105,7 +106,8 @@ export function NotificationDropdown() {
 
 										{notification.status === "read" && (
 											<UI.Button
-												style={{width: "85px"}}
+												ml="12"
+												style={{minWidth: "85px"}}
 												variant="outlined"
 												disabled={updateNotificationRequestState.status === "loading"}
 												onClick={() => updateNotification({id: notification.id, status: "unread"})}
