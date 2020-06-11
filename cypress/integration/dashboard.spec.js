@@ -4,14 +4,14 @@ import {format} from "date-fns";
 
 const DASHBOARD_URL = "/dashboard";
 
+const today = format(new Date(), "yyyy-MM-dd");
+
 describe("Dashboard", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
 	});
 
 	it("upper part", () => {
-		const today = format(new Date(), "yyyy-MM-dd");
-
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -294,24 +294,36 @@ describe("Dashboard", () => {
 		cy.findByText("2 days regress streak");
 		cy.findByText("1 day regress streak");
 
-		cy.findByText("first")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=1");
-		cy.findByText("second")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=2");
-		cy.findByText("third")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=3");
-		cy.findByText("fourth")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=4");
-		cy.findByText("fifth")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=5");
-		cy.findByText("sixth")
-			.parent()
-			.should("have.attr", "href", "/dashboard?subview=habit_preview&preview_habit_id=6");
+		cy.findByText("first").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=1",
+		);
+		cy.findByText("second").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=2",
+		);
+		cy.findByText("third").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=3",
+		);
+		cy.findByText("fourth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=4",
+		);
+		cy.findByText("fifth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=5",
+		);
+		cy.findByText("sixth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=6",
+		);
 	});
 
 	it("streak stats error", () => {
@@ -352,7 +364,7 @@ describe("Dashboard", () => {
 		cy.findByText("2 days progress streak");
 	});
 
-	it("Journal textarea is available in a day dialog", () => {
+	it("journal textarea is available in a day dialog", () => {
 		cy.login("jim");
 		cy.visit(DASHBOARD_URL);
 
@@ -364,5 +376,58 @@ describe("Dashboard", () => {
 				.click();
 			cy.findAllByLabelText("Journal");
 		});
+	});
+
+	it("no vote badge is shown where there's no vote for given habit today", () => {
+		cy.login("jim");
+		cy.visit(DASHBOARD_URL);
+
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/dashboard-streak-stats",
+			status: 200,
+			response: {
+				progress_streaks: [
+					{
+						id: 1,
+						name: "First habit",
+						has_vote_for_today: true,
+						progress_streak: 5,
+					},
+					{
+						id: 2,
+						name: "Second habit",
+						has_vote_for_today: false,
+						progress_streak: 6,
+					},
+				],
+				regress_streaks: [
+					{
+						id: 3,
+						name: "Third habit",
+						has_vote_for_today: false,
+						regress_streak: 7,
+					},
+					{
+						id: 4,
+						name: "Fourth habit",
+						has_vote_for_today: true,
+						regress_streak: 8,
+					},
+				],
+			},
+		});
+
+		cy.findAllByText("No vote yet").should("have.length", 2);
+		cy.findAllByText("No vote yet").should("have.attr", "title", "Vote for this habit");
+
+		cy.findAllByText("No vote yet")
+			.eq(0)
+			.should("have.attr", "href", `/calendar?preview_day=${today}&highlighted_habit_id=3`);
+
+		cy.findAllByText("No vote yet")
+			.eq(1)
+			.should("have.attr", "href", `/calendar?preview_day=${today}&highlighted_habit_id=2`);
 	});
 });

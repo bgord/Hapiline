@@ -26,8 +26,8 @@ import {
 	SaveButton,
 } from "./hooks/useEditableField";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
-import {constructUrl} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
+import {UrlBuilder} from "./services/url-builder";
 
 export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
@@ -112,17 +112,22 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								<ChevronUpIcon />
 							</UI.Button>
 						)}
+
 						{!isCommentVisible && (
 							<UI.Button variant="bare" title="Show and edit vote comment" onClick={toggleComment}>
 								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
 								<ChevronDownIcon />
 							</UI.Button>
 						)}
-						<Link
-							to={constructUrl("habits", {preview_habit_id: habitWithPossibleVote.id.toString()})}
+
+						<UI.Text
+							as={Link}
+							to={UrlBuilder.habits.preview(habitWithPossibleVote.id)}
+							variant="semi-bold"
 						>
-							<UI.Text variant="semi-bold">{habitWithPossibleVote.name}</UI.Text>
-						</Link>
+							{habitWithPossibleVote.name}
+						</UI.Text>
+
 						<UI.Wrapper ml="auto">
 							<UI.Button
 								bg={currentVoteType === "progress" ? "green" : "gray-0"}

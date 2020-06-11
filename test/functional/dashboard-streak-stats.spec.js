@@ -6,6 +6,7 @@ const users = require("../fixtures/users.json");
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Dashboard streak stats");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
+const Database = use("Database");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -61,10 +62,30 @@ test("full flow", async ({client, assert}) => {
 	assert.lengthOf(response.body.regress_streaks, 4);
 
 	for (const habit of response.body.progress_streaks) {
-		assert.hasAllKeys(habit, ["id", "name", "created_at", "progress_streak"]);
+		assert.hasAllKeys(habit, ["id", "name", "created_at", "progress_streak", "has_vote_for_today"]);
+
+		const voteForHabitToday = await Database.first("vote")
+			.from("habit_votes")
+			.where({habit_id: habit.id, day: new Date()});
+
+		if (!voteForHabitToday || voteForHabitToday.vote === null) {
+			assert.equal(habit.has_vote_for_today, false);
+		} else {
+			assert.equal(habit.has_vote_for_today, true);
+		}
 	}
 
 	for (const habit of response.body.regress_streaks) {
-		assert.hasAllKeys(habit, ["id", "name", "created_at", "regress_streak"]);
+		assert.hasAllKeys(habit, ["id", "name", "created_at", "regress_streak", "has_vote_for_today"]);
+
+		const voteForHabitToday = await Database.first("vote")
+			.from("habit_votes")
+			.where({habit_id: habit.id, day: new Date()});
+
+		if (!voteForHabitToday || voteForHabitToday.vote === null) {
+			assert.equal(habit.has_vote_for_today, false);
+		} else {
+			assert.equal(habit.has_vote_for_today, true);
+		}
 	}
 });

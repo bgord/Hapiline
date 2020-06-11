@@ -5,9 +5,9 @@ import React from "react";
 import * as UI from "./ui";
 import {Habit, HabitVote} from "./interfaces/index";
 import {api} from "./services/api";
-import {constructUrl} from "./hooks/useQueryParam";
 import {formatDay, formatDayName} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";
+import {UrlBuilder} from "./services/url-builder";
 
 export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habitId}) => {
 	const triggerErrorNotification = useErrorToast();
@@ -50,11 +50,6 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 };
 
 const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) => {
-	const voteUrl = constructUrl("calendar", {
-		preview_day: formatDay(day),
-		highlighted_habit_id: habit_id?.toString(),
-	});
-
 	const formattedDay = formatDay(day);
 	const formattedDayName = formatDayName(day);
 
@@ -64,18 +59,25 @@ const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) =
 	voteToBadgeVariant.set("regress", "negative");
 	voteToBadgeVariant.set(null, "neutral");
 
+	const voteUrl = UrlBuilder.calendar.day.habit({
+		day,
+		habitId: habit_id,
+	});
+
+	const badgeVariant = voteToBadgeVariant.get(vote) ?? "neutral";
+
 	return (
 		<UI.Field mt="24">
 			<UI.Row mb="6" crossAxis="center">
 				<UI.Label htmlFor={comment ?? undefined}>
 					{formattedDay} ({formattedDayName})
 				</UI.Label>
-				<Link to={voteUrl}>
-					<UI.Badge ml="6" variant={voteToBadgeVariant.get(vote) ?? "neutral"}>
-						{vote ?? "NO VOTE"}
-					</UI.Badge>
-				</Link>
+
+				<UI.Badge as={Link} to={voteUrl} ml="6" variant={badgeVariant}>
+					{vote ?? "NO VOTE"}
+				</UI.Badge>
 			</UI.Row>
+
 			<UI.Textarea id={comment ?? undefined} value={comment ?? undefined} disabled />
 		</UI.Field>
 	);

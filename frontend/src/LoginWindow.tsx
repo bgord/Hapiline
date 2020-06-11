@@ -78,13 +78,14 @@ export const LoginWindow: React.FC = () => {
 
 				<UI.Row mt="24">
 					<UI.Text>Don't have an account?</UI.Text>
-					<Link data-variant="link" data-ml="6" className="c-text" to="/register">
+					<UI.Text variant="link" ml="6" as={Link} to="/register">
 						Create now
-					</Link>
+					</UI.Text>
 				</UI.Row>
-				<Link data-mt="6" data-variant="link" className="c-text" to="/forgot-password">
+
+				<UI.Text mt="6" variant="link" as={Link} to="/forgot-password">
 					Forgot password?
-				</Link>
+				</UI.Text>
 
 				<UI.ShowIf request={loginRequestState} is="error">
 					<UI.ErrorBanner mt="24">{errorMessage}</UI.ErrorBanner>

@@ -7,13 +7,14 @@ import VisuallyHidden from "@reach/visually-hidden";
 
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
-import {constructUrl} from "./hooks/useQueryParam";
 import {
 	Habit,
 	habitStrengthToBadgeVariant,
 	voteToBgColor,
 	DayCellWithFullStats,
 } from "./interfaces/index";
+
+import {UrlBuilder} from "./services/url-builder";
 
 type DayDialogSummaryProps = Omit<
 	DayCellWithFullStats,
@@ -212,15 +213,18 @@ function getHabitsAddedAtThisDay(habits: Habit[], day: string | Date): Habit[] {
 
 const CompactHabitItem: React.FC<Habit> = ({name, id, score, strength, is_trackable}) => (
 	<UI.Row as="li" py="12" by="gray-1">
-		<Link to={constructUrl("habits", {preview_habit_id: id.toString()})}>
-			<UI.Text variant="semi-bold">{name}</UI.Text>
-		</Link>
+		<UI.Text as={Link} to={UrlBuilder.habits.preview(id)} variant="semi-bold">
+			{name}
+		</UI.Text>
+
 		<UI.Badge ml="auto" variant={score}>
 			{score}
 		</UI.Badge>
+
 		<UI.Badge ml="12" variant={habitStrengthToBadgeVariant[strength]}>
 			{strength}
 		</UI.Badge>
+
 		{!is_trackable && (
 			<UI.Badge ml="12" variant="neutral">
 				Untracked

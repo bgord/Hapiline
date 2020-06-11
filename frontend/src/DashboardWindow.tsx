@@ -8,12 +8,13 @@ import {DaySummaryChart} from "./DayDialogSummary";
 import {ExpandContractList} from "./ui/ExpandContractList";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {api} from "./services/api";
-import {constructUrl, useQueryParams} from "./hooks/useQueryParam";
+import {useQueryParams} from "./hooks/useQueryParam";
 import {formatToday} from "./config/DATE_FORMATS";
 import {pluralize} from "./services/pluralize";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "./interfaces/index";
+import {UrlBuilder} from "./services/url-builder";
 import * as UI from "./ui";
 
 export const DashboardWindow = () => {
@@ -94,6 +95,7 @@ export const DashboardWindow = () => {
 					View today
 				</UI.Button>
 			</UI.Row>
+
 			<UI.Column p="24">
 				<UI.ShowIf request={getDashboardStatsRequestState} is="error">
 					<UI.ErrorBanner mt="24">
@@ -155,66 +157,8 @@ export const DashboardWindow = () => {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
-					{regressStreakStats.length > 0 && (
-						<>
-							<UI.Row mt="24" mb="24" crossAxis="center">
-								<UI.Header variant="extra-small">Regress streaks</UI.Header>
-								<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
-									{regressStreakStats.length}
-								</UI.Badge>
-							</UI.Row>
-							<UI.Column by="gray-1">
-								<ExpandContractList max={5}>
-									{regressStreakStats.map(habit => (
-										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
-											<Link
-												to={constructUrl("dashboard", {
-													subview: "habit_preview",
-													preview_habit_id: habit.id.toString(),
-												})}
-											>
-												<UI.Text>{habit.name}</UI.Text>
-											</Link>
-											<UI.Badge variant="negative">
-												{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress
-												streak
-											</UI.Badge>
-										</UI.Row>
-									))}
-								</ExpandContractList>
-							</UI.Column>
-						</>
-					)}
-					{progressStreakStats.length > 0 && (
-						<>
-							<UI.Row mt="48" mb="24" crossAxis="center">
-								<UI.Header variant="extra-small">Progress streaks</UI.Header>
-								<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
-									{progressStreakStats.length}
-								</UI.Badge>
-							</UI.Row>
-							<UI.Column bt="gray-1">
-								<ExpandContractList max={5}>
-									{progressStreakStats.map(habit => (
-										<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="between">
-											<Link
-												to={constructUrl("dashboard", {
-													subview: "habit_preview",
-													preview_habit_id: habit.id.toString(),
-												})}
-											>
-												<UI.Text>{habit.name}</UI.Text>
-											</Link>
-											<UI.Badge variant="positive">
-												{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
-												streak
-											</UI.Badge>
-										</UI.Row>
-									))}
-								</ExpandContractList>
-							</UI.Column>
-						</>
-					)}
+					<RegressStreakList regressStreakStats={regressStreakStats} />
+					<ProgressStreakList progressStreakStats={progressStreakStats} />
 				</UI.ShowIf>
 
 				{subview === "day_preview" && (
@@ -238,6 +182,99 @@ export const DashboardWindow = () => {
 	);
 };
 
+const ProgressStreakList: React.FC<{
+	progressStreakStats: DashboardStreakStats["progress_streaks"];
+}> = ({progressStreakStats}) => {
+	if (progressStreakStats.length === 0) return null;
+
+	return (
+		<>
+			<UI.Row mt="48" mb="24" crossAxis="center">
+				<UI.Header variant="extra-small">Progress streaks</UI.Header>
+				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+					{progressStreakStats.length}
+				</UI.Badge>
+			</UI.Row>
+
+			<UI.Column bt="gray-1">
+				<ExpandContractList max={5}>
+					{progressStreakStats.map(habit => (
+						<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="end">
+							<UI.Text mr="auto" as={Link} to={UrlBuilder.dashboard.habit.preview(habit.id)}>
+								{habit.name}
+							</UI.Text>
+
+							{!habit.has_vote_for_today && (
+								<UI.Badge
+									as={Link}
+									to={UrlBuilder.calendar.day.habit({day: new Date(), habitId: habit.id})}
+									variant="neutral"
+									mx="12"
+									title="Vote for this habit"
+								>
+									No vote yet
+								</UI.Badge>
+							)}
+
+							<UI.Badge variant="positive">
+								{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress streak
+							</UI.Badge>
+						</UI.Row>
+					))}
+				</ExpandContractList>
+			</UI.Column>
+		</>
+	);
+};
+
+const RegressStreakList: React.FC<{
+	regressStreakStats: DashboardStreakStats["regress_streaks"];
+}> = ({regressStreakStats}) => {
+	if (regressStreakStats.length === 0) return null;
+
+	return (
+		<>
+			<UI.Row mt="24" mb="24" crossAxis="center">
+				<UI.Header variant="extra-small">Regress streaks</UI.Header>
+				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+					{regressStreakStats.length}
+				</UI.Badge>
+			</UI.Row>
+
+			<UI.Column by="gray-1">
+				<ExpandContractList max={5}>
+					{regressStreakStats.map(habit => (
+						<UI.Row py="12" by="gray-1" key={habit.id}>
+							<UI.Text mr="auto" as={Link} to={UrlBuilder.dashboard.habit.preview(habit.id)}>
+								{habit.name}
+							</UI.Text>
+
+							{!habit.has_vote_for_today && (
+								<UI.Badge
+									as={Link}
+									to={UrlBuilder.calendar.day.habit({
+										day: new Date(),
+										habitId: habit.id,
+									})}
+									variant="neutral"
+									mx="12"
+									title="Vote for this habit"
+								>
+									No vote yet
+								</UI.Badge>
+							)}
+
+							<UI.Badge variant="negative">
+								{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress streak
+							</UI.Badge>
+						</UI.Row>
+					))}
+				</ExpandContractList>
+			</UI.Column>
+		</>
+	);
+};
+
 type MotivationalTextProps = {
 	total: DashboardHabitVoteStatsForDateRanges["today"]["maximumVotes"];
 	votedFor: DashboardHabitVoteStatsForDateRanges["today"]["allVotes"];
@@ -255,9 +292,10 @@ const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, unt
 
 	const strategyToText = {
 		no_habits: (
-			<Link className="c-link" to="habits">
+			// TODO: Improve it display a text and a button separately
+			<UI.Text as={Link} variant="link" to="habits">
 				Add your first tracked habit to start voting!
-			</Link>
+			</UI.Text>
 		),
 		no_votes_today: (
 			<UI.Text>
