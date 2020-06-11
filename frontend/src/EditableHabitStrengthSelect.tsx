@@ -14,20 +14,20 @@ import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 export const EditableHabitStrengthSelect: React.FC<DetailedHabit> = ({id, strength}) => {
 	const [newHabitStrength, setNewHabitStrength] = React.useState<HabitStrengthType>(strength);
 
-	const triggerSuccessNotification = useSuccessToast();
-	const triggerErrorNotification = useErrorToast();
+	const triggerSuccessToast = useSuccessToast();
+	const triggerErrorToast = useErrorToast();
 
 	const [updateHabitStrength, updateHabitStrengthRequestState] = useMutation<
 		DetailedHabit,
 		DraftHabitPayload
 	>(api.habit.patch, {
 		onSuccess: habit => {
-			triggerSuccessNotification("Habit strength changed successfully!");
+			triggerSuccessToast("Habit strength changed successfully!");
 
 			const _habit: AsyncReturnType<typeof api.habit.show> = habit;
 			queryCache.setQueryData("single_habit", _habit);
 		},
-		onError: () => triggerErrorNotification("Habit strength couldn't be changed."),
+		onError: () => triggerErrorToast("Habit strength couldn't be changed."),
 	});
 
 	return (

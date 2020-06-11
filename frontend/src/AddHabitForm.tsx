@@ -23,8 +23,8 @@ export const AddHabitForm: React.FC = () => {
 	const [description, setDescription] = React.useState<NewHabitPayload["description"]>("");
 	const [isTrackable, setIsTrackable] = React.useState<NewHabitPayload["is_trackable"]>(true);
 
-	const triggerSuccessNotification = useSuccessToast();
-	const triggerUnexpectedErrorNotification = useErrorToast();
+	const triggerSuccessToast = useSuccessToast();
+	const triggerUnexpectedErrorToast = useErrorToast();
 
 	const [, updateQueryParams] = useQueryParams();
 
@@ -37,12 +37,12 @@ export const AddHabitForm: React.FC = () => {
 			setIsTrackable(true);
 
 			getHabitsRequestState.refetch();
-			triggerSuccessNotification("Habit successfully addedd!");
+			triggerSuccessToast("Habit successfully addedd!");
 		},
 		onError: error => {
 			const {responseStatus} = getRequestErrors(error as Error);
 			if (responseStatus === 500) {
-				triggerUnexpectedErrorNotification("Habit couldn't be added.");
+				triggerUnexpectedErrorToast("Habit couldn't be added.");
 			}
 		},
 	});

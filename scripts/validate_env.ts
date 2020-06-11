@@ -143,7 +143,6 @@ async function validateEnvServerDevelopment(envServerDevelopment: dotenv.DotenvP
 					.string()
 					.equals(["development"])
 					.required(),
-				APP_NAME: yup.string().required(),
 				APP_URL: yup.string().required(),
 				APP_KEY: yup
 					.string()
@@ -191,7 +190,6 @@ async function validateEnvServerProduction(
 					.string()
 					.equals(["production"])
 					.required(),
-				APP_NAME: yup.string().required(),
 				APP_URL: yup.string().required(),
 				APP_KEY: yup
 					.string()

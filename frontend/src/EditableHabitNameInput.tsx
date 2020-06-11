@@ -19,13 +19,13 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 	const field = useEditableFieldState();
 	const getHabitsRequestState = useHabitsState();
 
-	const triggerSuccessNotification = useSuccessToast();
-	const triggerErrorNotification = useErrorToast();
+	const triggerSuccessToast = useSuccessToast();
+	const triggerErrorToast = useErrorToast();
 
 	const [updateHabitName] = useMutation<DetailedHabit, DraftHabitPayload>(api.habit.patch, {
 		onSuccess: habit => {
 			field.setIdle();
-			triggerSuccessNotification("Name updated successfully!");
+			triggerSuccessToast("Name updated successfully!");
 			getHabitsRequestState.refetch();
 
 			const _habit: AsyncReturnType<typeof api.habit.show> = habit;
@@ -34,7 +34,7 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 		onError: _error => {
 			const {getArgErrorMessage} = getRequestErrors(_error as Error);
 			const inlineNameErrorMessage = getArgErrorMessage("name");
-			triggerErrorNotification(inlineNameErrorMessage || "Error while chaning name.");
+			triggerErrorToast(inlineNameErrorMessage || "Error while chaning name.");
 		},
 	});
 

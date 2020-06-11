@@ -33,13 +33,13 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
 
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 
 	const habitRequestState = useQuery<DetailedHabit, ["single_habit", Habit["id"]]>({
 		queryKey: ["single_habit", habitId],
 		queryFn: api.habit.show,
 		config: {
-			onError: () => triggerErrorNotification("Fetching task details failed."),
+			onError: () => triggerErrorToast("Fetching task details failed."),
 			retry: false,
 		},
 	});
@@ -145,19 +145,19 @@ const EditableDescription: React.FC<{
 }> = ({description, habitId, onResolve}) => {
 	const textarea = useEditableFieldState();
 
-	const triggerSuccessNotification = useSuccessToast();
-	const triggerErrorNotification = useErrorToast();
+	const triggerSuccessToast = useSuccessToast();
+	const triggerErrorToast = useErrorToast();
 
 	const [updateHabitDescription, updateHabitDescriptionRequestState] = useMutation<
 		DetailedHabit,
 		DraftHabitPayload
 	>(api.habit.patch, {
 		onSuccess: () => {
-			triggerSuccessNotification("Comment added successfully!");
+			triggerSuccessToast("Comment added successfully!");
 			textarea.setIdle();
 			onResolve();
 		},
-		onError: () => triggerErrorNotification("Habit description couldn't be changed"),
+		onError: () => triggerErrorToast("Habit description couldn't be changed"),
 	});
 
 	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(

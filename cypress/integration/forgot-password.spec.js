@@ -79,8 +79,14 @@ describe("Forgot password", () => {
 		const nonExistentEmail = "michael_scott@example.com";
 
 		cy.visit(FORGOT_PASSWORD_URL);
+
+		cy.findByText("You will receive an email with further instructions.");
+		cy.findByText("Email sent if an account exists.").should("not.exist");
+
 		cy.findByLabelText("Email").type(nonExistentEmail);
 		cy.findByText("Send email").click();
+
+		cy.findByText("You will receive an email with further instructions.").should("not.exist");
 		cy.findByText("Email sent if an account exists.");
 	});
 });

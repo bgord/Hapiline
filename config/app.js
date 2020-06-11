@@ -13,7 +13,7 @@ module.exports = {
   |
   */
 
-	name: Env.getOrFail("APP_NAME", "AdonisJs"),
+	name: "Hapiline",
 
 	/*
   |--------------------------------------------------------------------------

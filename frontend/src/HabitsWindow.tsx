@@ -29,12 +29,12 @@ export const HabitsWindow = () => {
 
 	const habits = useHabits();
 
-	const triggerSuccessNotification = useSuccessToast();
-	const triggerErrorNotification = useErrorToast();
+	const triggerSuccessToast = useSuccessToast();
+	const triggerErrorToast = useErrorToast();
 
 	const [reorderHabits] = useMutation<unknown, {habits: ReorderHabitPayload[]}>(api.habit.reorder, {
-		onSuccess: () => triggerSuccessNotification("Habits reordered successfully!"),
-		onError: () => triggerErrorNotification("Error while changing order."),
+		onSuccess: () => triggerSuccessToast("Habits reordered successfully!"),
+		onError: () => triggerErrorToast("Error while changing order."),
 	});
 
 	const [, updateSubviewQueryParam] = useQueryParam("subview");

@@ -29,6 +29,7 @@ if [ -z "$(git status --porcelain)" ]; then
   echo "✓  Clean working directory"
 else
   echo "⚠  You have some uncommited changes"
+  echo "Either commit and push them, or discard them"
   echo "Quitting..."
   exit 1
 fi
@@ -44,6 +45,7 @@ if [ $ALLOWED_BRANCH == "$CURRENT_BRANCH" ]; then
   printf "✓  Correct branch, proceeding\n\n";
 else
   echo "⚠  The deployment script is required to be run on branch \`master\`";
+  echo "Run: $ git checkout master"
   echo "Quitting..."
   exit 1
 fi
@@ -59,6 +61,7 @@ if [ "$(git rev-parse $ALLOWED_BRANCH)" == "$(git rev-parse $ALLOWED_BRANCH_ORIG
     echo "✓  Your current branch is in sync with it's origin, proceeding"
 else
     echo "⚠  Your current branch is not with sync with it's origin"
+    echo "Run: $ git push or $ git push --no-verify"
     echo "Quitting..."
     exit 1
 fi
@@ -74,6 +77,7 @@ if [ "$(git rev-parse $ALLOWED_BRANCH)" == "$(git rev-parse develop)" ]; then
     echo "✓  Your current branch is in sync with develop branch, proceeding"
 else
     echo "⚠  Your current branch is not with sync with develop branch"
+    echo "Merge the changes from the develop branch, and update the master's origin"
     echo "Quitting..."
     exit 1
 fi

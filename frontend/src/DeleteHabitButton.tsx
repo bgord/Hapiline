@@ -17,17 +17,17 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
-	const triggerSuccessNotification = useSuccessToast();
-	const triggerErrorNotification = useErrorToast();
+	const triggerSuccessToast = useSuccessToast();
+	const triggerErrorToast = useErrorToast();
 
 	const [deleteHabit, deleteHabitRequestState] = useMutation<unknown, Habit["id"]>(
 		api.habit.delete,
 		{
 			onSuccess: () => {
 				getHabitsRequestState.refetch();
-				triggerSuccessNotification("Habit successfully deleted!");
+				triggerSuccessToast("Habit successfully deleted!");
 			},
-			onError: () => triggerErrorNotification("Couldn't delete habit."),
+			onError: () => triggerErrorToast("Couldn't delete habit."),
 		},
 	);
 
