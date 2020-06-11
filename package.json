@@ -1,6 +1,6 @@
 {
   "name": "hapiline",
-  "version": "0.5.4",
+  "version": "0.6.0",
   "adonis-version": "4.1.0",
   "description": "A habit tracker",
   "main": "index.js",
