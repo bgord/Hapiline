@@ -89,3 +89,34 @@ test("full flow", async ({client, assert}) => {
 		}
 	}
 });
+
+test("streaks are returned in descending order", async ({client, assert}) => {
+	const pam = await User.find(users.pam.id);
+
+	const response = await client
+		.get(DASHBOARD_STREAK_STATS_URL)
+		.loginVia(pam)
+		.end();
+
+	for (let i = 0; i < response.body.progress_streaks.length - 1; i++) {
+		if (i === 0) {
+			assert.isAtLeast(response.body.progress_streaks[i].progress_streak, 1);
+		} else {
+			assert.isAtMost(
+				response.body.progress_streaks[i].progress_streak,
+				response.body.progress_streaks[i - 1].progress_streak,
+			);
+		}
+	}
+
+	for (let i = 0; i < response.body.regress_streaks.length - 1; i++) {
+		if (i === 0) {
+			assert.isAtLeast(response.body.regress_streaks[i].regress_streak, 1);
+		} else {
+			assert.isAtMost(
+				response.body.regress_streaks[i].regress_streak,
+				response.body.regress_streaks[i - 1].regress_streak,
+			);
+		}
+	}
+});

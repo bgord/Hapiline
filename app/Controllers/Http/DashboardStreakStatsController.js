@@ -40,14 +40,18 @@ class DashboardStreakStatsController {
 		}
 
 		return response.send({
-			progress_streaks: Array.from(result.progress_streaks).sort(orderByDescendingStreak),
-			regress_streaks: Array.from(result.regress_streaks).sort(orderByDescendingStreak),
+			progress_streaks: Array.from(result.progress_streaks).sort(
+				orderByDescendingStreak("progress_streak"),
+			),
+			regress_streaks: Array.from(result.regress_streaks).sort(
+				orderByDescendingStreak("regress_streak"),
+			),
 		});
 	}
 }
 
 module.exports = DashboardStreakStatsController;
 
-function orderByDescendingStreak(a, b) {
-	return a.progress_streak > b.progress_streak ? -1 : 1;
+function orderByDescendingStreak(key) {
+	return (a, b) => (a[key] > b[key] ? -1 : 1);
 }
