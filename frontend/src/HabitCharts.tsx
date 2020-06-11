@@ -18,7 +18,7 @@ import {useErrorToast} from "./contexts/toasts-context";
 
 export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 	const [dateRange, setChartRange] = React.useState<HabitVoteChartDateRangeType>("last_week");
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 
 	const habitVoteChartRequestState = useQuery<
 		DayVote[],
@@ -27,7 +27,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 		queryKey: ["habit_chart", id, dateRange],
 		queryFn: api.habit.getHabitVoteChart,
 		config: {
-			onError: () => triggerErrorNotification("Fetching chart data failed."),
+			onError: () => triggerErrorToast("Fetching chart data failed."),
 			retry: false,
 		},
 	});

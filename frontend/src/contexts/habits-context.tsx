@@ -10,13 +10,13 @@ type HabitsContext = QueryResult<Habit[]> | undefined;
 const HabitsContext = React.createContext<HabitsContext>(undefined);
 
 export const HabitsProvider: React.FC = props => {
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 
 	const getHabitsRequestState = useQuery<Habit[], "all_habits">({
 		queryKey: "all_habits",
 		queryFn: api.habit.get,
 		config: {
-			onError: () => triggerErrorNotification("Couldn't fetch habit list."),
+			onError: () => triggerErrorToast("Couldn't fetch habit list."),
 			retry: false,
 		},
 	});

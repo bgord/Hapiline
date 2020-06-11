@@ -11,7 +11,7 @@ import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 
 export function NotificationDropdown() {
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 	const {
 		on: areNotificationsVisible,
 		setOff: hideNotifications,
@@ -21,7 +21,7 @@ export function NotificationDropdown() {
 		queryKey: "notifications",
 		queryFn: api.notifications.get,
 		config: {
-			onError: () => triggerErrorNotification("Couldn't fetch notifications."),
+			onError: () => triggerErrorToast("Couldn't fetch notifications."),
 		},
 	});
 
@@ -32,7 +32,7 @@ export function NotificationDropdown() {
 		onSuccess: () => {
 			getNotificationsRequestState.refetch();
 		},
-		onError: () => triggerErrorNotification("Couldn't change notification status."),
+		onError: () => triggerErrorToast("Couldn't change notification status."),
 	});
 
 	const notifications = getNotificationsRequestState.data ?? [];

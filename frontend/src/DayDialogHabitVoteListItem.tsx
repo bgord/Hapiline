@@ -36,8 +36,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	const textarea = useEditableFieldState();
 	const {on: isCommentVisible, toggle: toggleComment} = useToggle();
 
-	const triggerSuccessNotification = useSuccessToast();
-	const triggerErrorNotification = useErrorToast();
+	const triggerSuccessToast = useSuccessToast();
+	const triggerErrorToast = useErrorToast();
 
 	const currentVoteType = habitWithPossibleVote.vote?.vote;
 
@@ -45,21 +45,21 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		api.habit.addHabitDayVote,
 		{
 			onSuccess: () => {
-				triggerSuccessNotification("Habit vote added successfully!");
+				triggerSuccessToast("Habit vote added successfully!");
 				onResolve();
 			},
 
-			onError: () => triggerErrorNotification("Error while changing habit vote."),
+			onError: () => triggerErrorToast("Error while changing habit vote."),
 		},
 	);
 
 	const upsertCommentResponseHandlers = {
 		onSuccess: () => {
-			triggerSuccessNotification("Comment added successfully!");
+			triggerSuccessToast("Comment added successfully!");
 			textarea.setIdle();
 			onResolve();
 		},
-		onError: () => triggerErrorNotification("Couldn't add comment"),
+		onError: () => triggerErrorToast("Couldn't add comment"),
 	};
 
 	const [updateVoteComment] = useMutation<HabitVote, HabitVoteCommentPayload>(

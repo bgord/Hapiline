@@ -41,13 +41,13 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 	const {on: isChartLegendVisible, toggle: toggleIsChartLegendVisible} = useToggle();
 	const {on: areTrackedHabitsVisible, toggle: toggleAreTrackedHabitsVisible} = useToggle(true);
 
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 
 	const getDayVotesRequestState = useQuery<HabitVote[], ["day", string]>({
 		queryKey: ["day", day],
 		queryFn: api.calendar.getDay,
 		config: {
-			onError: () => triggerErrorNotification("Couldn't fetch habit votes."),
+			onError: () => triggerErrorToast("Couldn't fetch habit votes."),
 		},
 	});
 

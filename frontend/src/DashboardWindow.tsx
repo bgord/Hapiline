@@ -20,7 +20,7 @@ import * as UI from "./ui";
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
 	const [{subview, preview_habit_id}, updateQueryParams] = useQueryParams();
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 
 	const getDashboardStatsRequestState = useQuery<
 		DashboardHabitVoteStatsForDateRanges,
@@ -29,7 +29,7 @@ export const DashboardWindow = () => {
 		queryKey: "dashboard_stats",
 		queryFn: api.stats.dashboard,
 		config: {
-			onError: () => triggerErrorNotification("Couldn't fetch dashboard stats."),
+			onError: () => triggerErrorToast("Couldn't fetch dashboard stats."),
 			retry: false,
 		},
 	});
@@ -41,7 +41,7 @@ export const DashboardWindow = () => {
 		queryKey: "dashboard_streak_stats",
 		queryFn: api.stats.dashboardStreak,
 		config: {
-			onError: () => triggerErrorNotification("Couldn't fetch dashboard streak stats."),
+			onError: () => triggerErrorToast("Couldn't fetch dashboard streak stats."),
 			retry: false,
 		},
 	});

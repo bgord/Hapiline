@@ -39,7 +39,7 @@ const ChangeEmail: React.FC = () => {
 	useDocumentTitle("Hapiline - profile");
 
 	const history = useHistory();
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 	const [userProfile] = useUserProfile();
 
 	const initialEmail = userProfile?.email;
@@ -52,7 +52,7 @@ const ChangeEmail: React.FC = () => {
 			onSuccess: () => {
 				setTimeout(() => history.push("/logout"), 5000);
 			},
-			onError: () => triggerErrorNotification("Couldn't change email."),
+			onError: () => triggerErrorToast("Couldn't change email."),
 		},
 	);
 
@@ -143,7 +143,7 @@ const ChangeEmail: React.FC = () => {
 };
 
 const ChangePassword = () => {
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 
 	const [oldPassword, setOldPassword] = React.useState<UpdatePasswordPayload["old_password"]>("");
 	const [newPassword, setNewPassword] = React.useState<UpdatePasswordPayload["password"]>("");
@@ -154,7 +154,7 @@ const ChangePassword = () => {
 	const [updatePassword, updatePasswordRequestState] = useMutation<unknown, UpdatePasswordPayload>(
 		api.auth.updatePassword,
 		{
-			onError: () => triggerErrorNotification("Couldn't update password."),
+			onError: () => triggerErrorToast("Couldn't update password."),
 		},
 	);
 
@@ -264,12 +264,12 @@ const DeleteAccount = () => {
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 	const history = useHistory();
 
 	const [deleteAccount, deleteAccountRequestState] = useMutation(api.auth.deleteAccount, {
 		onSuccess: () => history.push("/logout"),
-		onError: () => triggerErrorNotification("Couldn't delete account."),
+		onError: () => triggerErrorToast("Couldn't delete account."),
 	});
 
 	function confirmDeletion() {

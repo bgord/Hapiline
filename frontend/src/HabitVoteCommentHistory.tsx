@@ -10,13 +10,13 @@ import {useErrorToast} from "./contexts/toasts-context";
 import {UrlBuilder} from "./services/url-builder";
 
 export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habitId}) => {
-	const triggerErrorNotification = useErrorToast();
+	const triggerErrorToast = useErrorToast();
 
 	const getHabitVoteCommentsRequestState = useQuery<HabitVote[], ["comments", Habit["id"]]>({
 		queryKey: ["comments", habitId],
 		queryFn: api.habit.getHabitVoteComments,
 		config: {
-			onError: () => triggerErrorNotification("Couldn't fetch vote comments."),
+			onError: () => triggerErrorToast("Couldn't fetch vote comments."),
 			retry: false,
 		},
 	});
