@@ -424,10 +424,18 @@ describe("Dashboard", () => {
 
 		cy.findAllByText("No vote yet")
 			.eq(0)
-			.should("have.attr", "href", `/calendar?preview_day=${today}&highlighted_habit_id=3`);
+			.should(
+				"have.attr",
+				"href",
+				`/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=3`,
+			);
 
 		cy.findAllByText("No vote yet")
 			.eq(1)
-			.should("have.attr", "href", `/calendar?preview_day=${today}&highlighted_habit_id=2`);
+			.should(
+				"have.attr",
+				"href",
+				`/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=2`,
+			);
 	});
 });
