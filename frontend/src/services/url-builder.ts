@@ -1,6 +1,6 @@
 import {constructUrl} from "../hooks/useQueryParam";
 import {Habit} from "../interfaces/index";
-import {formatDay} from "../config/DATE_FORMATS";
+import {formatDay, formatToday} from "../config/DATE_FORMATS";
 
 export const UrlBuilder = {
 	habits: {
@@ -15,6 +15,20 @@ export const UrlBuilder = {
 				constructUrl("dashboard", {
 					subview: "habit_preview",
 					preview_habit_id: habitId.toString(),
+				}),
+		},
+		calendar: {
+			today: (): string =>
+				constructUrl("dashboard", {
+					subview: "day_preview",
+					preview_day: formatToday(),
+					habit_vote_filter: "unvoted",
+				}),
+			habitToday: (habitId: Habit["id"]): string =>
+				constructUrl("dashboard", {
+					subview: "day_preview",
+					preview_day: formatToday(),
+					highlighted_habit_id: habitId.toString(),
 				}),
 		},
 	},

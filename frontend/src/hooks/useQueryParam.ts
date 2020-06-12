@@ -24,6 +24,7 @@ export function useQueryParam(param: string): [string | undefined, (value: strin
 export function useQueryParams(): [
 	{[index: string]: string | undefined},
 	(baseUrl: string, payload: QueryParamsObject) => void,
+	(url: string) => void,
 ] {
 	const history = useHistory();
 	const queryParams: QueryParamsObject = parseQueryParams(history.location.search);
@@ -38,5 +39,6 @@ export function useQueryParams(): [
 					from: baseUrl,
 				},
 			}),
+		(url: string) => history.push(url),
 	];
 }

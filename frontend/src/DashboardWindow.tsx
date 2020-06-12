@@ -19,7 +19,7 @@ import * as UI from "./ui";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
-	const [{subview, preview_habit_id}, updateQueryParams] = useQueryParams();
+	const [{subview, preview_habit_id}, updateQueryParams, updateUrl] = useQueryParams();
 	const triggerErrorToast = useErrorToast();
 
 	const getDashboardStatsRequestState = useQuery<
@@ -80,18 +80,14 @@ export const DashboardWindow = () => {
 
 	const currentDate = formatToday();
 
-	const redirectToCurrentDay = () =>
-		updateQueryParams("dashboard", {
-			subview: "day_preview",
-			preview_day: currentDate,
-			habit_vote_filter: "unvoted",
-		});
-
 	return (
 		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "var(--view-width)"}}>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="large">Hello!</UI.Header>
-				<UI.Button variant="primary" onClick={redirectToCurrentDay}>
+				<UI.Button
+					variant="primary"
+					onClick={() => updateUrl(UrlBuilder.dashboard.calendar.today())}
+				>
 					View today
 				</UI.Button>
 			</UI.Row>
@@ -207,7 +203,7 @@ const ProgressStreakList: React.FC<{
 							{!habit.has_vote_for_today && (
 								<UI.Badge
 									as={Link}
-									to={UrlBuilder.calendar.day.habit({day: new Date(), habitId: habit.id})}
+									to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
 									variant="neutral"
 									mx="12"
 									title="Vote for this habit"
@@ -252,10 +248,7 @@ const RegressStreakList: React.FC<{
 							{!habit.has_vote_for_today && (
 								<UI.Badge
 									as={Link}
-									to={UrlBuilder.calendar.day.habit({
-										day: new Date(),
-										habitId: habit.id,
-									})}
+									to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
 									variant="neutral"
 									mx="12"
 									title="Vote for this habit"
