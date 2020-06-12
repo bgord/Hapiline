@@ -324,6 +324,34 @@ describe("Dashboard", () => {
 			"href",
 			"/dashboard?subview=habit_preview&preview_habit_id=6",
 		);
+
+		// Collapsing regress streak list
+		cy.findByText("Hide regress streak list").click({force: true});
+
+		cy.findByText("Regress streaks");
+		cy.findByText("4 days regress streak").should("not.be.visible");
+		cy.findByText("2 days regress streak").should("not.be.visible");
+		cy.findByText("1 day regress streak").should("not.be.visible");
+
+		cy.findByText("Show regress streak list").click({force: true});
+		cy.findByText("Regress streaks");
+		cy.findByText("4 days regress streak");
+		cy.findByText("2 days regress streak");
+		cy.findByText("1 day regress streak");
+
+		// Collapsing progress streak list
+		cy.findByText("Hide progress streak list").click({force: true});
+
+		cy.findByText("Progress streaks");
+		cy.findByText("3 days progress streak").should("not.be.visible");
+		cy.findByText("2 days progress streak").should("not.be.visible");
+		cy.findByText("1 day progress streak").should("not.be.visible");
+
+		cy.findByText("Show progress streak list").click({force: true});
+		cy.findByText("Progress streaks");
+		cy.findByText("3 days progress streak");
+		cy.findByText("2 days progress streak");
+		cy.findByText("1 day progress streak");
 	});
 
 	it("streak stats error", () => {
