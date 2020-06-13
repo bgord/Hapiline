@@ -5,7 +5,7 @@ import React from "react";
 import * as UI from "./ui";
 import {Habit, HabitVote} from "./interfaces/index";
 import {api} from "./services/api";
-import {formatDay, formatDayName} from "./config/DATE_FORMATS";
+import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";
 import {UrlBuilder} from "./services/url-builder";
 
@@ -51,7 +51,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 
 const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) => {
 	const formattedDay = formatDay(day);
-	const formattedDayName = formatDayName(day);
+	const formattedDayName = formatShortDayName(day);
 
 	const voteToBadgeVariant = new Map<typeof vote, UI.BadgeVariant>();
 	voteToBadgeVariant.set("progress", "positive");

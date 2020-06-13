@@ -5,10 +5,11 @@ import * as UI from "./ui";
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
 import {DayCellWithFullStats} from "./interfaces/index";
 import {useQueryParams} from "./hooks/useQueryParam";
-import {format} from "date-fns";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {HabitTab} from "./HabitTab";
 import {JournalTab} from "./JournalTab";
+import {formatDayName} from "./config/DATE_FORMATS";
+
 type DayDialogProps = Omit<
 	DayCellWithFullStats,
 	"styles" | "createdHabitsCount" | "nullVotesCountStats"
@@ -25,27 +26,25 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 		updateQueryParams(location?.state?.from ?? location.pathname, {});
 	}
 
-	const dayName = format(new Date(day), "iiii");
-
 	return (
 		<Dialog
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
-			style={{maxHeight: "700px", paddingBottom: "48px", overflow: "auto"}}
+			style={{maxHeight: "800px", paddingBottom: "48px", overflow: "auto"}}
 		>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="small">
-					{day} - {dayName}
+					{day} - {formatDayName(day)}
 				</UI.Header>
 				<UI.CloseIcon onClick={dismissDialog} />
 			</UI.Row>
 
 			<Tabs data-mt="24" defaultIndex={0}>
 				<TabList>
-					<Tab data-variant="bare" className="c-button">
+					<Tab as={UI.Button} variant="bare">
 						Habits
 					</Tab>
-					<Tab data-variant="bare" className="c-button" data-ml="12">
+					<Tab as={UI.Button} variant="bare" ml="12">
 						Journal
 					</Tab>
 				</TabList>
