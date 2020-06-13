@@ -49,10 +49,10 @@ export const Calendar: React.FC = () => {
 		const numberOfPlateauVotes = statsForTheDay?.numberOfPlateauVotes || 0;
 		const numberOfRegressVotes = statsForTheDay?.numberOfRegressVotes || 0;
 
-		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(trackedHabits, day).length;
+		const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day).length;
 
 		const numberOfMissingVotes =
-			habitsAvailableAtThisDayCount -
+			numberOfHabitsAvailableAtThisDay -
 			numberOfProgressVotes -
 			numberOfPlateauVotes -
 			numberOfRegressVotes;
