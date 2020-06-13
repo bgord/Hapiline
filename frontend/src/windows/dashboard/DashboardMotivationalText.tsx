@@ -76,7 +76,7 @@ function extractFromRequest(
 ): ExtractedType {
 	return {
 		total: request?.data?.today?.maximumVotes ?? 0,
-		untracked: request?.data?.today?.untrackedHabits ?? 0,
+		untracked: request?.data?.today?.numberOfUntrackedHabits ?? 0,
 		votedFor: request?.data?.today?.allVotes ?? 0,
 	};
 }

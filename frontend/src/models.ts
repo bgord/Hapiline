@@ -199,16 +199,16 @@ export type DashboardStreakStats = {
 };
 
 type DashboardHabitVoteStats = {
-  progressVotes: number;
-  plateauVotes: number;
-  regressVotes: number;
-  noVotes: number;
+  numberOfProgressVotes: number;
+  numberOfPlateauVotes: number;
+  numberOfRegressVotes: number;
+  numberOfMissingVotes: number;
   allVotes: number;
   maximumVotes: number;
 };
 
 export type DashboardHabitVoteStatsForDateRanges = {
-  today: DashboardHabitVoteStats & { untrackedHabits: number };
+  today: DashboardHabitVoteStats & { numberOfUntrackedHabits: number };
   lastWeek: DashboardHabitVoteStats;
   lastMonth: DashboardHabitVoteStats;
 };

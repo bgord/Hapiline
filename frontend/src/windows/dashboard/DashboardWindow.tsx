@@ -54,27 +54,11 @@ export const DashboardWindow = () => {
 	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
 	const numberOfHabitsAvailableToday = todayStats?.maximumVotes ?? 0;
-
-	const statsForToday = {
-		numberOfProgressVotes: todayStats?.progressVotes ?? 0,
-		numberOfPlateauVotes: todayStats?.plateauVotes ?? 0,
-		numberOfRegressVotes: todayStats?.regressVotes ?? 0,
-		numberOfMissingVotes: todayStats?.noVotes ?? 0,
-	};
-
-	const statsForLastWeek = {
-		numberOfProgressVotes: lastWeekStats?.progressVotes ?? 0,
-		numberOfPlateauVotes: lastWeekStats?.plateauVotes ?? 0,
-		numberOfRegressVotes: lastWeekStats?.regressVotes ?? 0,
-		numberOfMissingVotes: lastWeekStats?.noVotes ?? 0,
-	};
-
-	const statsForLastMonth = {
-		numberOfProgressVotes: lastMonthStats?.progressVotes ?? 0,
-		numberOfPlateauVotes: lastMonthStats?.plateauVotes ?? 0,
-		numberOfRegressVotes: lastMonthStats?.regressVotes ?? 0,
-		numberOfMissingVotes: lastMonthStats?.noVotes ?? 0,
-	};
+	const shouldTodayStatsBeDisplayed = numberOfHabitsAvailableToday > 0;
+	const shouldLastWeekStatsBeDisplayed =
+		numberOfHabitsAvailableToday > 0 && !deepEqual(todayStats, lastWeekStats);
+	const shouldLastMonthStatsBeDisplayed =
+		numberOfHabitsAvailableToday > 0 && !deepEqual(lastWeekStats, lastMonthStats);
 
 	const dateOfToday = formatToday();
 
@@ -101,42 +85,30 @@ export const DashboardWindow = () => {
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<DashboardMotivationalText request={getDashboardStatsRequestState} />
 
-					{numberOfHabitsAvailableToday > 0 && (
+					{shouldTodayStatsBeDisplayed && todayStats && (
 						<UI.Column data-testid="chart-today">
 							<UI.Text variant="dimmed">Votes today</UI.Text>
 
 							<UI.Row mb="24">
-								<DaySummaryChart
-									maximumVotes={todayStats?.maximumVotes ?? 0}
-									day={dateOfToday}
-									{...statsForToday}
-								/>
+								<DaySummaryChart day={dateOfToday} {...todayStats} />
 							</UI.Row>
 						</UI.Column>
 					)}
 
-					{numberOfHabitsAvailableToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
+					{shouldLastWeekStatsBeDisplayed && lastWeekStats && (
 						<UI.Column data-testid="chart-last-week">
 							<UI.Text variant="dimmed">Votes last week</UI.Text>
 							<UI.Row mb="24">
-								<DaySummaryChart
-									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-									day={dateOfToday}
-									{...statsForLastWeek}
-								/>
+								<DaySummaryChart day={dateOfToday} {...lastWeekStats} />
 							</UI.Row>
 						</UI.Column>
 					)}
 
-					{numberOfHabitsAvailableToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
+					{shouldLastMonthStatsBeDisplayed && lastMonthStats && (
 						<UI.Column data-testid="chart-last-month">
 							<UI.Text variant="dimmed">Votes last month</UI.Text>
 							<UI.Row mb="24">
-								<DaySummaryChart
-									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-									day={dateOfToday}
-									{...statsForLastMonth}
-								/>
+								<DaySummaryChart day={dateOfToday} {...lastMonthStats} />
 							</UI.Row>
 						</UI.Column>
 					)}
@@ -152,14 +124,14 @@ export const DashboardWindow = () => {
 					<DashboardNoStreakList request={getDashboardStreakStatsRequestState} />
 				</UI.ShowIf>
 
-				{subview === "day_preview" && (
+				{subview === "day_preview" && todayStats && (
 					<DayDialog
 						day={dateOfToday}
 						onResolve={() => {
 							getDashboardStatsRequestState.refetch({force: true});
 							getDashboardStreakStatsRequestState.refetch({force: true});
 						}}
-						{...statsForToday}
+						{...todayStats}
 					/>
 				)}
 

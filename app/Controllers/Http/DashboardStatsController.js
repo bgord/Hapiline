@@ -6,9 +6,9 @@ class DashboardStatsController {
 		const _resultForToday = await Database.raw(
 			`
       SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes",
 
         (
           SELECT COUNT(*)
@@ -26,7 +26,7 @@ class DashboardStatsController {
             h.created_at::date <= NOW()::date
             AND h.user_id = :user_id
             AND h.is_trackable IS FALSE
-        )::integer as "untrackedHabits"
+        )::integer as "numberOfUntrackedHabits"
 
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
@@ -55,9 +55,9 @@ class DashboardStatsController {
 		const _resultForLastWeek = await Database.raw(
 			`
       SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes"
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE
@@ -88,9 +88,9 @@ class DashboardStatsController {
 		const _resultForLastMonth = await Database.raw(
 			`
       SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes"
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE
@@ -105,18 +105,18 @@ class DashboardStatsController {
 		return response.send({
 			today: {
 				...resultForToday,
-				noVotes: getNumberOfMissingVotes(resultForToday.maximumVotes, resultForToday),
+				numberOfMissingVotes: getNumberOfMissingVotes(resultForToday.maximumVotes, resultForToday),
 				allVotes: getNumberOfAllVotes(resultForToday),
 			},
 			lastWeek: {
 				...resultForLastWeek,
-				noVotes: getNumberOfMissingVotes(maximumVotesLastWeek, resultForLastWeek),
+				numberOfMissingVotes: getNumberOfMissingVotes(maximumVotesLastWeek, resultForLastWeek),
 				allVotes: getNumberOfAllVotes(resultForLastWeek),
 				maximumVotes: maximumVotesLastWeek || 0,
 			},
 			lastMonth: {
 				...resultForLastMonth,
-				noVotes: getNumberOfMissingVotes(maximumVotesLastMonth, resultForLastMonth),
+				numberOfMissingVotes: getNumberOfMissingVotes(maximumVotesLastMonth, resultForLastMonth),
 				allVotes: getNumberOfAllVotes(resultForLastMonth),
 				maximumVotes: maximumVotesLastMonth || 0,
 			},
@@ -126,9 +126,9 @@ class DashboardStatsController {
 
 function getNumberOfAllVotes(resultForTimePeriod) {
 	return (
-		get(resultForTimePeriod, "progressVotes", 0) +
-		get(resultForTimePeriod, "plateauVotes", 0) +
-		get(resultForTimePeriod, "regressVotes", 0)
+		get(resultForTimePeriod, "numberOfProgressVotes", 0) +
+		get(resultForTimePeriod, "numberOfPlateauVotes", 0) +
+		get(resultForTimePeriod, "numberOfRegressVotes", 0)
 	);
 }
 
@@ -139,9 +139,9 @@ function getNumberOfMissingVotes(_maximum, resultForTimePeriod) {
 
 	return (
 		maximum -
-		get(resultForTimePeriod, "progressVotes", 0) -
-		get(resultForTimePeriod, "plateauVotes", 0) -
-		get(resultForTimePeriod, "regressVotes", 0)
+		get(resultForTimePeriod, "numberOfProgressVotes", 0) -
+		get(resultForTimePeriod, "numberOfPlateauVotes", 0) -
+		get(resultForTimePeriod, "numberOfRegressVotes", 0)
 	);
 }
 
