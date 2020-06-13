@@ -5,18 +5,13 @@ import * as Storage from "ts-storage";
 export function usePersistentState<T extends Storage.AllowedTypes>(
 	key: string,
 	defaultValue: T,
-	guard: (value: unknown) => value is T,
 ): [T, (value: T) => void] {
 	const valueFromLocalStorage = getFromLocalStorage<T>(key, defaultValue);
 
-	const [value, setValue] = React.useState<T>(
-		(guard(valueFromLocalStorage) ? valueFromLocalStorage : defaultValue) ?? defaultValue,
-	);
+	const [value, setValue] = React.useState<T>(valueFromLocalStorage ?? defaultValue);
 
 	React.useEffect(() => {
-		if (guard(value)) {
-			Storage.set(key, value);
-		}
+		Storage.set(key, value);
 	}, [value]);
 
 	return [value, setValue];

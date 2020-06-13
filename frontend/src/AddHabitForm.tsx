@@ -18,26 +18,18 @@ export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
 	const getHabitsRequestState = useHabitsState();
 
-	const [name, setName] = usePersistentState<NewHabitPayload["name"]>("habit_name", "", isString);
-	const [score, setScore] = usePersistentState<NewHabitPayload["score"]>(
-		"habit_score",
-		"positive",
-		isHabitScore,
-	);
-
+	const [name, setName] = usePersistentState<NewHabitPayload["name"]>("habit_name", "");
+	const [score, setScore] = usePersistentState<NewHabitPayload["score"]>("habit_score", "positive");
 	const [strength, setStrength] = usePersistentState<NewHabitPayload["strength"]>(
 		"habit_strength",
 		"established",
-		isHabitStrength,
 	);
-
 	const [description, setDescription] = usePersistentState<
 		NonNullable<NewHabitPayload["description"]>
-	>("habit_description", "", isString);
-
+	>("habit_description", "");
 	const [isTrackable, setIsTrackable] = usePersistentState<
 		NonNullable<NewHabitPayload["is_trackable"]>
-	>("habit_is_trackable", true, isBoolean);
+	>("habit_is_trackable", true);
 
 	const triggerSuccessToast = useSuccessToast();
 	const triggerUnexpectedErrorToast = useErrorToast();
@@ -214,11 +206,3 @@ export const AddHabitForm: React.FC = () => {
 		</Dialog>
 	);
 };
-
-function isString(value: unknown): value is string {
-	return typeof value === "string";
-}
-
-function isBoolean(value: unknown): value is boolean {
-	return typeof value === "boolean";
-}
