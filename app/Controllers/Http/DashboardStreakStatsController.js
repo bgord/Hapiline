@@ -12,6 +12,7 @@ class DashboardStreakStatsController {
 		const result = {
 			progress_streaks: [],
 			regress_streaks: [],
+			no_streak: [],
 		};
 
 		for (const habit of habits) {
@@ -27,6 +28,7 @@ class DashboardStreakStatsController {
 					progress_streak,
 					has_vote_for_today: Boolean(habitVotes[0].vote),
 				});
+				continue;
 			}
 
 			const regress_streak = votesStreakCalculator.calculate(HABIT_VOTE_TYPES.regress);
@@ -36,7 +38,13 @@ class DashboardStreakStatsController {
 					regress_streak,
 					has_vote_for_today: Boolean(habitVotes[0].vote),
 				});
+				continue;
 			}
+
+			result.no_streak.push({
+				...habit,
+				has_vote_for_today: Boolean(habitVotes[0].vote),
+			});
 		}
 
 		return response.send({
@@ -46,6 +54,7 @@ class DashboardStreakStatsController {
 			regress_streaks: Array.from(result.regress_streaks).sort(
 				orderByDescendingStreak("regress_streak"),
 			),
+			no_streak: result.no_streak,
 		});
 	}
 }
