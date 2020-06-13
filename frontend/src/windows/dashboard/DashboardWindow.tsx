@@ -79,7 +79,7 @@ export const DashboardWindow = () => {
 		noVotesCountStats: lastMonthStats?.noVotes ?? 0,
 	};
 
-	const currentDate = formatToday();
+	const dateOfToday = formatToday();
 
 	return (
 		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "var(--view-width)"}}>
@@ -115,7 +115,7 @@ export const DashboardWindow = () => {
 							<UI.Row mb="24">
 								<DaySummaryChart
 									maximumVotes={todayStats?.maximumVotes ?? 0}
-									day={currentDate}
+									day={dateOfToday}
 									{...statsForToday}
 								/>
 							</UI.Row>
@@ -128,7 +128,7 @@ export const DashboardWindow = () => {
 							<UI.Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastWeekStats?.maximumVotes ?? 0}
-									day={currentDate}
+									day={dateOfToday}
 									{...statsForLastWeek}
 								/>
 							</UI.Row>
@@ -141,7 +141,7 @@ export const DashboardWindow = () => {
 							<UI.Row mb="24">
 								<DaySummaryChart
 									maximumVotes={lastMonthStats?.maximumVotes ?? 0}
-									day={currentDate}
+									day={dateOfToday}
 									{...statsForLastMonth}
 								/>
 							</UI.Row>
@@ -161,7 +161,7 @@ export const DashboardWindow = () => {
 
 				{subview === "day_preview" && (
 					<DayDialog
-						day={currentDate}
+						day={dateOfToday}
 						onResolve={() => {
 							getDashboardStatsRequestState.refetch({force: true});
 							getDashboardStreakStatsRequestState.refetch({force: true});
