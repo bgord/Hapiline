@@ -48,11 +48,6 @@ export const DashboardWindow = () => {
 		},
 	});
 
-	// TODO: Try to set a default value for query to eliminate * ?? [] statements.
-	const progressStreakStats = getDashboardStreakStatsRequestState.data?.progress_streaks ?? [];
-	const regressStreakStats = getDashboardStreakStatsRequestState.data?.regress_streaks ?? [];
-	const noStreakStats = getDashboardStreakStatsRequestState.data?.no_streak ?? [];
-
 	const todayStats = getDashboardStatsRequestState?.data?.today;
 	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
 	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
@@ -159,9 +154,9 @@ export const DashboardWindow = () => {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
-					<DashboardRegressStreakList regressStreakStats={regressStreakStats} />
-					<DashboardProgressStreakList progressStreakStats={progressStreakStats} />
-					<DashboardNoStreakList noStreakStats={noStreakStats} />
+					<DashboardRegressStreakList request={getDashboardStreakStatsRequestState} />
+					<DashboardProgressStreakList request={getDashboardStreakStatsRequestState} />
+					<DashboardNoStreakList request={getDashboardStreakStatsRequestState} />
 				</UI.ShowIf>
 
 				{subview === "day_preview" && (

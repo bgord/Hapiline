@@ -1,6 +1,7 @@
 import React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
+import {QueryResult} from "react-query";
 
 import {DashboardStreakStats} from "../../models";
 import {useToggle} from "../../hooks/useToggle";
@@ -13,9 +14,11 @@ import {ExpandContractList} from "../../ui/ExpandContractList";
 import * as UI from "../../ui";
 
 export const DashboardNoStreakList: React.FC<{
-	noStreakStats: DashboardStreakStats["no_streak"];
-}> = ({noStreakStats}) => {
+	request: QueryResult<DashboardStreakStats>;
+}> = ({request}) => {
 	const {on: isNoStreakListVisible, toggle: toggleNoStreakList} = useToggle(true);
+
+	const noStreakStats = request.data?.no_streak ?? [];
 
 	if (noStreakStats.length === 0) return null;
 

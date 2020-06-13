@@ -1,6 +1,7 @@
 import React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
+import {QueryResult} from "react-query";
 
 import {DashboardStreakStats} from "../../models";
 import {useToggle} from "../../hooks/useToggle";
@@ -14,9 +15,11 @@ import {ExpandContractList} from "../../ui/ExpandContractList";
 import * as UI from "../../ui";
 
 export const DashboardProgressStreakList: React.FC<{
-	progressStreakStats: DashboardStreakStats["progress_streaks"];
-}> = ({progressStreakStats}) => {
+	request: QueryResult<DashboardStreakStats>;
+}> = ({request}) => {
 	const {on: isProgressStreakListVisible, toggle: toggleProgressStreakList} = useToggle(true);
+
+	const progressStreakStats = request.data?.progress_streaks ?? [];
 
 	if (progressStreakStats.length === 0) return null;
 
