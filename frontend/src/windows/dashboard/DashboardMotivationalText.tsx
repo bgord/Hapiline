@@ -28,17 +28,16 @@ export const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedF
 		),
 		no_votes_today: (
 			<UI.Text>
-				Start your day well! You have <UI.Text variant="bold">{total}</UI.Text>
-				tracked habits to vote for. And {untracked} untracked habits.
+				Start your day well! You have <UI.Text variant="bold">{total}</UI.Text> tracked habits to
+				vote for. And {untracked} untracked habits.
 			</UI.Text>
 		),
 		not_all_voted: (
 			<UI.Column>
 				<UI.Text>You're on a good track!</UI.Text>
 				<UI.Text>
-					You have <UI.Text variant="bold">{total - votedFor}</UI.Text>
-					tracked habits to vote for left out of <UI.Text variant="bold">{total}</UI.Text> (and{" "}
-					{untracked} untracked habits).
+					You have <UI.Text variant="bold">{total - votedFor}</UI.Text> tracked habits to vote for
+					left out of <UI.Text variant="bold">{total}</UI.Text> (and {untracked} untracked habits).
 				</UI.Text>
 			</UI.Column>
 		),

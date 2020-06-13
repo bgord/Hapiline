@@ -48,6 +48,7 @@ export const DashboardWindow = () => {
 		},
 	});
 
+	// TODO: Try to set a default value for query to eliminate * ?? [] statements.
 	const progressStreakStats = getDashboardStreakStatsRequestState.data?.progress_streaks ?? [];
 	const regressStreakStats = getDashboardStreakStatsRequestState.data?.regress_streaks ?? [];
 	const noStreakStats = getDashboardStreakStatsRequestState.data?.no_streak ?? [];
@@ -56,10 +57,12 @@ export const DashboardWindow = () => {
 	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
 	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
+	// TODO: Try to find a way to avoid ?? 0 statements.
 	const howManyHabitsToday = todayStats?.maximumVotes ?? 0;
 	const howManyUntrackedHabitsToday = todayStats?.untrackedHabits ?? 0;
 	const howManyVotesToday = todayStats?.allVotes ?? 0;
 
+	// TODO: Try to find a way to avoid ?? 0 statements.
 	const statsForToday = {
 		progressVotesCountStats: todayStats?.progressVotes ?? 0,
 		plateauVotesCountStats: todayStats?.plateauVotes ?? 0,
