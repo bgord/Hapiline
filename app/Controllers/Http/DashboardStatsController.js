@@ -109,7 +109,7 @@ class DashboardStatsController {
 					resultForToday.numberOfPossibleVotes,
 					resultForToday,
 				),
-				allVotes: getNumberOfAllVotes(resultForToday),
+				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForToday),
 			},
 			lastWeek: {
 				...resultForLastWeek,
@@ -117,7 +117,7 @@ class DashboardStatsController {
 					numberOfPossibleVotesLastWeek,
 					resultForLastWeek,
 				),
-				allVotes: getNumberOfAllVotes(resultForLastWeek),
+				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForLastWeek),
 				numberOfPossibleVotes: numberOfPossibleVotesLastWeek || 0,
 			},
 			lastMonth: {
@@ -126,14 +126,14 @@ class DashboardStatsController {
 					numberOfPossibleVotesLastMonth,
 					resultForLastMonth,
 				),
-				allVotes: getNumberOfAllVotes(resultForLastMonth),
+				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForLastMonth),
 				numberOfPossibleVotes: numberOfPossibleVotesLastMonth || 0,
 			},
 		});
 	}
 }
 
-function getNumberOfAllVotes(resultForTimePeriod) {
+function getNumberOfNonEmptyVotes(resultForTimePeriod) {
 	return (
 		get(resultForTimePeriod, "numberOfProgressVotes", 0) +
 		get(resultForTimePeriod, "numberOfPlateauVotes", 0) +

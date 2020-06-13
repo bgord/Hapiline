@@ -53,8 +53,7 @@ export type NewHabitPayload = Omit<
   "id" | "created_at" | "updated_at" | "order"
 >;
 
-export type DraftHabitPayload =
-  & Partial<Pick<Habit, "id" | "description" | "name" | "score" | "strength">>
+export type DraftHabitPayload = Partial<Pick<Habit, "id" | "description" | "name" | "score" | "strength">>
   & {
     id: Habit["id"];
   };
@@ -204,8 +203,7 @@ type DashboardHabitVoteStats = {
   numberOfRegressVotes: number;
   numberOfMissingVotes: number;
   numberOfPossibleVotes: number;
-  // TODO
-  allVotes: number;
+  numberOfNonEmptyVotes: number;
 };
 
 export type DashboardHabitVoteStatsForDateRanges = {

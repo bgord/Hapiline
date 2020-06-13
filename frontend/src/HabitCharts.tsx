@@ -78,9 +78,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 						<ChartCell
 							key={String(item.day)}
 							habitId={id}
-							style={{
-								flexBasis: `calc(100% / ${numberOfHabitVoteChartItems})`,
-							}}
+							style={{flexBasis: `calc(100% / ${numberOfHabitVoteChartItems})`}}
 							{...item}
 						/>
 					))}

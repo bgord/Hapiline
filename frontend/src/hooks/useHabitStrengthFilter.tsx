@@ -5,9 +5,7 @@ import * as UI from "../ui";
 
 type HabitStrengthFilter = HabitStrengthType | "all-strengths";
 
-const strengthFilterToFunction: {
-	[key in HabitStrengthFilter]: (habit: Habit) => boolean;
-} = {
+const strengthFilterToFunction: {[key in HabitStrengthFilter]: (habit: Habit) => boolean} = {
 	"all-strengths": () => true,
 	established: habit => habit.strength === HabitStrengths.established,
 	developing: habit => habit.strength === HabitStrengths.developing,
