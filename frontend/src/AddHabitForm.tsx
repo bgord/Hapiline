@@ -83,8 +83,11 @@ export const AddHabitForm: React.FC = () => {
 						name,
 						score,
 						strength,
-						user_id: profile?.id || 0,
-						description: description || null,
+
+						// If profile.id happens to be 0,
+						// the request will fail.
+						user_id: profile?.id ?? 0,
+						description: description ?? null,
 						is_trackable: isTrackable,
 					});
 				}}
