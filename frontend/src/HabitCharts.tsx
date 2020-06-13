@@ -32,7 +32,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 		},
 	});
 
-	const howManyHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
+	const numberOfHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
 
 	const regressVotes =
 		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress").length ?? 0;
@@ -41,9 +41,9 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 	const progressVotes =
 		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress").length ?? 0;
 
-	const regressVotesPrct = ((regressVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
-	const plateauVotesPrct = ((plateauVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
-	const progressVotesPrct = ((progressVotes / howManyHabitVoteChartItems) * 100).toFixed(2);
+	const regressVotesPrct = ((regressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
+	const plateauVotesPrct = ((plateauVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
+	const progressVotesPrct = ((progressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
 
 	return (
 		<>
@@ -77,7 +77,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 							key={String(item.day)}
 							habitId={id}
 							style={{
-								flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`,
+								flexBasis: `calc(100% / ${numberOfHabitVoteChartItems})`,
 							}}
 							{...item}
 						/>
@@ -102,7 +102,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 					</UI.Text>
 
 					<UI.Text ml="auto" variant="bold">
-						{howManyHabitVoteChartItems}
+						{numberOfHabitVoteChartItems}
 					</UI.Text>
 					<UI.Text ml="6">in total</UI.Text>
 				</UI.Row>
