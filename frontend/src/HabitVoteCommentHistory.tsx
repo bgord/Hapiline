@@ -22,6 +22,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 	});
 
 	const voteComments = getHabitVoteCommentsRequestState?.data ?? [];
+	const numberOfVoteComments = voteComments.length;
 
 	return (
 		<>
@@ -34,16 +35,14 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 			</UI.ShowIf>
 
 			<UI.ShowIf request={getHabitVoteCommentsRequestState} is="success">
-				{voteComments.length === 0 && (
+				{numberOfVoteComments === 0 && (
 					<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
 				)}
-				{voteComments.length > 0 && (
-					<>
-						{voteComments.map(voteComment => (
-							<HabitVoteComment key={voteComment.id} {...voteComment} />
-						))}
-					</>
-				)}
+
+				{numberOfVoteComments > 0 &&
+					voteComments.map(voteComment => (
+						<HabitVoteComment key={voteComment.id} {...voteComment} />
+					))}
 			</UI.ShowIf>
 		</>
 	);
