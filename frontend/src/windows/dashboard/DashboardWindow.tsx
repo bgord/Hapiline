@@ -14,7 +14,7 @@ import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "../../
 import {UrlBuilder} from "../../services/url-builder";
 import * as UI from "../../ui";
 
-import {MotivationalText} from "./DashboardMotivationalText";
+import {DashboardMotivationalText} from "./DashboardMotivationalText";
 import {DashboardRegressStreakList} from "./DashboardRegressStreakList";
 import {DashboardNoStreakList} from "./DashboardNoStreakList";
 import {DashboardProgressStreakList} from "./DashboardProgressStreakList";
@@ -102,7 +102,7 @@ export const DashboardWindow = () => {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
-					<MotivationalText
+					<DashboardMotivationalText
 						untracked={howManyUntrackedHabitsToday}
 						total={howManyHabitsToday}
 						votedFor={howManyVotesToday}

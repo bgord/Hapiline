@@ -4,13 +4,17 @@ import {Link} from "react-router-dom";
 import {DashboardHabitVoteStatsForDateRanges} from "../../models";
 import * as UI from "../../ui";
 
-type MotivationalTextProps = {
+type DashboardMotivationalTextProps = {
 	total: DashboardHabitVoteStatsForDateRanges["today"]["maximumVotes"];
 	votedFor: DashboardHabitVoteStatsForDateRanges["today"]["allVotes"];
 	untracked: DashboardHabitVoteStatsForDateRanges["today"]["untrackedHabits"];
 };
 
-export const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, untracked}) => {
+export const DashboardMotivationalText: React.FC<DashboardMotivationalTextProps> = ({
+	total,
+	votedFor,
+	untracked,
+}) => {
 	function selectStrategy() {
 		if (total === 0) return "no_habits";
 		if (votedFor === 0) return "no_votes_today";
