@@ -138,31 +138,34 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 	const _untrackedHabits = useUntrackedHabits();
 	const untrackedHabits = getHabitsAvailableAtThisDay(_untrackedHabits, day);
 
-	// -1 means that no tab is selected by default
 	return (
+		// -1 means that no tab is selected by default
 		<Tabs data-mt="48" defaultIndex={-1}>
 			<TabList>
-				<Tab data-variant="bare" className="c-button">
+				<Tab as={UI.Button} variant="bare">
 					Show new habits
 				</Tab>
-				<Tab data-variant="bare" className="c-button" data-ml="12">
+				<Tab as={UI.Button} variant="bare" ml="12">
 					Show untracked habits
 				</Tab>
 			</TabList>
 			<TabPanels data-mt="12">
 				<TabPanel>
 					{habitsAddedAtThisDay.length === 0 && <UI.Text>No habits added this day.</UI.Text>}
+
 					{habitsAddedAtThisDay.length === 1 && (
 						<UI.Text>
 							<UI.Text variant="bold">One</UI.Text> habit added this day.
 						</UI.Text>
 					)}
+
 					{habitsAddedAtThisDay.length > 1 && (
 						<>
 							<UI.Text variant="bold">{habitsAddedAtThisDay.length}</UI.Text>{" "}
 							<UI.Text>habits added this day</UI.Text>.
 						</>
 					)}
+
 					<UI.Column
 						style={{
 							borderTop: habitsAddedAtThisDay.length > 0 ? `1px solid var(--gray-1)` : undefined,
@@ -174,18 +177,22 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 						))}
 					</UI.Column>
 				</TabPanel>
+
 				<TabPanel>
 					{untrackedHabits.length === 0 && (
 						<UI.Text>No untracked habit available this day.</UI.Text>
 					)}
+
 					{untrackedHabits.length === 1 && (
 						<UI.Text>
 							<UI.Text variant="bold">One</UI.Text> untracked habit available this day.
 						</UI.Text>
 					)}
+
 					{untrackedHabits.length > 1 && (
 						<UI.Text>{useUntrackedHabits.length} untracked habit available this day.</UI.Text>
 					)}
+
 					<UI.Column
 						style={{
 							borderTop: untrackedHabits.length > 0 ? `1px solid var(--gray-1)` : undefined,

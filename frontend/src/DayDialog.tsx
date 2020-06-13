@@ -41,10 +41,10 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 
 			<Tabs data-mt="24" defaultIndex={0}>
 				<TabList>
-					<Tab data-variant="bare" className="c-button">
+					<Tab as={UI.Button} variant="bare">
 						Habits
 					</Tab>
-					<Tab data-variant="bare" className="c-button" data-ml="12">
+					<Tab as={UI.Button} variant="bare" ml="12">
 						Journal
 					</Tab>
 				</TabList>
