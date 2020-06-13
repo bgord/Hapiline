@@ -34,16 +34,18 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 
 	const numberOfHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
 
-	const regressVotes =
+	const numberOfRegressVotes =
 		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress").length ?? 0;
-	const plateauVotes =
+	const numberOfPlateauVotes =
 		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "plateau").length ?? 0;
-	const progressVotes =
+	const numberOfProgressVotes =
 		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress").length ?? 0;
 
-	const regressVotesPrct = ((regressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
-	const plateauVotesPrct = ((plateauVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
-	const progressVotesPrct = ((progressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
+	const regressVotesPrct = ((numberOfRegressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
+	const plateauVotesPrct = ((numberOfPlateauVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
+	const progressVotesPrct = ((numberOfProgressVotes / numberOfHabitVoteChartItems) * 100).toFixed(
+		2,
+	);
 
 	return (
 		<>
@@ -86,19 +88,22 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 				<UI.Row mt="6" crossAxis="center">
 					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
 					<UI.Text>
-						{regressVotes} regress {pluralize("vote", regressVotes)}({regressVotesPrct}%)
+						{numberOfRegressVotes} regress {pluralize("vote", numberOfRegressVotes)}(
+						{regressVotesPrct}%)
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{plateauVotes} plateau {pluralize("vote", plateauVotes)}({plateauVotesPrct}%)
+						{numberOfPlateauVotes} plateau {pluralize("vote", numberOfPlateauVotes)}(
+						{plateauVotesPrct}%)
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{progressVotes} progress {pluralize("vote", progressVotes)}({progressVotesPrct}%)
+						{numberOfProgressVotes} progress {pluralize("vote", numberOfProgressVotes)}(
+						{progressVotesPrct}%)
 					</UI.Text>
 
 					<UI.Text ml="auto" variant="bold">
