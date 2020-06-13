@@ -78,8 +78,7 @@ export const DashboardRegressStreakList: React.FC<{
 								)}
 
 								<UI.Badge variant="negative">
-									{habit.regress_streak}
-									{pluralize("day", habit.regress_streak)} regress streak
+									{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress streak
 								</UI.Badge>
 							</UI.Row>
 						))}

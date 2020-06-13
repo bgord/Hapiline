@@ -78,8 +78,7 @@ export const DashboardProgressStreakList: React.FC<{
 								)}
 
 								<UI.Badge variant="positive">
-									{habit.progress_streak}
-									{pluralize("day", habit.progress_streak)} progress streak
+									{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress streak
 								</UI.Badge>
 							</UI.Row>
 						))}
