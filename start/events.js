@@ -56,13 +56,6 @@ Event.on("email::changed", async ({user, token}) => {
 Event.on("vote::updated", async ({vote, habit}) => {
 	if (vote.vote !== HABIT_VOTE_TYPES.progress) return;
 
-	const notificationPayload = {
-		content: `You have 5 progress votes for '${habit.name}'!`,
-		type: NOTIFICATION_TYPES.regular,
-		status: NOTIFICATION_STATUSES.unread,
-		user_id: habit.user_id,
-	};
-
 	const habitVotesGetter = new HabitVotesGetter(habit);
 	const allHabitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
 
@@ -72,6 +65,13 @@ Event.on("vote::updated", async ({vote, habit}) => {
 	const milestones = [5, 10, 15, 25, 50, 100];
 
 	if (milestones.includes(progressStreak)) {
+		const notificationPayload = {
+			content: `You have ${progressStreak} progress votes for '${habit.name}'!`,
+			type: NOTIFICATION_TYPES.regular,
+			status: NOTIFICATION_STATUSES.unread,
+			user_id: habit.user_id,
+		};
+
 		await Notification.create(notificationPayload);
 	}
 });

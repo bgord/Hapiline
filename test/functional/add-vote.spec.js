@@ -338,10 +338,61 @@ test("emits notification after 5 consecutive progress votes", async ({client, as
 		.insert(habitPayload)
 		.returning("*");
 
-	// Add votes for days TODAY - x, where 1 =< x <= 4
+	// Add votes via database for days TODAY - x, where 1 =< x <= 4
 	// via Database, so we don't get rejected by two days
 	// before today vote update policy.
 	for (let i = 1; i <= 4; i++) {
+		await Database.into("habit_votes").insert({
+			habit_id: habit.id,
+			day: datefns.subDays(new Date(), i),
+			vote: HABIT_VOTE_TYPES.progress,
+		});
+	}
+
+	// Add a vote via http for today, so that an vote::updated event
+	// is emitted.
+	const response = await client
+		.post(ADD_VOTE_URL)
+		.send({
+			habit_id: habit.id,
+			day: new Date(),
+			vote: HABIT_VOTE_TYPES.progress,
+		})
+		.loginVia(jim)
+		.end();
+	response.assertStatus(200);
+
+	await Utils.sleep(1000);
+
+	const notification = await Database.first("*")
+		.from("notifications")
+		.where({
+			content: `You have 5 progress votes for '${habitPayload.name}'!`,
+		});
+
+	assert.ok(notification);
+});
+
+test("emits notification after 10 consecutive progress votes", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+
+	const habitPayload = {
+		name: "Get up and do something",
+		score: HABIT_SCORE_TYPES.positive,
+		strength: HABIT_STRENGTH_TYPES.fresh,
+		order: 50,
+		user_id: jim.id,
+		created_at: datefns.subDays(new Date(), 11),
+	};
+
+	const [habit] = await Database.into("habits")
+		.insert(habitPayload)
+		.returning("*");
+
+	// Add votes via database for days TODAY - x, where 1 =< x <= 9
+	// via Database, so we don't get rejected by two days
+	// before today vote update policy.
+	for (let i = 1; i <= 9; i++) {
 		await Database.into("habit_votes").insert({
 			habit_id: habit.id,
 			day: datefns.subDays(new Date(), i),
@@ -367,7 +418,8 @@ test("emits notification after 5 consecutive progress votes", async ({client, as
 	const notification = await Database.first("*")
 		.from("notifications")
 		.where({
-			content: `You have 5 progress votes for '${habitPayload.name}'!`,
+			content: `You have 10 progress votes for '${habitPayload.name}'!`,
 		});
+
 	assert.ok(notification);
 });
