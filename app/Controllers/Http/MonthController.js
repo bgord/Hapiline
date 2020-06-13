@@ -2,36 +2,55 @@ const dateFns = require("date-fns");
 const Database = use("Database");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
+const get = require("lodash.get");
+
 class MonthsController {
 	async show({request, response, auth}) {
+		// A number <= 0, which represents the offset in months
+		// starting from the month that's `today`.
 		const monthOffset = Number(request.get().monthOffset);
 
-		const today = Date.now();
+		// It represents the date that's in the month that we want to
+		// take stats about.
+		const dateInTheMonth = dateFns.subMonths(Date.now(), monthOffset);
 
-		const date = dateFns.subMonths(today, monthOffset);
+		const startOfTheMonth = dateFns.startOfMonth(dateInTheMonth);
+		const endOfTheMonth = dateFns.endOfMonth(dateInTheMonth);
 
-		const startOfGivenMonth = dateFns.startOfMonth(date);
-		const endOfGivenMonth = dateFns.endOfMonth(date);
-
-		const createdHabitsCountResult = await Database.table("habits")
+		// An array of the following shape:
+		// [{ day: '2020-06-11', numberOfHabits: 6 }]
+		//
+		// Includes only `day`s that have at least 1 created habit.
+		// TODO: Rewrite it as a plain SQL
+		const numberOfCreatedHabitsByDay = await Database.table("habits")
 			.select(
 				Database.raw("to_char(created_at::date, 'YYYY-MM-DD') as day"),
-				Database.raw('count(*)::integer as "createdHabits"'),
+				Database.raw('count(*)::integer as "numberOfHabits"'),
 			)
 			.where("user_id", auth.user.id)
-			.whereRaw(`created_at::date >= :startOfGivenMonth`, {startOfGivenMonth})
-			.whereRaw(`created_at::date <= :endOfGivenMonth`, {endOfGivenMonth})
+			.whereRaw(`created_at::date >= :startOfTheMonth`, {startOfTheMonth})
+			.whereRaw(`created_at::date <= :endOfTheMonth`, {endOfTheMonth})
 			.groupBy("day")
 			.orderBy("day");
 
-		const voteTypesCountResult = await Database.select(
+		// An array of the following shape:
+		// [
+		//    { day: '2020-06-13', numberOfVotes: 1, voteType: 'plateau' },
+		//    { day: '2020-06-13', numberOfVotes: 6, voteType: 'progress' },
+		//    { day: '2020-06-13', numberOfVotes: 6, voteType: 'regress' },
+		//    { day: '2020-06-13', numberOfVotes: 1, voteType: null },
+		// ]
+		//
+		// Includes only `day`s that have at least one vote per given type.
+		// TODO: Rewrite it as a plain SQL
+		const numberOfVoteTypesByDay = await Database.select(
 			Database.raw("to_char(day::date, 'YYYY-MM-DD') as day"),
-			Database.raw('count(*)::integer as "voteTypeCount"'),
+			Database.raw('count(*)::integer as "numberOfVotes"'),
 			"vote as voteType",
 		)
 			.from("habit_votes")
-			.whereRaw(`day::date >= :startOfGivenMonth`, {startOfGivenMonth})
-			.whereRaw(`day::date <= :endOfGivenMonth`, {endOfGivenMonth})
+			.whereRaw(`day::date >= :startOfTheMonth`, {startOfTheMonth})
+			.whereRaw(`day::date <= :endOfTheMonth`, {endOfTheMonth})
 			.whereIn(
 				"habit_id",
 				Database.select("id")
@@ -42,35 +61,40 @@ class MonthsController {
 			.groupBy("vote")
 			.orderBy("day");
 
-		const daysSet = new Set([
-			...createdHabitsCountResult.map(entry => entry.day),
-			...voteTypesCountResult.map(entry => entry.day),
+		const daysWithAtLeastOneStat = new Set([
+			...numberOfCreatedHabitsByDay.map(entry => entry.day),
+			...numberOfVoteTypesByDay.map(entry => entry.day),
 		]);
 
-		const days = [...daysSet].map(day => {
-			const createdHabitsCountStats = createdHabitsCountResult.find(entry => entry.day === day);
-			const progressVotesCountStats = voteTypesCountResult.find(
-				entry => entry.day === day && entry.voteType === HABIT_VOTE_TYPES.progress,
+		const daysWithAtLeastOneCreatedHabitOrVote = [...daysWithAtLeastOneStat].map(day => {
+			const habitsCreatedByDay = numberOfCreatedHabitsByDay.find(entry => entry.day === day);
+
+			const progressVotesByDay = numberOfVoteTypesByDay.find(
+				getByDayAndVoteType(day, HABIT_VOTE_TYPES.progress),
 			);
-			const plateauVotesCountStats = voteTypesCountResult.find(
-				entry => entry.day === day && entry.voteType === HABIT_VOTE_TYPES.plateau,
+
+			const plateauVotesByDay = numberOfVoteTypesByDay.find(
+				getByDayAndVoteType(day, HABIT_VOTE_TYPES.plateau),
 			);
-			const regressVotesCountStats = voteTypesCountResult.find(
-				entry => entry.day === day && entry.voteType === HABIT_VOTE_TYPES.regress,
+
+			const regressVotesByDay = numberOfVoteTypesByDay.find(
+				getByDayAndVoteType(day, HABIT_VOTE_TYPES.regress),
 			);
+
+			function getByDayAndVoteType(day, voteType) {
+				return entry => entry.day === day && entry.voteType === voteType;
+			}
 
 			return {
 				day,
-				createdHabitsCount: createdHabitsCountStats ? createdHabitsCountStats.createdHabits : 0,
-				progressVotesCountStats: progressVotesCountStats
-					? progressVotesCountStats.voteTypeCount
-					: 0,
-				plateauVotesCountStats: plateauVotesCountStats ? plateauVotesCountStats.voteTypeCount : 0,
-				regressVotesCountStats: regressVotesCountStats ? regressVotesCountStats.voteTypeCount : 0,
+				createdHabitsCount: get(habitsCreatedByDay, "numberOfHabits", 0),
+				progressVotesCountStats: get(progressVotesByDay, "numberOfVotes", 0),
+				plateauVotesCountStats: get(plateauVotesByDay, "numberOfVotes", 0),
+				regressVotesCountStats: get(regressVotesByDay, "numberOfVotes", 0),
 			};
 		});
 
-		return response.send(days);
+		return response.send(daysWithAtLeastOneCreatedHabitOrVote);
 	}
 }
 
