@@ -1,4 +1,4 @@
-import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "../interfaces/index";
+import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "../models";
 import {_internal_api} from "./api";
 
 export const getDashboardStats = (_key: "dashboard_stats") =>

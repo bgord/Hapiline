@@ -16,7 +16,7 @@ import {
 	HabitVotePayload,
 	HabitVote,
 	HabitVoteCommentPayload,
-} from "./interfaces/index";
+} from "./models";
 import * as UI from "./ui";
 import {api} from "./services/api";
 import {

@@ -11,7 +11,7 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
-import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./interfaces/index";
+import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./models";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -44,29 +44,27 @@ export const Calendar: React.FC = () => {
 
 		const statsForTheDay = dayStatsFromServer?.find(item => item.day === dayCell.day);
 
-		const createdHabitsCount = statsForTheDay?.createdHabitsCount || 0;
-		const progressVotesCountStats = statsForTheDay?.progressVotesCountStats || 0;
-		const plateauVotesCountStats = statsForTheDay?.plateauVotesCountStats || 0;
-		const regressVotesCountStats = statsForTheDay?.regressVotesCountStats || 0;
-		const nullVotesCountStats = statsForTheDay?.nullVotesCountStats || 0;
+		const numberOfCreatedHabits = statsForTheDay?.numberOfCreatedHabits || 0;
+		const numberOfProgressVotes = statsForTheDay?.numberOfProgressVotes || 0;
+		const numberOfPlateauVotes = statsForTheDay?.numberOfPlateauVotes || 0;
+		const numberOfRegressVotes = statsForTheDay?.numberOfRegressVotes || 0;
 
-		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(trackedHabits, day).length;
+		const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day).length;
 
-		const noVotesCountStats =
-			habitsAvailableAtThisDayCount -
-			progressVotesCountStats -
-			plateauVotesCountStats -
-			regressVotesCountStats;
+		const numberOfMissingVotes =
+			numberOfHabitsAvailableAtThisDay -
+			numberOfProgressVotes -
+			numberOfPlateauVotes -
+			numberOfRegressVotes;
 
 		return {
 			day: dayCell.day,
 			styles: dayCell.styles,
-			createdHabitsCount,
-			progressVotesCountStats,
-			plateauVotesCountStats,
-			regressVotesCountStats,
-			nullVotesCountStats,
-			noVotesCountStats,
+			numberOfCreatedHabits,
+			numberOfProgressVotes,
+			numberOfPlateauVotes,
+			numberOfRegressVotes,
+			numberOfMissingVotes,
 		};
 	});
 
@@ -97,8 +95,9 @@ export const Calendar: React.FC = () => {
 
 	function getPreviousButtonTitle() {
 		if (getMonthRequestState.status === "loading") return "Loading...";
-		if (isCurrentMonthTheMonthFirstHabbitWasAdded)
+		if (isCurrentMonthTheMonthFirstHabbitWasAdded) {
 			return "There are no habits added in the previous month";
+		}
 		return "Go to previous month";
 	}
 

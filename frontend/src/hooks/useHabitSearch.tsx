@@ -1,7 +1,7 @@
 import React from "react";
 
 import * as UI from "../ui";
-import {Habit} from "../interfaces/index";
+import {Habit} from "../models";
 
 export const useHabitSearch = (defaultValue = "") => {
 	const [habitSearchPhrase, setHabitSearchPhrase] = React.useState(defaultValue);

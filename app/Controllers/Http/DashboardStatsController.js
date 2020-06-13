@@ -1,13 +1,14 @@
 const Database = use("Database");
+const get = require("lodash.get");
 
 class DashboardStatsController {
 	async index({auth, response}) {
 		const _resultForToday = await Database.raw(
 			`
       SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes",
 
         (
           SELECT COUNT(*)
@@ -16,7 +17,7 @@ class DashboardStatsController {
             h.created_at::date <= NOW()::date
             AND h.user_id = :user_id
             AND h.is_trackable IS TRUE
-        )::integer as "maximumVotes",
+        )::integer as "numberOfPossibleVotes",
 
         (
           SELECT COUNT(*)
@@ -25,7 +26,7 @@ class DashboardStatsController {
             h.created_at::date <= NOW()::date
             AND h.user_id = :user_id
             AND h.is_trackable IS FALSE
-        )::integer as "untrackedHabits"
+        )::integer as "numberOfUntrackedHabits"
 
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
@@ -35,11 +36,11 @@ class DashboardStatsController {
 		);
 		const resultForToday = _resultForToday.rows[0];
 
-		const _resultForMaximumVotesLastWeek = await Database.raw(
+		const _numberOfPossibleVotesLastWeek = await Database.raw(
 			`
       SELECT
         SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
-        OVER (ORDER BY day)::integer AS "maximumVotesLastWeek"
+        OVER (ORDER BY day)::integer AS "numberOfPossibleVotesLastWeek"
       FROM GENERATE_SERIES(NOW() - '6 days'::interval, NOW(), '1 day') as day
       LEFT JOIN habits ON habits.created_at::date <= day::date
       WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
@@ -49,14 +50,14 @@ class DashboardStatsController {
       `,
 			{user_id: auth.user.id},
 		);
-		const {maximumVotesLastWeek} = _resultForMaximumVotesLastWeek.rows[0] || 0;
+		const {numberOfPossibleVotesLastWeek} = _numberOfPossibleVotesLastWeek.rows[0] || 0;
 
 		const _resultForLastWeek = await Database.raw(
 			`
       SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes"
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE
@@ -68,11 +69,11 @@ class DashboardStatsController {
 		);
 		const resultForLastWeek = _resultForLastWeek.rows[0];
 
-		const _resultForMaximumVotesLastMonth = await Database.raw(
+		const _numberOfPossibleVotesLastMonth = await Database.raw(
 			`
       SELECT
         SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
-        OVER (ORDER BY day)::integer AS "maximumVotesLastMonth"
+        OVER (ORDER BY day)::integer AS "numberOfPossibleVotesLastMonth"
       FROM GENERATE_SERIES(NOW() - '29 days'::interval, NOW(), '1 day') as day
       LEFT JOIN habits ON habits.created_at::date <= day::date
       WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
@@ -82,14 +83,14 @@ class DashboardStatsController {
       `,
 			{user_id: auth.user.id},
 		);
-		const {maximumVotesLastMonth} = _resultForMaximumVotesLastMonth.rows[0] || 0;
+		const {numberOfPossibleVotesLastMonth} = _numberOfPossibleVotesLastMonth.rows[0] || 0;
 
 		const _resultForLastMonth = await Database.raw(
 			`
       SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "progressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "plateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "regressVotes"
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE
@@ -104,42 +105,53 @@ class DashboardStatsController {
 		return response.send({
 			today: {
 				...resultForToday,
-				noVotes:
-					resultForToday.maximumVotes -
-						resultForToday.progressVotes -
-						resultForToday.plateauVotes -
-						resultForToday.regressVotes || 0,
-				allVotes:
-					resultForToday.progressVotes + resultForToday.plateauVotes + resultForToday.regressVotes,
+				numberOfMissingVotes: getNumberOfMissingVotes(
+					resultForToday.numberOfPossibleVotes,
+					resultForToday,
+				),
+				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForToday),
 			},
 			lastWeek: {
 				...resultForLastWeek,
-				noVotes:
-					maximumVotesLastWeek -
-						resultForLastWeek.progressVotes -
-						resultForLastWeek.plateauVotes -
-						resultForLastWeek.regressVotes || 0,
-				allVotes:
-					resultForLastWeek.progressVotes +
-					resultForLastWeek.plateauVotes +
-					resultForLastWeek.regressVotes,
-				maximumVotes: maximumVotesLastWeek || 0,
+				numberOfMissingVotes: getNumberOfMissingVotes(
+					numberOfPossibleVotesLastWeek,
+					resultForLastWeek,
+				),
+				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForLastWeek),
+				numberOfPossibleVotes: numberOfPossibleVotesLastWeek || 0,
 			},
 			lastMonth: {
 				...resultForLastMonth,
-				noVotes:
-					maximumVotesLastMonth -
-						resultForLastMonth.progressVotes -
-						resultForLastMonth.plateauVotes -
-						resultForLastMonth.regressVotes || 0,
-				allVotes:
-					resultForLastMonth.progressVotes +
-					resultForLastMonth.plateauVotes +
-					resultForLastMonth.regressVotes,
-				maximumVotes: maximumVotesLastMonth || 0,
+				numberOfMissingVotes: getNumberOfMissingVotes(
+					numberOfPossibleVotesLastMonth,
+					resultForLastMonth,
+				),
+				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForLastMonth),
+				numberOfPossibleVotes: numberOfPossibleVotesLastMonth || 0,
 			},
 		});
 	}
+}
+
+function getNumberOfNonEmptyVotes(resultForTimePeriod) {
+	return (
+		get(resultForTimePeriod, "numberOfProgressVotes", 0) +
+		get(resultForTimePeriod, "numberOfPlateauVotes", 0) +
+		get(resultForTimePeriod, "numberOfRegressVotes", 0)
+	);
+}
+
+function getNumberOfMissingVotes(_maximum, resultForTimePeriod) {
+	const maximum = _maximum || 0;
+
+	if (maximum === 0) return 0;
+
+	return (
+		maximum -
+		get(resultForTimePeriod, "numberOfProgressVotes", 0) -
+		get(resultForTimePeriod, "numberOfPlateauVotes", 0) -
+		get(resultForTimePeriod, "numberOfRegressVotes", 0)
+	);
 }
 
 module.exports = DashboardStatsController;

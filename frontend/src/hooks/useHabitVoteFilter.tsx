@@ -2,7 +2,7 @@ import React from "react";
 
 import * as UI from "../ui";
 import {useQueryParam} from "./useQueryParam";
-import {HabitWithPossibleHabitVote} from "../interfaces/index";
+import {HabitWithPossibleHabitVote} from "../models";
 
 type HabitVoteFilterTypes = "unvoted" | "voted" | "all";
 

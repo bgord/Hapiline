@@ -1,6 +1,6 @@
 import {isBefore, isSameDay} from "date-fns";
 
-import {Habit} from "../interfaces/index";
+import {Habit} from "../models";
 
 export function getHabitsAvailableAtThisDay(habits: Habit[], day: string | Date): Habit[] {
 	return habits.filter(habit => {

@@ -2,7 +2,7 @@ import React from "react";
 
 import * as UI from "../ui";
 
-import {Habit, HabitScores, HabitScoreType} from "../interfaces/index";
+import {Habit, HabitScores, HabitScoreType} from "../models";
 
 type HabitScoreFilter = HabitScoreType | "all-scores";
 

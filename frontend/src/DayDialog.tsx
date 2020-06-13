@@ -3,17 +3,14 @@ import {useLocation} from "react-router-dom";
 import React from "react";
 import * as UI from "./ui";
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
-import {DayCellWithFullStats} from "./interfaces/index";
+import {DayCellWithFullStats} from "./models";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {HabitTab} from "./HabitTab";
 import {JournalTab} from "./JournalTab";
-import {formatDayName} from "./config/DATE_FORMATS";
+import {formatDayName} from "./services/date-formatter";
 
-type DayDialogProps = Omit<
-	DayCellWithFullStats,
-	"styles" | "createdHabitsCount" | "nullVotesCountStats"
-> & {
+type DayDialogProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
 	onResolve: VoidFunction;
 };
 

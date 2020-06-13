@@ -3,7 +3,7 @@ import React from "react";
 
 import * as UI from "./ui";
 import {api} from "./services/api";
-import {User} from "./interfaces/index";
+import {User} from "./models";
 
 export const ForgotPasswordWindow: React.FC = () => {
 	const [email, setEmail] = React.useState<User["email"]>("");

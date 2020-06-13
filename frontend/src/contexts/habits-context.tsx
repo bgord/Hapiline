@@ -3,7 +3,7 @@ import React from "react";
 
 import {api} from "../services/api";
 import {useErrorToast} from "./toasts-context";
-import {Habit} from "../interfaces/index";
+import {Habit} from "../models";
 
 type HabitsContext = QueryResult<Habit[]> | undefined;
 

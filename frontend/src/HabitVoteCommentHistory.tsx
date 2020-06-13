@@ -3,9 +3,9 @@ import {useQuery} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {Habit, HabitVote} from "./interfaces/index";
+import {Habit, HabitVote} from "./models";
 import {api} from "./services/api";
-import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
+import {formatDay, formatShortDayName} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
 import {UrlBuilder} from "./services/url-builder";
 
@@ -22,6 +22,7 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 	});
 
 	const voteComments = getHabitVoteCommentsRequestState?.data ?? [];
+	const numberOfVoteComments = voteComments.length;
 
 	return (
 		<>
@@ -34,16 +35,14 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 			</UI.ShowIf>
 
 			<UI.ShowIf request={getHabitVoteCommentsRequestState} is="success">
-				{voteComments.length === 0 && (
+				{numberOfVoteComments === 0 && (
 					<UI.Text mt="24">Future vote comments will appear here.</UI.Text>
 				)}
-				{voteComments.length > 0 && (
-					<>
-						{voteComments.map(voteComment => (
-							<HabitVoteComment key={voteComment.id} {...voteComment} />
-						))}
-					</>
-				)}
+
+				{numberOfVoteComments > 0 &&
+					voteComments.map(voteComment => (
+						<HabitVoteComment key={voteComment.id} {...voteComment} />
+					))}
 			</UI.ShowIf>
 		</>
 	);

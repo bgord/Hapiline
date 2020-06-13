@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Habit, HabitStrengthType, HabitStrengths} from "../interfaces/index";
+import {Habit, HabitStrengthType, HabitStrengths} from "../models";
 import * as UI from "../ui";
 
 type HabitStrengthFilter = HabitStrengthType | "all-strengths";

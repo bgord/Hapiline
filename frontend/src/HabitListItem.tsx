@@ -5,7 +5,7 @@ import React from "react";
 import * as UI from "./ui/";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {useQueryParam} from "./hooks/useQueryParam";
-import {Habit, habitStrengthToBadgeVariant} from "./interfaces/index";
+import {Habit, habitStrengthToBadgeVariant} from "./models";
 
 interface HabitListItemProps {
 	habit: Habit;

@@ -3,7 +3,7 @@ import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {NewPasswordPayload} from "./interfaces/index";
+import {NewPasswordPayload} from "./models";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 

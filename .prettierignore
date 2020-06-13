@@ -1,5 +1,5 @@
 package.json
 package-lock.json
 
-// Temporary, because Prettier doesn't seem to support `export type {}` syntax
-frontend/src/interfaces/index.ts
+// Temporary, because Prettier doesn't seem to support `export type {}` syntax yetga
+frontend/src/models.ts

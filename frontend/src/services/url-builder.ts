@@ -1,6 +1,6 @@
 import {constructUrl} from "../hooks/useQueryParam";
-import {Habit} from "../interfaces/index";
-import {formatDay, formatToday} from "../config/DATE_FORMATS";
+import {Habit} from "../models";
+import {formatDay, formatToday} from "./date-formatter";
 
 export const UrlBuilder = {
 	habits: {

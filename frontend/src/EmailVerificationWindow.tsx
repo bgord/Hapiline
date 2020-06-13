@@ -2,7 +2,7 @@ import {useParams, Link} from "react-router-dom";
 import {useMutation} from "react-query";
 import React from "react";
 
-import {Token} from "./interfaces/index";
+import {Token} from "./models";
 import * as UI from "./ui";
 import {api} from "./services/api";
 

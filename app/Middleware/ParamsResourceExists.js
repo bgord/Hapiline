@@ -6,14 +6,14 @@ class ParamsResourceExists {
 		const {id} = params;
 
 		try {
-			const {count} = await Database.table(table)
+			const {count: numberOfResults} = await Database.table(table)
 				.count("*")
 				.where({
 					[column]: id,
 				})
 				.first();
 
-			if (parseInt(count, 10) > 0) {
+			if (parseInt(numberOfResults, 10) > 0) {
 				return next();
 			}
 			throw new Error();

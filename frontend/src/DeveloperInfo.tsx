@@ -2,7 +2,7 @@ import React from "react";
 import {useToggle} from "./hooks/useToggle";
 
 import * as UI from "./ui";
-import {formatTime} from "./config/DATE_FORMATS";
+import {formatTime} from "./services/date-formatter";
 
 declare const __BUILD_VERSION__: string;
 declare const __BUILD_DATE__: string;

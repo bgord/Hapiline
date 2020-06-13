@@ -4,7 +4,7 @@ import React from "react";
 import * as UI from "./ui";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {User, NewUserPayload} from "./interfaces/index";
+import {User, NewUserPayload} from "./models";
 
 export const RegistrationWindow: React.FC = () => {
 	const [email, setEmail] = React.useState<User["email"]>("");

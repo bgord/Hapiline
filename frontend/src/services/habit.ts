@@ -11,7 +11,7 @@ import {
 	HabitVotePayload,
 	HabitVoteCommentPayload,
 	ReorderHabitPayload,
-} from "../interfaces/index";
+} from "../models";
 
 export const getHabitsRequest = async (_key: "all_habits") =>
 	_internal_api.get<Habit[]>("/habits").then(response => response.data);

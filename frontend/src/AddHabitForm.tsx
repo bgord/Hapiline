@@ -11,7 +11,7 @@ import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
-import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./interfaces/index";
+import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./models";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
@@ -83,8 +83,11 @@ export const AddHabitForm: React.FC = () => {
 						name,
 						score,
 						strength,
-						user_id: profile?.id || 0,
-						description: description || null,
+
+						// If profile.id happens to be 0,
+						// the request will fail.
+						user_id: profile?.id ?? 0,
+						description: description ?? null,
 						is_trackable: isTrackable,
 					});
 				}}

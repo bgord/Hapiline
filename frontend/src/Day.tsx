@@ -4,8 +4,8 @@ import React from "react";
 import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
-import {DayCellWithFullStats} from "./interfaces/index";
-import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
+import {DayCellWithFullStats} from "./models";
+import {formatDay, formatShortDayName} from "./services/date-formatter";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
@@ -23,23 +23,23 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 	const isThisDayToday = isToday(new Date(day));
 	const isThisDayInTheFuture = isFuture(thisDay);
 
-	const howManyHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, thisDay).length;
+	const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, thisDay).length;
 
-	const isDayDialogAvailable = !isThisDayInTheFuture && howManyHabitsAvailableAtThisDay > 0;
+	const isDayDialogAvailable = !isThisDayInTheFuture && numberOfHabitsAvailableAtThisDay > 0;
 	const isDayDialogVisible = previewDay && isSameDay(new Date(previewDay), thisDay);
 
 	function openDialog() {
 		updateQueryParams("calendar", {
 			preview_day: day,
-			habit_vote_filter: isThisDayToday && stats.noVotesCountStats > 0 ? "unvoted" : "all",
+			habit_vote_filter: isThisDayToday && stats.numberOfMissingVotes > 0 ? "unvoted" : "all",
 		});
 	}
 
-	const isNewHabitsTextVisible = stats && stats.createdHabitsCount > 0;
+	const isNewHabitsTextVisible = stats && stats.numberOfCreatedHabits > 0;
 
-	const newHabitsText = `${stats.createdHabitsCount} new ${pluralize(
+	const newHabitsText = `${stats.numberOfCreatedHabits} new ${pluralize(
 		"habit",
-		stats.createdHabitsCount ?? 0,
+		stats.numberOfCreatedHabits ?? 0,
 	)}`;
 
 	return (
@@ -67,7 +67,7 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 			)}
 			{isDayDialogAvailable && (
 				<DaySummaryChart
-					maximumVotes={howManyHabitsAvailableAtThisDay}
+					numberOfPossibleVotes={numberOfHabitsAvailableAtThisDay}
 					day={formatDay(thisDay)}
 					{...stats}
 				/>

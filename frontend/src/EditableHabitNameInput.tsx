@@ -9,7 +9,7 @@ import {
 } from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {HabitNameInput} from "./HabitNameInput";
-import {DetailedHabit, DraftHabitPayload} from "./interfaces/index";
+import {DetailedHabit, DraftHabitPayload} from "./models";
 import {api, AsyncReturnType} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";

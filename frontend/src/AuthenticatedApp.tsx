@@ -5,7 +5,7 @@ import {createBrowserHistory} from "history";
 
 import * as UI from "./ui";
 import {Calendar} from "./Calendar";
-import {DashboardWindow} from "./DashboardWindow";
+import {DashboardWindow} from "./windows/dashboard/DashboardWindow";
 import {HabitsProvider} from "./contexts/habits-context";
 import {HabitsWindow} from "./HabitsWindow";
 import {Logo} from "./Logo";

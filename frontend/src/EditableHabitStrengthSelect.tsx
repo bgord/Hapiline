@@ -2,12 +2,7 @@ import {queryCache, useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {
-	DetailedHabit,
-	HabitStrengthType,
-	isHabitStrength,
-	DraftHabitPayload,
-} from "./interfaces/index";
+import {DetailedHabit, HabitStrengthType, isHabitStrength, DraftHabitPayload} from "./models";
 import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 

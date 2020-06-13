@@ -171,33 +171,33 @@ describe("Habit", () => {
 		cy.findByLabelText("Developing (1)").should("not.be.checked");
 		cy.findByLabelText("All scores (4)").should("be.checked");
 		cy.findByLabelText("All strengths (4)").should("be.checked");
-		cy.findByTestId("habit-search-result-count").should("have.text", "4 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "4 results");
 
 		cy.findByLabelText("Positive (2)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 2));
-		cy.findByTestId("habit-search-result-count").should("have.text", "2 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
 
 		cy.findByLabelText("Neutral (1)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("habit-search-result-count").should("have.text", "1 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
 		cy.findByLabelText("Negative (1)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("habit-search-result-count").should("have.text", "1 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
 		cy.findByLabelText("All scores (4)").check();
 
 		cy.findByLabelText("Established (2)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 2));
-		cy.findByTestId("habit-search-result-count").should("have.text", "2 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
 
 		cy.findByLabelText("Developing (1)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("habit-search-result-count").should("have.text", "1 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
 		cy.findByLabelText("Fresh (1)").check();
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("habit-search-result-count").should("have.text", "1 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
 		cy.findByLabelText("All strengths (4)").check();
 
@@ -205,7 +205,7 @@ describe("Habit", () => {
 			.should("have.value", "")
 			.type("the");
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("habit-search-result-count").should("have.text", "1 results");
+		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
 		cy.findByText("Clear").click();
 		cy.findByPlaceholderText("Search for habits...").should("have.value", "");

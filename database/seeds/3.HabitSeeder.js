@@ -11,9 +11,9 @@ class HabitsSeeder {
 		const users = await Database.table("users");
 
 		for (let user of users) {
-			const howManyHabits = (user.id - 1) * 5;
+			const numberOfHabits = (user.id - 1) * 5;
 
-			const payload = Array.from({length: howManyHabits}).map((_, index) => {
+			const payload = Array.from({length: numberOfHabits}).map((_, index) => {
 				const ts = datefns.subDays(today, index % 3).setHours(index & 3);
 				const date = new Date(ts).toISOString();
 
