@@ -58,5 +58,10 @@ export const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedF
 	const strategy = selectStrategy();
 
 	if (!strategy) return null;
-	return strategyToText[strategy];
+
+	return (
+		<UI.Row mt="24" mb="48">
+			{strategyToText[strategy]}
+		</UI.Row>
+	);
 };

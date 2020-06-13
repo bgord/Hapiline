@@ -90,6 +90,7 @@ export const DashboardWindow = () => {
 		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "var(--view-width)"}}>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="large">Hello!</UI.Header>
+
 				<UI.Button
 					variant="primary"
 					onClick={() => updateUrl(UrlBuilder.dashboard.calendar.today())}
@@ -106,13 +107,11 @@ export const DashboardWindow = () => {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
-					<UI.Row mt="24" mb="48">
-						<MotivationalText
-							untracked={howManyUntrackedHabitsToday}
-							total={howManyHabitsToday}
-							votedFor={howManyVotesToday}
-						/>
-					</UI.Row>
+					<MotivationalText
+						untracked={howManyUntrackedHabitsToday}
+						total={howManyHabitsToday}
+						votedFor={howManyVotesToday}
+					/>
 
 					{howManyHabitsToday > 0 && (
 						<UI.Column data-testid="chart-today">
