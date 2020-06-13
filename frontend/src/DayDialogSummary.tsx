@@ -129,9 +129,11 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 	const habits = useHabits();
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
+	const numberOfHabitsAddedAtThisDay = habitsAddedAtThisDay.length;
 
 	const _untrackedHabits = useUntrackedHabits();
 	const untrackedHabits = getHabitsAvailableAtThisDay(_untrackedHabits, day);
+	const numberOfUntrackedHabits = untrackedHabits.length;
 
 	return (
 		// -1 means that no tab is selected by default
@@ -146,24 +148,24 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 			</TabList>
 			<TabPanels data-mt="12">
 				<TabPanel>
-					{habitsAddedAtThisDay.length === 0 && <UI.Text>No habits added this day.</UI.Text>}
+					{numberOfHabitsAddedAtThisDay === 0 && <UI.Text>No habits added this day.</UI.Text>}
 
-					{habitsAddedAtThisDay.length === 1 && (
+					{numberOfHabitsAddedAtThisDay === 1 && (
 						<UI.Text>
 							<UI.Text variant="bold">One</UI.Text> habit added this day.
 						</UI.Text>
 					)}
 
-					{habitsAddedAtThisDay.length > 1 && (
+					{numberOfHabitsAddedAtThisDay > 1 && (
 						<>
-							<UI.Text variant="bold">{habitsAddedAtThisDay.length}</UI.Text>{" "}
+							<UI.Text variant="bold">{numberOfHabitsAddedAtThisDay}</UI.Text>{" "}
 							<UI.Text>habits added this day</UI.Text>.
 						</>
 					)}
 
 					<UI.Column
 						style={{
-							borderTop: habitsAddedAtThisDay.length > 0 ? `1px solid var(--gray-1)` : undefined,
+							borderTop: numberOfHabitsAddedAtThisDay > 0 ? `1px solid var(--gray-1)` : undefined,
 						}}
 						mt="24"
 					>
@@ -174,24 +176,24 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 				</TabPanel>
 
 				<TabPanel>
-					{untrackedHabits.length === 0 && (
+					{numberOfUntrackedHabits === 0 && (
 						<UI.Text>No untracked habit available this day.</UI.Text>
 					)}
 
-					{untrackedHabits.length === 1 && (
+					{numberOfUntrackedHabits === 1 && (
 						<UI.Text>
 							<UI.Text variant="bold">One</UI.Text>
 							untracked habit available this day.
 						</UI.Text>
 					)}
 
-					{untrackedHabits.length > 1 && (
-						<UI.Text>{useUntrackedHabits.length} untracked habit available this day.</UI.Text>
+					{numberOfUntrackedHabits > 1 && (
+						<UI.Text>{numberOfUntrackedHabits} untracked habit available this day.</UI.Text>
 					)}
 
 					<UI.Column
 						style={{
-							borderTop: untrackedHabits.length > 0 ? `1px solid var(--gray-1)` : undefined,
+							borderTop: numberOfUntrackedHabits > 0 ? `1px solid var(--gray-1)` : undefined,
 						}}
 						mt="24"
 					>
