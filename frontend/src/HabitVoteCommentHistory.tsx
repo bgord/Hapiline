@@ -3,7 +3,7 @@ import {useQuery} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {Habit, HabitVote} from "./interfaces/index";
+import {Habit, HabitVote} from "./models";
 import {api} from "./services/api";
 import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";

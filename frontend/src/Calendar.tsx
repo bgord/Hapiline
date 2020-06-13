@@ -11,7 +11,7 @@ import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
-import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./interfaces/index";
+import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./models";
 
 const habitDialogGrid: React.CSSProperties = {
 	display: "grid",
@@ -97,8 +97,9 @@ export const Calendar: React.FC = () => {
 
 	function getPreviousButtonTitle() {
 		if (getMonthRequestState.status === "loading") return "Loading...";
-		if (isCurrentMonthTheMonthFirstHabbitWasAdded)
+		if (isCurrentMonthTheMonthFirstHabbitWasAdded) {
 			return "There are no habits added in the previous month";
+		}
 		return "Go to previous month";
 	}
 

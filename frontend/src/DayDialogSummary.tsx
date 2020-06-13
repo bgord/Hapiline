@@ -7,12 +7,7 @@ import VisuallyHidden from "@reach/visually-hidden";
 
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
-import {
-	Habit,
-	habitStrengthToBadgeVariant,
-	voteToBgColor,
-	DayCellWithFullStats,
-} from "./interfaces/index";
+import {Habit, habitStrengthToBadgeVariant, voteToBgColor, DayCellWithFullStats} from "./models";
 
 import {UrlBuilder} from "./services/url-builder";
 
@@ -185,7 +180,8 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 
 					{untrackedHabits.length === 1 && (
 						<UI.Text>
-							<UI.Text variant="bold">One</UI.Text> untracked habit available this day.
+							<UI.Text variant="bold">One</UI.Text>
+							untracked habit available this day.
 						</UI.Text>
 					)}
 

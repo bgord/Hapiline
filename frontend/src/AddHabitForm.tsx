@@ -11,7 +11,7 @@ import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
-import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./interfaces/index";
+import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./models";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();

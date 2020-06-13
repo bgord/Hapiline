@@ -4,7 +4,7 @@ import React from "react";
 
 import * as UI from "./ui";
 import {TrashIcon} from "./ui/icons/Trash";
-import {Habit} from "./interfaces/index";
+import {Habit} from "./models";
 import {api} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";

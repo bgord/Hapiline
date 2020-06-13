@@ -3,7 +3,7 @@ import {useLocation} from "react-router-dom";
 import React from "react";
 import * as UI from "./ui";
 import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
-import {DayCellWithFullStats} from "./interfaces/index";
+import {DayCellWithFullStats} from "./models";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {HabitTab} from "./HabitTab";

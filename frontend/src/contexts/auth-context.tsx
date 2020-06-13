@@ -2,7 +2,7 @@ import {useQuery} from "react-query";
 import React from "react";
 
 import * as UI from "../ui";
-import {UserProfile} from "../interfaces/index";
+import {UserProfile} from "../models";
 import {api} from "../services/api";
 
 type UserProfileContext = [

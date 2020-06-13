@@ -11,7 +11,7 @@ import {
 	voteToBgColor,
 	HabitVoteChartDateRangeType,
 	HabitVoteChartDateRanges,
-} from "./interfaces/index";
+} from "./models";
 import {api} from "./services/api";
 import {formatDay} from "./config/DATE_FORMATS";
 import {useErrorToast} from "./contexts/toasts-context";
@@ -76,7 +76,9 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 						<ChartCell
 							key={String(item.day)}
 							habitId={id}
-							style={{flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`}}
+							style={{
+								flexBasis: `calc(100% / ${howManyHabitVoteChartItems})`,
+							}}
 							{...item}
 						/>
 					))}
@@ -84,19 +86,19 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 				<UI.Row mt="6" crossAxis="center">
 					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
 					<UI.Text>
-						{regressVotes} regress {pluralize("vote", regressVotes)} ({regressVotesPrct}%)
+						{regressVotes} regress {pluralize("vote", regressVotes)}({regressVotesPrct}%)
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{plateauVotes} plateau {pluralize("vote", plateauVotes)} ({plateauVotesPrct}%)
+						{plateauVotes} plateau {pluralize("vote", plateauVotes)}({plateauVotesPrct}%)
 					</UI.Text>
 					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
 						·
 					</UI.Text>
 					<UI.Text>
-						{progressVotes} progress {pluralize("vote", progressVotes)} ({progressVotesPrct}%)
+						{progressVotes} progress {pluralize("vote", progressVotes)}({progressVotesPrct}%)
 					</UI.Text>
 
 					<UI.Text ml="auto" variant="bold">

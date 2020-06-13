@@ -2,7 +2,7 @@ import {useQuery, useMutation} from "react-query";
 import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 
-import {Notification, DraftNotificationPayload} from "./interfaces/index";
+import {Notification, DraftNotificationPayload} from "./models";
 
 import * as UI from "./ui";
 import {BellIcon} from "./ui/icons/Bell";

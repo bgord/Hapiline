@@ -7,7 +7,7 @@ import {
 	NewPasswordPayload,
 	NewEmailPayload,
 	UpdatePasswordPayload,
-} from "../interfaces/index";
+} from "../models";
 import {_internal_api} from "./api";
 
 export const loginRequest = (loginPayload: LoginPayload) =>

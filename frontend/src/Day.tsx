@@ -4,7 +4,7 @@ import React from "react";
 import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
-import {DayCellWithFullStats} from "./interfaces/index";
+import {DayCellWithFullStats} from "./models";
 import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";

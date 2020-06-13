@@ -17,7 +17,7 @@ import {useToggle} from "./hooks/useToggle";
 import {FilterIcon} from "./ui/icons/Filter";
 import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {Habit, ReorderHabitPayload} from "./interfaces/index";
+import {Habit, ReorderHabitPayload} from "./models";
 
 export const HabitsWindow = () => {
 	const getHabitsRequestState = useHabitsState();

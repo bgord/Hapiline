@@ -17,7 +17,7 @@ import {formatToday} from "./config/DATE_FORMATS";
 import {pluralize} from "./services/pluralize";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
-import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "./interfaces/index";
+import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "./models";
 import {UrlBuilder} from "./services/url-builder";
 import {useToggle} from "./hooks/useToggle";
 import * as UI from "./ui";
@@ -247,7 +247,8 @@ const ProgressStreakList: React.FC<{
 								)}
 
 								<UI.Badge variant="positive">
-									{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress streak
+									{habit.progress_streak}
+									{pluralize("day", habit.progress_streak)} progress streak
 								</UI.Badge>
 							</UI.Row>
 						))}
@@ -320,7 +321,8 @@ const RegressStreakList: React.FC<{
 								)}
 
 								<UI.Badge variant="negative">
-									{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress streak
+									{habit.regress_streak}
+									{pluralize("day", habit.regress_streak)} regress streak
 								</UI.Badge>
 							</UI.Row>
 						))}
@@ -424,29 +426,30 @@ const MotivationalText: React.FC<MotivationalTextProps> = ({total, votedFor, unt
 		),
 		no_votes_today: (
 			<UI.Text>
-				Start your day well! You have <UI.Text variant="bold">{total}</UI.Text> tracked habits to
-				vote for. And {untracked} untracked habits.
+				Start your day well! You have <UI.Text variant="bold">{total}</UI.Text>
+				tracked habits to vote for. And {untracked} untracked habits.
 			</UI.Text>
 		),
 		not_all_voted: (
 			<UI.Column>
 				<UI.Text>You're on a good track!</UI.Text>
 				<UI.Text>
-					You have <UI.Text variant="bold">{total - votedFor}</UI.Text> tracked habits to vote for
-					left out of <UI.Text variant="bold">{total}</UI.Text> (and {untracked} untracked habits).
+					You have <UI.Text variant="bold">{total - votedFor}</UI.Text>
+					tracked habits to vote for left out of <UI.Text variant="bold">{total}</UI.Text> (and{" "}
+					{untracked} untracked habits).
 				</UI.Text>
 			</UI.Column>
 		),
 		all_voted: (
 			<UI.Column>
 				<UI.Row>
-					<UI.Text variant="bold">Congratulations! </UI.Text>
+					<UI.Text variant="bold">Congratulations!</UI.Text>
 					<UI.Text ml="6">
-						You voted for every one of <UI.Text variant="bold">{total}</UI.Text> tracked habits
-						today!
+						You voted for every one of <UI.Text variant="bold">{total}</UI.Text>
+						tracked habits today!
 					</UI.Text>
 				</UI.Row>
-				<UI.Text> You also have {untracked} untracked habits.</UI.Text>
+				<UI.Text>You also have {untracked} untracked habits.</UI.Text>
 			</UI.Column>
 		),
 	};

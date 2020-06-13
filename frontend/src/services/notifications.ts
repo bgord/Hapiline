@@ -1,5 +1,5 @@
 import {_internal_api} from "./api";
-import {Notification, DraftNotificationPayload} from "../interfaces/index";
+import {Notification, DraftNotificationPayload} from "../models";
 
 export const getNotificationsRequest = (_key: "notifications") =>
 	_internal_api.get<Notification[]>("/notifications").then(response => response.data);

@@ -10,12 +10,7 @@ import * as UI from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
 import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
-import {
-	Habit,
-	HabitVote,
-	HabitWithPossibleHabitVote,
-	DayCellWithFullStats,
-} from "./interfaces/index";
+import {Habit, HabitVote, HabitWithPossibleHabitVote, DayCellWithFullStats} from "./models";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";

@@ -9,7 +9,7 @@ import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useUserProfile} from "./contexts/auth-context";
 import * as UI from "./ui";
-import {NewEmailPayload, UpdatePasswordPayload} from "./interfaces/index";
+import {NewEmailPayload, UpdatePasswordPayload} from "./models";
 import {formatTime} from "./config/DATE_FORMATS";
 
 export const ProfileWindow = () => {
@@ -303,7 +303,7 @@ const DeleteAccount = () => {
 			{modalStatus === "editing" && (
 				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
 					<AlertDialogLabel>
-						<UI.Header variant="small">Do you really want to delete your account? </UI.Header>
+						<UI.Header variant="small">Do you really want to delete your account?</UI.Header>
 					</AlertDialogLabel>
 					<UI.Row mt="48" mainAxis="between">
 						<UI.Button variant="danger" onClick={confirmDeletion}>

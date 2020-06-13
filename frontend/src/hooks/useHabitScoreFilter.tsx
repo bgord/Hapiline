@@ -2,11 +2,13 @@ import React from "react";
 
 import * as UI from "../ui";
 
-import {Habit, HabitScores, HabitScoreType} from "../interfaces/index";
+import {Habit, HabitScores, HabitScoreType} from "../models";
 
 type HabitScoreFilter = HabitScoreType | "all-scores";
 
-const scoreFilterToFunction: {[key in HabitScoreFilter]: (habit: Habit) => boolean} = {
+const scoreFilterToFunction: {
+	[key in HabitScoreFilter]: (habit: Habit) => boolean;
+} = {
 	"all-scores": () => true,
 	positive: habit => habit.score === HabitScores.positive,
 	neutral: habit => habit.score === HabitScores.neutral,

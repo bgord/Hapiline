@@ -5,7 +5,7 @@ import React from "react";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-import {UserProfile, LoginPayload} from "./interfaces/index";
+import {UserProfile, LoginPayload} from "./models";
 import * as UI from "./ui";
 
 export const LoginWindow: React.FC = () => {
