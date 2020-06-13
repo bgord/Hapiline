@@ -45,13 +45,14 @@ export const HabitsWindow = () => {
 	const habitScoreFilter = useHabitScoreFilter();
 	const habitSearch = useHabitSearch();
 
-	const habitCounts = getHabitCounts(habits);
+	const numbersOfHabitsByQueries = getNumbersOfHabitsByQueries(habits);
 
 	const filteredHabits = habits
 		.filter(habitScoreFilter.filterFunction)
 		.filter(habitStrengthFilter.filterFunction)
 		.filter(habit => habitSearch.filterFn(habit.name));
-	const howManyResults = filteredHabits.length;
+
+	const numberOfHabitResults = filteredHabits.length;
 
 	function onDragEnd(result: DropResult) {
 		if (!result.destination) return;
@@ -118,32 +119,32 @@ export const HabitsWindow = () => {
 								<UI.Text variant="semi-bold">Scores</UI.Text>
 								<UI.Row mt="24" crossAxis="center">
 									<HabitScoreFilters.Positive.Input
-										disabled={habitCounts.positive === 0}
+										disabled={numbersOfHabitsByQueries.positive === 0}
 										value={habitScoreFilter.value}
 										onChange={habitScoreFilter.onChange}
 									/>
 									<HabitScoreFilters.Positive.Label>
-										Positive ({habitCounts.positive})
+										Positive ({numbersOfHabitsByQueries.positive})
 									</HabitScoreFilters.Positive.Label>
 								</UI.Row>
 								<UI.Row mt="12" crossAxis="center">
 									<HabitScoreFilters.Neutral.Input
-										disabled={habitCounts.neutral === 0}
+										disabled={numbersOfHabitsByQueries.neutral === 0}
 										value={habitScoreFilter.value}
 										onChange={habitScoreFilter.onChange}
 									/>
 									<HabitScoreFilters.Neutral.Label>
-										Neutral ({habitCounts.neutral})
+										Neutral ({numbersOfHabitsByQueries.neutral})
 									</HabitScoreFilters.Neutral.Label>
 								</UI.Row>
 								<UI.Row mt="12" crossAxis="center">
 									<HabitScoreFilters.Negative.Input
-										disabled={habitCounts.negative === 0}
+										disabled={numbersOfHabitsByQueries.negative === 0}
 										value={habitScoreFilter.value}
 										onChange={habitScoreFilter.onChange}
 									/>
 									<HabitScoreFilters.Negative.Label>
-										Negative ({habitCounts.negative})
+										Negative ({numbersOfHabitsByQueries.negative})
 									</HabitScoreFilters.Negative.Label>
 								</UI.Row>
 								<UI.Row mt="12" crossAxis="center">
@@ -152,7 +153,7 @@ export const HabitsWindow = () => {
 										onChange={habitScoreFilter.onChange}
 									/>
 									<HabitScoreFilters.All.Label>
-										All scores ({habitCounts.all})
+										All scores ({numbersOfHabitsByQueries.all})
 									</HabitScoreFilters.All.Label>
 								</UI.Row>
 							</UI.Column>
@@ -162,30 +163,30 @@ export const HabitsWindow = () => {
 									<HabitStrengthFilters.Established.Input
 										value={habitStrengthFilter.value}
 										onChange={habitStrengthFilter.onChange}
-										disabled={habitCounts.established === 0}
+										disabled={numbersOfHabitsByQueries.established === 0}
 									/>
 									<HabitStrengthFilters.Established.Label>
-										Established ({habitCounts.established})
+										Established ({numbersOfHabitsByQueries.established})
 									</HabitStrengthFilters.Established.Label>
 								</UI.Row>
 								<UI.Row mt="12">
 									<HabitStrengthFilters.Developing.Input
 										value={habitStrengthFilter.value}
 										onChange={habitStrengthFilter.onChange}
-										disabled={habitCounts.developing === 0}
+										disabled={numbersOfHabitsByQueries.developing === 0}
 									/>
 									<HabitStrengthFilters.Developing.Label>
-										Developing ({habitCounts.developing})
+										Developing ({numbersOfHabitsByQueries.developing})
 									</HabitStrengthFilters.Developing.Label>
 								</UI.Row>
 								<UI.Row mt="12">
 									<HabitStrengthFilters.Fresh.Input
 										value={habitStrengthFilter.value}
 										onChange={habitStrengthFilter.onChange}
-										disabled={habitCounts.fresh === 0}
+										disabled={numbersOfHabitsByQueries.fresh === 0}
 									/>
 									<HabitStrengthFilters.Fresh.Label>
-										Fresh ({habitCounts.fresh})
+										Fresh ({numbersOfHabitsByQueries.fresh})
 									</HabitStrengthFilters.Fresh.Label>
 								</UI.Row>
 								<UI.Row mt="12">
@@ -194,7 +195,7 @@ export const HabitsWindow = () => {
 										onChange={habitStrengthFilter.onChange}
 									/>
 									<HabitStrengthFilters.All.Label>
-										All strengths ({habitCounts.all})
+										All strengths ({numbersOfHabitsByQueries.all})
 									</HabitStrengthFilters.All.Label>
 								</UI.Row>
 							</UI.Column>
@@ -222,8 +223,8 @@ export const HabitsWindow = () => {
 					</UI.Row>
 
 					<UI.Row mainAxis="end" mt="24" mb="24" px="24">
-						<UI.Text data-testid="habit-search-result-count">
-							<UI.Text variant="bold">{howManyResults}</UI.Text> results
+						<UI.Text data-testid="number-of-habit-search-results">
+							<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
 						</UI.Text>
 					</UI.Row>
 
@@ -282,20 +283,22 @@ function reorder(habits: Habit[], fromIndex: number, toIndex: number): Habit[] {
 	return result;
 }
 
-function getHabitCounts(habits: Habit[]) {
-	const countByScore = (score: Habit["score"]): number =>
-		habits.filter(habit => habit.score === score).length;
+function getNumbersOfHabitsByQueries(habits: Habit[]) {
+	function getNumberOfHabitsByScore(score: Habit["score"]): number {
+		return habits.filter(habit => habit.score === score).length;
+	}
 
-	const countByStrength = (strength: Habit["strength"]): number =>
-		habits.filter(habit => habit.strength === strength).length;
+	function getNumberOfHabitsByStrength(strength: Habit["strength"]): number {
+		return habits.filter(habit => habit.strength === strength).length;
+	}
 
 	return {
-		positive: countByScore("positive"),
-		neutral: countByScore("neutral"),
-		negative: countByScore("negative"),
-		established: countByStrength("established"),
-		developing: countByStrength("developing"),
-		fresh: countByStrength("fresh"),
+		positive: getNumberOfHabitsByScore("positive"),
+		neutral: getNumberOfHabitsByScore("neutral"),
+		negative: getNumberOfHabitsByScore("negative"),
+		established: getNumberOfHabitsByStrength("established"),
+		developing: getNumberOfHabitsByStrength("developing"),
+		fresh: getNumberOfHabitsByStrength("fresh"),
 		all: habits.length,
 	};
 }
