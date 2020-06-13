@@ -43,12 +43,12 @@ export const DashboardMotivationalText: React.FC<{
 		all_voted: (
 			<UI.Column>
 				<UI.Row>
-					<UI.Text variant="bold">Congratulations!</UI.Text>
+					<UI.Text variant="bold">Congratulations!</UI.Text>{" "}
 					<UI.Text ml="6">
-						You voted for every one of <UI.Text variant="bold">{total}</UI.Text>
-						tracked habits today!
+						You voted for every one of <UI.Text variant="bold">{total}</UI.Text> tracked habits
+						today!
 					</UI.Text>
-				</UI.Row>
+				</UI.Row>{" "}
 				<UI.Text>You also have {untracked} untracked habits.</UI.Text>
 			</UI.Column>
 		),
