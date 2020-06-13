@@ -4,23 +4,23 @@ import React from "react";
 import deepEqual from "fast-deep-equal";
 import VisuallyHidden from "@reach/visually-hidden";
 
-import {ChevronUpIcon} from "./ui/icons/ChevronUp";
-import {ChevronDownIcon} from "./ui/icons/ChevronDown";
+import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
+import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
 
-import {DayDialog} from "./DayDialog";
-import {DaySummaryChart} from "./DayDialogSummary";
-import {ExpandContractList} from "./ui/ExpandContractList";
-import {HabitItemDialog} from "./HabitItemDialog";
-import {api} from "./services/api";
-import {useQueryParams} from "./hooks/useQueryParam";
-import {formatToday} from "./services/date-formatter";
-import {pluralize} from "./services/pluralize";
-import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {useErrorToast} from "./contexts/toasts-context";
-import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "./models";
-import {UrlBuilder} from "./services/url-builder";
-import {useToggle} from "./hooks/useToggle";
-import * as UI from "./ui";
+import {DayDialog} from "../../DayDialog";
+import {DaySummaryChart} from "../../DayDialogSummary";
+import {ExpandContractList} from "../../ui/ExpandContractList";
+import {HabitItemDialog} from "../../HabitItemDialog";
+import {api} from "../../services/api";
+import {useQueryParams} from "../../hooks/useQueryParam";
+import {formatToday} from "../../services/date-formatter";
+import {pluralize} from "../../services/pluralize";
+import {useDocumentTitle} from "../../hooks/useDocumentTitle";
+import {useErrorToast} from "../../contexts/toasts-context";
+import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "../../models";
+import {UrlBuilder} from "../../services/url-builder";
+import {useToggle} from "../../hooks/useToggle";
+import * as UI from "../../ui";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
