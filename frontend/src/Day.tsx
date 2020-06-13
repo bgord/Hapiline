@@ -23,9 +23,9 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 	const isThisDayToday = isToday(new Date(day));
 	const isThisDayInTheFuture = isFuture(thisDay);
 
-	const howManyHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, thisDay).length;
+	const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, thisDay).length;
 
-	const isDayDialogAvailable = !isThisDayInTheFuture && howManyHabitsAvailableAtThisDay > 0;
+	const isDayDialogAvailable = !isThisDayInTheFuture && numberOfHabitsAvailableAtThisDay > 0;
 	const isDayDialogVisible = previewDay && isSameDay(new Date(previewDay), thisDay);
 
 	function openDialog() {
@@ -67,7 +67,7 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 			)}
 			{isDayDialogAvailable && (
 				<DaySummaryChart
-					maximumVotes={howManyHabitsAvailableAtThisDay}
+					maximumVotes={numberOfHabitsAvailableAtThisDay}
 					day={formatDay(thisDay)}
 					{...stats}
 				/>
