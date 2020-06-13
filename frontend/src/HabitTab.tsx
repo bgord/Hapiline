@@ -31,6 +31,8 @@ type HabitTabProps = Omit<
 export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) => {
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
+	const [queryParams, updateQueryParams] = useQueryParams();
+
 	const trackedHabits = useTrackedHabits();
 
 	const {on: isChartLegendVisible, toggle: toggleIsChartLegendVisible} = useToggle();
@@ -46,11 +48,8 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 		},
 	});
 
-	const [queryParams, updateQueryParams] = useQueryParams();
-	const highlightedHabitId = queryParams.highlighted_habit_id;
-
 	const possiblyHighlightedHabitName = trackedHabits.find(
-		habit => habit.id === Number(highlightedHabitId),
+		habit => habit.id === Number(queryParams.highlighted_habit_id),
 	)?.name;
 
 	const habitSearch = useHabitSearch(possiblyHighlightedHabitName);
@@ -71,13 +70,14 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 		},
 	);
 
-	const isThereNoTrackedHabits = habitsAvailableAtThisDay.length === 0;
+	const numberOfTrackedHabits = habitsAvailableAtThisDay.length;
+	const areThereNoTrackedHabits = numberOfTrackedHabits === 0;
 
-	const howManyHabitsAtAll = habitsWithPossibleVote.length;
-	const howManyUnvotedHabits = habitsWithPossibleVote.filter(({vote}) => !vote?.vote).length;
-	const howManyVotedHabits = habitsWithPossibleVote.filter(({vote}) => vote?.vote).length;
+	const numberOfHabitsAtAll = habitsWithPossibleVote.length;
+	const numberOfHabitsWithoutVotes = habitsWithPossibleVote.filter(({vote}) => !vote?.vote).length;
+	const numberOfHabitsWithVote = habitsWithPossibleVote.filter(({vote}) => vote?.vote).length;
 
-	const doesEveryHabitHasAVote = howManyUnvotedHabits === 0 && howManyHabitsAtAll > 0;
+	const doesEveryHabitHasVote = numberOfHabitsWithoutVotes === 0 && numberOfHabitsAtAll > 0;
 
 	function clearHighlightedHabitId() {
 		const {highlighted_habit_id, ...rest} = queryParams;
@@ -90,7 +90,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 	return (
 		<UI.Column px="24">
-			{doesEveryHabitHasAVote && (
+			{doesEveryHabitHasVote && (
 				<UI.SuccessBanner mt="24">
 					<UI.Text ml="12" style={{color: "#025D26"}}>
 						Congratulations! You've voted for every habit.
@@ -100,6 +100,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					</UI.Emoji>
 				</UI.SuccessBanner>
 			)}
+
 			<UI.Row mt="24">
 				<UI.Button
 					onClick={toggleIsChartLegendVisible}
@@ -109,12 +110,15 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				>
 					<QuestionMarkIcon />
 				</UI.Button>
+
 				<DaySummaryChart maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
+
 				<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
 					<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
 					{" in total"}
 				</UI.Text>
 			</UI.Row>
+
 			<UI.Row mt="6" crossAxis="center">
 				{isChartLegendVisible && (
 					<UI.Row mb="6" mainAxis="center">
@@ -122,18 +126,21 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 						<UI.Text>no votes</UI.Text>
 					</UI.Row>
 				)}
+
 				{isChartLegendVisible && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
 						<UI.Text>regress votes</UI.Text>
 					</UI.Row>
 				)}
+
 				{isChartLegendVisible && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</UI.Text>
 						<UI.Text>plateau votes</UI.Text>
 					</UI.Row>
 				)}
+
 				{isChartLegendVisible && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "#8bdb90"}}>·</UI.Text>
@@ -141,30 +148,31 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					</UI.Row>
 				)}
 			</UI.Row>
+
 			<UI.Row mt="48" crossAxis="center">
 				<HabitVoteFilters.Voted.Input
 					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
-					disabled={howManyVotedHabits === 0}
+					disabled={numberOfHabitsWithVote === 0}
 				/>
 				<HabitVoteFilters.Voted.Label>
-					Show voted ({howManyVotedHabits})
+					Show voted ({numberOfHabitsWithVote})
 				</HabitVoteFilters.Voted.Label>
 
 				<HabitVoteFilters.Unvoted.Input
 					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
-					disabled={howManyUnvotedHabits === 0}
+					disabled={numberOfHabitsWithoutVotes === 0}
 				/>
 				<HabitVoteFilters.Unvoted.Label>
-					Show unvoted ({howManyUnvotedHabits})
+					Show unvoted ({numberOfHabitsWithoutVotes})
 				</HabitVoteFilters.Unvoted.Label>
 
 				<HabitVoteFilters.All.Input
 					value={habitVoteFilter.value}
 					onChange={habitVoteFilter.onChange}
 				/>
-				<HabitVoteFilters.All.Label>Show all ({howManyHabitsAtAll})</HabitVoteFilters.All.Label>
+				<HabitVoteFilters.All.Label>Show all ({numberOfHabitsAtAll})</HabitVoteFilters.All.Label>
 
 				<UI.Button
 					ml="auto"
@@ -183,6 +191,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			</UI.Row>
 			<UI.Row mt="24" crossAxis="end">
 				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
+
 				<UI.Button
 					ml="12"
 					onClick={() => {
@@ -193,16 +202,19 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				>
 					Clear
 				</UI.Button>
-				<UI.Text ml="auto" data-testid="habit-search-result-count">
+
+				<UI.Text ml="auto" data-testid="number-of-habit-search-results">
 					<UI.Text variant="bold">{filteredHabitsWithPossibleVote.length}</UI.Text> results
 				</UI.Text>
 			</UI.Row>
-			{isThereNoTrackedHabits && (
+
+			{areThereNoTrackedHabits && (
 				<UI.InfoBanner size="big" mt="48">
 					No habits available this day.
 				</UI.InfoBanner>
 			)}
-			{!isThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
+
+			{!areThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
 				<UI.Column pb="48">
 					<UI.Row mainAxis="between" crossAxis="center" mt="48" mb="24">
 						<UI.Header variant="extra-small">Tracked habits</UI.Header>
