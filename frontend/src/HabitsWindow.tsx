@@ -20,14 +20,14 @@ import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {Habit, ReorderHabitPayload} from "./models";
 
 export const HabitsWindow = () => {
-	const getHabitsRequestState = useHabitsState();
-	const [subview] = useQueryParam("subview");
-
-	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
-
 	useDocumentTitle("Hapiline - habit list");
 
+	const getHabitsRequestState = useHabitsState();
+	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
+
 	const habits = useHabits();
+
+	const [subview] = useQueryParam("subview");
 
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
