@@ -1,20 +1,15 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import {QueryResult} from "react-query";
 
 import {DashboardHabitVoteStatsForDateRanges} from "../../models";
 import * as UI from "../../ui";
 
-type DashboardMotivationalTextProps = {
-	total: DashboardHabitVoteStatsForDateRanges["today"]["maximumVotes"];
-	votedFor: DashboardHabitVoteStatsForDateRanges["today"]["allVotes"];
-	untracked: DashboardHabitVoteStatsForDateRanges["today"]["untrackedHabits"];
-};
+export const DashboardMotivationalText: React.FC<{
+	request: QueryResult<DashboardHabitVoteStatsForDateRanges>;
+}> = ({request}) => {
+	const {total, votedFor, untracked} = extractFromRequest(request);
 
-export const DashboardMotivationalText: React.FC<DashboardMotivationalTextProps> = ({
-	total,
-	votedFor,
-	untracked,
-}) => {
 	function selectStrategy() {
 		if (total === 0) return "no_habits";
 		if (votedFor === 0) return "no_votes_today";
@@ -69,3 +64,19 @@ export const DashboardMotivationalText: React.FC<DashboardMotivationalTextProps>
 		</UI.Row>
 	);
 };
+
+type ExtractedType = {
+	total: number;
+	untracked: number;
+	votedFor: number;
+};
+
+function extractFromRequest(
+	request: QueryResult<DashboardHabitVoteStatsForDateRanges>,
+): ExtractedType {
+	return {
+		total: request?.data?.today?.maximumVotes ?? 0,
+		untracked: request?.data?.today?.untrackedHabits ?? 0,
+		votedFor: request?.data?.today?.allVotes ?? 0,
+	};
+}

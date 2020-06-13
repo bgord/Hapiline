@@ -21,6 +21,7 @@ import {DashboardProgressStreakList} from "./DashboardProgressStreakList";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
+
 	const [{subview, preview_habit_id}, updateQueryParams, updateUrl] = useQueryParams();
 	const triggerErrorToast = useErrorToast();
 
@@ -54,8 +55,6 @@ export const DashboardWindow = () => {
 
 	// TODO: Try to find a way to avoid ?? 0 statements.
 	const howManyHabitsToday = todayStats?.maximumVotes ?? 0;
-	const howManyUntrackedHabitsToday = todayStats?.untrackedHabits ?? 0;
-	const howManyVotesToday = todayStats?.allVotes ?? 0;
 
 	// TODO: Try to find a way to avoid ?? 0 statements.
 	const statsForToday = {
@@ -102,11 +101,7 @@ export const DashboardWindow = () => {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
-					<DashboardMotivationalText
-						untracked={howManyUntrackedHabitsToday}
-						total={howManyHabitsToday}
-						votedFor={howManyVotesToday}
-					/>
+					<DashboardMotivationalText request={getDashboardStatsRequestState} />
 
 					{howManyHabitsToday > 0 && (
 						<UI.Column data-testid="chart-today">
