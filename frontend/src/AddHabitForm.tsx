@@ -30,12 +30,7 @@ export const AddHabitForm: React.FC = () => {
 
 	const [addHabit, addHabitRequestState] = useMutation<Habit, NewHabitPayload>(api.habit.post, {
 		onSuccess: () => {
-			setName("");
-			setScore("positive");
-			setStrength("established");
-			setDescription("");
-			setIsTrackable(true);
-
+			resetForm();
 			getHabitsRequestState.refetch();
 			triggerSuccessToast("Habit successfully addedd!");
 		},
@@ -65,6 +60,14 @@ export const AddHabitForm: React.FC = () => {
 		if (isHabitStrength(event.target.value)) {
 			setStrength(event.target.value);
 		}
+	}
+
+	function resetForm() {
+		setName("");
+		setScore("positive");
+		setStrength("established");
+		setDescription("");
+		setIsTrackable(true);
 	}
 
 	return (
@@ -169,18 +172,22 @@ export const AddHabitForm: React.FC = () => {
 					<UI.Error mt="6">{descriptionInlineErrorMessage}</UI.Error>
 				</UI.ShowIf>
 
-				<UI.Button
-					style={{width: "125px"}}
-					ml="auto"
-					mt="48"
-					mb="24"
-					variant="primary"
-					layout="with-icon"
-					type="submit"
-				>
-					<PlusCircleIcon mr="auto" />
-					Add habit
-				</UI.Button>
+				<UI.Row mt="48" mb="24" mainAxis="end">
+					<UI.Button variant="outlined" onClick={resetForm}>
+						Reset form
+					</UI.Button>
+
+					<UI.Button
+						style={{width: "125px"}}
+						ml="24"
+						variant="primary"
+						layout="with-icon"
+						type="submit"
+					>
+						<PlusCircleIcon mr="auto" />
+						Add habit
+					</UI.Button>
+				</UI.Row>
 
 				<UI.ShowIf request={addHabitRequestState} is="error">
 					<UI.ErrorBanner size="big">
