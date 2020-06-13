@@ -12,30 +12,30 @@ import {Habit, habitStrengthToBadgeVariant, voteToBgColor, DayCellWithFullStats}
 import {UrlBuilder} from "./services/url-builder";
 
 type DayDialogSummaryProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
-	maximumVotes: number;
+	numberOfPossibleVotes: number;
 };
 
 export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElements["div"]> = ({
-	maximumVotes,
+	numberOfPossibleVotes,
 	...stats
 }) => {
 	const missingVotesPercentage = Number(
-		((stats.numberOfMissingVotes ?? 0) / maximumVotes) * 100,
+		((stats.numberOfMissingVotes ?? 0) / numberOfPossibleVotes) * 100,
 	).toFixed(2);
 	const regressVotesPercentage = Number(
-		((stats.numberOfRegressVotes ?? 0) / maximumVotes) * 100,
+		((stats.numberOfRegressVotes ?? 0) / numberOfPossibleVotes) * 100,
 	).toFixed(2);
 	const plateauVotesPercentage = Number(
-		((stats.numberOfPlateauVotes ?? 0) / maximumVotes) * 100,
+		((stats.numberOfPlateauVotes ?? 0) / numberOfPossibleVotes) * 100,
 	).toFixed(2);
 	const progressVotesPercentage = Number(
-		((stats.numberOfProgressVotes ?? 0) / maximumVotes) * 100,
+		((stats.numberOfProgressVotes ?? 0) / numberOfPossibleVotes) * 100,
 	).toFixed(2);
 
-	const noVotesCellTitle = `No votes: ${stats.numberOfMissingVotes}/${maximumVotes} (${missingVotesPercentage}%)`;
-	const regressVotesCellTitle = `Regress: ${stats.numberOfRegressVotes}/${maximumVotes} (${regressVotesPercentage}%)`;
-	const plateauVotesCellTitle = `Plateau: ${stats.numberOfPlateauVotes}/${maximumVotes} (${plateauVotesPercentage}%)`;
-	const progressVotesCellTitle = `Progress: ${stats.numberOfProgressVotes}/${maximumVotes} (${progressVotesPercentage}%)`;
+	const noVotesCellTitle = `No votes: ${stats.numberOfMissingVotes}/${numberOfPossibleVotes} (${missingVotesPercentage}%)`;
+	const regressVotesCellTitle = `Regress: ${stats.numberOfRegressVotes}/${numberOfPossibleVotes} (${regressVotesPercentage}%)`;
+	const plateauVotesCellTitle = `Plateau: ${stats.numberOfPlateauVotes}/${numberOfPossibleVotes} (${plateauVotesPercentage}%)`;
+	const progressVotesCellTitle = `Progress: ${stats.numberOfProgressVotes}/${numberOfPossibleVotes} (${progressVotesPercentage}%)`;
 
 	return (
 		<UI.Row width="100%">

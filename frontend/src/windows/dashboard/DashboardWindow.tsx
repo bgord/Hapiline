@@ -53,7 +53,7 @@ export const DashboardWindow = () => {
 	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
 	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
-	const numberOfHabitsAvailableToday = todayStats?.maximumVotes ?? 0;
+	const numberOfHabitsAvailableToday = todayStats?.numberOfPossibleVotes ?? 0;
 	const shouldTodayStatsBeDisplayed = numberOfHabitsAvailableToday > 0;
 	const shouldLastWeekStatsBeDisplayed =
 		numberOfHabitsAvailableToday > 0 && !deepEqual(todayStats, lastWeekStats);

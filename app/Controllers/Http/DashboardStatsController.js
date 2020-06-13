@@ -17,7 +17,7 @@ class DashboardStatsController {
             h.created_at::date <= NOW()::date
             AND h.user_id = :user_id
             AND h.is_trackable IS TRUE
-        )::integer as "maximumVotes",
+        )::integer as "numberOfPossibleVotes",
 
         (
           SELECT COUNT(*)
@@ -36,11 +36,11 @@ class DashboardStatsController {
 		);
 		const resultForToday = _resultForToday.rows[0];
 
-		const _resultForMaximumVotesLastWeek = await Database.raw(
+		const _numberOfPossibleVotesLastWeek = await Database.raw(
 			`
       SELECT
         SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
-        OVER (ORDER BY day)::integer AS "maximumVotesLastWeek"
+        OVER (ORDER BY day)::integer AS "numberOfPossibleVotesLastWeek"
       FROM GENERATE_SERIES(NOW() - '6 days'::interval, NOW(), '1 day') as day
       LEFT JOIN habits ON habits.created_at::date <= day::date
       WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
@@ -50,7 +50,7 @@ class DashboardStatsController {
       `,
 			{user_id: auth.user.id},
 		);
-		const {maximumVotesLastWeek} = _resultForMaximumVotesLastWeek.rows[0] || 0;
+		const {numberOfPossibleVotesLastWeek} = _numberOfPossibleVotesLastWeek.rows[0] || 0;
 
 		const _resultForLastWeek = await Database.raw(
 			`
@@ -69,11 +69,11 @@ class DashboardStatsController {
 		);
 		const resultForLastWeek = _resultForLastWeek.rows[0];
 
-		const _resultForMaximumVotesLastMonth = await Database.raw(
+		const _numberOfPossibleVotesLastMonth = await Database.raw(
 			`
       SELECT
         SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
-        OVER (ORDER BY day)::integer AS "maximumVotesLastMonth"
+        OVER (ORDER BY day)::integer AS "numberOfPossibleVotesLastMonth"
       FROM GENERATE_SERIES(NOW() - '29 days'::interval, NOW(), '1 day') as day
       LEFT JOIN habits ON habits.created_at::date <= day::date
       WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
@@ -83,7 +83,7 @@ class DashboardStatsController {
       `,
 			{user_id: auth.user.id},
 		);
-		const {maximumVotesLastMonth} = _resultForMaximumVotesLastMonth.rows[0] || 0;
+		const {numberOfPossibleVotesLastMonth} = _numberOfPossibleVotesLastMonth.rows[0] || 0;
 
 		const _resultForLastMonth = await Database.raw(
 			`
@@ -105,20 +105,29 @@ class DashboardStatsController {
 		return response.send({
 			today: {
 				...resultForToday,
-				numberOfMissingVotes: getNumberOfMissingVotes(resultForToday.maximumVotes, resultForToday),
+				numberOfMissingVotes: getNumberOfMissingVotes(
+					resultForToday.numberOfPossibleVotes,
+					resultForToday,
+				),
 				allVotes: getNumberOfAllVotes(resultForToday),
 			},
 			lastWeek: {
 				...resultForLastWeek,
-				numberOfMissingVotes: getNumberOfMissingVotes(maximumVotesLastWeek, resultForLastWeek),
+				numberOfMissingVotes: getNumberOfMissingVotes(
+					numberOfPossibleVotesLastWeek,
+					resultForLastWeek,
+				),
 				allVotes: getNumberOfAllVotes(resultForLastWeek),
-				maximumVotes: maximumVotesLastWeek || 0,
+				numberOfPossibleVotes: numberOfPossibleVotesLastWeek || 0,
 			},
 			lastMonth: {
 				...resultForLastMonth,
-				numberOfMissingVotes: getNumberOfMissingVotes(maximumVotesLastMonth, resultForLastMonth),
+				numberOfMissingVotes: getNumberOfMissingVotes(
+					numberOfPossibleVotesLastMonth,
+					resultForLastMonth,
+				),
 				allVotes: getNumberOfAllVotes(resultForLastMonth),
-				maximumVotes: maximumVotesLastMonth || 0,
+				numberOfPossibleVotes: numberOfPossibleVotesLastMonth || 0,
 			},
 		});
 	}

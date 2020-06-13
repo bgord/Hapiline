@@ -203,8 +203,9 @@ type DashboardHabitVoteStats = {
   numberOfPlateauVotes: number;
   numberOfRegressVotes: number;
   numberOfMissingVotes: number;
+  numberOfPossibleVotes: number;
+  // TODO
   allVotes: number;
-  maximumVotes: number;
 };
 
 export type DashboardHabitVoteStatsForDateRanges = {

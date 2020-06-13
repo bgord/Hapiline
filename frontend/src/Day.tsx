@@ -67,7 +67,7 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 			)}
 			{isDayDialogAvailable && (
 				<DaySummaryChart
-					maximumVotes={numberOfHabitsAvailableAtThisDay}
+					numberOfPossibleVotes={numberOfHabitsAvailableAtThisDay}
 					day={formatDay(thisDay)}
 					{...stats}
 				/>

@@ -68,7 +68,7 @@ test("full flow", async ({client, assert}) => {
 			numberOfRegressVotes: 1,
 			numberOfMissingVotes: 3,
 			allVotes: 2,
-			maximumVotes: 5,
+			numberOfPossibleVotes: 5,
 			numberOfUntrackedHabits: 0,
 		},
 		lastWeek: {
@@ -77,7 +77,7 @@ test("full flow", async ({client, assert}) => {
 			numberOfRegressVotes: 1,
 			numberOfMissingVotes: 6,
 			allVotes: 3,
-			maximumVotes: 9,
+			numberOfPossibleVotes: 9,
 		},
 		lastMonth: {
 			numberOfProgressVotes: 1,
@@ -85,7 +85,7 @@ test("full flow", async ({client, assert}) => {
 			numberOfRegressVotes: 1,
 			numberOfMissingVotes: 6,
 			allVotes: 3,
-			maximumVotes: 9,
+			numberOfPossibleVotes: 9,
 		},
 	});
 
@@ -116,7 +116,7 @@ test("full flow", async ({client, assert}) => {
 			numberOfRegressVotes: 1,
 			numberOfMissingVotes: 3,
 			allVotes: 2,
-			maximumVotes: 5,
+			numberOfPossibleVotes: 5,
 			numberOfUntrackedHabits: 1,
 		},
 		lastWeek: {
@@ -125,7 +125,7 @@ test("full flow", async ({client, assert}) => {
 			numberOfRegressVotes: 1,
 			numberOfMissingVotes: 6,
 			allVotes: 3,
-			maximumVotes: 9,
+			numberOfPossibleVotes: 9,
 		},
 		lastMonth: {
 			numberOfProgressVotes: 1,
@@ -133,7 +133,7 @@ test("full flow", async ({client, assert}) => {
 			numberOfRegressVotes: 1,
 			numberOfMissingVotes: 6,
 			allVotes: 3,
-			maximumVotes: 9,
+			numberOfPossibleVotes: 9,
 		},
 	});
 });
@@ -157,7 +157,7 @@ test("no habits", async ({client, assert}) => {
 			numberOfRegressVotes: 0,
 			numberOfMissingVotes: 0,
 			allVotes: 0,
-			maximumVotes: 0,
+			numberOfPossibleVotes: 0,
 			numberOfUntrackedHabits: 0,
 		},
 		lastWeek: {
@@ -166,7 +166,7 @@ test("no habits", async ({client, assert}) => {
 			numberOfRegressVotes: 0,
 			numberOfMissingVotes: 0,
 			allVotes: 0,
-			maximumVotes: 0,
+			numberOfPossibleVotes: 0,
 		},
 		lastMonth: {
 			numberOfProgressVotes: 0,
@@ -174,7 +174,7 @@ test("no habits", async ({client, assert}) => {
 			numberOfRegressVotes: 0,
 			numberOfMissingVotes: 0,
 			allVotes: 0,
-			maximumVotes: 0,
+			numberOfPossibleVotes: 0,
 		},
 	});
 });

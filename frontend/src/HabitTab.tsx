@@ -108,7 +108,11 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					<QuestionMarkIcon />
 				</UI.Button>
 
-				<DaySummaryChart maximumVotes={habitsAvailableAtThisDay.length} day={day} {...stats} />
+				<DaySummaryChart
+					numberOfPossibleVotes={habitsAvailableAtThisDay.length}
+					day={day}
+					{...stats}
+				/>
 
 				<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
 					<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
