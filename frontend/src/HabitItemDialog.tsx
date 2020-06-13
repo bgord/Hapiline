@@ -17,7 +17,7 @@ import {HabitCharts} from "./HabitCharts";
 import {HabitVoteCommentHistory} from "./HabitVoteCommentHistory";
 import {Habit, DetailedHabit, DraftHabitPayload} from "./models";
 import {api} from "./services/api";
-import {formatTime} from "./config/DATE_FORMATS";
+import {formatTime} from "./services/date-formatter";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";

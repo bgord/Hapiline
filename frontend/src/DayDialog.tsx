@@ -8,7 +8,7 @@ import {useQueryParams} from "./hooks/useQueryParam";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {HabitTab} from "./HabitTab";
 import {JournalTab} from "./JournalTab";
-import {formatDayName} from "./config/DATE_FORMATS";
+import {formatDayName} from "./services/date-formatter";
 
 type DayDialogProps = Omit<
 	DayCellWithFullStats,

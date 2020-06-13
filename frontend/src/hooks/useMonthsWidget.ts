@@ -2,7 +2,7 @@ import {eachDayOfInterval, endOfMonth, startOfMonth, subMonths} from "date-fns";
 import React from "react";
 
 import {DayCell} from "../models";
-import {formatDay, formatMonth} from "../config/DATE_FORMATS";
+import {formatDay, formatMonth} from "../services/date-formatter";
 
 export type MonthOffset = number;
 

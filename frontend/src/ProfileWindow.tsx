@@ -10,7 +10,7 @@ import {useErrorToast} from "./contexts/toasts-context";
 import {useUserProfile} from "./contexts/auth-context";
 import * as UI from "./ui";
 import {NewEmailPayload, UpdatePasswordPayload} from "./models";
-import {formatTime} from "./config/DATE_FORMATS";
+import {formatTime} from "./services/date-formatter";
 
 export const ProfileWindow = () => {
 	const [profile] = useUserProfile();

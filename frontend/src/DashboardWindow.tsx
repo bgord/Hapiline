@@ -13,7 +13,7 @@ import {ExpandContractList} from "./ui/ExpandContractList";
 import {HabitItemDialog} from "./HabitItemDialog";
 import {api} from "./services/api";
 import {useQueryParams} from "./hooks/useQueryParam";
-import {formatToday} from "./config/DATE_FORMATS";
+import {formatToday} from "./services/date-formatter";
 import {pluralize} from "./services/pluralize";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast} from "./contexts/toasts-context";

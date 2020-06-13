@@ -5,7 +5,7 @@ import React from "react";
 import * as UI from "./ui";
 import {Habit, HabitVote} from "./models";
 import {api} from "./services/api";
-import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
+import {formatDay, formatShortDayName} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
 import {UrlBuilder} from "./services/url-builder";
 

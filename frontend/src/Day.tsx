@@ -5,7 +5,7 @@ import * as UI from "./ui";
 import {DayDialog} from "./DayDialog";
 import {DaySummaryChart} from "./DayDialogSummary";
 import {DayCellWithFullStats} from "./models";
-import {formatDay, formatShortDayName} from "./config/DATE_FORMATS";
+import {formatDay, formatShortDayName} from "./services/date-formatter";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";

@@ -13,7 +13,7 @@ import {
 	HabitVoteChartDateRanges,
 } from "./models";
 import {api} from "./services/api";
-import {formatDay} from "./config/DATE_FORMATS";
+import {formatDay} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
 
 export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
