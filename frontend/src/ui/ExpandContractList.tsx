@@ -6,14 +6,15 @@ import * as UI from "./";
 export const ExpandContractList: React.FC<{max: number}> = ({children, max}) => {
 	const [state, setState] = React.useState<"contracted" | "expanded">();
 
-	const itemCount = React.Children.count(children);
-	const itemsToExpandCount = itemCount - max;
-	const isExpandable = itemCount > max;
+	const numberOfItems = React.Children.count(children);
+	const numberOfItemsToExpand = numberOfItems - max;
+
+	const isExpandable = numberOfItems > max;
 
 	React.useEffect(() => {
-		if (itemCount > max) setState("contracted");
+		if (numberOfItems > max) setState("contracted");
 		else setState("expanded");
-	}, [itemCount, max]);
+	}, [numberOfItems, max]);
 
 	return (
 		<>
@@ -31,7 +32,7 @@ export const ExpandContractList: React.FC<{max: number}> = ({children, max}) => 
 				<>
 					{React.Children.toArray(children).filter((_, index) => index < max)}
 					<UI.Button mt="12" variant="outlined" onClick={() => setState("expanded")}>
-						Show more ({itemsToExpandCount})
+						Show more ({numberOfItemsToExpand})
 					</UI.Button>
 				</>
 			)}
