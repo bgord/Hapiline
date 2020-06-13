@@ -1,4 +1,5 @@
 const Database = use("Database");
+const get = require("lodash.get");
 
 class DashboardStatsController {
 	async index({auth, response}) {
@@ -104,42 +105,44 @@ class DashboardStatsController {
 		return response.send({
 			today: {
 				...resultForToday,
-				noVotes:
-					resultForToday.maximumVotes -
-						resultForToday.progressVotes -
-						resultForToday.plateauVotes -
-						resultForToday.regressVotes || 0,
-				allVotes:
-					resultForToday.progressVotes + resultForToday.plateauVotes + resultForToday.regressVotes,
+				noVotes: getNumberOfMissingVotes(resultForToday.maximumVotes, resultForToday),
+				allVotes: getNumberOfAllVotes(resultForToday),
 			},
 			lastWeek: {
 				...resultForLastWeek,
-				noVotes:
-					maximumVotesLastWeek -
-						resultForLastWeek.progressVotes -
-						resultForLastWeek.plateauVotes -
-						resultForLastWeek.regressVotes || 0,
-				allVotes:
-					resultForLastWeek.progressVotes +
-					resultForLastWeek.plateauVotes +
-					resultForLastWeek.regressVotes,
+				noVotes: getNumberOfMissingVotes(maximumVotesLastWeek, resultForLastWeek),
+				allVotes: getNumberOfAllVotes(resultForLastWeek),
 				maximumVotes: maximumVotesLastWeek || 0,
 			},
 			lastMonth: {
 				...resultForLastMonth,
-				noVotes:
-					maximumVotesLastMonth -
-						resultForLastMonth.progressVotes -
-						resultForLastMonth.plateauVotes -
-						resultForLastMonth.regressVotes || 0,
-				allVotes:
-					resultForLastMonth.progressVotes +
-					resultForLastMonth.plateauVotes +
-					resultForLastMonth.regressVotes,
+				noVotes: getNumberOfMissingVotes(maximumVotesLastMonth, resultForLastMonth),
+				allVotes: getNumberOfAllVotes(resultForLastMonth),
 				maximumVotes: maximumVotesLastMonth || 0,
 			},
 		});
 	}
+}
+
+function getNumberOfAllVotes(resultForTimePeriod) {
+	return (
+		get(resultForTimePeriod, "progressVotes", 0) +
+		get(resultForTimePeriod, "plateauVotes", 0) +
+		get(resultForTimePeriod, "regressVotes", 0)
+	);
+}
+
+function getNumberOfMissingVotes(_maximum, resultForTimePeriod) {
+	const maximum = _maximum || 0;
+
+	if (maximum === 0) return 0;
+
+	return (
+		maximum -
+		get(resultForTimePeriod, "progressVotes", 0) -
+		get(resultForTimePeriod, "plateauVotes", 0) -
+		get(resultForTimePeriod, "regressVotes", 0)
+	);
 }
 
 module.exports = DashboardStatsController;

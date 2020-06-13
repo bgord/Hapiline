@@ -21,7 +21,6 @@ class MonthsController {
 		// [{ day: '2020-06-11', numberOfHabits: 6 }]
 		//
 		// Includes only `day`s that have at least 1 created habit.
-		// TODO: Rewrite it as a plain SQL
 		const numberOfCreatedHabitsByDay = await Database.table("habits")
 			.select(
 				Database.raw("to_char(created_at::date, 'YYYY-MM-DD') as day"),
@@ -42,7 +41,6 @@ class MonthsController {
 		// ]
 		//
 		// Includes only `day`s that have at least one vote per given type.
-		// TODO: Rewrite it as a plain SQL
 		const numberOfVoteTypesByDay = await Database.select(
 			Database.raw("to_char(day::date, 'YYYY-MM-DD') as day"),
 			Database.raw('count(*)::integer as "numberOfVotes"'),
