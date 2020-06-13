@@ -12,16 +12,32 @@ import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
 import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./models";
+import {usePersistentState} from "./hooks/usePersistentState";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
 	const getHabitsRequestState = useHabitsState();
 
-	const [name, setName] = React.useState<NewHabitPayload["name"]>("");
-	const [score, setScore] = React.useState<NewHabitPayload["score"]>("positive");
-	const [strength, setStrength] = React.useState<NewHabitPayload["strength"]>("established");
-	const [description, setDescription] = React.useState<NewHabitPayload["description"]>("");
-	const [isTrackable, setIsTrackable] = React.useState<NewHabitPayload["is_trackable"]>(true);
+	const [name, setName] = usePersistentState<NewHabitPayload["name"]>("habit_name", "", isString);
+	const [score, setScore] = usePersistentState<NewHabitPayload["score"]>(
+		"habit_score",
+		"positive",
+		isHabitScore,
+	);
+
+	const [strength, setStrength] = usePersistentState<NewHabitPayload["strength"]>(
+		"habit_strength",
+		"established",
+		isHabitStrength,
+	);
+
+	const [description, setDescription] = usePersistentState<
+		NonNullable<NewHabitPayload["description"]>
+	>("habit_description", "", isString);
+
+	const [isTrackable, setIsTrackable] = usePersistentState<
+		NonNullable<NewHabitPayload["is_trackable"]>
+	>("habit_is_trackable", true, isBoolean);
 
 	const triggerSuccessToast = useSuccessToast();
 	const triggerUnexpectedErrorToast = useErrorToast();
@@ -146,7 +162,7 @@ export const AddHabitForm: React.FC = () => {
 							id="is_trackable"
 							name="is_trackable"
 							checked={Boolean(isTrackable)}
-							onChange={() => setIsTrackable(v => !v)}
+							onChange={() => setIsTrackable(!isTrackable)}
 						/>
 						<UI.Label ml="6" htmlFor="is_trackable">
 							Track this habit
@@ -198,3 +214,11 @@ export const AddHabitForm: React.FC = () => {
 		</Dialog>
 	);
 };
+
+function isString(value: unknown): value is string {
+	return typeof value === "string";
+}
+
+function isBoolean(value: unknown): value is boolean {
+	return typeof value === "boolean";
+}
