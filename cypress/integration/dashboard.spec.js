@@ -281,6 +281,11 @@ describe("Dashboard", () => {
 					{id: 5, name: "fifth", regress_streak: 2},
 					{id: 6, name: "sixth", regress_streak: 1},
 				],
+				no_streak: [
+					{id: 7, name: "seventh"},
+					{id: 8, name: "eighth"},
+					{id: 9, name: "nineth"},
+				],
 			},
 		});
 
@@ -293,6 +298,8 @@ describe("Dashboard", () => {
 		cy.findByText("4 days regress streak");
 		cy.findByText("2 days regress streak");
 		cy.findByText("1 day regress streak");
+
+		cy.findByText("No streak");
 
 		cy.findByText("first").should(
 			"have.attr",
@@ -324,6 +331,21 @@ describe("Dashboard", () => {
 			"href",
 			"/dashboard?subview=habit_preview&preview_habit_id=6",
 		);
+		cy.findByText("seventh").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=7",
+		);
+		cy.findByText("eighth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=8",
+		);
+		cy.findByText("nineth").should(
+			"have.attr",
+			"href",
+			"/dashboard?subview=habit_preview&preview_habit_id=9",
+		);
 
 		// Collapsing regress streak list
 		cy.findByText("Hide regress streak list").click({force: true});
@@ -352,6 +374,20 @@ describe("Dashboard", () => {
 		cy.findByText("3 days progress streak");
 		cy.findByText("2 days progress streak");
 		cy.findByText("1 day progress streak");
+
+		// Collapsing no streak list
+		cy.findByText("Hide no streak list").click({force: true});
+
+		cy.findByText("No streak");
+		cy.findByText("seventh").should("not.be.visible");
+		cy.findByText("eighth").should("not.be.visible");
+		cy.findByText("nineth").should("not.be.visible");
+
+		cy.findByText("Show no streak list").click({force: true});
+		cy.findByText("No streak");
+		cy.findByText("seventh");
+		cy.findByText("eighth");
+		cy.findByText("nineth");
 	});
 
 	it("streak stats error", () => {

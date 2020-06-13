@@ -181,6 +181,13 @@ export type DashboardStreakStats = {
 		regress_streak: HabitStreaks["regress_streak"];
 		has_vote_for_today: boolean;
 	}[];
+
+  no_streak: {
+		id: Habit["id"];
+		name: Habit["name"];
+		created_at: Habit["created_at"];
+		has_vote_for_today: boolean;
+  }[];
 }
 
 type DashboardHabitVoteStats =  {

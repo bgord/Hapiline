@@ -53,6 +53,7 @@ export const DashboardWindow = () => {
 
 	const progressStreakStats = getDashboardStreakStatsRequestState.data?.progress_streaks ?? [];
 	const regressStreakStats = getDashboardStreakStatsRequestState.data?.regress_streaks ?? [];
+	const noStreakStats = getDashboardStreakStatsRequestState.data?.no_streak ?? [];
 
 	const todayStats = getDashboardStatsRequestState?.data?.today;
 	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
@@ -160,6 +161,7 @@ export const DashboardWindow = () => {
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<RegressStreakList regressStreakStats={regressStreakStats} />
 					<ProgressStreakList progressStreakStats={progressStreakStats} />
+					<NoStreakList noStreakStats={noStreakStats} />
 				</UI.ShowIf>
 
 				{subview === "day_preview" && (
@@ -320,6 +322,75 @@ const RegressStreakList: React.FC<{
 								<UI.Badge variant="negative">
 									{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress streak
 								</UI.Badge>
+							</UI.Row>
+						))}
+					</ExpandContractList>
+				</UI.Column>
+			)}
+		</>
+	);
+};
+
+const NoStreakList: React.FC<{
+	noStreakStats: DashboardStreakStats["no_streak"];
+}> = ({noStreakStats}) => {
+	const {on: isNoStreakListVisible, toggle: toggleNoStreakList} = useToggle(true);
+
+	if (noStreakStats.length === 0) return null;
+
+	return (
+		<>
+			<UI.Row mt="24" crossAxis="center">
+				<UI.Header variant="extra-small">No streak</UI.Header>
+				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+					{noStreakStats.length}
+				</UI.Badge>
+
+				{isNoStreakListVisible && (
+					<UI.Button
+						ml="auto"
+						variant="bare"
+						title="Hide no streak list"
+						onClick={toggleNoStreakList}
+					>
+						<VisuallyHidden>Hide no streak list</VisuallyHidden>
+						<ChevronUpIcon />
+					</UI.Button>
+				)}
+
+				{!isNoStreakListVisible && (
+					<UI.Button
+						ml="auto"
+						variant="bare"
+						title="Show no streak list"
+						onClick={toggleNoStreakList}
+					>
+						<VisuallyHidden>Show no streak list</VisuallyHidden>
+						<ChevronDownIcon />
+					</UI.Button>
+				)}
+			</UI.Row>
+
+			{isNoStreakListVisible && (
+				<UI.Column by="gray-1" mt="24">
+					<ExpandContractList max={5}>
+						{noStreakStats.map(habit => (
+							<UI.Row py="12" by="gray-1" key={habit.id}>
+								<UI.Text mr="auto" as={Link} to={UrlBuilder.dashboard.habit.preview(habit.id)}>
+									{habit.name}
+								</UI.Text>
+
+								{!habit.has_vote_for_today && (
+									<UI.Badge
+										as={Link}
+										to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
+										variant="neutral"
+										mx="12"
+										title="Vote for this habit"
+									>
+										No vote yet
+									</UI.Badge>
+								)}
 							</UI.Row>
 						))}
 					</ExpandContractList>

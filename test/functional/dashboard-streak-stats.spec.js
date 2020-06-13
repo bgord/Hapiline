@@ -60,6 +60,9 @@ test("full flow", async ({client, assert}) => {
 
 	assert.lengthOf(response.body.progress_streaks, 3);
 	assert.lengthOf(response.body.regress_streaks, 4);
+	assert.lengthOf(response.body.no_streak, 13);
+
+	assert.hasAllKeys(response.body, ["progress_streaks", "regress_streaks", "no_streak"]);
 
 	for (const habit of response.body.progress_streaks) {
 		assert.hasAllKeys(habit, ["id", "name", "created_at", "progress_streak", "has_vote_for_today"]);
@@ -77,6 +80,20 @@ test("full flow", async ({client, assert}) => {
 
 	for (const habit of response.body.regress_streaks) {
 		assert.hasAllKeys(habit, ["id", "name", "created_at", "regress_streak", "has_vote_for_today"]);
+
+		const voteForHabitToday = await Database.first("vote")
+			.from("habit_votes")
+			.where({habit_id: habit.id, day: new Date()});
+
+		if (!voteForHabitToday || voteForHabitToday.vote === null) {
+			assert.equal(habit.has_vote_for_today, false);
+		} else {
+			assert.equal(habit.has_vote_for_today, true);
+		}
+	}
+
+	for (const habit of response.body.no_streak) {
+		assert.hasAllKeys(habit, ["id", "name", "created_at", "has_vote_for_today"]);
 
 		const voteForHabitToday = await Database.first("vote")
 			.from("habit_votes")
