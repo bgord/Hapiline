@@ -30,7 +30,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 		<Dialog
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
-			style={{maxHeight: "700px", paddingBottom: "48px", overflow: "auto"}}
+			style={{maxHeight: "800px", paddingBottom: "48px", overflow: "auto"}}
 		>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="small">

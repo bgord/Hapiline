@@ -55,7 +55,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 		<Dialog
 			onDismiss={dismissDialog}
 			aria-label="Show habit preview"
-			style={{maxHeight: "600px", overflow: "auto"}}
+			style={{maxHeight: "800px", overflow: "auto"}}
 		>
 			<UI.Column>
 				<UI.Row bg="gray-1" p="24" mainAxis="between">
