@@ -21,10 +21,7 @@ import {useTrackedHabits} from "./contexts/habits-context";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useToggle} from "./hooks/useToggle";
 
-type HabitTabProps = Omit<
-	DayCellWithFullStats,
-	"styles" | "createdHabitsCount" | "nullVotesCountStats"
-> & {
+type HabitTabProps = Omit<DayCellWithFullStats, "styles" | "createdHabitsCount"> & {
 	onResolve: VoidFunction;
 };
 

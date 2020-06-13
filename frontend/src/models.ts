@@ -163,7 +163,6 @@ export interface DayStatsFromServer {
   progressVotesCountStats: number;
   plateauVotesCountStats: number;
   regressVotesCountStats: number;
-  nullVotesCountStats: number;
 }
 
 export type DayCellWithFullStats = DayCell & DayStatsFromServer & {

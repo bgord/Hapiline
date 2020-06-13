@@ -48,7 +48,6 @@ export const Calendar: React.FC = () => {
 		const progressVotesCountStats = statsForTheDay?.progressVotesCountStats || 0;
 		const plateauVotesCountStats = statsForTheDay?.plateauVotesCountStats || 0;
 		const regressVotesCountStats = statsForTheDay?.regressVotesCountStats || 0;
-		const nullVotesCountStats = statsForTheDay?.nullVotesCountStats || 0;
 
 		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(trackedHabits, day).length;
 
@@ -65,7 +64,6 @@ export const Calendar: React.FC = () => {
 			progressVotesCountStats,
 			plateauVotesCountStats,
 			regressVotesCountStats,
-			nullVotesCountStats,
 			noVotesCountStats,
 		};
 	});

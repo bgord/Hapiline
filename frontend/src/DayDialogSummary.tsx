@@ -11,10 +11,7 @@ import {Habit, habitStrengthToBadgeVariant, voteToBgColor, DayCellWithFullStats}
 
 import {UrlBuilder} from "./services/url-builder";
 
-type DayDialogSummaryProps = Omit<
-	DayCellWithFullStats,
-	"styles" | "createdHabitsCount" | "nullVotesCountStats"
-> & {
+type DayDialogSummaryProps = Omit<DayCellWithFullStats, "styles" | "createdHabitsCount"> & {
 	maximumVotes: number;
 };
 
