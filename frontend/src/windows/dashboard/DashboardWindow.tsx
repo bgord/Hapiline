@@ -53,10 +53,8 @@ export const DashboardWindow = () => {
 	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
 	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
 
-	// TODO: Try to find a way to avoid ?? 0 statements.
-	const howManyHabitsToday = todayStats?.maximumVotes ?? 0;
+	const numberOfHabitsAvailableToday = todayStats?.maximumVotes ?? 0;
 
-	// TODO: Try to find a way to avoid ?? 0 statements.
 	const statsForToday = {
 		progressVotesCountStats: todayStats?.progressVotes ?? 0,
 		plateauVotesCountStats: todayStats?.plateauVotes ?? 0,
@@ -103,7 +101,7 @@ export const DashboardWindow = () => {
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<DashboardMotivationalText request={getDashboardStatsRequestState} />
 
-					{howManyHabitsToday > 0 && (
+					{numberOfHabitsAvailableToday > 0 && (
 						<UI.Column data-testid="chart-today">
 							<UI.Text variant="dimmed">Votes today</UI.Text>
 
@@ -117,7 +115,7 @@ export const DashboardWindow = () => {
 						</UI.Column>
 					)}
 
-					{howManyHabitsToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
+					{numberOfHabitsAvailableToday > 0 && !deepEqual(statsForToday, statsForLastWeek) && (
 						<UI.Column data-testid="chart-last-week">
 							<UI.Text variant="dimmed">Votes last week</UI.Text>
 							<UI.Row mb="24">
@@ -130,7 +128,7 @@ export const DashboardWindow = () => {
 						</UI.Column>
 					)}
 
-					{howManyHabitsToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
+					{numberOfHabitsAvailableToday > 0 && !deepEqual(statsForLastWeek, statsForLastMonth) && (
 						<UI.Column data-testid="chart-last-month">
 							<UI.Text variant="dimmed">Votes last month</UI.Text>
 							<UI.Row mb="24">
