@@ -37,7 +37,7 @@ export function NotificationDropdown() {
 
 	const notifications = getNotificationsRequestState.data ?? [];
 
-	const unreadNotifictionsNumber = notifications.filter(
+	const numberOfUnreadNotifications = notifications.filter(
 		notification => notification.status === "unread",
 	).length;
 
@@ -46,9 +46,9 @@ export function NotificationDropdown() {
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
 				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
 				<BellIcon />
-				{unreadNotifictionsNumber > 0 && (
+				{numberOfUnreadNotifications > 0 && (
 					<UI.Text position="absolute" style={{top: "-3px", right: "3px"}}>
-						{unreadNotifictionsNumber}
+						{numberOfUnreadNotifications}
 					</UI.Text>
 				)}
 			</UI.Button>
@@ -64,7 +64,7 @@ export function NotificationDropdown() {
 							<UI.Header variant="extra-small">Notifications</UI.Header>
 
 							<UI.Badge ml="6" variant="neutral" style={{padding: "3px 6px"}}>
-								{unreadNotifictionsNumber}
+								{numberOfUnreadNotifications}
 							</UI.Badge>
 
 							<UI.CloseIcon ml="auto" onClick={hideNotifications} />
