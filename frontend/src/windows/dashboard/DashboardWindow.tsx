@@ -1,30 +1,23 @@
-import {Link} from "react-router-dom";
 import {useQuery} from "react-query";
 import React from "react";
 import deepEqual from "fast-deep-equal";
-import VisuallyHidden from "@reach/visually-hidden";
-
-import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
-import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
 
 import {DayDialog} from "../../DayDialog";
 import {DaySummaryChart} from "../../DayDialogSummary";
-import {ExpandContractList} from "../../ui/ExpandContractList";
 import {HabitItemDialog} from "../../HabitItemDialog";
 import {api} from "../../services/api";
 import {useQueryParams} from "../../hooks/useQueryParam";
 import {formatToday} from "../../services/date-formatter";
-import {pluralize} from "../../services/pluralize";
 import {useDocumentTitle} from "../../hooks/useDocumentTitle";
 import {useErrorToast} from "../../contexts/toasts-context";
 import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "../../models";
 import {UrlBuilder} from "../../services/url-builder";
-import {useToggle} from "../../hooks/useToggle";
 import * as UI from "../../ui";
 
 import {MotivationalText} from "./DashboardMotivationalText";
 import {DashboardRegressStreakList} from "./DashboardRegressStreakList";
 import {DashboardNoStreakList} from "./DashboardNoStreakList";
+import {DashboardProgressStreakList} from "./DashboardProgressStreakList";
 
 export const DashboardWindow = () => {
 	useDocumentTitle("Hapiline - dashboard");
@@ -108,6 +101,7 @@ export const DashboardWindow = () => {
 						Cannot load dashboard stats now, please try again.
 					</UI.ErrorBanner>
 				</UI.ShowIf>
+
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<UI.Row mt="24" mb="48">
 						<MotivationalText
@@ -164,7 +158,7 @@ export const DashboardWindow = () => {
 
 				<UI.ShowIf request={getDashboardStatsRequestState} is="success">
 					<DashboardRegressStreakList regressStreakStats={regressStreakStats} />
-					<ProgressStreakList progressStreakStats={progressStreakStats} />
+					<DashboardProgressStreakList progressStreakStats={progressStreakStats} />
 					<DashboardNoStreakList noStreakStats={noStreakStats} />
 				</UI.ShowIf>
 
@@ -178,6 +172,7 @@ export const DashboardWindow = () => {
 						{...statsForToday}
 					/>
 				)}
+
 				{subview === "habit_preview" && !isNaN(Number(preview_habit_id)) && (
 					<HabitItemDialog
 						habitId={Number(preview_habit_id)}
@@ -186,79 +181,5 @@ export const DashboardWindow = () => {
 				)}
 			</UI.Column>
 		</UI.Card>
-	);
-};
-
-const ProgressStreakList: React.FC<{
-	progressStreakStats: DashboardStreakStats["progress_streaks"];
-}> = ({progressStreakStats}) => {
-	const {on: isProgressStreakListVisible, toggle: toggleProgressStreakList} = useToggle(true);
-
-	if (progressStreakStats.length === 0) return null;
-
-	return (
-		<>
-			<UI.Row mt="48" mb="24" crossAxis="center">
-				<UI.Header variant="extra-small">Progress streaks</UI.Header>
-				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
-					{progressStreakStats.length}
-				</UI.Badge>
-
-				{isProgressStreakListVisible && (
-					<UI.Button
-						ml="auto"
-						variant="bare"
-						title="Hide progress streak list"
-						onClick={toggleProgressStreakList}
-					>
-						<VisuallyHidden>Hide progress streak list</VisuallyHidden>
-						<ChevronUpIcon />
-					</UI.Button>
-				)}
-
-				{!isProgressStreakListVisible && (
-					<UI.Button
-						ml="auto"
-						variant="bare"
-						title="Show progress streak list"
-						onClick={toggleProgressStreakList}
-					>
-						<VisuallyHidden>Show progress streak list</VisuallyHidden>
-						<ChevronDownIcon />
-					</UI.Button>
-				)}
-			</UI.Row>
-
-			{isProgressStreakListVisible && (
-				<UI.Column bt="gray-1">
-					<ExpandContractList max={5}>
-						{progressStreakStats.map(habit => (
-							<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="end">
-								<UI.Text mr="auto" as={Link} to={UrlBuilder.dashboard.habit.preview(habit.id)}>
-									{habit.name}
-								</UI.Text>
-
-								{!habit.has_vote_for_today && (
-									<UI.Badge
-										as={Link}
-										to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
-										variant="neutral"
-										mx="12"
-										title="Vote for this habit"
-									>
-										No vote yet
-									</UI.Badge>
-								)}
-
-								<UI.Badge variant="positive">
-									{habit.progress_streak}
-									{pluralize("day", habit.progress_streak)} progress streak
-								</UI.Badge>
-							</UI.Row>
-						))}
-					</ExpandContractList>
-				</UI.Column>
-			)}
-		</>
 	);
 };
