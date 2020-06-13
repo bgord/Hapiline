@@ -44,27 +44,27 @@ export const Calendar: React.FC = () => {
 
 		const statsForTheDay = dayStatsFromServer?.find(item => item.day === dayCell.day);
 
-		const createdHabitsCount = statsForTheDay?.createdHabitsCount || 0;
-		const progressVotesCountStats = statsForTheDay?.progressVotesCountStats || 0;
-		const plateauVotesCountStats = statsForTheDay?.plateauVotesCountStats || 0;
-		const regressVotesCountStats = statsForTheDay?.regressVotesCountStats || 0;
+		const numberOfCreatedHabits = statsForTheDay?.numberOfCreatedHabits || 0;
+		const numberOfProgressVotes = statsForTheDay?.numberOfProgressVotes || 0;
+		const numberOfPlateauVotes = statsForTheDay?.numberOfPlateauVotes || 0;
+		const numberOfRegressVotes = statsForTheDay?.numberOfRegressVotes || 0;
 
 		const habitsAvailableAtThisDayCount = getHabitsAvailableAtThisDay(trackedHabits, day).length;
 
-		const noVotesCountStats =
+		const numberOfMissingVotes =
 			habitsAvailableAtThisDayCount -
-			progressVotesCountStats -
-			plateauVotesCountStats -
-			regressVotesCountStats;
+			numberOfProgressVotes -
+			numberOfPlateauVotes -
+			numberOfRegressVotes;
 
 		return {
 			day: dayCell.day,
 			styles: dayCell.styles,
-			createdHabitsCount,
-			progressVotesCountStats,
-			plateauVotesCountStats,
-			regressVotesCountStats,
-			noVotesCountStats,
+			numberOfCreatedHabits,
+			numberOfProgressVotes,
+			numberOfPlateauVotes,
+			numberOfRegressVotes,
+			numberOfMissingVotes,
 		};
 	});
 

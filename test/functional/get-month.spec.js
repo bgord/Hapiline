@@ -123,10 +123,10 @@ test("full flow", async ({client, assert}) => {
 	response.body.forEach(entry => {
 		assert.hasAllKeys(entry, [
 			"day",
-			"createdHabitsCount",
-			"progressVotesCountStats",
-			"plateauVotesCountStats",
-			"regressVotesCountStats",
+			"numberOfCreatedHabits",
+			"numberOfProgressVotes",
+			"numberOfPlateauVotes",
+			"numberOfRegressVotes",
 		]);
 	});
 });

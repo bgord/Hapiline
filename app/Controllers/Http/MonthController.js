@@ -85,10 +85,10 @@ class MonthsController {
 
 			return {
 				day,
-				createdHabitsCount: get(habitsCreatedByDay, "numberOfHabits", 0),
-				progressVotesCountStats: get(progressVotesByDay, "numberOfVotes", 0),
-				plateauVotesCountStats: get(plateauVotesByDay, "numberOfVotes", 0),
-				regressVotesCountStats: get(regressVotesByDay, "numberOfVotes", 0),
+				numberOfCreatedHabits: get(habitsCreatedByDay, "numberOfHabits", 0),
+				numberOfProgressVotes: get(progressVotesByDay, "numberOfVotes", 0),
+				numberOfPlateauVotes: get(plateauVotesByDay, "numberOfVotes", 0),
+				numberOfRegressVotes: get(regressVotesByDay, "numberOfVotes", 0),
 			};
 		});
 

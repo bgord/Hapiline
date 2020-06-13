@@ -56,24 +56,24 @@ export const DashboardWindow = () => {
 	const numberOfHabitsAvailableToday = todayStats?.maximumVotes ?? 0;
 
 	const statsForToday = {
-		progressVotesCountStats: todayStats?.progressVotes ?? 0,
-		plateauVotesCountStats: todayStats?.plateauVotes ?? 0,
-		regressVotesCountStats: todayStats?.regressVotes ?? 0,
-		noVotesCountStats: todayStats?.noVotes ?? 0,
+		numberOfProgressVotes: todayStats?.progressVotes ?? 0,
+		numberOfPlateauVotes: todayStats?.plateauVotes ?? 0,
+		numberOfRegressVotes: todayStats?.regressVotes ?? 0,
+		numberOfMissingVotes: todayStats?.noVotes ?? 0,
 	};
 
 	const statsForLastWeek = {
-		progressVotesCountStats: lastWeekStats?.progressVotes ?? 0,
-		plateauVotesCountStats: lastWeekStats?.plateauVotes ?? 0,
-		regressVotesCountStats: lastWeekStats?.regressVotes ?? 0,
-		noVotesCountStats: lastWeekStats?.noVotes ?? 0,
+		numberOfProgressVotes: lastWeekStats?.progressVotes ?? 0,
+		numberOfPlateauVotes: lastWeekStats?.plateauVotes ?? 0,
+		numberOfRegressVotes: lastWeekStats?.regressVotes ?? 0,
+		numberOfMissingVotes: lastWeekStats?.noVotes ?? 0,
 	};
 
 	const statsForLastMonth = {
-		progressVotesCountStats: lastMonthStats?.progressVotes ?? 0,
-		plateauVotesCountStats: lastMonthStats?.plateauVotes ?? 0,
-		regressVotesCountStats: lastMonthStats?.regressVotes ?? 0,
-		noVotesCountStats: lastMonthStats?.noVotes ?? 0,
+		numberOfProgressVotes: lastMonthStats?.progressVotes ?? 0,
+		numberOfPlateauVotes: lastMonthStats?.plateauVotes ?? 0,
+		numberOfRegressVotes: lastMonthStats?.regressVotes ?? 0,
+		numberOfMissingVotes: lastMonthStats?.noVotes ?? 0,
 	};
 
 	const dateOfToday = formatToday();

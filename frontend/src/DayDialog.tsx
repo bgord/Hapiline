@@ -10,7 +10,7 @@ import {HabitTab} from "./HabitTab";
 import {JournalTab} from "./JournalTab";
 import {formatDayName} from "./services/date-formatter";
 
-type DayDialogProps = Omit<DayCellWithFullStats, "styles" | "createdHabitsCount"> & {
+type DayDialogProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
 	onResolve: VoidFunction;
 };
 

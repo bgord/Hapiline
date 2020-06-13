@@ -11,7 +11,7 @@ import {Habit, habitStrengthToBadgeVariant, voteToBgColor, DayCellWithFullStats}
 
 import {UrlBuilder} from "./services/url-builder";
 
-type DayDialogSummaryProps = Omit<DayCellWithFullStats, "styles" | "createdHabitsCount"> & {
+type DayDialogSummaryProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
 	maximumVotes: number;
 };
 
@@ -19,23 +19,23 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 	maximumVotes,
 	...stats
 }) => {
-	const noVotesPercentage = Number(((stats.noVotesCountStats ?? 0) / maximumVotes) * 100).toFixed(
-		2,
-	);
+	const missingVotesPercentage = Number(
+		((stats.numberOfMissingVotes ?? 0) / maximumVotes) * 100,
+	).toFixed(2);
 	const regressVotesPercentage = Number(
-		((stats.regressVotesCountStats ?? 0) / maximumVotes) * 100,
+		((stats.numberOfRegressVotes ?? 0) / maximumVotes) * 100,
 	).toFixed(2);
 	const plateauVotesPercentage = Number(
-		((stats.plateauVotesCountStats ?? 0) / maximumVotes) * 100,
+		((stats.numberOfPlateauVotes ?? 0) / maximumVotes) * 100,
 	).toFixed(2);
 	const progressVotesPercentage = Number(
-		((stats.progressVotesCountStats ?? 0) / maximumVotes) * 100,
+		((stats.numberOfProgressVotes ?? 0) / maximumVotes) * 100,
 	).toFixed(2);
 
-	const noVotesCellTitle = `No votes: ${stats.noVotesCountStats}/${maximumVotes} (${noVotesPercentage}%)`;
-	const regressVotesCellTitle = `Regress: ${stats.regressVotesCountStats}/${maximumVotes} (${regressVotesPercentage}%)`;
-	const plateauVotesCellTitle = `Plateau: ${stats.plateauVotesCountStats}/${maximumVotes} (${plateauVotesPercentage}%)`;
-	const progressVotesCellTitle = `Progress: ${stats.progressVotesCountStats}/${maximumVotes} (${progressVotesPercentage}%)`;
+	const noVotesCellTitle = `No votes: ${stats.numberOfMissingVotes}/${maximumVotes} (${missingVotesPercentage}%)`;
+	const regressVotesCellTitle = `Regress: ${stats.numberOfRegressVotes}/${maximumVotes} (${regressVotesPercentage}%)`;
+	const plateauVotesCellTitle = `Plateau: ${stats.numberOfPlateauVotes}/${maximumVotes} (${plateauVotesPercentage}%)`;
+	const progressVotesCellTitle = `Progress: ${stats.numberOfProgressVotes}/${maximumVotes} (${progressVotesPercentage}%)`;
 
 	return (
 		<UI.Row width="100%">
@@ -44,9 +44,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				crossAxis="center"
 				title={noVotesCellTitle}
 				py="0"
-				px={stats.noVotesCountStats ? "3" : "0"}
+				px={stats.numberOfMissingVotes ? "3" : "0"}
 				style={{
-					flexBasis: `${noVotesPercentage}%`,
+					flexBasis: `${missingVotesPercentage}%`,
 					backgroundColor: voteToBgColor.get(null),
 					fontWeight: "bold",
 					color: "var(--gray-3)",
@@ -54,8 +54,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					fontSize: "14px",
 				}}
 			>
-				<VisuallyHidden>{stats.noVotesCountStats} habits with no votes</VisuallyHidden>
-				{stats.noVotesCountStats > 0 && stats.noVotesCountStats}
+				<VisuallyHidden>{stats.numberOfMissingVotes} habits with no votes</VisuallyHidden>
+				{stats.numberOfMissingVotes > 0 && stats.numberOfMissingVotes}
 			</UI.Row>
 			<UI.Row
 				mainAxis="center"
@@ -72,10 +72,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					fontSize: "14px",
 				}}
 			>
-				<VisuallyHidden>
-					{stats.regressVotesCountStats ?? 0} habits with regress votes
-				</VisuallyHidden>
-				{stats.regressVotesCountStats ?? 0}
+				<VisuallyHidden>{stats.numberOfRegressVotes ?? 0} habits with regress votes</VisuallyHidden>
+				{stats.numberOfRegressVotes ?? 0}
 			</UI.Row>
 
 			<UI.Row
@@ -93,10 +91,8 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					fontSize: "14px",
 				}}
 			>
-				<VisuallyHidden>
-					{stats.plateauVotesCountStats ?? 0} habits with plateau votes
-				</VisuallyHidden>
-				{stats.plateauVotesCountStats ?? 0}
+				<VisuallyHidden>{stats.numberOfPlateauVotes ?? 0} habits with plateau votes</VisuallyHidden>
+				{stats.numberOfPlateauVotes ?? 0}
 			</UI.Row>
 
 			<UI.Row
@@ -115,9 +111,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 				}}
 			>
 				<VisuallyHidden>
-					{stats.progressVotesCountStats ?? 0} habits with progress votes
+					{stats.numberOfProgressVotes ?? 0} habits with progress votes
 				</VisuallyHidden>
-				{stats.progressVotesCountStats ?? 0}
+				{stats.numberOfProgressVotes ?? 0}
 			</UI.Row>
 		</UI.Row>
 	);

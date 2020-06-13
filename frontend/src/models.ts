@@ -159,14 +159,14 @@ export interface DayCell {
 
 export interface DayStatsFromServer {
   day: string;
-  createdHabitsCount: number;
-  progressVotesCountStats: number;
-  plateauVotesCountStats: number;
-  regressVotesCountStats: number;
+  numberOfCreatedHabits: number;
+  numberOfProgressVotes: number;
+  numberOfPlateauVotes: number;
+  numberOfRegressVotes: number;
 }
 
 export type DayCellWithFullStats = DayCell & DayStatsFromServer & {
-  noVotesCountStats: number;
+  numberOfMissingVotes: number;
 };
 
 // ===========
