@@ -8,7 +8,6 @@ export const JournalTab = () => (
 			<UI.Textarea
 				style={{minHeight: "400px"}} //TODO: Adjust to new solution
 				id="journal"
-				value="Ok, so that's it? That's all you wanted to say?"
 			/>
 		</UI.Field>
 	</UI.Row>
