@@ -76,12 +76,12 @@ class HabitsController {
 
 	async delete({params, response, auth}) {
 		try {
-			const deletedItemsCounter = await auth.user
+			const numberOfDeletedHabits = await auth.user
 				.habits()
 				.where({id: params.id})
 				.delete();
 
-			if (!deletedItemsCounter) throw error;
+			if (!numberOfDeletedHabits) throw error;
 
 			return response.send();
 		} catch (error) {
