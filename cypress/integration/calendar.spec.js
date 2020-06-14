@@ -510,4 +510,20 @@ describe("Calendar", () => {
 			cy.findByPlaceholderText("Write something...").should("have.value", "where are the turtles");
 		});
 	});
+
+	it("offline simulation", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			status: 500,
+			url: "/api/v1/month?monthOffset=0",
+			response: {},
+		});
+
+		cy.viewport(1200, 1200);
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
+		cy.findByText("Couldn't fetch calendar stats");
+	});
 });
