@@ -3,6 +3,7 @@
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
+const workboxPlugin = require("workbox-webpack-plugin");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const {CheckerPlugin} = require("awesome-typescript-loader");
@@ -46,6 +47,10 @@ module.exports = (_env, argv) => {
 				__BUILD_VERSION__: JSON.stringify(process.env.npm_package_version),
 				__BUILD_DATE__: JSON.stringify(new Date().toISOString()),
 				__ENVIRONMENT__: JSON.stringify(dev ? "development" : "production"),
+			}),
+			new workboxPlugin.InjectManifest({
+				swSrc: "./frontend/src/sw",
+				swDest: "sw.js",
 			}),
 		],
 		devtool: dev ? "source-map" : "",

@@ -62,3 +62,24 @@ ReactDOM.render(
 	</React.StrictMode>,
 	document.getElementById("root"),
 );
+
+// prettier-ignore
+if (
+  "serviceWorker" in navigator
+
+  // TODO: Comment the line below if you want to
+  // use the service worker in development.
+  // && __ENVIRONMENT__ === "production"
+) {
+	window.addEventListener("load", () => {
+		navigator.serviceWorker
+			.register("/sw.js")
+			.then(registration => {
+				console.log("SW registered: ", registration);
+			})
+			.catch(registrationError => {
+				console.log("SW registration error: ");
+				console.error(registrationError);
+			});
+	});
+}
