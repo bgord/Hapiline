@@ -12,16 +12,24 @@ import {useHabitsState} from "./contexts/habits-context";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useUserProfile} from "./contexts/auth-context";
 import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./models";
+import {usePersistentState} from "./hooks/usePersistentState";
 
 export const AddHabitForm: React.FC = () => {
 	const [profile] = useUserProfile();
 	const getHabitsRequestState = useHabitsState();
 
-	const [name, setName] = React.useState<NewHabitPayload["name"]>("");
-	const [score, setScore] = React.useState<NewHabitPayload["score"]>("positive");
-	const [strength, setStrength] = React.useState<NewHabitPayload["strength"]>("established");
-	const [description, setDescription] = React.useState<NewHabitPayload["description"]>("");
-	const [isTrackable, setIsTrackable] = React.useState<NewHabitPayload["is_trackable"]>(true);
+	const [name, setName] = usePersistentState<NewHabitPayload["name"]>("habit_name", "");
+	const [score, setScore] = usePersistentState<NewHabitPayload["score"]>("habit_score", "positive");
+	const [strength, setStrength] = usePersistentState<NewHabitPayload["strength"]>(
+		"habit_strength",
+		"established",
+	);
+	const [description, setDescription] = usePersistentState<
+		NonNullable<NewHabitPayload["description"]>
+	>("habit_description", "");
+	const [isTrackable, setIsTrackable] = usePersistentState<
+		NonNullable<NewHabitPayload["is_trackable"]>
+	>("habit_is_trackable", true);
 
 	const triggerSuccessToast = useSuccessToast();
 	const triggerUnexpectedErrorToast = useErrorToast();
@@ -30,12 +38,7 @@ export const AddHabitForm: React.FC = () => {
 
 	const [addHabit, addHabitRequestState] = useMutation<Habit, NewHabitPayload>(api.habit.post, {
 		onSuccess: () => {
-			setName("");
-			setScore("positive");
-			setStrength("established");
-			setDescription("");
-			setIsTrackable(true);
-
+			resetForm();
 			getHabitsRequestState.refetch();
 			triggerSuccessToast("Habit successfully addedd!");
 		},
@@ -65,6 +68,14 @@ export const AddHabitForm: React.FC = () => {
 		if (isHabitStrength(event.target.value)) {
 			setStrength(event.target.value);
 		}
+	}
+
+	function resetForm() {
+		setName("");
+		setScore("positive");
+		setStrength("established");
+		setDescription("");
+		setIsTrackable(true);
 	}
 
 	return (
@@ -143,7 +154,7 @@ export const AddHabitForm: React.FC = () => {
 							id="is_trackable"
 							name="is_trackable"
 							checked={Boolean(isTrackable)}
-							onChange={() => setIsTrackable(v => !v)}
+							onChange={() => setIsTrackable(!isTrackable)}
 						/>
 						<UI.Label ml="6" htmlFor="is_trackable">
 							Track this habit
@@ -158,6 +169,7 @@ export const AddHabitForm: React.FC = () => {
 				<UI.Field mt="24">
 					<UI.Label htmlFor="description">Description</UI.Label>
 					<UI.Textarea
+						id="description"
 						value={String(description)}
 						onChange={event => setDescription(event.target.value)}
 						name="description"
@@ -169,18 +181,22 @@ export const AddHabitForm: React.FC = () => {
 					<UI.Error mt="6">{descriptionInlineErrorMessage}</UI.Error>
 				</UI.ShowIf>
 
-				<UI.Button
-					style={{width: "125px"}}
-					ml="auto"
-					mt="48"
-					mb="24"
-					variant="primary"
-					layout="with-icon"
-					type="submit"
-				>
-					<PlusCircleIcon mr="auto" />
-					Add habit
-				</UI.Button>
+				<UI.Row mt="48" mb="24" mainAxis="end">
+					<UI.Button variant="outlined" onClick={resetForm}>
+						Reset form
+					</UI.Button>
+
+					<UI.Button
+						style={{width: "125px"}}
+						ml="24"
+						variant="primary"
+						layout="with-icon"
+						type="submit"
+					>
+						<PlusCircleIcon mr="auto" />
+						Add habit
+					</UI.Button>
+				</UI.Row>
 
 				<UI.ShowIf request={addHabitRequestState} is="error">
 					<UI.ErrorBanner size="big">
