@@ -2,6 +2,7 @@ const Database = use("Database");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const {HabitVotesGetter} = require("../../Beings/HabitVotesGetter");
 const {VotesStreakCalculator} = require("../../Beings/VotesStreakCalculator");
+const {orderByDescendingStreak} = require("../../Beings/orderByDescendingStreak");
 
 class DashboardStreakStatsController {
 	async index({auth, response}) {
@@ -60,12 +61,3 @@ class DashboardStreakStatsController {
 }
 
 module.exports = DashboardStreakStatsController;
-
-function orderByDescendingStreak(key) {
-	return (a, b) => {
-		if (a[key] === b[key]) {
-			return b[key].has_vote_for_today - a[key].has_vote_for_today;
-		}
-		return a[key] > b[key] ? -1 : 1;
-	};
-}
