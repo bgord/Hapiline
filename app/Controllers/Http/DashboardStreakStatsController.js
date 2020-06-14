@@ -62,5 +62,7 @@ class DashboardStreakStatsController {
 module.exports = DashboardStreakStatsController;
 
 function orderByDescendingStreak(key) {
+	// TODO: Sort by descending order, and votes with
+	// `has_vote_for_today=true` first.
 	return (a, b) => (a[key] > b[key] ? -1 : 1);
 }
