@@ -9,9 +9,11 @@ import {NetworkOnly} from "workbox-strategies";
 // reinstalled properly.
 console.log(`SW v${__BUILD_VERSION__}`);
 
-// There's a Workbox build error if `self.__WB_MANIFEST`:
+// There's a Workbox build error if `self.__WB_MANIFEST`
+// is not present in the SW file.
+
+/* eslint-disable no-unused-expressions */
 self.__WB_MANIFEST;
-// is not present in the SW file, hence this comment :D
 
 // To skip the `waiting` step in the service worker lifecycle:
 // installing -> waiting -> activated -> redundant
