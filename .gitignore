@@ -17,6 +17,7 @@ frontend/css/index.css
 public/*
 !public/logo.png
 !public/favicon.ico
+!public/offline.html
 dist/
 
 # Other
