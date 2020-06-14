@@ -229,17 +229,20 @@ printf "\n🛈  Changing docker host to local\n\n"
 unset DOCKER_HOST
 
 
-# Sending a request to the /healthcheck endpoint after 5s.
+# Sending a request to the /healthcheck endpoint after 10s.
 #
 # REASONING: If a request is fired immediately, it may fail
 #            because the containers didn't have enough time
 #            to become responsive.
 #
-printf "\n🛈  Checking if healthcheck responds correctly from localhost  in 5s...\n\n"
-sleep 5s
+printf "\n🛈  Checking if healthcheck responds correctly from localhost  in 10s...\n\n"
+sleep 10s
 http GET bgord.tech:3333/healthcheck
 
 printf "\n✓  Everything seems to be fine!\n\n"
+
+
+zenity --notification --text="Deployment finished successfully."
 
 
 # Opening the production app with the Firefox browser.

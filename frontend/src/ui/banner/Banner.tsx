@@ -4,6 +4,8 @@ import React from "react";
 import {Margins} from "../margins";
 import {Paddings} from "../paddings";
 import {Alignments} from "../alignments";
+import {Positions} from "../positions";
+
 import {InfoIcon} from "../icons/Info";
 import {ExclamationIcon} from "../icons/Exclamation";
 import {CheckmarkIcon} from "../icons/Checkmark";
@@ -16,7 +18,8 @@ type BannerProps = JSX.IntrinsicElements["div"] & {variant: BannerVariant} & {
 	size?: BannerSize;
 } & Margins &
 	Paddings &
-	Alignments;
+	Alignments &
+	Positions;
 
 export const Banner: React.FC<BannerProps> = ({
 	variant,
@@ -36,6 +39,7 @@ export const Banner: React.FC<BannerProps> = ({
 	pb,
 	pl,
 	crossAxisSelf,
+	position = "static",
 	...props
 }) => (
 	<div
@@ -56,6 +60,7 @@ export const Banner: React.FC<BannerProps> = ({
 		data-pb={pb}
 		data-pl={pl}
 		data-cross-axis-self={crossAxisSelf}
+		data-position={position}
 		className="c-banner"
 		{...props}
 	/>
@@ -65,7 +70,8 @@ type SpecificBannerProps = JSX.IntrinsicElements["div"] &
 	Margins &
 	Paddings & {
 		size?: BannerSize;
-	} & Alignments;
+	} & Alignments &
+	Positions;
 
 export const InfoBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="info">
