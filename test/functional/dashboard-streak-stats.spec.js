@@ -116,24 +116,46 @@ test("streaks are returned in descending order", async ({client, assert}) => {
 		.end();
 
 	for (let i = 0; i < response.body.progress_streaks.length - 1; i++) {
+		const currentStreak = response.body.progress_streaks[i];
+
+		// If we're looking on the first streak,
+		// there's no previous one to compare with.
 		if (i === 0) {
-			assert.isAtLeast(response.body.progress_streaks[i].progress_streak, 1);
+			assert.isAtLeast(currentStreak.progress_streak, 1);
 		} else {
-			assert.isAtMost(
-				response.body.progress_streaks[i].progress_streak,
-				response.body.progress_streaks[i - 1].progress_streak,
-			);
+			const previousStreak = response.body.progress_streaks[i - 1];
+
+			assert.isAtMost(currentStreak.progress_streak, previousStreak.progress_streak);
+
+			if (
+				currentStreak.progress_streak === previousStreak.progress_streak &&
+				previousStreak.has_vote_for_today === true &&
+				currentStreak.has_vote_for_today === false
+			) {
+				throw new Error("Streaks are not ordered by `has_vote_for_today` properly!");
+			}
 		}
 	}
 
 	for (let i = 0; i < response.body.regress_streaks.length - 1; i++) {
+		const currentStreak = response.body.regress_streaks[i];
+
+		// If we're looking on the first streak,
+		// there's no previous one to compare with.
 		if (i === 0) {
-			assert.isAtLeast(response.body.regress_streaks[i].regress_streak, 1);
+			assert.isAtLeast(currentStreak.regress_streak, 1);
 		} else {
-			assert.isAtMost(
-				response.body.regress_streaks[i].regress_streak,
-				response.body.regress_streaks[i - 1].regress_streak,
-			);
+			const previousStreak = response.body.regress_streaks[i - 1];
+
+			assert.isAtMost(currentStreak.regress_streak, previousStreak.regress_streak);
+
+			if (
+				currentStreak.regress_streak === previousStreak.regress_streak &&
+				previousStreak.has_vote_for_today === true &&
+				currentStreak.has_vote_for_today === false
+			) {
+				throw new Error("Streaks are not ordered by `has_vote_for_today` properly!");
+			}
 		}
 	}
 });
