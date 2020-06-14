@@ -1096,4 +1096,19 @@ describe("Habit", () => {
 
 		cy.url().should("contain", "/calendar?preview_day=2020-01-19&highlighted_habit_id=36");
 	});
+
+	it("offline mode simulation", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: "/api/v1/habits",
+			status: 500,
+			response: {},
+		});
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findByText("Cannot fetch habits, please try again");
+	});
 });
