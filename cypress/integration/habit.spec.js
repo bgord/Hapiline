@@ -62,6 +62,55 @@ describe("Habit", () => {
 		cy.findByText("Go to sleep at 9:30 AM");
 	});
 
+	it("Add habit form local storage sync", () => {
+		cy.clearLocalStorage();
+
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findByText("New habit").click();
+		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit name").type("okokok");
+			cy.findByLabelText("Score").select("negative");
+			cy.findByLabelText("Strength").select("fresh");
+			cy.findByLabelText("Track this habit").click();
+			cy.findByLabelText("Description").type("kokoko");
+
+			cy.findByText("Close dialog").click({force: true});
+		});
+
+		// The form values survive closing the modal
+		cy.findByText("New habit").click();
+		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit name").should("have.value", "okokok");
+			cy.findByLabelText("Score").should("have.value", "negative");
+			cy.findByLabelText("Strength").should("have.value", "fresh");
+			cy.findByLabelText("Track this habit").should("not.be.checked");
+			cy.findByLabelText("Description").should("have.value", "kokoko");
+		});
+
+		cy.reload();
+
+		// The form values survive page reloads
+		cy.findByRole("dialog").within(() => {
+			cy.findByLabelText("Habit name").should("have.value", "okokok");
+			cy.findByLabelText("Score").should("have.value", "negative");
+			cy.findByLabelText("Strength").should("have.value", "fresh");
+			cy.findByLabelText("Track this habit").should("not.be.checked");
+			cy.findByLabelText("Description").should("have.value", "kokoko");
+
+			// Reset form clears the local storage and restores the defauls
+			cy.findByText("Reset form").click();
+			cy.findByLabelText("Habit name").should("have.value", "");
+			cy.findByLabelText("Score").should("have.value", "positive");
+			cy.findByLabelText("Strength").should("have.value", "established");
+			cy.findByLabelText("Track this habit").should("be.checked");
+			cy.findByLabelText("Description").should("have.value", "");
+
+			cy.clearLocalStorage();
+		});
+	});
+
 	it("500 while adding an item", () => {
 		const errorMessage = "Unexpected error, try again later.";
 		cy.server();

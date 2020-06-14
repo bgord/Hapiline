@@ -169,6 +169,7 @@ export const AddHabitForm: React.FC = () => {
 				<UI.Field mt="24">
 					<UI.Label htmlFor="description">Description</UI.Label>
 					<UI.Textarea
+						id="description"
 						value={String(description)}
 						onChange={event => setDescription(event.target.value)}
 						name="description"
