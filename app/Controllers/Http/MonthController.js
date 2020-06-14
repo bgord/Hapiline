@@ -68,18 +68,18 @@ class MonthsController {
 			const habitsCreatedByDay = numberOfCreatedHabitsByDay.find(entry => entry.day === day);
 
 			const progressVotesByDay = numberOfVoteTypesByDay.find(
-				getByDayAndVoteType(day, HABIT_VOTE_TYPES.progress),
+				getByDayAndVoteType(HABIT_VOTE_TYPES.progress),
 			);
 
 			const plateauVotesByDay = numberOfVoteTypesByDay.find(
-				getByDayAndVoteType(day, HABIT_VOTE_TYPES.plateau),
+				getByDayAndVoteType(HABIT_VOTE_TYPES.plateau),
 			);
 
 			const regressVotesByDay = numberOfVoteTypesByDay.find(
-				getByDayAndVoteType(day, HABIT_VOTE_TYPES.regress),
+				getByDayAndVoteType(HABIT_VOTE_TYPES.regress),
 			);
 
-			function getByDayAndVoteType(day, voteType) {
+			function getByDayAndVoteType(voteType) {
 				return entry => entry.day === day && entry.voteType === voteType;
 			}
 

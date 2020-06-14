@@ -12,7 +12,7 @@ export function usePersistentState<T extends Storage.AllowedTypes>(
 
 	React.useEffect(() => {
 		Storage.set(key, value);
-	}, [value]);
+	}, [key, value]);
 
 	return [value, setValue];
 }
