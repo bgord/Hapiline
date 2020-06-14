@@ -52,6 +52,11 @@ $ ./run.sh npm install
 ```bash
 $ ./run.sh adonis migration:run
 ```
+**Clear database**
+
+```bash
+$ ./run.sh adonis migration:refresh
+```
 
 **Run seeds**
 
