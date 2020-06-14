@@ -242,6 +242,9 @@ http GET bgord.tech:3333/healthcheck
 printf "\n✓  Everything seems to be fine!\n\n"
 
 
+zenity --notification --text="Deployment finished successfully."
+
+
 # Opening the production app with the Firefox browser.
 #
 # REASONING: We chose Firefox because it's preinstalled on most Linux
