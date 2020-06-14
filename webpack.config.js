@@ -43,6 +43,15 @@ module.exports = () => {
 				__BUILD_DATE__: JSON.stringify(new Date().toISOString()),
 				__ENVIRONMENT__: JSON.stringify("development"),
 			}),
+
+			// Uncomment the plugin below to be able to run service worker
+			// in development mode.
+
+			// new workboxPlugin.InjectManifest({
+			// 	swSrc: "./frontend/src/sw",
+			// 	swDest: "sw.js",
+			// 	mode: "development",
+			// }),
 		],
 		devtool: "source-map",
 		devServer: {
