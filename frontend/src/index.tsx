@@ -63,23 +63,26 @@ ReactDOM.render(
 	document.getElementById("root"),
 );
 
-// prettier-ignore
 if (
-  "serviceWorker" in navigator
-
-  // TODO: Comment the line below if you want to
-  // use the service worker in development.
-  // && __ENVIRONMENT__ === "production"
+	"serviceWorker" in navigator &&
+	// Comment the line below if you want to
+	// use the service worker in development mode.
+	// And uncomment the if statements for
+	// debugging purposes.
+	__ENVIRONMENT__ === "production"
 ) {
 	window.addEventListener("load", () => {
 		navigator.serviceWorker
 			.register("/sw.js")
-			.then(registration => {
-				console.log("SW registered: ", registration);
+			.then(_registration => {
+				// if (__ENVIRONMENT__ === "development") {
+				// 	console.log("SW registered: ", _registration);
+				// }
 			})
-			.catch(registrationError => {
-				console.log("SW registration error: ");
-				console.error(registrationError);
+			.catch(_registrationError => {
+				// if (__ENVIRONMENT__ === "development") {
+				// 	console.log("SW registration error: ", _registrationError);
+				// }
 			});
 	});
 }

@@ -9,6 +9,10 @@ import {NetworkOnly} from "workbox-strategies";
 // reinstalled properly.
 console.log(`SW v${__BUILD_VERSION__}`);
 
+// There's a Workbox build error if `self.__WB_MANIFEST`:
+self.__WB_MANIFEST;
+// is not present in the SW file, hence this comment :D
+
 // To skip the `waiting` step in the service worker lifecycle:
 // installing -> waiting -> activated -> redundant
 self.skipWaiting();
@@ -45,7 +49,3 @@ const navigationHandler = async params => {
 
 // Register this strategy to handle all navigations.
 registerRoute(new NavigationRoute(navigationHandler));
-
-// There's a Workbox build error if string:
-// `self.__WB_MANIFEST`
-// is not present in the SW file, hence this comment :D

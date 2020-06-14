@@ -13,7 +13,7 @@
     "api:test": "adonis test --bail",
     "api:test:specific": "adonis test --grep",
     "frontend:dev": "webpack --mode development",
-    "frontend:prod": "webpack --mode production",
+    "frontend:prod": "webpack --mode production --config prod.webpack.config.js",
     "e2e:test": "./node_modules/.bin/cypress open --browser chromium",
     "e2e:test:headless": "./node_modules/.bin/cypress run --browser chromium --headless",
     "cosmos": "cosmos",
