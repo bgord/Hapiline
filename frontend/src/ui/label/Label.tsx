@@ -15,5 +15,5 @@ export const Label: React.FC<JSX.IntrinsicElements["label"] &
 	}> = ({variant = "normal", m, mx, my, mt, mr, mb, ml, ...props}) => {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 
-	return <label data-variant={variant} className="c-label" {...marginTokens} {...props} />;
+	return <label className="c-label" data-variant={variant} {...marginTokens} {...props} />;
 };

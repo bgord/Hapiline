@@ -26,8 +26,8 @@ export function Badge<E extends React.ElementType = typeof defaultElement>({
 	return (
 		<Box
 			as={defaultElement}
-			data-variant={variant}
 			className="c-badge"
+			data-variant={variant}
 			{...marginTokens}
 			{...paddingTokens}
 			{...props}

@@ -30,6 +30,18 @@ export type Borders = {
 	bb?: BorderColors;
 	bl?: BorderColors;
 };
+export function getBorderTokens(border: Borders) {
+	return {
+		"data-bw": border.bw,
+		"data-b": border.b,
+		"data-bx": border.bx,
+		"data-by": border.by,
+		"data-bt": border.bt,
+		"data-br": border.br,
+		"data-bb": border.bb,
+		"data-bl": border.bl,
+	};
+}
 
 type MainAxisAlignment = "start" | "center" | "between" | "end";
 type CrossAxisAlignment = "start" | "center" | "baseline" | "end";
@@ -65,6 +77,7 @@ export function getBackgroundToken({bg}: Backgrounds) {
 		"data-bg": bg,
 	};
 }
+
 type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
 export interface Margins {
 	mt?: SpacingScale;
