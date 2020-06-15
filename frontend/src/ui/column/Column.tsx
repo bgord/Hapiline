@@ -11,6 +11,7 @@ import {
 	Backgrounds,
 	Margins,
 	Paddings,
+	getMarginTokens,
 } from "../design-system";
 
 type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions & Backgrounds & Borders;
@@ -19,17 +20,12 @@ export type ColumnProps<E extends React.ElementType> = PolymorphicComponentProps
 
 const defaultElement = "div";
 
+// prettier-ignore
 export const Column = React.forwardRef(
 	<E extends React.ElementType = typeof defaultElement>(
 		{
 			ref,
-			m,
-			mx,
-			my,
-			mt,
-			mr,
-			mb,
-			ml,
+			m, mx, my, mt, mr, mb, ml,
 			p,
 			px,
 			py,
@@ -54,6 +50,8 @@ export const Column = React.forwardRef(
 		}: ColumnProps<E>,
 		innerRef: typeof ref,
 	) => {
+		const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+
 		return (
 			<Box
 				ref={innerRef}
@@ -63,13 +61,6 @@ export const Column = React.forwardRef(
 				data-width={width}
 				data-position={position}
 				data-bg={bg}
-				data-m={m}
-				data-mx={mx}
-				data-my={my}
-				data-mt={mt}
-				data-mr={mr}
-				data-mb={mb}
-				data-ml={ml}
 				data-p={p}
 				data-px={px}
 				data-py={py}
@@ -86,6 +77,7 @@ export const Column = React.forwardRef(
 				data-bb={bb}
 				data-bl={bl}
 				className="c-column"
+				{...marginTokens}
 				{...props}
 			/>
 		);

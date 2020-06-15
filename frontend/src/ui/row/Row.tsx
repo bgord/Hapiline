@@ -11,6 +11,7 @@ import {
 	Backgrounds,
 	Margins,
 	Paddings,
+	getMarginTokens,
 } from "../design-system";
 
 type RowOwnProps = Margins & Alignments & Widths & Paddings & Positions & Backgrounds & Borders;
@@ -19,18 +20,13 @@ export type RowProps<E extends React.ElementType> = PolymorphicComponentProps<E,
 
 const defaultElement = "div";
 
+// prettier-ignore
 export function Row<E extends React.ElementType = typeof defaultElement>({
 	mainAxis = "start",
 	crossAxis = "center",
 	width,
 	bg,
-	m,
-	mx,
-	my,
-	mt,
-	mr,
-	mb,
-	ml,
+	m, mx, my, mt, mr, mb, ml,
 	p,
 	px,
 	py,
@@ -49,6 +45,8 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 	bl,
 	...props
 }: RowProps<E>): JSX.Element {
+	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+
 	return (
 		<Box
 			as={defaultElement}
@@ -62,13 +60,6 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			data-pr={pr}
 			data-pb={pb}
 			data-pl={pl}
-			data-m={m}
-			data-mx={mx}
-			data-my={my}
-			data-mt={mt}
-			data-mr={mr}
-			data-mb={mb}
-			data-ml={ml}
 			data-position={position}
 			data-bg={bg}
 			className="c-row"
@@ -80,6 +71,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			data-br={br}
 			data-bb={bb}
 			data-bl={bl}
+			{...marginTokens}
 			{...props}
 		/>
 	);

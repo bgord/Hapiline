@@ -3,7 +3,7 @@ import "./text.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Positions, Margins} from "../design-system";
+import {Positions, Margins, getMarginTokens} from "../design-system";
 
 export type TextVariant =
 	| "regular"
@@ -23,31 +23,22 @@ export type TextProps<E extends React.ElementType> = PolymorphicComponentProps<E
 
 const defaultElement = "span";
 
+// prettier-ignore
 export function Text<E extends React.ElementType = typeof defaultElement>({
 	variant = "regular",
-	m,
-	mx,
-	my,
-	mt,
-	mr,
-	mb,
-	ml,
+	m, mx, my, mt, mr, mb, ml,
 	position = "static",
 	...props
 }: TextProps<E>): JSX.Element {
+	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+
 	return (
 		<Box
 			as={defaultElement}
-			data-m={m}
-			data-mx={mx}
-			data-my={my}
-			data-mt={mt}
-			data-mr={mr}
-			data-mb={mb}
-			data-ml={ml}
 			data-variant={variant}
 			data-position={position}
 			className="c-text"
+			{...marginTokens}
 			{...props}
 		/>
 	);

@@ -63,3 +63,15 @@ export interface Paddings {
 	px?: SpacingScale;
 	py?: SpacingScale;
 }
+
+export function getMarginTokens(margins: Margins) {
+	return {
+		"data-m": margins.m,
+		"data-mx": margins.mx,
+		"data-my": margins.my,
+		"data-mt": margins.mt,
+		"data-mr": margins.mr,
+		"data-mb": margins.mb,
+		"data-ml": margins.ml,
+	};
+}

@@ -3,7 +3,7 @@ import "./card.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Positions, Backgrounds, Margins, Paddings} from "../design-system";
+import {Positions, Backgrounds, Margins, Paddings, getMarginTokens} from "../design-system";
 
 type CardOwnProps = JSX.IntrinsicElements["div"] & Paddings & Margins & Positions & Backgrounds;
 
@@ -11,6 +11,7 @@ export type CardProps<E extends React.ElementType> = PolymorphicComponentProps<E
 
 const defaultElement = "div";
 
+// prettier-ignore
 export function Card<E extends React.ElementType = typeof defaultElement>({
 	p,
 	px,
@@ -19,17 +20,13 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	pr,
 	pb,
 	pl,
-	m,
-	mx,
-	my,
-	mt,
-	mr,
-	mb,
-	ml,
+	m, mx, my, mt, mr, mb, ml,
 	bg,
 	position = "static",
 	...props
 }: CardProps<E>): JSX.Element {
+	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+
 	return (
 		<Box
 			as={defaultElement}
@@ -40,16 +37,10 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 			data-pr={pr}
 			data-pb={pb}
 			data-pl={pl}
-			data-m={m}
-			data-mx={mx}
-			data-my={my}
-			data-mt={mt}
-			data-mr={mr}
-			data-mb={mb}
-			data-ml={ml}
 			data-bg={bg}
 			data-position={position}
 			className="c-card"
+			{...marginTokens}
 			{...props}
 		/>
 	);
