@@ -11,6 +11,7 @@ import {
 	getMarginTokens,
 	getPaddingTokens,
 	getPositionToken,
+	getBackgroundToken,
 } from "../design-system";
 
 type CardOwnProps = JSX.IntrinsicElements["div"] & Paddings & Margins & Positions & Backgrounds;
@@ -21,24 +22,25 @@ const defaultElement = "div";
 
 // prettier-ignore
 export function Card<E extends React.ElementType = typeof defaultElement>({
-	bg,
 	m, mx, my, mt, mr, mb, ml,
 	p, px, py, pt, pr, pb, pl,
 	position = "static",
+	bg,
 	...props
 }: CardProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 	const positionToken = getPositionToken({position});
+	const backgroundToken = getBackgroundToken({bg})
 
 	return (
 		<Box
 			as={defaultElement}
 			className="c-card"
-			data-bg={bg}
 			{...marginTokens}
 			{...paddingTokens}
 			{...positionToken}
+			{...backgroundToken}
 			{...props}
 		/>
 	);

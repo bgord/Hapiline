@@ -60,7 +60,11 @@ type Background =
 export type Backgrounds = {
 	bg?: Background;
 };
-
+export function getBackgroundToken({bg}: Backgrounds) {
+	return {
+		"data-bg": bg,
+	};
+}
 type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
 export interface Margins {
 	mt?: SpacingScale;
