@@ -8,6 +8,12 @@ export interface Positions {
 	position?: Position;
 }
 
+export function getPositionToken(position: Positions) {
+	return {
+		"data-position": position,
+	};
+}
+
 type BorderWidth = "1" | "2" | "3";
 type BorderColors = "gray-1" | "gray-2";
 export type Borders = {

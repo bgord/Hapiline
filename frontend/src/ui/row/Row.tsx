@@ -14,6 +14,7 @@ import {
 	getMarginTokens,
 	getPaddingTokens,
 	getAlignmentTokens,
+	getPositionToken,
 } from "../design-system";
 
 type RowOwnProps = Margins & Alignments & Widths & Paddings & Positions & Backgrounds & Borders;
@@ -26,10 +27,6 @@ const defaultElement = "div";
 export function Row<E extends React.ElementType = typeof defaultElement>({
 	width,
 	bg,
-	mainAxis = "start", crossAxis = "center", crossAxisSelf,
-	m, mx, my, mt, mr, mb, ml,
-	p, px, py, pt, pr, pb, pl,
-	position = "static",
 	bw,
 	b,
 	bx,
@@ -38,18 +35,22 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 	br,
 	bb,
 	bl,
+	m, mx, my, mt, mr, mb, ml,
+	p, px, py, pt, pr, pb, pl,
+	mainAxis = "start", crossAxis = "center", crossAxisSelf,
+	position = "static",
 	...props
 }: RowProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 	const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
+	const positionToken = getPositionToken({position});
 
 	return (
 		<Box
 			as={defaultElement}
 			className="c-row"
 			data-width={width}
-			data-position={position}
 			data-bg={bg}
 			data-bw={bw}
 			data-b={b}
@@ -62,6 +63,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			{...marginTokens}
 			{...paddingTokens}
 			{...alignmentTokens}
+			{...positionToken}
 			{...props}
 		/>
 	);

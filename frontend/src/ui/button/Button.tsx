@@ -11,6 +11,7 @@ import {
 	Paddings,
 	getMarginTokens,
 	getPaddingTokens,
+	getPositionToken,
 } from "../design-system";
 
 type ButtonVariant = "secondary" | "primary" | "outlined" | "bare" | "danger";
@@ -37,30 +38,31 @@ type ButtonProps = React.ComponentPropsWithoutRef<"button"> &
 export const Button = React.forwardRef(function _Button(
 	{
 		type = "button",
-		position = "static",
 		variant,
 		layout,
 		bg,
 		m, mx, my, mt, mr, mb, ml,
 		p, px, py, pt, pr, pb, pl,
+		position = "static",
 		...props
 	}: ButtonProps,
 	ref: React.Ref<HTMLButtonElement>,
 ) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
+	const positionToken = getPositionToken({position});
 
 	return (
 		<button
 			ref={ref}
 			type={type}
 			data-variant={variant}
-			data-position={position}
 			data-layout={layout}
 			data-bg={bg}
 			className="c-button"
 			{...marginTokens}
 			{...paddingTokens}
+			{...positionToken}
 			{...props}
 		/>
 	);
