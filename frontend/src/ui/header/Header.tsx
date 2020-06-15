@@ -2,8 +2,7 @@ import "./header.css";
 
 import React from "react";
 
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
+import {Margins, Paddings} from "../design-system";
 
 type HeaderVariant = "extra-small" | "small" | "medium" | "large";
 

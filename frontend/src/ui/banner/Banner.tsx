@@ -1,10 +1,7 @@
 import "./banner.css";
 
 import React from "react";
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Alignments} from "../alignments";
-import {Positions} from "../positions";
+import {Positions, Alignments, Margins, Paddings} from "../design-system";
 
 import {InfoIcon} from "../icons/Info";
 import {ExclamationIcon} from "../icons/Exclamation";

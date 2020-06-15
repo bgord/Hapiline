@@ -4,10 +4,7 @@ import "./button.css";
 
 import React from "react";
 
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Positions} from "../positions";
-import {Backgrounds} from "../backgrounds";
+import {Positions, Backgrounds, Margins, Paddings} from "../design-system";
 
 type ButtonVariant = "secondary" | "primary" | "outlined" | "bare" | "danger";
 type ButtonLayout = "with-icon";

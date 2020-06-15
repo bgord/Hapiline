@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Margins} from "../margins";
+import {Margins} from "../design-system";
 
 type PlusCircleIconProps = JSX.IntrinsicElements["path"] & Margins;
 

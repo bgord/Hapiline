@@ -2,8 +2,7 @@ import "./field.css";
 
 import React from "react";
 
-import {Margins} from "../margins";
-import {Widths} from "../widths";
+import {Widths, Margins} from "../design-system";
 
 type FieldVariant = "column" | "row";
 

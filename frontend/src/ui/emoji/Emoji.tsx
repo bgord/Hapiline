@@ -1,5 +1,6 @@
 import React from "react";
-import {Margins} from "../margins";
+
+import {Margins} from "../design-system";
 
 export const labelToEmoji = {
 	party: "🎉",

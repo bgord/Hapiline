@@ -3,8 +3,7 @@ import "./badge.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
+import {Margins, Paddings} from "../design-system";
 
 export type BadgeVariant = "positive" | "negative" | "neutral" | "light" | "normal" | "strong";
 

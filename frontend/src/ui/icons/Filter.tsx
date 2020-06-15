@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Margins} from "../margins";
+import {Margins} from "../design-system";
 
 type FilterIconProps = JSX.IntrinsicElements["path"] & Margins;
 

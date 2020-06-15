@@ -3,10 +3,7 @@ import "./card.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Positions} from "../positions";
-import {Backgrounds} from "../backgrounds";
+import {Positions, Backgrounds, Margins, Paddings} from "../design-system";
 
 type CardOwnProps = JSX.IntrinsicElements["div"] & Paddings & Margins & Positions & Backgrounds;
 

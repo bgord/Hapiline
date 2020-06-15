@@ -1,7 +1,7 @@
 import "./error.css";
 
 import React from "react";
-import {Margins} from "../margins";
+import {Margins} from "../design-system";
 
 export const Error: React.FC<JSX.IntrinsicElements["div"] & Margins> = ({
 	m,

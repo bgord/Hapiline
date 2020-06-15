@@ -1,9 +1,6 @@
 import React from "react";
 
-import {Alignments} from "../alignments";
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Widths} from "../widths";
+import {Widths, Alignments, Margins, Paddings} from "../design-system";
 
 type WrapperProps = JSX.IntrinsicElements["div"] & Margins & Alignments & Widths & Paddings;
 

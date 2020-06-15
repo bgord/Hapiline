@@ -3,13 +3,15 @@ import "./row.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Alignments} from "../alignments";
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Widths} from "../widths";
-import {Positions} from "../positions";
-import {Backgrounds} from "../backgrounds";
-import {Borders} from "../borders";
+import {
+	Widths,
+	Positions,
+	Borders,
+	Alignments,
+	Backgrounds,
+	Margins,
+	Paddings,
+} from "../design-system";
 
 type RowOwnProps = Margins & Alignments & Widths & Paddings & Positions & Backgrounds & Borders;
 

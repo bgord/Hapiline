@@ -3,8 +3,7 @@ import "./text.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Margins} from "../margins";
-import {Positions} from "../positions";
+import {Positions, Margins} from "../design-system";
 
 export type TextVariant =
 	| "regular"

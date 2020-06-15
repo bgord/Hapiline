@@ -3,13 +3,15 @@ import "./column.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Alignments} from "../alignments";
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Widths} from "../widths";
-import {Positions} from "../positions";
-import {Backgrounds} from "../backgrounds";
-import {Borders} from "../borders";
+import {
+	Widths,
+	Positions,
+	Borders,
+	Alignments,
+	Backgrounds,
+	Margins,
+	Paddings,
+} from "../design-system";
 
 type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions & Backgrounds & Borders;
 
