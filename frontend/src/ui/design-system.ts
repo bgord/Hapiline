@@ -2,13 +2,17 @@ type Width = "auto" | "100%";
 export interface Widths {
 	width?: Width;
 }
+export function getWidthToken({width}: Widths) {
+	return {
+		"data-width": width,
+	};
+}
 
 type Position = "relative" | "absolute" | "fixed" | "static";
 export interface Positions {
 	position?: Position;
 }
-
-export function getPositionToken(position: Positions) {
+export function getPositionToken({position}: Positions) {
 	return {
 		"data-position": position,
 	};
@@ -35,7 +39,6 @@ export interface Alignments {
 	crossAxis?: CrossAxisAlignment;
 	crossAxisSelf?: CrossAxisSelfAlignment;
 }
-
 export function getAlignmentTokens(alignments: Alignments) {
 	return {
 		"data-main-axis": alignments.mainAxis,
@@ -77,7 +80,6 @@ export interface Paddings {
 	px?: SpacingScale;
 	py?: SpacingScale;
 }
-
 export function getMarginTokens(margins: Margins) {
 	return {
 		"data-m": margins.m,
@@ -89,7 +91,6 @@ export function getMarginTokens(margins: Margins) {
 		"data-ml": margins.ml,
 	};
 }
-
 export function getPaddingTokens(paddings: Paddings) {
 	return {
 		"data-p": paddings.p,

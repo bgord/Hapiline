@@ -2,7 +2,7 @@ import "./field.css";
 
 import React from "react";
 
-import {Widths, Margins, getMarginTokens} from "../design-system";
+import {Widths, Margins, getMarginTokens, getWidthToken} from "../design-system";
 
 type FieldVariant = "column" | "row";
 
@@ -16,18 +16,19 @@ type FieldProps = JSX.IntrinsicElements["div"] &
 // prettier-ignore
 export const Field: React.FC<FieldProps> = ({
 	children,
+	variant = "column",
 	m, mx, my, mt, mr, mb, ml, 
   width,
-	variant = "column",
 	...props
 }) => {
 	const passedChildren = [...React.Children.toArray(children)];
 	const reorderedChildren = passedChildren.reverse();
 
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+	const widthToken = getWidthToken({width});
 
 	return (
-		<div data-width={width} data-variant={variant} className="c-field" {...marginTokens} {...props}>
+		<div data-variant={variant} className="c-field" {...marginTokens} {...widthToken} {...props}>
 			{reorderedChildren}
 		</div>
 	);

@@ -15,6 +15,7 @@ import {
 	getPaddingTokens,
 	getAlignmentTokens,
 	getPositionToken,
+	getWidthToken,
 } from "../design-system";
 
 type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions & Backgrounds & Borders;
@@ -28,7 +29,6 @@ export const Column = React.forwardRef(
 	<E extends React.ElementType = typeof defaultElement>(
 		{
 			ref,
-			width,
 			bg,
 			bw,
 			b,
@@ -42,6 +42,7 @@ export const Column = React.forwardRef(
 			p, px, py, pt, pr, pb, pl,
 			mainAxis, crossAxis, crossAxisSelf,
 			position = "static",
+			width,
 			...props
 		}: ColumnProps<E>,
 		innerRef: typeof ref,
@@ -50,12 +51,12 @@ export const Column = React.forwardRef(
 		const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 		const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
 		const positionToken = getPositionToken({position});
+		const widthToken = getWidthToken({width});
 
 		return (
 			<Box
 				ref={innerRef}
 				as={defaultElement}
-				data-width={width}
 				data-bg={bg}
 				data-bw={bw}
 				data-b={b}
@@ -70,6 +71,7 @@ export const Column = React.forwardRef(
 				{...paddingTokens}
 				{...alignmentTokens}
 				{...positionToken}
+				{...widthToken}
 				{...props}
 			/>
 		);
