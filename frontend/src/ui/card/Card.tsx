@@ -32,16 +32,9 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	return (
 		<Box
 			as={defaultElement}
-			data-p={p}
-			data-px={px}
-			data-py={py}
-			data-pt={pt}
-			data-pr={pr}
-			data-pb={pb}
-			data-pl={pl}
+			className="c-card"
 			data-bg={bg}
 			data-position={position}
-			className="c-card"
 			{...marginTokens}
 			{...paddingTokens}
 			{...props}

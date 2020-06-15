@@ -8,6 +8,7 @@ import {
 	Paddings,
 	getMarginTokens,
 	getPaddingTokens,
+	getAlignmentTokens,
 } from "../design-system";
 
 import {InfoIcon} from "../icons/Info";
@@ -31,22 +32,23 @@ export const Banner: React.FC<BannerProps> = ({
 	size = "normal",
 	m, mx, my, mt, mr, mb, ml,
 	p, px, py, pt, pr, pb, pl,
-	crossAxisSelf,
+	mainAxis, crossAxis, crossAxisSelf,
 	position = "static",
 	...props
 }) => {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
+	const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
 
 	return (
 		<div
+			className="c-banner"
 			data-variant={variant}
 			data-size={size}
-			data-cross-axis-self={crossAxisSelf}
 			data-position={position}
-			className="c-banner"
 			{...marginTokens}
 			{...paddingTokens}
+			{...alignmentTokens}
 			{...props}
 		/>
 	);

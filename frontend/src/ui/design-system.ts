@@ -30,6 +30,14 @@ export interface Alignments {
 	crossAxisSelf?: CrossAxisSelfAlignment;
 }
 
+export function getAlignmentTokens(alignments: Alignments) {
+	return {
+		"data-main-axis": alignments.mainAxis,
+		"data-cross-axis": alignments.crossAxis,
+		"data-cross-axis-self": alignments.crossAxisSelf,
+	};
+}
+
 type Background =
 	| "white"
 	| "gray-0"
