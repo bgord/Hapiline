@@ -75,3 +75,15 @@ export function getMarginTokens(margins: Margins) {
 		"data-ml": margins.ml,
 	};
 }
+
+export function getPaddingTokens(paddings: Paddings) {
+	return {
+		"data-p": paddings.p,
+		"data-px": paddings.px,
+		"data-py": paddings.py,
+		"data-pt": paddings.pt,
+		"data-pr": paddings.pr,
+		"data-pb": paddings.pb,
+		"data-pl": paddings.pl,
+	};
+}

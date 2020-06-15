@@ -1,7 +1,14 @@
 import "./banner.css";
 
 import React from "react";
-import {Positions, Alignments, Margins, Paddings, getMarginTokens} from "../design-system";
+import {
+	Positions,
+	Alignments,
+	Margins,
+	Paddings,
+	getMarginTokens,
+	getPaddingTokens,
+} from "../design-system";
 
 import {InfoIcon} from "../icons/Info";
 import {ExclamationIcon} from "../icons/Exclamation";
@@ -23,33 +30,23 @@ export const Banner: React.FC<BannerProps> = ({
 	variant,
 	size = "normal",
 	m, mx, my, mt, mr, mb, ml,
-	p,
-	px,
-	py,
-	pt,
-	pr,
-	pb,
-	pl,
+	p, px, py, pt, pr, pb, pl,
 	crossAxisSelf,
 	position = "static",
 	...props
 }) => {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
+
 	return (
 		<div
 			data-variant={variant}
 			data-size={size}
-			data-p={p}
-			data-px={px}
-			data-py={py}
-			data-pt={pt}
-			data-pr={pr}
-			data-pb={pb}
-			data-pl={pl}
 			data-cross-axis-self={crossAxisSelf}
 			data-position={position}
 			className="c-banner"
 			{...marginTokens}
+			{...paddingTokens}
 			{...props}
 		/>
 	);

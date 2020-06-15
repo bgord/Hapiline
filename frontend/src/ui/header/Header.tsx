@@ -2,7 +2,7 @@ import "./header.css";
 
 import React from "react";
 
-import {Margins, Paddings, getMarginTokens} from "../design-system";
+import {Margins, Paddings, getMarginTokens, getPaddingTokens} from "../design-system";
 
 type HeaderVariant = "extra-small" | "small" | "medium" | "large";
 
@@ -25,19 +25,14 @@ export const Header: React.FC<HeaderProps> = ({
 	...props
 }) => {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 
 	return (
 		<header
-			data-p={p}
-			data-px={px}
-			data-py={py}
-			data-pt={pt}
-			data-pr={pr}
-			data-pb={pb}
-			data-pl={pl}
 			data-variant={variant}
 			className="c-header"
 			{...marginTokens}
+			{...paddingTokens}
 			{...props}
 		/>
 	);

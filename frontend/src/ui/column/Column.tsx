@@ -12,6 +12,7 @@ import {
 	Margins,
 	Paddings,
 	getMarginTokens,
+	getPaddingTokens,
 } from "../design-system";
 
 type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions & Backgrounds & Borders;
@@ -51,6 +52,7 @@ export const Column = React.forwardRef(
 		innerRef: typeof ref,
 	) => {
 		const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+		const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 
 		return (
 			<Box
@@ -61,13 +63,6 @@ export const Column = React.forwardRef(
 				data-width={width}
 				data-position={position}
 				data-bg={bg}
-				data-p={p}
-				data-px={px}
-				data-py={py}
-				data-pt={pt}
-				data-pr={pr}
-				data-pb={pb}
-				data-pl={pl}
 				data-bw={bw}
 				data-b={b}
 				data-bx={bx}
@@ -78,6 +73,7 @@ export const Column = React.forwardRef(
 				data-bl={bl}
 				className="c-column"
 				{...marginTokens}
+				{...paddingTokens}
 				{...props}
 			/>
 		);

@@ -12,6 +12,7 @@ import {
 	Margins,
 	Paddings,
 	getMarginTokens,
+	getPaddingTokens,
 } from "../design-system";
 
 type RowOwnProps = Margins & Alignments & Widths & Paddings & Positions & Backgrounds & Borders;
@@ -46,6 +47,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 	...props
 }: RowProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 
 	return (
 		<Box
@@ -53,13 +55,6 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			data-main-axis={mainAxis}
 			data-cross-axis={crossAxis}
 			data-width={width}
-			data-p={p}
-			data-px={px}
-			data-py={py}
-			data-pt={pt}
-			data-pr={pr}
-			data-pb={pb}
-			data-pl={pl}
 			data-position={position}
 			data-bg={bg}
 			className="c-row"
@@ -72,6 +67,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			data-bb={bb}
 			data-bl={bl}
 			{...marginTokens}
+			{...paddingTokens}
 			{...props}
 		/>
 	);

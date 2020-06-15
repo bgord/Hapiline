@@ -1,6 +1,13 @@
 import React from "react";
 
-import {Widths, Alignments, Margins, Paddings, getMarginTokens} from "../design-system";
+import {
+	Widths,
+	Alignments,
+	Margins,
+	Paddings,
+	getMarginTokens,
+	getPaddingTokens,
+} from "../design-system";
 
 type WrapperProps = JSX.IntrinsicElements["div"] & Margins & Alignments & Widths & Paddings;
 
@@ -20,20 +27,15 @@ export const Wrapper: React.FC<WrapperProps> = ({
 	...props
 }) => {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 
 	return (
 		<div
 			data-main-axis={mainAxis}
 			data-cross-axis={crossAxis}
 			data-width={width}
-			data-p={p}
-			data-px={px}
-			data-py={py}
-			data-pt={pt}
-			data-pr={pr}
-			data-pb={pb}
-			data-pl={pl}
 			{...marginTokens}
+			{...paddingTokens}
 			{...props}
 		/>
 	);
