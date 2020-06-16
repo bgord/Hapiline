@@ -2,8 +2,7 @@ import "./header.css";
 
 import React from "react";
 
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
+import {Margins, Paddings, getMarginTokens, getPaddingTokens} from "../design-system";
 
 type HeaderVariant = "extra-small" | "small" | "medium" | "large";
 
@@ -12,15 +11,10 @@ type HeaderProps = JSX.IntrinsicElements["header"] & {
 } & Margins &
 	Paddings;
 
+// prettier-ignore
 export const Header: React.FC<HeaderProps> = ({
 	variant = "medium",
-	m,
-	mx,
-	my,
-	mt,
-	mr,
-	mb,
-	ml,
+	m, mx, my, mt, mr, mb, ml,
 	p,
 	px,
 	py,
@@ -29,24 +23,17 @@ export const Header: React.FC<HeaderProps> = ({
 	pb,
 	pl,
 	...props
-}) => (
-	<header
-		data-m={m}
-		data-mx={mx}
-		data-my={my}
-		data-mt={mt}
-		data-mr={mr}
-		data-mb={mb}
-		data-ml={ml}
-		data-p={p}
-		data-px={px}
-		data-py={py}
-		data-pt={pt}
-		data-pr={pr}
-		data-pb={pb}
-		data-pl={pl}
-		data-variant={variant}
-		className="c-header"
-		{...props}
-	/>
-);
+}) => {
+	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
+
+	return (
+		<header
+			data-variant={variant}
+			className="c-header"
+			{...marginTokens}
+			{...paddingTokens}
+			{...props}
+		/>
+	);
+};
