@@ -3,13 +3,22 @@ import "./column.css";
 import React from "react";
 import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 
-import {Alignments} from "../alignments";
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Widths} from "../widths";
-import {Positions} from "../positions";
-import {Backgrounds} from "../backgrounds";
-import {Borders} from "../borders";
+import {
+	Widths,
+	Positions,
+	Borders,
+	Alignments,
+	Backgrounds,
+	Margins,
+	Paddings,
+	getMarginTokens,
+	getPaddingTokens,
+	getAlignmentTokens,
+	getPositionToken,
+	getWidthToken,
+	getBackgroundToken,
+	getBorderTokens,
+} from "../design-system";
 
 type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions & Backgrounds & Borders;
 
@@ -17,73 +26,42 @@ export type ColumnProps<E extends React.ElementType> = PolymorphicComponentProps
 
 const defaultElement = "div";
 
+// prettier-ignore
 export const Column = React.forwardRef(
 	<E extends React.ElementType = typeof defaultElement>(
 		{
 			ref,
-			m,
-			mx,
-			my,
-			mt,
-			mr,
-			mb,
-			ml,
-			p,
-			px,
-			py,
-			pt,
-			pr,
-			pb,
-			pl,
-			mainAxis,
-			crossAxis,
+			m, mx, my, mt, mr, mb, ml,
+			p, px, py, pt, pr, pb, pl,
+			mainAxis, crossAxis, crossAxisSelf,
+			position = "static",
 			width,
 			bg,
-			position = "static",
-			bw,
-			b,
-			bx,
-			by,
-			bt,
-			br,
-			bb,
-			bl,
+			b, bx, by, bt, br, bb, bl, bw,
 			...props
 		}: ColumnProps<E>,
 		innerRef: typeof ref,
 	) => {
+		const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+		const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
+		const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
+		const positionToken = getPositionToken({position});
+		const widthToken = getWidthToken({width});
+		const backgroundToken = getBackgroundToken({bg});
+		const borderTokens = getBorderTokens({b, bx, by, bt, br, bb, bl, bw});
+
 		return (
 			<Box
-				ref={innerRef}
 				as={defaultElement}
-				data-main-axis={mainAxis}
-				data-cross-axis={crossAxis}
-				data-width={width}
-				data-position={position}
-				data-bg={bg}
-				data-m={m}
-				data-mx={mx}
-				data-my={my}
-				data-mt={mt}
-				data-mr={mr}
-				data-mb={mb}
-				data-ml={ml}
-				data-p={p}
-				data-px={px}
-				data-py={py}
-				data-pt={pt}
-				data-pr={pr}
-				data-pb={pb}
-				data-pl={pl}
-				data-bw={bw}
-				data-b={b}
-				data-bx={bx}
-				data-by={by}
-				data-bt={bt}
-				data-br={br}
-				data-bb={bb}
-				data-bl={bl}
 				className="c-column"
+				ref={innerRef}
+				{...marginTokens}
+				{...paddingTokens}
+				{...alignmentTokens}
+				{...positionToken}
+				{...widthToken}
+				{...backgroundToken}
+				{...borderTokens}
 				{...props}
 			/>
 		);

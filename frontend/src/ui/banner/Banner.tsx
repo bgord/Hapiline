@@ -1,10 +1,16 @@
 import "./banner.css";
 
 import React from "react";
-import {Margins} from "../margins";
-import {Paddings} from "../paddings";
-import {Alignments} from "../alignments";
-import {Positions} from "../positions";
+import {
+	Positions,
+	Alignments,
+	Margins,
+	Paddings,
+	getMarginTokens,
+	getPaddingTokens,
+	getAlignmentTokens,
+	getPositionToken,
+} from "../design-system";
 
 import {InfoIcon} from "../icons/Info";
 import {ExclamationIcon} from "../icons/Exclamation";
@@ -21,50 +27,34 @@ type BannerProps = JSX.IntrinsicElements["div"] & {variant: BannerVariant} & {
 	Alignments &
 	Positions;
 
+// prettier-ignore
 export const Banner: React.FC<BannerProps> = ({
 	variant,
 	size = "normal",
-	m,
-	mx,
-	my,
-	mt,
-	mr,
-	mb,
-	ml,
-	p,
-	px,
-	py,
-	pt,
-	pr,
-	pb,
-	pl,
-	crossAxisSelf,
+	m, mx, my, mt, mr, mb, ml,
+	p, px, py, pt, pr, pb, pl,
+	mainAxis, crossAxis, crossAxisSelf,
 	position = "static",
 	...props
-}) => (
-	<div
-		data-variant={variant}
-		data-size={size}
-		data-m={m}
-		data-mx={mx}
-		data-my={my}
-		data-mt={mt}
-		data-mr={mr}
-		data-mb={mb}
-		data-ml={ml}
-		data-p={p}
-		data-px={px}
-		data-py={py}
-		data-pt={pt}
-		data-pr={pr}
-		data-pb={pb}
-		data-pl={pl}
-		data-cross-axis-self={crossAxisSelf}
-		data-position={position}
-		className="c-banner"
-		{...props}
-	/>
-);
+}) => {
+	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
+	const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
+	const positionToken = getPositionToken({ position });
+
+	return (
+		<div
+			className="c-banner"
+			data-variant={variant}
+			data-size={size}
+			{...marginTokens}
+			{...paddingTokens}
+			{...alignmentTokens}
+			{...positionToken}
+			{...props}
+		/>
+	);
+};
 
 type SpecificBannerProps = JSX.IntrinsicElements["div"] &
 	Margins &

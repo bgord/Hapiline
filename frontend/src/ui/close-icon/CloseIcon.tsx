@@ -8,8 +8,7 @@ import VisuallyHidden from "@reach/visually-hidden";
 import {Close} from "../icons/Close";
 
 import * as UI from "../button/Button";
-import {Margins} from "../margins";
-import {Backgrounds} from "../backgrounds";
+import {Backgrounds, Margins} from "../design-system";
 
 type CloseIconProps = React.ComponentPropsWithoutRef<"button"> & Margins & Backgrounds;
 
