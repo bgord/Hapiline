@@ -1,10 +1,11 @@
 const Database = use("Database");
 
 class JournalController {
-	async show({params, response, auth}) {
-		const journal = await Database.table("journals")
+	async show({response, request, auth}) {
+		const {day} = request.get();
+		const [journal] = await Database.table("journals")
 			.where("user_id", auth.user.id)
-			.where("day", params.day);
+			.where("day", day);
 
 		if (!journal) return response.notFound();
 

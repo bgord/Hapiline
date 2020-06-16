@@ -1,13 +1,13 @@
 const ace = require("@adonisjs/ace");
 const datefns = require("date-fns");
 const qs = require("qs");
-
 const {
 	assertAccessDenied,
 	assertInvalidSession,
 	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
+const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Show journal");
 
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
@@ -25,7 +25,7 @@ afterEach(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
-const GET_JORNAL_DAY_URL = "/api/v1/journals";
+const GET_JORNAL_DAY_URL = "/api/v1/journal";
 
 test("auth", async ({client}) => {
 	const response = await client.get(GET_JORNAL_DAY_URL).end();
@@ -47,7 +47,6 @@ test("account-status:(active)", async ({client}) => {
 		account_status: ACCOUNT_STATUSES.pending,
 	});
 	await jim.save();
-
 	const response = await client
 		.get(GET_JORNAL_DAY_URL)
 		.loginVia(jim)
@@ -98,10 +97,8 @@ test("validation", async ({client}) => {
 
 	for (const [payload, argErrors] of cases) {
 		const queryString = qs.stringify(payload);
-
 		const response = await client
 			.get(`${GET_JORNAL_DAY_URL}?${queryString}`)
-			.send(payload)
 			.loginVia(jim)
 			.end();
 
@@ -111,7 +108,7 @@ test("validation", async ({client}) => {
 
 test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
-	const today = new Date();
+	const today = datefns.format(new Date(), "yyyy-MM-dd");
 
 	const payload = {day: today};
 
@@ -122,6 +119,9 @@ test("full flow", async ({client, assert}) => {
 		.send(payload)
 		.loginVia(jim)
 		.end();
-	console.log(response);
-	///???
+
+	response.assertStatus(200);
+	assert.equal(response.body.user_id, jim.id);
+	assert.equal(response.body.content, "10 lorem ipsumlorem ipsum");
+	assert.ok(datefns.isEqual(datefns.parseISO(response.body.day), datefns.parseISO(today)));
 });
