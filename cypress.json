@@ -1,5 +1,5 @@
 {
-	"baseUrl": "http://localhost:3333",
+	"baseUrl": "http://hapiline.localhost",
 	"video": false,
 	"chromeWebSecurity": false
 }

@@ -52,6 +52,7 @@ $ ./run.sh npm install
 ```bash
 $ ./run.sh adonis migration:run
 ```
+
 **Clear database**
 
 ```bash
@@ -70,7 +71,7 @@ $ ./run.sh adonis seed
 $ ./npm.sh run frontend:dev
 ```
 
-The app should be already up and running at `localhost:3333`.
+The app should be already up and running at `hapiline.localhost`.
 
 ## Development
 
