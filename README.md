@@ -65,6 +65,12 @@ $ ./run.sh adonis migration:refresh
 $ ./run.sh adonis seed
 ```
 
+**Generate types**
+
+```bash
+$ npx prisma generate
+```
+
 **Start frontend app**
 
 ```bash
