@@ -66,6 +66,16 @@ export function getAlignmentTokens(alignments: Alignments) {
 	};
 }
 
+type Wrap = "nowrap" | "wrap" | undefined;
+export interface Wraps {
+	wrap?: Wrap;
+}
+export function getWrapToken(wrap: Wrap) {
+	return {
+		"data-wrap": wrap,
+	};
+}
+
 type Background =
 	| "white"
 	| "gray-0"
