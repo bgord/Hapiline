@@ -45,9 +45,9 @@ export const Column = React.forwardRef(
 		const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 		const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 		const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
-		const positionToken = getPositionToken({position});
-		const widthToken = getWidthToken({width});
-		const backgroundToken = getBackgroundToken({bg});
+		const positionToken = getPositionToken(position);
+		const widthToken = getWidthToken(width);
+		const backgroundToken = getBackgroundToken(bg);
 		const borderTokens = getBorderTokens({b, bx, by, bt, br, bb, bl, bw});
 
 		return (

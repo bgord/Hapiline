@@ -40,7 +40,7 @@ export const Banner: React.FC<BannerProps> = ({
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 	const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
-	const positionToken = getPositionToken({ position });
+	const positionToken = getPositionToken(position);
 
 	return (
 		<div

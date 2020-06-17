@@ -2,7 +2,7 @@ type Width = "auto" | "100%";
 export interface Widths {
 	width?: Width;
 }
-export function getWidthToken({width}: Widths) {
+export function getWidthToken(width?: Width) {
 	return {
 		"data-width": width,
 	};
@@ -12,7 +12,7 @@ type Position = "relative" | "absolute" | "fixed" | "static";
 export interface Positions {
 	position?: Position;
 }
-export function getPositionToken({position}: Positions) {
+export function getPositionToken(position?: Position) {
 	return {
 		"data-position": position,
 	};
@@ -72,7 +72,7 @@ type Background =
 export type Backgrounds = {
 	bg?: Background;
 };
-export function getBackgroundToken({bg}: Backgrounds) {
+export function getBackgroundToken(bg?: Background) {
 	return {
 		"data-bg": bg,
 	};

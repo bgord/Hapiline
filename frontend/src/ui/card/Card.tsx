@@ -30,8 +30,8 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 }: CardProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
-	const positionToken = getPositionToken({position});
-	const backgroundToken = getBackgroundToken({bg})
+	const positionToken = getPositionToken(position);
+	const backgroundToken = getBackgroundToken(bg);
 
 	return (
 		<Box

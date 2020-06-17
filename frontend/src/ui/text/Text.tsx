@@ -31,7 +31,7 @@ export function Text<E extends React.ElementType = typeof defaultElement>({
 	...props
 }: TextProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
-	const positionToken = getPositionToken({position});
+	const positionToken = getPositionToken(position);
 
 	return (
 		<Box

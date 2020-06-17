@@ -25,7 +25,7 @@ export const Field: React.FC<FieldProps> = ({
 	const reorderedChildren = passedChildren.reverse();
 
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
-	const widthToken = getWidthToken({width});
+	const widthToken = getWidthToken(width);
 
 	return (
 		<div data-variant={variant} className="c-field" {...marginTokens} {...widthToken} {...props}>

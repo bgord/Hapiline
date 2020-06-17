@@ -51,8 +51,8 @@ export const Button = React.forwardRef(function _Button(
 ) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
-	const positionToken = getPositionToken({position});
-	const backgroundToken = getBackgroundToken({bg});
+	const positionToken = getPositionToken(position);
+	const backgroundToken = getBackgroundToken(bg);
 
 	return (
 		<button

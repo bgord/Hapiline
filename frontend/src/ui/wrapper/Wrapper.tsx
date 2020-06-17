@@ -24,7 +24,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 	const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
-	const widthToken = getWidthToken({width});
+	const widthToken = getWidthToken(width);
 
 	return (
 		<div
