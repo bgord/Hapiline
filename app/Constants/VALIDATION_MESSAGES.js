@@ -34,6 +34,8 @@ const VALIDATION_MESSAGES = {
 	invalid_notification_status: `Notification status must be one of: ${Object.keys(
 		NOTIFICATION_STATUSES,
 	)}`,
+	sameOrAfter: (field, sameOrAfterDay) =>
+		`Field ${field} must be samee or after ${sameOrAfterDay}.`,
 };
 
 module.exports = VALIDATION_MESSAGES;

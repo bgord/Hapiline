@@ -163,6 +163,10 @@ Route.get("/api/v1/journal", "JournalController.show")
 	.middleware(["auth", `is:(regular)`, `account-status:active`])
 	.validator("ShowJournal");
 
+Route.post("/api/v1/journal", "JournalController.store")
+	.middleware(["auth", `is:(regular)`, `account-status:active`])
+	.validator("StoreJournal");
+
 Route.get("*", async ({request, response}) => {
 	const resourcePath = request.url();
 	if (resourcePath === "/") {
