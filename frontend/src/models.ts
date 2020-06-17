@@ -21,7 +21,7 @@ export type LoginPayload = Pick<User, "email" | "password">;
 export type NewPasswordPayload = {
   token: Token;
   password: User["password"];
-  passwordConfirmation: User["password"];
+  password_confirmation: User["password"];
 };
 export type NewEmailPayload = {
   newEmail: User["email"];
