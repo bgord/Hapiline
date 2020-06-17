@@ -88,7 +88,7 @@ export function getBackgroundToken(bg?: Background) {
 type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
 type ResponsiveSpacingScaleType = SpacingScale | [SpacingScale, SpacingScale];
 export interface Margins {
-	mt?: SpacingScale;
+	mt?: ResponsiveSpacingScaleType;
 	mr?: SpacingScale;
 	mb?: SpacingScale;
 	ml?: SpacingScale;
@@ -113,11 +113,18 @@ export function getMarginTokens(margins: Margins) {
 		  }
 		: {"data-mx": margins.mx};
 
+	const mt = Array.isArray(margins.mt)
+		? {
+				"data-mt": margins.mt[0],
+				"data-lg-mt": margins.mt[1],
+		  }
+		: {"data-mt": margins.mt};
+
 	return {
 		"data-m": margins.m,
 		...mx,
 		"data-my": margins.my,
-		"data-mt": margins.mt,
+		...mt,
 		"data-mr": margins.mr,
 		"data-mb": margins.mb,
 		"data-ml": margins.ml,
