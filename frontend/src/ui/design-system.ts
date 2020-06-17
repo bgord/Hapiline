@@ -86,13 +86,14 @@ export function getBackgroundToken(bg?: Background) {
 }
 
 type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
+type ResponsiveSpacingScaleType = SpacingScale | [SpacingScale, SpacingScale];
 export interface Margins {
 	mt?: SpacingScale;
 	mr?: SpacingScale;
 	mb?: SpacingScale;
 	ml?: SpacingScale;
 	m?: SpacingScale;
-	mx?: SpacingScale;
+	mx?: ResponsiveSpacingScaleType;
 	my?: SpacingScale;
 }
 export interface Paddings {
@@ -105,9 +106,16 @@ export interface Paddings {
 	py?: SpacingScale;
 }
 export function getMarginTokens(margins: Margins) {
+	const mx = Array.isArray(margins.mx)
+		? {
+				"data-mx": margins.mx[0],
+				"data-lg-mx": margins.mx[1],
+		  }
+		: {"data-mx": margins.mx};
+
 	return {
 		"data-m": margins.m,
-		"data-mx": margins.mx,
+		...mx,
 		"data-my": margins.my,
 		"data-mt": margins.mt,
 		"data-mr": margins.mr,
