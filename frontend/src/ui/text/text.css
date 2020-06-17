@@ -26,10 +26,10 @@
 
 .c-text[data-variant="link"] {
 	text-decoration: underline;
-	text-decoration-style: dotted;
+	text-decoration-style: solid;
 	color: #515d7b;
 }
 .c-text[data-variant="link"]:hover {
-	text-decoration-style: solid;
-	color: #515d7b;
+	text-decoration-style: double;
+	transition: text-decoration-style 0.3s;
 }
