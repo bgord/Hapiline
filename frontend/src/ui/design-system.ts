@@ -1,4 +1,4 @@
-type Width = "auto" | "100%" | "600px";
+type Width = "auto" | "100%" | "view-m";
 type ResponsiveWidth = Width | [Width, Width];
 export interface Widths {
 	width?: ResponsiveWidth;

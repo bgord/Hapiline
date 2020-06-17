@@ -24,7 +24,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 			mt={["72", "24"]}
 			mx={["auto", "12"]}
 			mb="72"
-			width={["600px", "auto"]}
+			width={["view-m", "auto"]}
 		>
 			<UI.Column
 				as="form"

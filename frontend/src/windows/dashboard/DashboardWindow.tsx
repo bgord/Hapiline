@@ -63,7 +63,7 @@ export const DashboardWindow = () => {
 	const dateOfToday = formatToday();
 
 	return (
-		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "var(--view-width)"}}>
+		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "var(--view-width-l)"}}>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="large">Hello!</UI.Header>
 

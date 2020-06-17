@@ -57,7 +57,8 @@
 	--border-width-m: 2px;
 	--border-width-l: 3px;
 
-	--view-width: 750px;
+	--view-width-m: 600px;
+	--view-width-l: 750px;
 }
 
 html {
@@ -553,8 +554,8 @@ body {
 	width: var(--spacing-auto) !important;
 }
 
-*[data-width="600px"] {
-	width: 600px;
+*[data-width="view-m"] {
+	width: var(--view-width-m);
 }
 
 @media (max-width: 768px) {
@@ -566,8 +567,8 @@ body {
 		width: var(--spacing-auto);
 	}
 
-	*[data-lg-width="600px"] {
-		width: 600px;
+	*[data-lg-width="view-m"] {
+		width: var(--view-width-m);
 	}
 }
 

@@ -19,7 +19,7 @@ export const NewPasswordWindow: React.FC = () => {
 	const {errorMessage} = getRequestStateErrors(newPasswordRequestState);
 
 	return (
-		<UI.Card py="48" px="24" mx={["auto", "12"]} my="72" width={["600px", "auto"]}>
+		<UI.Card py="48" px="24" mx={["auto", "12"]} my="72" width={["view-m", "auto"]}>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
