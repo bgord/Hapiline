@@ -60,7 +60,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 
 				<UI.ShowIf request={forgotPasswordRequestState} is={["idle", "loading", "error"]}>
 					<UI.InfoBanner mt="48">
-						<UI.Text>You will receive an email with further instructions.</UI.Text>
+						You will receive an email with further instructions.
 					</UI.InfoBanner>
 				</UI.ShowIf>
 
