@@ -18,7 +18,7 @@ export const ForgotPasswordWindow: React.FC = () => {
 	}
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72">
+		<UI.Card py="48" px="24" mx="auto" my="72" width={["600px", "100%"]}>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -37,7 +37,6 @@ export const ForgotPasswordWindow: React.FC = () => {
 						required
 						onChange={event => setEmail(event.target.value)}
 						placeholder="john.brown@gmail.com"
-						style={{width: "500px"}}
 					/>
 				</UI.Field>
 

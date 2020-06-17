@@ -21,7 +21,7 @@ export const RegistrationWindow: React.FC = () => {
 	const emailInlineErrorMessage = getArgErrorMessage("email");
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>
+		<UI.Card py="48" px="24" mx="auto" my="72" width={["600px", "100%"]}>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {

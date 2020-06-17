@@ -1,8 +1,15 @@
-type Width = "auto" | "100%";
+type Width = "auto" | "100%" | "600px";
+type ResponsiveWidth = Width | [Width, Width];
 export interface Widths {
-	width?: Width;
+	width?: ResponsiveWidth;
 }
-export function getWidthToken(width?: Width) {
+export function getWidthToken(width?: ResponsiveWidth) {
+	if (Array.isArray(width)) {
+		return {
+			"data-width": width[0],
+			"data-lg-width": width[1],
+		};
+	}
 	return {
 		"data-width": width,
 	};
