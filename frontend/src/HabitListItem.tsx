@@ -42,28 +42,32 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 					data-state={snapshot.isDragging ? "dragging" : "idle"}
 					ref={provided.innerRef}
 					as="li"
-					px="24"
+					px={["24", "6"]}
 					py="6"
 					pb="12"
 					by="gray-1"
 					style={{cursor: "move", ...provided.draggableProps.style}}
 				>
 					<UI.Row mainAxis="between" crossAxis="baseline">
-						<UI.Text variant="semi-bold">{habit.name}</UI.Text>
+						<UI.Text variant="semi-bold" mr="12">
+							{habit.name}
+						</UI.Text>
 						<UI.Button ml="auto" variant="outlined" onClick={openPreviewDialog}>
 							More
 						</UI.Button>
 					</UI.Row>
 
-					<UI.Row mt="6">
-						<UI.Badge mr="6" variant={habit.score}>
+					<UI.Row mt={["0", "24"]} wrap="wrap">
+						<UI.Badge mt="6" mr="6" variant={habit.score}>
 							{habit.score}
 						</UI.Badge>
-						<UI.Badge ml="6" variant={habitStrengthToBadgeVariant[habit.strength]}>
+
+						<UI.Badge mt="6" mr={["24", "6"]} variant={habitStrengthToBadgeVariant[habit.strength]}>
 							{habit.strength}
 						</UI.Badge>
+
 						{!habit.is_trackable && (
-							<UI.Badge ml="12" variant="neutral">
+							<UI.Badge mt="6" variant="neutral">
 								Untracked
 							</UI.Badge>
 						)}

@@ -10,7 +10,7 @@ import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStre
 import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
-import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
+import {useHabitSearch} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
@@ -211,24 +211,10 @@ export const HabitsWindow = () => {
 						</UI.Row>
 					)}
 
-					<UI.Row mb="24" mt={["48", "24"]} crossAxis="end" wrap={["nowrap", "wrap-reverse"]}>
-						<UI.Row wrap="wrap" mx={["24", "12"]}>
-							<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-
-							<UI.Button
-								mx={["12", "0"]}
-								mt={["auto", "12"]}
-								variant="outlined"
-								onClick={habitSearch.clearPhrase}
-							>
-								Clear
-							</UI.Button>
-						</UI.Row>
-
+					<UI.Row mt={["48", "24"]} mainAxis="end">
 						<UI.Button
-							ml="auto"
 							mr={["24", "12"]}
-							mt={[, "24"]}
+							mt={["0", "12"]}
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
@@ -238,9 +224,26 @@ export const HabitsWindow = () => {
 						</UI.Button>
 					</UI.Row>
 
-					<UI.Text ml={["24", "12"]} data-testid="number-of-habit-search-results">
-						<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
-					</UI.Text>
+					<UI.Row mt="6" width="auto" crossAxis="end" wrap="wrap" mx={["24", "12"]}>
+						<UI.Field mr="12">
+							<UI.Label htmlFor="habit_name">Habit name</UI.Label>
+							<UI.Input
+								id="habit_name"
+								type="search"
+								placeholder="Search for habits..."
+								value={habitSearch.value}
+								onChange={habitSearch.onChange}
+							/>
+						</UI.Field>
+
+						<UI.Button mt={["auto", "12"]} variant="outlined" onClick={habitSearch.clearPhrase}>
+							Clear
+						</UI.Button>
+
+						<UI.Text mb="6" ml="auto" data-testid="number-of-habit-search-results">
+							<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
+						</UI.Text>
+					</UI.Row>
 
 					<UI.ShowIf request={getHabitsRequestState} is="success">
 						{filteredHabits.length === 0 && (

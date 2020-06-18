@@ -107,11 +107,11 @@ type ResponsiveSpacingScaleType = SpacingScale | [SpacingScale, SpacingScale];
 export interface Margins {
 	mt?: ResponsiveSpacingScaleType;
 	mr?: ResponsiveSpacingScaleType;
-	mb?: SpacingScale;
+	mb?: ResponsiveSpacingScaleType;
 	ml?: ResponsiveSpacingScaleType;
-	m?: SpacingScale;
+	m?: ResponsiveSpacingScaleType;
 	mx?: ResponsiveSpacingScaleType;
-	my?: SpacingScale;
+	my?: ResponsiveSpacingScaleType;
 }
 export interface Paddings {
 	pt?: SpacingScale;
@@ -119,7 +119,7 @@ export interface Paddings {
 	pb?: SpacingScale;
 	pl?: SpacingScale;
 	p?: SpacingScale;
-	px?: SpacingScale;
+	px?: ResponsiveSpacingScaleType;
 	py?: SpacingScale;
 }
 export function getMarginTokens(margins: Margins) {
@@ -145,9 +145,18 @@ export function getMarginTokens(margins: Margins) {
 }
 
 export function getPaddingTokens(paddings: Paddings) {
+	function getSinglePaddingToken(key: keyof Paddings) {
+		if (Array.isArray(paddings[key])) {
+			return {
+				[`data-${key}`]: paddings?.[key]?.[0],
+				[`data-lg-${key}`]: paddings?.[key]?.[1],
+			};
+		}
+		return {[`data-${key}`]: paddings[key]};
+	}
 	return {
 		"data-p": paddings.p,
-		"data-px": paddings.px,
+		...getSinglePaddingToken("px"),
 		"data-py": paddings.py,
 		"data-pt": paddings.pt,
 		"data-pr": paddings.pr,
