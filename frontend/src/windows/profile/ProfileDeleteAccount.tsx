@@ -54,11 +54,16 @@ export const ProfileDeleteAccount = () => {
 			</UI.ShowIf>
 
 			{isAccountDeletionModalVisible && (
-				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
+				<AlertDialog
+					data-width="view-m"
+					data-lg-width="auto"
+					data-lg-mx="12"
+					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
+				>
 					<AlertDialogLabel>
 						<UI.Header variant="small">Do you really want to delete your account?</UI.Header>
 					</AlertDialogLabel>
-					<UI.Row mt="48" mainAxis="between">
+					<UI.Row mt="48" mainAxis="between" wrap="wrap">
 						<UI.Button variant="danger" onClick={confirmDeletion}>
 							Yes, delete
 						</UI.Button>
@@ -66,6 +71,7 @@ export const ProfileDeleteAccount = () => {
 							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={hideAccountDeletionModal}
+							mt={[, "24"]}
 						>
 							Nevermind, don't delete
 						</UI.Button>
