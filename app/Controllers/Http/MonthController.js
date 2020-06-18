@@ -65,7 +65,9 @@ class MonthsController {
 		]);
 
 		const daysWithAtLeastOneCreatedHabitOrVote = [...daysWithAtLeastOneStat].map(day => {
-			const habitsCreatedByDay = numberOfCreatedHabitsByDay.find(entry => entry.day === day);
+			const habitsCreatedByDay = numberOfCreatedHabitsByDay.find(
+				entry => entry && entry.day === day,
+			);
 
 			const progressVotesByDay = numberOfVoteTypesByDay.find(
 				getByDayAndVoteType(HABIT_VOTE_TYPES.progress),
@@ -80,7 +82,7 @@ class MonthsController {
 			);
 
 			function getByDayAndVoteType(voteType) {
-				return entry => entry.day === day && entry.voteType === voteType;
+				return entry => entry && entry.day === day && entry.voteType === voteType;
 			}
 
 			return {
