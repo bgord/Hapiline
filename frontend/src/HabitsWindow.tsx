@@ -18,9 +18,12 @@ import {FilterIcon} from "./ui/icons/Filter";
 import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {Habit, ReorderHabitPayload} from "./models";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export const HabitsWindow = () => {
 	useDocumentTitle("Hapiline - habit list");
+
+	const mediaQuery = useMediaQuery();
 
 	const getHabitsRequestState = useHabitsState();
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
@@ -99,22 +102,24 @@ export const HabitsWindow = () => {
 					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between" wrap="wrap">
 						<UI.Header variant="large">Habit list</UI.Header>
 
-						<UI.Button
-							disabled={filteredHabits.length === 0}
-							style={{width: "145px"}}
-							variant="secondary"
-							layout="with-icon"
-							onClick={() => {
-								resetAllFilters();
-								toggleFilters();
-							}}
-						>
-							<FilterIcon mr="auto" />
-							{areFiltersVisible ? "Hide filters" : "Show filters"}
-						</UI.Button>
+						{mediaQuery === MEDIA_QUERY.default && (
+							<UI.Button
+								disabled={filteredHabits.length === 0}
+								style={{width: "145px"}}
+								variant="secondary"
+								layout="with-icon"
+								onClick={() => {
+									resetAllFilters();
+									toggleFilters();
+								}}
+							>
+								<FilterIcon mr="auto" />
+								{areFiltersVisible ? "Hide filters" : "Show filters"}
+							</UI.Button>
+						)}
 					</UI.Row>
 
-					{areFiltersVisible && (
+					{areFiltersVisible && mediaQuery === MEDIA_QUERY.default && (
 						<UI.Row mt="48" px="24" crossAxis="start">
 							<UI.Column pr="72" bw="2" br="gray-1">
 								<UI.Text variant="semi-bold">Scores</UI.Text>
@@ -223,6 +228,7 @@ export const HabitsWindow = () => {
 						<UI.Button
 							ml="auto"
 							mr={["24", "12"]}
+							mt={[, "24"]}
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
