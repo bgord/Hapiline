@@ -554,6 +554,10 @@ body {
 	width: var(--spacing-auto) !important;
 }
 
+*[data-width="view-l"] {
+	width: var(--view-width-l);
+}
+
 *[data-width="view-m"] {
 	width: var(--view-width-m);
 }
@@ -565,6 +569,10 @@ body {
 
 	*[data-lg-width="auto"] {
 		width: var(--spacing-auto);
+	}
+
+	*[data-lg-width="view-l"] {
+		width: var(--view-width-l);
 	}
 
 	*[data-lg-width="view-m"] {
