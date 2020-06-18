@@ -5,10 +5,15 @@ import {useMutation} from "react-query";
 
 import {api} from "../../services/api";
 import {useErrorToast} from "../../contexts/toasts-context";
+import {useToggle} from "../../hooks/useToggle";
 import * as UI from "../../ui";
 
 export const ProfileDeleteAccount = () => {
-	const [modalStatus, setModalStatus] = React.useState<"idle" | "editing">("idle");
+	const {
+		on: isAccountDeletionModalVisible,
+		setOn: showAccountDeletionModal,
+		setOff: hideAccountDeletionModal,
+	} = useToggle(false);
 
 	const cancelRef = React.useRef<HTMLButtonElement>();
 
@@ -21,8 +26,8 @@ export const ProfileDeleteAccount = () => {
 	});
 
 	function confirmDeletion() {
-		setModalStatus("idle");
 		deleteAccount();
+		hideAccountDeletionModal();
 	}
 	return (
 		<UI.Column p="24">
@@ -38,7 +43,7 @@ export const ProfileDeleteAccount = () => {
 				mt="24"
 				variant="danger"
 				disabled={deleteAccountRequestState.status === "loading"}
-				onClick={() => setModalStatus("editing")}
+				onClick={showAccountDeletionModal}
 				mr="auto"
 			>
 				Delete account
@@ -48,7 +53,7 @@ export const ProfileDeleteAccount = () => {
 				<UI.Error mt="12">An error occurred during account deletion.</UI.Error>
 			</UI.ShowIf>
 
-			{modalStatus === "editing" && (
+			{isAccountDeletionModalVisible && (
 				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
 					<AlertDialogLabel>
 						<UI.Header variant="small">Do you really want to delete your account?</UI.Header>
@@ -60,7 +65,7 @@ export const ProfileDeleteAccount = () => {
 						<UI.Button
 							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
-							onClick={() => setModalStatus("idle")}
+							onClick={hideAccountDeletionModal}
 						>
 							Nevermind, don't delete
 						</UI.Button>
