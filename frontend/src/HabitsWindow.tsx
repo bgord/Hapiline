@@ -91,12 +91,12 @@ export const HabitsWindow = () => {
 	}
 
 	return (
-		<UI.Column>
+		<UI.Column mx="auto" mt="48" mb="24" width={["view-l", "auto"]}>
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<UI.ShowIf request={getHabitsRequestState} is={["error", "success"]}>
-				<UI.Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
-					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between">
+				<UI.Card>
+					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between" wrap="wrap">
 						<UI.Header variant="large">Habit list</UI.Header>
 						<UI.Button
 							disabled={filteredHabits.length === 0}
@@ -205,14 +205,21 @@ export const HabitsWindow = () => {
 						</UI.Row>
 					)}
 
-					<UI.Row px="24" mb="24" mt="48" crossAxis="end">
-						<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-						<UI.Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
-							Clear
-						</UI.Button>
+					<UI.Row mb="24" mt="48" mainAxis="between" crossAxis="end" wrap={[, "wrap-reverse"]}>
+						<UI.Row wrap="wrap" mx="12">
+							<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
+							<UI.Button
+								mx={["12", "0"]}
+								mt={["auto", "12"]}
+								variant="outlined"
+								onClick={habitSearch.clearPhrase}
+							>
+								Clear
+							</UI.Button>
+						</UI.Row>
 						<UI.Button
-							style={{width: "125px"}}
 							ml="auto"
+							mr="12"
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
@@ -222,11 +229,9 @@ export const HabitsWindow = () => {
 						</UI.Button>
 					</UI.Row>
 
-					<UI.Row mainAxis="end" mt="24" mb="24" px="24">
-						<UI.Text data-testid="number-of-habit-search-results">
-							<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
-						</UI.Text>
-					</UI.Row>
+					<UI.Text ml="12" data-testid="number-of-habit-search-results">
+						<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
+					</UI.Text>
 
 					<UI.ShowIf request={getHabitsRequestState} is="success">
 						{filteredHabits.length === 0 && (

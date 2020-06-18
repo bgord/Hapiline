@@ -58,7 +58,7 @@
 	--border-width-l: 3px;
 
 	--view-width-m: 600px;
-	--view-width-l: 750px;
+	--view-width-l: 800px;
 }
 
 html {
@@ -795,4 +795,22 @@ body {
 
 *[data-wrap="wrap"] {
 	flex-wrap: wrap;
+}
+
+*[data-wrap="wrap-reverse"] {
+	flex-wrap: wrap-reverse;
+}
+
+@media (max-width: 768px) {
+	*[data-lg-wrap="nowrap"] {
+		flex-wrap: nowrap;
+	}
+
+	*[data-lg-wrap="wrap"] {
+		flex-wrap: wrap;
+	}
+
+	*[data-lg-wrap="wrap-reverse"] {
+		flex-wrap: wrap-reverse;
+	}
 }

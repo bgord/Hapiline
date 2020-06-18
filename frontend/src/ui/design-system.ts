@@ -66,11 +66,18 @@ export function getAlignmentTokens(alignments: Alignments) {
 	};
 }
 
-type Wrap = "nowrap" | "wrap" | undefined;
+type Wrap = "nowrap" | "wrap" | "wrap-reverse" | undefined;
+type ResponsiveWrap = Wrap | [Wrap, Wrap];
 export interface Wraps {
-	wrap?: Wrap;
+	wrap?: ResponsiveWrap;
 }
-export function getWrapToken(wrap: Wrap) {
+export function getWrapToken(wrap: ResponsiveWrap) {
+	if (Array.isArray(wrap)) {
+		return {
+			"data-wrap": wrap[0],
+			"data-lg-wrap": wrap[1],
+		};
+	}
 	return {
 		"data-wrap": wrap,
 	};
