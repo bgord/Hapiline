@@ -98,6 +98,7 @@ export const HabitsWindow = () => {
 				<UI.Card>
 					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between" wrap="wrap">
 						<UI.Header variant="large">Habit list</UI.Header>
+
 						<UI.Button
 							disabled={filteredHabits.length === 0}
 							style={{width: "145px"}}

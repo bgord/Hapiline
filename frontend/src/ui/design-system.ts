@@ -123,44 +123,27 @@ export interface Paddings {
 	py?: SpacingScale;
 }
 export function getMarginTokens(margins: Margins) {
-	const mx = Array.isArray(margins.mx)
-		? {
-				"data-mx": margins.mx[0],
-				"data-lg-mx": margins.mx[1],
-		  }
-		: {"data-mx": margins.mx};
-
-	const mt = Array.isArray(margins.mt)
-		? {
-				"data-mt": margins.mt[0],
-				"data-lg-mt": margins.mt[1],
-		  }
-		: {"data-mt": margins.mt};
-
-	const ml = Array.isArray(margins.ml)
-		? {
-				"data-ml": margins.ml[0],
-				"data-lg-ml": margins.ml[1],
-		  }
-		: {"data-ml": margins.ml};
-
-	const mr = Array.isArray(margins.mr)
-		? {
-				"data-mr": margins.mr[0],
-				"data-lg-mr": margins.mr[1],
-		  }
-		: {"data-mr": margins.mr};
+	function getSingleMarginToken(key: keyof Margins) {
+		if (Array.isArray(margins[key])) {
+			return {
+				[`data-${key}`]: margins?.[key]?.[0],
+				[`data-lg-${key}`]: margins?.[key]?.[1],
+			};
+		}
+		return {[`data-${key}`]: margins[key]};
+	}
 
 	return {
-		"data-m": margins.m,
-		...mx,
-		"data-my": margins.my,
-		...mt,
-		...mr,
-		"data-mb": margins.mb,
-		...ml,
+		...getSingleMarginToken("m"),
+		...getSingleMarginToken("mx"),
+		...getSingleMarginToken("my"),
+		...getSingleMarginToken("mt"),
+		...getSingleMarginToken("mr"),
+		...getSingleMarginToken("mb"),
+		...getSingleMarginToken("ml"),
 	};
 }
+
 export function getPaddingTokens(paddings: Paddings) {
 	return {
 		"data-p": paddings.p,
