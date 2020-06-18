@@ -43,7 +43,7 @@ const ChangeEmail: React.FC = () => {
 	const [userProfile] = useUserProfile();
 
 	const initialEmail = userProfile?.email;
-	const [newEmail, setNewEmail] = React.useState<NewEmailPayload["newEmail"]>(initialEmail ?? "");
+	const [newEmail, setNewEmail] = React.useState<NewEmailPayload["newEmail"]>("");
 	const [password, setPassword] = React.useState<NewEmailPayload["password"]>("");
 
 	const [changeEmail, changeEmailRequestState] = useMutation<unknown, NewEmailPayload>(
@@ -83,15 +83,15 @@ const ChangeEmail: React.FC = () => {
 
 			<UI.ShowIf request={changeEmailRequestState} is={["idle", "loading", "error"]}>
 				<UI.Field mt="24" mr="12" width="100%">
-					<UI.Label htmlFor="email">Email</UI.Label>
+					<UI.Label htmlFor="new_email">New email</UI.Label>
 					<UI.Input
-						id="email"
+						id="new_email"
 						value={newEmail}
 						onChange={event => setNewEmail(event.target.value)}
 						required
-						type="email"
+						type="new_email"
 						disabled={changeEmailRequestState.status === "loading"}
-						placeholder="user@example.com"
+						placeholder="new@example.com"
 					/>
 					<UI.ShowIf request={changeEmailRequestState} is="error">
 						{emailInlineError && <UI.Error>{emailInlineError}</UI.Error>}
