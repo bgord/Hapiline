@@ -69,6 +69,39 @@ body {
 	background-color: var(--gray-1) !important;
 }
 
+/* ----------------------------------------------------- */
+/* Reach UI components */
+/* ----------------------------------------------------- */
+
+[data-reach-dialog-content] {
+	margin-top: 90px;
+	padding: var(--spacing-s) 0 0 0;
+	border-radius: var(--radius-m);
+}
+
+[data-reach-tab-list] {
+	padding: var(--spacing-xs);
+	background: var(--gray-1);
+}
+
+[data-reach-tab][data-selected] {
+	background: white !important;
+}
+
+[data-reach-alert-dialog-content] {
+	padding: var(--spacing-m);
+	width: 33%;
+}
+
+/* ----------------------------------------------------- */
+/* react-beautiful-dnd */
+/* ----------------------------------------------------- */
+
+*[data-state="dragging"] {
+	background: var(--gray-1);
+	border: 3px solid var(--gray-3) !important;
+}
+
 @keyframes fadeIn {
 	from {
 		opacity: 0;
@@ -762,37 +795,4 @@ body {
 
 *[data-wrap="wrap"] {
 	flex-wrap: wrap;
-}
-
-/* ----------------------------------------------------- */
-/* Reach UI components */
-/* ----------------------------------------------------- */
-
-[data-reach-dialog-content] {
-	margin-top: 90px;
-	padding: var(--spacing-s) 0 0 0;
-	border-radius: var(--radius-m);
-}
-
-[data-reach-tab-list] {
-	padding: var(--spacing-xs);
-	background: var(--gray-1);
-}
-
-[data-reach-tab][data-selected] {
-	background: white !important;
-}
-
-[data-reach-alert-dialog-content] {
-	padding: var(--spacing-m);
-	width: 33%;
-}
-
-/* ----------------------------------------------------- */
-/* react-beautiful-dnd */
-/* ----------------------------------------------------- */
-
-*[data-state="dragging"] {
-	background: var(--gray-1);
-	border: 3px solid var(--gray-3) !important;
 }
