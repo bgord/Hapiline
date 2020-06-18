@@ -21,13 +21,17 @@ class JournalController {
 			.where("user_id", auth.user.id)
 			.where("created_at", "<=", day)
 			.count("*");
+
 		if (Number(numberOfHabitsCreatedBeforeDay) === 0) {
 			return response.validationError({
 				argErrors: [
 					{
-						message: VALIDATION_MESSAGES.sameOrAfter("day", "Day of creation of the first habit"),
+						message: VALIDATION_MESSAGES.same_or_after(
+							"day",
+							"day of the creation of the first habit",
+						),
 						field: "day",
-						validation: "sameOrAfter",
+						validation: "same_or_after",
 					},
 				],
 			});

@@ -106,9 +106,12 @@ test("validation", async ({client}) => {
 			{day: datefns.format(datefns.subDays(new Date(), 10), "yyyy-MM-dd"), content: "123"},
 			[
 				{
-					message: VALIDATION_MESSAGES.sameOrAfter("day", "Day of creation of the first habit"),
+					message: VALIDATION_MESSAGES.same_or_after(
+						"day",
+						"day of the creation of the first habit",
+					),
 					field: "day",
-					validation: "sameOrAfter",
+					validation: "same_or_after",
 				},
 			],
 		],
