@@ -106,9 +106,9 @@ type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undef
 type ResponsiveSpacingScaleType = SpacingScale | [SpacingScale, SpacingScale];
 export interface Margins {
 	mt?: ResponsiveSpacingScaleType;
-	mr?: SpacingScale;
+	mr?: ResponsiveSpacingScaleType;
 	mb?: SpacingScale;
-	ml?: SpacingScale;
+	ml?: ResponsiveSpacingScaleType;
 	m?: SpacingScale;
 	mx?: ResponsiveSpacingScaleType;
 	my?: SpacingScale;
@@ -137,14 +137,28 @@ export function getMarginTokens(margins: Margins) {
 		  }
 		: {"data-mt": margins.mt};
 
+	const ml = Array.isArray(margins.ml)
+		? {
+				"data-ml": margins.ml[0],
+				"data-lg-ml": margins.ml[1],
+		  }
+		: {"data-ml": margins.ml};
+
+	const mr = Array.isArray(margins.mr)
+		? {
+				"data-mr": margins.mr[0],
+				"data-lg-mr": margins.mr[1],
+		  }
+		: {"data-mr": margins.mr};
+
 	return {
 		"data-m": margins.m,
 		...mx,
 		"data-my": margins.my,
 		...mt,
-		"data-mr": margins.mr,
+		...mr,
 		"data-mb": margins.mb,
-		"data-ml": margins.ml,
+		...ml,
 	};
 }
 export function getPaddingTokens(paddings: Paddings) {

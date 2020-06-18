@@ -91,7 +91,7 @@ export const HabitsWindow = () => {
 	}
 
 	return (
-		<UI.Column mx="auto" mt="48" mb="24" width={["view-l", "auto"]}>
+		<UI.Column mx={["auto", "6"]} mt="48" mb="24" width={["view-l", "auto"]}>
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<UI.ShowIf request={getHabitsRequestState} is={["error", "success"]}>
@@ -205,9 +205,10 @@ export const HabitsWindow = () => {
 						</UI.Row>
 					)}
 
-					<UI.Row mb="24" mt="48" mainAxis="between" crossAxis="end" wrap={[, "wrap-reverse"]}>
-						<UI.Row wrap="wrap" mx="12">
+					<UI.Row mb="24" mt={["48", "24"]} crossAxis="end" wrap={["nowrap", "wrap-reverse"]}>
+						<UI.Row wrap="wrap" mx={["24", "12"]}>
 							<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
+
 							<UI.Button
 								mx={["12", "0"]}
 								mt={["auto", "12"]}
@@ -217,19 +218,20 @@ export const HabitsWindow = () => {
 								Clear
 							</UI.Button>
 						</UI.Row>
+
 						<UI.Button
 							ml="auto"
-							mr="12"
+							mr={["24", "12"]}
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
 						>
-							<PlusIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
+							<PlusIcon mr="12" style={{stroke: "var(--gray-1)"}} />
 							New habit
 						</UI.Button>
 					</UI.Row>
 
-					<UI.Text ml="12" data-testid="number-of-habit-search-results">
+					<UI.Text ml={["24", "12"]} data-testid="number-of-habit-search-results">
 						<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
 					</UI.Text>
 
