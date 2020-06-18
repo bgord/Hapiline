@@ -12,7 +12,7 @@ import {Logo} from "./Logo";
 import {Logout} from "./Logout";
 import {Toasts} from "./Toasts";
 import {useUserProfile} from "./contexts/auth-context";
-import {ProfileWindow} from "./ProfileWindow";
+import {ProfileWindow} from "./windows/profile/ProfileWindow";
 import {NotificationDropdown} from "./NotificationsDropdown";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
