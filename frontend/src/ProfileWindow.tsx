@@ -16,7 +16,7 @@ export const ProfileWindow = () => {
 	const [profile] = useUserProfile();
 
 	return (
-		<UI.Column ml="auto" mr="auto" my="48" style={{maxWidth: "var(--view-width-l)"}}>
+		<UI.Column mx={["auto", "12"]} mb="48" mt={["72", "24"]} width={["view-l", "auto"]}>
 			<UI.Card>
 				<UI.Row bg="gray-1" mt="12" p="24">
 					<UI.Header variant="large">Profile settings</UI.Header>
