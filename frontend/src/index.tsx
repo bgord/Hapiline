@@ -69,7 +69,10 @@ if (
 	// use the service worker in development mode.
 	// And uncomment the if statements for
 	// debugging purposes.
-	__ENVIRONMENT__ === "production"
+
+	// TODO: Enable service worker on production,
+	// when the server is running on HTTPs
+	__ENVIRONMENT__ === "nowhere"
 ) {
 	window.addEventListener("load", () => {
 		navigator.serviceWorker
