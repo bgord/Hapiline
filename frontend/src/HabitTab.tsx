@@ -207,11 +207,11 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				</UI.Button>
 			</UI.Row>
 
-			<UI.Row mt="24" crossAxis="end">
-				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
+			<UI.Row mt="12" crossAxis="end" wrap="wrap">
+				<HabitSearchInput data-mr="12" value={habitSearch.value} onChange={habitSearch.onChange} />
 
 				<UI.Button
-					ml="12"
+					mt="24"
 					onClick={() => {
 						habitSearch.clearPhrase();
 						clearHighlightedHabitId();
@@ -221,7 +221,13 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					Clear
 				</UI.Button>
 
-				<UI.Text ml="auto" data-testid="number-of-habit-search-results">
+				<UI.Text
+					mt="24"
+					ml="auto"
+					mb="6"
+					mr={[, "24"]}
+					data-testid="number-of-habit-search-results"
+				>
 					<UI.Text variant="bold">{filteredHabitsWithPossibleVote.length}</UI.Text> results
 				</UI.Text>
 			</UI.Row>
