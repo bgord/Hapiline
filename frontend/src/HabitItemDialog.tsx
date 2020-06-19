@@ -86,13 +86,16 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 				{habit?.id && (
 					<UI.Column px="24">
-						<UI.Row mt="24" style={{marginLeft: "-12px"}}>
-							<UI.Row mr="6">
+						<UI.Row style={{marginLeft: "-12px"}} wrap={[, "wrap"]} crossAxis="end">
+							<UI.Row mr="6" mt="24">
 								<EditableHabitNameInput {...habit} key={habit?.name} />
 							</UI.Row>
+
 							<EditableHabitScoreSelect {...habit} key={habit?.score} />
+
 							<EditableHabitStrengthSelect {...habit} key={habit?.strength} />
 						</UI.Row>
+
 						{!habit.is_trackable && (
 							<UI.Row mt="24">
 								<UI.Badge variant="neutral">Untracked</UI.Badge>

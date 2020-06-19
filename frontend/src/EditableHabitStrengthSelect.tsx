@@ -26,7 +26,7 @@ export const EditableHabitStrengthSelect: React.FC<DetailedHabit> = ({id, streng
 	});
 
 	return (
-		<UI.Field ml="12">
+		<UI.Field mt="24">
 			<UI.Label htmlFor="habit_strength">Strength</UI.Label>
 			<UI.Select
 				id="habit_strength"
