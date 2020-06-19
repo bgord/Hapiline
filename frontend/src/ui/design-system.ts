@@ -118,7 +118,7 @@ export interface Paddings {
 	pr?: SpacingScale;
 	pb?: SpacingScale;
 	pl?: SpacingScale;
-	p?: SpacingScale;
+	p?: ResponsiveSpacingScaleType;
 	px?: ResponsiveSpacingScaleType;
 	py?: SpacingScale;
 }
@@ -155,7 +155,7 @@ export function getPaddingTokens(paddings: Paddings) {
 		return {[`data-${key}`]: paddings[key]};
 	}
 	return {
-		"data-p": paddings.p,
+		...getSinglePaddingToken("p"),
 		...getSinglePaddingToken("px"),
 		"data-py": paddings.py,
 		"data-pt": paddings.pt,

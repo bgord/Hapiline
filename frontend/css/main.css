@@ -628,6 +628,32 @@ body {
 }
 
 @media (max-width: 768px) {
+	/* Padding */
+	*[data-lg-p="0"] {
+		padding: var(--spacing-0);
+	}
+	*[data-lg-p="3"] {
+		padding: var(--spacing-xxs);
+	}
+	*[data-lg-p="6"] {
+		padding: var(--spacing-xs);
+	}
+	*[data-lg-p="12"] {
+		padding: var(--spacing-s);
+	}
+	*[data-lg-p="24"] {
+		padding: var(--spacing-m);
+	}
+	*[data-lg-p="48"] {
+		padding: var(--spacing-l);
+	}
+	*[data-lg-p="72"] {
+		padding: var(--spacing-xl);
+	}
+	*[data-lg-p="auto"] {
+		padding: var(--spacing-auto);
+	}
+
 	/* Padding horizontal */
 	*[data-lg-px="0"] {
 		padding-left: var(--spacing-0);

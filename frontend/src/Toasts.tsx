@@ -9,7 +9,7 @@ const ToastItem: React.FC<Toast> = ({id, type, message}) => {
 	const dispatch = useToastDispatch();
 
 	const typeToBgColor: {[key in ToastType]: string} = {
-		success: "var(--green-light)",
+		success: "#8fdf94ff",
 		error: "var(--red-light)",
 	};
 
@@ -19,10 +19,10 @@ const ToastItem: React.FC<Toast> = ({id, type, message}) => {
 		<UI.Row
 			as={Alert}
 			position="relative"
-			style={{minWidth: "350px", background: typeToBgColor[type]}}
+			style={{maxWidth: "350px", background: typeToBgColor[type], flexGrow: 1}}
 			mainAxis="between"
 			width="100%"
-			p="12"
+			p={["12", "6"]}
 			mt="12"
 		>
 			<UI.Text>{message}</UI.Text>
