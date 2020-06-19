@@ -63,7 +63,7 @@ export const DashboardWindow = () => {
 	const dateOfToday = formatToday();
 
 	return (
-		<UI.Card pt="12" mx="auto" mt="48" mb="24" style={{maxWidth: "var(--view-width-l)"}}>
+		<UI.Card pt="12" mx={["auto", "6"]} mt="48" mb="24" width={["view-l", "auto"]}>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="large">Hello!</UI.Header>
 
@@ -75,7 +75,7 @@ export const DashboardWindow = () => {
 				</UI.Button>
 			</UI.Row>
 
-			<UI.Column p="24">
+			<UI.Column p="24" px={["24", "6"]}>
 				<UI.ShowIf request={getDashboardStatsRequestState} is="error">
 					<UI.ErrorBanner mt="24">
 						Cannot load dashboard stats now, please try again.
