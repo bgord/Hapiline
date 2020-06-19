@@ -78,7 +78,7 @@ export const DashboardProgressStreakList: React.FC<{
 									{habit.name}
 								</UI.Text>
 
-								<UI.Row ml="auto" width="auto" wrap={[, "wrap-reverse"]} mainAxis="end">
+								<UI.Row ml="auto" width="auto" wrap={[, "wrap-reverse"]} mainAxis="end" mt="6">
 									{!habit.has_vote_for_today && (
 										<UI.Badge
 											mt={["12", "6"]}

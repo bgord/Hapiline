@@ -79,15 +79,24 @@ export const AddHabitForm: React.FC = () => {
 	}
 
 	return (
-		<Dialog data-pt="12" data-pb="48" aria-label="Add new habit" onDismiss={hideAddFormDialog}>
-			<UI.Row bg="gray-1" p="24" mainAxis="between">
+		<Dialog
+			data-width="view-l"
+			data-lg-width="auto"
+			data-lg-mx="12"
+			data-pt="12"
+			data-pb="24"
+			data-lg-mt="24"
+			aria-label="Add new habit"
+			onDismiss={hideAddFormDialog}
+		>
+			<UI.Row bg="gray-1" p="12" mainAxis="between">
 				<UI.Header variant="small">New habit</UI.Header>
 				<UI.CloseIcon onClick={hideAddFormDialog} />
 			</UI.Row>
 
 			<UI.Column
 				as="form"
-				p="24"
+				p="12"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
 					addHabit({
@@ -103,8 +112,8 @@ export const AddHabitForm: React.FC = () => {
 					});
 				}}
 			>
-				<UI.Row mt="48">
-					<UI.Field style={{flexGrow: 1}}>
+				<UI.Row wrap="wrap" mt={["48", "0"]}>
+					<UI.Field style={{flexGrow: 1}} mr="12" mt={[, "12"]}>
 						<UI.Label htmlFor="name">Habit name</UI.Label>
 						<HabitNameInput
 							id="name"
@@ -112,7 +121,8 @@ export const AddHabitForm: React.FC = () => {
 							onChange={event => setName(event.target.value)}
 						/>
 					</UI.Field>
-					<UI.Field ml="12">
+
+					<UI.Field mr="12" mt={[, "12"]}>
 						<UI.Label htmlFor="score">Score</UI.Label>
 						<UI.Select
 							id="score"
@@ -127,7 +137,8 @@ export const AddHabitForm: React.FC = () => {
 							<option value="negative">negative</option>
 						</UI.Select>
 					</UI.Field>
-					<UI.Field ml="12">
+
+					<UI.Field mt={[, "12"]}>
 						<UI.Label htmlFor="strength">Strength</UI.Label>
 						<UI.Select
 							id="strength"
@@ -148,8 +159,8 @@ export const AddHabitForm: React.FC = () => {
 					<UI.Error mt="6">{nameInlineErrorMessage}</UI.Error>
 				</UI.ShowIf>
 
-				<UI.Row mt="48" crossAxis="center">
-					<UI.Field variant="row">
+				<UI.Row crossAxis="center" wrap={[, "wrap"]}>
+					<UI.Field variant="row" mr="24" mt={["48", "24"]}>
 						<UI.Checkbox
 							id="is_trackable"
 							name="is_trackable"
@@ -161,7 +172,7 @@ export const AddHabitForm: React.FC = () => {
 						</UI.Label>
 					</UI.Field>
 
-					<UI.InfoBanner size="small" ml="24">
+					<UI.InfoBanner size="small" mt={["48", "24"]}>
 						You won't be able to vote for an untracked habit.
 					</UI.InfoBanner>
 				</UI.Row>
