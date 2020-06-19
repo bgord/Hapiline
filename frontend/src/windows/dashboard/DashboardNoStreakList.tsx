@@ -61,10 +61,11 @@ export const DashboardNoStreakList: React.FC<{
 						{noStreakStats.map(habit => (
 							<UI.Row
 								mainAxis="between"
+								crossAxis="end"
 								pb="12"
 								by="gray-1"
 								key={habit.id}
-								wrap={["nowrap", "wrap"]}
+								wrap="wrap"
 								width="100%"
 							>
 								<UI.Text
@@ -76,7 +77,7 @@ export const DashboardNoStreakList: React.FC<{
 									{habit.name}
 								</UI.Text>
 
-								<UI.Row width="auto" mt="12">
+								<UI.Row ml="auto" width="auto" wrap={[, "wrap-reverse"]} mainAxis="end">
 									{!habit.has_vote_for_today && (
 										<UI.Badge
 											as={Link}

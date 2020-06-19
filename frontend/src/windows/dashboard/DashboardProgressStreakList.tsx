@@ -62,10 +62,11 @@ export const DashboardProgressStreakList: React.FC<{
 						{progressStreakStats.map(habit => (
 							<UI.Row
 								mainAxis="between"
+								crossAxis="end"
 								pb="12"
 								by="gray-1"
 								key={habit.id}
-								wrap={["nowrap", "wrap"]}
+								wrap="wrap"
 								width="100%"
 							>
 								<UI.Text
@@ -77,10 +78,10 @@ export const DashboardProgressStreakList: React.FC<{
 									{habit.name}
 								</UI.Text>
 
-								<UI.Row width="auto" wrap={[, "wrap"]}>
+								<UI.Row ml="auto" width="auto" wrap={[, "wrap-reverse"]} mainAxis="end">
 									{!habit.has_vote_for_today && (
 										<UI.Badge
-											mt="12"
+											mt={["12", "6"]}
 											as={Link}
 											to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
 											variant="neutral"
@@ -91,7 +92,7 @@ export const DashboardProgressStreakList: React.FC<{
 										</UI.Badge>
 									)}
 
-									<UI.Badge variant="positive" mt="12">
+									<UI.Badge variant="positive" mt={["12", "6"]}>
 										{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
 										streak
 									</UI.Badge>
