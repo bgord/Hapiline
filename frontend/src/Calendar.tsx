@@ -18,6 +18,8 @@ const habitDialogGrid: React.CSSProperties = {
 	gridTemplateColumns: "repeat(7, 200px)",
 	gridTemplateRows: "repeat(6, 100px)",
 	gridGap: "12px",
+	width: "100%",
+	overflowX: "scroll",
 };
 
 export const Calendar: React.FC = () => {
@@ -102,7 +104,14 @@ export const Calendar: React.FC = () => {
 	}
 
 	return (
-		<UI.Column mt="24" crossAxis="center">
+		<UI.Column
+			mt="24"
+			crossAxis="center"
+			width={["100%", "auto"]}
+			style={{maxWidth: "1500px"}}
+			mx="auto"
+			p="12"
+		>
 			<UI.Row mb="24" bg="gray-2" px={["72", "6"]} py="12" width="auto">
 				<UI.Button
 					variant="outlined"
