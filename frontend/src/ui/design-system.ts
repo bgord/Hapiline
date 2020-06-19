@@ -117,7 +117,7 @@ export interface Paddings {
 	pt?: SpacingScale;
 	pr?: SpacingScale;
 	pb?: SpacingScale;
-	pl?: SpacingScale;
+	pl?: ResponsiveSpacingScaleType;
 	p?: ResponsiveSpacingScaleType;
 	px?: ResponsiveSpacingScaleType;
 	py?: SpacingScale;
@@ -161,6 +161,6 @@ export function getPaddingTokens(paddings: Paddings) {
 		"data-pt": paddings.pt,
 		"data-pr": paddings.pr,
 		"data-pb": paddings.pb,
-		"data-pl": paddings.pl,
+		...getSinglePaddingToken("pl"),
 	};
 }

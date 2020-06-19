@@ -282,7 +282,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 						</UI.Column>
 					)}
 
-					<DayDialogSummaryTabs day={day} />
+					{mediaQuery === MEDIA_QUERY.default && <DayDialogSummaryTabs day={day} />}
 				</UI.Column>
 			)}
 		</UI.Column>

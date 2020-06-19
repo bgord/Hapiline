@@ -687,6 +687,32 @@ body {
 		padding-left: var(--spacing-auto);
 		padding-right: var(--spacing-auto);
 	}
+
+	/* Padding left */
+	*[data-lg-pl="0"] {
+		padding-left: var(--spacing-0);
+	}
+	*[data-lg-pl="3"] {
+		padding-left: var(--spacing-xxs);
+	}
+	*[data-lg-pl="6"] {
+		padding-left: var(--spacing-xs);
+	}
+	*[data-lg-pl="12"] {
+		padding-left: var(--spacing-s);
+	}
+	*[data-lg-pl="24"] {
+		padding-left: var(--spacing-m);
+	}
+	*[data-lg-pl="48"] {
+		padding-left: var(--spacing-l);
+	}
+	*[data-lg-pl="72"] {
+		padding-left: var(--spacing-xl);
+	}
+	*[data-lg-pl="auto"] {
+		padding-left: var(--spacing-auto);
+	}
 }
 
 /* ----------------------------------------------------- */
