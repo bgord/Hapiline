@@ -4,7 +4,7 @@ import "./label.css";
 
 import React from "react";
 
-import {Margins} from "../margins";
+import {Margins, getMarginTokens} from "../design-system";
 
 type LabelVariant = "normal" | "optional";
 
@@ -12,14 +12,8 @@ export const Label: React.FC<JSX.IntrinsicElements["label"] &
 	Margins & {
 		variant?: LabelVariant;
 		htmlFor: JSX.IntrinsicElements["label"]["htmlFor"];
-	}> = ({variant = "normal", mt, mr, mb, ml, ...props}) => (
-	<label
-		data-mt={mt}
-		data-mr={mr}
-		data-mb={mb}
-		data-ml={ml}
-		data-variant={variant}
-		className="c-label"
-		{...props}
-	/>
-);
+	}> = ({variant = "normal", m, mx, my, mt, mr, mb, ml, ...props}) => {
+	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
+
+	return <label className="c-label" data-variant={variant} {...marginTokens} {...props} />;
+};

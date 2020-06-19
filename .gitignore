@@ -18,6 +18,8 @@ public/*
 !public/logo.png
 !public/favicon.ico
 !public/offline.html
+!public/manifest.json
+!public/app-icon.png
 dist/
 
 # Other

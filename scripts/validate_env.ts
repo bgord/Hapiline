@@ -82,7 +82,7 @@ async function validateEnvFrontendDevelopment(envFrontendDevelopment: dotenv.Dot
 		const envFrontendDevelopmentSchema = yup
 			.object()
 			.shape({
-				API_URL: yup.string().required(),
+				API_URL: yup.string().equals(["http://hapiline.localhost/api/v1/"]),
 				BUGSNAG_API_KEY: yup
 					.string()
 					.length(32)
@@ -163,7 +163,7 @@ async function validateEnvServerDevelopment(envServerDevelopment: dotenv.DotenvP
 					.string()
 					.email()
 					.required(),
-				HOST_PATH: yup.string().required(),
+				HOST_PATH: yup.string().equals(["http://hapiline.localhost"]),
 			})
 			.noUnknown();
 		await envServerDevelopmentSchema.validate(envServerDevelopment);
