@@ -45,6 +45,7 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 				type="submit"
 				layout="with-icon"
 				onClick={openDialog}
+				mt="48"
 			>
 				<TrashIcon />
 				{deleteHabitRequestState.status === "loading" ? "Loading" : "Delete"}

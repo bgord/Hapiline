@@ -130,18 +130,26 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 									onResolve={habitRequestState.refetch}
 								/>
 							</UI.Column>
+
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-							<UI.Row my="48" mainAxis="between" crossAxis="center">
-								<UI.Text variant="dimmed">Created at:</UI.Text>
-								<UI.Text variant="monospaced" ml="6">
-									{formatTime(habit.created_at)}
-								</UI.Text>
-								<UI.Text variant="dimmed" ml="24">
-									Last updated at:
-								</UI.Text>
-								<UI.Text variant="monospaced" ml="6">
-									{formatTime(habit.updated_at)}
-								</UI.Text>
+
+							<UI.Row mb="48" mainAxis="between" crossAxis="end" wrap={[, "wrap"]}>
+								<UI.Wrapper>
+									<UI.Text variant="dimmed" mr="6" mt="48">
+										Created at:
+									</UI.Text>
+									<UI.Text variant="monospaced" mr="24">
+										{formatTime(habit.created_at)}
+									</UI.Text>
+								</UI.Wrapper>
+
+								<UI.Wrapper>
+									<UI.Text variant="dimmed" mr="6" mt="48">
+										Last updated at:
+									</UI.Text>
+									<UI.Text variant="monospaced">{formatTime(habit.updated_at)}</UI.Text>
+								</UI.Wrapper>
+
 								<DeleteHabitButton {...habit} />
 							</UI.Row>
 						</UI.Column>
