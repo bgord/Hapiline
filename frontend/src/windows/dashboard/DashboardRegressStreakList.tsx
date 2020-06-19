@@ -77,9 +77,10 @@ export const DashboardRegressStreakList: React.FC<{
 									{habit.name}
 								</UI.Text>
 
-								<UI.Row width="auto" mt="12">
+								<UI.Row width="auto" wrap={[, "wrap"]}>
 									{!habit.has_vote_for_today && (
 										<UI.Badge
+											mt="12"
 											as={Link}
 											to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
 											variant="neutral"
@@ -90,7 +91,7 @@ export const DashboardRegressStreakList: React.FC<{
 										</UI.Badge>
 									)}
 
-									<UI.Badge variant="negative">
+									<UI.Badge variant="negative" mt="12">
 										{habit.regress_streak} {pluralize("day", habit.regress_streak)} regress streak
 									</UI.Badge>
 								</UI.Row>
