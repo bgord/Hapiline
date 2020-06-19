@@ -23,6 +23,7 @@ import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {pluralize} from "./services/pluralize";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 interface HabitItemDialogProps {
 	habitId: Habit["id"];
@@ -32,6 +33,8 @@ interface HabitItemDialogProps {
 export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeDialog}) => {
 	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
+
+	const mediaQuery = useMediaQuery();
 
 	const triggerErrorToast = useErrorToast();
 
@@ -54,8 +57,16 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 	return (
 		<Dialog
 			onDismiss={dismissDialog}
+			data-width="view-l"
+			data-lg-width="auto"
+			data-lg-mx="6"
+			data-lg-mt="12"
+			data-mb="0"
 			aria-label="Show habit preview"
-			style={{maxHeight: "800px", overflow: "auto"}}
+			style={{
+				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
+				overflow: "auto",
+			}}
 		>
 			<UI.Column>
 				<UI.Row bg="gray-1" p="24" mainAxis="between">
