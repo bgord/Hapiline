@@ -40,7 +40,7 @@ export const Banner: React.FC<BannerProps> = ({
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 	const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
-	const positionToken = getPositionToken({ position });
+	const positionToken = getPositionToken(position);
 
 	return (
 		<div
@@ -75,7 +75,7 @@ export const InfoBanner: React.FC<SpecificBannerProps> = ({children, ...props}) 
 export const ErrorBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="error">
 		<ExclamationIcon stroke="#682d36" />
-		<UI.Text style={{color: "#682d36"}} ml="12">
+		<UI.Text style={{fontSize: "14px", color: "#682d36"}} ml="12">
 			{children}
 		</UI.Text>
 	</Banner>
@@ -84,6 +84,8 @@ export const ErrorBanner: React.FC<SpecificBannerProps> = ({children, ...props})
 export const SuccessBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
 	<Banner {...props} variant="success">
 		<CheckmarkIcon />
-		<UI.Text style={{color: "#025D26"}}>{children}</UI.Text>
+		<UI.Text style={{fontSize: "14px", color: "#025D26"}} ml="12">
+			{children}
+		</UI.Text>
 	</Banner>
 );

@@ -21,7 +21,14 @@ export const RegistrationWindow: React.FC = () => {
 	const emailInlineErrorMessage = getArgErrorMessage("email");
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>
+		<UI.Card
+			py="48"
+			px="24"
+			mt={["72", "24"]}
+			mx={["auto", "12"]}
+			mb="72"
+			width={["view-m", "auto"]}
+		>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -93,7 +100,7 @@ export const RegistrationWindow: React.FC = () => {
 					<UI.SuccessBanner size="big" mt="24">
 						<UI.Column ml="12">
 							<UI.Text>Account confirmation email has been sent!</UI.Text>
-							<UI.Text>Please, check your inbox.</UI.Text>
+							<UI.Text mt="6">Please, check your inbox.</UI.Text>
 						</UI.Column>
 					</UI.SuccessBanner>
 				</UI.ShowIf>
@@ -106,9 +113,7 @@ export const RegistrationWindow: React.FC = () => {
 
 				<UI.ShowIf request={registrationRequestState} is={["idle", "loading", "error"]}>
 					<UI.InfoBanner mt="48">
-						<UI.Text>
-							You will receive an account confirmation email with further instructions.
-						</UI.Text>
+						You will receive an account confirmation email with further instructions.
 					</UI.InfoBanner>
 				</UI.ShowIf>
 			</UI.Column>

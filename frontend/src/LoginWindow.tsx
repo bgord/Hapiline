@@ -28,7 +28,14 @@ export const LoginWindow: React.FC = () => {
 	const {errorMessage} = getRequestStateErrors(loginRequestState);
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72" style={{width: "600px"}}>
+		<UI.Card
+			py="48"
+			px="24"
+			mt={["72", "24"]}
+			mx={["auto", "12"]}
+			mb="72"
+			width={["view-m", "auto"]}
+		>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
@@ -76,14 +83,14 @@ export const LoginWindow: React.FC = () => {
 					</UI.Button>
 				</UI.Row>
 
-				<UI.Row mt="24">
-					<UI.Text>Don't have an account?</UI.Text>
-					<UI.Text variant="link" ml="6" as={Link} to="/register">
+				<UI.Row mt="24" wrap="wrap">
+					<UI.Text mr="6">Don't have an account?</UI.Text>
+					<UI.Text variant="link" as={Link} to="/register">
 						Create now
 					</UI.Text>
 				</UI.Row>
 
-				<UI.Text mt="6" variant="link" as={Link} to="/forgot-password">
+				<UI.Text mt="24" variant="link" as={Link} to="/forgot-password">
 					Forgot password?
 				</UI.Text>
 

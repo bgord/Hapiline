@@ -1,8 +1,15 @@
-type Width = "auto" | "100%";
+type Width = "auto" | "100%" | "view-m" | "view-l";
+type ResponsiveWidth = Width | [Width, Width];
 export interface Widths {
-	width?: Width;
+	width?: ResponsiveWidth;
 }
-export function getWidthToken({width}: Widths) {
+export function getWidthToken(width?: ResponsiveWidth) {
+	if (Array.isArray(width)) {
+		return {
+			"data-width": width[0],
+			"data-lg-width": width[1],
+		};
+	}
 	return {
 		"data-width": width,
 	};
@@ -12,7 +19,7 @@ type Position = "relative" | "absolute" | "fixed" | "static";
 export interface Positions {
 	position?: Position;
 }
-export function getPositionToken({position}: Positions) {
+export function getPositionToken(position?: Position) {
 	return {
 		"data-position": position,
 	};
@@ -59,6 +66,23 @@ export function getAlignmentTokens(alignments: Alignments) {
 	};
 }
 
+type Wrap = "nowrap" | "wrap" | "wrap-reverse" | undefined;
+type ResponsiveWrap = Wrap | [Wrap, Wrap];
+export interface Wraps {
+	wrap?: ResponsiveWrap;
+}
+export function getWrapToken(wrap: ResponsiveWrap) {
+	if (Array.isArray(wrap)) {
+		return {
+			"data-wrap": wrap[0],
+			"data-lg-wrap": wrap[1],
+		};
+	}
+	return {
+		"data-wrap": wrap,
+	};
+}
+
 type Background =
 	| "white"
 	| "gray-0"
@@ -72,50 +96,71 @@ type Background =
 export type Backgrounds = {
 	bg?: Background;
 };
-export function getBackgroundToken({bg}: Backgrounds) {
+export function getBackgroundToken(bg?: Background) {
 	return {
 		"data-bg": bg,
 	};
 }
 
 type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
+type ResponsiveSpacingScaleType = SpacingScale | [SpacingScale, SpacingScale];
 export interface Margins {
-	mt?: SpacingScale;
-	mr?: SpacingScale;
-	mb?: SpacingScale;
-	ml?: SpacingScale;
-	m?: SpacingScale;
-	mx?: SpacingScale;
-	my?: SpacingScale;
+	mt?: ResponsiveSpacingScaleType;
+	mr?: ResponsiveSpacingScaleType;
+	mb?: ResponsiveSpacingScaleType;
+	ml?: ResponsiveSpacingScaleType;
+	m?: ResponsiveSpacingScaleType;
+	mx?: ResponsiveSpacingScaleType;
+	my?: ResponsiveSpacingScaleType;
 }
 export interface Paddings {
 	pt?: SpacingScale;
 	pr?: SpacingScale;
 	pb?: SpacingScale;
-	pl?: SpacingScale;
-	p?: SpacingScale;
-	px?: SpacingScale;
+	pl?: ResponsiveSpacingScaleType;
+	p?: ResponsiveSpacingScaleType;
+	px?: ResponsiveSpacingScaleType;
 	py?: SpacingScale;
 }
 export function getMarginTokens(margins: Margins) {
+	function getSingleMarginToken(key: keyof Margins) {
+		if (Array.isArray(margins[key])) {
+			return {
+				[`data-${key}`]: margins?.[key]?.[0],
+				[`data-lg-${key}`]: margins?.[key]?.[1],
+			};
+		}
+		return {[`data-${key}`]: margins[key]};
+	}
+
 	return {
-		"data-m": margins.m,
-		"data-mx": margins.mx,
-		"data-my": margins.my,
-		"data-mt": margins.mt,
-		"data-mr": margins.mr,
-		"data-mb": margins.mb,
-		"data-ml": margins.ml,
+		...getSingleMarginToken("m"),
+		...getSingleMarginToken("mx"),
+		...getSingleMarginToken("my"),
+		...getSingleMarginToken("mt"),
+		...getSingleMarginToken("mr"),
+		...getSingleMarginToken("mb"),
+		...getSingleMarginToken("ml"),
 	};
 }
+
 export function getPaddingTokens(paddings: Paddings) {
+	function getSinglePaddingToken(key: keyof Paddings) {
+		if (Array.isArray(paddings[key])) {
+			return {
+				[`data-${key}`]: paddings?.[key]?.[0],
+				[`data-lg-${key}`]: paddings?.[key]?.[1],
+			};
+		}
+		return {[`data-${key}`]: paddings[key]};
+	}
 	return {
-		"data-p": paddings.p,
-		"data-px": paddings.px,
+		...getSinglePaddingToken("p"),
+		...getSinglePaddingToken("px"),
 		"data-py": paddings.py,
 		"data-pt": paddings.pt,
 		"data-pr": paddings.pr,
 		"data-pb": paddings.pb,
-		"data-pl": paddings.pl,
+		...getSinglePaddingToken("pl"),
 	};
 }

@@ -60,29 +60,46 @@ export const DashboardProgressStreakList: React.FC<{
 			</UI.Row>
 
 			{isProgressStreakListVisible && (
-				<UI.Column bt="gray-1">
+				<UI.Column by="gray-1" mt="24">
 					<ExpandContractList max={5}>
 						{progressStreakStats.map(habit => (
-							<UI.Row py="12" by="gray-1" key={habit.id} mainAxis="end">
-								<UI.Text mr="auto" as={Link} to={UrlBuilder.dashboard.habit.preview(habit.id)}>
+							<UI.Row
+								mainAxis="between"
+								crossAxis="end"
+								pb="12"
+								by="gray-1"
+								key={habit.id}
+								wrap="wrap"
+								width="100%"
+							>
+								<UI.Text
+									mr="12"
+									mt="12"
+									as={Link}
+									to={UrlBuilder.dashboard.habit.preview(habit.id)}
+								>
 									{habit.name}
 								</UI.Text>
 
-								{!habit.has_vote_for_today && (
-									<UI.Badge
-										as={Link}
-										to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
-										variant="neutral"
-										mx="12"
-										title="Vote for this habit"
-									>
-										No vote yet
-									</UI.Badge>
-								)}
+								<UI.Row ml="auto" width="auto" wrap={[, "wrap-reverse"]} mainAxis="end" mt="6">
+									{!habit.has_vote_for_today && (
+										<UI.Badge
+											mt={["12", "6"]}
+											as={Link}
+											to={UrlBuilder.dashboard.calendar.habitToday(habit.id)}
+											variant="neutral"
+											mr="12"
+											title="Vote for this habit"
+										>
+											No vote yet
+										</UI.Badge>
+									)}
 
-								<UI.Badge variant="positive">
-									{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress streak
-								</UI.Badge>
+									<UI.Badge variant="positive" mt={["12", "6"]}>
+										{habit.progress_streak} {pluralize("day", habit.progress_streak)} progress
+										streak
+									</UI.Badge>
+								</UI.Row>
 							</UI.Row>
 						))}
 					</ExpandContractList>

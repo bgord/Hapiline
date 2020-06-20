@@ -10,7 +10,7 @@ import {HabitStrengthFilters, useHabitStrengthFilter} from "./hooks/useHabitStre
 import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {HabitScoreFilters, useHabitScoreFilter} from "./hooks/useHabitScoreFilter";
-import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
+import {useHabitSearch} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
@@ -18,9 +18,12 @@ import {FilterIcon} from "./ui/icons/Filter";
 import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {Habit, ReorderHabitPayload} from "./models";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export const HabitsWindow = () => {
 	useDocumentTitle("Hapiline - habit list");
+
+	const mediaQuery = useMediaQuery();
 
 	const getHabitsRequestState = useHabitsState();
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
@@ -91,29 +94,32 @@ export const HabitsWindow = () => {
 	}
 
 	return (
-		<UI.Column>
+		<UI.Column mx={["auto", "6"]} mt="48" mb="24" width={["view-l", "auto"]}>
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<UI.ShowIf request={getHabitsRequestState} is={["error", "success"]}>
-				<UI.Card mx="auto" mt="48" mb="24" style={{width: "800px"}}>
-					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between">
+				<UI.Card>
+					<UI.Row bg="gray-1" mt="12" p="24" mainAxis="between" wrap="wrap">
 						<UI.Header variant="large">Habit list</UI.Header>
-						<UI.Button
-							disabled={filteredHabits.length === 0}
-							style={{width: "145px"}}
-							variant="secondary"
-							layout="with-icon"
-							onClick={() => {
-								resetAllFilters();
-								toggleFilters();
-							}}
-						>
-							<FilterIcon mr="auto" />
-							{areFiltersVisible ? "Hide filters" : "Show filters"}
-						</UI.Button>
+
+						{mediaQuery === MEDIA_QUERY.default && (
+							<UI.Button
+								disabled={filteredHabits.length === 0}
+								style={{width: "145px"}}
+								variant="secondary"
+								layout="with-icon"
+								onClick={() => {
+									resetAllFilters();
+									toggleFilters();
+								}}
+							>
+								<FilterIcon mr="auto" />
+								{areFiltersVisible ? "Hide filters" : "Show filters"}
+							</UI.Button>
+						)}
 					</UI.Row>
 
-					{areFiltersVisible && (
+					{areFiltersVisible && mediaQuery === MEDIA_QUERY.default && (
 						<UI.Row mt="48" px="24" crossAxis="start">
 							<UI.Column pr="72" bw="2" br="gray-1">
 								<UI.Text variant="semi-bold">Scores</UI.Text>
@@ -205,25 +211,36 @@ export const HabitsWindow = () => {
 						</UI.Row>
 					)}
 
-					<UI.Row px="24" mb="24" mt="48" crossAxis="end">
-						<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
-						<UI.Button ml="12" variant="outlined" onClick={habitSearch.clearPhrase}>
-							Clear
-						</UI.Button>
+					<UI.Row mt={["48", "24"]} mainAxis="end">
 						<UI.Button
-							style={{width: "125px"}}
-							ml="auto"
+							mr={["24", "12"]}
+							mt={["0", "12"]}
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
 						>
-							<PlusIcon mr="auto" style={{stroke: "var(--gray-1)"}} />
+							<PlusIcon mr="12" style={{stroke: "var(--gray-1)"}} />
 							New habit
 						</UI.Button>
 					</UI.Row>
 
-					<UI.Row mainAxis="end" mt="24" mb="24" px="24">
-						<UI.Text data-testid="number-of-habit-search-results">
+					<UI.Row mt="6" width="auto" crossAxis="end" wrap="wrap" mx={["24", "12"]}>
+						<UI.Field mr="12">
+							<UI.Label htmlFor="habit_name">Habit name</UI.Label>
+							<UI.Input
+								id="habit_name"
+								type="search"
+								placeholder="Search for habits..."
+								value={habitSearch.value}
+								onChange={habitSearch.onChange}
+							/>
+						</UI.Field>
+
+						<UI.Button mt={["auto", "12"]} variant="outlined" onClick={habitSearch.clearPhrase}>
+							Clear
+						</UI.Button>
+
+						<UI.Text mb="6" mr="12" mt="12" ml="auto" data-testid="number-of-habit-search-results">
 							<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
 						</UI.Text>
 					</UI.Row>

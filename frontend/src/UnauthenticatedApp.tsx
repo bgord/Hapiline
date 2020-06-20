@@ -17,7 +17,7 @@ const unauthenticatedAppBrowserHistory = createBrowserHistory();
 const UnauthenticatedApp = () => (
 	<Router history={unauthenticatedAppBrowserHistory}>
 		<main>
-			<UI.Column width="100%" style={{height: "100vh"}}>
+			<UI.Column>
 				<UnauthenticatedNavbar />
 				<Switch>
 					<Route exact path="/login">

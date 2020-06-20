@@ -257,7 +257,7 @@ describe("Calendar", () => {
 			});
 
 			cy.findByPlaceholderText("Search for habits...")
-				.should("have.value", "")
+				.should("be.empty")
 				.type("0");
 
 			cy.findByTestId("day-dialog-habits")
@@ -282,7 +282,7 @@ describe("Calendar", () => {
 			cy.findByPlaceholderText("Search for habits...").type("xxx");
 
 			cy.findByText("Reset filters").click();
-			cy.findByPlaceholderText("Search for habits...").should("have.value", "");
+			cy.findByPlaceholderText("Search for habits...").should("be.empty");
 			cy.findByLabelText("Show voted (4)").should("not.be.checked");
 			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
 			cy.findByLabelText("Show all (10)").should("be.checked");

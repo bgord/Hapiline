@@ -21,6 +21,7 @@ export const AuthProvider: React.FC = props => {
 		queryFn: api.auth.isLoggedIn,
 		config: {
 			retry: false,
+			refetchOnWindowFocus: false,
 		},
 	});
 

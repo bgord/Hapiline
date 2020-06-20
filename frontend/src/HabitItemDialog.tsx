@@ -23,6 +23,7 @@ import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {pluralize} from "./services/pluralize";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 interface HabitItemDialogProps {
 	habitId: Habit["id"];
@@ -32,6 +33,8 @@ interface HabitItemDialogProps {
 export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeDialog}) => {
 	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
+
+	const mediaQuery = useMediaQuery();
 
 	const triggerErrorToast = useErrorToast();
 
@@ -54,8 +57,16 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 	return (
 		<Dialog
 			onDismiss={dismissDialog}
+			data-width="view-l"
+			data-lg-width="auto"
+			data-lg-mx="6"
+			data-lg-mt="12"
+			data-mb="0"
 			aria-label="Show habit preview"
-			style={{maxHeight: "800px", overflow: "auto"}}
+			style={{
+				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
+				overflow: "auto",
+			}}
 		>
 			<UI.Column>
 				<UI.Row bg="gray-1" p="24" mainAxis="between">
@@ -74,14 +85,17 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 				</UI.ShowIf>
 
 				{habit?.id && (
-					<UI.Column px="24">
-						<UI.Row mt="24" style={{marginLeft: "-12px"}}>
-							<UI.Row mr="6">
+					<UI.Column px={["24", "12"]}>
+						<UI.Row px="12" style={{marginLeft: "-12px"}} wrap={[, "wrap"]} crossAxis="end">
+							<UI.Row mr="6" mt="24">
 								<EditableHabitNameInput {...habit} key={habit?.name} />
 							</UI.Row>
+
 							<EditableHabitScoreSelect {...habit} key={habit?.score} />
+
 							<EditableHabitStrengthSelect {...habit} key={habit?.strength} />
 						</UI.Row>
+
 						{!habit.is_trackable && (
 							<UI.Row mt="24">
 								<UI.Badge variant="neutral">Untracked</UI.Badge>
@@ -93,15 +107,16 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 						<UI.Column mt="48">
 							{habit.is_trackable && (
 								<HabitCharts id={habit.id}>
-									<UI.Badge hidden={!habit.progress_streak} variant="positive">
+									<UI.Badge mt="12" hidden={!habit.progress_streak} variant="positive">
 										{habit.progress_streak} {pluralize("day", habit.progress_streak ?? 0)} progress
 										streak
 									</UI.Badge>
-									<UI.Badge hidden={!habit.regress_streak} variant="negative">
+									<UI.Badge mt="12" hidden={!habit.regress_streak} variant="negative">
 										{habit.regress_streak} {pluralize("day", habit.regress_streak ?? 0)} regress
 										streak
 									</UI.Badge>
 									<UI.Badge
+										mt="12"
 										hidden={Boolean(habit.regress_streak || habit.progress_streak)}
 										variant="neutral"
 									>
@@ -116,18 +131,26 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 									onResolve={habitRequestState.refetch}
 								/>
 							</UI.Column>
+
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
-							<UI.Row my="48" mainAxis="between" crossAxis="center">
-								<UI.Text variant="dimmed">Created at:</UI.Text>
-								<UI.Text variant="monospaced" ml="6">
-									{formatTime(habit.created_at)}
-								</UI.Text>
-								<UI.Text variant="dimmed" ml="24">
-									Last updated at:
-								</UI.Text>
-								<UI.Text variant="monospaced" ml="6">
-									{formatTime(habit.updated_at)}
-								</UI.Text>
+
+							<UI.Row mb="48" mainAxis="between" crossAxis="end" wrap={[, "wrap"]}>
+								<UI.Wrapper>
+									<UI.Text variant="dimmed" mr="6" mt="48">
+										Created at:
+									</UI.Text>
+									<UI.Text variant="monospaced" mr="24">
+										{formatTime(habit.created_at)}
+									</UI.Text>
+								</UI.Wrapper>
+
+								<UI.Wrapper>
+									<UI.Text variant="dimmed" mr="6" mt="48">
+										Last updated at:
+									</UI.Text>
+									<UI.Text variant="monospaced">{formatTime(habit.updated_at)}</UI.Text>
+								</UI.Wrapper>
+
 								<DeleteHabitButton {...habit} />
 							</UI.Row>
 						</UI.Column>

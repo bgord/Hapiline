@@ -19,12 +19,16 @@ export const NewPasswordWindow: React.FC = () => {
 	const {errorMessage} = getRequestStateErrors(newPasswordRequestState);
 
 	return (
-		<UI.Card py="48" px="24" mx="auto" mt="72">
+		<UI.Card py="48" px="24" mx={["auto", "12"]} my="72" width={["view-m", "auto"]}>
 			<UI.Column
 				as="form"
 				onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
 					event.preventDefault();
-					setNewPassword({token: token ?? "", password, passwordConfirmation});
+					setNewPassword({
+						token: decodeURIComponent(token ?? ""),
+						password,
+						password_confirmation: passwordConfirmation,
+					});
 				}}
 			>
 				<UI.Header>New password</UI.Header>
@@ -42,7 +46,6 @@ export const NewPasswordWindow: React.FC = () => {
 						required
 						pattern=".{6,}"
 						disabled={newPasswordRequestState.status === "success"}
-						style={{width: "500px"}}
 					/>
 				</UI.Field>
 
@@ -73,10 +76,10 @@ export const NewPasswordWindow: React.FC = () => {
 				</UI.Row>
 
 				<UI.ShowIf request={newPasswordRequestState} is="success">
-					<UI.SuccessBanner mt="24" size="big">
+					<UI.SuccessBanner mt="48" size="big">
 						<UI.Column ml="12">
 							<UI.Text>Password has been changed!</UI.Text>
-							<UI.Row>
+							<UI.Row mt="6">
 								<UI.Text>You can</UI.Text>
 								<UI.Text ml="6" variant="link" as={Link} to="/login">
 									login now

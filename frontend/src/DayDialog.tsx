@@ -9,6 +9,7 @@ import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {HabitTab} from "./HabitTab";
 import {JournalTab} from "./JournalTab";
 import {formatDayName} from "./services/date-formatter";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 type DayDialogProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
 	onResolve: VoidFunction;
@@ -19,15 +20,26 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	const location = useLocation<{from: string | undefined}>();
 	const [, updateQueryParams] = useQueryParams();
 
+	const mediaQuery = useMediaQuery();
+
 	function dismissDialog() {
 		updateQueryParams(location?.state?.from ?? location.pathname, {});
 	}
 
 	return (
 		<Dialog
+			data-width="view-l"
+			data-lg-width="auto"
+			data-lg-mx="6"
+			data-mt="48"
+			data-lg-mt="24"
+			data-mb="0"
+			style={{
+				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
+				overflow: "auto",
+			}}
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
-			style={{maxHeight: "800px", paddingBottom: "48px", overflow: "auto"}}
 		>
 			<UI.Row bg="gray-1" p="24" mainAxis="between">
 				<UI.Header variant="small">

@@ -45,21 +45,29 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 				type="submit"
 				layout="with-icon"
 				onClick={openDialog}
+				mt="48"
 			>
 				<TrashIcon />
 				{deleteHabitRequestState.status === "loading" ? "Loading" : "Delete"}
 			</UI.Button>
 			{showDialog && (
-				<AlertDialog leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}>
+				<AlertDialog
+					data-width="view-m"
+					data-lg-width="auto"
+					data-lg-mx="24"
+					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
+				>
 					<AlertDialogLabel>
 						<UI.Header variant="small">Do you want to delete the following habit?</UI.Header>
 					</AlertDialogLabel>
 					<UI.Text mt="48">{name}</UI.Text>
-					<UI.Row mt="48" mainAxis="between">
-						<UI.Button variant="outlined" onClick={confirmDeletion}>
+					<UI.Row mt="24" mainAxis="between" wrap="wrap">
+						<UI.Button mt="24" variant="outlined" onClick={confirmDeletion}>
 							Yes, delete
 						</UI.Button>
+
 						<UI.Button
+							mt="24"
 							variant="primary"
 							ref={cancelRef as React.RefObject<HTMLButtonElement>}
 							onClick={closeDialog}

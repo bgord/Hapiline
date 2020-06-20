@@ -105,30 +105,36 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		<>
 			<UI.Row as="li" pb="12" width="100%" by="gray-1">
 				<UI.Column width="100%">
-					<UI.Row pt="6">
-						{isCommentVisible && (
-							<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
-								<VisuallyHidden>Hide vote comment</VisuallyHidden>
-								<ChevronUpIcon />
-							</UI.Button>
-						)}
+					<UI.Row pt="6" width="100%" mr="6" wrap={[, "wrap"]}>
+						<UI.Row width="auto">
+							{isCommentVisible && (
+								<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
+									<VisuallyHidden>Hide vote comment</VisuallyHidden>
+									<ChevronUpIcon />
+								</UI.Button>
+							)}
 
-						{!isCommentVisible && (
-							<UI.Button variant="bare" title="Show and edit vote comment" onClick={toggleComment}>
-								<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
-								<ChevronDownIcon />
-							</UI.Button>
-						)}
+							{!isCommentVisible && (
+								<UI.Button
+									variant="bare"
+									title="Show and edit vote comment"
+									onClick={toggleComment}
+								>
+									<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
+									<ChevronDownIcon />
+								</UI.Button>
+							)}
 
-						<UI.Text
-							as={Link}
-							to={UrlBuilder.habits.preview(habitWithPossibleVote.id)}
-							variant="semi-bold"
-						>
-							{habitWithPossibleVote.name}
-						</UI.Text>
+							<UI.Text
+								as={Link}
+								to={UrlBuilder.habits.preview(habitWithPossibleVote.id)}
+								variant="semi-bold"
+							>
+								{habitWithPossibleVote.name}
+							</UI.Text>
+						</UI.Row>
 
-						<UI.Wrapper ml="auto">
+						<UI.Row ml="auto" width="auto">
 							<UI.Button
 								bg={currentVoteType === "progress" ? "green" : "gray-0"}
 								style={{
@@ -176,23 +182,30 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								<VisuallyHidden>Add regress vote</VisuallyHidden>
 								<FontAwesomeIcon icon={faMinus} />
 							</UI.Button>
-						</UI.Wrapper>
+						</UI.Row>
 					</UI.Row>
-					<UI.Row mt="6">
-						<UI.Badge ml="48" mr="6" variant={habitWithPossibleVote.score}>
+
+					<UI.Row mt="6" wrap={[, "wrap"]}>
+						<UI.Badge mt="6" ml={["48", "3"]} mr="6" variant={habitWithPossibleVote.score}>
 							{habitWithPossibleVote.score}
 						</UI.Badge>
-						<UI.Badge ml="6" variant={habitStrengthToBadgeVariant[habitWithPossibleVote.strength]}>
+						<UI.Badge
+							mt="6"
+							ml="6"
+							mr="12"
+							variant={habitStrengthToBadgeVariant[habitWithPossibleVote.strength]}
+						>
 							{habitWithPossibleVote.strength}
 						</UI.Badge>
 						{!currentVoteType && (
-							<UI.Badge ml="auto" variant="neutral">
+							<UI.Badge mt="6" ml={["auto", "3"]} variant="neutral" mr="6">
 								No vote yet
 							</UI.Badge>
 						)}
 					</UI.Row>
+
 					{isCommentVisible && (
-						<UI.Column mt="24" pl="48">
+						<UI.Column mt="24" pl={["48", "6"]}>
 							<UI.Field mb="12">
 								<UI.Label htmlFor="vote_comment">Vote comment</UI.Label>
 								<UI.Textarea

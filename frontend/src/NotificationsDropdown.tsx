@@ -9,6 +9,7 @@ import {BellIcon} from "./ui/icons/Bell";
 import {api} from "./services/api";
 import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -17,6 +18,9 @@ export function NotificationDropdown() {
 		setOff: hideNotifications,
 		toggle: toggleNotifications,
 	} = useToggle();
+
+	const mediaQuery = useMediaQuery();
+
 	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
 		queryKey: "notifications",
 		queryFn: api.notifications.get,
@@ -46,21 +50,28 @@ export function NotificationDropdown() {
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
 				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
 				<BellIcon />
+
 				{numberOfUnreadNotifications > 0 && (
 					<UI.Text position="absolute" style={{top: "-3px", right: "3px"}}>
 						{numberOfUnreadNotifications}
 					</UI.Text>
 				)}
 			</UI.Button>
+
 			{areNotificationsVisible && (
 				<UI.Card
 					mt="72"
 					id="notification-list"
 					position="absolute"
-					style={{width: "500px", right: "12px"}}
+					width={["view-m", "auto"]}
+					style={{
+						right: "12px",
+						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
+						overflowY: "auto",
+					}}
 				>
 					<UI.Column py="24" px="12">
-						<UI.Row mainAxis="between" mb="24">
+						<UI.Row mainAxis="between" mb={["24", "6"]}>
 							<UI.Header variant="extra-small">Notifications</UI.Header>
 
 							<UI.Badge ml="6" variant="neutral" style={{padding: "3px 6px"}}>

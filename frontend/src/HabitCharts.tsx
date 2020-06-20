@@ -15,10 +15,13 @@ import {
 import {api} from "./services/api";
 import {formatDay} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 	const [dateRange, setChartRange] = React.useState<HabitVoteChartDateRangeType>("last_week");
 	const triggerErrorToast = useErrorToast();
+
+	const mediaQuery = useMediaQuery();
 
 	const habitVoteChartRequestState = useQuery<
 		DayVote[],
@@ -49,7 +52,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 
 	return (
 		<>
-			<UI.Row mainAxis="between">
+			<UI.Row mainAxis="between" wrap={[, "wrap"]}>
 				<UI.Field variant="row" style={{alignItems: "center", justifyContent: "flex-end"}}>
 					<UI.Label mr="12" htmlFor="date_range">
 						Select date range:
@@ -83,32 +86,36 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 						/>
 					))}
 				</UI.Row>
-				<UI.Row mt="6" crossAxis="center">
-					<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
-					<UI.Text>
-						{numberOfRegressVotes} regress {pluralize("vote", numberOfRegressVotes)}(
-						{regressVotesPrct}%)
-					</UI.Text>
-					<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
-						·
-					</UI.Text>
-					<UI.Text>
-						{numberOfPlateauVotes} plateau {pluralize("vote", numberOfPlateauVotes)}(
-						{plateauVotesPrct}%)
-					</UI.Text>
-					<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
-						·
-					</UI.Text>
-					<UI.Text>
-						{numberOfProgressVotes} progress {pluralize("vote", numberOfProgressVotes)}(
-						{progressVotesPrct}%)
-					</UI.Text>
+				{mediaQuery === MEDIA_QUERY.default && (
+					<UI.Row mt="6" crossAxis="center">
+						<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
+						<UI.Text>
+							{numberOfRegressVotes} regress {pluralize("vote", numberOfRegressVotes)} (
+							{regressVotesPrct}%)
+						</UI.Text>
+						<UI.Text ml="24" style={{fontSize: "72px", color: "var(--gray-3)"}}>
+							·
+						</UI.Text>
+						<UI.Text>
+							{numberOfPlateauVotes} plateau {pluralize("vote", numberOfPlateauVotes)} (
+							{plateauVotesPrct}%)
+						</UI.Text>
+						<UI.Text ml="24" style={{fontSize: "72px", color: "#8bdb90"}}>
+							·
+						</UI.Text>
+						<UI.Text>
+							{numberOfProgressVotes} progress {pluralize("vote", numberOfProgressVotes)} (
+							{progressVotesPrct}%)
+						</UI.Text>
 
-					<UI.Text ml="auto" variant="bold">
-						{numberOfHabitVoteChartItems}
-					</UI.Text>
-					<UI.Text ml="6">in total</UI.Text>
-				</UI.Row>
+						<UI.Text ml="auto" variant="bold">
+							{numberOfHabitVoteChartItems}
+						</UI.Text>
+						<UI.Text style={{whiteSpace: "nowrap"}} ml="6">
+							in total
+						</UI.Text>
+					</UI.Row>
+				)}
 			</UI.ShowIf>
 
 			<UI.ShowIf request={habitVoteChartRequestState} is="error">

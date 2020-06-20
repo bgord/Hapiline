@@ -18,6 +18,8 @@ const habitDialogGrid: React.CSSProperties = {
 	gridTemplateColumns: "repeat(7, 200px)",
 	gridTemplateRows: "repeat(6, 100px)",
 	gridGap: "12px",
+	width: "100%",
+	overflowX: "scroll",
 };
 
 export const Calendar: React.FC = () => {
@@ -102,30 +104,37 @@ export const Calendar: React.FC = () => {
 	}
 
 	return (
-		<UI.Column mt="24" crossAxis="center">
-			<UI.Row mb="24" bg="gray-2" px="72" py="12" width="auto">
+		<UI.Column
+			mt="24"
+			crossAxis="center"
+			width={["100%", "auto"]}
+			style={{maxWidth: "1500px"}}
+			mx="auto"
+			p="12"
+		>
+			<UI.Row mb="24" bg="gray-2" px={["72", "6"]} py="12" width="auto">
 				<UI.Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
 					disabled={isPreviousButtonDisabled}
-					style={{width: "100px"}}
+					style={{width: "90px"}}
 					title={getPreviousButtonTitle()}
-					mr="24"
+					mr={["24", "6"]}
 				>
 					Previous
 				</UI.Button>
 
 				<CalendarIcon />
-				<UI.Text ml="6" variant="bold">
+				<UI.Text style={{whiteSpace: "nowrap"}} ml="6" variant="bold">
 					{date}
 				</UI.Text>
 
 				<UI.Button
-					ml="24"
+					ml={["24", "6"]}
 					variant="outlined"
 					onClick={widget.setNextMonth}
 					disabled={isNextButtonDisabled}
-					style={{width: "100px"}}
+					style={{width: "90px"}}
 					title={getNextButtonTitle()}
 				>
 					Next

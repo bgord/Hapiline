@@ -20,6 +20,7 @@ import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useToggle} from "./hooks/useToggle";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 type HabitTabProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
 	onResolve: VoidFunction;
@@ -34,6 +35,8 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 	const {on: isChartLegendVisible, toggle: toggleIsChartLegendVisible} = useToggle();
 	const {on: areTrackedHabitsVisible, toggle: toggleAreTrackedHabitsVisible} = useToggle(true);
+
+	const mediaQuery = useMediaQuery();
 
 	const triggerErrorToast = useErrorToast();
 
@@ -86,7 +89,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 		.filter(habitWithPossibleVote => habitSearch.filterFn(habitWithPossibleVote.name));
 
 	return (
-		<UI.Column px="24">
+		<UI.Column px={["24", "6"]}>
 			{doesEveryHabitHasVote && (
 				<UI.SuccessBanner mt="24">
 					<UI.Text ml="12" style={{color: "#025D26"}}>
@@ -99,14 +102,16 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			)}
 
 			<UI.Row mt="24">
-				<UI.Button
-					onClick={toggleIsChartLegendVisible}
-					style={{marginLeft: "-12px"}}
-					mr="12"
-					variant="bare"
-				>
-					<QuestionMarkIcon />
-				</UI.Button>
+				{mediaQuery === MEDIA_QUERY.default && (
+					<UI.Button
+						onClick={toggleIsChartLegendVisible}
+						style={{marginLeft: "-12px"}}
+						mr="12"
+						variant="bare"
+					>
+						<QuestionMarkIcon />
+					</UI.Button>
+				)}
 
 				<DaySummaryChart
 					numberOfPossibleVotes={habitsAvailableAtThisDay.length}
@@ -121,28 +126,28 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			</UI.Row>
 
 			<UI.Row mt="6" crossAxis="center">
-				{isChartLegendVisible && (
+				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</UI.Text>
 						<UI.Text>no votes</UI.Text>
 					</UI.Row>
 				)}
 
-				{isChartLegendVisible && (
+				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
 						<UI.Text>regress votes</UI.Text>
 					</UI.Row>
 				)}
 
-				{isChartLegendVisible && (
+				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "var(--gray-3)"}}>·</UI.Text>
 						<UI.Text>plateau votes</UI.Text>
 					</UI.Row>
 				)}
 
-				{isChartLegendVisible && (
+				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "#8bdb90"}}>·</UI.Text>
 						<UI.Text>progress votes</UI.Text>
@@ -150,33 +155,44 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				)}
 			</UI.Row>
 
-			<UI.Row mt="48" crossAxis="center">
-				<HabitVoteFilters.Voted.Input
-					value={habitVoteFilter.value}
-					onChange={habitVoteFilter.onChange}
-					disabled={numberOfHabitsWithVote === 0}
-				/>
-				<HabitVoteFilters.Voted.Label>
-					Show voted ({numberOfHabitsWithVote})
-				</HabitVoteFilters.Voted.Label>
+			<UI.Row mt={["24", "12"]} mainAxis="between" crossAxis="center" wrap={[, "wrap"]}>
+				<UI.Row width="auto" wrap={[, "wrap"]}>
+					<UI.Row width="auto" mt="12">
+						<HabitVoteFilters.Voted.Input
+							value={habitVoteFilter.value}
+							onChange={habitVoteFilter.onChange}
+							disabled={numberOfHabitsWithVote === 0}
+						/>
+						<HabitVoteFilters.Voted.Label>
+							Show voted ({numberOfHabitsWithVote})
+						</HabitVoteFilters.Voted.Label>
+					</UI.Row>
 
-				<HabitVoteFilters.Unvoted.Input
-					value={habitVoteFilter.value}
-					onChange={habitVoteFilter.onChange}
-					disabled={numberOfHabitsWithoutVotes === 0}
-				/>
-				<HabitVoteFilters.Unvoted.Label>
-					Show unvoted ({numberOfHabitsWithoutVotes})
-				</HabitVoteFilters.Unvoted.Label>
+					<UI.Row width="auto" mt="12">
+						<HabitVoteFilters.Unvoted.Input
+							value={habitVoteFilter.value}
+							onChange={habitVoteFilter.onChange}
+							disabled={numberOfHabitsWithoutVotes === 0}
+						/>
+						<HabitVoteFilters.Unvoted.Label>
+							Show unvoted ({numberOfHabitsWithoutVotes})
+						</HabitVoteFilters.Unvoted.Label>
+					</UI.Row>
 
-				<HabitVoteFilters.All.Input
-					value={habitVoteFilter.value}
-					onChange={habitVoteFilter.onChange}
-				/>
-				<HabitVoteFilters.All.Label>Show all ({numberOfHabitsAtAll})</HabitVoteFilters.All.Label>
+					<UI.Row width="auto" mt="12">
+						<HabitVoteFilters.All.Input
+							value={habitVoteFilter.value}
+							onChange={habitVoteFilter.onChange}
+						/>
+						<HabitVoteFilters.All.Label>
+							Show all ({numberOfHabitsAtAll})
+						</HabitVoteFilters.All.Label>
+					</UI.Row>
+				</UI.Row>
 
 				<UI.Button
 					ml="auto"
+					mt="12"
 					onClick={() => {
 						habitVoteFilter.reset();
 						habitSearch.clearPhrase();
@@ -190,11 +206,12 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					Reset filters
 				</UI.Button>
 			</UI.Row>
-			<UI.Row mt="24" crossAxis="end">
-				<HabitSearchInput value={habitSearch.value} onChange={habitSearch.onChange} />
+
+			<UI.Row mt="12" crossAxis="end" wrap="wrap">
+				<HabitSearchInput data-mr="12" value={habitSearch.value} onChange={habitSearch.onChange} />
 
 				<UI.Button
-					ml="12"
+					mt="24"
 					onClick={() => {
 						habitSearch.clearPhrase();
 						clearHighlightedHabitId();
@@ -204,7 +221,13 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					Clear
 				</UI.Button>
 
-				<UI.Text ml="auto" data-testid="number-of-habit-search-results">
+				<UI.Text
+					mt="24"
+					ml="auto"
+					mb="6"
+					mr={[, "24"]}
+					data-testid="number-of-habit-search-results"
+				>
 					<UI.Text variant="bold">{filteredHabitsWithPossibleVote.length}</UI.Text> results
 				</UI.Text>
 			</UI.Row>
@@ -259,7 +282,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 						</UI.Column>
 					)}
 
-					<DayDialogSummaryTabs day={day} />
+					{mediaQuery === MEDIA_QUERY.default && <DayDialogSummaryTabs day={day} />}
 				</UI.Column>
 			)}
 		</UI.Column>
