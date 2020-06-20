@@ -238,7 +238,7 @@ export const HabitsWindow = () => {
 
 					<UI.ShowIf request={getHabitsRequestState} is="error">
 						<UI.ErrorBanner size="big" mt="48" mx="24">
-							{errorMessage}
+							{errorMessage || "Cannot fetch habits, please try again"}
 							<UI.Button onClick={() => getHabitsRequestState.refetch()} ml="24" variant="outlined">
 								Retry
 							</UI.Button>

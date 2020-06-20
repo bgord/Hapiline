@@ -62,3 +62,30 @@ ReactDOM.render(
 	</React.StrictMode>,
 	document.getElementById("root"),
 );
+
+if (
+	"serviceWorker" in navigator &&
+	// Comment the line below if you want to
+	// use the service worker in development mode.
+	// And uncomment the if statements for
+	// debugging purposes.
+
+	// TODO: Enable service worker on production,
+	// when the server is running on HTTPs
+	__ENVIRONMENT__ === "nowhere"
+) {
+	window.addEventListener("load", () => {
+		navigator.serviceWorker
+			.register("/sw.js")
+			.then(_registration => {
+				// if (__ENVIRONMENT__ === "development") {
+				// 	console.log("SW registered: ", _registration);
+				// }
+			})
+			.catch(_registrationError => {
+				// if (__ENVIRONMENT__ === "development") {
+				// 	console.log("SW registration error: ", _registrationError);
+				// }
+			});
+	});
+}

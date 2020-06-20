@@ -133,7 +133,9 @@ export const Calendar: React.FC = () => {
 			</UI.Row>
 
 			<UI.ShowIf request={getMonthRequestState} is="error">
-				<UI.ErrorBanner my="24">{errorMessage}</UI.ErrorBanner>
+				<UI.ErrorBanner my="24" p="6">
+					{errorMessage || "Couldn't fetch calendar stats"}
+				</UI.ErrorBanner>
 			</UI.ShowIf>
 
 			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">

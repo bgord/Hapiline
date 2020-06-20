@@ -13,7 +13,7 @@
     "api:test": "adonis test --bail",
     "api:test:specific": "adonis test --grep",
     "frontend:dev": "webpack --mode development",
-    "frontend:prod": "webpack --mode production",
+    "frontend:prod": "webpack --mode production --config prod.webpack.config.js",
     "e2e:test": "./node_modules/.bin/cypress open --browser chromium",
     "e2e:test:headless": "./node_modules/.bin/cypress run --browser chromium --headless",
     "cosmos": "cosmos",
@@ -109,6 +109,10 @@
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.11.0",
+    "workbox-navigation-preload": "^5.1.3",
+    "workbox-routing": "^5.1.3",
+    "workbox-strategies": "^5.1.3",
+    "workbox-webpack-plugin": "^5.1.3",
     "yup": "^0.29.1"
   },
   "autoload": {
