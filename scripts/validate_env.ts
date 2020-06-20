@@ -106,7 +106,6 @@ async function validateEnvFrontendProduction(
 			.shape({
 				API_URL: yup
 					.string()
-					.url()
 					.notOneOf(
 						[envFrontendDevelopment.API_URL],
 						"'API_URL' for development and production must be different",
