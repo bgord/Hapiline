@@ -3,13 +3,13 @@ import * as React from "react";
 import VisuallyHidden from "@reach/visually-hidden";
 
 import {Notification, DraftNotificationPayload} from "./models";
-
 import * as UI from "./ui";
 import {BellIcon} from "./ui/icons/Bell";
 import {api} from "./services/api";
 import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
+import {formatDay} from "./services/date-formatter";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -44,7 +44,6 @@ export function NotificationDropdown() {
 	const numberOfUnreadNotifications = notifications.filter(
 		notification => notification.status === "unread",
 	).length;
-
 	return (
 		<UI.Column>
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
@@ -102,6 +101,9 @@ export function NotificationDropdown() {
 										key={notification.id}
 									>
 										<UI.Text ml="6">{notification.content}</UI.Text>
+										<UI.Text variant="light" ml="6">
+											{formatDay(notification?.created_at)}
+										</UI.Text>
 
 										{notification.status === "unread" && (
 											<UI.Button
