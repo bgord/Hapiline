@@ -70,7 +70,7 @@ export const ProfileChangePassword = () => {
 						disabled={updatePasswordRequestState.status === "loading"}
 					/>
 					<UI.ShowIf request={updatePasswordRequestState} is="error">
-						oldPasswordInlineError && (<UI.Error>{oldPasswordInlineError}</UI.Error>)
+						{oldPasswordInlineError && <UI.Error>{oldPasswordInlineError}</UI.Error>}
 					</UI.ShowIf>
 				</UI.Field>
 
