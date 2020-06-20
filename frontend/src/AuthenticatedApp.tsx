@@ -21,7 +21,7 @@ function AuthenticatedApp() {
 	return (
 		<HabitsProvider>
 			<Router history={authenticatedAppBrowserHistory}>
-				{/* <AuthenticatedNavbar /> */}
+				<AuthenticatedNavbar />
 				<Toasts />
 				<Switch>
 					<Route exact path="/logout">
