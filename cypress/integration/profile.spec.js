@@ -10,6 +10,7 @@ describe("Profile", () => {
 	});
 
 	it("account deletion", () => {
+		cy.viewport(1700, 1700);
 		cy.visit(LOGIN_URL);
 
 		cy.findByLabelText("Email").type("dwight@example.com");
@@ -68,12 +69,12 @@ describe("Profile", () => {
 		cy.login("dwight");
 		cy.visit(PROFILE_URL);
 
-		cy.findByLabelText("Email").should("have.value", "dwight@example.com");
+		cy.findByLabelText("New email").should("be.empty");
 		cy.findByLabelText("Password").should("be.empty");
 		cy.findByText("You will have to confirm your new email adress and login back again.");
 		cy.findByText("Confirm email").should("be.disabled");
 
-		cy.findByLabelText("Email")
+		cy.findByLabelText("New email")
 			.clear()
 			.type("dwight@dundermifflin.com");
 		cy.findByLabelText("Password").type("123456");
@@ -92,7 +93,7 @@ describe("Profile", () => {
 		cy.visit(PROFILE_URL);
 
 		// Invalid password
-		cy.findByLabelText("Email")
+		cy.findByLabelText("New email")
 			.clear()
 			.type("michael@dundermifflin.com");
 		cy.findByLabelText("Password")
@@ -106,7 +107,7 @@ describe("Profile", () => {
 		cy.tick(10000);
 
 		// Already existing email
-		cy.findByLabelText("Email")
+		cy.findByLabelText("New email")
 			.clear()
 			.type("jim@example.com");
 		cy.findByLabelText("Password")
@@ -132,6 +133,7 @@ describe("Profile", () => {
 
 		cy.findByText("Password changed successfully!");
 
+		cy.findByText("Menu").click();
 		cy.findByText("Logout").click();
 		cy.findByText("Login").click();
 

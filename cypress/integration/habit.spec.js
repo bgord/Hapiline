@@ -34,7 +34,7 @@ describe("Habit", () => {
 		cy.findByText("Habit successfully addedd!").should("not.exist");
 
 		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit name").should("have.value", "");
+			cy.findByLabelText("Habit name").should("be.empty");
 			cy.findByLabelText("Score").should("have.value", "positive");
 			cy.findByLabelText("Strength").should("have.value", "established");
 
@@ -101,11 +101,11 @@ describe("Habit", () => {
 
 			// Reset form clears the local storage and restores the defauls
 			cy.findByText("Reset form").click();
-			cy.findByLabelText("Habit name").should("have.value", "");
+			cy.findByLabelText("Habit name").should("be.empty");
 			cy.findByLabelText("Score").should("have.value", "positive");
 			cy.findByLabelText("Strength").should("have.value", "established");
 			cy.findByLabelText("Track this habit").should("be.checked");
-			cy.findByLabelText("Description").should("have.value", "");
+			cy.findByLabelText("Description").should("be.empty");
 
 			cy.clearLocalStorage();
 		});
@@ -251,13 +251,13 @@ describe("Habit", () => {
 		cy.findByLabelText("All strengths (4)").check();
 
 		cy.findByPlaceholderText("Search for habits...")
-			.should("have.value", "")
+			.should("be.empty")
 			.type("the");
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
 		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
 		cy.findByText("Clear").click();
-		cy.findByPlaceholderText("Search for habits...").should("have.value", "");
+		cy.findByPlaceholderText("Search for habits...").should("be.empty");
 	});
 
 	it("error while getting items", () => {
