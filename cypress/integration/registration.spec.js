@@ -6,18 +6,7 @@ const validNewCredentials = {
 };
 
 describe("Registration", () => {
-	before(() => {
-		cy.request("POST", "/test/db/seed");
-
-		cy.request({
-			method: "DELETE",
-			url: Cypress.env("MAILHOG_API_URL"),
-			auth: {
-				username: Cypress.env("MAILHOG_USERNAME"),
-				password: Cypress.env("MAILHOG_PASSWORD"),
-			},
-		});
-	});
+	before(() => cy.request("POST", "/test/db/seed"));
 
 	it("full flow", () => {
 		cy.visit(REGISTRATION_URL);
