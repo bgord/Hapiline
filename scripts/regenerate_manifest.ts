@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import fs from "fs";
 
 import manifest from "../public/manifest.json";
@@ -19,7 +21,7 @@ async function main() {
 
 	if (currentAppVersion === manifest.version) {
 		console.log("\nManifest file is up to date, nothing to do.");
-		process.exit(5);
+		process.exit(0);
 	}
 
 	console.log("\nGenerating new manifest...");
@@ -50,4 +52,7 @@ function constructManifest(version: string) {
 	};
 }
 
-main().catch(console.log);
+main().catch(error => {
+	console.error(error);
+	process.exit(1);
+});

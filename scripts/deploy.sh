@@ -169,6 +169,14 @@ git push --tags --no-verify
 printf "\n🛈  Pushing latest package(-lock).json version changes...\n\n"
 git push --no-verify
 
+# Regenerate manifest.json, and if tehere's a need to, push the change.
+
+printf "\n🛈  Regenerating manifest.json...\n\n"
+npm run manifest:regenerate
+git add public/manifest.json
+git commit -m "Update manifest.json"
+git push --no-verify
+
 
 # Building the frontend bundle for production, using the local instance
 # of the app running in the containers.
