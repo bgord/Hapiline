@@ -115,6 +115,9 @@
     "App": "./app"
   },
   "eslintConfig": {
-    "extends": "bgord"
+    "extends": "bgord",
+    "rules": {
+      "no-sparse-arrays": 0
+    }
   }
 }
