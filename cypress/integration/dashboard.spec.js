@@ -246,7 +246,7 @@ describe("Dashboard", () => {
 			cy.findByText("Unread");
 
 			cy.findAllByText("Congratulations! You did something good.").should("have.length", 2);
-
+			cy.findAllByText(today);
 			cy.findByText("Read").click();
 
 			cy.findByText("Read").should("not.exist");
