@@ -502,4 +502,26 @@ describe("Dashboard", () => {
 				`/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=2`,
 			);
 	});
+
+	it("persist state of streak lists' visibility", () => {
+		cy.clearLocalStorage();
+		cy.login("jim");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("Show regress streak list").should("not.be.visible");
+		cy.findByText("Hide regress streak list").click({force: true});
+		cy.findByText("Show regress streak list");
+
+		cy.findByText("Show progress streak list").should("not.be.visible");
+		cy.findByText("Hide progress streak list").click({force: true});
+		cy.findByText("Show progress streak list");
+
+		cy.reload();
+		cy.wait(1000);
+
+		cy.findByText("Show regress streak list");
+		cy.findByText("Show progress streak list");
+
+		cy.clearLocalStorage();
+	});
 });

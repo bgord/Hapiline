@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
 import {DashboardStreakStats} from "../../models";
-import {useToggle} from "../../hooks/useToggle";
+import {usePersistentToggle} from "../../hooks/useToggle";
 import {pluralize} from "../../services/pluralize";
 import {UrlBuilder} from "../../services/url-builder";
 
@@ -17,7 +17,10 @@ import * as UI from "../../ui";
 export const DashboardProgressStreakList: React.FC<{
 	request: QueryResult<DashboardStreakStats>;
 }> = ({request}) => {
-	const {on: isProgressStreakListVisible, toggle: toggleProgressStreakList} = useToggle(true);
+	const {on: isProgressStreakListVisible, toggle: toggleProgressStreakList} = usePersistentToggle(
+		true,
+		"show_progress_streak_list",
+	);
 
 	const progressStreakStats = request.data?.progress_streaks ?? [];
 

@@ -60,6 +60,7 @@ const aliases = {
 	Habit: "App/Models/Habit",
 	HabitVote: "App/Models/HabitVote",
 	Notification: "App/Models/Notification",
+	Journal: "App/Models/Journal",
 
 	// constants
 	ROLE_NAMES: "App/Constants/ROLE_NAMES",

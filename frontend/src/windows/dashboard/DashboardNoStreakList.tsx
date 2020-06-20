@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
 import {DashboardStreakStats} from "../../models";
-import {useToggle} from "../../hooks/useToggle";
+import {usePersistentToggle} from "../../hooks/useToggle";
 import {UrlBuilder} from "../../services/url-builder";
 
 import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
@@ -16,7 +16,10 @@ import * as UI from "../../ui";
 export const DashboardNoStreakList: React.FC<{
 	request: QueryResult<DashboardStreakStats>;
 }> = ({request}) => {
-	const {on: isNoStreakListVisible, toggle: toggleNoStreakList} = useToggle(true);
+	const {on: isNoStreakListVisible, toggle: toggleNoStreakList} = usePersistentToggle(
+		true,
+		"show_no_streak_list",
+	);
 
 	const noStreakStats = request.data?.no_streak ?? [];
 
