@@ -16,6 +16,7 @@ tmp
 frontend/css/index.css
 public/*
 !public/logo.png
+!public/logo-icon.png
 !public/favicon.ico
 dist/
 
