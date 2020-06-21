@@ -1,39 +1,35 @@
 import {NavLink} from "react-router-dom";
 import * as React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import * as UI from "./ui";
 import {Logo} from "./Logo";
 import {useUserProfile} from "./contexts/auth-context";
 import {NotificationDropdown} from "./NotificationsDropdown";
 import {useWindowWidth} from "./ui/breakpoints";
-import {useToggle} from "./hooks/useToggle";
+import {Menu, MenuList, MenuButton, MenuLink} from "@reach/menu-button";
 
 export function AuthenticatedNavbar() {
 	const width = useWindowWidth();
-	const shouldDisplayStandardMenu = width > 1000;
-
-	if (shouldDisplayStandardMenu) {
-	}
+	const shouldDisplayInlineMenu = width > 1000;
 
 	return (
-		<UI.Row as="nav" bg="gray-0" bw="2" bb="gray-2" p={shouldDisplayStandardMenu ? "0" : "6"}>
+		<UI.Row as="nav" bg="gray-0" bw="2" bb="gray-2" p={shouldDisplayInlineMenu ? "0" : "6"}>
 			<NavLink activeClassName="c-active-link" data-ml="12" data-mr="auto" exact to="/dashboard">
 				<Logo />
 			</NavLink>
 
-			{shouldDisplayStandardMenu && <StandardMenu />}
+			{shouldDisplayInlineMenu && <InlineMenu />}
 
 			<NotificationDropdown />
 
-			{shouldDisplayStandardMenu && <UI.NavItem to="/logout">Logout</UI.NavItem>}
+			{shouldDisplayInlineMenu && <UI.NavItem to="/logout">Logout</UI.NavItem>}
 
-			{!shouldDisplayStandardMenu && <DropdownMenu />}
+			{!shouldDisplayInlineMenu && <DropdownMenu />}
 		</UI.Row>
 	);
 }
 
-function StandardMenu() {
+function InlineMenu() {
 	const [profile] = useUserProfile();
 
 	return (
@@ -51,47 +47,31 @@ function StandardMenu() {
 function DropdownMenu() {
 	const [profile] = useUserProfile();
 
-	const {on: isDropdownMenuVisible, toggle: toggleDropdownMenu} = useToggle(false);
-
 	return (
-		<UI.Column>
-			<UI.Button ml="12" variant="bare" style={{position: "relative"}} onClick={toggleDropdownMenu}>
-				<VisuallyHidden>Menu dropdown</VisuallyHidden>
+		<Menu>
+			<MenuButton as={UI.Button} ml="12" variant="bare">
 				<UI.Text>Menu</UI.Text>
-			</UI.Button>
+			</MenuButton>
 
-			{isDropdownMenuVisible && (
-				<UI.Card
-					mt="72"
-					id="menu-list"
-					position="absolute"
-					width="auto"
-					style={{
-						right: "18px",
-						maxHeight: "450px",
-						overflowY: "auto",
-					}}
-				>
-					<UI.Column>
-						<UI.Row mainAxis="between" mb="6" p="6">
-							<UI.Header variant="extra-small">Menu</UI.Header>
-							<UI.CloseIcon ml="auto" onClick={toggleDropdownMenu} />
-						</UI.Row>
+			<UI.Card as={MenuList} id="menu-list" data-bw="2" data-b="gray-2">
+				<MenuLink as={UI.NavItem} p="12" to="/profile">
+					<UI.Text variant="bold">{profile?.email}</UI.Text>
+				</MenuLink>
 
-						<UI.Column>
-							<UI.NavItem variant="bold" to="/profile">
-								{profile?.email}
-							</UI.NavItem>
+				<MenuLink as={UI.NavItem} p="12" to="/dashboard">
+					Dashboard
+				</MenuLink>
+				<MenuLink as={UI.NavItem} p="12" to="/habits">
+					Habits
+				</MenuLink>
+				<MenuLink as={UI.NavItem} p="12" to="/calendar">
+					Calendar
+				</MenuLink>
 
-							<UI.NavItem to="/dashboard">Dashboard</UI.NavItem>
-							<UI.NavItem to="/habits">Habits</UI.NavItem>
-							<UI.NavItem to="/calendar">Calendar</UI.NavItem>
-
-							<UI.NavItem to="/logout">Logout</UI.NavItem>
-						</UI.Column>
-					</UI.Column>
-				</UI.Card>
-			)}
-		</UI.Column>
+				<MenuLink as={UI.NavItem} p="12" to="/logout">
+					Logout
+				</MenuLink>
+			</UI.Card>
+		</Menu>
 	);
 }
