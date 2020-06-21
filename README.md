@@ -103,7 +103,8 @@ $ npm install
 ```
 # Ensure the containers are up: (docker-compose up)
 
-$ npm run e2e:test
+$ npm run e2e:desktop # opens the Cypress UI
+$ npm run e2e:desktop:headless # runs tests in the headless mode
 ```
 
 **Env validation**
