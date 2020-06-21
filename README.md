@@ -121,3 +121,18 @@ $ npm run validate:env:all
 ```
 
 ---
+
+**Regenerate TypeScript types basing on the database schema with Prisma**
+
+```bash
+$ npx prisma introspect
+
+// Double-check the changes added to `prisma/schema.prisma` and commit them.
+
+$ npx prisma generate
+
+// Now, the new types for the current database schema should be accessible via `@prisma/client`
+// in `frontend/src/models.ts`.
+```
+
+---
