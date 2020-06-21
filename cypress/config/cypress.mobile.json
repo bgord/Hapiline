@@ -1,0 +1,7 @@
+{
+	"baseUrl": "http://hapiline.localhost",
+	"video": false,
+	"chromeWebSecurity": false,
+	"viewportWidth": 320,
+	"viewportHeight": 568
+}

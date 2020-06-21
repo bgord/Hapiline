@@ -16,6 +16,8 @@
     "frontend:prod": "webpack --mode production --config prod.webpack.config.js",
     "e2e:desktop": "./node_modules/.bin/cypress open --browser chromium --config-file cypress/config/cypress.desktop.json",
     "e2e:desktop:headless": "./node_modules/.bin/cypress run --browser chromium --config-file cypress/config/cypress.desktop.json --headless",
+    "e2e:mobile": "./node_modules/.bin/cypress open --browser chromium --config-file cypress/config/cypress.mobile.json --env 'device=mobile'",
+    "e2e:mobile:headless": "./node_modules/.bin/cypress run --browser chromium --config-file cypress/config/cypress.mobile.json --env 'device=mobile' --headless",
     "cosmos": "cosmos",
     "cosmos:export": "cosmos-export",
     "env:validate:dev": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts",
