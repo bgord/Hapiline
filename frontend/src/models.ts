@@ -1,4 +1,4 @@
-import { users, habits, notifications, habit_votes } from "@prisma/client";
+import { users, habits, notifications, habit_votes, journals} from "@prisma/client";
 
 /* eslint-disable no-duplicate-imports */
 import type {
@@ -217,3 +217,9 @@ export type DashboardHabitVoteStatsForDateRanges = {
 // Token
 
 export type Token = string;
+
+// ===========
+
+// Journal
+
+export type Journal = journals;
