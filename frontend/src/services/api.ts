@@ -27,6 +27,7 @@ import {
 import {getDayRequest, getMonthRequest} from "./calendar";
 import {getDashboardStats, getDashboardStreakStats} from "./stats";
 import {getNotificationsRequest, updateNotificationRequest} from "./notifications";
+import {getJournalRequest, updateJournalRequest} from "./journal";
 
 declare const process: {
 	env: {
@@ -75,6 +76,10 @@ export const api = {
 		get: getNotificationsRequest,
 		update: updateNotificationRequest,
 	},
+	journal:{
+		get: getJournalRequest,
+		post: updateJournalRequest
+	}
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */

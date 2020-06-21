@@ -60,5 +60,9 @@ module.exports = () => {
 			historyApiFallback: true,
 			contentBase: "./",
 		},
+		watchOptions: {
+			aggregateTimeout: 200,
+			poll: 1000,
+		},
 	};
 };

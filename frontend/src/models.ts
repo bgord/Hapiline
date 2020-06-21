@@ -217,3 +217,17 @@ export type DashboardHabitVoteStatsForDateRanges = {
 // Token
 
 export type Token = string;
+
+// ===========
+
+// Journal
+export type Journal ={
+  day: Date;
+  content: string ;
+  user_id: number;
+};
+
+export type NewJournalRequest = Omit<
+Journal,
+"user_id"
+>;
