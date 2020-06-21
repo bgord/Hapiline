@@ -10,7 +10,6 @@ describe("Profile", () => {
 	});
 
 	it("account deletion", () => {
-		cy.viewport(1700, 1700);
 		cy.visit(LOGIN_URL);
 
 		cy.findByLabelText("Email").type("dwight@example.com");

@@ -41,7 +41,6 @@ describe("Calendar", () => {
 			],
 		});
 
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -104,8 +103,6 @@ describe("Calendar", () => {
 	});
 
 	it("content of the latest day tile", () => {
-		cy.viewport(1700, 1700);
-
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -132,8 +129,6 @@ describe("Calendar", () => {
 	});
 
 	it("untracked habits are not shown in the calendar tiles", () => {
-		cy.viewport(1700, 1700);
-
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -206,7 +201,6 @@ describe("Calendar", () => {
 	});
 
 	it("dialog", () => {
-		cy.viewport(2000, 2000);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -308,7 +302,6 @@ describe("Calendar", () => {
 	it("doesn't render not trackable habits", () => {
 		cy.server();
 
-		cy.viewport(2000, 2000);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -348,7 +341,6 @@ describe("Calendar", () => {
 	});
 
 	it("habit votes", () => {
-		cy.viewport(1700, 1700);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -400,7 +392,6 @@ describe("Calendar", () => {
 	});
 
 	it("vote comments", () => {
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -465,7 +456,6 @@ describe("Calendar", () => {
 	});
 
 	it("add a comment to a habit with no vote", () => {
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -520,7 +510,6 @@ describe("Calendar", () => {
 			response: {},
 		});
 
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
