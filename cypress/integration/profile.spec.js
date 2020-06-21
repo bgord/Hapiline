@@ -17,6 +17,9 @@ describe("Profile", () => {
 		cy.findByTestId("login-submit").click();
 		cy.url().should("include", DASHBOARD_URL);
 
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Menu").click();
+		}
 		cy.findByText("dwight@example.com").click();
 
 		cy.url().should("contain", PROFILE_URL);
@@ -132,7 +135,9 @@ describe("Profile", () => {
 
 		cy.findByText("Password changed successfully!");
 
-		cy.findByText("Menu").click();
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Menu").click();
+		}
 		cy.findByText("Logout").click();
 		cy.findByText("Login").click();
 

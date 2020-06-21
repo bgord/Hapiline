@@ -154,8 +154,11 @@ describe("Habit", () => {
 		cy.visit(HABITS_URL);
 
 		cy.findByText("It seems you haven't added any habits yet.");
-		cy.findByText("Show filters").should("be.disabled");
 		cy.findByText("New habit");
+
+		if (Cypress.env("device") === "desktop") {
+			cy.findByText("Show filters").should("be.disabled");
+		}
 	});
 
 	it("renders returned items", () => {
@@ -210,45 +213,47 @@ describe("Habit", () => {
 
 		cy.findByText("Untracked");
 
-		cy.findByText("Show filters").click();
+		if (Cypress.env("device") === "desktop") {
+			cy.findByText("Show filters").click();
 
-		cy.findByLabelText("Positive (2)").should("not.be.checked");
-		cy.findByLabelText("Neutral (1)").should("not.be.checked");
-		cy.findByLabelText("Negative (1)").should("not.be.checked");
-		cy.findByLabelText("Established (2)").should("not.be.checked");
-		cy.findByLabelText("Fresh (1)").should("not.be.checked");
-		cy.findByLabelText("Developing (1)").should("not.be.checked");
-		cy.findByLabelText("All scores (4)").should("be.checked");
-		cy.findByLabelText("All strengths (4)").should("be.checked");
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "4 results");
+			cy.findByLabelText("Positive (2)").should("not.be.checked");
+			cy.findByLabelText("Neutral (1)").should("not.be.checked");
+			cy.findByLabelText("Negative (1)").should("not.be.checked");
+			cy.findByLabelText("Established (2)").should("not.be.checked");
+			cy.findByLabelText("Fresh (1)").should("not.be.checked");
+			cy.findByLabelText("Developing (1)").should("not.be.checked");
+			cy.findByLabelText("All scores (4)").should("be.checked");
+			cy.findByLabelText("All strengths (4)").should("be.checked");
+			cy.findByTestId("number-of-habit-search-results").should("have.text", "4 results");
 
-		cy.findByLabelText("Positive (2)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 2));
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
+			cy.findByLabelText("Positive (2)").check();
+			cy.get("ul").within(() => cy.get("li").should("have.length", 2));
+			cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
 
-		cy.findByLabelText("Neutral (1)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
+			cy.findByLabelText("Neutral (1)").check();
+			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
-		cy.findByLabelText("Negative (1)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
+			cy.findByLabelText("Negative (1)").check();
+			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
-		cy.findByLabelText("All scores (4)").check();
+			cy.findByLabelText("All scores (4)").check();
 
-		cy.findByLabelText("Established (2)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 2));
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
+			cy.findByLabelText("Established (2)").check();
+			cy.get("ul").within(() => cy.get("li").should("have.length", 2));
+			cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
 
-		cy.findByLabelText("Developing (1)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
+			cy.findByLabelText("Developing (1)").check();
+			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
-		cy.findByLabelText("Fresh (1)").check();
-		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
+			cy.findByLabelText("Fresh (1)").check();
+			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
+			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
-		cy.findByLabelText("All strengths (4)").check();
+			cy.findByLabelText("All strengths (4)").check();
+		}
 
 		cy.findByPlaceholderText("Search for habits...")
 			.should("be.empty")
@@ -311,12 +316,14 @@ describe("Habit", () => {
 		cy.findByText("Close dialog").click({force: true});
 		cy.findByText("0 lorem");
 
-		cy.findByText("Show filters").click();
+		if (Cypress.env("device" === "desktop")) {
+			cy.findByText("Show filters").click();
 
-		cy.findByText("Positive (4)");
-		cy.findByText("Neutral (3)");
-		cy.findByText("Negative (3)");
-		cy.findByText("All scores (10)");
+			cy.findByText("Positive (4)");
+			cy.findByText("Neutral (3)");
+			cy.findByText("Negative (3)");
+			cy.findByText("All scores (10)");
+		}
 
 		cy.findAllByText("More")
 			.first()
@@ -327,10 +334,12 @@ describe("Habit", () => {
 		cy.findByText("0 lorem").should("not.exist");
 		cy.findByText("Habit successfully deleted!");
 
-		cy.findByText("Positive (3)");
-		cy.findByText("Neutral (3)");
-		cy.findByText("Negative (3)");
-		cy.findByText("All scores (9)");
+		if (Cypress.env("device" === "desktop")) {
+			cy.findByText("Positive (3)");
+			cy.findByText("Neutral (3)");
+			cy.findByText("Negative (3)");
+			cy.findByText("All scores (9)");
+		}
 	});
 
 	it("deleting habit error", () => {
