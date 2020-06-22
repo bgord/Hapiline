@@ -85,11 +85,11 @@ export const AddHabitForm: React.FC = () => {
 			data-lg-mx="12"
 			data-pt="12"
 			data-pb="24"
-			data-lg-mt="24"
+			data-lg-mt="12"
 			aria-label="Add new habit"
 			onDismiss={hideAddFormDialog}
 		>
-			<UI.Row bg="gray-1" p="12" mainAxis="between">
+			<UI.Row bg="gray-1" p={["24", "6"]} mainAxis="between">
 				<UI.Header variant="small">New habit</UI.Header>
 				<UI.CloseIcon onClick={hideAddFormDialog} />
 			</UI.Row>

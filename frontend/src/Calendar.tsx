@@ -105,7 +105,7 @@ export const Calendar: React.FC = () => {
 
 	return (
 		<UI.Column
-			mt="24"
+			mt={["24", "12"]}
 			crossAxis="center"
 			width={["100%", "auto"]}
 			style={{maxWidth: "1520px"}}
