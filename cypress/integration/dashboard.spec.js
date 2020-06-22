@@ -526,6 +526,8 @@ describe("Dashboard", () => {
 	});
 
 	it("correct search by highlighted_habit_id", () => {
+		const urlOfHabitHighlightedInDashboardDayPreview = `http://hapiline.localhost/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=31`;
+
 		cy.login("pam");
 		cy.visit(DASHBOARD_URL);
 
@@ -533,10 +535,7 @@ describe("Dashboard", () => {
 			.first()
 			.click();
 
-		cy.url().should(
-			"be.equal",
-			`http://hapiline.localhost/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=31`,
-		);
+		cy.url().should("be.equal", urlOfHabitHighlightedInDashboardDayPreview);
 
 		cy.findByRole("dialog").within(() => {
 			cy.findAllByText("0 lorem");
