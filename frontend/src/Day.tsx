@@ -43,12 +43,15 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 	)}`;
 
 	return (
-		<UI.Column data-testid="day" bg="gray-0" bw="2" b="gray-1" style={styles}>
+		<UI.Column mt={[, "6"]} data-testid="day" bg="gray-0" bw="2" b="gray-1" style={styles}>
 			<UI.Row mainAxis="between" px="6">
 				<UI.Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
 					{day}
 				</UI.Text>
-				<UI.Text>{formatShortDayName(day)}</UI.Text>
+
+				<UI.Text variant={isThisDayToday ? "bold" : "regular"} ml={[, "12"]} mr={[, "auto"]}>
+					{formatShortDayName(day)}
+				</UI.Text>
 			</UI.Row>
 			{isDayDialogAvailable && (
 				<>
