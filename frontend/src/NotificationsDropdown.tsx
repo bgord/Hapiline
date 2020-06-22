@@ -50,6 +50,7 @@ export function NotificationDropdown() {
 			{areNotificationsVisible && (
 				<UI.Card
 					mt="72"
+					ml={[, "6"]}
 					id="notification-list"
 					position="absolute"
 					width={["view-m", "auto"]}
@@ -79,7 +80,7 @@ export function NotificationDropdown() {
 
 							<UI.Column as="ul">
 								{notifications.map(notification => (
-									<Notification
+									<NotificationItem
 										refetchNotifications={getNotificationsRequestState.refetch}
 										{...notification}
 									/>
@@ -99,7 +100,7 @@ export function NotificationDropdown() {
 
 type NotificationProps = Notification & {refetchNotifications: VoidFunction};
 
-function Notification({refetchNotifications, ...notification}: NotificationProps) {
+function NotificationItem({refetchNotifications, ...notification}: NotificationProps) {
 	const triggerErrorToast = useErrorToast();
 
 	const [updateNotification, updateNotificationRequestState] = useMutation<
@@ -118,14 +119,16 @@ function Notification({refetchNotifications, ...notification}: NotificationProps
 				borderLeftWidth: "var(--border-width-l)",
 				borderLeftColor: "var(--gray-2)",
 			}}
-			crossAxis="center"
-			mt="24"
+			crossAxis="start"
+			mb="24"
 			key={notification.id}
 		>
-			<UI.Text ml="6">{notification.content}</UI.Text>
-			<UI.Text variant="light" ml="6">
-				{formatDay(notification?.created_at)}
-			</UI.Text>
+			<UI.Column>
+				<UI.Text ml="6">{notification.content}</UI.Text>
+				<UI.Text variant="light" ml="6">
+					{formatDay(notification?.created_at)}
+				</UI.Text>
+			</UI.Column>
 
 			{notification.status === "unread" && (
 				<UI.Button
