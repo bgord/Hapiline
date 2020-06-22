@@ -15,6 +15,7 @@ import {AuthProvider} from "./contexts/auth-context";
 import {ToastsProvider} from "./contexts/toasts-context";
 import {DeveloperInfo} from "./DeveloperInfo";
 import {OfflineIndicator} from "./OfflineIndicator";
+import {MediaQueryDevTools} from "./MediaQueryDevTools";
 
 declare const __BUILD_VERSION__: string;
 declare const __ENVIRONMENT__: string;
@@ -56,6 +57,7 @@ ReactDOM.render(
 					<App />
 					<DeveloperInfo />
 					<OfflineIndicator />
+					<MediaQueryDevTools />
 				</AuthProvider>
 			</ToastsProvider>
 		</ErrorBoundary>
