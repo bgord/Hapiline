@@ -20,8 +20,9 @@
     "e2e:mobile:headless": "./node_modules/.bin/cypress run --browser chromium --config-file cypress/config/cypress.mobile.json --env 'device=mobile' --headless",
     "cosmos": "cosmos",
     "cosmos:export": "cosmos-export",
-    "env:validate:dev": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts",
-    "env:validate:all": "ts-node -P ./tsconfig.scripts.json  ./scripts/validate_env.ts --with-prod"
+    "env:validate:dev": "ts-node -P ./tsconfig.scripts.json ./scripts/validate_env.ts",
+    "env:validate:all": "ts-node -P ./tsconfig.scripts.json ./scripts/validate_env.ts --with-prod",
+    "manifest:regenerate": "ts-node -P ./tsconfig.scripts.json ./scripts/regenerate_manifest.ts"
   },
   "author": "Bartosz Gordon",
   "license": "UNLICENSED",
