@@ -18,3 +18,18 @@
 .c-header[data-variant="large"] {
 	font-size: 24px;
 }
+
+@media (max-width: 768px) {
+	.c-header[data-lg-variant="extra-small"] {
+		font-size: 18px;
+	}
+	.c-header[data-lg-variant="small"] {
+		font-size: 20px;
+	}
+	.c-header[data-lg-variant="medium"] {
+		font-size: 22px;
+	}
+	.c-header[data-lg-variant="large"] {
+		font-size: 24px;
+	}
+}
