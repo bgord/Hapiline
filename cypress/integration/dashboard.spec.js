@@ -437,7 +437,7 @@ describe("Dashboard", () => {
 		cy.findByRole("dialog").within(() => {
 			cy.findAllByText("Journal")
 				.first()
-				.click();
+				.click({force: true});
 			cy.findAllByLabelText("Journal");
 		});
 	});
