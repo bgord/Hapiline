@@ -169,3 +169,15 @@ model users {
   role_user       role_user[]
   tokens          tokens[]
 }
+
+model journals {
+  content    String
+  created_at DateTime @default(now())
+  day        DateTime
+  id         Int      @default(autoincrement()) @id
+  updated_at DateTime @default(now())
+  user_id    Int
+  users      users    @relation(fields: [user_id], references: [id])
+
+  @@unique([user_id, day], name: "journals_user_id_day_unique")
+}

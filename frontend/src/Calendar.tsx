@@ -108,7 +108,7 @@ export const Calendar: React.FC = () => {
 			mt="24"
 			crossAxis="center"
 			width={["100%", "auto"]}
-			style={{maxWidth: "1500px"}}
+			style={{maxWidth: "1520px"}}
 			mx="auto"
 			p="12"
 		>

@@ -1,4 +1,4 @@
-import { users, habits, notifications, habit_votes } from "@prisma/client";
+import { users, habits, notifications, habit_votes, journals} from "@prisma/client";
 
 /* eslint-disable no-duplicate-imports */
 import type {
@@ -221,13 +221,5 @@ export type Token = string;
 // ===========
 
 // Journal
-export type Journal ={
-  day: Date;
-  content: string ;
-  user_id: number;
-};
 
-export type NewJournalRequest = Omit<
-Journal,
-"user_id"
->;
+export type Journal = journals;

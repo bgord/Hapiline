@@ -103,7 +103,11 @@ $ npm install
 ```
 # Ensure the containers are up: (docker-compose up)
 
-$ npm run e2e:test
+$ npm run e2e:desktop # opens the Cypress UI for desktop screen resolution
+$ npm run e2e:desktop:headless # runs tests in the headless mode for desktop screen resolution
+
+$ npm run e2e:mobile # opens the Cypress UI for mobile screen resolution
+$ npm run e2e:mobile:headless # runs tests in the headless mode for mobile screen resolution
 ```
 
 **Env validation**
@@ -118,6 +122,21 @@ To validate both development and production env files (server and frontend):
 
 ```bash
 $ npm run validate:env:all
+```
+
+---
+
+**Regenerate TypeScript types basing on the database schema with Prisma**
+
+```bash
+$ npx prisma introspect
+
+// Double-check the changes added to `prisma/schema.prisma` and commit them.
+
+$ npx prisma generate
+
+// Now, the new types for the current database schema should be accessible via `@prisma/client`
+// in `frontend/src/models.ts`.
 ```
 
 ---

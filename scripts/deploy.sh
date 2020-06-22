@@ -144,8 +144,11 @@ printf "\n🛈  Running backend tests...\n\n"
 #            The solution is to run `./run.sh npm run frontend:dev`` and run the script
 #            one more time.
 #
-printf "\n🛈  Running e2e tests...\n\n"
-npm run e2e:test:headless
+printf "\n🛈  Running e2e tests for desktop...\n\n"
+npm run e2e:desktop:headless
+
+printf "\n🛈  Running e2e tests for mobile...\n\n"
+npm run e2e:mobile:headless
 
 
 # Using the $VERSION_CHANGE variable to bump the version using `npm version`.
@@ -167,6 +170,14 @@ git push --tags --no-verify
 # Pushing the package(-lock).json changes created by `npm version`.
 # We use `--no-verify` to skip running api tests in the git pre-push hook.
 printf "\n🛈  Pushing latest package(-lock).json version changes...\n\n"
+git push --no-verify
+
+# Regenerate manifest.json, and if tehere's a need to, push the change.
+
+printf "\n🛈  Regenerating manifest.json...\n\n"
+npm run manifest:regenerate
+git add public/manifest.json
+git commit -m "Update manifest.json"
 git push --no-verify
 
 
