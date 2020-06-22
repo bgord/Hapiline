@@ -32,7 +32,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			data-lg-width="auto"
 			data-lg-mx="6"
 			data-mt="48"
-			data-lg-mt="24"
+			data-lg-mt="12"
 			data-mb="0"
 			style={{
 				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
@@ -41,7 +41,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
 		>
-			<UI.Row bg="gray-1" p="24" mainAxis="between">
+			<UI.Row bg="gray-1" p={["24", "6"]} mainAxis="between">
 				<UI.Header variant="small">
 					{day} - {formatDayName(day)}
 				</UI.Header>

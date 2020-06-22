@@ -69,7 +69,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			}}
 		>
 			<UI.Column>
-				<UI.Row bg="gray-1" p="24" mainAxis="between">
+				<UI.Row bg="gray-1" p={["24", "6"]} mainAxis="between">
 					<UI.Header variant="small">Habit preview</UI.Header>
 					<UI.CloseIcon onClick={dismissDialog} />
 				</UI.Row>
