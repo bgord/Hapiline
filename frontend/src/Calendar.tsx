@@ -1,29 +1,32 @@
+import {isSameMonth, subMonths} from "date-fns";
 import {useQuery} from "react-query";
 import React from "react";
-import {isSameMonth, subMonths} from "date-fns";
 
-import * as UI from "./ui";
 import {CalendarIcon} from "./ui/icons/Calendar";
 import {Day} from "./Day";
+import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./models";
+import {MEDIA_QUERY, useMediaQuery} from "./ui/breakpoints";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
 import {useTrackedHabits} from "./contexts/habits-context";
-import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./models";
-
-const habitDialogGrid: React.CSSProperties = {
-	display: "grid",
-	gridTemplateColumns: "repeat(7, 200px)",
-	gridTemplateRows: "repeat(6, 100px)",
-	gridGap: "12px",
-	width: "100%",
-	overflowX: "scroll",
-};
+import * as UI from "./ui";
 
 export const Calendar: React.FC = () => {
 	useDocumentTitle("Hapiline - calendar");
+
+	const mediaQuery = useMediaQuery();
+
+	const calendarGrid: React.CSSProperties = {
+		display: mediaQuery === MEDIA_QUERY.default ? "grid" : "block",
+		gridTemplateColumns: "repeat(7, 200px)",
+		gridTemplateRows: "repeat(6, 100px)",
+		gridGap: "12px",
+		width: "100%",
+		overflowX: "scroll",
+	};
 
 	const [widget, date, monthOffset] = useMonthsWidget();
 	const trackedHabits = useTrackedHabits();
@@ -105,7 +108,7 @@ export const Calendar: React.FC = () => {
 
 	return (
 		<UI.Column
-			mt="24"
+			mt={["24", "12"]}
 			crossAxis="center"
 			width={["100%", "auto"]}
 			style={{maxWidth: "1520px"}}
@@ -147,7 +150,7 @@ export const Calendar: React.FC = () => {
 				</UI.ErrorBanner>
 			</UI.ShowIf>
 
-			<UI.Card bg="gray-0" data-testid="calendar" style={habitDialogGrid} p="12">
+			<UI.Card bg="gray-0" data-testid="calendar" style={calendarGrid} p="12">
 				{dayCellsWithStats.map(props => (
 					<Day
 						key={props.day.toString()}
