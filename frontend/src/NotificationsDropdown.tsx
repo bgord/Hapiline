@@ -1,6 +1,5 @@
 import {useQuery, useMutation} from "react-query";
 import * as React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {Notification, DraftNotificationPayload} from "./models";
 import * as UI from "./ui";
@@ -47,7 +46,7 @@ export function NotificationDropdown() {
 	return (
 		<UI.Column>
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
-				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
+				<UI.VisuallyHidden>Notifications dropdown</UI.VisuallyHidden>
 				<BellIcon />
 
 				{numberOfUnreadNotifications > 0 && (

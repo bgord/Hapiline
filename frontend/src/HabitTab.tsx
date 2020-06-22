@@ -1,7 +1,6 @@
 import {useLocation} from "react-router-dom";
 import {useQuery, QueryResult} from "react-query";
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {ChevronUpIcon} from "./ui/icons/ChevronUp";
 import {ChevronDownIcon} from "./ui/icons/ChevronDown";
@@ -249,7 +248,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 								title="Hide tracked habits"
 								onClick={toggleAreTrackedHabitsVisible}
 							>
-								<VisuallyHidden>Hide tracked habits</VisuallyHidden>
+								<UI.VisuallyHidden>Hide tracked habits</UI.VisuallyHidden>
 								<ChevronUpIcon />
 							</UI.Button>
 						)}
@@ -260,7 +259,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 								title="Show tracked habits"
 								onClick={toggleAreTrackedHabitsVisible}
 							>
-								<VisuallyHidden>Show tracked habits</VisuallyHidden>
+								<UI.VisuallyHidden>Show tracked habits</UI.VisuallyHidden>
 								<ChevronDownIcon />
 							</UI.Button>
 						)}

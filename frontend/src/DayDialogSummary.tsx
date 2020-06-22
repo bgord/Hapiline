@@ -3,7 +3,6 @@ import {Tabs, TabList, Tab, TabPanels, TabPanel} from "@reach/tabs";
 import * as UI from "./ui/";
 import React from "react";
 import {Link} from "react-router-dom";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useHabits, useUntrackedHabits} from "./contexts/habits-context";
@@ -54,7 +53,7 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					fontSize: "14px",
 				}}
 			>
-				<VisuallyHidden>{stats.numberOfMissingVotes} habits with no votes</VisuallyHidden>
+				<UI.VisuallyHidden>{stats.numberOfMissingVotes} habits with no votes</UI.VisuallyHidden>
 				{stats.numberOfMissingVotes > 0 && stats.numberOfMissingVotes}
 			</UI.Row>
 			<UI.Row
@@ -72,7 +71,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					fontSize: "14px",
 				}}
 			>
-				<VisuallyHidden>{stats.numberOfRegressVotes ?? 0} habits with regress votes</VisuallyHidden>
+				<UI.VisuallyHidden>
+					{stats.numberOfRegressVotes ?? 0} habits with regress votes
+				</UI.VisuallyHidden>
 				{stats.numberOfRegressVotes ?? 0}
 			</UI.Row>
 
@@ -91,7 +92,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					fontSize: "14px",
 				}}
 			>
-				<VisuallyHidden>{stats.numberOfPlateauVotes ?? 0} habits with plateau votes</VisuallyHidden>
+				<UI.VisuallyHidden>
+					{stats.numberOfPlateauVotes ?? 0} habits with plateau votes
+				</UI.VisuallyHidden>
 				{stats.numberOfPlateauVotes ?? 0}
 			</UI.Row>
 
@@ -110,9 +113,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 					fontSize: "14px",
 				}}
 			>
-				<VisuallyHidden>
+				<UI.VisuallyHidden>
 					{stats.numberOfProgressVotes ?? 0} habits with progress votes
-				</VisuallyHidden>
+				</UI.VisuallyHidden>
 				{stats.numberOfProgressVotes ?? 0}
 			</UI.Row>
 		</UI.Row>

@@ -1,6 +1,5 @@
 import {Router, Route, Switch, Redirect, NavLink} from "react-router-dom";
 import * as React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {createBrowserHistory} from "history";
 
@@ -88,7 +87,7 @@ function AuthenticatedNavbar() {
 						style={{position: "relative"}}
 						onClick={toggleMenuVisibility}
 					>
-						<VisuallyHidden>Menu dropdown</VisuallyHidden>
+						<UI.VisuallyHidden>Menu dropdown</UI.VisuallyHidden>
 						<UI.Text>Menu</UI.Text>
 					</UI.Button>
 

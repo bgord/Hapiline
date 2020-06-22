@@ -8,7 +8,6 @@ import {faPlus, faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {subDays, isBefore} from "date-fns";
 import {ChevronUpIcon} from "./ui/icons/ChevronUp";
 import {ChevronDownIcon} from "./ui/icons/ChevronDown";
-import VisuallyHidden from "@reach/visually-hidden";
 import {
 	HabitVoteType,
 	habitStrengthToBadgeVariant,
@@ -109,7 +108,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 						<UI.Row width="auto">
 							{isCommentVisible && (
 								<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
-									<VisuallyHidden>Hide vote comment</VisuallyHidden>
+									<UI.VisuallyHidden>Hide vote comment</UI.VisuallyHidden>
 									<ChevronUpIcon />
 								</UI.Button>
 							)}
@@ -120,7 +119,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									title="Show and edit vote comment"
 									onClick={toggleComment}
 								>
-									<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
+									<UI.VisuallyHidden>Show and edit vote comment</UI.VisuallyHidden>
 									<ChevronDownIcon />
 								</UI.Button>
 							)}
@@ -147,7 +146,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
 								}
 							>
-								<VisuallyHidden>Add progress vote</VisuallyHidden>
+								<UI.VisuallyHidden>Add progress vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faPlus} />
 							</UI.Button>
 							<UI.Button
@@ -163,7 +162,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
 								}
 							>
-								<VisuallyHidden>Add plateau vote</VisuallyHidden>
+								<UI.VisuallyHidden>Add plateau vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faEquals} />
 							</UI.Button>
 							<UI.Button
@@ -179,7 +178,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
 								}
 							>
-								<VisuallyHidden>Add regress vote</VisuallyHidden>
+								<UI.VisuallyHidden>Add regress vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faMinus} />
 							</UI.Button>
 						</UI.Row>

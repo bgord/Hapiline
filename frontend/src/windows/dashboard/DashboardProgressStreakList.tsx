@@ -1,5 +1,4 @@
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
@@ -41,7 +40,7 @@ export const DashboardProgressStreakList: React.FC<{
 						title="Hide progress streak list"
 						onClick={toggleProgressStreakList}
 					>
-						<VisuallyHidden>Hide progress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Hide progress streak list</UI.VisuallyHidden>
 						<ChevronUpIcon />
 					</UI.Button>
 				)}
@@ -53,7 +52,7 @@ export const DashboardProgressStreakList: React.FC<{
 						title="Show progress streak list"
 						onClick={toggleProgressStreakList}
 					>
-						<VisuallyHidden>Show progress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Show progress streak list</UI.VisuallyHidden>
 						<ChevronDownIcon />
 					</UI.Button>
 				)}

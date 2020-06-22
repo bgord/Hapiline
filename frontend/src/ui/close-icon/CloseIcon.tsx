@@ -3,7 +3,6 @@
 import "./close-icon.css";
 
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {Close} from "../icons/Close";
 
@@ -14,7 +13,7 @@ type CloseIconProps = React.ComponentPropsWithoutRef<"button"> & Margins & Backg
 
 export const CloseIcon: React.FC<CloseIconProps> = ({bg, ...props}) => (
 	<UI.Button data-bg={bg} variant="bare" {...props}>
-		<VisuallyHidden>Close dialog</VisuallyHidden>
+		<UI.VisuallyHidden>Close dialog</UI.VisuallyHidden>
 		<Close />
 	</UI.Button>
 );
