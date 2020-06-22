@@ -6,7 +6,7 @@ import React from "react";
 
 import {Close} from "../icons/Close";
 
-import * as UI from "../button/Button";
+import * as UI from "../index";
 import {Backgrounds, Margins} from "../design-system";
 
 type CloseIconProps = React.ComponentPropsWithoutRef<"button"> & Margins & Backgrounds;
