@@ -34,6 +34,7 @@ export function NotificationDropdown() {
 	const numberOfUnreadNotifications = notifications.filter(
 		notification => notification.status === "unread",
 	).length;
+
 	return (
 		<UI.Column>
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
@@ -79,12 +80,14 @@ export function NotificationDropdown() {
 							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
 
 							<UI.Column as="ul">
-								{notifications.map(notification => (
-									<NotificationItem
-										refetchNotifications={getNotificationsRequestState.refetch}
-										{...notification}
-									/>
-								))}
+								<UI.ExpandContractList max={5}>
+									{notifications.map(notification => (
+										<NotificationItem
+											refetchNotifications={getNotificationsRequestState.refetch}
+											{...notification}
+										/>
+									))}
+								</UI.ExpandContractList>
 							</UI.Column>
 						</UI.ShowIf>
 
