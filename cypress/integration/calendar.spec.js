@@ -41,7 +41,6 @@ describe("Calendar", () => {
 			],
 		});
 
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -104,8 +103,6 @@ describe("Calendar", () => {
 	});
 
 	it("content of the latest day tile", () => {
-		cy.viewport(1700, 1700);
-
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -132,8 +129,6 @@ describe("Calendar", () => {
 	});
 
 	it("untracked habits are not shown in the calendar tiles", () => {
-		cy.viewport(1700, 1700);
-
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -153,7 +148,14 @@ describe("Calendar", () => {
 				});
 		});
 
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Menu").click();
+		}
 		cy.findByText("Habits").click();
+
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Close dialog").click({force: true});
+		}
 		cy.findByText("New habit").click();
 
 		cy.findByRole("dialog").within(() => {
@@ -206,7 +208,6 @@ describe("Calendar", () => {
 	});
 
 	it("dialog", () => {
-		cy.viewport(2000, 2000);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -231,10 +232,13 @@ describe("Calendar", () => {
 			cy.findByText("1 habits with regress votes");
 			cy.findByText("6 habits with no votes");
 
-			cy.findByText("Show new habits").click();
-			cy.findByText("4");
-			cy.findByText("habits added this day");
-			cy.findByText("Show untracked habits").click();
+			if (Cypress.env("device") === "desktop") {
+				cy.findByText("Show new habits").click();
+				cy.findByText("4");
+				cy.findByText("habits added this day");
+
+				cy.findByText("Show untracked habits").click();
+			}
 
 			cy.findByLabelText("Show voted (4)").should("not.be.checked");
 			cy.findByLabelText("Show unvoted (6)").should("be.checked");
@@ -308,11 +312,17 @@ describe("Calendar", () => {
 	it("doesn't render not trackable habits", () => {
 		cy.server();
 
-		cy.viewport(2000, 2000);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Menu").click();
+		}
 		cy.findByText("Habits").click();
+
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Close dialog").click({force: true});
+		}
 		cy.findByText("New habit").click();
 
 		cy.findByRole("dialog").within(() => {
@@ -323,7 +333,15 @@ describe("Calendar", () => {
 			cy.findByText("Close dialog").click({force: true});
 		});
 
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Menu").click();
+		}
 		cy.findByText("Calendar").click();
+		if (Cypress.env("device") === "mobile") {
+			cy.findAllByText("Close dialog")
+				.first()
+				.click({force: true});
+		}
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
@@ -331,24 +349,25 @@ describe("Calendar", () => {
 				.within(() => cy.findByText("Show").click());
 		});
 
-		cy.findByRole("dialog").within(() => {
-			cy.findByText("Show new habits").click();
+		if (Cypress.env("device") === "desktop") {
+			cy.findByRole("dialog").within(() => {
+				cy.findByText("Show new habits").click();
 
-			cy.findAllByText("5");
-			cy.findByText("habits added this day");
+				cy.findAllByText("5");
+				cy.findByText("habits added this day");
 
-			cy.findAllByText("Untracked");
+				cy.findAllByText("Untracked");
 
-			cy.findByText("Show untracked habits").click();
-			cy.findByText("One");
-			cy.findByText("untracked habit available this day.");
+				cy.findByText("Show untracked habits").click();
+				cy.findByText("One");
+				cy.findByText("untracked habit available this day.");
 
-			cy.findAllByText("THE NOT TRACKED ONE");
-		});
+				cy.findAllByText("THE NOT TRACKED ONE");
+			});
+		}
 	});
 
 	it("habit votes", () => {
-		cy.viewport(1700, 1700);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -400,7 +419,6 @@ describe("Calendar", () => {
 	});
 
 	it("vote comments", () => {
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -465,7 +483,6 @@ describe("Calendar", () => {
 	});
 
 	it("add a comment to a habit with no vote", () => {
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 
@@ -520,7 +537,6 @@ describe("Calendar", () => {
 			response: {},
 		});
 
-		cy.viewport(1200, 1200);
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 

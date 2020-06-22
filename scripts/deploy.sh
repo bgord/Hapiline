@@ -144,8 +144,11 @@ printf "\n🛈  Running backend tests...\n\n"
 #            The solution is to run `./run.sh npm run frontend:dev`` and run the script
 #            one more time.
 #
-printf "\n🛈  Running e2e tests...\n\n"
-npm run e2e:test:headless
+printf "\n🛈  Running e2e tests for desktop...\n\n"
+npm run e2e:desktop:headless
+
+printf "\n🛈  Running e2e tests for mobile...\n\n"
+npm run e2e:mobile:headless
 
 
 # Using the $VERSION_CHANGE variable to bump the version using `npm version`.

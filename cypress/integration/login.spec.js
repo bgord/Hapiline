@@ -27,7 +27,9 @@ describe("Login", () => {
 
 		cy.url().should("include", DASHBOARD_URL);
 
-		cy.findByText("Menu").click();
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Menu").click();
+		}
 		cy.findByText("Logout").click({force: true});
 
 		cy.url().should("include", HOME_URL);
