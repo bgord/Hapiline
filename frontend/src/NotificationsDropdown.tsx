@@ -29,21 +29,12 @@ export function NotificationDropdown() {
 		},
 	});
 
-	const [updateNotification, updateNotificationRequestState] = useMutation<
-		Notification,
-		DraftNotificationPayload
-	>(api.notifications.update, {
-		onSuccess: () => {
-			getNotificationsRequestState.refetch();
-		},
-		onError: () => triggerErrorToast("Couldn't change notification status."),
-	});
-
 	const notifications = getNotificationsRequestState.data ?? [];
 
 	const numberOfUnreadNotifications = notifications.filter(
 		notification => notification.status === "unread",
 	).length;
+
 	return (
 		<UI.Column>
 			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
@@ -60,6 +51,7 @@ export function NotificationDropdown() {
 			{areNotificationsVisible && (
 				<UI.Card
 					mt="72"
+					ml={[, "6"]}
 					id="notification-list"
 					position="absolute"
 					width={["view-m", "auto"]}
@@ -88,48 +80,14 @@ export function NotificationDropdown() {
 							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
 
 							<UI.Column as="ul">
-								{notifications.map(notification => (
-									<UI.Row
-										as="li"
-										mainAxis="between"
-										style={{
-											borderLeftWidth: "var(--border-width-l)",
-											borderLeftColor: "var(--gray-2)",
-										}}
-										crossAxis="center"
-										mt="24"
-										key={notification.id}
-									>
-										<UI.Text ml="6">{notification.content}</UI.Text>
-										<UI.Text variant="light" ml="6">
-											{formatDay(notification?.created_at)}
-										</UI.Text>
-
-										{notification.status === "unread" && (
-											<UI.Button
-												ml="12"
-												style={{minWidth: "85px"}}
-												variant="secondary"
-												disabled={updateNotificationRequestState.status === "loading"}
-												onClick={() => updateNotification({id: notification.id, status: "read"})}
-											>
-												Read
-											</UI.Button>
-										)}
-
-										{notification.status === "read" && (
-											<UI.Button
-												ml="12"
-												style={{minWidth: "85px"}}
-												variant="outlined"
-												disabled={updateNotificationRequestState.status === "loading"}
-												onClick={() => updateNotification({id: notification.id, status: "unread"})}
-											>
-												Unread
-											</UI.Button>
-										)}
-									</UI.Row>
-								))}
+								<UI.ExpandContractList max={5}>
+									{notifications.map(notification => (
+										<NotificationItem
+											refetchNotifications={getNotificationsRequestState.refetch}
+											{...notification}
+										/>
+									))}
+								</UI.ExpandContractList>
 							</UI.Column>
 						</UI.ShowIf>
 
@@ -140,5 +98,64 @@ export function NotificationDropdown() {
 				</UI.Card>
 			)}
 		</UI.Column>
+	);
+}
+
+type NotificationProps = Notification & {refetchNotifications: VoidFunction};
+
+function NotificationItem({refetchNotifications, ...notification}: NotificationProps) {
+	const triggerErrorToast = useErrorToast();
+
+	const [updateNotification, updateNotificationRequestState] = useMutation<
+		Notification,
+		DraftNotificationPayload
+	>(api.notifications.update, {
+		onSuccess: refetchNotifications,
+		onError: () => triggerErrorToast("Couldn't change notification status."),
+	});
+
+	return (
+		<UI.Row
+			as="li"
+			mainAxis="between"
+			style={{
+				borderLeftWidth: "var(--border-width-l)",
+				borderLeftColor: "var(--gray-2)",
+			}}
+			crossAxis="start"
+			mb="24"
+			key={notification.id}
+		>
+			<UI.Column>
+				<UI.Text ml="6">{notification.content}</UI.Text>
+				<UI.Text variant="light" ml="6">
+					{formatDay(notification?.created_at)}
+				</UI.Text>
+			</UI.Column>
+
+			{notification.status === "unread" && (
+				<UI.Button
+					ml="12"
+					style={{minWidth: "85px"}}
+					variant="secondary"
+					disabled={updateNotificationRequestState.status === "loading"}
+					onClick={() => updateNotification({id: notification.id, status: "read"})}
+				>
+					Read
+				</UI.Button>
+			)}
+
+			{notification.status === "read" && (
+				<UI.Button
+					ml="12"
+					style={{minWidth: "85px"}}
+					variant="outlined"
+					disabled={updateNotificationRequestState.status === "loading"}
+					onClick={() => updateNotification({id: notification.id, status: "unread"})}
+				>
+					Unread
+				</UI.Button>
+			)}
+		</UI.Row>
 	);
 }

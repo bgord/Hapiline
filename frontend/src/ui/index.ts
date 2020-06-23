@@ -31,3 +31,4 @@ export * from "./icons/QuestionMark";
 export * from "./icons/Trash";
 
 export * from "./ShowIf";
+export * from "./ExpandContractList";
