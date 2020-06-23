@@ -34,10 +34,7 @@ const UnauthenticatedApp = () => (
 					<Route exact path="/new-password/:token">
 						<NewPasswordWindow />
 					</Route>
-					<Route exact path="/">
-						<Home />
-					</Route>
-					<Redirect to="/" />
+					<Redirect to="/login" />
 				</Switch>
 			</UI.Column>
 		</main>
