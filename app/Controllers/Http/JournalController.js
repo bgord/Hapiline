@@ -44,15 +44,13 @@ class JournalController {
 
 		if (existingJournal) {
 			const journal = await Journal.find(existingJournal.id);
-
-			journal.merge({content});
+			journal.merge({content: content || ""});
 			journal.save();
 
 			return response.status(200).send(journal);
 		}
-
 		const createdJournal = await Journal.create({
-			content,
+			content: content || "",
 			day,
 			user_id: auth.user.id,
 		});

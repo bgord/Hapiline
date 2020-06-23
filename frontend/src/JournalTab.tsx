@@ -53,7 +53,7 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 					onChange={e => setJournalContent(e.target.value)}
 					value={journalContent}
 				/>
-				<UI.Button onClick={handleSaveRequest} variant="primary">
+				<UI.Button mt="12" onClick={handleSaveRequest} variant="primary">
 					Save
 				</UI.Button>
 				<UI.ShowIf request={saveJournalRequestState} is="error">
