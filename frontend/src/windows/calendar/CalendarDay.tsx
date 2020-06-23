@@ -24,7 +24,7 @@ export function CalendarDay(props: CalendarDayProps) {
 	const previewDay = queryParams.preview_day;
 
 	const thisDay = new Date(day);
-	const isThisDayToday = isToday(new Date(day));
+	const isThisDayToday = isToday(thisDay);
 	const isThisDayInTheFuture = isFuture(thisDay);
 
 	const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, thisDay).length;
@@ -39,7 +39,7 @@ export function CalendarDay(props: CalendarDayProps) {
 		});
 	}
 
-	const isNewHabitsTextVisible = stats && stats.numberOfCreatedHabits > 0;
+	const isNewHabitsTextVisible = stats.numberOfCreatedHabits > 0;
 
 	const newHabitsText = `${stats.numberOfCreatedHabits} new ${pluralize(
 		"habit",
@@ -49,29 +49,27 @@ export function CalendarDay(props: CalendarDayProps) {
 	const textVariant = isThisDayToday ? "bold" : "regular";
 
 	return (
-		<UI.Column mt={[, "6"]} data-testid="day" bg="gray-0" bw="2" b="gray-1" style={styles}>
-			<UI.Row mainAxis="between" px="6">
+		<UI.Column mt={[, "6"]} bg="gray-0" bw="2" b="gray-1" style={styles} data-testid="day">
+			<UI.Row px="6">
 				<UI.Text variant={textVariant}>{day}</UI.Text>
 
-				<UI.Text variant={textVariant} ml={[, "12"]} mr={[, "auto"]}>
+				<UI.Text variant={textVariant} ml={["auto", "12"]}>
 					{formatShortDayName(day)}
 				</UI.Text>
 			</UI.Row>
+
 			{isDayDialogAvailable && (
-				<>
-					<UI.Row crossAxis="end" mainAxis="end" p="6" my="auto">
-						{isNewHabitsTextVisible && (
-							<UI.Text mr="auto" variant="dimmed">
-								{newHabitsText}
-							</UI.Text>
-						)}
-						<UI.Button variant="bare" bg="gray-1" ml="auto" onClick={openDialog}>
-							Show
-						</UI.Button>
-					</UI.Row>
-					{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
-				</>
+				<UI.Row mainAxis="between" crossAxis="end" p="6" my="auto">
+					{isNewHabitsTextVisible && <UI.Text variant="dimmed">{newHabitsText}</UI.Text>}
+
+					<UI.Button ml="auto" variant="bare" bg="gray-1" onClick={openDialog}>
+						Show
+					</UI.Button>
+				</UI.Row>
 			)}
+
+			{isDayDialogVisible && <DayDialog day={day} onResolve={refreshCalendar} {...stats} />}
+
 			{isDayDialogAvailable && (
 				<DaySummaryChart
 					numberOfPossibleVotes={numberOfHabitsAvailableAtThisDay}
