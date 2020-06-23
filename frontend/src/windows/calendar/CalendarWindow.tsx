@@ -2,19 +2,19 @@ import {isSameMonth, subMonths} from "date-fns";
 import {useQuery} from "react-query";
 import React from "react";
 
-import {CalendarIcon} from "./ui/icons/Calendar";
-import {Day} from "./Day";
-import {Habit, DayCellWithFullStats, DayStatsFromServer} from "./models";
-import {MEDIA_QUERY, useMediaQuery} from "./ui/breakpoints";
-import {api} from "./services/api";
-import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
-import {getRequestStateErrors} from "./selectors/getRequestErrors";
-import {useDocumentTitle} from "./hooks/useDocumentTitle";
-import {useMonthsWidget, MonthOffset} from "./hooks/useMonthsWidget";
-import {useTrackedHabits} from "./contexts/habits-context";
-import * as UI from "./ui";
+import {CalendarIcon} from "../../ui/icons/Calendar";
+import {Day} from "../../Day";
+import {Habit, DayCellWithFullStats, DayStatsFromServer} from "../../models";
+import {MEDIA_QUERY, useMediaQuery} from "../../ui/breakpoints";
+import {api} from "../../services/api";
+import {getHabitsAvailableAtThisDay} from "../../selectors/getHabitsAvailableAtDay";
+import {getRequestStateErrors} from "../../selectors/getRequestErrors";
+import {useDocumentTitle} from "../../hooks/useDocumentTitle";
+import {useMonthsWidget, MonthOffset} from "../../hooks/useMonthsWidget";
+import {useTrackedHabits} from "../../contexts/habits-context";
+import * as UI from "../../ui";
 
-export const Calendar: React.FC = () => {
+export function CalendarWindow() {
 	useDocumentTitle("Hapiline - calendar");
 
 	const mediaQuery = useMediaQuery();
@@ -161,7 +161,7 @@ export const Calendar: React.FC = () => {
 			</UI.Card>
 		</UI.Column>
 	);
-};
+}
 
 function getFirstAddedHabit(trackedHabits: Habit[]): Habit {
 	const [firstAddedHabit] = [...trackedHabits].sort((a, b) =>

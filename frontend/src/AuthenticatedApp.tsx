@@ -3,7 +3,7 @@ import * as React from "react";
 
 import {createBrowserHistory} from "history";
 
-import {Calendar} from "./Calendar";
+import {CalendarWindow} from "./windows/calendar/CalendarWindow";
 import {DashboardWindow} from "./windows/dashboard/DashboardWindow";
 import {HabitsProvider} from "./contexts/habits-context";
 import {HabitsWindow} from "./HabitsWindow";
@@ -28,7 +28,7 @@ function AuthenticatedApp() {
 						<HabitsWindow />
 					</Route>
 					<Route exact path="/calendar">
-						<Calendar />
+						<CalendarWindow />
 					</Route>
 					<Route exact path="/dashboard">
 						<DashboardWindow />
