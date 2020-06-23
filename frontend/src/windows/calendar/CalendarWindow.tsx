@@ -4,7 +4,7 @@ import React from "react";
 
 import {CalendarIcon} from "../../ui/icons/Calendar";
 import {Day} from "../../Day";
-import {Habit, DayCellWithFullStats, DayStatsFromServer} from "../../models";
+import {Habit, DayCellWithFullStats, DayStatsFromServer, DayCell} from "../../models";
 import {MEDIA_QUERY, useMediaQuery} from "../../ui/breakpoints";
 import {api} from "../../services/api";
 import {getHabitsAvailableAtThisDay} from "../../selectors/getHabitsAvailableAtDay";
@@ -18,10 +18,8 @@ export function CalendarWindow() {
 	useDocumentTitle("Hapiline - calendar");
 
 	const mediaQuery = useMediaQuery();
-	const calendarGrid = getCalendarGrid(mediaQuery);
 
 	const [widget, monthString, monthOffset] = useMonthsWidget();
-	const trackedHabits = useTrackedHabits();
 
 	const getMonthRequestState = useQuery<DayStatsFromServer[], ["month", MonthOffset]>({
 		queryKey: ["month", monthOffset],
@@ -31,43 +29,21 @@ export function CalendarWindow() {
 			retry: false,
 		},
 	});
-
 	const {errorMessage} = getRequestStateErrors(getMonthRequestState);
 
+	const trackedHabits = useTrackedHabits();
+
 	const dayStatsFromServer = getMonthRequestState.data;
-
-	const dayCellsWithStats: DayCellWithFullStats[] = widget.daysOfTheMonth.map(dayCell => {
-		const day = new Date(dayCell.day);
-
-		const statsForTheDay = dayStatsFromServer?.find(item => item.day === dayCell.day);
-
-		const numberOfCreatedHabits = statsForTheDay?.numberOfCreatedHabits || 0;
-		const numberOfProgressVotes = statsForTheDay?.numberOfProgressVotes || 0;
-		const numberOfPlateauVotes = statsForTheDay?.numberOfPlateauVotes || 0;
-		const numberOfRegressVotes = statsForTheDay?.numberOfRegressVotes || 0;
-
-		const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day).length;
-
-		const numberOfMissingVotes =
-			numberOfHabitsAvailableAtThisDay -
-			numberOfProgressVotes -
-			numberOfPlateauVotes -
-			numberOfRegressVotes;
-
-		return {
-			day: dayCell.day,
-			styles: dayCell.styles,
-			numberOfCreatedHabits,
-			numberOfProgressVotes,
-			numberOfPlateauVotes,
-			numberOfRegressVotes,
-			numberOfMissingVotes,
-		};
-	});
+	const appendStatsToEachDayOfTheMonth = appendStatsToEachDayOfTheMonthFactory(
+		trackedHabits,
+		dayStatsFromServer,
+	);
+	const dayCellsWithFullStats: DayCellWithFullStats[] = widget.daysOfTheMonth.map(
+		appendStatsToEachDayOfTheMonth,
+	);
 
 	const isCurrentMonth = monthOffset === 0;
 	const isNextButtonDisabled = getMonthRequestState.status === "loading" || isCurrentMonth;
-
 	function getNextButtonTitle() {
 		if (getMonthRequestState.status === "loading") return "Loading...";
 		if (isCurrentMonth) return "You cannot access the next month yet";
@@ -78,10 +54,8 @@ export function CalendarWindow() {
 		monthOffset,
 		trackedHabits,
 	);
-
 	const isPreviousButtonDisabled =
 		getMonthRequestState.status === "loading" || isCurrentMonthTheMonthFirstHabbitWasAdded;
-
 	function getPreviousButtonTitle() {
 		if (getMonthRequestState.status === "loading") return "Loading...";
 		if (isCurrentMonthTheMonthFirstHabbitWasAdded) {
@@ -134,8 +108,8 @@ export function CalendarWindow() {
 				</UI.ErrorBanner>
 			</UI.ShowIf>
 
-			<UI.Card bg="gray-0" data-testid="calendar" style={calendarGrid} p="12">
-				{dayCellsWithStats.map(props => (
+			<UI.Card bg="gray-0" data-testid="calendar" style={getCalendarGrid(mediaQuery)} p="12">
+				{dayCellsWithFullStats.map(props => (
 					<Day
 						key={props.day.toString()}
 						refreshCalendar={() => getMonthRequestState.refetch({force: true})}
@@ -170,7 +144,7 @@ function checkIfCurrentMonthTheMonthFirstHabbitWasAdded(
 	const currentlyDisplayedMonth = subMonths(new Date(), monthOffset);
 
 	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
-	const firstAddedHabitDate = new Date(firstAddedHabit.created_at);
+	const firstAddedHabitDate = new Date(firstAddedHabit?.created_at);
 
 	return isSameMonth(currentlyDisplayedMonth, firstAddedHabitDate);
 }
@@ -181,4 +155,38 @@ function getFirstAddedHabit(trackedHabits: Habit[]): Habit {
 	);
 
 	return firstAddedHabit;
+}
+
+function appendStatsToEachDayOfTheMonthFactory(
+	trackedHabits: Habit[],
+	dayStatsFromServer: DayStatsFromServer[] | undefined,
+) {
+	return function appendStatsToEachDayOfTheMonth(dayCell: DayCell) {
+		const day = new Date(dayCell.day);
+
+		const statsForTheDay = dayStatsFromServer?.find(item => item.day === dayCell.day);
+
+		const numberOfCreatedHabits = statsForTheDay?.numberOfCreatedHabits || 0;
+		const numberOfProgressVotes = statsForTheDay?.numberOfProgressVotes || 0;
+		const numberOfPlateauVotes = statsForTheDay?.numberOfPlateauVotes || 0;
+		const numberOfRegressVotes = statsForTheDay?.numberOfRegressVotes || 0;
+
+		const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day).length;
+
+		const numberOfMissingVotes =
+			numberOfHabitsAvailableAtThisDay -
+			numberOfProgressVotes -
+			numberOfPlateauVotes -
+			numberOfRegressVotes;
+
+		return {
+			day: dayCell.day,
+			styles: dayCell.styles,
+			numberOfCreatedHabits,
+			numberOfProgressVotes,
+			numberOfPlateauVotes,
+			numberOfRegressVotes,
+			numberOfMissingVotes,
+		};
+	};
 }
