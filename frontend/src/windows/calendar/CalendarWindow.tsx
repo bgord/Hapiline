@@ -18,15 +18,7 @@ export function CalendarWindow() {
 	useDocumentTitle("Hapiline - calendar");
 
 	const mediaQuery = useMediaQuery();
-
-	const calendarGrid: React.CSSProperties = {
-		display: mediaQuery === MEDIA_QUERY.default ? "grid" : "block",
-		gridTemplateColumns: "repeat(7, 200px)",
-		gridTemplateRows: "repeat(6, 100px)",
-		gridGap: "12px",
-		width: "100%",
-		overflowX: "scroll",
-	};
+	const calendarGrid = getCalendarGrid(mediaQuery);
 
 	const [widget, date, monthOffset] = useMonthsWidget();
 	const trackedHabits = useTrackedHabits();
@@ -169,4 +161,17 @@ function getFirstAddedHabit(trackedHabits: Habit[]): Habit {
 	);
 
 	return firstAddedHabit;
+}
+
+function getCalendarGrid(mediaQuery: MEDIA_QUERY): React.CSSProperties {
+	return {
+    // On default widths, we want to mantain the default calendar-esque style,
+    // on lower we display days one under another.
+		display: mediaQuery === MEDIA_QUERY.default ? "grid" : "block",
+		gridTemplateColumns: "repeat(7, 200px)",
+		gridTemplateRows: "repeat(6, 100px)",
+		gridGap: "12px",
+		width: "100%",
+		overflowX: "scroll",
+	};
 }
