@@ -67,13 +67,12 @@ export function CalendarWindow() {
 	return (
 		<UI.Column
 			mt={["24", "12"]}
-			crossAxis="center"
 			width={["100%", "auto"]}
 			style={{maxWidth: "1520px"}}
 			mx="auto"
 			p="12"
 		>
-			<UI.Row mb="24" bg="gray-2" px={["72", "6"]} py="12" width="auto">
+			<UI.Row mainAxis="center" mb="12" bg="gray-3" px={["72", "6"]} py="12">
 				<UI.Button
 					variant="outlined"
 					onClick={widget.setPreviousMonth}
@@ -108,7 +107,7 @@ export function CalendarWindow() {
 				</UI.ErrorBanner>
 			</UI.ShowIf>
 
-			<UI.Card bg="gray-0" data-testid="calendar" style={getCalendarGrid(mediaQuery)} p="12">
+			<UI.Card p="12" bg="gray-0" style={getCalendarGrid(mediaQuery)} data-testid="calendar">
 				{dayCellsWithFullStats.map(props => (
 					<CalendarDay
 						key={props.day.toString()}
