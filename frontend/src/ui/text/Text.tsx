@@ -14,10 +14,16 @@ export type TextVariant =
 	| "monospaced"
 	| "link";
 
-type TextOwnProps = JSX.IntrinsicElements["span"] & {
+type TextVariants = {
 	variant?: TextVariant;
-} & Margins &
-	Positions;
+};
+
+export type TextWrap = "normal" | "no";
+export type TextWraps = {
+	wrap?: TextWrap;
+};
+
+type TextOwnProps = JSX.IntrinsicElements["span"] & TextVariants & TextWraps & Margins & Positions;
 
 export type TextProps<E extends React.ElementType> = PolymorphicComponentProps<E, TextOwnProps>;
 
@@ -26,6 +32,7 @@ const defaultElement = "span";
 // prettier-ignore
 export function Text<E extends React.ElementType = typeof defaultElement>({
 	variant = "regular",
+	wrap = "normal",
 	m, mx, my, mt, mr, mb, ml,
 	position = "static",
 	...props
@@ -38,6 +45,7 @@ export function Text<E extends React.ElementType = typeof defaultElement>({
 			as={defaultElement}
 			className="c-text"
 			data-variant={variant}
+			data-wrap={wrap}
 			{...marginTokens}
 			{...positionToken}
 			{...props}

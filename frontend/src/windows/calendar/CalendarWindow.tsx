@@ -86,7 +86,7 @@ export function CalendarWindow() {
 				</UI.Button>
 
 				<CalendarIcon />
-				<UI.Text style={{whiteSpace: "nowrap"}} ml="6" variant="bold">
+				<UI.Text wrap="no" ml="6" variant="bold">
 					{monthString}
 				</UI.Text>
 
