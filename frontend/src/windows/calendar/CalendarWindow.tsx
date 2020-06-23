@@ -20,7 +20,7 @@ export function CalendarWindow() {
 	const mediaQuery = useMediaQuery();
 	const calendarGrid = getCalendarGrid(mediaQuery);
 
-	const [widget, date, monthOffset] = useMonthsWidget();
+	const [widget, monthString, monthOffset] = useMonthsWidget();
 	const trackedHabits = useTrackedHabits();
 
 	const getMonthRequestState = useQuery<DayStatsFromServer[], ["month", MonthOffset]>({
@@ -74,17 +74,9 @@ export function CalendarWindow() {
 		return "Go to next month";
 	}
 
-	// Get the date of month that's currently displayed,
-	// convert firstAddedHabit?.created_at to a format that date-fns understands,
-	// and check if they are the same month
-	const currentlyDisplayedMonth = subMonths(new Date(), monthOffset);
-
-	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
-	const firstAddedHabitDate = new Date(firstAddedHabit?.created_at);
-
-	const isCurrentMonthTheMonthFirstHabbitWasAdded = isSameMonth(
-		currentlyDisplayedMonth,
-		firstAddedHabitDate,
+	const isCurrentMonthTheMonthFirstHabbitWasAdded = checkIfCurrentMonthTheMonthFirstHabbitWasAdded(
+		monthOffset,
+		trackedHabits,
 	);
 
 	const isPreviousButtonDisabled =
@@ -121,7 +113,7 @@ export function CalendarWindow() {
 
 				<CalendarIcon />
 				<UI.Text style={{whiteSpace: "nowrap"}} ml="6" variant="bold">
-					{date}
+					{monthString}
 				</UI.Text>
 
 				<UI.Button
@@ -155,18 +147,10 @@ export function CalendarWindow() {
 	);
 }
 
-function getFirstAddedHabit(trackedHabits: Habit[]): Habit {
-	const [firstAddedHabit] = [...trackedHabits].sort((a, b) =>
-		a.created_at.toString().localeCompare(b.created_at.toString()),
-	);
-
-	return firstAddedHabit;
-}
-
 function getCalendarGrid(mediaQuery: MEDIA_QUERY): React.CSSProperties {
 	return {
-    // On default widths, we want to mantain the default calendar-esque style,
-    // on lower we display days one under another.
+		// On default widths, we want to mantain the default calendar-esque style,
+		// on lower we display days one under another.
 		display: mediaQuery === MEDIA_QUERY.default ? "grid" : "block",
 		gridTemplateColumns: "repeat(7, 200px)",
 		gridTemplateRows: "repeat(6, 100px)",
@@ -174,4 +158,27 @@ function getCalendarGrid(mediaQuery: MEDIA_QUERY): React.CSSProperties {
 		width: "100%",
 		overflowX: "scroll",
 	};
+}
+
+function checkIfCurrentMonthTheMonthFirstHabbitWasAdded(
+	monthOffset: MonthOffset,
+	trackedHabits: Habit[],
+) {
+	// Get the date of month that's currently displayed,
+	// convert firstAddedHabit?.created_at to a format that date-fns understands,
+	// and check if they are the same month
+	const currentlyDisplayedMonth = subMonths(new Date(), monthOffset);
+
+	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
+	const firstAddedHabitDate = new Date(firstAddedHabit.created_at);
+
+	return isSameMonth(currentlyDisplayedMonth, firstAddedHabitDate);
+}
+
+function getFirstAddedHabit(trackedHabits: Habit[]): Habit {
+	const [firstAddedHabit] = [...trackedHabits].sort((a, b) =>
+		a.created_at.toString().localeCompare(b.created_at.toString()),
+	);
+
+	return firstAddedHabit;
 }
