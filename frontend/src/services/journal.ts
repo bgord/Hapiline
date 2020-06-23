@@ -9,10 +9,9 @@ import {
 
 export const getJournalRequest = async (_key: "journal", day: Journal["day"]) =>
     _internal_api
-    // .get<DayStatsFromServer[]>(constructUrl("/month", {monthOffset: String(monthOffset)}))
     .get<Journal>(constructUrl(`/journal`, {day: formatDay(day)})).then(response=> response.data)
 
 export const updateJournalRequest = (newJournalPayload: NewJournalRequest) =>
     _internal_api
-    .post<Journal>(constructUrl(`/journal`,{day: formatDay(newJournalPayload.day), content: newJournalPayload?.content})).then(response=> response.data)
+    .post<Journal>(`/journal`,{day: formatDay(newJournalPayload.day), content: newJournalPayload.content}).then(response=> response.data)
 

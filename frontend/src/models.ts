@@ -226,5 +226,5 @@ export type Journal = journals;
 
 export type NewJournalRequest = Omit<
 Journal,
-"user_id"
+"user_id" | "created_at" |"id" |"updated_at"
 >;
