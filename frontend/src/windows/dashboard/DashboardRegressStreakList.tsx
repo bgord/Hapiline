@@ -9,7 +9,6 @@ import {UrlBuilder} from "../../services/url-builder";
 
 import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
 import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
-import {ExpandContractList} from "../../ui/ExpandContractList";
 
 import * as UI from "../../ui";
 
@@ -60,7 +59,7 @@ export const DashboardRegressStreakList: React.FC<{
 
 			{isRegressStreakListVisible && (
 				<UI.Column by="gray-1" mt="24">
-					<ExpandContractList max={5}>
+					<UI.ExpandContractList max={5}>
 						{regressStreakStats.map(habit => (
 							<UI.Row
 								mainAxis="between"
@@ -100,7 +99,7 @@ export const DashboardRegressStreakList: React.FC<{
 								</UI.Row>
 							</UI.Row>
 						))}
-					</ExpandContractList>
+					</UI.ExpandContractList>
 				</UI.Column>
 			)}
 		</>

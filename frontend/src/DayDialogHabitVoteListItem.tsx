@@ -27,6 +27,7 @@ import {
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useToggle} from "./hooks/useToggle";
 import {UrlBuilder} from "./services/url-builder";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
@@ -34,6 +35,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 }> = ({onResolve, day, ...habitWithPossibleVote}) => {
 	const textarea = useEditableFieldState();
 	const {on: isCommentVisible, toggle: toggleComment} = useToggle();
+
+	const mediaQuery = useMediaQuery();
 
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
@@ -105,7 +108,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 			<UI.Row as="li" pb="12" width="100%" by="gray-1">
 				<UI.Column width="100%">
 					<UI.Row pt="6" width="100%" mr="6" wrap={[, "wrap"]}>
-						<UI.Row width="auto">
+						{/* TODO: Refactor the habit vote list so that -6px margin is not necessary */}
+						<UI.Row width="auto" style={{marginLeft: mediaQuery === MEDIA_QUERY.lg ? "-6px" : "0"}}>
 							{isCommentVisible && (
 								<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
 									<UI.VisuallyHidden>Hide vote comment</UI.VisuallyHidden>
