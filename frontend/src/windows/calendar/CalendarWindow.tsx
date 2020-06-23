@@ -3,7 +3,7 @@ import {useQuery} from "react-query";
 import React from "react";
 
 import {CalendarIcon} from "../../ui/icons/Calendar";
-import {Day} from "../../Day";
+import {CalendarDay} from "./CalendarDay";
 import {Habit, DayCellWithFullStats, DayStatsFromServer, DayCell} from "../../models";
 import {MEDIA_QUERY, useMediaQuery} from "../../ui/breakpoints";
 import {api} from "../../services/api";
@@ -110,7 +110,7 @@ export function CalendarWindow() {
 
 			<UI.Card bg="gray-0" data-testid="calendar" style={getCalendarGrid(mediaQuery)} p="12">
 				{dayCellsWithFullStats.map(props => (
-					<Day
+					<CalendarDay
 						key={props.day.toString()}
 						refreshCalendar={() => getMonthRequestState.refetch({force: true})}
 						{...props}

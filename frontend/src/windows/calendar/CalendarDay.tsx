@@ -1,23 +1,27 @@
 import {isFuture, isSameDay, isToday} from "date-fns";
 import React from "react";
 
-import * as UI from "./ui";
-import {DayDialog} from "./DayDialog";
-import {DaySummaryChart} from "./DayDialogSummary";
-import {DayCellWithFullStats} from "./models";
-import {formatDay, formatShortDayName} from "./services/date-formatter";
-import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
-import {useHabits} from "./contexts/habits-context";
-import {useQueryParams} from "./hooks/useQueryParam";
-import {pluralize} from "./services/pluralize";
+import * as UI from "../../ui";
+import {DayDialog} from "../../DayDialog";
+import {DaySummaryChart} from "../../DayDialogSummary";
+import {DayCellWithFullStats} from "../../models";
+import {formatDay, formatShortDayName} from "../../services/date-formatter";
+import {getHabitsAvailableAtThisDay} from "../../selectors/getHabitsAvailableAtDay";
+import {useHabits} from "../../contexts/habits-context";
+import {useQueryParams} from "../../hooks/useQueryParam";
+import {pluralize} from "../../services/pluralize";
 
-export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction}> = props => {
+type CalendarDayProps = DayCellWithFullStats & {
+	refreshCalendar: VoidFunction;
+};
+
+export function CalendarDay(props: CalendarDayProps) {
 	const {day, styles, refreshCalendar, ...stats} = props;
 
 	const habits = useHabits();
 	const [queryParams, updateQueryParams] = useQueryParams();
 
-	const previewDay = queryParams?.preview_day;
+	const previewDay = queryParams.preview_day;
 
 	const thisDay = new Date(day);
 	const isThisDayToday = isToday(new Date(day));
@@ -39,17 +43,17 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 
 	const newHabitsText = `${stats.numberOfCreatedHabits} new ${pluralize(
 		"habit",
-		stats.numberOfCreatedHabits ?? 0,
+		stats.numberOfCreatedHabits,
 	)}`;
+
+	const textVariant = isThisDayToday ? "bold" : "regular";
 
 	return (
 		<UI.Column mt={[, "6"]} data-testid="day" bg="gray-0" bw="2" b="gray-1" style={styles}>
 			<UI.Row mainAxis="between" px="6">
-				<UI.Text variant={isThisDayToday ? "bold" : "regular"} style={{textAlign: "center"}}>
-					{day}
-				</UI.Text>
+				<UI.Text variant={textVariant}>{day}</UI.Text>
 
-				<UI.Text variant={isThisDayToday ? "bold" : "regular"} ml={[, "12"]} mr={[, "auto"]}>
+				<UI.Text variant={textVariant} ml={[, "12"]} mr={[, "auto"]}>
 					{formatShortDayName(day)}
 				</UI.Text>
 			</UI.Row>
@@ -77,4 +81,4 @@ export const Day: React.FC<DayCellWithFullStats & {refreshCalendar: VoidFunction
 			)}
 		</UI.Column>
 	);
-};
+}
