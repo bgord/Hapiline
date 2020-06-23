@@ -3,22 +3,17 @@ const get = require("lodash.get");
 
 class DashboardStatsController {
 	async index({auth, response}) {
+		const numberOfPossibleVotesLastDay = await getNumberOfPossibleVotesForDateInterval({
+			user_id: auth.user.id,
+			strategy: "last_day",
+		});
+
 		const _resultForToday = await Database.raw(
 			`
       SELECT
         COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
         COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
         COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes",
-
-        (
-          SELECT COUNT(*)
-          FROM habits as h
-          WHERE
-            h.created_at::date <= NOW()::date
-            AND h.user_id = :user_id
-            AND h.is_trackable IS TRUE
-        )::integer as "numberOfPossibleVotes",
-
         (
           SELECT COUNT(*)
           FROM habits as h
@@ -83,11 +78,9 @@ class DashboardStatsController {
 		return response.send({
 			today: {
 				...resultForToday,
-				numberOfMissingVotes: getNumberOfMissingVotes(
-					resultForToday.numberOfPossibleVotes,
-					resultForToday,
-				),
+				numberOfMissingVotes: getNumberOfMissingVotes(numberOfPossibleVotesLastDay, resultForToday),
 				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForToday),
+				numberOfPossibleVotes: numberOfPossibleVotesLastDay,
 			},
 			lastWeek: {
 				...resultForLastWeek,
@@ -136,7 +129,9 @@ async function getNumberOfPossibleVotesForDateInterval({user_id, strategy}) {
 	function getOffsetForStrategy(strategy) {
 		if (strategy === "last_month") return "29 days";
 		if (strategy === "last_week") return "6 days";
-		return "1 day";
+		if (strategy === "last_day") return "0 days";
+
+		throw new Error(`Unknown strategy: ${strategy}`);
 	}
 
 	const result = await Database.raw(
