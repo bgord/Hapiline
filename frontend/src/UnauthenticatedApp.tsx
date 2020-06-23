@@ -6,7 +6,6 @@ import {createBrowserHistory} from "history";
 import * as UI from "./ui";
 import {EmailVerificationWindow} from "./EmailVerificationWindow";
 import {ForgotPasswordWindow} from "./ForgotPasswordWindow";
-import {Home} from "./Home";
 import {LoginWindow} from "./LoginWindow";
 import {Logo} from "./Logo";
 import {NewPasswordWindow} from "./NewPasswordWindow";
