@@ -83,7 +83,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 	const filteredHabitsWithPossibleVote = habitsWithPossibleVote
 		.filter(habitVoteFilter.filterFunction)
 		.filter(habitWithPossibleVote => {
-			const isHighlightedHabitIdPresent = !Number.isNaN(Number(queryParams.highlighted_habit_id));
+			const isHighlightedHabitIdPresent = isNumber(queryParams.highlighted_habit_id);
 
 			if (isHighlightedHabitIdPresent)
 				return habitWithPossibleVote.id === Number(queryParams.highlighted_habit_id);
@@ -299,4 +299,8 @@ function getDayVoteForHabit(
 	const votesFromGivenDay = getDayVotesRequestState.data ?? [];
 
 	return votesFromGivenDay.find(vote => vote.habit_id === habit.id) ?? null;
+}
+
+function isNumber(value: unknown) {
+	return !Number.isNaN(Number(value));
 }
