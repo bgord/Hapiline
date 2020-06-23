@@ -36,21 +36,10 @@ class DashboardStatsController {
 		);
 		const resultForToday = _resultForToday.rows[0];
 
-		const _numberOfPossibleVotesLastWeek = await Database.raw(
-			`
-      SELECT
-        SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
-        OVER (ORDER BY day)::integer AS "numberOfPossibleVotesLastWeek"
-      FROM GENERATE_SERIES(NOW() - '6 days'::interval, NOW(), '1 day') as day
-      LEFT JOIN habits ON habits.created_at::date <= day::date
-      WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
-      GROUP BY day
-      ORDER BY day DESC
-      LIMIT 1
-      `,
-			{user_id: auth.user.id},
-		);
-		const {numberOfPossibleVotesLastWeek} = _numberOfPossibleVotesLastWeek.rows[0] || 0;
+		const numberOfPossibleVotesLastWeek = await getNumberOfPossibleVotesForDateInterval({
+			user_id: auth.user.id,
+			strategy: "last_week",
+		});
 
 		const _resultForLastWeek = await Database.raw(
 			`
@@ -69,21 +58,10 @@ class DashboardStatsController {
 		);
 		const resultForLastWeek = _resultForLastWeek.rows[0];
 
-		const _numberOfPossibleVotesLastMonth = await Database.raw(
-			`
-      SELECT
-        SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
-        OVER (ORDER BY day)::integer AS "numberOfPossibleVotesLastMonth"
-      FROM GENERATE_SERIES(NOW() - '29 days'::interval, NOW(), '1 day') as day
-      LEFT JOIN habits ON habits.created_at::date <= day::date
-      WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
-      GROUP BY day
-      ORDER BY day DESC
-      LIMIT 1
-      `,
-			{user_id: auth.user.id},
-		);
-		const {numberOfPossibleVotesLastMonth} = _numberOfPossibleVotesLastMonth.rows[0] || 0;
+		const numberOfPossibleVotesLastMonth = await getNumberOfPossibleVotesForDateInterval({
+			user_id: auth.user.id,
+			strategy: "last_month",
+		});
 
 		const _resultForLastMonth = await Database.raw(
 			`
@@ -118,7 +96,7 @@ class DashboardStatsController {
 					resultForLastWeek,
 				),
 				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForLastWeek),
-				numberOfPossibleVotes: numberOfPossibleVotesLastWeek || 0,
+				numberOfPossibleVotes: numberOfPossibleVotesLastWeek,
 			},
 			lastMonth: {
 				...resultForLastMonth,
@@ -127,7 +105,7 @@ class DashboardStatsController {
 					resultForLastMonth,
 				),
 				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForLastMonth),
-				numberOfPossibleVotes: numberOfPossibleVotesLastMonth || 0,
+				numberOfPossibleVotes: numberOfPossibleVotesLastMonth,
 			},
 		});
 	}
@@ -152,6 +130,31 @@ function getNumberOfMissingVotes(_maximum, resultForTimePeriod) {
 		get(resultForTimePeriod, "numberOfPlateauVotes", 0) -
 		get(resultForTimePeriod, "numberOfRegressVotes", 0)
 	);
+}
+
+async function getNumberOfPossibleVotesForDateInterval({user_id, strategy}) {
+	function getOffsetForStrategy(strategy) {
+		if (strategy === "last_month") return "29 days";
+		if (strategy === "last_week") return "6 days";
+		return "1 day";
+	}
+
+	const result = await Database.raw(
+		`
+      SELECT
+        SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
+        OVER (ORDER BY day)::integer AS "numberOfPossibleVotes"
+      FROM GENERATE_SERIES(NOW() - :offset::interval, NOW(), '1 day') as day
+      LEFT JOIN habits ON habits.created_at::date <= day::date
+      WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
+      GROUP BY day
+      ORDER BY day DESC
+      LIMIT 1
+      `,
+		{user_id, offset: getOffsetForStrategy(strategy)},
+	);
+
+	return get(result, "rows[0].numberOfPossibleVotes", 0);
 }
 
 module.exports = DashboardStatsController;
