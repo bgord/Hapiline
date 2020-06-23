@@ -153,9 +153,6 @@ describe("Calendar", () => {
 		}
 		cy.findByText("Habits").click();
 
-		if (Cypress.env("device") === "mobile") {
-			cy.findByText("Close dialog").click({force: true});
-		}
 		cy.findByText("New habit").click();
 
 		cy.findByRole("dialog").within(() => {
@@ -320,9 +317,6 @@ describe("Calendar", () => {
 		}
 		cy.findByText("Habits").click();
 
-		if (Cypress.env("device") === "mobile") {
-			cy.findByText("Close dialog").click({force: true});
-		}
 		cy.findByText("New habit").click();
 
 		cy.findByRole("dialog").within(() => {
