@@ -207,7 +207,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				</UI.Button>
 			</UI.Row>
 
-			<UI.Row mt="12" crossAxis="end" wrap="wrap">
+			<UI.Row mt="12" crossAxis="end" wrap="wrap" mb="24">
 				<HabitSearchInput data-mr="12" value={habitSearch.value} onChange={habitSearch.onChange} />
 
 				<UI.Button
@@ -240,7 +240,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 			{!areThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
 				<UI.Column pb="48">
-					<UI.Row mainAxis="between" crossAxis="center" mt="48" mb="24">
+					<UI.Row mainAxis="between" crossAxis="center" mt="24" mb="24">
 						<UI.Header variant="extra-small">Tracked habits</UI.Header>
 
 						{areTrackedHabitsVisible && (
