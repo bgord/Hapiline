@@ -75,7 +75,6 @@ describe("Dashboard", () => {
 					numberOfMissingVotes: 10,
 					numberOfNonEmptyVotes: 0,
 					numberOfPossibleVotes: 10,
-					numberOfUntrackedHabits: 2,
 				},
 				lastWeek: {
 					numberOfProgressVotes: 1,
@@ -103,7 +102,7 @@ describe("Dashboard", () => {
 			.eq(6)
 			.should(
 				"include.text",
-				"Start your day well! You have 10 tracked habits to vote for. And 2 untracked habits.",
+				"Start your day well! You have 10 tracked habits to vote for. And 0 untracked habits.",
 			);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -145,7 +144,6 @@ describe("Dashboard", () => {
 					numberOfMissingVotes: 0,
 					numberOfPossibleVotes: 10,
 					numberOfNonEmptyVotes: 10,
-					numberOfUntrackedHabits: 3,
 				},
 			},
 		});
@@ -157,7 +155,7 @@ describe("Dashboard", () => {
 			.eq(6)
 			.should(
 				"include.text",
-				"Congratulations! You voted for every one of 10 tracked habits today! You also have 3 untracked habits.",
+				"Congratulations! You voted for every one of 10 tracked habits today! You also have 0 untracked habits.",
 			);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -181,7 +179,6 @@ describe("Dashboard", () => {
 					numberOfMissingVotes: 0,
 					numberOfPossibleVotes: 0,
 					numberOfNonEmptyVotes: 0,
-					numberOfUntrackedHabits: 0,
 				},
 			},
 		});
