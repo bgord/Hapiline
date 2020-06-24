@@ -60,19 +60,12 @@ class DashboardStatsController {
 }
 
 async function getNumberOfPossibleVotesForDateInterval({user_id, strategy}) {
-	function getOffsetForStrategy(strategy) {
-		if (strategy === "last_month") return "29 days";
-		if (strategy === "last_week") return "6 days";
-		if (strategy === "last_day") return "0 days";
-
-		throw new Error(`Unknown strategy: ${strategy}`);
-	}
-
 	const result = await Database.raw(
 		`
       SELECT
         SUM(COUNT(habits.*) FILTER (WHERE habits.created_at::date <= day))
-        OVER (ORDER BY day)::integer AS "numberOfPossibleVotes"
+        OVER (ORDER BY day)::integer
+        AS "numberOfPossibleVotes"
       FROM GENERATE_SERIES(NOW() - :offset::interval, NOW(), '1 day') as day
       LEFT JOIN habits ON habits.created_at::date <= day::date
       WHERE habits.user_id = :user_id AND habits.is_trackable IS TRUE
@@ -87,14 +80,6 @@ async function getNumberOfPossibleVotesForDateInterval({user_id, strategy}) {
 }
 
 async function getVoteStatsForDateInterval({user_id, strategy}) {
-	function getOffsetForStrategy(strategy) {
-		if (strategy === "last_month") return "29 days";
-		if (strategy === "last_week") return "6 days";
-		if (strategy === "last_day") return "0 days";
-
-		throw new Error(`Unknown strategy: ${strategy}`);
-	}
-
 	const result = await Database.raw(
 		`
       SELECT
@@ -112,6 +97,14 @@ async function getVoteStatsForDateInterval({user_id, strategy}) {
 	);
 
 	return result.rows[0];
+}
+
+function getOffsetForStrategy(strategy) {
+	if (strategy === "last_month") return "29 days";
+	if (strategy === "last_week") return "6 days";
+	if (strategy === "last_day") return "0 days";
+
+	throw new Error(`Unknown strategy: ${strategy}`);
 }
 
 function getNumberOfNonEmptyVotes(resultForTimePeriod) {
