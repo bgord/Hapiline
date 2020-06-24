@@ -36,17 +36,16 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 		},
 	});
 
-	const numberOfHabitVoteChartItems = habitVoteChartRequestState.data?.length ?? 0;
-
 	const numberOfRegressVotes = getByVoteType(habitVoteChartRequestState, "regress");
 	const numberOfPlateauVotes = getByVoteType(habitVoteChartRequestState, "plateau");
 	const numberOfProgressVotes = getByVoteType(habitVoteChartRequestState, "progress");
 
-	const regressVotesPrct = ((numberOfRegressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
-	const plateauVotesPrct = ((numberOfPlateauVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
-	const progressVotesPrct = ((numberOfProgressVotes / numberOfHabitVoteChartItems) * 100).toFixed(
-		2,
-	);
+	const numberOfHabitVoteChartItems = habitVoteChartRequestState.data?.length ?? 0;
+	const getPercentageOfVotes = getPercentageOfFactory(numberOfHabitVoteChartItems);
+
+	const regressVotesPrct = getPercentageOfVotes(numberOfRegressVotes);
+	const plateauVotesPrct = getPercentageOfVotes(numberOfPlateauVotes);
+	const progressVotesPrct = getPercentageOfVotes(numberOfProgressVotes);
 
 	return (
 		<>
@@ -84,6 +83,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 						/>
 					))}
 				</UI.Row>
+
 				{mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mt="6" crossAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
@@ -157,4 +157,8 @@ function isChartRange(value: string): value is HabitVoteChartDateRangeType {
 
 function getByVoteType(request: QueryResult<DayVote[]>, type: HabitVoteType) {
 	return request.data?.filter(({vote}) => vote === type).length ?? 0;
+}
+
+function getPercentageOfFactory(maximum: number) {
+	return (value: number) => ((value / maximum) * 100).toFixed(2);
 }
