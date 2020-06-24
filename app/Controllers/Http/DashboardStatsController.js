@@ -13,16 +13,7 @@ class DashboardStatsController {
       SELECT
         COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
         COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes",
-        (
-          SELECT COUNT(*)
-          FROM habits as h
-          WHERE
-            h.created_at::date <= NOW()::date
-            AND h.user_id = :user_id
-            AND h.is_trackable IS FALSE
-        )::integer as "numberOfUntrackedHabits"
-
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
       FROM habit_votes as hv
       INNER JOIN habits as h ON hv.habit_id = h.id
       WHERE hv.day::date = NOW()::date AND h.user_id = :user_id

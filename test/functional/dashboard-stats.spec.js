@@ -69,7 +69,6 @@ test("full flow", async ({client, assert}) => {
 			numberOfMissingVotes: 3,
 			numberOfNonEmptyVotes: 2,
 			numberOfPossibleVotes: 5,
-			numberOfUntrackedHabits: 0,
 		},
 		lastWeek: {
 			numberOfProgressVotes: 1,
@@ -117,7 +116,6 @@ test("full flow", async ({client, assert}) => {
 			numberOfMissingVotes: 3,
 			numberOfNonEmptyVotes: 2,
 			numberOfPossibleVotes: 5,
-			numberOfUntrackedHabits: 1,
 		},
 		lastWeek: {
 			numberOfProgressVotes: 1,
@@ -158,7 +156,6 @@ test("no habits", async ({client, assert}) => {
 			numberOfMissingVotes: 0,
 			numberOfNonEmptyVotes: 0,
 			numberOfPossibleVotes: 0,
-			numberOfUntrackedHabits: 0,
 		},
 		lastWeek: {
 			numberOfProgressVotes: 0,

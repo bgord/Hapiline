@@ -4,15 +4,15 @@ import {QueryResult} from "react-query";
 
 import {DashboardHabitVoteStatsForDateRanges} from "../../models";
 import * as UI from "../../ui";
+import {useUntrackedHabits} from "../../contexts/habits-context";
 
 export const DashboardMotivationalText: React.FC<{
 	request: QueryResult<DashboardHabitVoteStatsForDateRanges>;
 }> = ({request}) => {
-	const {
-		numberOfTrackedHabits,
-		numberOfNonEmptyVotes,
-		numberOfUntrackedHabits,
-	} = extractFromRequest(request);
+	const {numberOfTrackedHabits, numberOfNonEmptyVotes} = extractFromRequest(request);
+
+	const untrackedHabits = useUntrackedHabits();
+	const numberOfUntrackedHabits = untrackedHabits.length;
 
 	function selectStrategy() {
 		if (numberOfTrackedHabits === 0) return "no_habits";
@@ -74,7 +74,6 @@ export const DashboardMotivationalText: React.FC<{
 
 type ExtractedType = {
 	numberOfTrackedHabits: number;
-	numberOfUntrackedHabits: number;
 	numberOfNonEmptyVotes: number;
 };
 
@@ -83,7 +82,6 @@ function extractFromRequest(
 ): ExtractedType {
 	return {
 		numberOfTrackedHabits: request?.data?.today?.numberOfPossibleVotes ?? 0,
-		numberOfUntrackedHabits: request?.data?.today?.numberOfUntrackedHabits ?? 0,
 		numberOfNonEmptyVotes: request?.data?.today?.numberOfNonEmptyVotes ?? 0,
 	};
 }
