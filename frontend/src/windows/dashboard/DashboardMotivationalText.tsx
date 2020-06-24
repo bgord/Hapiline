@@ -81,7 +81,7 @@ function extractFromRequest(
 	request: QueryResult<DashboardHabitVoteStatsForDateRanges>,
 ): ExtractedType {
 	return {
-		numberOfTrackedHabits: request?.data?.today?.numberOfPossibleVotes ?? 0,
-		numberOfNonEmptyVotes: request?.data?.today?.numberOfNonEmptyVotes ?? 0,
+		numberOfTrackedHabits: request.data?.today?.numberOfPossibleVotes ?? 0,
+		numberOfNonEmptyVotes: request.data?.today?.numberOfNonEmptyVotes ?? 0,
 	};
 }
