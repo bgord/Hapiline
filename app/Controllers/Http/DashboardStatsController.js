@@ -7,64 +7,28 @@ class DashboardStatsController {
 			user_id: auth.user.id,
 			strategy: "last_day",
 		});
-
-		const _resultForToday = await Database.raw(
-			`
-      SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
-      FROM habit_votes as hv
-      INNER JOIN habits as h ON hv.habit_id = h.id
-      WHERE hv.day::date = NOW()::date AND h.user_id = :user_id
-    `,
-			{user_id: auth.user.id},
-		);
-		const resultForToday = _resultForToday.rows[0];
+		const resultForToday = await getVoteStatsForDateInterval({
+			user_id: auth.user.id,
+			strategy: "last_day",
+		});
 
 		const numberOfPossibleVotesLastWeek = await getNumberOfPossibleVotesForDateInterval({
 			user_id: auth.user.id,
 			strategy: "last_week",
 		});
-
-		const _resultForLastWeek = await Database.raw(
-			`
-      SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
-      FROM habit_votes as hv
-      INNER JOIN habits as h ON hv.habit_id = h.id
-      WHERE
-        h.user_id = :user_id AND
-        hv.day::date >= NOW()::date - '6 days'::interval AND
-        hv.day::date <= NOW()::date
-		`,
-			{user_id: auth.user.id},
-		);
-		const resultForLastWeek = _resultForLastWeek.rows[0];
+		const resultForLastWeek = await getVoteStatsForDateInterval({
+			user_id: auth.user.id,
+			strategy: "last_week",
+		});
 
 		const numberOfPossibleVotesLastMonth = await getNumberOfPossibleVotesForDateInterval({
 			user_id: auth.user.id,
 			strategy: "last_month",
 		});
-
-		const _resultForLastMonth = await Database.raw(
-			`
-      SELECT
-        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
-        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
-      FROM habit_votes as hv
-      INNER JOIN habits as h ON hv.habit_id = h.id
-      WHERE
-        h.user_id = :user_id AND
-        hv.day::date >= NOW()::date - '29 days'::interval AND
-        hv.day::date <= NOW()::date
-		`,
-			{user_id: auth.user.id},
-		);
-		const resultForLastMonth = _resultForLastMonth.rows[0];
+		const resultForLastMonth = await getVoteStatsForDateInterval({
+			user_id: auth.user.id,
+			strategy: "last_month",
+		});
 
 		return response.send({
 			today: {
@@ -95,27 +59,6 @@ class DashboardStatsController {
 	}
 }
 
-function getNumberOfNonEmptyVotes(resultForTimePeriod) {
-	return (
-		get(resultForTimePeriod, "numberOfProgressVotes", 0) +
-		get(resultForTimePeriod, "numberOfPlateauVotes", 0) +
-		get(resultForTimePeriod, "numberOfRegressVotes", 0)
-	);
-}
-
-function getNumberOfMissingVotes(_maximum, resultForTimePeriod) {
-	const maximum = _maximum || 0;
-
-	if (maximum === 0) return 0;
-
-	return (
-		maximum -
-		get(resultForTimePeriod, "numberOfProgressVotes", 0) -
-		get(resultForTimePeriod, "numberOfPlateauVotes", 0) -
-		get(resultForTimePeriod, "numberOfRegressVotes", 0)
-	);
-}
-
 async function getNumberOfPossibleVotesForDateInterval({user_id, strategy}) {
 	function getOffsetForStrategy(strategy) {
 		if (strategy === "last_month") return "29 days";
@@ -141,6 +84,55 @@ async function getNumberOfPossibleVotesForDateInterval({user_id, strategy}) {
 	);
 
 	return get(result, "rows[0].numberOfPossibleVotes", 0);
+}
+
+async function getVoteStatsForDateInterval({user_id, strategy}) {
+	function getOffsetForStrategy(strategy) {
+		if (strategy === "last_month") return "29 days";
+		if (strategy === "last_week") return "6 days";
+		if (strategy === "last_day") return "0 days";
+
+		throw new Error(`Unknown strategy: ${strategy}`);
+	}
+
+	const result = await Database.raw(
+		`
+      SELECT
+        COUNT(*) FILTER (WHERE hv.vote = 'progress')::integer AS "numberOfProgressVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'plateau')::integer AS "numberOfPlateauVotes",
+        COUNT(*) FILTER (WHERE hv.vote = 'regress')::integer AS "numberOfRegressVotes"
+      FROM habit_votes as hv
+      INNER JOIN habits as h ON hv.habit_id = h.id
+      WHERE
+        h.user_id = :user_id AND
+        hv.day::date >= NOW()::date - :offset::interval AND
+        hv.day::date <= NOW()::date
+		`,
+		{user_id, offset: getOffsetForStrategy(strategy)},
+	);
+
+	return result.rows[0];
+}
+
+function getNumberOfNonEmptyVotes(resultForTimePeriod) {
+	return (
+		get(resultForTimePeriod, "numberOfProgressVotes", 0) +
+		get(resultForTimePeriod, "numberOfPlateauVotes", 0) +
+		get(resultForTimePeriod, "numberOfRegressVotes", 0)
+	);
+}
+
+function getNumberOfMissingVotes(_maximum, resultForTimePeriod) {
+	const maximum = _maximum || 0;
+
+	if (maximum === 0) return 0;
+
+	return (
+		maximum -
+		get(resultForTimePeriod, "numberOfProgressVotes", 0) -
+		get(resultForTimePeriod, "numberOfPlateauVotes", 0) -
+		get(resultForTimePeriod, "numberOfRegressVotes", 0)
+	);
 }
 
 module.exports = DashboardStatsController;
