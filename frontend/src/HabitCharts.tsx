@@ -1,5 +1,5 @@
 import {Link, LinkProps} from "react-router-dom";
-import {useQuery} from "react-query";
+import {useQuery, QueryResult} from "react-query";
 import React from "react";
 import {pluralize} from "./services/pluralize";
 import {UrlBuilder} from "./services/url-builder";
@@ -11,6 +11,7 @@ import {
 	voteToBgColor,
 	HabitVoteChartDateRangeType,
 	HabitVoteChartDateRanges,
+	HabitVoteType,
 } from "./models";
 import {api} from "./services/api";
 import {formatDay} from "./services/date-formatter";
@@ -35,14 +36,11 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 		},
 	});
 
-	const numberOfHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
+	const numberOfHabitVoteChartItems = habitVoteChartRequestState.data?.length ?? 0;
 
-	const numberOfRegressVotes =
-		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress").length ?? 0;
-	const numberOfPlateauVotes =
-		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "plateau").length ?? 0;
-	const numberOfProgressVotes =
-		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress").length ?? 0;
+	const numberOfRegressVotes = getByVoteType(habitVoteChartRequestState, "regress");
+	const numberOfPlateauVotes = getByVoteType(habitVoteChartRequestState, "plateau");
+	const numberOfProgressVotes = getByVoteType(habitVoteChartRequestState, "progress");
 
 	const regressVotesPrct = ((numberOfRegressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
 	const plateauVotesPrct = ((numberOfPlateauVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
@@ -155,4 +153,8 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 
 function isChartRange(value: string): value is HabitVoteChartDateRangeType {
 	return Object.keys(HabitVoteChartDateRanges).includes(value);
+}
+
+function getByVoteType(request: QueryResult<DayVote[]>, type: HabitVoteType) {
+	return request.data?.filter(({vote}) => vote === type).length ?? 0;
 }
