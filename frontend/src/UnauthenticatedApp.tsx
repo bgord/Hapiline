@@ -6,7 +6,6 @@ import {createBrowserHistory} from "history";
 import * as UI from "./ui";
 import {EmailVerificationWindow} from "./EmailVerificationWindow";
 import {ForgotPasswordWindow} from "./ForgotPasswordWindow";
-import {Home} from "./Home";
 import {LoginWindow} from "./LoginWindow";
 import {Logo} from "./Logo";
 import {NewPasswordWindow} from "./NewPasswordWindow";
@@ -35,10 +34,7 @@ const UnauthenticatedApp = () => (
 					<Route exact path="/new-password/:token">
 						<NewPasswordWindow />
 					</Route>
-					<Route exact path="/">
-						<Home />
-					</Route>
-					<Redirect to="/" />
+					<Redirect to="/login" />
 				</Switch>
 			</UI.Column>
 		</main>

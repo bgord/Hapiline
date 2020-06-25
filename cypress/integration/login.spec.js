@@ -5,7 +5,6 @@ const admin = {
 };
 
 const DASHBOARD_URL = "/dashboard";
-const HOME_URL = "/";
 const LOGIN_URL = "/login";
 const REGISTRATION_URL = "/register";
 const FORGOT_PASSWORD_URL = "/forgot-password";
@@ -16,10 +15,7 @@ describe("Login", () => {
 	});
 
 	it("goes through the basic login/logout flow", () => {
-		cy.visit(HOME_URL);
-
-		cy.findByText("Login").click();
-		cy.url().should("include", LOGIN_URL);
+		cy.visit(LOGIN_URL);
 
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
@@ -32,7 +28,7 @@ describe("Login", () => {
 		}
 		cy.findByText("Logout").click({force: true});
 
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 	});
 
 	it("has links to registration and forgot password pages", () => {
@@ -76,10 +72,10 @@ describe("Login", () => {
 
 	it("doesn't let unlogged users access /dashboard and /logout", () => {
 		cy.visit(DASHBOARD_URL);
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 
 		cy.visit("/logout");
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 	});
 
 	it("doesn't let logged users access /login and /", () => {
@@ -98,19 +94,19 @@ describe("Login", () => {
 
 	it("nested invalid route redirecting for unlogged user", () => {
 		cy.visit("/login/x/x/x");
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 
 		cy.visit("/login/x/x/x/");
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 
 		cy.visit("/dashboard/x/x/x");
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 
 		cy.visit("/dashboard/x/x/x/");
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 
 		cy.visit("/xxx");
-		cy.url().should("include", HOME_URL);
+		cy.url().should("include", LOGIN_URL);
 	});
 
 	it("nested invalid route redirecting for logged user", () => {
