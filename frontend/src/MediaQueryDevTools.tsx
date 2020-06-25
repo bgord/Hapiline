@@ -10,7 +10,14 @@ export const MediaQueryDevTools = () => {
 	const {width, height} = useWindowSize();
 
 	return (
-		<UI.Row p="3" bg="gray-3" style={{top: 0, zIndex: 5}} position="absolute" width="auto">
+		<UI.Row
+			as="aside"
+			p="3"
+			bg="gray-3"
+			style={{top: 0, zIndex: 5}}
+			position="absolute"
+			width="auto"
+		>
 			{__ENVIRONMENT__ === "development" && (
 				<UI.Text>
 					W:{width}px H:{height}px ({mediaQuery})
