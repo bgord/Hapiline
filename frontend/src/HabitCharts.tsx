@@ -14,7 +14,7 @@ import {
 	HabitVoteType,
 } from "./models";
 import {api} from "./services/api";
-import {formatDay} from "./services/date-formatter";
+import {formatDay, formatShortDay} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
@@ -75,12 +75,20 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 			<UI.ShowIf request={habitVoteChartRequestState} is="success">
 				<UI.Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
-						<ChartCell
-							key={String(item.day)}
-							habitId={id}
-							style={{flexBasis: `calc(100% / ${numberOfHabitVoteChartItems})`}}
-							{...item}
-						/>
+						<UI.Column width="100%">
+							{dateRange === "last_week" && (
+								<UI.Text variant="dimmed" style={{textAlign: "center", fontSize: "12px"}}>
+									{formatShortDay(item.day)}
+								</UI.Text>
+							)}
+
+							<ChartCell
+								key={String(item.day)}
+								habitId={id}
+								style={{flexBasis: `calc(100% / ${numberOfHabitVoteChartItems})`}}
+								{...item}
+							/>
+						</UI.Column>
 					))}
 				</UI.Row>
 
@@ -127,12 +135,8 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 	day,
 	vote,
 	habitId,
-	...rest
 }) => {
-	const date = formatDay(day);
-	const backgroundColor = voteToBgColor.get(vote);
-
-	const title = `${date} - ${vote ?? "no vote"}`;
+	const title = `${formatDay(day)} - ${vote ?? "no vote"}`;
 
 	return (
 		<Link
@@ -140,14 +144,13 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 				day,
 				habitId,
 			})}
-			data-bw="1"
-			data-b="gray-1"
 			title={title}
 			key={String(day)}
+			data-bw="1"
+			data-br="gray-1"
 			style={{
-				backgroundColor,
+				backgroundColor: voteToBgColor.get(vote),
 				height: "24px",
-				...rest.style,
 			}}
 		/>
 	);
