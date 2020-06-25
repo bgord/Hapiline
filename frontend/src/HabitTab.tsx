@@ -118,7 +118,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					{...stats}
 				/>
 
-				<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
+				<UI.Text ml="12" wrap="no">
 					<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
 					{" in total"}
 				</UI.Text>

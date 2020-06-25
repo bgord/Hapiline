@@ -111,7 +111,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 						<UI.Text ml="auto" variant="bold">
 							{numberOfHabitVoteChartItems}
 						</UI.Text>
-						<UI.Text style={{whiteSpace: "nowrap"}} ml="6">
+						<UI.Text wrap="no" ml="6">
 							in total
 						</UI.Text>
 					</UI.Row>

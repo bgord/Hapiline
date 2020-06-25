@@ -10,6 +10,7 @@ const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const qs = require("qs");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
+const datefns = require("date-fns");
 
 trait("Test/ApiClient");
 trait("Auth/Client");
@@ -128,13 +129,21 @@ test("full flow", async ({client, assert}) => {
 			"numberOfPlateauVotes",
 			"numberOfRegressVotes",
 		]);
+
+		assert.ok(datefns.isValid(new Date(entry.day)));
+
+		assert.isAtLeast(entry.numberOfCreatedHabits, 0);
+		assert.isAtLeast(entry.numberOfProgressVotes, 0);
+		assert.isAtLeast(entry.numberOfPlateauVotes, 0);
+		assert.isAtLeast(entry.numberOfRegressVotes, 0);
 	});
 });
 
-test("month with no entries", async ({client, assert}) => {
+test("month with no available habits", async ({client, assert}) => {
 	const pam = await User.find(users.pam.id);
 
-	const payload = {monthOffset: 2};
+	// Check if "2" is converted to 2 under the hood
+	const payload = {monthOffset: "2"};
 
 	const queryString = qs.stringify(payload);
 
