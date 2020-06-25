@@ -37,7 +37,7 @@ function constructManifest(version: string) {
 		manifest_version: 2,
 		name: "Hapiline",
 		short_name: "Hapiline - habit tracker",
-		start_url: "http://localhost:3333/",
+		start_url: "http://localhost:3333/login",
 		display: "standalone",
 		theme_color: "#1654ff",
 		background_color: "#ecedf1",

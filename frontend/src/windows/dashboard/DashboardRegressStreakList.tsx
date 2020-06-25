@@ -1,5 +1,4 @@
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
@@ -40,7 +39,7 @@ export const DashboardRegressStreakList: React.FC<{
 						title="Hide regress streak list"
 						onClick={toggleRegressStreakList}
 					>
-						<VisuallyHidden>Hide regress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Hide regress streak list</UI.VisuallyHidden>
 						<ChevronUpIcon />
 					</UI.Button>
 				)}
@@ -52,7 +51,7 @@ export const DashboardRegressStreakList: React.FC<{
 						title="Show regress streak list"
 						onClick={toggleRegressStreakList}
 					>
-						<VisuallyHidden>Show regress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Show regress streak list</UI.VisuallyHidden>
 						<ChevronDownIcon />
 					</UI.Button>
 				)}

@@ -1,5 +1,4 @@
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
@@ -39,7 +38,7 @@ export const DashboardNoStreakList: React.FC<{
 						title="Hide no streak list"
 						onClick={toggleNoStreakList}
 					>
-						<VisuallyHidden>Hide no streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Hide no streak list</UI.VisuallyHidden>
 						<ChevronUpIcon />
 					</UI.Button>
 				)}
@@ -51,7 +50,7 @@ export const DashboardNoStreakList: React.FC<{
 						title="Show no streak list"
 						onClick={toggleNoStreakList}
 					>
-						<VisuallyHidden>Show no streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Show no streak list</UI.VisuallyHidden>
 						<ChevronDownIcon />
 					</UI.Button>
 				)}

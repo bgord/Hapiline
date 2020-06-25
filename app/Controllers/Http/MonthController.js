@@ -64,7 +64,9 @@ class MonthsController {
 			...numberOfVoteTypesByDay.map(entry => entry.day),
 		]);
 
-		const daysWithAtLeastOneCreatedHabitOrVote = [...daysWithAtLeastOneStat].map(day => {
+		// Calculate stats and massage them so that
+		// they either contain the number we're looking for or 0.
+		const statsForDaysWithAtLeastOneCreatedHabitOrVote = [...daysWithAtLeastOneStat].map(day => {
 			const habitsCreatedByDay = numberOfCreatedHabitsByDay.find(
 				entry => entry && entry.day === day,
 			);
@@ -94,7 +96,7 @@ class MonthsController {
 			};
 		});
 
-		return response.send(daysWithAtLeastOneCreatedHabitOrVote);
+		return response.send(statsForDaysWithAtLeastOneCreatedHabitOrVote);
 	}
 }
 

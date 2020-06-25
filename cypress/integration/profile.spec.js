@@ -36,10 +36,8 @@ describe("Profile", () => {
 		cy.findByText("Delete account").click();
 		cy.findByText("Yes, delete").click();
 
-		cy.url().should("contain", "/");
-		cy.findByText("Welcome to home page");
+		cy.url().should("contain", LOGIN_URL);
 
-		cy.findByText("Login").click();
 		cy.findByLabelText("Email").type("dwight@example.com");
 		cy.findByLabelText("Password").type("123456");
 		cy.findByTestId("login-submit").click();
@@ -85,7 +83,7 @@ describe("Profile", () => {
 		cy.findByText("Email confirmation message has been sent! You will be logged out in 5 seconds.");
 
 		cy.tick(5000);
-		cy.findByText("Welcome to home page");
+		cy.url().should("contain", LOGIN_URL);
 	});
 
 	it("email confirmation errors", () => {
@@ -139,7 +137,8 @@ describe("Profile", () => {
 			cy.findByText("Menu").click();
 		}
 		cy.findByText("Logout").click();
-		cy.findByText("Login").click();
+
+		cy.url().should("contain", LOGIN_URL);
 
 		cy.findByLabelText("Email").type("dwight@example.com");
 		cy.findByLabelText("Password").type("nonono");
