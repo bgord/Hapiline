@@ -14,6 +14,7 @@ describe("Dashboard", () => {
 	it("upper part", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
+		cy.injectAxe();
 
 		cy.findByText("Hello!");
 
@@ -26,7 +27,7 @@ describe("Dashboard", () => {
 		cy.go("back");
 
 		cy.get("div")
-			.eq(6)
+			.eq(5)
 			.should(
 				"include.text",
 				"You're on a good track!You have 6 tracked habits to vote for left out of 10 (and 0 untracked habits).",
@@ -61,6 +62,8 @@ describe("Dashboard", () => {
 		});
 
 		cy.findByTestId("chart-last-month").should("not.exist");
+
+		cy.checkA11y();
 
 		cy.server();
 		cy.route({
@@ -99,7 +102,7 @@ describe("Dashboard", () => {
 		cy.wait(1000);
 
 		cy.get("div")
-			.eq(6)
+			.eq(4)
 			.should(
 				"include.text",
 				"Start your day well! You have 10 tracked habits to vote for. And 0 untracked habits.",
@@ -155,8 +158,10 @@ describe("Dashboard", () => {
 			.eq(6)
 			.should(
 				"include.text",
-				"Congratulations! You voted for every one of 10 tracked habits today! You also have 0 untracked habits.",
+				"Congratulations! You voted for every one of 10 tracked habits today!",
 			);
+
+		cy.findByText("You also have 0 untracked habits.");
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -233,6 +238,8 @@ describe("Dashboard", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
+		cy.injectAxe();
+
 		cy.findByText("Notifications dropdown").click({force: true});
 
 		cy.get("#notification-list").within(() => {
@@ -251,6 +258,8 @@ describe("Dashboard", () => {
 
 			cy.findByText("Notifications");
 			cy.findByText("0");
+
+			cy.checkA11y();
 
 			cy.findByText("Close dialog").click({force: true});
 		});
