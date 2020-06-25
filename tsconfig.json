@@ -15,7 +15,7 @@
 		"noEmit": true,
 		"jsx": "react",
 		"noImplicitAny": true,
-		"types": ["cypress", "@types/testing-library__cypress"]
+		"types": ["cypress", "@types/testing-library__cypress", "@types/cypress-axe"]
 	},
 	"include": ["./frontend/src", "./cypress"]
 }
