@@ -224,7 +224,7 @@ export type Token = string;
 
 export type Journal = journals;
 
-export type NewJournalRequest = Omit<
+export type DraftJournal = Omit<
 Journal,
 "user_id" | "created_at" |"id" |"updated_at"
 >;

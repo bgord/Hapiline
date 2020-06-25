@@ -3,7 +3,7 @@ import {useQuery, useMutation} from "react-query";
 import * as UI from "./ui";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {api} from "./services/api";
-import {Journal, NewJournalRequest} from "./models";
+import {Journal, DraftJournal} from "./models";
 
 interface JournalProps {
 	day: Date;
@@ -20,7 +20,7 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 			retry: false,
 		},
 	});
-	const [journalRequestState, saveJournalRequestState] = useMutation<Journal, NewJournalRequest>(
+	const [journalRequestState, saveJournalRequestState] = useMutation<Journal, DraftJournal>(
 		api.journal.post,
 		{
 			onSuccess: () => {
