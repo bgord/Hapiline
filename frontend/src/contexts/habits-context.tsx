@@ -37,7 +37,7 @@ export function useHabits() {
 	if (context === undefined) {
 		throw new Error(`useHabits must be used within the HabitsContext`);
 	}
-	return context?.data ?? [];
+	return context.data ?? [];
 }
 
 export function useTrackedHabits() {
@@ -45,7 +45,7 @@ export function useTrackedHabits() {
 	if (context === undefined) {
 		throw new Error(`useTrackedHabits must be used within the HabitsContext`);
 	}
-	return context?.data?.filter(habit => habit.is_trackable) ?? [];
+	return context.data?.filter(habit => habit.is_trackable) ?? [];
 }
 
 export function useUntrackedHabits() {
@@ -53,5 +53,5 @@ export function useUntrackedHabits() {
 	if (context === undefined) {
 		throw new Error(`useUntrackedHabits must be used within the HabitsContext`);
 	}
-	return context?.data?.filter(habit => !habit.is_trackable) ?? [];
+	return context.data?.filter(habit => !habit.is_trackable) ?? [];
 }

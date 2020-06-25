@@ -49,9 +49,9 @@ export const DashboardWindow = () => {
 		},
 	});
 
-	const todayStats = getDashboardStatsRequestState?.data?.today;
-	const lastWeekStats = getDashboardStatsRequestState?.data?.lastWeek;
-	const lastMonthStats = getDashboardStatsRequestState?.data?.lastMonth;
+	const todayStats = getDashboardStatsRequestState.data?.today;
+	const lastWeekStats = getDashboardStatsRequestState.data?.lastWeek;
+	const lastMonthStats = getDashboardStatsRequestState.data?.lastMonth;
 
 	const numberOfHabitsAvailableToday = todayStats?.numberOfPossibleVotes ?? 0;
 	const shouldTodayStatsBeDisplayed = numberOfHabitsAvailableToday > 0;
