@@ -14,9 +14,11 @@ describe("Login", () => {
 		cy.request("POST", "/test/db/seed");
 	});
 
-	it("goes through the basic login/logout flow", () => {
+	beforeEach(() => {
 		cy.visit(LOGIN_URL);
+	});
 
+	it("goes through the basic login/logout flow", () => {
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -32,7 +34,6 @@ describe("Login", () => {
 	});
 
 	it("has links to registration and forgot password pages", () => {
-		cy.visit(LOGIN_URL);
 		cy.findByText("Don't have an account?");
 		cy.findByText("Create now").click();
 		cy.url().should("contain", REGISTRATION_URL);
@@ -43,8 +44,6 @@ describe("Login", () => {
 	});
 
 	it("displays server side errors", () => {
-		cy.visit(LOGIN_URL);
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.invalidPassword);
 		cy.findByTestId("login-submit").click();
@@ -55,8 +54,6 @@ describe("Login", () => {
 	});
 
 	it("client-side validation errors", () => {
-		cy.visit(LOGIN_URL);
-
 		cy.findByLabelText("Email")
 			.type("admin")
 			.should("not.be.valid");
@@ -79,8 +76,6 @@ describe("Login", () => {
 	});
 
 	it("doesn't let logged users access /login and /", () => {
-		cy.visit(LOGIN_URL);
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -110,8 +105,6 @@ describe("Login", () => {
 	});
 
 	it("nested invalid route redirecting for logged user", () => {
-		cy.visit("/login");
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -146,8 +139,6 @@ describe("Login", () => {
 				argErrors: [],
 			},
 		});
-
-		cy.visit(LOGIN_URL);
 
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
