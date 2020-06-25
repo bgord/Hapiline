@@ -20,8 +20,6 @@ describe("Login", () => {
 	});
 
 	it("goes through the basic login/logout flow", () => {
-		cy.checkA11y();
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -34,11 +32,11 @@ describe("Login", () => {
 		cy.findByText("Logout").click({force: true});
 
 		cy.url().should("include", LOGIN_URL);
+
+		cy.checkA11y();
 	});
 
 	it("has links to registration and forgot password pages", () => {
-		cy.checkA11y();
-
 		cy.findByText("Don't have an account?");
 		cy.findByText("Create now").click();
 		cy.url().should("contain", REGISTRATION_URL);
@@ -49,20 +47,18 @@ describe("Login", () => {
 	});
 
 	it("displays server side errors", () => {
-		cy.checkA11y();
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.invalidPassword);
 		cy.findByTestId("login-submit").click();
 
 		cy.findByText("Invalid email or password.");
 
+		cy.checkA11y();
+
 		cy.url().should("contain", "/login");
 	});
 
 	it("client-side validation errors", () => {
-		cy.checkA11y();
-
 		cy.findByLabelText("Email")
 			.type("admin")
 			.should("not.be.valid");
@@ -71,14 +67,14 @@ describe("Login", () => {
 			.should("not.be.valid");
 		cy.findByTestId("login-submit").click();
 
+		cy.checkA11y();
+
 		cy.findByText("Invalid email or password.").should("not.exist");
 
 		cy.url().should("contain", LOGIN_URL);
 	});
 
 	it("doesn't let unlogged users access /dashboard and /logout", () => {
-		cy.checkA11y();
-
 		cy.visit(DASHBOARD_URL);
 		cy.url().should("include", LOGIN_URL);
 
@@ -87,8 +83,6 @@ describe("Login", () => {
 	});
 
 	it("doesn't let logged users access /login and /", () => {
-		cy.checkA11y();
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -101,8 +95,6 @@ describe("Login", () => {
 	});
 
 	it("nested invalid route redirecting for unlogged user", () => {
-		cy.checkA11y();
-
 		cy.visit("/login/x/x/x");
 		cy.url().should("include", LOGIN_URL);
 
@@ -120,8 +112,6 @@ describe("Login", () => {
 	});
 
 	it("nested invalid route redirecting for logged user", () => {
-		cy.checkA11y();
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -157,11 +147,11 @@ describe("Login", () => {
 			},
 		});
 
-		cy.checkA11y();
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
+
+		cy.checkA11y();
 
 		cy.findByText(errorMessage);
 	});
