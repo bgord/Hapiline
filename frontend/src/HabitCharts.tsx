@@ -36,12 +36,12 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 		},
 	});
 
-	const numberOfRegressVotes = getByVoteType(habitVoteChartRequestState, "regress");
-	const numberOfPlateauVotes = getByVoteType(habitVoteChartRequestState, "plateau");
-	const numberOfProgressVotes = getByVoteType(habitVoteChartRequestState, "progress");
+	const numberOfRegressVotes = getNumberOfVotesByType(habitVoteChartRequestState, "regress");
+	const numberOfPlateauVotes = getNumberOfVotesByType(habitVoteChartRequestState, "plateau");
+	const numberOfProgressVotes = getNumberOfVotesByType(habitVoteChartRequestState, "progress");
 
 	const numberOfHabitVoteChartItems = habitVoteChartRequestState.data?.length ?? 0;
-	const getPercentageOfVotes = getPercentageOfFactory(numberOfHabitVoteChartItems);
+	const getPercentageOfVotes = getPercentageFactory(numberOfHabitVoteChartItems);
 
 	const regressVotesPrct = getPercentageOfVotes(numberOfRegressVotes);
 	const plateauVotesPrct = getPercentageOfVotes(numberOfPlateauVotes);
@@ -163,10 +163,10 @@ function isChartRange(value: string): value is HabitVoteChartDateRangeType {
 	return Object.keys(HabitVoteChartDateRanges).includes(value);
 }
 
-function getByVoteType(request: QueryResult<DayVote[]>, type: HabitVoteType) {
+function getNumberOfVotesByType(request: QueryResult<DayVote[]>, type: HabitVoteType) {
 	return request.data?.filter(({vote}) => vote === type).length ?? 0;
 }
 
-function getPercentageOfFactory(maximum: number) {
+function getPercentageFactory(maximum: number) {
 	return (value: number) => ((value / maximum) * 100).toFixed(2);
 }
