@@ -65,11 +65,6 @@ test("validation", async ({client}) => {
 					field: "day",
 					validation: "required",
 				},
-				{
-					message: VALIDATION_MESSAGES.required("content"),
-					field: "content",
-					validation: "required",
-				},
 			],
 		],
 		[
@@ -163,5 +158,42 @@ test("full flow creating", async ({client, assert}) => {
 	response.assertStatus(201);
 	assert.equal(response.body.user_id, jim.id);
 	assert.equal(response.body.content, payload.content);
+	assert.ok(datefns.isEqual(datefns.parseISO(response.body.day), datefns.parseISO(yesterday)));
+});
+test("full-flow-with-empty-content", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
+	const payload = {
+		day: yesterday,
+		content: "",
+	};
+
+	const response = await client
+		.post(ADD_JOURNAL_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	response.assertStatus(201);
+	assert.equal(response.body.user_id, jim.id);
+	assert.equal(response.body.content, payload.content);
+	assert.ok(datefns.isEqual(datefns.parseISO(response.body.day), datefns.parseISO(yesterday)));
+});
+test("full-flow-without-content", async ({client, assert}) => {
+	const jim = await User.find(users.jim.id);
+	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
+	const payload = {
+		day: yesterday,
+	};
+
+	const response = await client
+		.post(ADD_JOURNAL_URL)
+		.send(payload)
+		.loginVia(jim)
+		.end();
+
+	response.assertStatus(201);
+	assert.equal(response.body.user_id, jim.id);
+	assert.equal(response.body.content, "");
 	assert.ok(datefns.isEqual(datefns.parseISO(response.body.day), datefns.parseISO(yesterday)));
 });
