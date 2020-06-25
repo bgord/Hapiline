@@ -63,10 +63,14 @@ describe("Forgot password", () => {
 		});
 	});
 
+	beforeEach(() => {
+		cy.visit(FORGOT_PASSWORD_URL);
+
+		cy.injectAxe();
+	});
+
 	it("displays the same message for non-existent email", () => {
 		const nonExistentEmail = "michael_scott@example.com";
-
-		cy.visit(FORGOT_PASSWORD_URL);
 
 		cy.findByText("You will receive an email with further instructions.");
 		cy.findByText("Email sent if an account exists.").should("not.exist");
@@ -76,5 +80,7 @@ describe("Forgot password", () => {
 
 		cy.findByText("You will receive an email with further instructions.").should("not.exist");
 		cy.findByText("Email sent if an account exists.");
+
+		cy.checkA11y();
 	});
 });
