@@ -32,3 +32,5 @@ export * from "./icons/Trash";
 
 export * from "./ShowIf";
 export * from "./ExpandContractList";
+
+export {default as VisuallyHidden} from "@reach/visually-hidden";
