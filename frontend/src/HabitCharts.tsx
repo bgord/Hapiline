@@ -140,6 +140,8 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 				day,
 				habitId,
 			})}
+			data-bw="1"
+			data-b="gray-1"
 			title={title}
 			key={String(day)}
 			style={{
