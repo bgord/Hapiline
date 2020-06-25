@@ -21,9 +21,14 @@ const currentMonthString = format(today, "MMMM yyyy");
 describe("Calendar", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
+
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
 	});
 
 	it("disabling previous/next buttons", () => {
+		cy.injectAxe();
+
 		cy.server();
 		cy.route({
 			method: "GET",
@@ -41,9 +46,6 @@ describe("Calendar", () => {
 			],
 		});
 
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		// The "next" button is disabled by default, because
 		// we land on the current month.
 		cy.findByText("Next")
@@ -56,6 +58,8 @@ describe("Calendar", () => {
 		cy.findByText("Previous")
 			.should("be.disabled")
 			.should("have.attr", "title", "There are no habits added in the previous month");
+
+		cy.checkA11y();
 
 		// Another scenario, the only habit is created a month ago.
 		cy.route({
@@ -103,9 +107,6 @@ describe("Calendar", () => {
 	});
 
 	it("content of the latest day tile", () => {
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		cy.findByText(currentMonthString);
 
 		cy.findAllByTestId("calendar").within(() => {
@@ -129,9 +130,6 @@ describe("Calendar", () => {
 	});
 
 	it("untracked habits are not shown in the calendar tiles", () => {
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		cy.findByText(currentMonthString);
 
 		cy.findAllByTestId("calendar").within(() => {
@@ -183,6 +181,8 @@ describe("Calendar", () => {
 	});
 
 	it("get month error", () => {
+		cy.injectAxe();
+
 		const errorMessage = "Unexpected error, try again later.";
 
 		cy.server();
@@ -197,16 +197,14 @@ describe("Calendar", () => {
 			},
 		});
 
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		cy.findByText(currentMonthString);
 		cy.findByText(errorMessage);
+
+		cy.checkA11y();
 	});
 
 	it("dialog", () => {
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
+		cy.injectAxe();
 
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
@@ -222,6 +220,15 @@ describe("Calendar", () => {
 
 		cy.findByRole("dialog").within(() => {
 			cy.findByText(`${format(new Date(), "yyyy-MM-dd")} - ${format(new Date(), "iiii")}`);
+
+			cy.checkA11y('div[role="dialog"]', {
+				rules: {
+					// Disabled due to a slight issue with the `ESTABLISHED` badge
+					"color-contrast": {
+						enabled: false,
+					},
+				},
+			});
 
 			cy.findByText("Tracked habits");
 			cy.findByText("2 habits with progress votes");
@@ -309,9 +316,6 @@ describe("Calendar", () => {
 	it("doesn't render not trackable habits", () => {
 		cy.server();
 
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		if (Cypress.env("device") === "mobile") {
 			cy.findByText("Menu").click();
 		}
@@ -362,9 +366,6 @@ describe("Calendar", () => {
 	});
 
 	it("habit votes", () => {
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
@@ -413,9 +414,6 @@ describe("Calendar", () => {
 	});
 
 	it("vote comments", () => {
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
@@ -477,9 +475,6 @@ describe("Calendar", () => {
 	});
 
 	it("add a comment to a habit with no vote", () => {
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
-
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
@@ -530,9 +525,6 @@ describe("Calendar", () => {
 			url: "/api/v1/month?monthOffset=0",
 			response: {},
 		});
-
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
 
 		cy.findByText("Couldn't fetch calendar stats");
 	});

@@ -109,6 +109,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 						variant="bare"
 					>
 						<QuestionMarkIcon />
+						<UI.VisuallyHidden>Toggle habit vote chart legend</UI.VisuallyHidden>
 					</UI.Button>
 				)}
 
