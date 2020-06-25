@@ -47,6 +47,9 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 	const plateauVotesPrct = getPercentageOfVotes(numberOfPlateauVotes);
 	const progressVotesPrct = getPercentageOfVotes(numberOfProgressVotes);
 
+	const shouldDisplayChartLabels: boolean =
+		dateRange === "last_week" || (habitVoteChartRequestState?.data?.length ?? 0) <= 7;
+
 	return (
 		<>
 			<UI.Row mainAxis="between" wrap={[, "wrap"]}>
@@ -76,7 +79,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 				<UI.Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
 						<UI.Column width="100%">
-							{dateRange === "last_week" && (
+							{shouldDisplayChartLabels && (
 								<UI.Text variant="dimmed" style={{textAlign: "center", fontSize: "12px"}}>
 									{formatShortDay(item.day)}
 								</UI.Text>
