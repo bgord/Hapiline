@@ -181,8 +181,6 @@ describe("Calendar", () => {
 	});
 
 	it("get month error", () => {
-		cy.injectAxe();
-
 		const errorMessage = "Unexpected error, try again later.";
 
 		cy.server();
@@ -199,8 +197,6 @@ describe("Calendar", () => {
 
 		cy.findByText(currentMonthString);
 		cy.findByText(errorMessage);
-
-		cy.checkA11y();
 	});
 
 	it("dialog", () => {
