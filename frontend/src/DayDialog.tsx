@@ -62,7 +62,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						<HabitTab day={day} onResolve={onResolve} {...stats} />
 					</TabPanel>
 					<TabPanel>
-						<JournalTab />
+						<JournalTab day={new Date(day)} />
 					</TabPanel>
 				</TabPanels>
 			</Tabs>

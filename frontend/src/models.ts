@@ -223,3 +223,8 @@ export type Token = string;
 // Journal
 
 export type Journal = journals;
+
+export type DraftJournal = Omit<
+Journal,
+"user_id" | "created_at" |"id" |"updated_at"
+>;

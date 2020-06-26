@@ -9,7 +9,7 @@ class StoreJournal extends BaseHttpValidator {
 
 		return {
 			day: `required|date|before:${tomorrow}`,
-			content: `required|string`,
+			content: `string`,
 		};
 	}
 
