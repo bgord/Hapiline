@@ -8,9 +8,12 @@ const validNewCredentials = {
 describe("Registration", () => {
 	before(() => cy.request("POST", "/test/db/seed"));
 
-	it("full flow", () => {
+	beforeEach(() => {
 		cy.visit(REGISTRATION_URL);
+		cy.injectAxe();
+	});
 
+	it("full flow", () => {
 		cy.findByText("You will receive an account confirmation email with further instructions.");
 
 		cy.findByLabelText("Email").type(validNewCredentials.email);
@@ -33,6 +36,8 @@ describe("Registration", () => {
 		cy.findByLabelText("Repeat password")
 			.should("be.disabled")
 			.should("have.value", validNewCredentials.password);
+
+		cy.checkA11y();
 	});
 
 	it("validation", () => {
@@ -41,8 +46,6 @@ describe("Registration", () => {
 		const tooShortPassword = "xxx";
 		const correctPassword = "123456";
 		const incorrectPasswordConfirmation = "55555";
-
-		cy.visit(REGISTRATION_URL);
 
 		cy.findByLabelText("Email")
 			.type(invalidEmail)
@@ -70,6 +73,8 @@ describe("Registration", () => {
 
 		cy.findByText("Given email address already exists.");
 		cy.get('div.c-banner[data-variant="error"]').should("not.exist");
+
+		cy.checkA11y();
 	});
 
 	it("500", () => {
@@ -87,12 +92,12 @@ describe("Registration", () => {
 			},
 		});
 
-		cy.visit(REGISTRATION_URL);
-
 		cy.findByLabelText("Email").type(validNewCredentials.email);
 		cy.findByLabelText("Password").type(validNewCredentials.password);
 		cy.findByLabelText("Repeat password").type(validNewCredentials.password);
 		cy.findByTestId("registration-submit").click();
+
+		cy.checkA11y();
 
 		cy.findByText(errorMessage);
 	});

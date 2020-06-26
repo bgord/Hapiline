@@ -66,6 +66,7 @@ export function CalendarWindow() {
 
 	return (
 		<UI.Column
+			as="main"
 			mt={["24", "12"]}
 			width={["100%", "auto"]}
 			style={{maxWidth: "1520px"}}
@@ -85,7 +86,7 @@ export function CalendarWindow() {
 				</UI.Button>
 
 				<CalendarIcon />
-				<UI.Text wrap="no" ml="6" variant="bold">
+				<UI.Text as="h1" wrap="no" ml="6" variant="bold">
 					{monthString}
 				</UI.Text>
 
@@ -102,7 +103,7 @@ export function CalendarWindow() {
 			</UI.Row>
 
 			<UI.ShowIf request={getMonthRequestState} is="error">
-				<UI.ErrorBanner my="24" p="6">
+				<UI.ErrorBanner my="24" p="6" mx="auto">
 					{errorMessage || "Couldn't fetch calendar stats"}
 				</UI.ErrorBanner>
 			</UI.ShowIf>

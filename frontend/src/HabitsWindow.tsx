@@ -94,13 +94,15 @@ export const HabitsWindow = () => {
 	}
 
 	return (
-		<UI.Column mx={["auto", "6"]} mt={["48", "12"]} mb="24" width={["view-l", "auto"]}>
+		<UI.Column as="main" mx={["auto", "6"]} mt={["48", "12"]} mb="24" width={["view-l", "auto"]}>
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<UI.ShowIf request={getHabitsRequestState} is={["error", "success"]}>
 				<UI.Card>
 					<UI.Row bg="gray-1" mt="12" p={["24", "12"]} mainAxis="between" wrap="wrap">
-						<UI.Header variant={["large", "small"]}>Habit list</UI.Header>
+						<UI.Header as="h1" variant={["large", "small"]}>
+							Habit list
+						</UI.Header>
 
 						{mediaQuery === MEDIA_QUERY.default && (
 							<UI.Button

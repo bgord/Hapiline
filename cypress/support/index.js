@@ -36,3 +36,5 @@ const isValid = (_chai, utils) => {
 };
 // registers our assertion function "isValid" with Chai
 chai.use(isValid);
+
+import "cypress-axe";

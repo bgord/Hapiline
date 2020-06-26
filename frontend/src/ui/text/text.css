@@ -11,13 +11,13 @@
 	text-transform: uppercase;
 	font-size: 14px;
 	font-weight: 600;
-	color: var(--gray-7);
+	color: var(--gray-8);
 }
 .c-text[data-variant="semi-bold"] {
 	font-weight: 500;
 }
 .c-text[data-variant="light"] {
-	color: var(--gray-7);
+	color: var(--gray-8);
 }
 
 .c-text[data-variant="monospaced"] {

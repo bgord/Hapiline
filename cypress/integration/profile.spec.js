@@ -12,6 +12,8 @@ describe("Profile", () => {
 	it("account deletion", () => {
 		cy.visit(LOGIN_URL);
 
+		cy.injectAxe();
+
 		cy.findByLabelText("Email").type("dwight@example.com");
 		cy.findByLabelText("Password").type("123456");
 		cy.findByTestId("login-submit").click();
@@ -34,6 +36,7 @@ describe("Profile", () => {
 		cy.findByText("Nevermind, don't delete").click();
 
 		cy.findByText("Delete account").click();
+
 		cy.findByText("Yes, delete").click();
 
 		cy.url().should("contain", LOGIN_URL);
@@ -43,6 +46,8 @@ describe("Profile", () => {
 		cy.findByTestId("login-submit").click();
 
 		cy.findByText("Access denied.");
+
+		cy.checkA11y();
 	});
 
 	it("account deletion error", () => {

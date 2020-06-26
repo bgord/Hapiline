@@ -63,7 +63,14 @@ export const DashboardWindow = () => {
 	const dateOfToday = formatToday();
 
 	return (
-		<UI.Card pt="12" mx={["auto", "6"]} mt={["48", "12"]} mb="24" width={["view-l", "auto"]}>
+		<UI.Card
+			as="main"
+			pt="12"
+			mx={["auto", "6"]}
+			mt={["48", "12"]}
+			mb="24"
+			width={["view-l", "auto"]}
+		>
 			<UI.Row bg="gray-1" p={["24", "12"]} mainAxis="between">
 				<UI.Header variant={["large", "small"]}>Hello!</UI.Header>
 

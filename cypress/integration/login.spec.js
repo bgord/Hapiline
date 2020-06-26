@@ -14,9 +14,12 @@ describe("Login", () => {
 		cy.request("POST", "/test/db/seed");
 	});
 
-	it("goes through the basic login/logout flow", () => {
+	beforeEach(() => {
 		cy.visit(LOGIN_URL);
+		cy.injectAxe();
+	});
 
+	it("goes through the basic login/logout flow", () => {
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -29,10 +32,11 @@ describe("Login", () => {
 		cy.findByText("Logout").click({force: true});
 
 		cy.url().should("include", LOGIN_URL);
+
+		cy.checkA11y();
 	});
 
 	it("has links to registration and forgot password pages", () => {
-		cy.visit(LOGIN_URL);
 		cy.findByText("Don't have an account?");
 		cy.findByText("Create now").click();
 		cy.url().should("contain", REGISTRATION_URL);
@@ -43,20 +47,18 @@ describe("Login", () => {
 	});
 
 	it("displays server side errors", () => {
-		cy.visit(LOGIN_URL);
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.invalidPassword);
 		cy.findByTestId("login-submit").click();
 
 		cy.findByText("Invalid email or password.");
 
+		cy.checkA11y();
+
 		cy.url().should("contain", "/login");
 	});
 
 	it("client-side validation errors", () => {
-		cy.visit(LOGIN_URL);
-
 		cy.findByLabelText("Email")
 			.type("admin")
 			.should("not.be.valid");
@@ -64,6 +66,8 @@ describe("Login", () => {
 			.type("123")
 			.should("not.be.valid");
 		cy.findByTestId("login-submit").click();
+
+		cy.checkA11y();
 
 		cy.findByText("Invalid email or password.").should("not.exist");
 
@@ -79,8 +83,6 @@ describe("Login", () => {
 	});
 
 	it("doesn't let logged users access /login and /", () => {
-		cy.visit(LOGIN_URL);
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -110,8 +112,6 @@ describe("Login", () => {
 	});
 
 	it("nested invalid route redirecting for logged user", () => {
-		cy.visit("/login");
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
@@ -147,11 +147,11 @@ describe("Login", () => {
 			},
 		});
 
-		cy.visit(LOGIN_URL);
-
 		cy.findByLabelText("Email").type(admin.email);
 		cy.findByLabelText("Password").type(admin.password);
 		cy.findByTestId("login-submit").click();
+
+		cy.checkA11y();
 
 		cy.findByText(errorMessage);
 	});
