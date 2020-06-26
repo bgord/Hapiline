@@ -49,8 +49,9 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 	return (
 		<UI.Row ml={mediaQuery === MEDIA_QUERY.default ? "12" : "0"} crossAxis="end" mt="24">
 			<UI.Field width="100%" mr="12">
-				<UI.Label htmlFor="habit_name">Habit name</UI.Label>
+				<UI.Label htmlFor="editable_habit_name">Habit name</UI.Label>
 				<HabitNameInput
+					id="editable_habit_name"
 					onKeyDown={event => {
 						if (event.keyCode === 13 && newHabitName !== name && newHabitName) {
 							updateHabitName({id, name: newHabitName});

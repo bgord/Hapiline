@@ -68,6 +68,8 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
+		cy.injectAxe();
+
 		cy.findByText("New habit").click();
 		cy.findByRole("dialog").within(() => {
 			cy.findByLabelText("Habit name").type("okokok");
@@ -77,6 +79,15 @@ describe("Habit", () => {
 			cy.findByLabelText("Description").type("kokoko");
 
 			cy.findByText("Close dialog").click({force: true});
+		});
+
+		cy.checkA11y("html", {
+			rules: {
+				// Disabled due to a slight issue with the `ESTABLISHED` badge
+				"color-contrast": {
+					enabled: false,
+				},
+			},
 		});
 
 		// The form values survive closing the modal
@@ -204,6 +215,8 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
+		cy.injectAxe();
+
 		cy.get("ul").within(() => {
 			response.forEach(item => {
 				cy.findByText(item.name);
@@ -212,6 +225,15 @@ describe("Habit", () => {
 		});
 
 		cy.findByText("Untracked");
+
+		cy.checkA11y("html", {
+			rules: {
+				// Disabled due to a slight issue with the `ESTABLISHED` badge
+				"color-contrast": {
+					enabled: false,
+				},
+			},
+		});
 
 		if (Cypress.env("device") === "desktop") {
 			cy.findByText("Show filters").click();
@@ -472,6 +494,8 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
+		cy.injectAxe();
+
 		cy.findAllByText("More")
 			.first()
 			.click();
@@ -484,9 +508,13 @@ describe("Habit", () => {
 			cy.findByText("2019-02-01 00:00");
 			cy.findByText("2 days progress streak");
 			cy.findByDisplayValue("Last week");
+
+			cy.checkA11y('div[role="dialog"]');
+
 			for (const {day, vote} of chartResponse) {
 				cy.findByTitle(`${day} - ${vote}`);
 			}
+
 			cy.findByText("Close dialog").click({force: true});
 		});
 
