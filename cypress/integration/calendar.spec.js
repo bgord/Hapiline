@@ -181,8 +181,6 @@ describe("Calendar", () => {
 	});
 
 	it("get month error", () => {
-		cy.injectAxe();
-
 		const errorMessage = "Unexpected error, try again later.";
 
 		cy.server();
@@ -199,8 +197,6 @@ describe("Calendar", () => {
 
 		cy.findByText(currentMonthString);
 		cy.findByText(errorMessage);
-
-		cy.checkA11y();
 	});
 
 	it("dialog", () => {
@@ -452,7 +448,9 @@ describe("Calendar", () => {
 				.clear()
 				.type("nonono");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.first()
+				.click();
 		});
 
 		cy.findByText("Comment added successfully!");
@@ -488,7 +486,9 @@ describe("Calendar", () => {
 
 			cy.findByPlaceholderText("Write something...").type("where are the turtles");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.first()
+				.click();
 
 			cy.findByText("Close dialog").click({force: true});
 		});

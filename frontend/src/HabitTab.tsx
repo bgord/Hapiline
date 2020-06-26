@@ -47,11 +47,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 		},
 	});
 
-	const possiblyHighlightedHabitName = trackedHabits.find(
-		habit => habit.id === Number(queryParams.highlighted_habit_id),
-	)?.name;
-
-	const habitSearch = useHabitSearch(possiblyHighlightedHabitName);
+	const habitSearch = useHabitSearch();
 	const habitVoteFilter = useHabitVoteFilter();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day);
@@ -85,7 +81,14 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 	const filteredHabitsWithPossibleVote = habitsWithPossibleVote
 		.filter(habitVoteFilter.filterFunction)
-		.filter(habitWithPossibleVote => habitSearch.filterFn(habitWithPossibleVote.name));
+		.filter(habitWithPossibleVote => {
+			const isHighlightedHabitIdPresent = isNumber(queryParams.highlighted_habit_id);
+
+			if (isHighlightedHabitIdPresent)
+				return habitWithPossibleVote.id === Number(queryParams.highlighted_habit_id);
+
+			return habitSearch.filterFn(habitWithPossibleVote.name);
+		});
 
 	return (
 		<UI.Column px={["24", "6"]}>
@@ -296,4 +299,8 @@ function getDayVoteForHabit(
 	const votesFromGivenDay = getDayVotesRequestState.data ?? [];
 
 	return votesFromGivenDay.find(vote => vote.habit_id === habit.id) ?? null;
+}
+
+function isNumber(value: unknown) {
+	return !Number.isNaN(Number(value));
 }

@@ -1,5 +1,5 @@
 import {Link, LinkProps} from "react-router-dom";
-import {useQuery} from "react-query";
+import {useQuery, QueryResult} from "react-query";
 import React from "react";
 import {pluralize} from "./services/pluralize";
 import {UrlBuilder} from "./services/url-builder";
@@ -11,9 +11,10 @@ import {
 	voteToBgColor,
 	HabitVoteChartDateRangeType,
 	HabitVoteChartDateRanges,
+	HabitVoteType,
 } from "./models";
 import {api} from "./services/api";
-import {formatDay} from "./services/date-formatter";
+import {formatDay, formatShortDay} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
@@ -35,20 +36,19 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 		},
 	});
 
-	const numberOfHabitVoteChartItems = habitVoteChartRequestState?.data?.length ?? 0;
+	const numberOfRegressVotes = getNumberOfVotesByType(habitVoteChartRequestState, "regress");
+	const numberOfPlateauVotes = getNumberOfVotesByType(habitVoteChartRequestState, "plateau");
+	const numberOfProgressVotes = getNumberOfVotesByType(habitVoteChartRequestState, "progress");
 
-	const numberOfRegressVotes =
-		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "regress").length ?? 0;
-	const numberOfPlateauVotes =
-		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "plateau").length ?? 0;
-	const numberOfProgressVotes =
-		habitVoteChartRequestState?.data?.filter(vote => vote.vote === "progress").length ?? 0;
+	const numberOfHabitVoteChartItems = habitVoteChartRequestState.data?.length ?? 0;
+	const getPercentageOfVotes = getPercentageFactory(numberOfHabitVoteChartItems);
 
-	const regressVotesPrct = ((numberOfRegressVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
-	const plateauVotesPrct = ((numberOfPlateauVotes / numberOfHabitVoteChartItems) * 100).toFixed(2);
-	const progressVotesPrct = ((numberOfProgressVotes / numberOfHabitVoteChartItems) * 100).toFixed(
-		2,
-	);
+	const regressVotesPrct = getPercentageOfVotes(numberOfRegressVotes);
+	const plateauVotesPrct = getPercentageOfVotes(numberOfPlateauVotes);
+	const progressVotesPrct = getPercentageOfVotes(numberOfProgressVotes);
+
+	const shouldDisplayChartLabels: boolean =
+		dateRange === "last_week" || (habitVoteChartRequestState?.data?.length ?? 0) <= 7;
 
 	return (
 		<>
@@ -78,14 +78,23 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 			<UI.ShowIf request={habitVoteChartRequestState} is="success">
 				<UI.Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
-						<ChartCell
-							key={String(item.day)}
-							habitId={id}
-							style={{flexBasis: `calc(100% / ${numberOfHabitVoteChartItems})`}}
-							{...item}
-						/>
+						<UI.Column width="100%">
+							{shouldDisplayChartLabels && (
+								<UI.Text variant="dimmed" style={{textAlign: "center", fontSize: "12px"}}>
+									{formatShortDay(item.day)}
+								</UI.Text>
+							)}
+
+							<ChartCell
+								key={String(item.day)}
+								habitId={id}
+								style={{flexBasis: `calc(100% / ${numberOfHabitVoteChartItems})`}}
+								{...item}
+							/>
+						</UI.Column>
 					))}
 				</UI.Row>
+
 				{mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mt="6" crossAxis="center">
 						<UI.Text style={{fontSize: "72px", color: "#ef8790"}}>·</UI.Text>
@@ -129,12 +138,8 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 	day,
 	vote,
 	habitId,
-	...rest
 }) => {
-	const date = formatDay(day);
-	const backgroundColor = voteToBgColor.get(vote);
-
-	const title = `${date} - ${vote ?? "no vote"}`;
+	const title = `${formatDay(day)} - ${vote ?? "no vote"}`;
 
 	return (
 		<Link
@@ -144,10 +149,11 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 			})}
 			title={title}
 			key={String(day)}
+			data-bw="1"
+			data-br="gray-1"
 			style={{
-				backgroundColor,
+				backgroundColor: voteToBgColor.get(vote),
 				height: "24px",
-				...rest.style,
 			}}
 		/>
 	);
@@ -155,4 +161,12 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 
 function isChartRange(value: string): value is HabitVoteChartDateRangeType {
 	return Object.keys(HabitVoteChartDateRanges).includes(value);
+}
+
+function getNumberOfVotesByType(request: QueryResult<DayVote[]>, type: HabitVoteType) {
+	return request.data?.filter(({vote}) => vote === type).length ?? 0;
+}
+
+function getPercentageFactory(maximum: number) {
+	return (value: number) => ((value / maximum) * 100).toFixed(2);
 }
