@@ -2,6 +2,8 @@ const DASHBOARD_URL = "/dashboard";
 const HABITS_URL = "/habits";
 const CALENDAR_URL = "/calendar";
 const PROFILE_URL = "/profile";
+const LOGIN_URL = "/login";
+const REGISTER_URL = "/register";
 
 describe("a11y", () => {
 	// I'm using `cy.findByText("Skip to content").click({force: true});` here
@@ -87,5 +89,46 @@ describe("a11y", () => {
 		cy.get("main").tab();
 
 		cy.findByLabelText("New email").should("have.focus");
+	});
+
+	it("skip nav for all main unauthenticated views", () => {
+		cy.visit(LOGIN_URL);
+		cy.wait(500);
+
+		// Not skipping navigation
+		cy.get("body").tab();
+
+		cy.findByText("Skip to content").should("have.focus");
+		cy.findByText("Skip to content")
+			.tab()
+			.tab();
+
+		cy.findByText("Register").should("have.focus");
+
+		// Skipping navigation, and getting straight to the content
+		// of the login window
+		cy.reload();
+		cy.wait(500);
+
+		cy.get("body").tab();
+
+		cy.findByText("Skip to content").click({force: true});
+
+		cy.get("main").tab();
+
+		cy.findByLabelText("Email").should("have.focus");
+
+		// Skipping navigation, and getting straight to the content
+		// of the register window
+		cy.visit(REGISTER_URL);
+		cy.wait(500);
+
+		cy.get("body").tab();
+
+		cy.findByText("Skip to content").click({force: true});
+
+		cy.get("main").tab();
+
+		cy.findByLabelText("Email").should("have.focus");
 	});
 });
