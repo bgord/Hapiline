@@ -65,6 +65,7 @@ export const DashboardWindow = () => {
 	return (
 		<UI.Card
 			as="main"
+			tabIndex={0}
 			pt="12"
 			mx={["auto", "6"]}
 			mt={["48", "12"]}
