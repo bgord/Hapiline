@@ -452,7 +452,9 @@ describe("Calendar", () => {
 				.clear()
 				.type("nonono");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.first()
+				.click();
 		});
 
 		cy.findByText("Comment added successfully!");
@@ -488,7 +490,9 @@ describe("Calendar", () => {
 
 			cy.findByPlaceholderText("Write something...").type("where are the turtles");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.first()
+				.click();
 
 			cy.findByText("Close dialog").click({force: true});
 		});

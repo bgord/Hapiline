@@ -12,6 +12,7 @@ export const MediaQueryDevTools = () => {
 	return (
 		<UI.Row
 			as="aside"
+			aria-label="Media query dev tools"
 			p="3"
 			bg="gray-3"
 			style={{top: 0, zIndex: 5}}

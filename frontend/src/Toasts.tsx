@@ -41,7 +41,13 @@ export const Toasts = () => {
 	});
 
 	return (
-		<UI.Column as="aside" position="fixed" m="12" style={{bottom: 0, right: 0, zIndex: 1}}>
+		<UI.Column
+			aria-label="Toasts sidebar"
+			as="aside"
+			position="fixed"
+			m="12"
+			style={{bottom: 0, right: 0, zIndex: 1}}
+		>
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
 					<ToastItem {...item}>{item.message}</ToastItem>
