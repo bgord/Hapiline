@@ -36,7 +36,12 @@ export function NotificationDropdown() {
 
 	return (
 		<UI.Column>
-			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
+			<UI.Button
+				aria-label="Notifications dropdown"
+				variant="bare"
+				onClick={toggleNotifications}
+				style={{position: "relative"}}
+			>
 				<UI.VisuallyHidden>Notifications dropdown</UI.VisuallyHidden>
 				<BellIcon />
 
