@@ -86,7 +86,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 				{habit?.id && (
 					<UI.Column px={["24", "12"]}>
-						<UI.Row px="12" style={{marginLeft: "-12px"}} wrap={[, "wrap"]} crossAxis="end">
+						<UI.Row wrap={[, "wrap"]} crossAxis="end" width="100%">
 							<UI.Row mr="6" mt="24">
 								<EditableHabitNameInput {...habit} key={habit?.name} />
 							</UI.Row>
