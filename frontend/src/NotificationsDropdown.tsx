@@ -8,7 +8,7 @@ import {api} from "./services/api";
 import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
-import {formatDay} from "./services/date-formatter";
+import {isToday, isYesterday, differenceInDays} from "date-fns";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -132,9 +132,7 @@ function NotificationItem({refetchNotifications, ...notification}: NotificationP
 		>
 			<UI.Column>
 				<UI.Text ml="6">{notification.content}</UI.Text>
-				<UI.Text variant="light" ml="6">
-					{formatDay(notification?.created_at)}
-				</UI.Text>
+				<NotificationDate createdAt={notification.created_at} />
 			</UI.Column>
 
 			{notification.status === "unread" && (
@@ -161,5 +159,22 @@ function NotificationItem({refetchNotifications, ...notification}: NotificationP
 				</UI.Button>
 			)}
 		</UI.Row>
+	);
+}
+
+function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) {
+	function formatNotificationDate() {
+		const date = new Date(createdAt);
+		const today = new Date();
+
+		if (isToday(date)) return "Today";
+		if (isYesterday(date)) return "Yesterday";
+		return `${differenceInDays(today, date)} days ago`;
+	}
+
+	return (
+		<UI.Text variant="light" ml="6">
+			{formatNotificationDate()}
+		</UI.Text>
 	);
 }
