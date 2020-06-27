@@ -48,7 +48,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				<UI.CloseIcon onClick={dismissDialog} />
 			</UI.Row>
 
-			<Tabs data-mt="24" defaultIndex={0}>
+			<Tabs data-mt="12" defaultIndex={0}>
 				<TabList>
 					<Tab as={UI.Button} variant="bare">
 						Habits
@@ -57,7 +57,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						Journal
 					</Tab>
 				</TabList>
-				<TabPanels data-mt="12">
+				<TabPanels data-mt="6">
 					<TabPanel>
 						<HabitTab day={day} onResolve={onResolve} {...stats} />
 					</TabPanel>

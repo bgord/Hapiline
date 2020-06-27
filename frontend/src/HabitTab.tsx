@@ -243,7 +243,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 			{!areThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
 				<UI.Column pb="48">
-					<UI.Row mainAxis="between" crossAxis="center" mt="24" mb="24">
+					<UI.Row mainAxis="between" crossAxis="center" mt="12" mb="6">
 						<UI.Header variant="extra-small">Tracked habits</UI.Header>
 
 						{areTrackedHabitsVisible && (
