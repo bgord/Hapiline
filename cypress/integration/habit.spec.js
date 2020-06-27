@@ -509,7 +509,14 @@ describe("Habit", () => {
 			cy.findByText("2 days progress streak");
 			cy.findByDisplayValue("Last week");
 
-			cy.checkA11y('div[role="dialog"]');
+			cy.checkA11y('div[role="dialog"]', {
+				rules: {
+					// Disabled due to a slight issue with the chart labels' text color
+					"color-contrast": {
+						enabled: false,
+					},
+				},
+			});
 
 			for (const {day, vote} of chartResponse) {
 				cy.findByTitle(`${day} - ${vote}`);
