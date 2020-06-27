@@ -14,7 +14,6 @@ import {api, AsyncReturnType} from "./services/api";
 import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
-import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 	const field = useEditableFieldState();
@@ -22,8 +21,6 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
-
-	const mediaQuery = useMediaQuery();
 
 	const [updateHabitName] = useMutation<DetailedHabit, DraftHabitPayload>(api.habit.patch, {
 		onSuccess: habit => {
@@ -47,7 +44,7 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 	);
 
 	return (
-		<UI.Row ml={mediaQuery === MEDIA_QUERY.default ? "12" : "0"} crossAxis="end" mt="24">
+		<UI.Row crossAxis="end" mt="24">
 			<UI.Field width="100%" mr="12">
 				<UI.Label htmlFor="editable_habit_name">Habit name</UI.Label>
 				<HabitNameInput
