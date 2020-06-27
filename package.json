@@ -5,7 +5,7 @@
   "description": "A habit tracker",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . --ext .js,.tsx,.ts --ignore-pattern node_modules/",
+    "lint": "eslint . --ext .js,.tsx,.ts --cache",
     "lint:fix": "eslint . --fix",
     "prettify": "pretty-quick",
     "prettify:staged": "pretty-quick --staged",
