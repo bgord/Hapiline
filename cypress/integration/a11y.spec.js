@@ -10,6 +10,10 @@ describe("a11y", () => {
 	// in case when I want to press "Enter" to trigger the "Skip to content" link.
 	// Cypress doesn't seem to work well for keyboard a11y testing.
 
+	beforeEach(() => {
+		cy.request("POST", "/test/db/seed");
+	});
+
 	it("skip nav for all main authenticated views", () => {
 		cy.login("pam");
 		cy.visit(DASHBOARD_URL);
