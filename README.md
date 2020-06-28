@@ -65,6 +65,8 @@ $ ./run.sh adonis migration:refresh
 $ ./run.sh adonis seed
 ```
 
+> TIP: After the first app configuration you can fire `npm run db:reseed` if you want to reseed the database.
+
 **Generate types**
 
 ```bash

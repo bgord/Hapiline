@@ -26,7 +26,7 @@ export const DashboardProgressStreakList: React.FC<{
 
 	return (
 		<>
-			<UI.Row mt="48" mb="24" crossAxis="center">
+			<UI.Row mt="24" crossAxis="center">
 				<UI.Header variant="extra-small">Progress streaks</UI.Header>
 				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
 					{progressStreakStats.length}
@@ -58,7 +58,7 @@ export const DashboardProgressStreakList: React.FC<{
 			</UI.Row>
 
 			{isProgressStreakListVisible && (
-				<UI.Column by="gray-1" mt="24">
+				<UI.Column by="gray-1" mt="6">
 					<UI.ExpandContractList max={5}>
 						{progressStreakStats.map(habit => (
 							<UI.Row

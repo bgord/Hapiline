@@ -8,7 +8,8 @@ import {api} from "./services/api";
 import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
-import {formatDay} from "./services/date-formatter";
+import {isToday, isYesterday, differenceInDays} from "date-fns";
+import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -19,6 +20,8 @@ export function NotificationDropdown() {
 	} = useToggle();
 
 	const mediaQuery = useMediaQuery();
+
+	useBodyScrollLock(areNotificationsVisible && mediaQuery === MEDIA_QUERY.lg);
 
 	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
 		queryKey: "notifications",
@@ -36,7 +39,12 @@ export function NotificationDropdown() {
 
 	return (
 		<UI.Column>
-			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
+			<UI.Button
+				aria-label="Notifications dropdown"
+				variant="bare"
+				onClick={toggleNotifications}
+				style={{position: "relative"}}
+			>
 				<UI.VisuallyHidden>Notifications dropdown</UI.VisuallyHidden>
 				<BellIcon />
 
@@ -58,6 +66,7 @@ export function NotificationDropdown() {
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
 						overflowY: "auto",
+						zIndex: 1,
 					}}
 				>
 					<UI.Column py="24" px="12">
@@ -127,9 +136,7 @@ function NotificationItem({refetchNotifications, ...notification}: NotificationP
 		>
 			<UI.Column>
 				<UI.Text ml="6">{notification.content}</UI.Text>
-				<UI.Text variant="light" ml="6">
-					{formatDay(notification?.created_at)}
-				</UI.Text>
+				<NotificationDate createdAt={notification.created_at} />
 			</UI.Column>
 
 			{notification.status === "unread" && (
@@ -156,5 +163,22 @@ function NotificationItem({refetchNotifications, ...notification}: NotificationP
 				</UI.Button>
 			)}
 		</UI.Row>
+	);
+}
+
+function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) {
+	function formatNotificationDate() {
+		const date = new Date(createdAt);
+		const today = new Date();
+
+		if (isToday(date)) return "today";
+		if (isYesterday(date)) return "yesterday";
+		return `${differenceInDays(today, date)} days ago`;
+	}
+
+	return (
+		<UI.Text variant="dimmed" ml="6" style={{fontSize: "12px"}}>
+			{formatNotificationDate()}
+		</UI.Text>
 	);
 }

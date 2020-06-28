@@ -67,6 +67,7 @@ export function CalendarWindow() {
 	return (
 		<UI.Column
 			as="main"
+			tabIndex={0}
 			mt={["24", "12"]}
 			width={["100%", "auto"]}
 			style={{maxWidth: "1520px"}}

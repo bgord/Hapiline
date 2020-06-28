@@ -94,7 +94,14 @@ export const HabitsWindow = () => {
 	}
 
 	return (
-		<UI.Column as="main" mx={["auto", "6"]} mt={["48", "12"]} mb="24" width={["view-l", "auto"]}>
+		<UI.Column
+			as="main"
+			tabIndex={0}
+			mx={["auto", "6"]}
+			mt={["48", "12"]}
+			mb="24"
+			width={["view-l", "auto"]}
+		>
 			{subview === "add_habit" && <AddHabitForm />}
 
 			<UI.ShowIf request={getHabitsRequestState} is={["error", "success"]}>
@@ -242,7 +249,7 @@ export const HabitsWindow = () => {
 							Clear
 						</UI.Button>
 
-						<UI.Text mb="6" mr="12" mt="12" ml="auto" data-testid="number-of-habit-search-results">
+						<UI.Text mb="6" mt="12" ml="auto" data-testid="number-of-habit-search-results">
 							<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
 						</UI.Text>
 					</UI.Row>

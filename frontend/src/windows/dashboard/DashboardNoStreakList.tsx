@@ -57,7 +57,7 @@ export const DashboardNoStreakList: React.FC<{
 			</UI.Row>
 
 			{isNoStreakListVisible && (
-				<UI.Column by="gray-1" mt="24">
+				<UI.Column by="gray-1" mt="6">
 					<UI.ExpandContractList max={5}>
 						{noStreakStats.map(habit => (
 							<UI.Row
