@@ -109,7 +109,13 @@ export function CalendarWindow() {
 				</UI.ErrorBanner>
 			</UI.ShowIf>
 
-			<UI.Card p="12" bg="gray-0" style={getCalendarGrid(mediaQuery)} data-testid="calendar">
+			<UI.Card
+				p="12"
+				bg="gray-0"
+				overflow="scroll"
+				style={getCalendarGrid(mediaQuery)}
+				data-testid="calendar"
+			>
 				{dayCellsWithFullStats.map(props => (
 					<CalendarDay
 						key={props.day.toString()}
@@ -131,7 +137,6 @@ function getCalendarGrid(mediaQuery: MEDIA_QUERY): React.CSSProperties {
 		gridTemplateRows: "repeat(6, 100px)",
 		gridGap: "12px",
 		width: "100%",
-		overflowX: "scroll",
 	};
 }
 

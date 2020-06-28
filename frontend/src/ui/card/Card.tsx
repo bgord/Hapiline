@@ -10,12 +10,14 @@ import {
 	Paddings,
 	Widths,
 	ZIndexes,
+	Overflows,
 	getMarginTokens,
 	getPaddingTokens,
 	getPositionToken,
 	getBackgroundToken,
 	getWidthToken,
 	getZIndexToken,
+	getOverflowToken,
 } from "../design-system";
 
 type CardOwnProps = JSX.IntrinsicElements["div"] &
@@ -24,7 +26,8 @@ type CardOwnProps = JSX.IntrinsicElements["div"] &
 	Positions &
 	Backgrounds &
 	Widths &
-	ZIndexes;
+	ZIndexes &
+	Overflows;
 
 export type CardProps<E extends React.ElementType> = PolymorphicComponentProps<E, CardOwnProps>;
 
@@ -38,6 +41,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	bg,
 	width,
 	z,
+	overflow,
 	...props
 }: CardProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
@@ -46,6 +50,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	const backgroundToken = getBackgroundToken(bg);
 	const widthToken = getWidthToken(width);
 	const zIndexToken = getZIndexToken(z);
+	const overflowToken = getOverflowToken(overflow);
 
 	return (
 		<Box
@@ -57,6 +62,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 			{...backgroundToken}
 			{...widthToken}
 			{...zIndexToken}
+			{...overflowToken}
 			{...props}
 		/>
 	);

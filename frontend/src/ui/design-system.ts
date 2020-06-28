@@ -112,6 +112,16 @@ export function getZIndexToken(z?: ZIndex) {
 	};
 }
 
+type Overflow = "auto" | "scroll";
+export type Overflows = {
+	overflow?: Overflow;
+};
+export function getOverflowToken(overflow?: Overflow) {
+	return {
+		"data-overflow": overflow,
+	};
+}
+
 type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
 type ResponsiveSpacingScaleType = SpacingScale | [SpacingScale, SpacingScale];
 export interface Margins {

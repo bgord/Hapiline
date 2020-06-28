@@ -974,3 +974,15 @@ body {
 *[data-z="2"] {
 	z-index: var(--z-index-2);
 }
+
+/* ----------------------------------------------------- */
+/* Overflows */
+/* ----------------------------------------------------- */
+
+*[data-overflow="auto"] {
+	overflow: auto;
+}
+
+*[data-overflow="scroll"] {
+	overflow: scroll;
+}

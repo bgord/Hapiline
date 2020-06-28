@@ -63,10 +63,10 @@ export function NotificationDropdown() {
 					position="absolute"
 					width={["view-m", "auto"]}
 					z="1"
+					overflow="auto"
 					style={{
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
-						overflowY: "auto",
 					}}
 				>
 					<UI.Column py="24" px="12">
