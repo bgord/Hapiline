@@ -12,6 +12,7 @@ import {
 	Margins,
 	Paddings,
 	Wraps,
+	ZIndexes,
 	getMarginTokens,
 	getPaddingTokens,
 	getAlignmentTokens,
@@ -20,6 +21,7 @@ import {
 	getBackgroundToken,
 	getBorderTokens,
 	getWrapToken,
+	getZIndexToken,
 } from "../design-system";
 
 type RowOwnProps = Margins &
@@ -29,7 +31,8 @@ type RowOwnProps = Margins &
 	Positions &
 	Backgrounds &
 	Borders &
-	Wraps;
+	Wraps &
+	ZIndexes;
 
 export type RowProps<E extends React.ElementType> = PolymorphicComponentProps<E, RowOwnProps>;
 
@@ -45,6 +48,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 	bg,
 	b, bx, by, bt, br, bb, bl, bw,
 	wrap,
+	z,
 	...props
 }: RowProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
@@ -55,6 +59,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 	const backgroundToken = getBackgroundToken(bg);
 	const borderTokens = getBorderTokens({b, bx, by, bt, br, bb, bl, bw});
 	const wrapToken = getWrapToken(wrap);
+	const zIndexToken = getZIndexToken(z);
 
 	return (
 		<Box
@@ -68,6 +73,7 @@ export function Row<E extends React.ElementType = typeof defaultElement>({
 			{...backgroundToken}
 			{...borderTokens}
 			{...wrapToken}
+			{...zIndexToken}
 			{...props}
 		/>
 	);

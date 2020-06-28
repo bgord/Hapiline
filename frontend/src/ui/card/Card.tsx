@@ -9,11 +9,13 @@ import {
 	Margins,
 	Paddings,
 	Widths,
+	ZIndexes,
 	getMarginTokens,
 	getPaddingTokens,
 	getPositionToken,
 	getBackgroundToken,
 	getWidthToken,
+	getZIndexToken,
 } from "../design-system";
 
 type CardOwnProps = JSX.IntrinsicElements["div"] &
@@ -21,7 +23,8 @@ type CardOwnProps = JSX.IntrinsicElements["div"] &
 	Margins &
 	Positions &
 	Backgrounds &
-	Widths;
+	Widths &
+	ZIndexes;
 
 export type CardProps<E extends React.ElementType> = PolymorphicComponentProps<E, CardOwnProps>;
 
@@ -34,6 +37,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	position = "static",
 	bg,
 	width,
+	z,
 	...props
 }: CardProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
@@ -41,6 +45,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	const positionToken = getPositionToken(position);
 	const backgroundToken = getBackgroundToken(bg);
 	const widthToken = getWidthToken(width);
+	const zIndexToken = getZIndexToken(z);
 
 	return (
 		<Box
@@ -51,6 +56,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 			{...positionToken}
 			{...backgroundToken}
 			{...widthToken}
+			{...zIndexToken}
 			{...props}
 		/>
 	);
