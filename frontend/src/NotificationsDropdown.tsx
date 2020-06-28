@@ -9,6 +9,7 @@ import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 import {isToday, isYesterday, differenceInDays} from "date-fns";
+import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -19,6 +20,8 @@ export function NotificationDropdown() {
 	} = useToggle();
 
 	const mediaQuery = useMediaQuery();
+
+	useBodyScrollLock(areNotificationsVisible && mediaQuery === MEDIA_QUERY.lg);
 
 	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
 		queryKey: "notifications",
