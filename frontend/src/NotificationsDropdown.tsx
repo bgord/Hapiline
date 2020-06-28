@@ -168,13 +168,13 @@ function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) 
 		const date = new Date(createdAt);
 		const today = new Date();
 
-		if (isToday(date)) return "Today";
-		if (isYesterday(date)) return "Yesterday";
+		if (isToday(date)) return "today";
+		if (isYesterday(date)) return "yesterday";
 		return `${differenceInDays(today, date)} days ago`;
 	}
 
 	return (
-		<UI.Text variant="light" ml="6">
+		<UI.Text variant="dimmed" ml="6" style={{fontSize: "12px"}}>
 			{formatNotificationDate()}
 		</UI.Text>
 	);
