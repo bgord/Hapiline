@@ -3,6 +3,7 @@
 import {format, getDate} from "date-fns";
 
 const CALENDAR_URL = "/calendar";
+const DASHBOARD_URL = "/dashboard";
 
 const today = Date.now();
 
@@ -15,12 +16,12 @@ const dayOfTheMonthTodayIndex = dayOfTheMonthToday - 1;
 describe("day dialog", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
-
-		cy.login("dwight");
-		cy.visit(CALENDAR_URL);
 	});
 
 	it("dialog", () => {
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
 		cy.injectAxe();
 
 		cy.findAllByTestId("calendar").within(() => {
@@ -131,6 +132,9 @@ describe("day dialog", () => {
 	});
 
 	it("doesn't render not trackable habits", () => {
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
 		cy.server();
 
 		if (Cypress.env("device") === "mobile") {
@@ -183,6 +187,9 @@ describe("day dialog", () => {
 	});
 
 	it("habit votes", () => {
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
@@ -231,6 +238,9 @@ describe("day dialog", () => {
 	});
 
 	it("vote comments", () => {
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
@@ -294,6 +304,9 @@ describe("day dialog", () => {
 	});
 
 	it("add a comment to a habit with no vote", () => {
+		cy.login("dwight");
+		cy.visit(CALENDAR_URL);
+
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
@@ -339,6 +352,8 @@ describe("day dialog", () => {
 	});
 
 	it("correct search by highlighted_habit_id", () => {
+		const today = format(new Date(), "yyyy-MM-dd");
+
 		const urlOfHabitHighlightedInDashboardDayPreview = `http://hapiline.localhost/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=31`;
 
 		cy.login("pam");

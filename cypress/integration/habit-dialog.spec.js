@@ -1,5 +1,7 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
+const HABITS_URL = "/habits";
+
 describe("habit dialog", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
