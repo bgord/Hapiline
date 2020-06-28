@@ -34,10 +34,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			data-mt="48"
 			data-lg-mt="12"
 			data-mb="0"
-			style={{
-				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
-				overflow: "auto",
-			}}
+			data-overflow="auto"
+			style={{maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh"}}
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
 		>

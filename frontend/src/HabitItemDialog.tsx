@@ -62,11 +62,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			data-lg-mx="6"
 			data-lg-mt="12"
 			data-mb="0"
+			data-overflow="auto"
 			aria-label="Show habit preview"
-			style={{
-				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
-				overflow: "auto",
-			}}
+			style={{maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh"}}
 		>
 			<UI.Column>
 				<UI.Row bg="gray-1" p={["24", "6"]} mainAxis="between">

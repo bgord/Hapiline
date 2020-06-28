@@ -15,7 +15,8 @@ export const MediaQueryDevTools = () => {
 			aria-label="Media query dev tools"
 			p="3"
 			bg="gray-3"
-			style={{top: 0, zIndex: 5}}
+			z="2"
+			style={{top: 0}}
 			position="absolute"
 			width="auto"
 		>

@@ -44,7 +44,7 @@ export function NotificationDropdown() {
 				aria-label="Notifications dropdown"
 				variant="bare"
 				onClick={toggleNotifications}
-				style={{position: "relative"}}
+				position="relative"
 			>
 				<UI.VisuallyHidden>Notifications dropdown</UI.VisuallyHidden>
 				<BellIcon />
@@ -63,11 +63,11 @@ export function NotificationDropdown() {
 					id="notification-list"
 					position="absolute"
 					width={["view-m", "auto"]}
+					z="1"
+					overflow="auto"
 					style={{
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
-						overflowY: "auto",
-						zIndex: 1,
 					}}
 				>
 					<UI.Column py="24" px="12">
