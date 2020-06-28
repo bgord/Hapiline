@@ -535,4 +535,26 @@ describe("Calendar", () => {
 
 		cy.findByText("Couldn't fetch calendar stats");
 	});
+
+	it("correct search by highlighted_habit_id", () => {
+		const urlOfHabitHighlightedInDashboardDayPreview = `http://hapiline.localhost/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=31`;
+
+		cy.login("pam");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findAllByText("No vote yet")
+			.first()
+			.click();
+
+		cy.url().should("be.equal", urlOfHabitHighlightedInDashboardDayPreview);
+
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("0 lorem");
+			cy.findByText("10 loremlorem").should("not.exist");
+
+			cy.findByTestId("day-dialog-habits")
+				.children()
+				.should("have.length", 1);
+		});
+	});
 });

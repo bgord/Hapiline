@@ -7,6 +7,20 @@ describe("Journal", () => {
 		cy.request("POST", "/test/db/seed");
 	});
 
+	it("journal textarea is available in a day dialog", () => {
+		cy.login("jim");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("View today").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("Journal")
+				.first()
+				.click({force: true});
+			cy.findAllByLabelText("Journal");
+		});
+	});
+
 	it("updating existing journal with a non-empty content", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);

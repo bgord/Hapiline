@@ -11,7 +11,7 @@ describe("Dashboard", () => {
 		cy.request("POST", "/test/db/seed");
 	});
 
-	it("upper part", () => {
+	it("dashboard stats", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 		cy.injectAxe();
@@ -212,7 +212,7 @@ describe("Dashboard", () => {
 		cy.url().should("contain", "/habits");
 	});
 
-	it("upper part request errors", () => {
+	it("dashboard stats request errors", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -240,47 +240,7 @@ describe("Dashboard", () => {
 		cy.findByText("Cannot load dashboard stats now, please try again.");
 	});
 
-	it("notifications", () => {
-		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
-
-		cy.injectAxe();
-
-		cy.findByText("Notifications dropdown").click({force: true});
-
-		cy.get("#notification-list").within(() => {
-			cy.findByText("Notifications");
-			cy.findByText("1");
-
-			cy.findByText("Read");
-			cy.findByText("Unread");
-
-			cy.findAllByText("Congratulations! You did something good.").should("have.length", 2);
-			cy.findAllByText("today").should("have.length", 2);
-			cy.findByText("Read").click();
-
-			cy.findByText("Read").should("not.exist");
-			cy.findAllByText("Unread").should("have.length", 2);
-
-			cy.findByText("Notifications");
-			cy.findByText("0");
-
-			cy.checkA11y("html", {
-				rules: {
-					// Disabled due to a slight issue with the notification date text color
-					"color-contrast": {
-						enabled: false,
-					},
-				},
-			});
-
-			cy.findByText("Close dialog").click({force: true});
-		});
-
-		cy.get("#notification-list").should("not.exist");
-	});
-
-	it("streak stats", () => {
+	it("dashboard streak stats", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -409,7 +369,7 @@ describe("Dashboard", () => {
 		cy.findByText("nineth");
 	});
 
-	it("streak stats error", () => {
+	it("dashboard streak stats error", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -424,7 +384,7 @@ describe("Dashboard", () => {
 		cy.findByText("Couldn't fetch dashboard streak stats.");
 	});
 
-	it("Dashboard streaks get refreshed after a vote from the View Today modal", () => {
+	it("dashboard streaks get refreshed after a vote from the View Today modal", () => {
 		cy.login("jim");
 		cy.visit(DASHBOARD_URL);
 
@@ -445,20 +405,6 @@ describe("Dashboard", () => {
 
 		cy.findByText("1 day progress streak").should("not.exist");
 		cy.findByText("2 days progress streak");
-	});
-
-	it("journal textarea is available in a day dialog", () => {
-		cy.login("jim");
-		cy.visit(DASHBOARD_URL);
-
-		cy.findByText("View today").click();
-
-		cy.findByRole("dialog").within(() => {
-			cy.findAllByText("Journal")
-				.first()
-				.click({force: true});
-			cy.findAllByLabelText("Journal");
-		});
 	});
 
 	it("no vote badge is shown where there's no vote for given habit today", () => {
@@ -542,27 +488,5 @@ describe("Dashboard", () => {
 		cy.findByText("Show progress streak list");
 
 		cy.clearLocalStorage();
-	});
-
-	it("correct search by highlighted_habit_id", () => {
-		const urlOfHabitHighlightedInDashboardDayPreview = `http://hapiline.localhost/dashboard?subview=day_preview&preview_day=${today}&highlighted_habit_id=31`;
-
-		cy.login("pam");
-		cy.visit(DASHBOARD_URL);
-
-		cy.findAllByText("No vote yet")
-			.first()
-			.click();
-
-		cy.url().should("be.equal", urlOfHabitHighlightedInDashboardDayPreview);
-
-		cy.findByRole("dialog").within(() => {
-			cy.findAllByText("0 lorem");
-			cy.findByText("10 loremlorem").should("not.exist");
-
-			cy.findByTestId("day-dialog-habits")
-				.children()
-				.should("have.length", 1);
-		});
 	});
 });
