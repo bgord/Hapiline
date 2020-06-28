@@ -59,6 +59,10 @@
 
 	--view-width-m: 600px;
 	--view-width-l: 800px;
+
+	--z-index-0: 0;
+	--z-index-1: 1;
+	--z-index-2: 2;
 }
 
 html {
@@ -953,4 +957,20 @@ body {
 	*[data-lg-wrap="wrap-reverse"] {
 		flex-wrap: wrap-reverse;
 	}
+}
+
+/* ----------------------------------------------------- */
+/* z indexes */
+/* ----------------------------------------------------- */
+
+*[data-z="0"] {
+	z-index: var(--z-index-0);
+}
+
+*[data-z="1"] {
+	z-index: var(--z-index-1);
+}
+
+*[data-z="2"] {
+	z-index: var(--z-index-2);
 }
