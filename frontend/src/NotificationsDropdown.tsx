@@ -43,7 +43,7 @@ export function NotificationDropdown() {
 				aria-label="Notifications dropdown"
 				variant="bare"
 				onClick={toggleNotifications}
-				style={{position: "relative"}}
+				position="relative"
 			>
 				<UI.VisuallyHidden>Notifications dropdown</UI.VisuallyHidden>
 				<BellIcon />
