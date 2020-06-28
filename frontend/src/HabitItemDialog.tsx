@@ -146,7 +146,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 								<UI.Wrapper>
 									<UI.Text variant="dimmed" mr="6" mt="12">
-										Updated at:
+										Last update:
 									</UI.Text>
 									<UI.Text variant="monospaced">{formatTime(habit.updated_at)}</UI.Text>
 								</UI.Wrapper>
