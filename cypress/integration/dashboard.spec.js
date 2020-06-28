@@ -30,7 +30,7 @@ describe("Dashboard", () => {
 			.eq(5)
 			.should(
 				"include.text",
-				"You're on a good track!You have 6 tracked habits to vote for left out of 10 (and 0 untracked habits).",
+				"You're on a good track! You have 6 tracked habits to vote for left out of 10 (and 0 untracked habits).",
 			);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -167,7 +167,6 @@ describe("Dashboard", () => {
 				"include.text",
 				"Congratulations! You voted for every one of 10 tracked habits today!",
 			);
-
 		cy.findByText("You also have 0 untracked habits.");
 
 		cy.findByTestId("chart-today").within(() => {
@@ -257,7 +256,7 @@ describe("Dashboard", () => {
 			cy.findByText("Unread");
 
 			cy.findAllByText("Congratulations! You did something good.").should("have.length", 2);
-			cy.findAllByText("Today").should("have.length", 2);
+			cy.findAllByText("today").should("have.length", 2);
 			cy.findByText("Read").click();
 
 			cy.findByText("Read").should("not.exist");

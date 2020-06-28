@@ -38,7 +38,7 @@ export const DashboardMotivationalText: React.FC<{
 		),
 		not_all_voted: (
 			<UI.Column>
-				<UI.Text>You're on a good track!</UI.Text>
+				<UI.Text>You're on a good track!</UI.Text>{" "}
 				<UI.Text>
 					You have <UI.Text variant="bold">{numberOfTrackedHabits - numberOfNonEmptyVotes}</UI.Text>{" "}
 					tracked habits to vote for left out of{" "}
@@ -51,12 +51,12 @@ export const DashboardMotivationalText: React.FC<{
 			<UI.Column>
 				<UI.Row wrap="wrap">
 					<UI.Text variant="bold" mr="6">
-						Congratulations!
+						Congratulations!{" "}
 					</UI.Text>
 
 					<UI.Text>
 						You voted for every one of <UI.Text variant="bold">{numberOfTrackedHabits}</UI.Text>{" "}
-						tracked habits today!
+						tracked habits today!{" "}
 					</UI.Text>
 				</UI.Row>
 
