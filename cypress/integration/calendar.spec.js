@@ -19,9 +19,11 @@ const dayOfTheMonthTodayIndex = dayOfTheMonthToday - 1;
 const currentMonthString = format(today, "MMMM yyyy");
 
 describe("Calendar", () => {
-	beforeEach(() => {
+	before(() => {
 		cy.request("POST", "/test/db/seed");
+	});
 
+	beforeEach(() => {
 		cy.login("dwight");
 		cy.visit(CALENDAR_URL);
 	});

@@ -7,7 +7,7 @@ const DASHBOARD_URL = "/dashboard";
 const today = format(new Date(), "yyyy-MM-dd");
 
 describe("Dashboard", () => {
-	beforeEach(() => {
+	before(() => {
 		cy.request("POST", "/test/db/seed");
 	});
 
