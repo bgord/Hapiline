@@ -58,7 +58,7 @@ export const DashboardRegressStreakList: React.FC<{
 			</UI.Row>
 
 			{isRegressStreakListVisible && (
-				<UI.Column by="gray-1" mt="24">
+				<UI.Column by="gray-1" mt="6">
 					<UI.ExpandContractList max={5}>
 						{regressStreakStats.map(habit => (
 							<UI.Row

@@ -249,7 +249,7 @@ export const HabitsWindow = () => {
 							Clear
 						</UI.Button>
 
-						<UI.Text mb="6" mr="12" mt="12" ml="auto" data-testid="number-of-habit-search-results">
+						<UI.Text mb="6" mt="12" ml="auto" data-testid="number-of-habit-search-results">
 							<UI.Text variant="bold">{numberOfHabitResults}</UI.Text> results
 						</UI.Text>
 					</UI.Row>

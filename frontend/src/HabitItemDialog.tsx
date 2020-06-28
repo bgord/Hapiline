@@ -86,7 +86,7 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 				{habit?.id && (
 					<UI.Column px={["24", "12"]}>
-						<UI.Row px="12" style={{marginLeft: "-12px"}} wrap={[, "wrap"]} crossAxis="end">
+						<UI.Row wrap={[, "wrap"]} crossAxis="end" width="100%">
 							<UI.Row mr="6" mt="24">
 								<EditableHabitNameInput {...habit} key={habit?.name} />
 							</UI.Row>
@@ -134,9 +134,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
 
-							<UI.Row mb="48" mainAxis="between" crossAxis="end" wrap={[, "wrap"]}>
+							<UI.Row mt="12" mb="48" mainAxis="between" crossAxis="end" wrap={[, "wrap"]}>
 								<UI.Wrapper>
-									<UI.Text variant="dimmed" mr="6" mt="48">
+									<UI.Text variant="dimmed" mr="6" mt="24">
 										Created at:
 									</UI.Text>
 									<UI.Text variant="monospaced" mr="24">
@@ -145,8 +145,8 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								</UI.Wrapper>
 
 								<UI.Wrapper>
-									<UI.Text variant="dimmed" mr="6" mt="48">
-										Last updated at:
+									<UI.Text variant="dimmed" mr="6" mt="12">
+										Last update:
 									</UI.Text>
 									<UI.Text variant="monospaced">{formatTime(habit.updated_at)}</UI.Text>
 								</UI.Wrapper>

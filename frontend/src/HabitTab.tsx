@@ -96,10 +96,10 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				<UI.SuccessBanner mt="24">
 					<UI.Text ml="12" style={{color: "#025D26"}}>
 						Congratulations! You've voted for every habit.
+						<UI.Emoji ml="12" ariaLabel="Party emoji">
+							{UI.labelToEmoji.party}
+						</UI.Emoji>
 					</UI.Text>
-					<UI.Emoji ml="12" ariaLabel="Party emoji">
-						{UI.labelToEmoji.party}
-					</UI.Emoji>
 				</UI.SuccessBanner>
 			)}
 
@@ -243,7 +243,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 			{!areThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
 				<UI.Column pb="48">
-					<UI.Row mainAxis="between" crossAxis="center" mt="24" mb="24">
+					<UI.Row mainAxis="between" crossAxis="center" mt="12" mb="6">
 						<UI.Header variant="extra-small">Tracked habits</UI.Header>
 
 						{areTrackedHabitsVisible && (
