@@ -48,14 +48,15 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 			<UI.Field width="100%">
 				<UI.Label htmlFor="journal">Journal</UI.Label>
 				<UI.Textarea
-					style={{minHeight: "400px", fontSize: "1.1rem", marginBottom: "1rem"}} //TODO: Adjust to new solution
+					style={{minHeight: "400px"}} //TODO: Adjust to new solution
 					id="journal"
 					onChange={e => setJournalContent(e.target.value)}
 					value={journalContent}
 				/>
-				<UI.Button mt="12" onClick={handleSaveRequest} variant="primary">
+				<UI.Button mt="24" onClick={handleSaveRequest} variant="primary">
 					Save
 				</UI.Button>
+
 				<UI.ShowIf request={saveJournalRequestState} is="error">
 					<UI.ErrorBanner m="24">Couldn't save daily journal, please try again.</UI.ErrorBanner>
 				</UI.ShowIf>
