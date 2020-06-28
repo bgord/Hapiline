@@ -46,7 +46,8 @@ export const Toasts = () => {
 			as="aside"
 			position="fixed"
 			m="12"
-			style={{bottom: 0, right: 0, zIndex: 1}}
+			z="1"
+			style={{bottom: 0, right: 0}}
 		>
 			{transitions.map(({item, props, key}) => (
 				<animated.div key={key} style={props}>
