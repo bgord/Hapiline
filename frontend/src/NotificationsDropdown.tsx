@@ -27,6 +27,7 @@ export function NotificationDropdown() {
 		queryKey: "notifications",
 		queryFn: api.notifications.get,
 		config: {
+			retry: false,
 			onError: () => triggerErrorToast("Couldn't fetch notifications."),
 		},
 	});
@@ -100,7 +101,7 @@ export function NotificationDropdown() {
 						</UI.ShowIf>
 
 						<UI.ShowIf request={getNotificationsRequestState} is="error">
-							<UI.Error>Couldn't fetch notifications...</UI.Error>
+							<UI.Error>Couldn't fetch notifications.</UI.Error>
 						</UI.ShowIf>
 					</UI.Column>
 				</UI.Card>
