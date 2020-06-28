@@ -100,7 +100,7 @@ describe("day dialog", () => {
 				.should("have.length", 4);
 
 			cy.findByLabelText("Show unvoted (6)").check();
-			y.findByTestId("day-dialog-habits")
+			cy.findByTestId("day-dialog-habits")
 				.children()
 				.should("have.length", 6);
 

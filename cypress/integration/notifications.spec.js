@@ -1,6 +1,10 @@
 const DASHBOARD_URL = "/dashboard";
 
 describe("notifications", () => {
+	beforeEach(() => {
+		cy.request("POST", "/test/db/seed");
+	});
+
 	it("displays notifications", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
