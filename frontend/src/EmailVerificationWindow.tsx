@@ -28,11 +28,17 @@ export const EmailVerificationWindow = () => {
 			<UI.ShowIf request={emailVerificationRequestState} is="success">
 				<UI.Row mt="48" width="100%" mainAxis="center">
 					<UI.SuccessBanner size="big">
-						<UI.Text ml="12">Success! You can </UI.Text>
-						<UI.Text variant="link" mx="3" as={Link} to="/login">
-							login
-						</UI.Text>
-						<UI.Text> now.</UI.Text>
+						<UI.Column>
+							<UI.Text ml="12">Email verified successfully!</UI.Text>
+
+							<UI.Row>
+								<UI.Text ml="12">You can</UI.Text>
+								<UI.Text variant="link" mx="3" as={Link} to="/login">
+									login
+								</UI.Text>
+								<UI.Text> now.</UI.Text>
+							</UI.Row>
+						</UI.Column>
 					</UI.SuccessBanner>
 				</UI.Row>
 			</UI.ShowIf>
@@ -40,7 +46,10 @@ export const EmailVerificationWindow = () => {
 			<UI.ShowIf request={emailVerificationRequestState} is="error">
 				<UI.Row mainAxis="center" width="100%">
 					<UI.ErrorBanner mt="48" size="big">
-						Invalid or expired token
+						<UI.Column>
+							<UI.Text>We cannot verify your email :(</UI.Text>
+							<UI.Text>Invalid or expired token.</UI.Text>
+						</UI.Column>
 					</UI.ErrorBanner>
 				</UI.Row>
 			</UI.ShowIf>

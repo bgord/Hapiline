@@ -96,10 +96,10 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				<UI.SuccessBanner mt="24">
 					<UI.Text ml="12" style={{color: "#025D26"}}>
 						Congratulations! You've voted for every habit.
+						<UI.Emoji ml="12" ariaLabel="Party emoji">
+							{UI.labelToEmoji.party}
+						</UI.Emoji>
 					</UI.Text>
-					<UI.Emoji ml="12" ariaLabel="Party emoji">
-						{UI.labelToEmoji.party}
-					</UI.Emoji>
 				</UI.SuccessBanner>
 			)}
 

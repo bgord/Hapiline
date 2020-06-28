@@ -9,6 +9,7 @@ import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 import {isToday, isYesterday, differenceInDays} from "date-fns";
+import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -19,6 +20,8 @@ export function NotificationDropdown() {
 	} = useToggle();
 
 	const mediaQuery = useMediaQuery();
+
+	useBodyScrollLock(areNotificationsVisible && mediaQuery === MEDIA_QUERY.lg);
 
 	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
 		queryKey: "notifications",
@@ -63,6 +66,7 @@ export function NotificationDropdown() {
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
 						overflowY: "auto",
+						zIndex: 1,
 					}}
 				>
 					<UI.Column py="24" px="12">
@@ -167,13 +171,13 @@ function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) 
 		const date = new Date(createdAt);
 		const today = new Date();
 
-		if (isToday(date)) return "Today";
-		if (isYesterday(date)) return "Yesterday";
+		if (isToday(date)) return "today";
+		if (isYesterday(date)) return "yesterday";
 		return `${differenceInDays(today, date)} days ago`;
 	}
 
 	return (
-		<UI.Text variant="light" ml="6">
+		<UI.Text variant="dimmed" ml="6" style={{fontSize: "12px"}}>
 			{formatNotificationDate()}
 		</UI.Text>
 	);
