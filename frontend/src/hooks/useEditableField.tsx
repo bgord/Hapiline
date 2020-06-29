@@ -1,7 +1,5 @@
 import React from "react";
 
-import * as UI from "../ui";
-
 interface UseEditableFieldStateReturnType {
 	state: "idle" | "focused";
 	setIdle: VoidFunction;
@@ -60,25 +58,3 @@ export function useEditableFieldValue({
 	}
 	return [value, {onClear, onChange, onUpdate}];
 }
-
-export const CancelButton: React.FC<UseEditableFieldStateReturnType &
-	React.ComponentPropsWithoutRef<"button">> = ({state, setIdle, setFocused, onClick, ...props}) => (
-	<>
-		{state === "focused" && (
-			<UI.Button
-				ml="6"
-				variant="outlined"
-				onClick={event => {
-					setIdle();
-					if (onClick) onClick(event);
-				}}
-				{...props}
-			/>
-		)}
-	</>
-);
-
-export const SaveButton: React.FC<UseEditableFieldStateReturnType &
-	React.ComponentPropsWithoutRef<"button">> = ({state, setIdle, setFocused, ...props}) => (
-	<>{state === "focused" && <UI.Button variant="primary" {...props} />}</>
-);
