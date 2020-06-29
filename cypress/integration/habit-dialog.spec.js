@@ -283,39 +283,84 @@ describe("habit dialog", () => {
 		});
 	});
 
-	it("changing name", () => {
+	it("changing name to a non-empty value", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		// "Save" flow
 		cy.findByText("0 lorem xxx").should("not.exist");
 		cy.findAllByText("More")
 			.first()
 			.click();
 
+		// At first, the two buttons should be disabled
+		cy.findByDisplayValue("0 lorem");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+
 		cy.findByDisplayValue("0 lorem").type(" xxx");
-		cy.findByText("Cancel");
-		cy.findByText("Save").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+
+		cy.findAllByText("Save")
+			.first()
+			.click();
+
 		cy.findByText("Name updated successfully!");
+
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+
 		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
 
 		cy.findByText("0 lorem xxx");
 		cy.findByText("0 lorem").should("not.exist");
+	});
 
-		// Enter flow
-		cy.findByText("1 loremlorem yyy").should("not.exist");
+	it("changing name to an empty value is impossible", () => {
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findByText("0 lorem xxx").should("not.exist");
 		cy.findAllByText("More")
-			.eq(1)
+			.first()
 			.click();
 
-		cy.findByDisplayValue("1 loremlorem").type(" yyy{enter}");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Cancel").should("not.exist");
-		cy.findAllByText("Name updated successfully!");
-		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
+		// At first, the two buttons should be disabled
+		cy.findByDisplayValue("0 lorem");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
 
-		cy.findByText("1 loremlorem yyy");
-		cy.findByText("1 loremlorem").should("not.exist");
+		// After clearing the input, save butotn should be disabled
+		// but users still has a way to cancel to the previous name
+		cy.findByDisplayValue("0 lorem").clear();
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
+
+		cy.findByDisplayValue("0 lorem");
 	});
 
 	it("cancel changing name", () => {
@@ -327,16 +372,22 @@ describe("habit dialog", () => {
 			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" nono");
-		cy.findByText("Cancel").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
 		cy.findByDisplayValue("0 lorem");
 
 		cy.findByDisplayValue("0 lorem")
 			.clear()
 			.type("6 lorem");
-		cy.findByText("Save").click();
+		cy.findAllByText("Save")
+			.first()
+			.click();
 		cy.findByText("Given habit already exists.");
 
-		cy.findByText("Cancel").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
 		cy.findByDisplayValue("0 lorem");
 	});
 
@@ -355,8 +406,12 @@ describe("habit dialog", () => {
 
 		cy.findByText("Given habit already exists.");
 
-		cy.findByText("Save");
-		cy.findByText("Cancel");
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
 	});
 
 	it("changing name error", () => {
@@ -382,9 +437,15 @@ describe("habit dialog", () => {
 			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" xxx");
-		cy.findByText("Save").click();
-		cy.findByText("Save");
-		cy.findByText("Cancel");
+		cy.findAllByText("Save")
+			.first()
+			.click();
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
 		cy.findByText(errorMessage);
 
 		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));

@@ -61,7 +61,7 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 				variant="primary"
 				mr="3"
 				mt="12"
-				disabled={isHabitNamePristine}
+				disabled={isHabitNamePristine || newHabitName === ""}
 				onClick={newHabitNameHelpers.onUpdate}
 			>
 				Save
