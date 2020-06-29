@@ -18,12 +18,7 @@ import {
 } from "./models";
 import * as UI from "./ui";
 import {api} from "./services/api";
-import {
-	useEditableFieldState,
-	useEditableFieldValue,
-	CancelButton,
-	SaveButton,
-} from "./hooks/useEditableField";
+import {useEditableFieldState, useEditableFieldValue} from "./hooks/useEditableField";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useToggle} from "./hooks/useToggle";
 import {UrlBuilder} from "./services/url-builder";
@@ -94,6 +89,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	const dayBeforeYesterday = subDays(new Date(), 2);
 	const isBeforeDayBeforeYesterday = isBefore(new Date(day), dayBeforeYesterday);
 
+	const comment = habitWithPossibleVote.vote?.comment ?? null;
+
 	function changeVote(type: NonNullable<HabitVoteType>) {
 		addHabitDayVote({
 			day: new Date(day),
@@ -102,6 +99,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 			comment: habitWithPossibleVote.vote?.comment ?? null,
 		});
 	}
+
+	const isVoteCommentPristine = comment === newComment || (!comment && !newComment);
 
 	return (
 		<>
@@ -213,6 +212,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								<UI.Label htmlFor="vote_comment">Vote comment</UI.Label>
 								<UI.Textarea
 									id="vote_comment"
+									disabled={isBeforeDayBeforeYesterday}
 									key={habitWithPossibleVote.vote?.comment ?? undefined}
 									onFocus={textarea.setFocused}
 									placeholder="Write something..."
@@ -221,12 +221,22 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								/>
 							</UI.Field>
 							<UI.Row mb="12">
-								<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+								<UI.Button
+									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									variant="primary"
+									onClick={newCommentHelpers.onUpdate}
+									mr="6"
+								>
 									Save
-								</SaveButton>
-								<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+								</UI.Button>
+
+								<UI.Button
+									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									variant="outlined"
+									onClick={newCommentHelpers.onClear}
+								>
 									Cancel
-								</CancelButton>
+								</UI.Button>
 							</UI.Row>
 						</UI.Column>
 					)}

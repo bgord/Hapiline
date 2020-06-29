@@ -186,7 +186,7 @@ const EditableDescription: React.FC<{
 	const {getArgErrorMessage} = getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
 
-	const hasDescriptionBeenChanged =
+	const isHabitDescriptionPristine =
 		description === newDescription || (!description && !newDescription);
 
 	return (
@@ -209,7 +209,7 @@ const EditableDescription: React.FC<{
 			<UI.Row>
 				<UI.Button
 					variant="primary"
-					disabled={hasDescriptionBeenChanged}
+					disabled={isHabitDescriptionPristine}
 					onClick={newDescriptionHelpers.onUpdate}
 					mr="6"
 				>
@@ -217,7 +217,7 @@ const EditableDescription: React.FC<{
 				</UI.Button>
 				<UI.Button
 					variant="outlined"
-					disabled={hasDescriptionBeenChanged}
+					disabled={isHabitDescriptionPristine}
 					onClick={newDescriptionHelpers.onClear}
 				>
 					Cancel

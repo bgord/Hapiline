@@ -39,6 +39,10 @@ export function useEditableFieldValue({
 
 	const [value, setValue] = React.useState<string | null | undefined>(() => castedDefaultValue);
 
+	React.useEffect(() => {
+		setValue(castedDefaultValue);
+	}, [castedDefaultValue]);
+
 	function onChange(
 		event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>,
 	) {
