@@ -347,7 +347,7 @@ describe("habit dialog", () => {
 			.should("be.disabled");
 
 		// After clearing the input, save butotn should be disabled
-		// but users still has a way to cancel to the previous name
+		// but user still has a way to cancel to the previous name
 		cy.findByDisplayValue("0 lorem").clear();
 		cy.findAllByText("Cancel")
 			.first()
