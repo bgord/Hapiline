@@ -2,12 +2,7 @@ import {Dialog} from "@reach/dialog";
 import {useQuery, useMutation} from "react-query";
 import React from "react";
 
-import {
-	CancelButton,
-	SaveButton,
-	useEditableFieldValue,
-	useEditableFieldState,
-} from "./hooks/useEditableField";
+import {useEditableFieldValue, useEditableFieldState} from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
@@ -185,10 +180,14 @@ const EditableDescription: React.FC<{
 				description: updateDescription,
 			}),
 		description,
+		true,
 	);
 
 	const {getArgErrorMessage} = getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
+
+	const hasDescriptionBeenChanged =
+		description === newDescription || (!description && !newDescription);
 
 	return (
 		<>
@@ -208,12 +207,21 @@ const EditableDescription: React.FC<{
 			)}
 
 			<UI.Row>
-				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
+				<UI.Button
+					variant="primary"
+					disabled={hasDescriptionBeenChanged}
+					onClick={newDescriptionHelpers.onUpdate}
+					mr="6"
+				>
 					Save
-				</SaveButton>
-				<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
+				</UI.Button>
+				<UI.Button
+					variant="outlined"
+					disabled={hasDescriptionBeenChanged}
+					onClick={newDescriptionHelpers.onClear}
+				>
 					Cancel
-				</CancelButton>
+				</UI.Button>
 			</UI.Row>
 		</>
 	);
