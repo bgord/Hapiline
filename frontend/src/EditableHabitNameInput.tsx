@@ -33,10 +33,10 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 		},
 	});
 
-	const [newHabitName, newHabitNameHelpers] = useEditableFieldValue(
-		newName => updateHabitName({id, name: newName}),
-		name,
-	);
+	const [newHabitName, newHabitNameHelpers] = useEditableFieldValue({
+		updateFn: newName => updateHabitName({id, name: newName}),
+		defaultValue: name,
+	});
 
 	const isHabitNamePristine = name === newHabitName;
 

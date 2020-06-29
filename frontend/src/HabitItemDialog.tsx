@@ -173,15 +173,15 @@ const EditableDescription: React.FC<{
 		onError: () => triggerErrorToast("Habit description couldn't be changed"),
 	});
 
-	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(
-		updateDescription =>
+	const [newDescription, newDescriptionHelpers] = useEditableFieldValue({
+		updateFn: updateDescription =>
 			updateHabitDescription({
 				id: habitId,
 				description: updateDescription,
 			}),
-		description,
-		true,
-	);
+		defaultValue: description,
+		allowEmptyString: true,
+	});
 
 	const {getArgErrorMessage} = getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");

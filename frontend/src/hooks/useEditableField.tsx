@@ -26,11 +26,15 @@ type useEditableFieldValueReturnType = [
 		onUpdate: VoidFunction;
 	},
 ];
-export function useEditableFieldValue(
-	updateFn: (value: string) => void,
-	defaultValue: string | null | undefined,
+export function useEditableFieldValue({
+	defaultValue,
+	updateFn,
 	allowEmptyString = false,
-): useEditableFieldValueReturnType {
+}: {
+	updateFn: (value: string) => void;
+	defaultValue: string | null | undefined;
+	allowEmptyString?: boolean;
+}): useEditableFieldValueReturnType {
 	const [value, setValue] = React.useState<string | null | undefined>(() => defaultValue);
 
 	function onChange(

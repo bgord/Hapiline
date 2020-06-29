@@ -74,8 +74,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		upsertCommentResponseHandlers,
 	);
 
-	const [newComment, newCommentHelpers] = useEditableFieldValue(
-		changedComment => {
+	const [newComment, newCommentHelpers] = useEditableFieldValue({
+		updateFn: changedComment => {
 			if (habitWithPossibleVote.vote?.id) {
 				updateVoteComment({id: habitWithPossibleVote.vote.id, comment: changedComment});
 			} else {
@@ -87,9 +87,9 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 				});
 			}
 		},
-		habitWithPossibleVote.vote?.comment,
-		true,
-	);
+		defaultValue: habitWithPossibleVote.vote?.comment,
+		allowEmptyString: true,
+	});
 
 	const dayBeforeYesterday = subDays(new Date(), 2);
 	const isBeforeDayBeforeYesterday = isBefore(new Date(day), dayBeforeYesterday);
