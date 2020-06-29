@@ -35,7 +35,9 @@ export function useEditableFieldValue({
 	defaultValue: string | null | undefined;
 	allowEmptyString?: boolean;
 }): useEditableFieldValueReturnType {
-	const [value, setValue] = React.useState<string | null | undefined>(() => defaultValue);
+	const castedDefaultValue = defaultValue ?? "";
+
+	const [value, setValue] = React.useState<string | null | undefined>(() => castedDefaultValue);
 
 	function onChange(
 		event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>,
@@ -43,16 +45,12 @@ export function useEditableFieldValue({
 		setValue(event.target.value);
 	}
 	function onClear() {
-		setValue(defaultValue || "");
+		setValue(castedDefaultValue);
 	}
 	function onUpdate() {
-		if (allowEmptyString) {
-			if (value === null || value === undefined || value === defaultValue) return;
-			updateFn(value);
-		}
+		if (value === null || value === undefined || value === castedDefaultValue) return;
 
-		if (!allowEmptyString) {
-			if (value === null || value === undefined || value === "" || value === defaultValue) return;
+		if (value !== "" || allowEmptyString) {
 			updateFn(value);
 		}
 	}
