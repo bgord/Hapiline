@@ -2,7 +2,7 @@ import {Dialog} from "@reach/dialog";
 import {useQuery, useMutation} from "react-query";
 import React from "react";
 
-import {useEditableFieldValue, useEditableFieldState} from "./hooks/useEditableField";
+import {useEditableFieldValue} from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
@@ -156,8 +156,6 @@ const EditableDescription: React.FC<{
 	habitId: Habit["id"];
 	onResolve: VoidFunction;
 }> = ({description, habitId, onResolve}) => {
-	const textarea = useEditableFieldState();
-
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
 
@@ -167,7 +165,6 @@ const EditableDescription: React.FC<{
 	>(api.habit.patch, {
 		onSuccess: () => {
 			triggerSuccessToast("Comment added successfully!");
-			textarea.setIdle();
 			onResolve();
 		},
 		onError: () => triggerErrorToast("Habit description couldn't be changed"),
@@ -195,7 +192,6 @@ const EditableDescription: React.FC<{
 				<UI.Label htmlFor="description">Description</UI.Label>
 				<UI.Textarea
 					id="description"
-					onFocus={textarea.setFocused}
 					placeholder="Write something..."
 					value={newDescription ?? undefined}
 					onChange={newDescriptionHelpers.onChange}

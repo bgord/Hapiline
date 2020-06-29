@@ -18,7 +18,7 @@ import {
 } from "./models";
 import * as UI from "./ui";
 import {api} from "./services/api";
-import {useEditableFieldState, useEditableFieldValue} from "./hooks/useEditableField";
+import {useEditableFieldValue} from "./hooks/useEditableField";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useToggle} from "./hooks/useToggle";
 import {UrlBuilder} from "./services/url-builder";
@@ -28,7 +28,6 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
 	day: string;
 }> = ({onResolve, day, ...habitWithPossibleVote}) => {
-	const textarea = useEditableFieldState();
 	const {on: isCommentVisible, toggle: toggleComment} = useToggle();
 
 	const mediaQuery = useMediaQuery();
@@ -53,7 +52,6 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	const upsertCommentResponseHandlers = {
 		onSuccess: () => {
 			triggerSuccessToast("Comment added successfully!");
-			textarea.setIdle();
 			onResolve();
 		},
 		onError: () => triggerErrorToast("Couldn't add comment"),
@@ -214,7 +212,6 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									id="vote_comment"
 									disabled={isBeforeDayBeforeYesterday}
 									key={habitWithPossibleVote.vote?.comment ?? undefined}
-									onFocus={textarea.setFocused}
 									placeholder="Write something..."
 									value={newComment ?? undefined}
 									onChange={newCommentHelpers.onChange}

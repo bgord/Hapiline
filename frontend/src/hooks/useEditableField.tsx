@@ -1,19 +1,5 @@
 import React from "react";
 
-interface UseEditableFieldStateReturnType {
-	state: "idle" | "focused";
-	setIdle: VoidFunction;
-	setFocused: VoidFunction;
-}
-export function useEditableFieldState(): UseEditableFieldStateReturnType {
-	const [state, setState] = React.useState<"idle" | "focused">("idle");
-	return {
-		state,
-		setIdle: () => setState("idle"),
-		setFocused: () => setState("focused"),
-	};
-}
-
 type useEditableFieldValueReturnType = [
 	string | null | undefined,
 	{

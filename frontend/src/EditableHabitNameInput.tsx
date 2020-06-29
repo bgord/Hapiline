@@ -1,7 +1,7 @@
 import {queryCache, useMutation} from "react-query";
 import React from "react";
 
-import {useEditableFieldState, useEditableFieldValue} from "./hooks/useEditableField";
+import {useEditableFieldValue} from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {HabitNameInput} from "./HabitNameInput";
 import {DetailedHabit, DraftHabitPayload} from "./models";
@@ -11,7 +11,6 @@ import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 
 export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
-	const field = useEditableFieldState();
 	const getHabitsRequestState = useHabitsState();
 
 	const triggerSuccessToast = useSuccessToast();
@@ -19,7 +18,6 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 
 	const [updateHabitName] = useMutation<DetailedHabit, DraftHabitPayload>(api.habit.patch, {
 		onSuccess: habit => {
-			field.setIdle();
 			triggerSuccessToast("Name updated successfully!");
 			getHabitsRequestState.refetch();
 
@@ -51,7 +49,6 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 							updateHabitName({id, name: newHabitName});
 						}
 					}}
-					onFocus={field.setFocused}
 					value={newHabitName ?? undefined}
 					onChange={newHabitNameHelpers.onChange}
 				/>
