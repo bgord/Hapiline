@@ -1,12 +1,7 @@
 import {queryCache, useMutation} from "react-query";
 import React from "react";
 
-import {
-	CancelButton,
-	SaveButton,
-	useEditableFieldState,
-	useEditableFieldValue,
-} from "./hooks/useEditableField";
+import {useEditableFieldState, useEditableFieldValue} from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {HabitNameInput} from "./HabitNameInput";
 import {DetailedHabit, DraftHabitPayload} from "./models";
@@ -43,8 +38,10 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 		name,
 	);
 
+	const isHabitNamePristine = name === newHabitName;
+
 	return (
-		<UI.Row crossAxis="end" mt="24">
+		<UI.Row crossAxis="end" wrap={[, "wrap"]} mt="24">
 			<UI.Field width="100%" mr="12">
 				<UI.Label htmlFor="editable_habit_name">Habit name</UI.Label>
 				<HabitNameInput
@@ -59,12 +56,25 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 					onChange={newHabitNameHelpers.onChange}
 				/>
 			</UI.Field>
-			<SaveButton {...field} onClick={newHabitNameHelpers.onUpdate}>
+
+			<UI.Button
+				variant="primary"
+				mr="3"
+				mt="12"
+				disabled={isHabitNamePristine}
+				onClick={newHabitNameHelpers.onUpdate}
+			>
 				Save
-			</SaveButton>
-			<CancelButton {...field} onClick={newHabitNameHelpers.onClear}>
+			</UI.Button>
+			<UI.Button
+				onClick={newHabitNameHelpers.onClear}
+				variant="outlined"
+				mr="6"
+				mt="12"
+				disabled={isHabitNamePristine}
+			>
 				Cancel
-			</CancelButton>
+			</UI.Button>
 		</UI.Row>
 	);
 };
