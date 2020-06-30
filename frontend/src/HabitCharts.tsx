@@ -97,22 +97,20 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 
 				{mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mt="6" crossAxis="center">
-						<UI.Text style={{fontSize: "72px", color: "#ef8790", marginLeft: "-12px"}}>·</UI.Text>
-						<UI.Text>
+						<SmallCircle fill="#ef8790" />
+						<UI.Text ml="6" mr="24">
 							{numberOfRegressVotes} regress {pluralize("vote", numberOfRegressVotes)} (
 							{regressVotesPrct}%)
 						</UI.Text>
-						<UI.Text ml="12" style={{fontSize: "72px", color: "var(--gray-3)"}}>
-							·
-						</UI.Text>
-						<UI.Text>
+
+						<SmallCircle fill="var(--gray-3)" />
+						<UI.Text ml="6" mr="24">
 							{numberOfPlateauVotes} plateau {pluralize("vote", numberOfPlateauVotes)} (
 							{plateauVotesPrct}%)
 						</UI.Text>
-						<UI.Text ml="12" style={{fontSize: "72px", color: "#8bdb90"}}>
-							·
-						</UI.Text>
-						<UI.Text>
+
+						<SmallCircle fill="#8bdb90" />
+						<UI.Text ml="6" mr="24">
 							{numberOfProgressVotes} progress {pluralize("vote", numberOfProgressVotes)} (
 							{progressVotesPrct}%)
 						</UI.Text>
@@ -158,6 +156,21 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 		/>
 	);
 };
+
+function SmallCircle({fill}: {fill: React.SVGProps<{}>["fill"]}) {
+	return (
+		<svg
+			data-mt="3"
+			fill={fill}
+			height={10}
+			width={10}
+			viewBox="0 0 10 10"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<circle cx="5" cy="5" r="5" />
+		</svg>
+	);
+}
 
 function isChartRange(value: string): value is HabitVoteChartDateRangeType {
 	return Object.keys(HabitVoteChartDateRanges).includes(value);
