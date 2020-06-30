@@ -9,8 +9,6 @@ import {useErrorToast} from "./contexts/toasts-context";
 import * as UI from "./ui/";
 import {useQueryParams} from "./hooks/useQueryParam";
 
-type JournalWithNumberOfWords = Journal & {numberOfWords: number};
-
 export function JournalsWindow() {
 	const triggerErrorToast = useErrorToast();
 
@@ -24,7 +22,6 @@ export function JournalsWindow() {
 	});
 
 	const journals = getJournalsRequestState.data ?? [];
-	const journalsWithNumberOfWords = journals.map(appendNumberOfWords);
 
 	return (
 		<UI.Card
@@ -62,7 +59,7 @@ export function JournalsWindow() {
 					)}
 
 					<UI.ExpandContractList max={20}>
-						{journalsWithNumberOfWords.map(journal => (
+						{journals.map(journal => (
 							<JournalItem key={journal.id} {...journal} />
 						))}
 					</UI.ExpandContractList>
@@ -72,22 +69,15 @@ export function JournalsWindow() {
 	);
 }
 
-function appendNumberOfWords(journal: Journal): JournalWithNumberOfWords {
-	const numberOfWords = journal.content ? journal.content.split(" ").length : 0;
-
-	return {
-		...journal,
-		numberOfWords,
-	};
-}
-
 // TODO: redirect to an already chosen journal tab
-function JournalItem(journal: JournalWithNumberOfWords) {
+function JournalItem(journal: Journal) {
 	const [, updateQueryParams] = useQueryParams();
 
 	function showJournal() {
 		updateQueryParams("calendar", {preview_day: formatDay(journal.day)});
 	}
+
+	const numberOfWords = getNumberOfWords(journal.content);
 
 	return (
 		<UI.Row key={journal.id} crossAxis="baseline" by="gray-1" py="12">
@@ -101,7 +91,7 @@ function JournalItem(journal: JournalWithNumberOfWords) {
 				</UI.Wrapper>
 
 				<UI.Text variant="bold" mr="24">
-					{journal.numberOfWords} {pluralize("word", journal.numberOfWords)}
+					{numberOfWords} {pluralize("word", numberOfWords)}
 				</UI.Text>
 			</UI.Row>
 
@@ -110,4 +100,9 @@ function JournalItem(journal: JournalWithNumberOfWords) {
 			</UI.Button>
 		</UI.Row>
 	);
+}
+
+function getNumberOfWords(content: Journal["content"]): number {
+	if (!content) return 0;
+	return content.split(" ").length;
 }
