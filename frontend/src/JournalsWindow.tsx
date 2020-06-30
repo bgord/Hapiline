@@ -7,6 +7,9 @@ import {formatDay, formatDayName} from "./services/date-formatter";
 import {pluralize} from "./services/pluralize";
 import {useErrorToast} from "./contexts/toasts-context";
 import * as UI from "./ui/";
+import {useQueryParams} from "./hooks/useQueryParam";
+
+type JournalWithNumberOfWords = Journal & {numberOfWords: number};
 
 export function JournalsWindow() {
 	const triggerErrorToast = useErrorToast();
@@ -60,23 +63,7 @@ export function JournalsWindow() {
 
 					<UI.ExpandContractList max={20}>
 						{journalsWithNumberOfWords.map(journal => (
-							<UI.Row key={journal.id} crossAxis="baseline" by="gray-1" py="12">
-								<UI.Row wrap={[, "wrap"]} mainAxis="between">
-									<UI.Wrapper mr="24">
-										<UI.Text variant="semi-bold" mr="12">
-											{formatDay(journal.day)}
-										</UI.Text>
-
-										<UI.Text>{formatDayName(journal.day)}</UI.Text>
-									</UI.Wrapper>
-
-									<UI.Text variant="bold" mr="24">
-										{journal.numberOfWords} {pluralize("word", journal.numberOfWords)}
-									</UI.Text>
-								</UI.Row>
-
-								<UI.Button variant="outlined">Show</UI.Button>
-							</UI.Row>
+							<JournalItem key={journal.id} {...journal} />
 						))}
 					</UI.ExpandContractList>
 				</UI.ShowIf>
@@ -85,11 +72,42 @@ export function JournalsWindow() {
 	);
 }
 
-function appendNumberOfWords(journal: Journal): Journal & {numberOfWords: number} {
+function appendNumberOfWords(journal: Journal): JournalWithNumberOfWords {
 	const numberOfWords = journal.content ? journal.content.split(" ").length : 0;
 
 	return {
 		...journal,
 		numberOfWords,
 	};
+}
+
+// TODO: redirect to an already chosen journal tab
+function JournalItem(journal: JournalWithNumberOfWords) {
+	const [, updateQueryParams] = useQueryParams();
+
+	function showJournal() {
+		updateQueryParams("calendar", {preview_day: formatDay(journal.day)});
+	}
+
+	return (
+		<UI.Row key={journal.id} crossAxis="baseline" by="gray-1" py="12">
+			<UI.Row wrap={[, "wrap"]} mainAxis="between">
+				<UI.Wrapper mr="24">
+					<UI.Text variant="semi-bold" mr="12">
+						{formatDay(journal.day)}
+					</UI.Text>
+
+					<UI.Text>{formatDayName(journal.day)}</UI.Text>
+				</UI.Wrapper>
+
+				<UI.Text variant="bold" mr="24">
+					{journal.numberOfWords} {pluralize("word", journal.numberOfWords)}
+				</UI.Text>
+			</UI.Row>
+
+			<UI.Button variant="outlined" onClick={showJournal}>
+				Show
+			</UI.Button>
+		</UI.Row>
+	);
 }
