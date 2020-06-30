@@ -2,12 +2,7 @@ import {Dialog} from "@reach/dialog";
 import {useQuery, useMutation} from "react-query";
 import React from "react";
 
-import {
-	CancelButton,
-	SaveButton,
-	useEditableFieldValue,
-	useEditableFieldState,
-} from "./hooks/useEditableField";
+import {useEditableFieldValue} from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
@@ -85,12 +80,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 				{habit?.id && (
 					<UI.Column px={["24", "12"]}>
 						<UI.Row wrap={[, "wrap"]} crossAxis="end" width="100%">
-							<UI.Row mr="6" mt="24">
-								<EditableHabitNameInput {...habit} key={habit?.name} />
-							</UI.Row>
+							<EditableHabitNameInput {...habit} key={habit?.name} />
 
 							<EditableHabitScoreSelect {...habit} key={habit?.score} />
-
 							<EditableHabitStrengthSelect {...habit} key={habit?.strength} />
 						</UI.Row>
 
@@ -164,8 +156,6 @@ const EditableDescription: React.FC<{
 	habitId: Habit["id"];
 	onResolve: VoidFunction;
 }> = ({description, habitId, onResolve}) => {
-	const textarea = useEditableFieldState();
-
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
 
@@ -175,23 +165,26 @@ const EditableDescription: React.FC<{
 	>(api.habit.patch, {
 		onSuccess: () => {
 			triggerSuccessToast("Comment added successfully!");
-			textarea.setIdle();
 			onResolve();
 		},
 		onError: () => triggerErrorToast("Habit description couldn't be changed"),
 	});
 
-	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(
-		updateDescription =>
+	const [newDescription, newDescriptionHelpers] = useEditableFieldValue({
+		updateFn: updateDescription =>
 			updateHabitDescription({
 				id: habitId,
 				description: updateDescription,
 			}),
-		description,
-	);
+		defaultValue: description,
+		allowEmptyString: true,
+	});
 
 	const {getArgErrorMessage} = getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
+
+	const isHabitDescriptionPristine =
+		description === newDescription || (!description && !newDescription);
 
 	return (
 		<>
@@ -199,7 +192,6 @@ const EditableDescription: React.FC<{
 				<UI.Label htmlFor="description">Description</UI.Label>
 				<UI.Textarea
 					id="description"
-					onFocus={textarea.setFocused}
 					placeholder="Write something..."
 					value={newDescription ?? undefined}
 					onChange={newDescriptionHelpers.onChange}
@@ -211,12 +203,21 @@ const EditableDescription: React.FC<{
 			)}
 
 			<UI.Row>
-				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
+				<UI.Button
+					variant="primary"
+					disabled={isHabitDescriptionPristine}
+					onClick={newDescriptionHelpers.onUpdate}
+					mr="6"
+				>
 					Save
-				</SaveButton>
-				<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
+				</UI.Button>
+				<UI.Button
+					variant="outlined"
+					disabled={isHabitDescriptionPristine}
+					onClick={newDescriptionHelpers.onClear}
+				>
 					Cancel
-				</CancelButton>
+				</UI.Button>
 			</UI.Row>
 		</>
 	);

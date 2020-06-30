@@ -78,7 +78,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 			<UI.ShowIf request={habitVoteChartRequestState} is="success">
 				<UI.Row mt="24">
 					{habitVoteChartRequestState.data?.map(item => (
-						<UI.Column width="100%">
+						<UI.Column width="100%" key={item.day.toString()}>
 							{shouldDisplayChartLabels && (
 								<UI.Text variant="dimmed" style={{textAlign: "center", fontSize: "12px"}}>
 									{formatShortDay(item.day)}

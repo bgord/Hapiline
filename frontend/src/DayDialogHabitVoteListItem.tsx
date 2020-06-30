@@ -18,12 +18,7 @@ import {
 } from "./models";
 import * as UI from "./ui";
 import {api} from "./services/api";
-import {
-	useEditableFieldState,
-	useEditableFieldValue,
-	CancelButton,
-	SaveButton,
-} from "./hooks/useEditableField";
+import {useEditableFieldValue} from "./hooks/useEditableField";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useToggle} from "./hooks/useToggle";
 import {UrlBuilder} from "./services/url-builder";
@@ -33,7 +28,6 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
 	day: string;
 }> = ({onResolve, day, ...habitWithPossibleVote}) => {
-	const textarea = useEditableFieldState();
 	const {on: isCommentVisible, toggle: toggleComment} = useToggle();
 
 	const mediaQuery = useMediaQuery();
@@ -58,7 +52,6 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	const upsertCommentResponseHandlers = {
 		onSuccess: () => {
 			triggerSuccessToast("Comment added successfully!");
-			textarea.setIdle();
 			onResolve();
 		},
 		onError: () => triggerErrorToast("Couldn't add comment"),
@@ -74,8 +67,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		upsertCommentResponseHandlers,
 	);
 
-	const [newComment, newCommentHelpers] = useEditableFieldValue(
-		changedComment => {
+	const [newComment, newCommentHelpers] = useEditableFieldValue({
+		updateFn: changedComment => {
 			if (habitWithPossibleVote.vote?.id) {
 				updateVoteComment({id: habitWithPossibleVote.vote.id, comment: changedComment});
 			} else {
@@ -87,12 +80,14 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 				});
 			}
 		},
-		habitWithPossibleVote.vote?.comment,
-		true,
-	);
+		defaultValue: habitWithPossibleVote.vote?.comment,
+		allowEmptyString: true,
+	});
 
 	const dayBeforeYesterday = subDays(new Date(), 2);
 	const isBeforeDayBeforeYesterday = isBefore(new Date(day), dayBeforeYesterday);
+
+	const comment = habitWithPossibleVote.vote?.comment ?? null;
 
 	function changeVote(type: NonNullable<HabitVoteType>) {
 		addHabitDayVote({
@@ -102,6 +97,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 			comment: habitWithPossibleVote.vote?.comment ?? null,
 		});
 	}
+
+	const isVoteCommentPristine = comment === newComment || (!comment && !newComment);
 
 	return (
 		<>
@@ -213,20 +210,30 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								<UI.Label htmlFor="vote_comment">Vote comment</UI.Label>
 								<UI.Textarea
 									id="vote_comment"
+									disabled={isBeforeDayBeforeYesterday}
 									key={habitWithPossibleVote.vote?.comment ?? undefined}
-									onFocus={textarea.setFocused}
 									placeholder="Write something..."
 									value={newComment ?? undefined}
 									onChange={newCommentHelpers.onChange}
 								/>
 							</UI.Field>
 							<UI.Row mb="12">
-								<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+								<UI.Button
+									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									variant="primary"
+									onClick={newCommentHelpers.onUpdate}
+									mr="6"
+								>
 									Save
-								</SaveButton>
-								<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+								</UI.Button>
+
+								<UI.Button
+									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									variant="outlined"
+									onClick={newCommentHelpers.onClear}
+								>
 									Cancel
-								</CancelButton>
+								</UI.Button>
 							</UI.Row>
 						</UI.Column>
 					)}

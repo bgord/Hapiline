@@ -283,39 +283,84 @@ describe("habit dialog", () => {
 		});
 	});
 
-	it("changing name", () => {
+	it("changing name to a non-empty value", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		// "Save" flow
 		cy.findByText("0 lorem xxx").should("not.exist");
 		cy.findAllByText("More")
 			.first()
 			.click();
 
+		// At first, the two buttons should be disabled
+		cy.findByDisplayValue("0 lorem");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+
 		cy.findByDisplayValue("0 lorem").type(" xxx");
-		cy.findByText("Cancel");
-		cy.findByText("Save").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+
+		cy.findAllByText("Save")
+			.first()
+			.click();
+
 		cy.findByText("Name updated successfully!");
+
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+
 		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
 
 		cy.findByText("0 lorem xxx");
 		cy.findByText("0 lorem").should("not.exist");
+	});
 
-		// Enter flow
-		cy.findByText("1 loremlorem yyy").should("not.exist");
+	it("changing name to an empty value is impossible", () => {
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findByText("0 lorem xxx").should("not.exist");
 		cy.findAllByText("More")
-			.eq(1)
+			.first()
 			.click();
 
-		cy.findByDisplayValue("1 loremlorem").type(" yyy{enter}");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Cancel").should("not.exist");
-		cy.findAllByText("Name updated successfully!");
-		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
+		// At first, the two buttons should be disabled
+		cy.findByDisplayValue("0 lorem");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
 
-		cy.findByText("1 loremlorem yyy");
-		cy.findByText("1 loremlorem").should("not.exist");
+		// After clearing the input, save butotn should be disabled
+		// but user still has a way to cancel to the previous name
+		cy.findByDisplayValue("0 lorem").clear();
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
+
+		cy.findByDisplayValue("0 lorem");
 	});
 
 	it("cancel changing name", () => {
@@ -327,16 +372,22 @@ describe("habit dialog", () => {
 			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" nono");
-		cy.findByText("Cancel").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
 		cy.findByDisplayValue("0 lorem");
 
 		cy.findByDisplayValue("0 lorem")
 			.clear()
 			.type("6 lorem");
-		cy.findByText("Save").click();
+		cy.findAllByText("Save")
+			.first()
+			.click();
 		cy.findByText("Given habit already exists.");
 
-		cy.findByText("Cancel").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
 		cy.findByDisplayValue("0 lorem");
 	});
 
@@ -355,8 +406,12 @@ describe("habit dialog", () => {
 
 		cy.findByText("Given habit already exists.");
 
-		cy.findByText("Save");
-		cy.findByText("Cancel");
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
 	});
 
 	it("changing name error", () => {
@@ -382,9 +437,15 @@ describe("habit dialog", () => {
 			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" xxx");
-		cy.findByText("Save").click();
-		cy.findByText("Save");
-		cy.findByText("Cancel");
+		cy.findAllByText("Save")
+			.first()
+			.click();
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
 		cy.findByText(errorMessage);
 
 		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
@@ -493,7 +554,7 @@ describe("habit dialog", () => {
 		});
 	});
 
-	it("changing description", () => {
+	it("changing description to a non-empty value", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
@@ -508,14 +569,69 @@ describe("habit dialog", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
-			cy.findByPlaceholderText("Write something...")
-				.clear()
-				.type("xxx");
+			cy.findByText("lorem");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("be.disabled");
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("be.disabled");
 
-			cy.findByText("Save").click();
+			cy.findByText("lorem").type(" ehh");
+
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("not.be.disabled");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("not.be.disabled")
+				.click();
+
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("be.disabled");
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("be.disabled");
 		});
 
-		cy.findByText("Comment added successfully!");
+		cy.findAllByText("Comment added successfully!");
+	});
+
+	it("changing description to an empty value", () => {
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
+
+			cy.findAllByText("More")
+				.eq(1)
+				.click();
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("lorem").clear();
+
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("not.be.disabled");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("not.be.disabled")
+				.click();
+
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("be.disabled");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("be.disabled");
+		});
+
+		cy.findAllByText("Comment added successfully!");
 	});
 
 	it("changing description error", () => {
@@ -551,7 +667,9 @@ describe("habit dialog", () => {
 				.clear()
 				.type("xxx");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.eq(1)
+				.click();
 		});
 
 		cy.findAllByText("Habit description couldn't be changed");
@@ -596,7 +714,9 @@ describe("habit dialog", () => {
 				.clear()
 				.type("xxx");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.eq(1)
+				.click();
 			cy.findByText("Too long description");
 		});
 
