@@ -34,3 +34,35 @@ describe("Journal", () => {
 			.should("have.value", "10 lorem ipsumlorem ipsum xd");
 	});
 });
+
+describe("Empty journal", () => {
+	beforeEach(() => {
+		cy.request("POST", "/test/db/seed");
+	});
+
+	it("upper part", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("View today").click();
+		cy.findAllByText("Journal")
+			.first()
+			.click();
+		cy.findAllByLabelText("Journal")
+			.first()
+			.clear();
+		cy.findByText("Save").click();
+		cy.findByText("Daily journal successfully updated!");
+
+		cy.findAllByLabelText("Journal")
+			.first()
+			.should("have.value", "");
+		cy.reload();
+		cy.findAllByText("Journal")
+			.first()
+			.click();
+		cy.findAllByLabelText("Journal")
+			.first()
+			.should("have.value", "");
+	});
+});
