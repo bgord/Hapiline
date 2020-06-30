@@ -21,11 +21,7 @@ export function JournalsWindow() {
 	});
 
 	const journals = getJournalsRequestState.data ?? [];
-
-	const journalsWithWordCount = journals.map(journal => ({
-		wordCount: journal.content ? journal.content.split(" ").length : 0,
-		...journal,
-	}));
+	const journalsWithNumberOfWords = journals.map(appendNumberOfWords);
 
 	return (
 		<UI.Card
@@ -63,17 +59,19 @@ export function JournalsWindow() {
 					)}
 
 					<UI.ExpandContractList max={20}>
-						{journalsWithWordCount.map(journal => (
+						{journalsWithNumberOfWords.map(journal => (
 							<UI.Row key={journal.id} crossAxis="baseline" by="gray-1" py="12">
 								<UI.Row wrap={[, "wrap"]} mainAxis="between">
 									<UI.Wrapper mr="24">
 										<UI.Text variant="semi-bold" mr="12">
 											{formatDay(journal.day)}
 										</UI.Text>
+
 										<UI.Text>{formatDayName(journal.day)}</UI.Text>
 									</UI.Wrapper>
+
 									<UI.Text variant="bold" mr="24">
-										{journal.wordCount} {pluralize("word", journal.wordCount)}
+										{journal.numberOfWords} {pluralize("word", journal.numberOfWords)}
 									</UI.Text>
 								</UI.Row>
 
@@ -85,4 +83,13 @@ export function JournalsWindow() {
 			</UI.Column>
 		</UI.Card>
 	);
+}
+
+function appendNumberOfWords(journal: Journal): Journal & {numberOfWords: number} {
+	const numberOfWords = journal.content ? journal.content.split(" ").length : 0;
+
+	return {
+		...journal,
+		numberOfWords,
+	};
 }
