@@ -92,6 +92,7 @@ export function NotificationDropdown() {
 								<UI.ExpandContractList max={5}>
 									{notifications.map(notification => (
 										<NotificationItem
+											key={notification.id}
 											refetchNotifications={getNotificationsRequestState.refetch}
 											{...notification}
 										/>

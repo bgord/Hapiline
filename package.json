@@ -130,7 +130,8 @@
   "eslintConfig": {
     "extends": "bgord",
     "rules": {
-      "no-sparse-arrays": 0
+      "no-sparse-arrays": 0,
+      "jest/valid-expect": 0
     }
   }
 }
