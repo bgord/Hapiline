@@ -1,4 +1,4 @@
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Get habits");
+const {test, trait, before, after} = use("Test/Suite")("Get journals");
 const ace = require("@adonisjs/ace");
 const User = use("User");
 const {assertInvalidSession, assertAccessDenied} = require("../helpers/assert-errors");
@@ -9,11 +9,11 @@ trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
 
-beforeEach(async () => {
+before(async () => {
 	await ace.call("seed", {}, {silent: true});
 });
 
-afterEach(async () => {
+after(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
@@ -34,15 +34,15 @@ test("is:(regular)", async ({client}) => {
 });
 
 test("account-status:(active)", async ({client}) => {
-	const jim = await User.find(users.jim.id);
-	jim.merge({
+	const pam = await User.find(users.pam.id);
+	pam.merge({
 		account_status: ACCOUNT_STATUSES.pending,
 	});
-	await jim.save();
+	await pam.save();
 
 	const response = await client
 		.get(GET_JOURNALS_URL)
-		.loginVia(jim)
+		.loginVia(pam)
 		.end();
 	assertAccessDenied(response);
 });
