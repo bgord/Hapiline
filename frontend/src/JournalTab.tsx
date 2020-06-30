@@ -15,7 +15,7 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 
 	const getJournalRequestState = useQuery<Journal, ["journal", Journal["day"]]>({
 		queryKey: ["journal", day],
-		queryFn: api.journal.get,
+		queryFn: api.journal.show,
 		config: {
 			retry: false,
 		},

@@ -17,5 +17,5 @@ export const updateJournalRequest = (newJournalPayload: DraftJournal) =>
 		})
 		.then(response => response.data);
 
-export const getJournalsRequest = async (_key: "journal") =>
+export const getJournalsRequest = async (_key: "journals") =>
 	_internal_api.get<Journal[]>("/journals").then(response => response.data);
