@@ -43,7 +43,7 @@ export function JournalsWindow() {
 
 			<UI.Column p="24" px={["24", "6"]}>
 				<UI.ShowIf request={getJournalsRequestState} is="loading">
-					Loading...
+					<UI.Text>Loading...</UI.Text>
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getJournalsRequestState} is="error">
@@ -51,21 +51,32 @@ export function JournalsWindow() {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getJournalsRequestState} is="success">
-					<UI.Text ml="auto" mb="24">
-						<UI.Text variant="bold">{journals.length}</UI.Text> results
+					<UI.Text ml="auto" mb={["24", "12"]}>
+						<UI.Text variant="bold">{journals.length}</UI.Text>{" "}
+						{pluralize("result", journals.length)}
 					</UI.Text>
+
+					{journals.length === 0 && getJournalsRequestState.status === "success" && (
+						<UI.InfoBanner>
+							<UI.Text>You don't have any journals</UI.Text>
+						</UI.InfoBanner>
+					)}
 
 					<UI.ExpandContractList max={20}>
 						{journalsWithWordCount.map(journal => (
 							<UI.Row key={journal.id} crossAxis="baseline" by="gray-1" py="12">
-								<UI.Text variant="semi-bold" mr="12">
-									{formatDay(journal.day)}
-								</UI.Text>
-								<UI.Text variant="regular">{formatDayName(journal.day)}</UI.Text>
+								<UI.Row wrap={[, "wrap"]} mainAxis="between">
+									<UI.Wrapper mr="24">
+										<UI.Text variant="semi-bold" mr="12">
+											{formatDay(journal.day)}
+										</UI.Text>
+										<UI.Text>{formatDayName(journal.day)}</UI.Text>
+									</UI.Wrapper>
+									<UI.Text variant="bold" mr="24">
+										{journal.wordCount} {pluralize("word", journal.wordCount)}
+									</UI.Text>
+								</UI.Row>
 
-								<UI.Text variant="bold" mr="24" ml="auto">
-									{journal.wordCount} {pluralize("word", journal.wordCount)}
-								</UI.Text>
 								<UI.Button variant="outlined">Show</UI.Button>
 							</UI.Row>
 						))}
