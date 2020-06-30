@@ -102,7 +102,7 @@ describe("a11y", () => {
 		cy.findByLabelText("New email").should("have.focus");
 
 		// Skipping navigation, and getting straight to the content
-		// of the profile window
+		// of the journals window
 		cy.visit(JOURNALS_URL);
 		cy.wait(500);
 

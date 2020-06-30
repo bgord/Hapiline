@@ -4,8 +4,8 @@ import {format} from "date-fns";
 const today = format(new Date(), "yyyy-MM-dd");
 const todayDayName = format(new Date(), "iiii");
 
-describe("Habit", () => {
-	beforeEach(() => {
+describe("Journal list", () => {
+	before(() => {
 		cy.request("POST", "/test/db/seed");
 	});
 
@@ -24,7 +24,7 @@ describe("Habit", () => {
 		cy.findByText("You don't have any journals yet.");
 	});
 
-	it("rendered item leads to a journal day tab", () => {
+	it("journal item leads to a journal day tab", () => {
 		const journalUrl = `/calendar?preview_day=${today}&tab=journal`;
 
 		cy.login("dwight");
