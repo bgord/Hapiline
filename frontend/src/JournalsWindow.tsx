@@ -16,7 +16,7 @@ export function JournalsWindow() {
 		queryKey: "journals",
 		queryFn: api.journal.get,
 		config: {
-			onError: () => triggerErrorToast("Couldn't fetch dashboard stats."),
+			onError: () => triggerErrorToast("Couldn't fetch journals."),
 			retry: false,
 		},
 	});
@@ -43,7 +43,12 @@ export function JournalsWindow() {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getJournalsRequestState} is="error">
-					<UI.ErrorBanner>Cannot fetch journals, please try again</UI.ErrorBanner>
+					<UI.ErrorBanner>
+						Cannot fetch journals, please try again.
+						<UI.Button ml="12" variant="outlined" onClick={() => getJournalsRequestState.refetch()}>
+							Retry
+						</UI.Button>
+					</UI.ErrorBanner>
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getJournalsRequestState} is="success">
@@ -54,7 +59,7 @@ export function JournalsWindow() {
 
 					{journals.length === 0 && getJournalsRequestState.status === "success" && (
 						<UI.InfoBanner>
-							<UI.Text>You don't have any journals</UI.Text>
+							<UI.Text>You don't have any journals yet.</UI.Text>
 						</UI.InfoBanner>
 					)}
 
