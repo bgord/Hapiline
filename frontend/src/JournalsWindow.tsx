@@ -69,12 +69,11 @@ export function JournalsWindow() {
 	);
 }
 
-// TODO: redirect to an already chosen journal tab
 function JournalItem(journal: Journal) {
 	const [, updateQueryParams] = useQueryParams();
 
 	function showJournal() {
-		updateQueryParams("calendar", {preview_day: formatDay(journal.day)});
+		updateQueryParams("calendar", {preview_day: formatDay(journal.day), tab: "journal"});
 	}
 
 	const numberOfWords = getNumberOfWords(journal.content);

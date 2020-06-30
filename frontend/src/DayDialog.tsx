@@ -10,6 +10,7 @@ import {HabitTab} from "./HabitTab";
 import {JournalTab} from "./JournalTab";
 import {formatDayName} from "./services/date-formatter";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
+import {useDayDialogTabIndex} from "./hooks/useDayDialogTabIndex";
 
 type DayDialogProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
 	onResolve: VoidFunction;
@@ -19,6 +20,8 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
 	const [, updateQueryParams] = useQueryParams();
+
+	const [tabIndex, setTabIndex] = useDayDialogTabIndex();
 
 	const mediaQuery = useMediaQuery();
 
@@ -46,7 +49,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 				<UI.CloseIcon onClick={dismissDialog} />
 			</UI.Row>
 
-			<Tabs data-mt="12" defaultIndex={0}>
+			<Tabs data-mt="12" index={tabIndex} onChange={setTabIndex}>
 				<TabList>
 					<Tab as={UI.Button} variant="bare">
 						Habits
