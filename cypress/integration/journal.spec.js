@@ -66,3 +66,27 @@ describe("Empty journal", () => {
 			.should("have.value", "");
 	});
 });
+
+describe("Save journal to wrong day", () => {
+	beforeEach(() => {
+		cy.request("POST", "/test/db/seed");
+	});
+
+	it("upper part", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("Calendar").click();
+		cy.findAllByText("Show")
+			.first()
+			.click();
+		cy.findAllByText("Journal")
+			.first()
+			.click();
+		cy.findAllByLabelText("Journal")
+			.first()
+			.type("xd");
+		cy.findByText("Save").click();
+		cy.findByText("Error while updating daily jorunal");
+	});
+});
