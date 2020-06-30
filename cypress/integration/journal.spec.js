@@ -1,14 +1,16 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
 const DASHBOARD_URL = "/dashboard";
+import {format} from "date-fns";
+const today = format(new Date(), "yyyy-MM-dd");
 
 describe("Journal", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
+		cy.login("dwight");
 	});
 
-	it("upper part", () => {
-		cy.login("dwight");
+	it("Update journal", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("View today").click();
@@ -33,15 +35,8 @@ describe("Journal", () => {
 			.first()
 			.should("have.value", "10 lorem ipsumlorem ipsum xd");
 	});
-});
 
-describe("Empty journal", () => {
-	beforeEach(() => {
-		cy.request("POST", "/test/db/seed");
-	});
-
-	it("upper part", () => {
-		cy.login("dwight");
+	it("Update journal with empty value", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("View today").click();
@@ -65,15 +60,8 @@ describe("Empty journal", () => {
 			.first()
 			.should("have.value", "");
 	});
-});
 
-describe("Save journal to wrong day", () => {
-	beforeEach(() => {
-		cy.request("POST", "/test/db/seed");
-	});
-
-	it("upper part", () => {
-		cy.login("dwight");
+	it("Save journal to wrong day", () => {
 		cy.visit(DASHBOARD_URL);
 
 		cy.findByText("Calendar").click();
@@ -88,5 +76,53 @@ describe("Save journal to wrong day", () => {
 			.type("xd");
 		cy.findByText("Save").click();
 		cy.findByText("Error while updating daily jorunal");
+	});
+
+	it("Error while loading daily journal", () => {
+		cy.visit(DASHBOARD_URL);
+		const errorMessage = "Error while loading daily journal.";
+		cy.server();
+		cy.route({
+			method: "GET",
+			url: `/api/v1/journal?day=${today}`,
+			status: 400,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+
+		cy.findByText("View today").click();
+		cy.findAllByText("Journal")
+			.first()
+			.click();
+		cy.findByText("Error while loading daily jorunal.");
+	});
+
+	it("Error while updating journal", () => {
+		cy.visit(DASHBOARD_URL);
+		const errorMessage = "Error while updating daily journal";
+
+		cy.server();
+		cy.route({
+			method: "POST",
+			url: `/api/v1/journal`,
+			status: 400,
+			response: {
+				code: "E_INTERNAL_SERVER_ERROR",
+				message: errorMessage,
+				argErrors: [],
+			},
+		});
+		cy.findByText("View today").click();
+		cy.findAllByText("Journal")
+			.first()
+			.click();
+		cy.findAllByLabelText("Journal")
+			.first()
+			.type(" xd");
+		cy.findByText("Save").click();
+		cy.findByText("Couldn't save daily journal, please try again.");
 	});
 });

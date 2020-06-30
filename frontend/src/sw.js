@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import * as navigationPreload from "workbox-navigation-preload";
 import {registerRoute, NavigationRoute} from "workbox-routing";
 import {NetworkOnly} from "workbox-strategies";

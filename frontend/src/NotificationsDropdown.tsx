@@ -1,6 +1,5 @@
 import {useQuery, useMutation} from "react-query";
 import * as React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {Notification, DraftNotificationPayload} from "./models";
 import * as UI from "./ui";
@@ -9,7 +8,8 @@ import {api} from "./services/api";
 import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
-import {formatDay} from "./services/date-formatter";
+import {isToday, isYesterday, differenceInDays} from "date-fns";
+import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -21,22 +21,15 @@ export function NotificationDropdown() {
 
 	const mediaQuery = useMediaQuery();
 
+	useBodyScrollLock(areNotificationsVisible && mediaQuery === MEDIA_QUERY.lg);
+
 	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
 		queryKey: "notifications",
 		queryFn: api.notifications.get,
 		config: {
+			retry: false,
 			onError: () => triggerErrorToast("Couldn't fetch notifications."),
 		},
-	});
-
-	const [updateNotification, updateNotificationRequestState] = useMutation<
-		Notification,
-		DraftNotificationPayload
-	>(api.notifications.update, {
-		onSuccess: () => {
-			getNotificationsRequestState.refetch();
-		},
-		onError: () => triggerErrorToast("Couldn't change notification status."),
 	});
 
 	const notifications = getNotificationsRequestState.data ?? [];
@@ -44,10 +37,16 @@ export function NotificationDropdown() {
 	const numberOfUnreadNotifications = notifications.filter(
 		notification => notification.status === "unread",
 	).length;
+
 	return (
 		<UI.Column>
-			<UI.Button variant="bare" onClick={toggleNotifications} style={{position: "relative"}}>
-				<VisuallyHidden>Notifications dropdown</VisuallyHidden>
+			<UI.Button
+				aria-label="Notifications dropdown"
+				variant="bare"
+				onClick={toggleNotifications}
+				position="relative"
+			>
+				<UI.VisuallyHidden>Notifications dropdown</UI.VisuallyHidden>
 				<BellIcon />
 
 				{numberOfUnreadNotifications > 0 && (
@@ -60,13 +59,15 @@ export function NotificationDropdown() {
 			{areNotificationsVisible && (
 				<UI.Card
 					mt="72"
+					ml={[, "6"]}
 					id="notification-list"
 					position="absolute"
 					width={["view-m", "auto"]}
+					z="1"
+					overflow="auto"
 					style={{
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
-						overflowY: "auto",
 					}}
 				>
 					<UI.Column py="24" px="12">
@@ -88,57 +89,98 @@ export function NotificationDropdown() {
 							{notifications.length === 0 && <UI.Text>You don't have any notifications.</UI.Text>}
 
 							<UI.Column as="ul">
-								{notifications.map(notification => (
-									<UI.Row
-										as="li"
-										mainAxis="between"
-										style={{
-											borderLeftWidth: "var(--border-width-l)",
-											borderLeftColor: "var(--gray-2)",
-										}}
-										crossAxis="center"
-										mt="24"
-										key={notification.id}
-									>
-										<UI.Text ml="6">{notification.content}</UI.Text>
-										<UI.Text variant="light" ml="6">
-											{formatDay(notification?.created_at)}
-										</UI.Text>
-
-										{notification.status === "unread" && (
-											<UI.Button
-												ml="12"
-												style={{minWidth: "85px"}}
-												variant="secondary"
-												disabled={updateNotificationRequestState.status === "loading"}
-												onClick={() => updateNotification({id: notification.id, status: "read"})}
-											>
-												Read
-											</UI.Button>
-										)}
-
-										{notification.status === "read" && (
-											<UI.Button
-												ml="12"
-												style={{minWidth: "85px"}}
-												variant="outlined"
-												disabled={updateNotificationRequestState.status === "loading"}
-												onClick={() => updateNotification({id: notification.id, status: "unread"})}
-											>
-												Unread
-											</UI.Button>
-										)}
-									</UI.Row>
-								))}
+								<UI.ExpandContractList max={5}>
+									{notifications.map(notification => (
+										<NotificationItem
+											key={notification.id}
+											refetchNotifications={getNotificationsRequestState.refetch}
+											{...notification}
+										/>
+									))}
+								</UI.ExpandContractList>
 							</UI.Column>
 						</UI.ShowIf>
 
 						<UI.ShowIf request={getNotificationsRequestState} is="error">
-							<UI.Error>Couldn't fetch notifications...</UI.Error>
+							<UI.Error>Couldn't fetch notifications.</UI.Error>
 						</UI.ShowIf>
 					</UI.Column>
 				</UI.Card>
 			)}
 		</UI.Column>
+	);
+}
+
+type NotificationProps = Notification & {refetchNotifications: VoidFunction};
+
+function NotificationItem({refetchNotifications, ...notification}: NotificationProps) {
+	const triggerErrorToast = useErrorToast();
+
+	const [updateNotification, updateNotificationRequestState] = useMutation<
+		Notification,
+		DraftNotificationPayload
+	>(api.notifications.update, {
+		onSuccess: refetchNotifications,
+		onError: () => triggerErrorToast("Couldn't change notification status."),
+	});
+
+	return (
+		<UI.Row
+			as="li"
+			mainAxis="between"
+			style={{
+				borderLeftWidth: "var(--border-width-l)",
+				borderLeftColor: "var(--gray-2)",
+			}}
+			crossAxis="start"
+			mb="24"
+			key={notification.id}
+		>
+			<UI.Column>
+				<UI.Text ml="6">{notification.content}</UI.Text>
+				<NotificationDate createdAt={notification.created_at} />
+			</UI.Column>
+
+			{notification.status === "unread" && (
+				<UI.Button
+					ml="12"
+					style={{minWidth: "85px"}}
+					variant="secondary"
+					disabled={updateNotificationRequestState.status === "loading"}
+					onClick={() => updateNotification({id: notification.id, status: "read"})}
+				>
+					Read
+				</UI.Button>
+			)}
+
+			{notification.status === "read" && (
+				<UI.Button
+					ml="12"
+					style={{minWidth: "85px"}}
+					variant="outlined"
+					disabled={updateNotificationRequestState.status === "loading"}
+					onClick={() => updateNotification({id: notification.id, status: "unread"})}
+				>
+					Unread
+				</UI.Button>
+			)}
+		</UI.Row>
+	);
+}
+
+function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) {
+	function formatNotificationDate() {
+		const date = new Date(createdAt);
+		const today = new Date();
+
+		if (isToday(date)) return "today";
+		if (isYesterday(date)) return "yesterday";
+		return `${differenceInDays(today, date)} days ago`;
+	}
+
+	return (
+		<UI.Text variant="dimmed" ml="6" style={{fontSize: "12px"}}>
+			{formatNotificationDate()}
+		</UI.Text>
 	);
 }

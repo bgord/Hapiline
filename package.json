@@ -1,11 +1,11 @@
 {
   "name": "hapiline",
-  "version": "0.9.0",
+  "version": "0.10.1",
   "adonis-version": "4.1.0",
   "description": "A habit tracker",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . --ext .js,.tsx,.ts --ignore-pattern node_modules/",
+    "lint": "eslint . --ext .js,.tsx,.ts --cache",
     "lint:fix": "eslint . --fix",
     "prettify": "pretty-quick",
     "prettify:staged": "pretty-quick --staged",
@@ -22,7 +22,8 @@
     "cosmos:export": "cosmos-export",
     "env:validate:dev": "ts-node -P ./tsconfig.scripts.json ./scripts/validate_env.ts",
     "env:validate:all": "ts-node -P ./tsconfig.scripts.json ./scripts/validate_env.ts --with-prod",
-    "manifest:regenerate": "ts-node -P ./tsconfig.scripts.json ./scripts/regenerate_manifest.ts"
+    "manifest:regenerate": "ts-node -P ./tsconfig.scripts.json ./scripts/regenerate_manifest.ts",
+    "db:reseed": "./run.sh adonis migration:refresh && ./run.sh adonis seed"
   },
   "author": "Bartosz Gordon",
   "license": "UNLICENSED",
@@ -53,6 +54,7 @@
     "@reach/alert-dialog": "^0.6.4",
     "@reach/dialog": "^0.6.4",
     "@reach/menu-button": "^0.10.4",
+    "@reach/skip-nav": "^0.10.5",
     "@reach/tabs": "^0.8.6",
     "@reach/visually-hidden": "^0.6.2",
     "@types/qs": "^6.9.0",
@@ -85,6 +87,7 @@
     "@testing-library/cypress": "^5.0.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
+    "@types/cypress-axe": "^0.8.0",
     "@types/testing-library__cypress": "^5.0.5",
     "@types/yup": "^0.29.1",
     "@typescript-eslint/eslint-plugin": "^2.13.0",
@@ -92,6 +95,8 @@
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.4.0",
     "cypress": "^4.8.0",
+    "cypress-axe": "^0.8.1",
+    "cypress-plugin-tab": "^1.0.5",
     "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-bgord": "^2.2.0",
@@ -125,7 +130,8 @@
   "eslintConfig": {
     "extends": "bgord",
     "rules": {
-      "no-sparse-arrays": 0
+      "no-sparse-arrays": 0,
+      "jest/valid-expect": 0
     }
   }
 }

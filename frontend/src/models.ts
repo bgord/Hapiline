@@ -207,7 +207,7 @@ type DashboardHabitVoteStats = {
 };
 
 export type DashboardHabitVoteStatsForDateRanges = {
-  today: DashboardHabitVoteStats & { numberOfUntrackedHabits: number };
+  today: DashboardHabitVoteStats;
   lastWeek: DashboardHabitVoteStats;
   lastMonth: DashboardHabitVoteStats;
 };

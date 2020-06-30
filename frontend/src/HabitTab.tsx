@@ -1,7 +1,6 @@
 import {useLocation} from "react-router-dom";
 import {useQuery, QueryResult} from "react-query";
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 
 import {ChevronUpIcon} from "./ui/icons/ChevronUp";
 import {ChevronDownIcon} from "./ui/icons/ChevronDown";
@@ -48,11 +47,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 		},
 	});
 
-	const possiblyHighlightedHabitName = trackedHabits.find(
-		habit => habit.id === Number(queryParams.highlighted_habit_id),
-	)?.name;
-
-	const habitSearch = useHabitSearch(possiblyHighlightedHabitName);
+	const habitSearch = useHabitSearch();
 	const habitVoteFilter = useHabitVoteFilter();
 
 	const habitsAvailableAtThisDay = getHabitsAvailableAtThisDay(trackedHabits, day);
@@ -86,7 +81,14 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 	const filteredHabitsWithPossibleVote = habitsWithPossibleVote
 		.filter(habitVoteFilter.filterFunction)
-		.filter(habitWithPossibleVote => habitSearch.filterFn(habitWithPossibleVote.name));
+		.filter(habitWithPossibleVote => {
+			const isHighlightedHabitIdPresent = isNumber(queryParams.highlighted_habit_id);
+
+			if (isHighlightedHabitIdPresent)
+				return habitWithPossibleVote.id === Number(queryParams.highlighted_habit_id);
+
+			return habitSearch.filterFn(habitWithPossibleVote.name);
+		});
 
 	return (
 		<UI.Column px={["24", "6"]}>
@@ -94,10 +96,10 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				<UI.SuccessBanner mt="24">
 					<UI.Text ml="12" style={{color: "#025D26"}}>
 						Congratulations! You've voted for every habit.
+						<UI.Emoji ml="12" ariaLabel="Party emoji">
+							{UI.labelToEmoji.party}
+						</UI.Emoji>
 					</UI.Text>
-					<UI.Emoji ml="12" ariaLabel="Party emoji">
-						{UI.labelToEmoji.party}
-					</UI.Emoji>
 				</UI.SuccessBanner>
 			)}
 
@@ -110,6 +112,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 						variant="bare"
 					>
 						<QuestionMarkIcon />
+						<UI.VisuallyHidden>Toggle habit vote chart legend</UI.VisuallyHidden>
 					</UI.Button>
 				)}
 
@@ -119,7 +122,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 					{...stats}
 				/>
 
-				<UI.Text ml="12" style={{whiteSpace: "nowrap"}}>
+				<UI.Text ml="12" wrap="no">
 					<UI.Text variant="bold">{trackedHabits.length}</UI.Text>
 					{" in total"}
 				</UI.Text>
@@ -207,7 +210,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				</UI.Button>
 			</UI.Row>
 
-			<UI.Row mt="12" crossAxis="end" wrap="wrap">
+			<UI.Row mt="12" crossAxis="end" wrap="wrap" mb="24">
 				<HabitSearchInput data-mr="12" value={habitSearch.value} onChange={habitSearch.onChange} />
 
 				<UI.Button
@@ -240,7 +243,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 
 			{!areThereNoTrackedHabits && filteredHabitsWithPossibleVote.length > 0 && (
 				<UI.Column pb="48">
-					<UI.Row mainAxis="between" crossAxis="center" mt="48" mb="24">
+					<UI.Row mainAxis="between" crossAxis="center" mt="12" mb="6">
 						<UI.Header variant="extra-small">Tracked habits</UI.Header>
 
 						{areTrackedHabitsVisible && (
@@ -249,7 +252,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 								title="Hide tracked habits"
 								onClick={toggleAreTrackedHabitsVisible}
 							>
-								<VisuallyHidden>Hide tracked habits</VisuallyHidden>
+								<UI.VisuallyHidden>Hide tracked habits</UI.VisuallyHidden>
 								<ChevronUpIcon />
 							</UI.Button>
 						)}
@@ -260,7 +263,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 								title="Show tracked habits"
 								onClick={toggleAreTrackedHabitsVisible}
 							>
-								<VisuallyHidden>Show tracked habits</VisuallyHidden>
+								<UI.VisuallyHidden>Show tracked habits</UI.VisuallyHidden>
 								<ChevronDownIcon />
 							</UI.Button>
 						)}
@@ -296,4 +299,8 @@ function getDayVoteForHabit(
 	const votesFromGivenDay = getDayVotesRequestState.data ?? [];
 
 	return votesFromGivenDay.find(vote => vote.habit_id === habit.id) ?? null;
+}
+
+function isNumber(value: unknown) {
+	return !Number.isNaN(Number(value));
 }

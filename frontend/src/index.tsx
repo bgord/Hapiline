@@ -1,6 +1,7 @@
 import "../css/normalize.css";
 import "@reach/dialog/styles.css";
 import "@reach/tabs/styles.css";
+import "@reach/skip-nav/styles.css";
 import "../css/main.css";
 
 import * as React from "react";

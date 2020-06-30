@@ -21,8 +21,8 @@ import "./commands";
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-const isValid = (_chai, utils) => {
-	function assertIsValid(options) {
+const isValid = (_chai, _utils) => {
+	function assertIsValid(_options) {
 		const validity = this._obj.get(0).checkValidity();
 		this.assert(
 			validity === true,
@@ -36,3 +36,6 @@ const isValid = (_chai, utils) => {
 };
 // registers our assertion function "isValid" with Chai
 chai.use(isValid);
+
+import "cypress-axe";
+import "cypress-plugin-tab";

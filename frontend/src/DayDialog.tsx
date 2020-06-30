@@ -32,23 +32,21 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			data-lg-width="auto"
 			data-lg-mx="6"
 			data-mt="48"
-			data-lg-mt="24"
+			data-lg-mt="12"
 			data-mb="0"
-			style={{
-				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
-				overflow: "auto",
-			}}
+			data-overflow="auto"
+			style={{maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh"}}
 			aria-label="Show day preview"
 			onDismiss={dismissDialog}
 		>
-			<UI.Row bg="gray-1" p="24" mainAxis="between">
+			<UI.Row bg="gray-1" p={["24", "6"]} mainAxis="between">
 				<UI.Header variant="small">
 					{day} - {formatDayName(day)}
 				</UI.Header>
 				<UI.CloseIcon onClick={dismissDialog} />
 			</UI.Row>
 
-			<Tabs data-mt="24" defaultIndex={0}>
+			<Tabs data-mt="12" defaultIndex={0}>
 				<TabList>
 					<Tab as={UI.Button} variant="bare">
 						Habits
@@ -57,7 +55,7 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 						Journal
 					</Tab>
 				</TabList>
-				<TabPanels data-mt="12">
+				<TabPanels data-mt="6">
 					<TabPanel>
 						<HabitTab day={day} onResolve={onResolve} {...stats} />
 					</TabPanel>

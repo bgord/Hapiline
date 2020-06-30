@@ -2,10 +2,8 @@ import React from "react";
 
 export const CheckmarkIcon: React.FC<JSX.IntrinsicElements["path"]> = props => (
 	<svg
-		style={{
-			width: "100%",
-			maxWidth: "24px",
-		}}
+		data-width="100%"
+		style={{maxWidth: "24px"}}
 		width="24"
 		height="24"
 		viewBox="0 0 24 24"

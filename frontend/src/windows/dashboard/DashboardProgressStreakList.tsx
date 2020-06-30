@@ -1,5 +1,4 @@
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
@@ -10,7 +9,6 @@ import {UrlBuilder} from "../../services/url-builder";
 
 import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
 import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
-import {ExpandContractList} from "../../ui/ExpandContractList";
 
 import * as UI from "../../ui";
 
@@ -28,7 +26,7 @@ export const DashboardProgressStreakList: React.FC<{
 
 	return (
 		<>
-			<UI.Row mt="48" mb="24" crossAxis="center">
+			<UI.Row mt="24" crossAxis="center">
 				<UI.Header variant="extra-small">Progress streaks</UI.Header>
 				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
 					{progressStreakStats.length}
@@ -41,7 +39,7 @@ export const DashboardProgressStreakList: React.FC<{
 						title="Hide progress streak list"
 						onClick={toggleProgressStreakList}
 					>
-						<VisuallyHidden>Hide progress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Hide progress streak list</UI.VisuallyHidden>
 						<ChevronUpIcon />
 					</UI.Button>
 				)}
@@ -53,15 +51,15 @@ export const DashboardProgressStreakList: React.FC<{
 						title="Show progress streak list"
 						onClick={toggleProgressStreakList}
 					>
-						<VisuallyHidden>Show progress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Show progress streak list</UI.VisuallyHidden>
 						<ChevronDownIcon />
 					</UI.Button>
 				)}
 			</UI.Row>
 
 			{isProgressStreakListVisible && (
-				<UI.Column by="gray-1" mt="24">
-					<ExpandContractList max={5}>
+				<UI.Column by="gray-1" mt="6">
+					<UI.ExpandContractList max={5}>
 						{progressStreakStats.map(habit => (
 							<UI.Row
 								mainAxis="between"
@@ -102,7 +100,7 @@ export const DashboardProgressStreakList: React.FC<{
 								</UI.Row>
 							</UI.Row>
 						))}
-					</ExpandContractList>
+					</UI.ExpandContractList>
 				</UI.Column>
 			)}
 		</>

@@ -15,7 +15,7 @@ export const Logout: React.FC = () => {
 			if (setUserProfile) {
 				setUserProfile(null);
 			}
-			history.push("/");
+			history.push("/login");
 		},
 	});
 

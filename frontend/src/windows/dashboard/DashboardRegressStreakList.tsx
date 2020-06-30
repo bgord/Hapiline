@@ -1,5 +1,4 @@
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
@@ -10,7 +9,6 @@ import {UrlBuilder} from "../../services/url-builder";
 
 import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
 import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
-import {ExpandContractList} from "../../ui/ExpandContractList";
 
 import * as UI from "../../ui";
 
@@ -41,7 +39,7 @@ export const DashboardRegressStreakList: React.FC<{
 						title="Hide regress streak list"
 						onClick={toggleRegressStreakList}
 					>
-						<VisuallyHidden>Hide regress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Hide regress streak list</UI.VisuallyHidden>
 						<ChevronUpIcon />
 					</UI.Button>
 				)}
@@ -53,15 +51,15 @@ export const DashboardRegressStreakList: React.FC<{
 						title="Show regress streak list"
 						onClick={toggleRegressStreakList}
 					>
-						<VisuallyHidden>Show regress streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Show regress streak list</UI.VisuallyHidden>
 						<ChevronDownIcon />
 					</UI.Button>
 				)}
 			</UI.Row>
 
 			{isRegressStreakListVisible && (
-				<UI.Column by="gray-1" mt="24">
-					<ExpandContractList max={5}>
+				<UI.Column by="gray-1" mt="6">
+					<UI.ExpandContractList max={5}>
 						{regressStreakStats.map(habit => (
 							<UI.Row
 								mainAxis="between"
@@ -101,7 +99,7 @@ export const DashboardRegressStreakList: React.FC<{
 								</UI.Row>
 							</UI.Row>
 						))}
-					</ExpandContractList>
+					</UI.ExpandContractList>
 				</UI.Column>
 			)}
 		</>

@@ -1,15 +1,19 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {useQuery, useMutation} from "react-query";
 import * as UI from "./ui";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {api} from "./services/api";
 import {Journal, DraftJournal} from "./models";
+import {Prompt} from "react-router-dom";
+import {getRequestErrors} from "./selectors/getRequestErrors";
 
 interface JournalProps {
 	day: Date;
 }
 export const JournalTab: React.FC<JournalProps> = ({day}) => {
-	const [journalContent, setJournalContent] = useState<Journal["content"]>("");
+	const [journalContent, setJournalContent] = React.useState<Journal["content"]>("");
+	const [showUpdateJournalError, setShowUpdateJournalError] = React.useState<boolean>(true);
+
 	const triggerErrorToast = useErrorToast();
 	const triggerSuccessToast = useSuccessToast();
 
@@ -18,6 +22,13 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 		queryFn: api.journal.get,
 		config: {
 			retry: false,
+			onError: error => {
+				const {responseStatus} = getRequestErrors(error as Error);
+				if (responseStatus === 404) {
+					setShowUpdateJournalError(false);
+				}
+				triggerErrorToast("Error while loading daily jorunal");
+			},
 		},
 	});
 	const [journalRequestState, saveJournalRequestState] = useMutation<Journal, DraftJournal>(
@@ -39,26 +50,45 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 	};
 	const journal = getJournalRequestState.data;
 
-	useEffect(() => {
+	React.useEffect(() => {
 		setJournalContent(journal?.content ?? "");
 	}, [journal]);
 
+	function shouldTriggerNotSavedChangesPrompt() {
+		if (journal?.content !== undefined) {
+			return journal?.content !== journalContent;
+		}
+
+		return journalContent !== "";
+	}
 	return (
 		<UI.Row p="24">
+			<Prompt
+				when={shouldTriggerNotSavedChangesPrompt()}
+				message="Are you sure? You will lose the changes to your journal."
+			/>
+
 			<UI.Field width="100%">
 				<UI.Label htmlFor="journal">Journal</UI.Label>
 				<UI.Textarea
-					style={{minHeight: "400px", fontSize: "1.1rem", marginBottom: "1rem"}} //TODO: Adjust to new solution
+					style={{minHeight: "400px"}} //TODO: Adjust to new solution
 					id="journal"
 					onChange={e => setJournalContent(e.target.value)}
 					value={journalContent}
+					disabled={getJournalRequestState.status === "error" && showUpdateJournalError}
 				/>
-				<UI.Button mt="12" onClick={handleSaveRequest} variant="primary">
+				<UI.Button mt="24" onClick={handleSaveRequest} variant="primary">
 					Save
 				</UI.Button>
+
 				<UI.ShowIf request={saveJournalRequestState} is="error">
 					<UI.ErrorBanner m="24">Couldn't save daily journal, please try again.</UI.ErrorBanner>
 				</UI.ShowIf>
+				{showUpdateJournalError && (
+					<UI.ShowIf request={getJournalRequestState} is="error">
+						<UI.ErrorBanner m="24">Error while loading daily jorunal.</UI.ErrorBanner>
+					</UI.ShowIf>
+				)}
 			</UI.Field>
 		</UI.Row>
 	);

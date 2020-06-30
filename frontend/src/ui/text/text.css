@@ -17,7 +17,7 @@
 	font-weight: 500;
 }
 .c-text[data-variant="light"] {
-	color: var(--gray-7);
+	color: var(--gray-8);
 }
 
 .c-text[data-variant="monospaced"] {
@@ -32,4 +32,12 @@
 .c-text[data-variant="link"]:hover {
 	text-decoration-style: double;
 	transition: text-decoration-style 0.3s;
+}
+
+.c-text[data-wrap="normal"] {
+	white-space: normal;
+}
+
+.c-text[data-wrap="no"] {
+	white-space: nowrap;
 }

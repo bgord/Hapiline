@@ -1,5 +1,4 @@
 import React from "react";
-import VisuallyHidden from "@reach/visually-hidden";
 import {Link} from "react-router-dom";
 import {QueryResult} from "react-query";
 
@@ -9,7 +8,6 @@ import {UrlBuilder} from "../../services/url-builder";
 
 import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
 import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
-import {ExpandContractList} from "../../ui/ExpandContractList";
 
 import * as UI from "../../ui";
 
@@ -40,7 +38,7 @@ export const DashboardNoStreakList: React.FC<{
 						title="Hide no streak list"
 						onClick={toggleNoStreakList}
 					>
-						<VisuallyHidden>Hide no streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Hide no streak list</UI.VisuallyHidden>
 						<ChevronUpIcon />
 					</UI.Button>
 				)}
@@ -52,15 +50,15 @@ export const DashboardNoStreakList: React.FC<{
 						title="Show no streak list"
 						onClick={toggleNoStreakList}
 					>
-						<VisuallyHidden>Show no streak list</VisuallyHidden>
+						<UI.VisuallyHidden>Show no streak list</UI.VisuallyHidden>
 						<ChevronDownIcon />
 					</UI.Button>
 				)}
 			</UI.Row>
 
 			{isNoStreakListVisible && (
-				<UI.Column by="gray-1" mt="24">
-					<ExpandContractList max={5}>
+				<UI.Column by="gray-1" mt="6">
+					<UI.ExpandContractList max={5}>
 						{noStreakStats.map(habit => (
 							<UI.Row
 								mainAxis="between"
@@ -95,7 +93,7 @@ export const DashboardNoStreakList: React.FC<{
 								</UI.Row>
 							</UI.Row>
 						))}
-					</ExpandContractList>
+					</UI.ExpandContractList>
 				</UI.Column>
 			)}
 		</>

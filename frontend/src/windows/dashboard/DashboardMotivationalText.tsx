@@ -4,15 +4,15 @@ import {QueryResult} from "react-query";
 
 import {DashboardHabitVoteStatsForDateRanges} from "../../models";
 import * as UI from "../../ui";
+import {useUntrackedHabits} from "../../contexts/habits-context";
 
 export const DashboardMotivationalText: React.FC<{
 	request: QueryResult<DashboardHabitVoteStatsForDateRanges>;
 }> = ({request}) => {
-	const {
-		numberOfTrackedHabits,
-		numberOfNonEmptyVotes,
-		numberOfUntrackedHabits,
-	} = extractFromRequest(request);
+	const {numberOfTrackedHabits, numberOfNonEmptyVotes} = extractFromRequest(request);
+
+	const untrackedHabits = useUntrackedHabits();
+	const numberOfUntrackedHabits = untrackedHabits.length;
 
 	function selectStrategy() {
 		if (numberOfTrackedHabits === 0) return "no_habits";
@@ -38,7 +38,7 @@ export const DashboardMotivationalText: React.FC<{
 		),
 		not_all_voted: (
 			<UI.Column>
-				<UI.Text>You're on a good track!</UI.Text>
+				<UI.Text>You're on a good track!</UI.Text>{" "}
 				<UI.Text>
 					You have <UI.Text variant="bold">{numberOfTrackedHabits - numberOfNonEmptyVotes}</UI.Text>{" "}
 					tracked habits to vote for left out of{" "}
@@ -49,14 +49,18 @@ export const DashboardMotivationalText: React.FC<{
 		),
 		all_voted: (
 			<UI.Column>
-				<UI.Row>
-					<UI.Text variant="bold">Congratulations!</UI.Text>{" "}
-					<UI.Text ml="6">
-						You voted for every one of <UI.Text variant="bold">{numberOfTrackedHabits}</UI.Text>{" "}
-						tracked habits today!
+				<UI.Row wrap="wrap">
+					<UI.Text variant="bold" mr="6">
+						Congratulations!{" "}
 					</UI.Text>
-				</UI.Row>{" "}
-				<UI.Text>You also have {numberOfUntrackedHabits} untracked habits.</UI.Text>
+
+					<UI.Text>
+						You voted for every one of <UI.Text variant="bold">{numberOfTrackedHabits}</UI.Text>{" "}
+						tracked habits today!{" "}
+					</UI.Text>
+				</UI.Row>
+
+				<UI.Text mt="6">You also have {numberOfUntrackedHabits} untracked habits.</UI.Text>
 			</UI.Column>
 		),
 	};
@@ -65,16 +69,11 @@ export const DashboardMotivationalText: React.FC<{
 
 	if (!strategy) return null;
 
-	return (
-		<UI.Row mt="24" mb="48">
-			{strategyToText[strategy]}
-		</UI.Row>
-	);
+	return <UI.Row mb="48">{strategyToText[strategy]}</UI.Row>;
 };
 
 type ExtractedType = {
 	numberOfTrackedHabits: number;
-	numberOfUntrackedHabits: number;
 	numberOfNonEmptyVotes: number;
 };
 
@@ -82,8 +81,7 @@ function extractFromRequest(
 	request: QueryResult<DashboardHabitVoteStatsForDateRanges>,
 ): ExtractedType {
 	return {
-		numberOfTrackedHabits: request?.data?.today?.numberOfPossibleVotes ?? 0,
-		numberOfUntrackedHabits: request?.data?.today?.numberOfUntrackedHabits ?? 0,
-		numberOfNonEmptyVotes: request?.data?.today?.numberOfNonEmptyVotes ?? 0,
+		numberOfTrackedHabits: request.data?.today?.numberOfPossibleVotes ?? 0,
+		numberOfNonEmptyVotes: request.data?.today?.numberOfNonEmptyVotes ?? 0,
 	};
 }

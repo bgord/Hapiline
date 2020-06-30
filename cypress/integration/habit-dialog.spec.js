@@ -2,303 +2,9 @@
 
 const HABITS_URL = "/habits";
 
-describe("Habit", () => {
+describe("habit dialog", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
-	});
-
-	it("Add a habit", () => {
-		cy.clock();
-
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findByText("New habit").click();
-		cy.url().should("contain", "/habits?subview=add_habit");
-
-		cy.findByRole("dialog").within(() => {
-			cy.findByText("New habit");
-			cy.findByLabelText("Habit name").type("Wake up at 7:30 AM");
-			cy.findByLabelText("Score").select("positive");
-			cy.findByLabelText("Strength").select("fresh");
-
-			cy.findByText("You won't be able to vote for an untracked habit.");
-
-			cy.findByText("Add habit").click();
-		});
-
-		cy.findByText("Habit successfully addedd!");
-
-		cy.tick(10000);
-
-		cy.findByText("Habit successfully addedd!").should("not.exist");
-
-		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit name").should("be.empty");
-			cy.findByLabelText("Score").should("have.value", "positive");
-			cy.findByLabelText("Strength").should("have.value", "established");
-
-			cy.findByLabelText("Habit name").type("Wake up at 7:30 AM");
-			cy.findByLabelText("Score").select("positive");
-			cy.findByLabelText("Strength").select("fresh");
-
-			cy.findByText("Add habit").click();
-
-			cy.findByText("Given habit already exists.");
-
-			cy.findByLabelText("Habit name")
-				.clear()
-				.type("Go to sleep at 9:30 AM");
-			cy.findByLabelText("Score").select("positive");
-			cy.findByLabelText("Strength").select("fresh");
-
-			cy.findByText("Add habit").click();
-
-			cy.findByText("Close dialog").click({force: true});
-		});
-
-		cy.findByText("Habit successfully addedd!");
-
-		cy.findByText("Go to sleep at 9:30 AM");
-	});
-
-	it("Add habit form local storage sync", () => {
-		cy.clearLocalStorage();
-
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findByText("New habit").click();
-		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit name").type("okokok");
-			cy.findByLabelText("Score").select("negative");
-			cy.findByLabelText("Strength").select("fresh");
-			cy.findByLabelText("Track this habit").click();
-			cy.findByLabelText("Description").type("kokoko");
-
-			cy.findByText("Close dialog").click({force: true});
-		});
-
-		// The form values survive closing the modal
-		cy.findByText("New habit").click();
-		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit name").should("have.value", "okokok");
-			cy.findByLabelText("Score").should("have.value", "negative");
-			cy.findByLabelText("Strength").should("have.value", "fresh");
-			cy.findByLabelText("Track this habit").should("not.be.checked");
-			cy.findByLabelText("Description").should("have.value", "kokoko");
-		});
-
-		cy.reload();
-
-		// The form values survive page reloads
-		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit name").should("have.value", "okokok");
-			cy.findByLabelText("Score").should("have.value", "negative");
-			cy.findByLabelText("Strength").should("have.value", "fresh");
-			cy.findByLabelText("Track this habit").should("not.be.checked");
-			cy.findByLabelText("Description").should("have.value", "kokoko");
-
-			// Reset form clears the local storage and restores the defauls
-			cy.findByText("Reset form").click();
-			cy.findByLabelText("Habit name").should("be.empty");
-			cy.findByLabelText("Score").should("have.value", "positive");
-			cy.findByLabelText("Strength").should("have.value", "established");
-			cy.findByLabelText("Track this habit").should("be.checked");
-			cy.findByLabelText("Description").should("be.empty");
-
-			cy.clearLocalStorage();
-		});
-	});
-
-	it("500 while adding an item", () => {
-		const errorMessage = "Unexpected error, try again later.";
-		cy.server();
-		cy.route({
-			method: "POST",
-			url: "/api/v1/habit",
-			status: 500,
-			response: {
-				code: "E_INTERNAL_SERVER_ERROR",
-				message: errorMessage,
-				argErrors: [],
-			},
-		});
-
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findByText("New habit").click();
-
-		cy.findByRole("dialog").within(() => {
-			cy.findByLabelText("Habit name").type("Wake up at 7:30 AM");
-			cy.findByLabelText("Score").select("positive");
-			cy.findByText("Add habit").click();
-
-			cy.findByText(errorMessage);
-		});
-
-		cy.findByText("Habit couldn't be added.");
-	});
-
-	it("empty list of items", () => {
-		cy.server();
-		cy.route({
-			method: "GET",
-			url: "/api/v1/habits",
-			status: 200,
-			response: [],
-		});
-
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findByText("It seems you haven't added any habits yet.");
-		cy.findByText("New habit");
-
-		if (Cypress.env("device") === "desktop") {
-			cy.findByText("Show filters").should("be.disabled");
-		}
-	});
-
-	it("renders returned items", () => {
-		const response = [
-			{
-				id: 1,
-				name: "Watch The Office",
-				score: "positive",
-				strength: "established",
-				is_trackable: true,
-			},
-			{
-				id: 2,
-				name: "Go to sleep",
-				score: "neutral",
-				strength: "fresh",
-				is_trackable: true,
-			},
-			{
-				id: 3,
-				name: "Wake up",
-				score: "negative",
-				strength: "developing",
-				is_trackable: true,
-			},
-			{
-				id: 4,
-				name: "Untrackable",
-				score: "positive",
-				strength: "established",
-				is_trackable: false,
-			},
-		];
-
-		cy.server();
-		cy.route({
-			method: "GET",
-			url: "/api/v1/habits",
-			status: 200,
-			response,
-		});
-
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.get("ul").within(() => {
-			response.forEach(item => {
-				cy.findByText(item.name);
-				cy.findAllByText(item.score);
-			});
-		});
-
-		cy.findByText("Untracked");
-
-		if (Cypress.env("device") === "desktop") {
-			cy.findByText("Show filters").click();
-
-			cy.findByLabelText("Positive (2)").should("not.be.checked");
-			cy.findByLabelText("Neutral (1)").should("not.be.checked");
-			cy.findByLabelText("Negative (1)").should("not.be.checked");
-			cy.findByLabelText("Established (2)").should("not.be.checked");
-			cy.findByLabelText("Fresh (1)").should("not.be.checked");
-			cy.findByLabelText("Developing (1)").should("not.be.checked");
-			cy.findByLabelText("All scores (4)").should("be.checked");
-			cy.findByLabelText("All strengths (4)").should("be.checked");
-			cy.findByTestId("number-of-habit-search-results").should("have.text", "4 results");
-
-			cy.findByLabelText("Positive (2)").check();
-			cy.get("ul").within(() => cy.get("li").should("have.length", 2));
-			cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
-
-			cy.findByLabelText("Neutral (1)").check();
-			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
-
-			cy.findByLabelText("Negative (1)").check();
-			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
-
-			cy.findByLabelText("All scores (4)").check();
-
-			cy.findByLabelText("Established (2)").check();
-			cy.get("ul").within(() => cy.get("li").should("have.length", 2));
-			cy.findByTestId("number-of-habit-search-results").should("have.text", "2 results");
-
-			cy.findByLabelText("Developing (1)").check();
-			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
-
-			cy.findByLabelText("Fresh (1)").check();
-			cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-			cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
-
-			cy.findByLabelText("All strengths (4)").check();
-		}
-
-		cy.findByPlaceholderText("Search for habits...")
-			.should("be.empty")
-			.type("the");
-		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
-		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
-
-		cy.findByText("Clear").click();
-		cy.findByPlaceholderText("Search for habits...").should("be.empty");
-	});
-
-	it("error while getting items", () => {
-		const errorMessage = "Error while getting the list.";
-
-		cy.server();
-		cy.route({
-			method: "GET",
-			url: "/api/v1/habits",
-			status: 500,
-			response: {
-				code: "E_INTERNAL_SERVER_ERROR",
-				message: errorMessage,
-				argErrors: [],
-			},
-		});
-
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findByText(errorMessage);
-		cy.findByText("Couldn't fetch habit list.");
-		cy.findByText("It seems you haven't added any habits yet.").should("not.exist");
-
-		cy.route({
-			method: "GET",
-			url: "/api/v1/habits",
-			status: 200,
-			response: [],
-		});
-
-		cy.findByText("Retry").click();
-
-		cy.findByText(errorMessage).should("not.exist");
-		cy.findByText("Retry").should("not.exist");
-		cy.findByText("It seems you haven't added any habits yet.");
 	});
 
 	it("deleting items", () => {
@@ -472,6 +178,8 @@ describe("Habit", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
+		cy.injectAxe();
+
 		cy.findAllByText("More")
 			.first()
 			.click();
@@ -484,9 +192,20 @@ describe("Habit", () => {
 			cy.findByText("2019-02-01 00:00");
 			cy.findByText("2 days progress streak");
 			cy.findByDisplayValue("Last week");
+
+			cy.checkA11y('div[role="dialog"]', {
+				rules: {
+					// Disabled due to a slight issue with the chart labels' text color
+					"color-contrast": {
+						enabled: false,
+					},
+				},
+			});
+
 			for (const {day, vote} of chartResponse) {
 				cy.findByTitle(`${day} - ${vote}`);
 			}
+
 			cy.findByText("Close dialog").click({force: true});
 		});
 
@@ -556,7 +275,7 @@ describe("Habit", () => {
 			cy.findByText("Created at:");
 			cy.findByText("2019-01-01 00:00");
 
-			cy.findByText("Last updated at:");
+			cy.findByText("Last update:");
 			cy.findByText("2019-02-01 00:00");
 
 			cy.findByText("Select date range:").should("not.exist");
@@ -564,39 +283,84 @@ describe("Habit", () => {
 		});
 	});
 
-	it("changing name", () => {
+	it("changing name to a non-empty value", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
-		// "Save" flow
 		cy.findByText("0 lorem xxx").should("not.exist");
 		cy.findAllByText("More")
 			.first()
 			.click();
 
+		// At first, the two buttons should be disabled
+		cy.findByDisplayValue("0 lorem");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+
 		cy.findByDisplayValue("0 lorem").type(" xxx");
-		cy.findByText("Cancel");
-		cy.findByText("Save").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+
+		cy.findAllByText("Save")
+			.first()
+			.click();
+
 		cy.findByText("Name updated successfully!");
+
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+
 		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
 
 		cy.findByText("0 lorem xxx");
 		cy.findByText("0 lorem").should("not.exist");
+	});
 
-		// Enter flow
-		cy.findByText("1 loremlorem yyy").should("not.exist");
+	it("changing name to an empty value is impossible", () => {
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.findByText("0 lorem xxx").should("not.exist");
 		cy.findAllByText("More")
-			.eq(1)
+			.first()
 			.click();
 
-		cy.findByDisplayValue("1 loremlorem").type(" yyy{enter}");
-		cy.findByText("Save").should("not.exist");
-		cy.findByText("Cancel").should("not.exist");
-		cy.findAllByText("Name updated successfully!");
-		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
+		// At first, the two buttons should be disabled
+		cy.findByDisplayValue("0 lorem");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
 
-		cy.findByText("1 loremlorem yyy");
-		cy.findByText("1 loremlorem").should("not.exist");
+		// After clearing the input, save butotn should be disabled
+		// but user still has a way to cancel to the previous name
+		cy.findByDisplayValue("0 lorem").clear();
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Save")
+			.first()
+			.should("be.disabled");
+
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
+
+		cy.findByDisplayValue("0 lorem");
 	});
 
 	it("cancel changing name", () => {
@@ -608,16 +372,22 @@ describe("Habit", () => {
 			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" nono");
-		cy.findByText("Cancel").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
 		cy.findByDisplayValue("0 lorem");
 
 		cy.findByDisplayValue("0 lorem")
 			.clear()
 			.type("6 lorem");
-		cy.findByText("Save").click();
+		cy.findAllByText("Save")
+			.first()
+			.click();
 		cy.findByText("Given habit already exists.");
 
-		cy.findByText("Cancel").click();
+		cy.findAllByText("Cancel")
+			.first()
+			.click();
 		cy.findByDisplayValue("0 lorem");
 	});
 
@@ -636,8 +406,12 @@ describe("Habit", () => {
 
 		cy.findByText("Given habit already exists.");
 
-		cy.findByText("Save");
-		cy.findByText("Cancel");
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
 	});
 
 	it("changing name error", () => {
@@ -663,9 +437,15 @@ describe("Habit", () => {
 			.click();
 
 		cy.findByDisplayValue("0 lorem").type(" xxx");
-		cy.findByText("Save").click();
-		cy.findByText("Save");
-		cy.findByText("Cancel");
+		cy.findAllByText("Save")
+			.first()
+			.click();
+		cy.findAllByText("Save")
+			.first()
+			.should("not.be.disabled");
+		cy.findAllByText("Cancel")
+			.first()
+			.should("not.be.disabled");
 		cy.findByText(errorMessage);
 
 		cy.findByRole("dialog").within(() => cy.findByText("Close dialog").click({force: true}));
@@ -745,132 +525,6 @@ describe("Habit", () => {
 		});
 	});
 
-	it("reordering habits (keyboard)", () => {
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findAllByTestId("draggable-habit-item").should("have.length", 10);
-
-		const expectedOrderBeforeDragAndDrop = [
-			"0 lorem",
-			"1 loremlorem",
-			"2 loremloremlorem",
-			"3 lorem",
-			"4 loremlorem",
-			"5 loremloremlorem",
-			"6 lorem",
-			"7 loremlorem",
-			"8 loremloremlorem",
-			"9 lorem",
-		];
-		expectedOrderBeforeDragAndDrop.forEach((_, index) => {
-			cy.queryAllByTestId("draggable-habit-item")
-				.eq(index)
-				.should("contain.text", expectedOrderBeforeDragAndDrop[index]);
-		});
-
-		cy.get("ul").within(() => {
-			cy.get("li:nth-child(1)")
-				.focus()
-				.trigger("keydown", {keyCode: 32})
-				.trigger("keydown", {keyCode: 40, force: true})
-				.trigger("keydown", {keyCode: 40, force: true})
-				.trigger("keydown", {keyCode: 32, force: true});
-		});
-
-		cy.findByText("Habits reordered successfully!").click();
-
-		const expectedOrderAfterDragAndDrop = [
-			"1 loremlorem",
-			"2 loremloremlorem",
-			"0 lorem",
-			"3 lorem",
-			"4 loremlorem",
-			"5 loremloremlorem",
-			"6 lorem",
-			"7 loremlorem",
-			"8 loremloremlorem",
-			"9 lorem",
-		];
-		expectedOrderAfterDragAndDrop.forEach((_, index) => {
-			cy.queryAllByTestId("draggable-habit-item")
-				.eq(index)
-				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
-		});
-
-		cy.reload().wait(1000);
-
-		expectedOrderAfterDragAndDrop.forEach((_, index) => {
-			cy.queryAllByTestId("draggable-habit-item")
-				.eq(index)
-				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
-		});
-	});
-
-	// The reason for skipping this test is that I cannot make it pass consistently.
-	// Sometimes the resulting order looks like this: 1230456789 instead of 1203456789.
-	// The good thing is that `reordering habits (keyboard)` test coverrs the same
-	// functionality, just via keyboard.
-	// It seems ok to do so, Atlassion does the same thing most of the times.
-	//
-	// [source](https://github.com/atlassian/react-beautiful-dnd/blob/master/cypress/integration/reorder-lists.spec.js)
-	//
-	// INFO: Consider refactoring if there's a reliable drad and drop cypress solution.
-	it.skip("reordering habits (mouse)", () => {
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findAllByTestId("draggable-habit-item").should("have.length", 10);
-
-		const expectedOrderBeforeDragAndDrop = [
-			"0 lorem",
-			"1 loremlorem",
-			"2 loremloremlorem",
-			"3 lorem",
-			"4 loremlorem",
-			"5 loremloremlorem",
-			"6 lorem",
-			"7 loremlorem",
-			"8 loremloremlorem",
-			"9 lorem",
-		];
-		expectedOrderBeforeDragAndDrop.forEach((_, index) => {
-			cy.queryAllByTestId("draggable-habit-item")
-				.eq(index)
-				.should("contain.text", expectedOrderBeforeDragAndDrop[index]);
-		});
-
-		cy.dragAndDrop("li:nth-child(1)", "li:nth-child(3)");
-
-		cy.findByText("Habits reordered successfully!");
-
-		const expectedOrderAfterDragAndDrop = [
-			"1 loremlorem",
-			"2 loremloremlorem",
-			"0 lorem",
-			"3 lorem",
-			"4 loremlorem",
-			"5 loremloremlorem",
-			"6 lorem",
-			"7 loremlorem",
-			"8 loremloremlorem",
-			"9 lorem",
-		];
-		expectedOrderAfterDragAndDrop.forEach((_, index) => {
-			cy.queryAllByTestId("draggable-habit-item")
-				.eq(index)
-				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
-		});
-
-		cy.reload().wait(5000);
-
-		expectedOrderAfterDragAndDrop.forEach((_, index) => {
-			cy.queryAllByTestId("draggable-habit-item")
-				.eq(index)
-				.should("contain.text", expectedOrderAfterDragAndDrop[index]);
-		});
-	});
-
 	it("changing strengths", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
@@ -900,7 +554,7 @@ describe("Habit", () => {
 		});
 	});
 
-	it("changing description", () => {
+	it("changing description to a non-empty value", () => {
 		cy.login("dwight");
 		cy.visit(HABITS_URL);
 
@@ -915,14 +569,69 @@ describe("Habit", () => {
 		});
 
 		cy.findByRole("dialog").within(() => {
-			cy.findByPlaceholderText("Write something...")
-				.clear()
-				.type("xxx");
+			cy.findByText("lorem");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("be.disabled");
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("be.disabled");
 
-			cy.findByText("Save").click();
+			cy.findByText("lorem").type(" ehh");
+
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("not.be.disabled");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("not.be.disabled")
+				.click();
+
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("be.disabled");
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("be.disabled");
 		});
 
-		cy.findByText("Comment added successfully!");
+		cy.findAllByText("Comment added successfully!");
+	});
+
+	it("changing description to an empty value", () => {
+		cy.login("dwight");
+		cy.visit(HABITS_URL);
+
+		cy.get("ul").within(() => {
+			cy.findAllByText("positive").should("have.length", 4);
+			cy.findAllByText("neutral").should("have.length", 3);
+			cy.findAllByText("negative").should("have.length", 3);
+
+			cy.findAllByText("More")
+				.eq(1)
+				.click();
+		});
+
+		cy.findByRole("dialog").within(() => {
+			cy.findByText("lorem").clear();
+
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("not.be.disabled");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("not.be.disabled")
+				.click();
+
+			cy.findAllByText("Cancel")
+				.eq(1)
+				.should("be.disabled");
+			cy.findAllByText("Save")
+				.eq(1)
+				.should("be.disabled");
+		});
+
+		cy.findAllByText("Comment added successfully!");
 	});
 
 	it("changing description error", () => {
@@ -958,7 +667,9 @@ describe("Habit", () => {
 				.clear()
 				.type("xxx");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.eq(1)
+				.click();
 		});
 
 		cy.findAllByText("Habit description couldn't be changed");
@@ -1003,7 +714,9 @@ describe("Habit", () => {
 				.clear()
 				.type("xxx");
 
-			cy.findByText("Save").click();
+			cy.findAllByText("Save")
+				.eq(1)
+				.click();
 			cy.findByText("Too long description");
 		});
 
@@ -1104,20 +817,5 @@ describe("Habit", () => {
 		cy.findByText("regress").click();
 
 		cy.url().should("contain", "/calendar?preview_day=2020-01-19&highlighted_habit_id=36");
-	});
-
-	it("offline mode simulation", () => {
-		cy.server();
-		cy.route({
-			method: "GET",
-			url: "/api/v1/habits",
-			status: 500,
-			response: {},
-		});
-
-		cy.login("dwight");
-		cy.visit(HABITS_URL);
-
-		cy.findByText("Cannot fetch habits, please try again");
 	});
 });

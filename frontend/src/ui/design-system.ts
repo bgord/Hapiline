@@ -102,6 +102,26 @@ export function getBackgroundToken(bg?: Background) {
 	};
 }
 
+type ZIndex = "0" | "1" | "2";
+export type ZIndexes = {
+	z?: ZIndex;
+};
+export function getZIndexToken(z?: ZIndex) {
+	return {
+		"data-z": z,
+	};
+}
+
+type Overflow = "auto" | "scroll";
+export type Overflows = {
+	overflow?: Overflow;
+};
+export function getOverflowToken(overflow?: Overflow) {
+	return {
+		"data-overflow": overflow,
+	};
+}
+
 type SpacingScale = "0" | "3" | "6" | "12" | "24" | "48" | "72" | "auto" | undefined;
 type ResponsiveSpacingScaleType = SpacingScale | [SpacingScale, SpacingScale];
 export interface Margins {

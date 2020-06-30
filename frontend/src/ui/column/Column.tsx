@@ -11,6 +11,7 @@ import {
 	Backgrounds,
 	Margins,
 	Paddings,
+	ZIndexes,
 	getMarginTokens,
 	getPaddingTokens,
 	getAlignmentTokens,
@@ -18,9 +19,17 @@ import {
 	getWidthToken,
 	getBackgroundToken,
 	getBorderTokens,
+	getZIndexToken,
 } from "../design-system";
 
-type ColumnOwnProps = Margins & Alignments & Paddings & Widths & Positions & Backgrounds & Borders;
+type ColumnOwnProps = Margins &
+	Alignments &
+	Paddings &
+	Widths &
+	Positions &
+	Backgrounds &
+	Borders &
+	ZIndexes;
 
 export type ColumnProps<E extends React.ElementType> = PolymorphicComponentProps<E, ColumnOwnProps>;
 
@@ -38,6 +47,7 @@ export const Column = React.forwardRef(
 			width,
 			bg,
 			b, bx, by, bt, br, bb, bl, bw,
+			z,
 			...props
 		}: ColumnProps<E>,
 		innerRef: typeof ref,
@@ -49,6 +59,7 @@ export const Column = React.forwardRef(
 		const widthToken = getWidthToken(width);
 		const backgroundToken = getBackgroundToken(bg);
 		const borderTokens = getBorderTokens({b, bx, by, bt, br, bb, bl, bw});
+		const zIndexToken = getZIndexToken(z);
 
 		return (
 			<Box
@@ -62,6 +73,7 @@ export const Column = React.forwardRef(
 				{...widthToken}
 				{...backgroundToken}
 				{...borderTokens}
+				{...zIndexToken}
 				{...props}
 			/>
 		);

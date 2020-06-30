@@ -8,7 +8,6 @@ import {faPlus, faEquals, faMinus} from "@fortawesome/free-solid-svg-icons";
 import {subDays, isBefore} from "date-fns";
 import {ChevronUpIcon} from "./ui/icons/ChevronUp";
 import {ChevronDownIcon} from "./ui/icons/ChevronDown";
-import VisuallyHidden from "@reach/visually-hidden";
 import {
 	HabitVoteType,
 	habitStrengthToBadgeVariant,
@@ -19,22 +18,19 @@ import {
 } from "./models";
 import * as UI from "./ui";
 import {api} from "./services/api";
-import {
-	useEditableFieldState,
-	useEditableFieldValue,
-	CancelButton,
-	SaveButton,
-} from "./hooks/useEditableField";
+import {useEditableFieldValue} from "./hooks/useEditableField";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useToggle} from "./hooks/useToggle";
 import {UrlBuilder} from "./services/url-builder";
+import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
 	day: string;
 }> = ({onResolve, day, ...habitWithPossibleVote}) => {
-	const textarea = useEditableFieldState();
 	const {on: isCommentVisible, toggle: toggleComment} = useToggle();
+
+	const mediaQuery = useMediaQuery();
 
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
@@ -56,7 +52,6 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 	const upsertCommentResponseHandlers = {
 		onSuccess: () => {
 			triggerSuccessToast("Comment added successfully!");
-			textarea.setIdle();
 			onResolve();
 		},
 		onError: () => triggerErrorToast("Couldn't add comment"),
@@ -72,8 +67,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		upsertCommentResponseHandlers,
 	);
 
-	const [newComment, newCommentHelpers] = useEditableFieldValue(
-		changedComment => {
+	const [newComment, newCommentHelpers] = useEditableFieldValue({
+		updateFn: changedComment => {
 			if (habitWithPossibleVote.vote?.id) {
 				updateVoteComment({id: habitWithPossibleVote.vote.id, comment: changedComment});
 			} else {
@@ -85,12 +80,14 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 				});
 			}
 		},
-		habitWithPossibleVote.vote?.comment,
-		true,
-	);
+		defaultValue: habitWithPossibleVote.vote?.comment,
+		allowEmptyString: true,
+	});
 
 	const dayBeforeYesterday = subDays(new Date(), 2);
 	const isBeforeDayBeforeYesterday = isBefore(new Date(day), dayBeforeYesterday);
+
+	const comment = habitWithPossibleVote.vote?.comment ?? null;
 
 	function changeVote(type: NonNullable<HabitVoteType>) {
 		addHabitDayVote({
@@ -101,15 +98,18 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		});
 	}
 
+	const isVoteCommentPristine = comment === newComment || (!comment && !newComment);
+
 	return (
 		<>
 			<UI.Row as="li" pb="12" width="100%" by="gray-1">
 				<UI.Column width="100%">
 					<UI.Row pt="6" width="100%" mr="6" wrap={[, "wrap"]}>
-						<UI.Row width="auto">
+						{/* TODO: Refactor the habit vote list so that -6px margin is not necessary */}
+						<UI.Row width="auto" style={{marginLeft: mediaQuery === MEDIA_QUERY.lg ? "-6px" : "0"}}>
 							{isCommentVisible && (
 								<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
-									<VisuallyHidden>Hide vote comment</VisuallyHidden>
+									<UI.VisuallyHidden>Hide vote comment</UI.VisuallyHidden>
 									<ChevronUpIcon />
 								</UI.Button>
 							)}
@@ -120,7 +120,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									title="Show and edit vote comment"
 									onClick={toggleComment}
 								>
-									<VisuallyHidden>Show and edit vote comment</VisuallyHidden>
+									<UI.VisuallyHidden>Show and edit vote comment</UI.VisuallyHidden>
 									<ChevronDownIcon />
 								</UI.Button>
 							)}
@@ -147,7 +147,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
 								}
 							>
-								<VisuallyHidden>Add progress vote</VisuallyHidden>
+								<UI.VisuallyHidden>Add progress vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faPlus} />
 							</UI.Button>
 							<UI.Button
@@ -163,7 +163,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
 								}
 							>
-								<VisuallyHidden>Add plateau vote</VisuallyHidden>
+								<UI.VisuallyHidden>Add plateau vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faEquals} />
 							</UI.Button>
 							<UI.Button
@@ -179,7 +179,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
 								}
 							>
-								<VisuallyHidden>Add regress vote</VisuallyHidden>
+								<UI.VisuallyHidden>Add regress vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faMinus} />
 							</UI.Button>
 						</UI.Row>
@@ -210,20 +210,30 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								<UI.Label htmlFor="vote_comment">Vote comment</UI.Label>
 								<UI.Textarea
 									id="vote_comment"
+									disabled={isBeforeDayBeforeYesterday}
 									key={habitWithPossibleVote.vote?.comment ?? undefined}
-									onFocus={textarea.setFocused}
 									placeholder="Write something..."
 									value={newComment ?? undefined}
 									onChange={newCommentHelpers.onChange}
 								/>
 							</UI.Field>
 							<UI.Row mb="12">
-								<SaveButton {...textarea} onClick={newCommentHelpers.onUpdate}>
+								<UI.Button
+									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									variant="primary"
+									onClick={newCommentHelpers.onUpdate}
+									mr="6"
+								>
 									Save
-								</SaveButton>
-								<CancelButton {...textarea} onClick={newCommentHelpers.onClear}>
+								</UI.Button>
+
+								<UI.Button
+									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									variant="outlined"
+									onClick={newCommentHelpers.onClear}
+								>
 									Cancel
-								</CancelButton>
+								</UI.Button>
 							</UI.Row>
 						</UI.Column>
 					)}

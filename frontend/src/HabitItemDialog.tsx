@@ -2,12 +2,7 @@ import {Dialog} from "@reach/dialog";
 import {useQuery, useMutation} from "react-query";
 import React from "react";
 
-import {
-	CancelButton,
-	SaveButton,
-	useEditableFieldValue,
-	useEditableFieldState,
-} from "./hooks/useEditableField";
+import {useEditableFieldValue} from "./hooks/useEditableField";
 import * as UI from "./ui";
 import {DeleteHabitButton} from "./DeleteHabitButton";
 import {EditableHabitNameInput} from "./EditableHabitNameInput";
@@ -62,14 +57,12 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			data-lg-mx="6"
 			data-lg-mt="12"
 			data-mb="0"
+			data-overflow="auto"
 			aria-label="Show habit preview"
-			style={{
-				maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh",
-				overflow: "auto",
-			}}
+			style={{maxHeight: mediaQuery === MEDIA_QUERY.default ? "calc(90vh - 48px)" : "95vh"}}
 		>
 			<UI.Column>
-				<UI.Row bg="gray-1" p="24" mainAxis="between">
+				<UI.Row bg="gray-1" p={["24", "6"]} mainAxis="between">
 					<UI.Header variant="small">Habit preview</UI.Header>
 					<UI.CloseIcon onClick={dismissDialog} />
 				</UI.Row>
@@ -86,13 +79,10 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 				{habit?.id && (
 					<UI.Column px={["24", "12"]}>
-						<UI.Row px="12" style={{marginLeft: "-12px"}} wrap={[, "wrap"]} crossAxis="end">
-							<UI.Row mr="6" mt="24">
-								<EditableHabitNameInput {...habit} key={habit?.name} />
-							</UI.Row>
+						<UI.Row wrap={[, "wrap"]} crossAxis="end" width="100%">
+							<EditableHabitNameInput {...habit} key={habit?.name} />
 
 							<EditableHabitScoreSelect {...habit} key={habit?.score} />
-
 							<EditableHabitStrengthSelect {...habit} key={habit?.strength} />
 						</UI.Row>
 
@@ -134,9 +124,9 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 
 							{habit.is_trackable && <HabitVoteCommentHistory habitId={habit.id} />}
 
-							<UI.Row mb="48" mainAxis="between" crossAxis="end" wrap={[, "wrap"]}>
+							<UI.Row mt="12" mb="48" mainAxis="between" crossAxis="end" wrap={[, "wrap"]}>
 								<UI.Wrapper>
-									<UI.Text variant="dimmed" mr="6" mt="48">
+									<UI.Text variant="dimmed" mr="6" mt="24">
 										Created at:
 									</UI.Text>
 									<UI.Text variant="monospaced" mr="24">
@@ -145,8 +135,8 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 								</UI.Wrapper>
 
 								<UI.Wrapper>
-									<UI.Text variant="dimmed" mr="6" mt="48">
-										Last updated at:
+									<UI.Text variant="dimmed" mr="6" mt="12">
+										Last update:
 									</UI.Text>
 									<UI.Text variant="monospaced">{formatTime(habit.updated_at)}</UI.Text>
 								</UI.Wrapper>
@@ -166,8 +156,6 @@ const EditableDescription: React.FC<{
 	habitId: Habit["id"];
 	onResolve: VoidFunction;
 }> = ({description, habitId, onResolve}) => {
-	const textarea = useEditableFieldState();
-
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
 
@@ -177,23 +165,26 @@ const EditableDescription: React.FC<{
 	>(api.habit.patch, {
 		onSuccess: () => {
 			triggerSuccessToast("Comment added successfully!");
-			textarea.setIdle();
 			onResolve();
 		},
 		onError: () => triggerErrorToast("Habit description couldn't be changed"),
 	});
 
-	const [newDescription, newDescriptionHelpers] = useEditableFieldValue(
-		updateDescription =>
+	const [newDescription, newDescriptionHelpers] = useEditableFieldValue({
+		updateFn: updateDescription =>
 			updateHabitDescription({
 				id: habitId,
 				description: updateDescription,
 			}),
-		description,
-	);
+		defaultValue: description,
+		allowEmptyString: true,
+	});
 
 	const {getArgErrorMessage} = getRequestStateErrors(updateHabitDescriptionRequestState);
 	const descriptionInlineErrorMessage = getArgErrorMessage("description");
+
+	const isHabitDescriptionPristine =
+		description === newDescription || (!description && !newDescription);
 
 	return (
 		<>
@@ -201,7 +192,6 @@ const EditableDescription: React.FC<{
 				<UI.Label htmlFor="description">Description</UI.Label>
 				<UI.Textarea
 					id="description"
-					onFocus={textarea.setFocused}
 					placeholder="Write something..."
 					value={newDescription ?? undefined}
 					onChange={newDescriptionHelpers.onChange}
@@ -213,12 +203,21 @@ const EditableDescription: React.FC<{
 			)}
 
 			<UI.Row>
-				<SaveButton {...textarea} onClick={newDescriptionHelpers.onUpdate}>
+				<UI.Button
+					variant="primary"
+					disabled={isHabitDescriptionPristine}
+					onClick={newDescriptionHelpers.onUpdate}
+					mr="6"
+				>
 					Save
-				</SaveButton>
-				<CancelButton {...textarea} onClick={newDescriptionHelpers.onClear}>
+				</UI.Button>
+				<UI.Button
+					variant="outlined"
+					disabled={isHabitDescriptionPristine}
+					onClick={newDescriptionHelpers.onClear}
+				>
 					Cancel
-				</CancelButton>
+				</UI.Button>
 			</UI.Row>
 		</>
 	);

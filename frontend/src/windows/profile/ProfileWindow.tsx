@@ -11,10 +11,17 @@ export const ProfileWindow = () => {
 	const [profile] = useUserProfile();
 
 	return (
-		<UI.Column mx={["auto", "12"]} mb="48" mt={["72", "24"]} width={["view-l", "auto"]}>
+		<UI.Column
+			as="main"
+			tabIndex={0}
+			mx={["auto", "6"]}
+			mb="48"
+			mt={["48", "12"]}
+			width={["view-l", "auto"]}
+		>
 			<UI.Card>
-				<UI.Row bg="gray-1" mt="12" p="24">
-					<UI.Header variant="large">Profile settings</UI.Header>
+				<UI.Row bg="gray-1" mt="12" p={["24", "12"]}>
+					<UI.Header variant={["large", "small"]}>Profile settings</UI.Header>
 				</UI.Row>
 
 				<ProfileChangeEmail />

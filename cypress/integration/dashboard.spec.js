@@ -7,13 +7,14 @@ const DASHBOARD_URL = "/dashboard";
 const today = format(new Date(), "yyyy-MM-dd");
 
 describe("Dashboard", () => {
-	beforeEach(() => {
+	before(() => {
 		cy.request("POST", "/test/db/seed");
 	});
 
-	it("upper part", () => {
+	it("dashboard stats", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
+		cy.injectAxe();
 
 		cy.findByText("Hello!");
 
@@ -26,10 +27,10 @@ describe("Dashboard", () => {
 		cy.go("back");
 
 		cy.get("div")
-			.eq(6)
+			.eq(5)
 			.should(
 				"include.text",
-				"You're on a good track!You have 6 tracked habits to vote for left out of 10 (and 0 untracked habits).",
+				"You're on a good track! You have 6 tracked habits to vote for left out of 10 (and 0 untracked habits).",
 			);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -62,6 +63,15 @@ describe("Dashboard", () => {
 
 		cy.findByTestId("chart-last-month").should("not.exist");
 
+		cy.checkA11y("html", {
+			rules: {
+				// Disabled due to a slight issue with the chart labels' text color
+				"color-contrast": {
+					enabled: false,
+				},
+			},
+		});
+
 		cy.server();
 		cy.route({
 			method: "GET",
@@ -75,7 +85,6 @@ describe("Dashboard", () => {
 					numberOfMissingVotes: 10,
 					numberOfNonEmptyVotes: 0,
 					numberOfPossibleVotes: 10,
-					numberOfUntrackedHabits: 2,
 				},
 				lastWeek: {
 					numberOfProgressVotes: 1,
@@ -100,10 +109,10 @@ describe("Dashboard", () => {
 		cy.wait(1000);
 
 		cy.get("div")
-			.eq(6)
+			.eq(4)
 			.should(
 				"include.text",
-				"Start your day well! You have 10 tracked habits to vote for. And 2 untracked habits.",
+				"Start your day well! You have 10 tracked habits to vote for. And 0 untracked habits.",
 			);
 
 		cy.findByTestId("chart-today").within(() => {
@@ -145,7 +154,6 @@ describe("Dashboard", () => {
 					numberOfMissingVotes: 0,
 					numberOfPossibleVotes: 10,
 					numberOfNonEmptyVotes: 10,
-					numberOfUntrackedHabits: 3,
 				},
 			},
 		});
@@ -157,8 +165,9 @@ describe("Dashboard", () => {
 			.eq(6)
 			.should(
 				"include.text",
-				"Congratulations! You voted for every one of 10 tracked habits today! You also have 3 untracked habits.",
+				"Congratulations! You voted for every one of 10 tracked habits today!",
 			);
+		cy.findByText("You also have 0 untracked habits.");
 
 		cy.findByTestId("chart-today").within(() => {
 			cy.findByText("Votes today");
@@ -181,7 +190,6 @@ describe("Dashboard", () => {
 					numberOfMissingVotes: 0,
 					numberOfPossibleVotes: 0,
 					numberOfNonEmptyVotes: 0,
-					numberOfUntrackedHabits: 0,
 				},
 			},
 		});
@@ -204,7 +212,7 @@ describe("Dashboard", () => {
 		cy.url().should("contain", "/habits");
 	});
 
-	it("upper part request errors", () => {
+	it("dashboard stats request errors", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -232,36 +240,7 @@ describe("Dashboard", () => {
 		cy.findByText("Cannot load dashboard stats now, please try again.");
 	});
 
-	it("notifications", () => {
-		cy.login("dwight");
-		cy.visit(DASHBOARD_URL);
-
-		cy.findByText("Notifications dropdown").click({force: true});
-
-		cy.get("#notification-list").within(() => {
-			cy.findByText("Notifications");
-			cy.findByText("1");
-
-			cy.findByText("Read");
-			cy.findByText("Unread");
-
-			cy.findAllByText("Congratulations! You did something good.").should("have.length", 2);
-			cy.findAllByText(today).should("have.length", 2);
-			cy.findByText("Read").click();
-
-			cy.findByText("Read").should("not.exist");
-			cy.findAllByText("Unread").should("have.length", 2);
-
-			cy.findByText("Notifications");
-			cy.findByText("0");
-
-			cy.findByText("Close dialog").click({force: true});
-		});
-
-		cy.get("#notification-list").should("not.exist");
-	});
-
-	it("streak stats", () => {
+	it("dashboard streak stats", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -390,7 +369,7 @@ describe("Dashboard", () => {
 		cy.findByText("nineth");
 	});
 
-	it("streak stats error", () => {
+	it("dashboard streak stats error", () => {
 		cy.login("dwight");
 		cy.visit(DASHBOARD_URL);
 
@@ -405,7 +384,7 @@ describe("Dashboard", () => {
 		cy.findByText("Couldn't fetch dashboard streak stats.");
 	});
 
-	it("Dashboard streaks get refreshed after a vote from the View Today modal", () => {
+	it("dashboard streaks get refreshed after a vote from the View Today modal", () => {
 		cy.login("jim");
 		cy.visit(DASHBOARD_URL);
 
@@ -426,20 +405,6 @@ describe("Dashboard", () => {
 
 		cy.findByText("1 day progress streak").should("not.exist");
 		cy.findByText("2 days progress streak");
-	});
-
-	it("journal textarea is available in a day dialog", () => {
-		cy.login("jim");
-		cy.visit(DASHBOARD_URL);
-
-		cy.findByText("View today").click();
-
-		cy.findByRole("dialog").within(() => {
-			cy.findAllByText("Journal")
-				.first()
-				.click();
-			cy.findAllByLabelText("Journal");
-		});
 	});
 
 	it("no vote badge is shown where there's no vote for given habit today", () => {
