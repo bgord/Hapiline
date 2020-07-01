@@ -184,3 +184,13 @@ export function getPaddingTokens(paddings: Paddings) {
 		...getSinglePaddingToken("pl"),
 	};
 }
+
+type OnEntryAnimation = "slide-down";
+export interface OnEntryAnimations {
+	onEntry?: OnEntryAnimation;
+}
+export function getOnEntryAnimationToken(onEntry?: OnEntryAnimation) {
+	return {
+		"data-on-entry": onEntry,
+	};
+}
