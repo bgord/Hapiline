@@ -61,6 +61,7 @@ export function NotificationDropdown() {
 					mt="72"
 					ml={[, "6"]}
 					id="notification-list"
+					onEntry="slide-down"
 					position="absolute"
 					width={["view-m", "auto"]}
 					z="1"
