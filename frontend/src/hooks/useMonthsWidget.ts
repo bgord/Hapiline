@@ -1,4 +1,4 @@
-import {eachDayOfInterval, endOfMonth, startOfMonth, subMonths} from "date-fns";
+import {differenceInMonths, eachDayOfInterval, endOfMonth, startOfMonth, subMonths} from "date-fns";
 
 import {DayCell} from "../models";
 import {formatDay, formatMonth} from "../services/date-formatter";
@@ -55,6 +55,10 @@ export const useMonthsWidget = (): MonthsWidgetProps => {
 		monthOffset,
 	];
 };
+
+export function getMonthOffsetFromDate(date: Date) {
+	return Math.abs(differenceInMonths(new Date(date), endOfMonth(new Date())));
+}
 
 function isNumber(value: unknown) {
 	return !Number.isNaN(Number(value));

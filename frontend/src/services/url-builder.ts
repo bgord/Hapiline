@@ -1,6 +1,7 @@
 import {constructUrl} from "../hooks/useQueryParam";
 import {Habit} from "../models";
 import {formatDay, formatToday} from "./date-formatter";
+import {getMonthOffsetFromDate} from "../hooks/useMonthsWidget";
 
 export const UrlBuilder = {
 	habits: {
@@ -38,6 +39,7 @@ export const UrlBuilder = {
 				constructUrl("calendar", {
 					preview_day: formatDay(day),
 					highlighted_habit_id: habitId.toString(),
+					month_offset: String(getMonthOffsetFromDate(day)),
 				}),
 		},
 	},
