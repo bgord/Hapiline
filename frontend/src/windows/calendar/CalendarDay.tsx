@@ -34,6 +34,7 @@ export function CalendarDay(props: CalendarDayProps) {
 
 	function openDialog() {
 		updateQueryParams("calendar", {
+			month_offset: queryParams.month_offset,
 			preview_day: day,
 			habit_vote_filter: isThisDayToday && stats.numberOfMissingVotes > 0 ? "unvoted" : "all",
 		});
