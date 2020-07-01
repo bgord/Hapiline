@@ -1,8 +1,8 @@
 import {eachDayOfInterval, endOfMonth, startOfMonth, subMonths} from "date-fns";
-import React from "react";
 
 import {DayCell} from "../models";
 import {formatDay, formatMonth} from "../services/date-formatter";
+import {useQueryParam} from "./useQueryParam";
 
 export type MonthOffset = number;
 
@@ -17,10 +17,13 @@ type MonthsWidgetProps = [
 ];
 
 export const useMonthsWidget = (): MonthsWidgetProps => {
-	const [monthOffset, setMonthOffset] = React.useState<MonthOffset>(0);
+	const [monthOffsetInUrl, setMonthOffsetInUrl] = useQueryParam("month_offset");
 
-	const setPreviousMonth = () => setMonthOffset(x => x + 1);
-	const setNextMonth = () => setMonthOffset(x => (x <= 0 ? 0 : x - 1));
+	const monthOffset = isNumber(monthOffsetInUrl) ? Number(monthOffsetInUrl) : 0;
+
+	const setPreviousMonth = () => setMonthOffsetInUrl((monthOffset + 1).toString());
+	const setNextMonth = () =>
+		setMonthOffsetInUrl((monthOffset <= 0 ? 0 : monthOffset - 1).toString());
 
 	const today = Date.now();
 
@@ -52,3 +55,7 @@ export const useMonthsWidget = (): MonthsWidgetProps => {
 		monthOffset,
 	];
 };
+
+function isNumber(value: unknown) {
+	return !Number.isNaN(Number(value));
+}
