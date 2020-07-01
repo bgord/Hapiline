@@ -38,7 +38,7 @@ export const UrlBuilder = {
 			habit: ({day, habitId}: {day: Date; habitId: Habit["id"]}): string =>
 				constructUrl("calendar", {
 					preview_day: formatDay(day),
-					highlighted_habit_id: habitId.toString(),
+					highlighted_habit_id: String(habitId),
 					month_offset: String(getMonthOffsetFromDate(day)),
 				}),
 		},
