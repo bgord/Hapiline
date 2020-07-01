@@ -58,6 +58,7 @@ export const ProfileDeleteAccount = () => {
 					data-width="view-m"
 					data-lg-width="auto"
 					data-lg-mx="12"
+					data-on-entry="slide-down"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
 					<AlertDialogLabel>
