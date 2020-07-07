@@ -106,13 +106,19 @@ body {
 	border: 3px solid var(--gray-3) !important;
 }
 
-@keyframes fadeIn {
+@keyframes slideDown {
 	from {
 		opacity: 0;
+		transform: translateY(-10px);
 	}
 	to {
 		opacity: 1;
+		transform: translateY(0px);
 	}
+}
+
+*[data-on-entry="slide-down"] {
+	animation: slideDown 0.33s ease-out;
 }
 
 /* ----------------------------------------------------- */

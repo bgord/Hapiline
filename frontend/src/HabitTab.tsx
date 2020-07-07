@@ -236,7 +236,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			</UI.Row>
 
 			{areThereNoTrackedHabits && (
-				<UI.InfoBanner size="big" mt="48">
+				<UI.InfoBanner size="big" my="48">
 					No habits available this day.
 				</UI.InfoBanner>
 			)}

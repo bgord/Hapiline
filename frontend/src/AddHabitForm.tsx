@@ -86,6 +86,7 @@ export const AddHabitForm: React.FC = () => {
 			data-pt="12"
 			data-pb="24"
 			data-lg-mt="12"
+			data-on-entry="slide-down"
 			aria-label="Add new habit"
 			onDismiss={hideAddFormDialog}
 		>

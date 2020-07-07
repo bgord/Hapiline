@@ -8,7 +8,7 @@ import {api} from "./services/api";
 import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
-import {isToday, isYesterday, differenceInDays} from "date-fns";
+import {differenceInDays} from "date-fns";
 import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
 
 export function NotificationDropdown() {
@@ -61,6 +61,7 @@ export function NotificationDropdown() {
 					mt="72"
 					ml={[, "6"]}
 					id="notification-list"
+					onEntry="slide-down"
 					position="absolute"
 					width={["view-m", "auto"]}
 					z="1"
@@ -173,9 +174,11 @@ function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) 
 		const date = new Date(createdAt);
 		const today = new Date();
 
-		if (isToday(date)) return "today";
-		if (isYesterday(date)) return "yesterday";
-		return `${differenceInDays(today, date)} days ago`;
+		const numberOfDaysFromToday = differenceInDays(today, date);
+
+		if (numberOfDaysFromToday === 0) return "today";
+		if (numberOfDaysFromToday === 1) return "yesterday";
+		return `${numberOfDaysFromToday} days ago`;
 	}
 
 	return (
