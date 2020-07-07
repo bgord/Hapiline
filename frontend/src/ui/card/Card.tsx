@@ -11,6 +11,7 @@ import {
 	Widths,
 	ZIndexes,
 	Overflows,
+	OnEntryAnimations,
 	getMarginTokens,
 	getPaddingTokens,
 	getPositionToken,
@@ -18,6 +19,7 @@ import {
 	getWidthToken,
 	getZIndexToken,
 	getOverflowToken,
+	getOnEntryAnimationToken,
 } from "../design-system";
 
 type CardOwnProps = JSX.IntrinsicElements["div"] &
@@ -27,7 +29,8 @@ type CardOwnProps = JSX.IntrinsicElements["div"] &
 	Backgrounds &
 	Widths &
 	ZIndexes &
-	Overflows;
+	Overflows &
+	OnEntryAnimations;
 
 export type CardProps<E extends React.ElementType> = PolymorphicComponentProps<E, CardOwnProps>;
 
@@ -42,6 +45,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	width,
 	z,
 	overflow,
+	onEntry,
 	...props
 }: CardProps<E>): JSX.Element {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
@@ -51,6 +55,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 	const widthToken = getWidthToken(width);
 	const zIndexToken = getZIndexToken(z);
 	const overflowToken = getOverflowToken(overflow);
+	const onEntryAnimationToken = getOnEntryAnimationToken(onEntry);
 
 	return (
 		<Box
@@ -63,6 +68,7 @@ export function Card<E extends React.ElementType = typeof defaultElement>({
 			{...widthToken}
 			{...zIndexToken}
 			{...overflowToken}
+			{...onEntryAnimationToken}
 			{...props}
 		/>
 	);

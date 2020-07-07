@@ -53,7 +53,7 @@ function DropdownMenu() {
 				<UI.Text>Menu</UI.Text>
 			</MenuButton>
 
-			<UI.Card as={MenuList} id="menu-list" data-bw="2" data-b="gray-2">
+			<UI.Card onEntry="slide-down" as={MenuList} id="menu-list" data-bw="2" data-b="gray-2">
 				<MenuLink as={UI.NavItem} p="12" to="/profile">
 					<UI.Text variant="bold">{profile?.email}</UI.Text>
 				</MenuLink>
