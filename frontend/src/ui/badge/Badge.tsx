@@ -6,8 +6,12 @@ import {Box, PolymorphicComponentProps} from "react-polymorphic-box";
 import {Margins, Paddings, getMarginTokens, getPaddingTokens} from "../design-system";
 
 export type BadgeVariant = "positive" | "negative" | "neutral" | "light" | "normal" | "strong";
+export type BadgeSize = "slim" | "normal";
 
-type BadgeOwnProps = JSX.IntrinsicElements["div"] & {variant: BadgeVariant} & Margins & Paddings;
+type BadgeOwnProps = JSX.IntrinsicElements["div"] & {variant: BadgeVariant} & {
+	size?: BadgeSize;
+} & Margins &
+	Paddings;
 
 export type BadgeProps<E extends React.ElementType> = PolymorphicComponentProps<E, BadgeOwnProps>;
 
@@ -16,6 +20,7 @@ const defaultElement = "div";
 // prettier-ignore
 export function Badge<E extends React.ElementType = typeof defaultElement>({
 	variant,
+	size = "normal",
 	m, mx, my, mt, mr, mb, ml,
 	p, px, py, pt, pr, pb, pl,
 	...props
@@ -28,6 +33,7 @@ export function Badge<E extends React.ElementType = typeof defaultElement>({
 			as={defaultElement}
 			className="c-badge"
 			data-variant={variant}
+			data-size={size}
 			{...marginTokens}
 			{...paddingTokens}
 			{...props}
