@@ -75,7 +75,7 @@ export function NotificationDropdown() {
 						<UI.Row mainAxis="between" mb={["24", "6"]}>
 							<UI.Header variant="extra-small">Notifications</UI.Header>
 
-							<UI.Badge ml="6" variant="neutral" style={{padding: "3px 6px"}}>
+							<UI.Badge ml="6" variant="neutral">
 								{numberOfUnreadNotifications}
 							</UI.Badge>
 

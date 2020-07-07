@@ -30,7 +30,7 @@ export const DashboardProgressStreakList: React.FC<{
 				<UI.Header as="h2" variant="extra-small" onClick={toggleProgressStreakList}>
 					Progress streaks
 				</UI.Header>
-				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+				<UI.Badge ml="6" variant="neutral" size="slim">
 					{progressStreakStats.length}
 				</UI.Badge>
 

@@ -4,8 +4,15 @@
 	letter-spacing: 0.8px;
 	border-radius: var(--radius-l);
 	font-weight: 600;
-	padding: 0 var(--spacing-s);
 	white-space: nowrap;
+}
+
+.c-badge[data-size="normal"] {
+	padding: 0 var(--spacing-s);
+}
+
+.c-badge[data-size="slim"] {
+	padding: 0 var(--spacing-xxs);
 }
 
 .c-badge[data-variant="positive"] {

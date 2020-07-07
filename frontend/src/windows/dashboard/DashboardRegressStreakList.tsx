@@ -30,7 +30,7 @@ export const DashboardRegressStreakList: React.FC<{
 				<UI.Header as="h2" variant="extra-small" onClick={toggleRegressStreakList}>
 					Regress streaks
 				</UI.Header>
-				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
+				<UI.Badge ml="6" variant="neutral" size="slim">
 					{regressStreakStats.length}
 				</UI.Badge>
 
