@@ -97,19 +97,19 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 
 				{mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mt="6" crossAxis="center">
-						<SmallCircle fill="#ef8790" />
+						<UI.SmallCircle fill="var(--red-neutral)" />
 						<UI.Text ml="6" mr="24">
 							{numberOfRegressVotes} regress {pluralize("vote", numberOfRegressVotes)} (
 							{regressVotesPrct}%)
 						</UI.Text>
 
-						<SmallCircle fill="var(--gray-3)" />
+						<UI.SmallCircle fill="var(--gray-3)" />
 						<UI.Text ml="6" mr="24">
 							{numberOfPlateauVotes} plateau {pluralize("vote", numberOfPlateauVotes)} (
 							{plateauVotesPrct}%)
 						</UI.Text>
 
-						<SmallCircle fill="#8bdb90" />
+						<UI.SmallCircle fill="var(--green-neutral)" />
 						<UI.Text ml="6" mr="24">
 							{numberOfProgressVotes} progress {pluralize("vote", numberOfProgressVotes)} (
 							{progressVotesPrct}%)
