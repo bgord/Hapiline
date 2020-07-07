@@ -16,6 +16,7 @@ describe("Journal", () => {
 			cy.findAllByText("Journal")
 				.first()
 				.click({force: true});
+			cy.findByText("Synced");
 			cy.findAllByLabelText("Journal");
 		});
 	});
@@ -31,9 +32,13 @@ describe("Journal", () => {
 			.first()
 			.should("have.value", "10 lorem ipsumlorem ipsum")
 			.type(" xd");
+		cy.findByText("Unsaved changes");
+
 		cy.findByText("Save").click();
 
 		cy.findByText("Daily journal successfully updated!");
+
+		cy.findByText("Synced");
 
 		cy.findAllByLabelText("Journal")
 			.first()

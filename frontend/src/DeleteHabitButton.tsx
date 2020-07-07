@@ -55,6 +55,7 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 					data-width="view-m"
 					data-lg-width="auto"
 					data-lg-mx="24"
+					data-on-entry="slide-down"
 					leastDestructiveRef={cancelRef as React.RefObject<HTMLElement>}
 				>
 					<AlertDialogLabel>

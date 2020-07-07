@@ -9,7 +9,7 @@ export const Logo: React.FC<JSX.IntrinsicElements["img"]> = props => {
 
 	return (
 		<img
-			alt="Hapiline logo"
+			alt="Hapiline brand"
 			src={src}
 			style={{
 				height: mediaQuery === MEDIA_QUERY.default ? "50px" : "45px",

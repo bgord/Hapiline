@@ -141,10 +141,7 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 
 	return (
 		<Link
-			to={UrlBuilder.calendar.day.habit({
-				day,
-				habitId,
-			})}
+			to={UrlBuilder.calendar.day.habit({day, habitId})}
 			title={title}
 			key={String(day)}
 			data-bw="1"

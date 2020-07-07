@@ -26,7 +26,9 @@ export const DashboardNoStreakList: React.FC<{
 	return (
 		<>
 			<UI.Row mt="24" crossAxis="center">
-				<UI.Header variant="extra-small">No streak</UI.Header>
+				<UI.Header as="h2" variant="extra-small">
+					No streak
+				</UI.Header>
 				<UI.Badge style={{padding: "0 3px"}} ml="6" variant="neutral">
 					{noStreakStats.length}
 				</UI.Badge>

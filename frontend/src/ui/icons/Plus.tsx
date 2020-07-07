@@ -16,12 +16,14 @@ export const PlusIcon: React.FC<PlusIconProps> = ({m, mx, my, mt, mr, mb, ml, ..
 			xmlns="http://www.w3.org/2000/svg"
 			{...marginTokens}
 		>
+			<title>Plus</title>
 			<path
 				d="M12 4V20M20 12L4 12"
 				stroke="#4A5568"
 				strokeWidth="2"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				aria-label="plus"
 				{...props}
 			/>
 		</svg>
