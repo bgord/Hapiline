@@ -19,14 +19,16 @@ type DayDialogProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabi
 export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) => {
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
-	const [, updateQueryParams] = useQueryParams();
+	const [queryParams, updateQueryParams] = useQueryParams();
 
 	const [tabIndex, setTabIndex] = useDayDialogTabIndex();
 
 	const mediaQuery = useMediaQuery();
 
 	function dismissDialog() {
-		updateQueryParams(location?.state?.from ?? location.pathname, {});
+		updateQueryParams(location?.state?.from ?? location.pathname, {
+			month_offset: queryParams.month_offset,
+		});
 	}
 
 	return (

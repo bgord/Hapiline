@@ -53,10 +53,15 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 	}
 
 	return (
-		<UI.Row p="24">
+		<UI.Column p="24">
 			<Prompt
 				when={shouldTriggerNotSavedChangesPrompt()}
 				message="Are you sure? You will lose the changes to your journal."
+			/>
+
+			<JournalSyncStatus
+				currentJournalContent={journal?.content}
+				newJournalContent={journalContent}
 			/>
 
 			<UI.Field width="100%">
@@ -67,7 +72,12 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 					onChange={e => setJournalContent(e.target.value)}
 					value={journalContent}
 				/>
-				<UI.Button mt="24" onClick={handleSaveRequest} variant="primary">
+				<UI.Button
+					mt="24"
+					onClick={handleSaveRequest}
+					variant="primary"
+					disabled={!shouldTriggerNotSavedChangesPrompt()}
+				>
 					Save
 				</UI.Button>
 
@@ -75,6 +85,33 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 					<UI.ErrorBanner m="24">Couldn't save daily journal, please try again.</UI.ErrorBanner>
 				</UI.ShowIf>
 			</UI.Field>
-		</UI.Row>
+		</UI.Column>
 	);
 };
+
+type JournalSyncStatusProps = {
+	currentJournalContent: Journal["content"] | undefined;
+	newJournalContent: string;
+};
+
+function JournalSyncStatus({newJournalContent, currentJournalContent}: JournalSyncStatusProps) {
+	function getStrategy() {
+		if (!newJournalContent && !currentJournalContent) return "no_journal";
+		if (newJournalContent !== currentJournalContent) return "unsaved_changes";
+		return "synced";
+	}
+
+	const strategyToText = {
+		no_journal: "No journal",
+		unsaved_changes: "Unsaved changes",
+		synced: "Synced",
+	};
+
+	const strategy = getStrategy();
+
+	return (
+		<UI.Text variant="dimmed" ml="auto" style={{fontSize: "12px"}}>
+			{strategyToText[strategy] || null}
+		</UI.Text>
+	);
+}

@@ -9,12 +9,14 @@ export const ChevronUpIcon: React.FC<JSX.IntrinsicElements["path"]> = props => (
 		fill="none"
 		xmlns="http://www.w3.org/2000/svg"
 	>
+		<title>Chevron up</title>
 		<path
 			d="M5 15L12 8L19 15"
 			stroke="var(--gray-10)"
 			strokeWidth="3"
 			strokeLinecap="round"
 			strokeLinejoin="round"
+			aria-label="chevron up"
 			{...props}
 		/>
 	</svg>

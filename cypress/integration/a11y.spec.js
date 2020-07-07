@@ -1,6 +1,5 @@
 const DASHBOARD_URL = "/dashboard";
 const HABITS_URL = "/habits";
-const CALENDAR_URL = "/calendar";
 const PROFILE_URL = "/profile";
 const JOURNALS_URL = "/journals";
 const LOGIN_URL = "/login";
@@ -73,20 +72,8 @@ describe("a11y", () => {
 			cy.findByText("New habit").should("have.focus");
 		}
 
-		// Skipping navigation, and getting straight to the content
-		// of the calendar window
-		cy.visit(CALENDAR_URL);
-		cy.wait(500);
-
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").click({force: true});
-
-		cy.get("main").tab();
-
-		cy.findAllByText("Show")
-			.first()
-			.should("have.focus");
+		// Not testing /calendar URL, because the first enabled button depends
+		// on the current date.
 
 		// Skipping navigation, and getting straight to the content
 		// of the profile window
