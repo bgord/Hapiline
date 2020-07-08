@@ -32,5 +32,6 @@ export * from "./icons/Trash";
 
 export * from "./ShowIf";
 export * from "./ExpandContractList";
+export * from "./SmallCircle";
 
 export {default as VisuallyHidden} from "@reach/visually-hidden";
