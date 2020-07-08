@@ -5,7 +5,7 @@ import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {api} from "./services/api";
 import {Journal, DraftJournal} from "./models";
 import {Prompt} from "react-router-dom";
-import {getRequestErrors} from "./selectors/getRequestErrors";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
 interface JournalProps {
 	day: Date;
@@ -23,7 +23,6 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 		config: {
 			retry: false,
 			onError: error => {
-				const {responseStatus} = getRequestErrors(error as Error);
 				if (responseStatus === 404) {
 					setShowUpdateJournalError(false);
 				}
@@ -31,6 +30,8 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 			},
 		},
 	});
+	const {responseStatus} = getRequestStateErrors(getJournalRequestState);
+
 	const [journalRequestState, saveJournalRequestState] = useMutation<Journal, DraftJournal>(
 		api.journal.post,
 		{

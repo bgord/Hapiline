@@ -1,8 +1,10 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
 const DASHBOARD_URL = "/dashboard";
-import {format} from "date-fns";
+import {format, addDays} from "date-fns";
 const today = format(new Date(), "yyyy-MM-dd");
+const tomorrow = addDays(new Date(), 1);
+const domain = "http://hapiline.localhost";
 
 describe("Journal", () => {
 	beforeEach(() => {
@@ -63,11 +65,9 @@ describe("Journal", () => {
 
 	it("Save journal to wrong day", () => {
 		cy.visit(DASHBOARD_URL);
-
-		cy.findByText("Calendar").click();
-		cy.findAllByText("Show")
-			.first()
-			.click();
+		//${tomorrow}
+		const URL = `${domain}/calendar?preview_day=2020-07-07&habit_vote_filter=all&tab=journal`;
+		cy.visit(URL);
 		cy.findAllByText("Journal")
 			.first()
 			.click();
@@ -85,7 +85,7 @@ describe("Journal", () => {
 		cy.route({
 			method: "GET",
 			url: `/api/v1/journal?day=${today}`,
-			status: 400,
+			status: 500,
 			response: {
 				code: "E_INTERNAL_SERVER_ERROR",
 				message: errorMessage,
@@ -108,7 +108,7 @@ describe("Journal", () => {
 		cy.route({
 			method: "POST",
 			url: `/api/v1/journal`,
-			status: 400,
+			status: 500,
 			response: {
 				code: "E_INTERNAL_SERVER_ERROR",
 				message: errorMessage,
