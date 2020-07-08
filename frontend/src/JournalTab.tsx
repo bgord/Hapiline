@@ -5,12 +5,15 @@ import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {api} from "./services/api";
 import {Journal, DraftJournal} from "./models";
 import {Prompt} from "react-router-dom";
+import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
 interface JournalProps {
 	day: Date;
 }
 export const JournalTab: React.FC<JournalProps> = ({day}) => {
 	const [journalContent, setJournalContent] = React.useState<Journal["content"]>("");
+	const [showUpdateJournalError, setShowUpdateJournalError] = React.useState<boolean>(true);
+
 	const triggerErrorToast = useErrorToast();
 	const triggerSuccessToast = useSuccessToast();
 
@@ -19,8 +22,16 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 		queryFn: api.journal.show,
 		config: {
 			retry: false,
+			onError: error => {
+				if (responseStatus === 404) {
+					setShowUpdateJournalError(false);
+				}
+				triggerErrorToast("Error while loading daily jorunal");
+			},
 		},
 	});
+	const {responseStatus} = getRequestStateErrors(getJournalRequestState);
+
 	const [journalRequestState, saveJournalRequestState] = useMutation<Journal, DraftJournal>(
 		api.journal.post,
 		{
@@ -51,7 +62,6 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 
 		return journalContent !== "";
 	}
-
 	return (
 		<UI.Column p="24">
 			<Prompt
@@ -71,6 +81,7 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 					id="journal"
 					onChange={e => setJournalContent(e.target.value)}
 					value={journalContent}
+					disabled={getJournalRequestState.status === "error" && showUpdateJournalError}
 				/>
 				<UI.Button
 					mt="24"
@@ -84,6 +95,11 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 				<UI.ShowIf request={saveJournalRequestState} is="error">
 					<UI.ErrorBanner m="24">Couldn't save daily journal, please try again.</UI.ErrorBanner>
 				</UI.ShowIf>
+				{showUpdateJournalError && (
+					<UI.ShowIf request={getJournalRequestState} is="error">
+						<UI.ErrorBanner m="24">Error while loading daily jorunal.</UI.ErrorBanner>
+					</UI.ShowIf>
+				)}
 			</UI.Field>
 		</UI.Column>
 	);
