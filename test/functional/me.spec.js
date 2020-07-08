@@ -2,7 +2,7 @@ const ace = require("@adonisjs/ace");
 
 const {assertInvalidSession} = require("../helpers/assert-errors");
 
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Me");
+const {test, trait, before, after} = use("Test/Suite")("Me");
 const User = use("User");
 const datefns = require("date-fns");
 
@@ -10,11 +10,11 @@ trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
 
-beforeEach(async () => {
+before(async () => {
 	await ace.call("seed", {}, {silent: true});
 });
 
-afterEach(async () => {
+after(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 

@@ -3,6 +3,11 @@ const Journal = use("Journal");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 class JournalController {
+	async index({response, auth}) {
+		const journals = await Database.table("journals").where("user_id", auth.user.id);
+		return response.send(journals);
+	}
+
 	async show({response, request, auth}) {
 		const {day} = request.get();
 

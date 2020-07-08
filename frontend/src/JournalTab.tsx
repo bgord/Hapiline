@@ -19,7 +19,7 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 
 	const getJournalRequestState = useQuery<Journal, ["journal", Journal["day"]]>({
 		queryKey: ["journal", day],
-		queryFn: api.journal.get,
+		queryFn: api.journal.show,
 		config: {
 			retry: false,
 			onError: error => {
@@ -63,10 +63,15 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 		return journalContent !== "";
 	}
 	return (
-		<UI.Row p="24">
+		<UI.Column p="24">
 			<Prompt
 				when={shouldTriggerNotSavedChangesPrompt()}
 				message="Are you sure? You will lose the changes to your journal."
+			/>
+
+			<JournalSyncStatus
+				currentJournalContent={journal?.content}
+				newJournalContent={journalContent}
 			/>
 
 			<UI.Field width="100%">
@@ -78,7 +83,12 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 					value={journalContent}
 					disabled={getJournalRequestState.status === "error" && showUpdateJournalError}
 				/>
-				<UI.Button mt="24" onClick={handleSaveRequest} variant="primary">
+				<UI.Button
+					mt="24"
+					onClick={handleSaveRequest}
+					variant="primary"
+					disabled={!shouldTriggerNotSavedChangesPrompt()}
+				>
 					Save
 				</UI.Button>
 
@@ -91,6 +101,33 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 					</UI.ShowIf>
 				)}
 			</UI.Field>
-		</UI.Row>
+		</UI.Column>
 	);
 };
+
+type JournalSyncStatusProps = {
+	currentJournalContent: Journal["content"] | undefined;
+	newJournalContent: string;
+};
+
+function JournalSyncStatus({newJournalContent, currentJournalContent}: JournalSyncStatusProps) {
+	function getStrategy() {
+		if (!newJournalContent && !currentJournalContent) return "no_journal";
+		if (newJournalContent !== currentJournalContent) return "unsaved_changes";
+		return "synced";
+	}
+
+	const strategyToText = {
+		no_journal: "No journal",
+		unsaved_changes: "Unsaved changes",
+		synced: "Synced",
+	};
+
+	const strategy = getStrategy();
+
+	return (
+		<UI.Text variant="dimmed" ml="auto" style={{fontSize: "12px"}}>
+			{strategyToText[strategy] || null}
+		</UI.Text>
+	);
+}

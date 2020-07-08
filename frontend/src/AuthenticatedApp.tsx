@@ -12,6 +12,7 @@ import {Logout} from "./Logout";
 import {Toasts} from "./Toasts";
 import {ProfileWindow} from "./windows/profile/ProfileWindow";
 import {AuthenticatedNavbar} from "./AuthenticatedNavbar";
+import {JournalsWindow} from "./JournalsWindow";
 import * as UI from "./ui/";
 
 const authenticatedAppBrowserHistory = createBrowserHistory();
@@ -36,6 +37,9 @@ function AuthenticatedApp() {
 					</Route>
 					<Route exact path="/dashboard">
 						<DashboardWindow />
+					</Route>
+					<Route exact path="/journals">
+						<JournalsWindow />
 					</Route>
 					<Route exact path="/profile">
 						<ProfileWindow />

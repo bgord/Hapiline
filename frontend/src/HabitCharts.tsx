@@ -97,22 +97,20 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 
 				{mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mt="6" crossAxis="center">
-						<UI.Text style={{fontSize: "72px", color: "#ef8790", marginLeft: "-12px"}}>·</UI.Text>
-						<UI.Text>
+						<UI.SmallCircle fill="var(--red-neutral)" />
+						<UI.Text ml="6" mr="24">
 							{numberOfRegressVotes} regress {pluralize("vote", numberOfRegressVotes)} (
 							{regressVotesPrct}%)
 						</UI.Text>
-						<UI.Text ml="12" style={{fontSize: "72px", color: "var(--gray-3)"}}>
-							·
-						</UI.Text>
-						<UI.Text>
+
+						<UI.SmallCircle fill="var(--gray-3)" />
+						<UI.Text ml="6" mr="24">
 							{numberOfPlateauVotes} plateau {pluralize("vote", numberOfPlateauVotes)} (
 							{plateauVotesPrct}%)
 						</UI.Text>
-						<UI.Text ml="12" style={{fontSize: "72px", color: "#8bdb90"}}>
-							·
-						</UI.Text>
-						<UI.Text>
+
+						<UI.SmallCircle fill="var(--green-neutral)" />
+						<UI.Text ml="6" mr="24">
 							{numberOfProgressVotes} progress {pluralize("vote", numberOfProgressVotes)} (
 							{progressVotesPrct}%)
 						</UI.Text>
@@ -143,10 +141,7 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 
 	return (
 		<Link
-			to={UrlBuilder.calendar.day.habit({
-				day,
-				habitId,
-			})}
+			to={UrlBuilder.calendar.day.habit({day, habitId})}
 			title={title}
 			key={String(day)}
 			data-bw="1"

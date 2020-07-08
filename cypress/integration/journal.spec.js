@@ -10,12 +10,24 @@ describe("Journal", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
 		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
 	});
 
-	it("Update journal", () => {
-		cy.visit(DASHBOARD_URL);
-
+	it("journal textarea is available in a day dialog", () => {
 		cy.findByText("View today").click();
+
+		cy.findByRole("dialog").within(() => {
+			cy.findAllByText("Journal")
+				.first()
+				.click({force: true});
+			cy.findByText("Synced");
+			cy.findAllByLabelText("Journal");
+		});
+	});
+
+	it("updating existing journal with a non-empty content", () => {
+		cy.findByText("View today").click();
+
 		cy.findAllByText("Journal")
 			.first()
 			.click({force: true});
@@ -23,13 +35,20 @@ describe("Journal", () => {
 			.first()
 			.should("have.value", "10 lorem ipsumlorem ipsum")
 			.type(" xd");
+		cy.findByText("Unsaved changes");
+
 		cy.findByText("Save").click();
+
 		cy.findByText("Daily journal successfully updated!");
+
+		cy.findByText("Synced");
 
 		cy.findAllByLabelText("Journal")
 			.first()
 			.should("have.value", "10 lorem ipsumlorem ipsum xd");
+
 		cy.reload();
+
 		cy.findAllByText("Journal")
 			.first()
 			.click({force: true});
@@ -51,10 +70,6 @@ describe("Journal", () => {
 		cy.findByText("Save").click({force: true});
 		cy.findByText("Daily journal successfully updated!");
 
-		cy.findAllByLabelText("Journal")
-			.first()
-			.should("have.value", "");
-		cy.reload();
 		cy.findAllByText("Journal")
 			.first()
 			.click({force: true});
