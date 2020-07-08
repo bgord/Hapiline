@@ -3,7 +3,7 @@ const ace = require("@adonisjs/ace");
 const {assertAccessDenied, assertInvalidSession} = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Dashboard streak stats");
+const {test, trait, before, after} = use("Test/Suite")("Dashboard streak stats");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const Database = use("Database");
@@ -12,11 +12,11 @@ trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
 
-beforeEach(async () => {
+before(async () => {
 	await ace.call("seed", {}, {silent: true});
 });
 
-afterEach(async () => {
+after(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 

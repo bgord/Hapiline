@@ -58,10 +58,7 @@ const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) =
 	voteToBadgeVariant.set("regress", "negative");
 	voteToBadgeVariant.set(null, "neutral");
 
-	const voteUrl = UrlBuilder.calendar.day.habit({
-		day,
-		habitId: habit_id,
-	});
+	const voteUrl = UrlBuilder.calendar.day.habit({day, habitId: habit_id});
 
 	const badgeVariant = voteToBadgeVariant.get(vote) ?? "neutral";
 

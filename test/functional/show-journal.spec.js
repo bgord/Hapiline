@@ -7,7 +7,7 @@ const {
 	assertValidationError,
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
-const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Show journal");
+const {test, trait, before, after} = use("Test/Suite")("Show journal");
 
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
@@ -17,11 +17,11 @@ trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
 
-beforeEach(async () => {
+before(async () => {
 	await ace.call("seed", {}, {silent: true});
 });
 
-afterEach(async () => {
+after(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
@@ -42,14 +42,14 @@ test("is:(regular)", async ({client}) => {
 });
 
 test("account-status:(active)", async ({client}) => {
-	const jim = await User.find(users.jim.id);
-	jim.merge({
+	const pam = await User.find(users.pam.id);
+	pam.merge({
 		account_status: ACCOUNT_STATUSES.pending,
 	});
-	await jim.save();
+	await pam.save();
 	const response = await client
 		.get(GET_JORNAL_DAY_URL)
-		.loginVia(jim)
+		.loginVia(pam)
 		.end();
 	assertAccessDenied(response);
 });

@@ -129,9 +129,9 @@ export type DayVote = {
 };
 
 export const voteToBgColor = new Map<HabitVoteType, string>();
-voteToBgColor.set("progress", "#8bdb90");
+voteToBgColor.set("progress", "var(--green-neutral)");
 voteToBgColor.set("plateau", "var(--gray-3)");
-voteToBgColor.set("regress", "#ef8790");
+voteToBgColor.set("regress", "var(--red-neutral)");
 voteToBgColor.set(null, "var(--gray-9)");
 
 export type HabitVoteChartDateRangeType =
