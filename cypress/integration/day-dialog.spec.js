@@ -291,7 +291,7 @@ describe("day dialog", () => {
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
-				.within(() => cy.findByText("Show").click());
+				.within(() => cy.findByText("Show").click({force: true}));
 		});
 
 		cy.findByRole("dialog").within(() => {
@@ -332,7 +332,7 @@ describe("day dialog", () => {
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
-				.within(() => cy.findByText("Show").click());
+				.within(() => cy.findByText("Show").click({force: true}));
 		});
 		cy.findByRole("dialog").within(() => {
 			cy.findByText("Close dialog").click({force: true});
@@ -341,7 +341,7 @@ describe("day dialog", () => {
 		cy.findAllByTestId("calendar").within(() => {
 			cy.findAllByTestId("day")
 				.eq(dayOfTheMonthTodayIndex)
-				.within(() => cy.findByText("Show").click());
+				.within(() => cy.findByText("Show").click({force: true}));
 		});
 		cy.findByRole("dialog").within(() => {
 			cy.findAllByText("Show and edit vote comment")
