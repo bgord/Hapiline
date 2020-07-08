@@ -1,10 +1,11 @@
 /* eslint-disable sonarjs/no-identical-functions */
 
-const DASHBOARD_URL = "/dashboard";
 import {format, subDays} from "date-fns";
+
+const DASHBOARD_URL = "/dashboard";
+
 const today = format(new Date(), "yyyy-MM-dd");
 const dayFromPast = format(subDays(new Date(), 2), "yyyy-MM-dd");
-const domain = "http://hapiline.localhost";
 
 describe("Journal", () => {
 	beforeEach(() => {
@@ -80,8 +81,9 @@ describe("Journal", () => {
 
 	it("Save journal to wrong day", () => {
 		cy.visit(DASHBOARD_URL);
-		const URL = `${domain}/calendar?preview_day=${dayFromPast}&habit_vote_filter=all&tab=journal`;
-		cy.visit(URL);
+		const DAY_FROM_PAST_URL = `/calendar?preview_day=${dayFromPast}&habit_vote_filter=all&tab=journal`;
+
+		cy.visit(DAY_FROM_PAST_URL);
 		cy.findAllByText("Journal")
 			.first()
 			.click({force: true});
