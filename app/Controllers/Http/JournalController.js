@@ -4,7 +4,9 @@ const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 class JournalController {
 	async index({response, auth}) {
-		const journals = await Database.table("journals").where("user_id", auth.user.id);
+		const journals = await Database.table("journals")
+			.where("user_id", auth.user.id)
+			.where("content", "<>", "");
 		return response.send(journals);
 	}
 

@@ -141,6 +141,7 @@ test("full flow updating", async ({client, assert}) => {
 	assert.equal(response.body.content, payload.content);
 	assert.ok(datefns.isEqual(datefns.parseISO(response.body.day), datefns.parseISO(today)));
 });
+
 test("full flow creating", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
@@ -160,6 +161,7 @@ test("full flow creating", async ({client, assert}) => {
 	assert.equal(response.body.content, payload.content);
 	assert.ok(datefns.isEqual(datefns.parseISO(response.body.day), datefns.parseISO(yesterday)));
 });
+
 test("full-flow-with-empty-content", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
@@ -179,6 +181,7 @@ test("full-flow-with-empty-content", async ({client, assert}) => {
 	assert.equal(response.body.content, payload.content);
 	assert.ok(datefns.isEqual(datefns.parseISO(response.body.day), datefns.parseISO(yesterday)));
 });
+
 test("full-flow-without-content", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
