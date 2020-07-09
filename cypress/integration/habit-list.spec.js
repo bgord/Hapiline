@@ -2,7 +2,7 @@
 
 const HABITS_URL = "/habits";
 
-describe("Habit", () => {
+describe("Habit list", () => {
 	beforeEach(() => {
 		cy.request("POST", "/test/db/seed");
 	});
@@ -230,6 +230,9 @@ describe("Habit", () => {
 			rules: {
 				// Disabled due to a slight issue with the `ESTABLISHED` badge
 				"color-contrast": {
+					enabled: false,
+				},
+				"aria-valid-attr-value": {
 					enabled: false,
 				},
 			},
