@@ -25,7 +25,7 @@ describe("Journal list", () => {
 	});
 
 	it("journal item leads to a journal day tab", () => {
-		const journalUrl = `/calendar?preview_day=${today}&tab=journal`;
+		const journalUrl = `/calendar?preview_day=${today}&tab=journal&month_offset=0`;
 
 		cy.login("dwight");
 		cy.visit(JOURNALS_URL);
