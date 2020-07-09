@@ -76,4 +76,15 @@ describe("Journal list", () => {
 		cy.findByText("Retry").should("not.exist");
 		cy.findByText("You don't have any journals yet.");
 	});
+
+	it("redirecting to the journal list after closing journal day modal", () => {
+		cy.login("dwight");
+		cy.visit(JOURNALS_URL);
+
+		cy.findByText("Show").click();
+
+		cy.findByText("Close dialog").click({force: true});
+
+		cy.url().should("contain", JOURNALS_URL);
+	});
 });
