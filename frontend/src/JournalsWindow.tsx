@@ -76,7 +76,7 @@ export function JournalsWindow() {
 }
 
 function JournalItem(journal: Journal) {
-	const [, updateQueryParams] = useQueryParams();
+	const [, updateQueryParams] = useQueryParams("journals");
 
 	function showJournal() {
 		updateQueryParams("calendar", {
