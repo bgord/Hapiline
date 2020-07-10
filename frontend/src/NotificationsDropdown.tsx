@@ -71,7 +71,7 @@ export function NotificationDropdown() {
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
 					}}
 				>
-					<UI.Column py="24" px="12">
+					<UI.Column py="6" px="12">
 						<UI.Row mainAxis="between" mb={["24", "6"]}>
 							<UI.Header variant="extra-small">Notifications</UI.Header>
 
