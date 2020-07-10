@@ -13,7 +13,7 @@ describe("Journal list", () => {
 		cy.server();
 		cy.route({
 			method: "GET",
-			url: "/api/v1/journals",
+			url: "/api/v1/journals?sort=days_desc",
 			status: 200,
 			response: [],
 		});
@@ -51,7 +51,7 @@ describe("Journal list", () => {
 		cy.server();
 		cy.route({
 			method: "GET",
-			url: "/api/v1/journals",
+			url: "/api/v1/journals?sort=days_desc",
 			status: 500,
 			response: {},
 		});
@@ -65,7 +65,7 @@ describe("Journal list", () => {
 
 		cy.route({
 			method: "GET",
-			url: "/api/v1/journals",
+			url: "/api/v1/journals?sort=days_desc",
 			status: 200,
 			response: [],
 		});

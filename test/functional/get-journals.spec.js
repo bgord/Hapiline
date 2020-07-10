@@ -53,11 +53,11 @@ test("account-status:(active)", async ({client}) => {
 });
 
 test("filters out empty journals", async ({client, assert}) => {
-	const pam = await User.find(users.pam.id);
+	const michael = await User.find(users.michael.id);
 
 	const firstResponse = await client
-		.get(GET_JOURNALS_URL)
-		.loginVia(pam)
+		.get(`${GET_JOURNALS_URL}?sort=${SORT_JOURNAL_BY_OPTIONS.days_desc}`)
+		.loginVia(michael)
 		.end();
 
 	firstResponse.assertStatus(200);
@@ -65,7 +65,7 @@ test("filters out empty journals", async ({client, assert}) => {
 
 	const journal = firstResponse.body[0];
 
-	assert.equal(journal.user_id, pam.id);
+	assert.equal(journal.user_id, michael.id);
 	assert.hasAllKeys(journal, ["id", "user_id", "content", "day", "created_at", "updated_at"]);
 
 	const _journal = await Journal.find(journal.id);
@@ -75,8 +75,8 @@ test("filters out empty journals", async ({client, assert}) => {
 	await _journal.save();
 
 	const secondResponse = await client
-		.get(GET_JOURNALS_URL)
-		.loginVia(pam)
+		.get(`${GET_JOURNALS_URL}?sort=${SORT_JOURNAL_BY_OPTIONS.days_desc}`)
+		.loginVia(michael)
 		.end();
 
 	secondResponse.assertStatus(200);

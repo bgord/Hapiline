@@ -99,7 +99,7 @@ describe("a11y", () => {
 
 		cy.get("main").tab();
 
-		cy.findByText("Show").should("have.focus");
+		cy.findByLabelText("Sort by").should("have.focus");
 	});
 
 	it("skip nav for all main unauthenticated views", function() {
