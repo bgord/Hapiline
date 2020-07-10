@@ -66,12 +66,14 @@ export function NotificationDropdown() {
 					width={["view-m", "auto"]}
 					z="1"
 					overflow="auto"
+					data-b="gray-2"
+					data-bw="1"
 					style={{
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
 					}}
 				>
-					<UI.Column py="24" px="12">
+					<UI.Column py="6" px="12">
 						<UI.Row mainAxis="between" mb={["24", "6"]}>
 							<UI.Header variant="extra-small">Notifications</UI.Header>
 
