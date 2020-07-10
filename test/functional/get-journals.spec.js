@@ -52,21 +52,35 @@ test("account-status:(active)", async ({client}) => {
 	assertAccessDenied(response);
 });
 
-test("full flow", async ({client, assert}) => {
-	const jim = await User.find(users.jim.id);
+test("filters out empty journals", async ({client, assert}) => {
+	const pam = await User.find(users.pam.id);
 
-	const response = await client
-		.get(`${GET_JOURNALS_URL}?sort=${SORT_JOURNAL_BY_OPTIONS.days_desc}`)
-		.loginVia(jim)
+	const firstResponse = await client
+		.get(GET_JOURNALS_URL)
+		.loginVia(pam)
 		.end();
 
-	response.assertStatus(200);
-	assert.lengthOf(response.body, 1);
+	firstResponse.assertStatus(200);
+	assert.lengthOf(firstResponse.body, 1);
 
-	const journal = response.body[0];
+	const journal = firstResponse.body[0];
 
-	assert.equal(journal.user_id, jim.id);
+	assert.equal(journal.user_id, pam.id);
 	assert.hasAllKeys(journal, ["id", "user_id", "content", "day", "created_at", "updated_at"]);
+
+	const _journal = await Journal.find(journal.id);
+	_journal.merge({
+		content: "",
+	});
+	await _journal.save();
+
+	const secondResponse = await client
+		.get(GET_JOURNALS_URL)
+		.loginVia(pam)
+		.end();
+
+	secondResponse.assertStatus(200);
+	assert.lengthOf(secondResponse.body, 0);
 });
 
 test("sorting - days_desc", async ({client, assert}) => {

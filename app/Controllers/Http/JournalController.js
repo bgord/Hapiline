@@ -14,6 +14,7 @@ class JournalController {
 
 		const journals = await Database.table("journals")
 			.where("user_id", auth.user.id)
+			.where("content", "<>", "")
 			.orderBy(...orderByClauseToSort[sort]);
 
 		return response.send(journals);
