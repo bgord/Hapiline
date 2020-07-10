@@ -21,7 +21,9 @@ export function useQueryParam(param: string): [string | undefined, (value: strin
 	];
 }
 
-export function useQueryParams(): [
+export function useQueryParams(
+	from?: string,
+): [
 	{[index: string]: string | undefined},
 	(baseUrl: string, payload: QueryParamsObject) => void,
 	(url: string) => void,
@@ -36,7 +38,7 @@ export function useQueryParams(): [
 				pathname: baseUrl,
 				search: constructQueryParams(payload),
 				state: {
-					from: baseUrl,
+					from: from || baseUrl,
 				},
 			}),
 		(url: string) => history.push(url),

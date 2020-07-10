@@ -8,6 +8,7 @@ import {pluralize} from "./services/pluralize";
 import {useErrorToast} from "./contexts/toasts-context";
 import * as UI from "./ui/";
 import {useQueryParams} from "./hooks/useQueryParam";
+import {getMonthOffsetFromDate} from "./hooks/useMonthsWidget";
 
 export function JournalsWindow() {
 	const triggerErrorToast = useErrorToast();
@@ -97,10 +98,14 @@ export function JournalsWindow() {
 }
 
 function JournalItem(journal: Journal) {
-	const [, updateQueryParams] = useQueryParams();
+	const [, updateQueryParams] = useQueryParams("journals");
 
 	function showJournal() {
-		updateQueryParams("calendar", {preview_day: formatDay(journal.day), tab: "journal"});
+		updateQueryParams("calendar", {
+			preview_day: formatDay(journal.day),
+			tab: "journal",
+			month_offset: String(getMonthOffsetFromDate(journal.day)),
+		});
 	}
 
 	const numberOfWords = getNumberOfWords(journal.content);
