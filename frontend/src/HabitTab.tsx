@@ -159,7 +159,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			</UI.Row>
 
 			<UI.Row mt={["24", "12"]} mainAxis="between" crossAxis="center" wrap={[, "wrap"]}>
-				<UI.Row width="auto" wrap={[, "wrap"]}>
+				<UI.Row width="auto" wrap={[, "wrap"]} tabIndex={0}>
 					<UI.Row width="auto" mt="12">
 						<HabitVoteFilters.Voted.Input
 							value={habitVoteFilter.value}
