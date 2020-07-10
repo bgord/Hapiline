@@ -1,19 +1,24 @@
 import React from "react";
 import {useQuery} from "react-query";
 
-import {Journal} from "./models";
+import {Journal, SortJournalByOption, SORT_JOURNAL_BY_OPTIONS} from "./models";
 import {api} from "./services/api";
 import {formatDay, formatDayName} from "./services/date-formatter";
 import {pluralize} from "./services/pluralize";
 import {useErrorToast} from "./contexts/toasts-context";
 import * as UI from "./ui/";
 import {useQueryParams} from "./hooks/useQueryParam";
+import {getMonthOffsetFromDate} from "./hooks/useMonthsWidget";
 
 export function JournalsWindow() {
 	const triggerErrorToast = useErrorToast();
 
-	const getJournalsRequestState = useQuery<Journal[], "journals">({
-		queryKey: "journals",
+	const [sortJournalsBy, setSortJournalsBy] = React.useState<SortJournalByOption>(
+		SORT_JOURNAL_BY_OPTIONS.days_desc,
+	);
+
+	const getJournalsRequestState = useQuery<Journal[], ["journals", SortJournalByOption]>({
+		queryKey: ["journals", sortJournalsBy],
 		queryFn: api.journal.get,
 		config: {
 			onError: () => triggerErrorToast("Couldn't fetch journals."),
@@ -52,10 +57,28 @@ export function JournalsWindow() {
 				</UI.ShowIf>
 
 				<UI.ShowIf request={getJournalsRequestState} is="success">
-					<UI.Text ml="auto" mb={["24", "12"]}>
-						<UI.Text variant="bold">{journals.length}</UI.Text>{" "}
-						{pluralize("result", journals.length)}
-					</UI.Text>
+					<UI.Row mainAxis="between" crossAxis="end" mb={["24", "12"]} mt="12">
+						<UI.Field variant="column">
+							<UI.Label htmlFor="sort_by">Sort by</UI.Label>
+							<UI.Select
+								id="sort_by"
+								value={sortJournalsBy}
+								onChange={event => {
+									if (isSortJournalByOption(event.target.value)) {
+										setSortJournalsBy(event.target.value);
+									}
+								}}
+							>
+								<option value="days_desc">Latest days first</option>
+								<option value="days_asc">Earliest days first</option>
+							</UI.Select>
+						</UI.Field>
+
+						<UI.Text>
+							<UI.Text variant="bold">{journals.length}</UI.Text>{" "}
+							{pluralize("result", journals.length)}
+						</UI.Text>
+					</UI.Row>
 
 					{journals.length === 0 && getJournalsRequestState.status === "success" && (
 						<UI.InfoBanner>
@@ -75,10 +98,14 @@ export function JournalsWindow() {
 }
 
 function JournalItem(journal: Journal) {
-	const [, updateQueryParams] = useQueryParams();
+	const [, updateQueryParams] = useQueryParams("journals");
 
 	function showJournal() {
-		updateQueryParams("calendar", {preview_day: formatDay(journal.day), tab: "journal"});
+		updateQueryParams("calendar", {
+			preview_day: formatDay(journal.day),
+			tab: "journal",
+			month_offset: String(getMonthOffsetFromDate(journal.day)),
+		});
 	}
 
 	const numberOfWords = getNumberOfWords(journal.content);
@@ -109,4 +136,8 @@ function JournalItem(journal: Journal) {
 function getNumberOfWords(content: Journal["content"]): number {
 	if (!content) return 0;
 	return content.split(" ").length;
+}
+
+function isSortJournalByOption(value: any): value is SortJournalByOption {
+	return Object.keys(SORT_JOURNAL_BY_OPTIONS).includes(value);
 }

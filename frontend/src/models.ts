@@ -228,3 +228,10 @@ export type DraftJournal = Omit<
 Journal,
 "user_id" | "created_at" |"id" |"updated_at"
 >;
+
+export type SortJournalByOption = "days_desc" | "days_asc";
+
+export const SORT_JOURNAL_BY_OPTIONS: {[key in SortJournalByOption]: SortJournalByOption} = {
+	days_asc: "days_asc",
+	days_desc: "days_desc",
+};

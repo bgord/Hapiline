@@ -25,7 +25,7 @@ describe("Journal list", () => {
 	});
 
 	it("journal item leads to a journal day tab", () => {
-		const journalUrl = `/calendar?preview_day=${today}&tab=journal`;
+		const journalUrl = `/calendar?preview_day=${today}&tab=journal&month_offset=0`;
 
 		cy.login("dwight");
 		cy.visit(JOURNALS_URL);
@@ -75,5 +75,16 @@ describe("Journal list", () => {
 		cy.findByText(errorMessage).should("not.exist");
 		cy.findByText("Retry").should("not.exist");
 		cy.findByText("You don't have any journals yet.");
+	});
+
+	it("redirecting to the journal list after closing journal day modal", () => {
+		cy.login("dwight");
+		cy.visit(JOURNALS_URL);
+
+		cy.findByText("Show").click();
+
+		cy.findByText("Close dialog").click({force: true});
+
+		cy.url().should("contain", JOURNALS_URL);
 	});
 });
