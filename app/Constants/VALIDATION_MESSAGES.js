@@ -36,6 +36,7 @@ const VALIDATION_MESSAGES = {
 	)}`,
 	same_or_after: (field, sameOrAfterDay) =>
 		`Field ${field} must be same as or after ${sameOrAfterDay}.`,
+	invalid_sort_by_option: "Invalid sort by option.",
 };
 
 module.exports = VALIDATION_MESSAGES;
