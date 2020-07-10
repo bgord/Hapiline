@@ -66,6 +66,8 @@ export function NotificationDropdown() {
 					width={["view-m", "auto"]}
 					z="1"
 					overflow="auto"
+					data-b="gray-2"
+					data-bw="1"
 					style={{
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
