@@ -78,6 +78,7 @@ const aliases = {
 	HABIT_VOTE_CHART_DATE_RANGE: "App/Constants/HABIT_VOTE_CHART_DATE_RANGE",
 	NOTIFICATION_TYPES: "App/Constants/NOTIFICATION_TYPES",
 	NOTIFICATION_STATUSES: "App/Constants/NOTIFICATION_STATUSES",
+	SORT_JOURNAL_BY_OPTIONS: "App/Constants/SORT_JOURNAL_BY_OPTIONS",
 
 	// validators
 	BaseHttpValidator: "App/Validators/BaseHttpValidator",

@@ -163,11 +163,9 @@ Route.get("/api/v1/journal", "JournalController.show")
 	.middleware(["auth", `is:(regular)`, `account-status:active`])
 	.validator("ShowJournal");
 
-Route.get("/api/v1/journals", "JournalController.index").middleware([
-	"auth",
-	`is:(regular)`,
-	`account-status:active`,
-]);
+Route.get("/api/v1/journals", "JournalController.index")
+	.validator("IndexJournal")
+	.middleware(["auth", `is:(regular)`, `account-status:active`]);
 
 Route.post("/api/v1/journal", "JournalController.store")
 	.middleware(["auth", `is:(regular)`, `account-status:active`])

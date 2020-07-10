@@ -25,6 +25,8 @@ afterEach(async () => {
 
 const ADD_JOURNAL_URL = "/api/v1/journal";
 
+const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
+
 test("auth", async ({client}) => {
 	const response = await client.post(ADD_JOURNAL_URL).end();
 	assertInvalidSession(response);
@@ -143,7 +145,6 @@ test("full flow updating", async ({client, assert}) => {
 });
 test("full flow creating", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
-	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
 	const payload = {
 		day: yesterday,
 		content: "Lorem ipsum".repeat(20),
@@ -162,7 +163,6 @@ test("full flow creating", async ({client, assert}) => {
 });
 test("full-flow-with-empty-content", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
-	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
 	const payload = {
 		day: yesterday,
 		content: "",
@@ -181,7 +181,6 @@ test("full-flow-with-empty-content", async ({client, assert}) => {
 });
 test("full-flow-without-content", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
-	const yesterday = datefns.format(datefns.subDays(new Date(), 1), "yyyy-MM-dd");
 	const payload = {
 		day: yesterday,
 	};
