@@ -126,7 +126,7 @@ function JournalSyncStatus({newJournalContent, currentJournalContent}: JournalSy
 	const strategy = getStrategy();
 
 	return (
-		<UI.Text variant="dimmed" ml="auto" style={{fontSize: "12px"}}>
+		<UI.Text variant="info" ml="auto">
 			{strategyToText[strategy] || null}
 		</UI.Text>
 	);
