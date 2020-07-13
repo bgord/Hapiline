@@ -10,6 +10,7 @@ import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 import {differenceInDays} from "date-fns";
 import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
+import {formatTime, formatShortDayName} from "./services/date-formatter";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -185,7 +186,11 @@ function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) 
 	}
 
 	return (
-		<UI.Text variant="info" ml="6">
+		<UI.Text
+			variant="info"
+			ml="6"
+			title={`${formatShortDayName(createdAtDate)} ${formatTime(createdAtDate)}`}
+		>
 			{formatNotificationDate()}
 		</UI.Text>
 	);
