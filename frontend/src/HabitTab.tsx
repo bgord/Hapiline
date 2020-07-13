@@ -128,35 +128,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 				</UI.Text>
 			</UI.Row>
 
-			<UI.Row mt="6" crossAxis="center">
-				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
-					<UI.Row mb="6" mainAxis="center">
-						<UI.SmallCircle fill="var(--gray-9)" />
-						<UI.Text ml="6">no votes</UI.Text>
-					</UI.Row>
-				)}
-
-				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
-					<UI.Row mb="6" mainAxis="center">
-						<UI.SmallCircle fill="var(--red-neutral)" />
-						<UI.Text ml="6">regress votes</UI.Text>
-					</UI.Row>
-				)}
-
-				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
-					<UI.Row mb="6" mainAxis="center">
-						<UI.SmallCircle fill="var(--gray-3)" />
-						<UI.Text ml="6">plateau votes</UI.Text>
-					</UI.Row>
-				)}
-
-				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
-					<UI.Row mb="6" mainAxis="center">
-						<UI.SmallCircle fill="var(--green-neutral)" />
-						<UI.Text ml="6">progress votes</UI.Text>
-					</UI.Row>
-				)}
-			</UI.Row>
+			{isChartLegendVisible && <ChartLegend />}
 
 			<UI.Row mt={["24", "12"]} mainAxis="between" crossAxis="center" wrap={[, "wrap"]}>
 				<UI.Row width="auto" wrap={[, "wrap"]}>
@@ -303,4 +275,31 @@ function getDayVoteForHabit(
 
 function isNumber(value: unknown) {
 	return !Number.isNaN(Number(value));
+}
+
+function ChartLegend() {
+	const mediaQuery = useMediaQuery();
+
+	if (mediaQuery !== MEDIA_QUERY.default) return null;
+
+	return (
+		<UI.Row mt="6" crossAxis="center">
+			<UI.Row mb="6" mainAxis="center">
+				<UI.SmallCircle fill="var(--gray-9)" />
+				<UI.Text ml="6">no votes</UI.Text>
+			</UI.Row>
+			<UI.Row mb="6" mainAxis="center">
+				<UI.SmallCircle fill="var(--red-neutral)" />
+				<UI.Text ml="6">regress votes</UI.Text>
+			</UI.Row>
+			<UI.Row mb="6" mainAxis="center">
+				<UI.SmallCircle fill="var(--gray-3)" />
+				<UI.Text ml="6">plateau votes</UI.Text>
+			</UI.Row>
+			<UI.Row mb="6" mainAxis="center">
+				<UI.SmallCircle fill="var(--green-neutral)" />
+				<UI.Text ml="6">progress votes</UI.Text>
+			</UI.Row>
+		</UI.Row>
+	);
 }
