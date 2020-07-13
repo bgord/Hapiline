@@ -7,12 +7,18 @@
 .c-text[data-variant="bold"] {
 	font-weight: 600;
 }
-.c-text[data-variant="dimmed"] {
+.c-text[data-variant="dimmed"],
+.c-text[data-variant="info"] {
 	text-transform: uppercase;
 	font-size: 14px;
 	font-weight: 600;
 	color: var(--gray-7);
 }
+
+.c-text[data-variant="info"] {
+	font-size: 12px;
+}
+
 .c-text[data-variant="semi-bold"] {
 	font-weight: 500;
 }

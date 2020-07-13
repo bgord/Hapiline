@@ -172,11 +172,12 @@ function NotificationItem({refetchNotifications, ...notification}: NotificationP
 }
 
 function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) {
-	function formatNotificationDate() {
-		const date = new Date(createdAt);
-		const today = new Date();
+	const createdAtDate = new Date(createdAt);
 
-		const numberOfDaysFromToday = differenceInDays(today, date);
+	function formatNotificationDate() {
+		const todayDate = new Date();
+
+		const numberOfDaysFromToday = differenceInDays(todayDate, createdAtDate);
 
 		if (numberOfDaysFromToday === 0) return "today";
 		if (numberOfDaysFromToday === 1) return "yesterday";
@@ -184,7 +185,7 @@ function NotificationDate({createdAt}: {createdAt: Notification["created_at"]}) 
 	}
 
 	return (
-		<UI.Text variant="dimmed" ml="6" style={{fontSize: "12px"}}>
+		<UI.Text variant="info" ml="6">
 			{formatNotificationDate()}
 		</UI.Text>
 	);

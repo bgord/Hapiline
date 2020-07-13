@@ -80,7 +80,7 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 					{habitVoteChartRequestState.data?.map(item => (
 						<UI.Column width="100%" key={item.day.toString()}>
 							{shouldDisplayChartLabels && (
-								<UI.Text variant="dimmed" style={{textAlign: "center", fontSize: "12px"}}>
+								<UI.Text variant="info" style={{textAlign: "center"}}>
 									{formatShortDay(item.day)}
 								</UI.Text>
 							)}

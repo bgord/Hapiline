@@ -12,7 +12,8 @@ export type TextVariant =
 	| "semi-bold"
 	| "light"
 	| "monospaced"
-	| "link";
+	| "link"
+	| "info";
 
 type TextVariants = {
 	variant?: TextVariant;
