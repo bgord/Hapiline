@@ -131,29 +131,29 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			<UI.Row mt="6" crossAxis="center">
 				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
-						<UI.Text style={{fontSize: "72px", color: "var(--gray-9)"}}>·</UI.Text>
-						<UI.Text>no votes</UI.Text>
+						<UI.SmallCircle fill="var(--gray-9)" />
+						<UI.Text ml="6">no votes</UI.Text>
 					</UI.Row>
 				)}
 
 				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.SmallCircle fill="var(--red-neutral)" />
-						<UI.Text>regress votes</UI.Text>
+						<UI.Text ml="6">regress votes</UI.Text>
 					</UI.Row>
 				)}
 
 				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.SmallCircle fill="var(--gray-3)" />
-						<UI.Text>plateau votes</UI.Text>
+						<UI.Text ml="6">plateau votes</UI.Text>
 					</UI.Row>
 				)}
 
 				{isChartLegendVisible && mediaQuery === MEDIA_QUERY.default && (
 					<UI.Row mb="6" mainAxis="center">
 						<UI.SmallCircle fill="var(--green-neutral)" />
-						<UI.Text>progress votes</UI.Text>
+						<UI.Text ml="6">progress votes</UI.Text>
 					</UI.Row>
 				)}
 			</UI.Row>
