@@ -84,8 +84,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		allowEmptyString: true,
 	});
 
-	const dayBeforeYesterday = subDays(new Date(), 2);
-	const isAddingVotesAllowed = isBefore(new Date(day), dayBeforeYesterday);
+	const weekAgo = subDays(new Date(), 7);
+	const isAddingVotesAllowed = isBefore(new Date(day), weekAgo);
 
 	const comment = habitWithPossibleVote.vote?.comment ?? null;
 
