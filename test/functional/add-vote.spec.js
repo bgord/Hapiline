@@ -105,7 +105,7 @@ test("validation", async ({client}) => {
 					validation: "before",
 				},
 				{
-					message: VALIDATION_MESSAGES.after("day", "2 days ago"),
+					message: VALIDATION_MESSAGES.after("day", "7 days ago"),
 					field: "day",
 					validation: "after",
 				},
@@ -132,10 +132,10 @@ test("validation", async ({client}) => {
 			],
 		],
 		[
-			{habit_id: 1, vote: HABIT_VOTE_TYPES.positive, day: datefns.subDays(new Date(), 3)},
+			{habit_id: 1, vote: HABIT_VOTE_TYPES.positive, day: datefns.subDays(new Date(), 8)},
 			[
 				{
-					message: VALIDATION_MESSAGES.after("day", "2 days ago"),
+					message: VALIDATION_MESSAGES.after("day", "7 days ago"),
 					field: "day",
 					validation: "after",
 				},

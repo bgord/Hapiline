@@ -84,8 +84,8 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 		allowEmptyString: true,
 	});
 
-	const dayBeforeYesterday = subDays(new Date(), 2);
-	const isBeforeDayBeforeYesterday = isBefore(new Date(day), dayBeforeYesterday);
+	const weekAgo = subDays(new Date(), 7);
+	const isAddingVotesAllowed = isBefore(new Date(day), weekAgo);
 
 	const comment = habitWithPossibleVote.vote?.comment ?? null;
 
@@ -143,9 +143,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								}}
 								variant="bare"
 								onClick={() => changeVote("progress")}
-								disabled={
-									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
-								}
+								disabled={addHabitDayVoteRequestState.status === "loading" || isAddingVotesAllowed}
 							>
 								<UI.VisuallyHidden>Add progress vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faPlus} />
@@ -159,9 +157,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("plateau")}
-								disabled={
-									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
-								}
+								disabled={addHabitDayVoteRequestState.status === "loading" || isAddingVotesAllowed}
 							>
 								<UI.VisuallyHidden>Add plateau vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faEquals} />
@@ -175,9 +171,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								ml="6"
 								variant="bare"
 								onClick={() => changeVote("regress")}
-								disabled={
-									addHabitDayVoteRequestState.status === "loading" || isBeforeDayBeforeYesterday
-								}
+								disabled={addHabitDayVoteRequestState.status === "loading" || isAddingVotesAllowed}
 							>
 								<UI.VisuallyHidden>Add regress vote</UI.VisuallyHidden>
 								<FontAwesomeIcon icon={faMinus} />
@@ -210,7 +204,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								<UI.Label htmlFor="vote_comment">Vote comment</UI.Label>
 								<UI.Textarea
 									id="vote_comment"
-									disabled={isBeforeDayBeforeYesterday}
+									disabled={isAddingVotesAllowed}
 									key={habitWithPossibleVote.vote?.comment ?? undefined}
 									placeholder="Write something..."
 									value={newComment ?? undefined}
@@ -219,7 +213,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 							</UI.Field>
 							<UI.Row mb="12">
 								<UI.Button
-									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									disabled={isVoteCommentPristine || isAddingVotesAllowed}
 									variant="primary"
 									onClick={newCommentHelpers.onUpdate}
 									mr="6"
@@ -228,7 +222,7 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 								</UI.Button>
 
 								<UI.Button
-									disabled={isVoteCommentPristine || isBeforeDayBeforeYesterday}
+									disabled={isVoteCommentPristine || isAddingVotesAllowed}
 									variant="outlined"
 									onClick={newCommentHelpers.onClear}
 								>
