@@ -9,6 +9,7 @@ export const UrlBuilder = {
 			constructUrl("habits", {
 				preview_habit_id: habitId.toString(),
 			}),
+		add: (): string => constructUrl("habits", {subview: "add_habit"}),
 	},
 	dashboard: {
 		habit: {
