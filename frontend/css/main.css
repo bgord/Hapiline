@@ -119,8 +119,21 @@ body {
 	}
 }
 
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 *[data-on-entry="slide-down"] {
 	animation: slideDown 0.33s ease-out;
+}
+
+*[data-on-entry="rotate"] {
+	animation: rotate 0.5s ease-out infinite;
 }
 
 /* ----------------------------------------------------- */
