@@ -236,7 +236,7 @@ describe("Calendar", () => {
 			response: [],
 		});
 
-		cy.wait(100);
+		cy.wait(1000);
 
 		cy.findByText("Previous").should("be.disabled");
 	});
