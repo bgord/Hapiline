@@ -20,7 +20,7 @@ export function LoaderIcon(props: React.SVGProps<SVGSVGElement>) {
 				cx="25"
 				cy="25"
 				r="20"
-				stroke-width="4"
+				strokeWidth="4"
 				stroke="var(--brand-blue)"
 				fill="none"
 				mask="url(#slice)"
