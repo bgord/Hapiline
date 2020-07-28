@@ -50,15 +50,16 @@ export function CalendarWindow() {
 		return "Go to next month";
 	}
 
-	const isCurrentMonthTheMonthFirstHabbitWasAdded = checkIfCurrentMonthTheMonthFirstHabbitWasAdded(
+	const isCurrentMonthTheMonthTheFirstHabitWasOrCanBeAdded = checkIfCurrentMonthIsTheMonthTheFirstHabitWasOrCanBeAdded(
 		monthOffset,
 		trackedHabits,
 	);
 	const isPreviousButtonDisabled =
-		getMonthRequestState.status === "loading" || isCurrentMonthTheMonthFirstHabbitWasAdded;
+		getMonthRequestState.status === "loading" || isCurrentMonthTheMonthTheFirstHabitWasOrCanBeAdded;
+
 	function getPreviousButtonTitle() {
 		if (getMonthRequestState.status === "loading") return "Loading...";
-		if (isCurrentMonthTheMonthFirstHabbitWasAdded) {
+		if (isCurrentMonthTheMonthTheFirstHabitWasOrCanBeAdded) {
 			return "There are no habits added in the previous month";
 		}
 		return "Go to previous month";
@@ -140,17 +141,20 @@ function getCalendarGrid(mediaQuery: MEDIA_QUERY): React.CSSProperties {
 	};
 }
 
-function checkIfCurrentMonthTheMonthFirstHabbitWasAdded(
+function checkIfCurrentMonthIsTheMonthTheFirstHabitWasOrCanBeAdded(
 	monthOffset: MonthOffset,
 	trackedHabits: Habit[],
-) {
+): boolean {
 	// Get the date of month that's currently displayed,
 	// convert firstAddedHabit?.created_at to a format that date-fns understands,
 	// and check if they are the same month
 	const currentlyDisplayedMonth = subMonths(new Date(), monthOffset);
 
 	const firstAddedHabit = getFirstAddedHabit(trackedHabits);
-	const firstAddedHabitDate = new Date(firstAddedHabit?.created_at);
+
+	if (!firstAddedHabit) return true;
+
+	const firstAddedHabitDate = new Date(firstAddedHabit.created_at);
 
 	return isSameMonth(currentlyDisplayedMonth, firstAddedHabitDate);
 }
