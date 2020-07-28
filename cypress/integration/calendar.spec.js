@@ -219,4 +219,25 @@ describe("Calendar", () => {
 
 		cy.findByText("Couldn't fetch calendar stats");
 	});
+
+	it("previous button is disabled for new accounts", () => {
+		cy.server();
+		cy.route({
+			method: "GET",
+			status: 200,
+			url: "/api/v1/habits",
+			response: [],
+		});
+
+		cy.route({
+			method: "GET",
+			status: 200,
+			url: "/api/v1/month?monthOffset=0",
+			response: [],
+		});
+
+		cy.wait(100);
+
+		cy.findByText("Previous").should("be.disabled");
+	});
 });
