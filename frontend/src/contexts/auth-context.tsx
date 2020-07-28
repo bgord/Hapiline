@@ -33,7 +33,7 @@ export const AuthProvider: React.FC = props => {
 	}, [isLoggedInRequest.status, isLoggedInRequest.data]);
 
 	if (!firstAttemptFinished && isLoggedInRequest.status === "loading") {
-		return <UI.Text>Loading...</UI.Text>;
+		return <UI.Loader />;
 	}
 
 	if (!firstAttemptFinished && isLoggedInRequest.status === "error") {

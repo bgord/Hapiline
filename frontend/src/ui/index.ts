@@ -9,6 +9,7 @@ export * from "./field/Field";
 export * from "./header/Header";
 export * from "./input/Input";
 export * from "./label/Label";
+export * from "./loader/Loader";
 export * from "./radio/Radio";
 export * from "./row/Row";
 export * from "./select/Select";
@@ -29,6 +30,7 @@ export * from "./icons/Plus";
 export * from "./icons/PlusCircle";
 export * from "./icons/QuestionMark";
 export * from "./icons/Trash";
+export * from "./icons/Loader";
 
 export * from "./ShowIf";
 export * from "./ExpandContractList";
