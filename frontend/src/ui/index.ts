@@ -30,6 +30,7 @@ export * from "./icons/Plus";
 export * from "./icons/PlusCircle";
 export * from "./icons/QuestionMark";
 export * from "./icons/Trash";
+export * from "./icons/Loader";
 
 export * from "./ShowIf";
 export * from "./ExpandContractList";
