@@ -184,7 +184,10 @@ async function validateEnvServerProduction(
 					.string()
 					.equals(["0.0.0.0"])
 					.required(),
-				PORT,
+				PORT: yup
+					.number()
+					.equals([80])
+					.required(),
 				NODE_ENV: yup
 					.string()
 					.equals(["production"])
