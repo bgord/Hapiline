@@ -9,6 +9,7 @@ export * from "./field/Field";
 export * from "./header/Header";
 export * from "./input/Input";
 export * from "./label/Label";
+export * from "./loader/Loader";
 export * from "./radio/Radio";
 export * from "./row/Row";
 export * from "./select/Select";
