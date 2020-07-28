@@ -200,7 +200,7 @@ describe("Dashboard", () => {
 			response: [],
 		});
 		cy.reload();
-		cy.findByText("Add your first tracked habit to start voting!");
+		cy.findByText("It seems you haven't added any habits yet.");
 
 		cy.findByText("Votes today").should("not.exist");
 		cy.findByText("0 habits with progress votes").should("not.exist");
@@ -208,7 +208,7 @@ describe("Dashboard", () => {
 		cy.findByText("0 habits with regress votes").should("not.exist");
 		cy.findByText("0 habits with no votes").should("not.exist");
 
-		cy.findByText("Add your first tracked habit to start voting!").click();
+		cy.findByText("Add your first habit!").click();
 		cy.url().should("contain", "/habits");
 	});
 

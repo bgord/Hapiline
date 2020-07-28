@@ -5,6 +5,7 @@ import {QueryResult} from "react-query";
 import {DashboardHabitVoteStatsForDateRanges} from "../../models";
 import * as UI from "../../ui";
 import {useUntrackedHabits} from "../../contexts/habits-context";
+import {UrlBuilder} from "../../services/url-builder";
 
 export const DashboardMotivationalText: React.FC<{
 	request: QueryResult<DashboardHabitVoteStatsForDateRanges>;
@@ -25,10 +26,12 @@ export const DashboardMotivationalText: React.FC<{
 
 	const strategyToText = {
 		no_habits: (
-			// TODO: Improve it display a text and a button separately
-			<UI.Text as={Link} variant="link" to="habits">
-				Add your first tracked habit to start voting!
-			</UI.Text>
+			<UI.Column width="100%">
+				<UI.InfoBanner>It seems you haven't added any habits yet.</UI.InfoBanner>
+				<UI.Text variant="link" as={Link} to={UrlBuilder.habits.add()} mt="24">
+					Add your first habit!
+				</UI.Text>
+			</UI.Column>
 		),
 		no_votes_today: (
 			<UI.Text>
