@@ -19,11 +19,13 @@ import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {Habit, ReorderHabitPayload} from "./models";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
+import {useKeyboardShortcurts} from "./hooks/useKeyboardShortcuts";
 
 export const HabitsWindow = () => {
 	useDocumentTitle("Hapiline - habit list");
 
 	const mediaQuery = useMediaQuery();
+	const searchHabitsRef = React.useRef<HTMLInputElement>(null);
 
 	const getHabitsRequestState = useHabitsState();
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
@@ -41,6 +43,20 @@ export const HabitsWindow = () => {
 	});
 
 	const [, updateSubviewQueryParam] = useQueryParam("subview");
+	function openAddFormDialog() {
+		updateSubviewQueryParam("add_habit");
+	}
+	function focusSearchHabitsInput(event: KeyboardEvent) {
+		if (searchHabitsRef.current) {
+			event.preventDefault();
+			searchHabitsRef.current.focus();
+		}
+	}
+
+	useKeyboardShortcurts({
+		"Shift+KeyA": openAddFormDialog,
+		"Shift+KeyS": focusSearchHabitsInput,
+	});
 
 	const {on: areFiltersVisible, toggle: toggleFilters} = useToggle();
 
@@ -82,10 +98,6 @@ export const HabitsWindow = () => {
 		habitScoreFilter.value !== "all-scores" ||
 		habitStrengthFilter.value !== "all-strengths" ||
 		habitSearch.value !== "";
-
-	function openAddFormDialog() {
-		updateSubviewQueryParam("add_habit");
-	}
 
 	function resetAllFilters() {
 		habitScoreFilter.reset();
@@ -227,6 +239,7 @@ export const HabitsWindow = () => {
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
+							title={`Press "Shift + A"`}
 						>
 							<PlusIcon mr="12" style={{stroke: "var(--gray-1)"}} />
 							New habit
@@ -239,7 +252,8 @@ export const HabitsWindow = () => {
 							<UI.Input
 								id="habit_name"
 								type="search"
-								placeholder="Search for habits..."
+								placeholder={`Press "Shift + S" to search for habits...`}
+								ref={searchHabitsRef}
 								value={habitSearch.value}
 								onChange={habitSearch.onChange}
 							/>

@@ -1,7 +1,7 @@
 import * as UI from "./ui";
 import React from "react";
 
-export const HabitNameInput: React.FC<JSX.IntrinsicElements["input"]> = props => (
+export const HabitNameInput: React.FC<JSX.IntrinsicElements["input"]> = ({ref, ...props}) => (
 	<UI.Input
 		required
 		pattern=".{1,255}"
