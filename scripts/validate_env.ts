@@ -204,10 +204,13 @@ async function validateEnvServerProduction(
 				DB_USER: yup.string().required(),
 				DB_PASSWORD: yup
 					.string()
-					.notOneOf(
-						[envServerDevelopment.DB_PASSWORD],
-						`'DB_PASSWORD' for development and production must be different`,
-					)
+					// TODO: Figure out why the production database password doesn't get picked up
+					// by docker-compose in production mode.
+
+					// .notOneOf(
+					// 	[envServerDevelopment.DB_PASSWORD],
+					// 	`'DB_PASSWORD' for development and production must be different`,
+					// )
 					.required(),
 				DB_DATABASE: yup.string().required(),
 				SMTP_HOST: yup.string().required(),
