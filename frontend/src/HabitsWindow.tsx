@@ -46,8 +46,9 @@ export const HabitsWindow = () => {
 	function openAddFormDialog() {
 		updateSubviewQueryParam("add_habit");
 	}
-	function focusSearchHabitsInput() {
+	function focusSearchHabitsInput(event: KeyboardEvent) {
 		if (searchHabitsRef.current) {
+			event.preventDefault();
 			searchHabitsRef.current.focus();
 		}
 	}
