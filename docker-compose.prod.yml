@@ -13,9 +13,16 @@ services:
       dockerfile: Dockerfile-app.prod
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.hapiline.tls.certresolver=myresolver"
+
+      - "traefik.http.routers.hapiline_http.rule=Host(`bgord.tech`)"
+      - "traefik.http.routers.hapiline_http.entrypoints=web"
+      - "traefik.http.routers.hapiline_http.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
       - "traefik.http.routers.hapiline.rule=Host(`bgord.tech`)"
       - "traefik.http.routers.hapiline.entrypoints=websecure"
-      - "traefik.http.routers.hapiline.tls.certresolver=myresolver"
+      - "traefik.http.routers.hapiline.tls=true"
   db:
     env_file:
       - ./.env-prod
