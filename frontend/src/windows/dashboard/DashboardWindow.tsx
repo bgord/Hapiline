@@ -13,6 +13,7 @@ import {useErrorToast} from "../../contexts/toasts-context";
 import {DashboardStreakStats, DashboardHabitVoteStatsForDateRanges} from "../../models";
 import {UrlBuilder} from "../../services/url-builder";
 import * as UI from "../../ui";
+import {useKeyboardShortcurts} from "../../hooks/useKeyboardShortcuts";
 
 import {DashboardMotivationalText} from "./DashboardMotivationalText";
 import {DashboardRegressStreakList} from "./DashboardRegressStreakList";
@@ -24,6 +25,10 @@ export const DashboardWindow = () => {
 
 	const [{subview, preview_habit_id}, updateQueryParams, updateUrl] = useQueryParams();
 	const triggerErrorToast = useErrorToast();
+
+	useKeyboardShortcurts({
+		"Shift+KeyT": () => updateUrl(UrlBuilder.dashboard.calendar.today()),
+	});
 
 	const getDashboardStatsRequestState = useQuery<
 		DashboardHabitVoteStatsForDateRanges,
@@ -78,6 +83,7 @@ export const DashboardWindow = () => {
 				<UI.Button
 					variant="primary"
 					onClick={() => updateUrl(UrlBuilder.dashboard.calendar.today())}
+					title={`Press "Shift + T"`}
 				>
 					View today
 				</UI.Button>
