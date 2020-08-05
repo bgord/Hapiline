@@ -9,6 +9,6 @@ RUN npm ci --production
 
 COPY . .
 
-EXPOSE 3333
+EXPOSE 80
 
 CMD ["sh", "entrypoint-prod.sh"]
