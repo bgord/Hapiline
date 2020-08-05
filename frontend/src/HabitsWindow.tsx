@@ -25,6 +25,7 @@ export const HabitsWindow = () => {
 	useDocumentTitle("Hapiline - habit list");
 
 	const mediaQuery = useMediaQuery();
+	const searchHabitsRef = React.useRef<HTMLInputElement>(null);
 
 	const getHabitsRequestState = useHabitsState();
 	const {errorMessage} = getRequestStateErrors(getHabitsRequestState);
@@ -45,9 +46,15 @@ export const HabitsWindow = () => {
 	function openAddFormDialog() {
 		updateSubviewQueryParam("add_habit");
 	}
+	function focusSearchHabitsInput() {
+		if (searchHabitsRef.current) {
+			searchHabitsRef.current.focus();
+		}
+	}
 
 	useKeyboardShortcurts({
-		a: openAddFormDialog,
+		"Shift+KeyA": openAddFormDialog,
+		"Shift+KeyS": focusSearchHabitsInput,
 	});
 
 	const {on: areFiltersVisible, toggle: toggleFilters} = useToggle();
@@ -231,7 +238,7 @@ export const HabitsWindow = () => {
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
-							title={`Press "a"`}
+							title={`Press "Shift + A"`}
 						>
 							<PlusIcon mr="12" style={{stroke: "var(--gray-1)"}} />
 							New habit
@@ -244,7 +251,8 @@ export const HabitsWindow = () => {
 							<UI.Input
 								id="habit_name"
 								type="search"
-								placeholder="Search for habits..."
+								placeholder={`Press "Shift + S" to search for habits...`}
+								ref={searchHabitsRef}
 								value={habitSearch.value}
 								onChange={habitSearch.onChange}
 							/>
