@@ -19,6 +19,7 @@ import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {Habit, ReorderHabitPayload} from "./models";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
+import {useKeyboardShortcurts} from "./hooks/useKeyboardShortcuts";
 
 export const HabitsWindow = () => {
 	useDocumentTitle("Hapiline - habit list");
@@ -41,6 +42,13 @@ export const HabitsWindow = () => {
 	});
 
 	const [, updateSubviewQueryParam] = useQueryParam("subview");
+	function openAddFormDialog() {
+		updateSubviewQueryParam("add_habit");
+	}
+
+	useKeyboardShortcurts({
+		a: openAddFormDialog,
+	});
 
 	const {on: areFiltersVisible, toggle: toggleFilters} = useToggle();
 
@@ -82,10 +90,6 @@ export const HabitsWindow = () => {
 		habitScoreFilter.value !== "all-scores" ||
 		habitStrengthFilter.value !== "all-strengths" ||
 		habitSearch.value !== "";
-
-	function openAddFormDialog() {
-		updateSubviewQueryParam("add_habit");
-	}
 
 	function resetAllFilters() {
 		habitScoreFilter.reset();
@@ -227,6 +231,7 @@ export const HabitsWindow = () => {
 							variant="primary"
 							layout="with-icon"
 							onClick={openAddFormDialog}
+							title={`Press "a"`}
 						>
 							<PlusIcon mr="12" style={{stroke: "var(--gray-1)"}} />
 							New habit
