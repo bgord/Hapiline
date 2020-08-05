@@ -13,11 +13,19 @@ import {useDocumentTitle} from "../../hooks/useDocumentTitle";
 import {useMonthsWidget, MonthOffset} from "../../hooks/useMonthsWidget";
 import {useTrackedHabits} from "../../contexts/habits-context";
 import * as UI from "../../ui";
+import {useKeyboardShortcurts} from "../../hooks/useKeyboardShortcuts";
+import {useQueryParams} from "../../hooks/useQueryParam";
+import {UrlBuilder} from "../../services/url-builder";
 
 export function CalendarWindow() {
 	useDocumentTitle("Hapiline - calendar");
 
 	const mediaQuery = useMediaQuery();
+
+	const [, , updateUrl] = useQueryParams();
+	useKeyboardShortcurts({
+		"Shift+KeyT": () => updateUrl(UrlBuilder.calendar.today()),
+	});
 
 	const [widget, monthString, monthOffset] = useMonthsWidget();
 

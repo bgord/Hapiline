@@ -43,5 +43,11 @@ export const UrlBuilder = {
 					month_offset: String(getMonthOffsetFromDate(day)),
 				}),
 		},
+		today: (): string =>
+			constructUrl("calendar", {
+				subview: "day_preview",
+				preview_day: formatToday(),
+				habit_vote_filter: "unvoted",
+			}),
 	},
 };
