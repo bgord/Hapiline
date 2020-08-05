@@ -11,6 +11,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-app.prod
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hapiline.rule=Host(`bgord.tech`)"
+      - "traefik.http.routers.hapiline.entrypoints=websecure"
+      - "traefik.http.routers.hapiline.tls.certresolver=myresolver"
   db:
     env_file:
       - ./.env-prod
@@ -32,7 +37,6 @@ services:
       - "--entrypoints.websecure.address=:443"
       - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
-      # - "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
       - "--certificatesresolvers.myresolver.acme.email=gordonbartosz@gmail.com"
       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
     ports:
@@ -42,12 +46,3 @@ services:
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-
-  whoami:
-    image: "containous/whoami"
-    container_name: "simple-service"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.whoami.rule=Host(`bgord.tech`)"
-      - "traefik.http.routers.whoami.entrypoints=websecure"
-      - "traefik.http.routers.whoami.tls.certresolver=myresolver"
