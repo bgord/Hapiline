@@ -280,14 +280,17 @@ describe("Habit list", () => {
 			cy.findByLabelText("All strengths (4)").check();
 		}
 
-		cy.findByPlaceholderText("Search for habits...")
+		cy.findByPlaceholderText(`Press "Shift + S" to search for habits...`)
 			.should("be.empty")
 			.type("the");
 		cy.get("ul").within(() => cy.get("li").should("have.length", 1));
 		cy.findByTestId("number-of-habit-search-results").should("have.text", "1 results");
 
 		cy.findByText("Clear").click();
-		cy.findByPlaceholderText("Search for habits...").should("be.empty");
+		cy.findByPlaceholderText(`Press "Shift + S" to search for habits...`).should("be.empty");
+
+		cy.findByPlaceholderText(`Press "Shift + S" to search for habits...`).type("oijaeog");
+		cy.findByText("It seems you haven't added any habits yet.").should("not.exist");
 	});
 
 	it("error while getting items", () => {
