@@ -262,7 +262,7 @@ export const HabitsWindow = () => {
 					</UI.Row>
 
 					<UI.ShowIf request={getHabitsRequestState} is="success">
-						{filteredHabits.length === 0 && (
+						{numbersOfHabitsByQueries.all === 0 && (
 							<UI.InfoBanner size="big" mt="48" mx="24">
 								It seems you haven't added any habits yet.
 							</UI.InfoBanner>
