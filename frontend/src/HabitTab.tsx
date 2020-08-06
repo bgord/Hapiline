@@ -14,12 +14,13 @@ import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {api} from "./services/api";
 import {getHabitsAvailableAtThisDay} from "./selectors/getHabitsAvailableAtDay";
 import {useErrorToast} from "./contexts/toasts-context";
-import {useHabitSearch, HabitSearchInput} from "./hooks/useHabitSearch";
+import {useHabitSearch} from "./hooks/useHabitSearch";
 import {useQueryParams} from "./hooks/useQueryParam";
 import {useTrackedHabits} from "./contexts/habits-context";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {useToggle} from "./hooks/useToggle";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
+import {useKeyboardShortcurts} from "./hooks/useKeyboardShortcuts";
 
 type HabitTabProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabits"> & {
 	onResolve: VoidFunction;
@@ -29,6 +30,17 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
 	const [queryParams, updateQueryParams] = useQueryParams();
+
+	const searchHabitsRef = React.useRef<HTMLInputElement>(null);
+	function focusSearchHabitsInput(event: KeyboardEvent) {
+		if (searchHabitsRef.current) {
+			event.preventDefault();
+			searchHabitsRef.current.focus();
+		}
+	}
+	useKeyboardShortcurts({
+		"Shift+KeyS": focusSearchHabitsInput,
+	});
 
 	const trackedHabits = useTrackedHabits();
 
@@ -183,7 +195,18 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			</UI.Row>
 
 			<UI.Row mt="12" crossAxis="end" wrap="wrap" mb="24">
-				<HabitSearchInput data-mr="12" value={habitSearch.value} onChange={habitSearch.onChange} />
+				<UI.Field>
+					<UI.Label htmlFor="habit_name">Habit name</UI.Label>
+					<UI.Input
+						id="habit_name"
+						type="search"
+						placeholder={`Press "Shift + S" to search for habits...`}
+						ref={searchHabitsRef}
+						value={habitSearch.value}
+						onChange={habitSearch.onChange}
+						data-mr="12"
+					/>
+				</UI.Field>
 
 				<UI.Button
 					mt="24"

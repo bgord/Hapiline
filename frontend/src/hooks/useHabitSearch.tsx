@@ -1,6 +1,5 @@
 import React from "react";
 
-import * as UI from "../ui";
 import {Habit} from "../models";
 
 export const useHabitSearch = (defaultValue = "") => {
@@ -23,10 +22,3 @@ export const useHabitSearch = (defaultValue = "") => {
 		clearPhrase: clearHabitSearchPhrase,
 	};
 };
-
-export const HabitSearchInput: React.FC<JSX.IntrinsicElements["input"]> = ({ref, ...props}) => (
-	<UI.Field>
-		<UI.Label htmlFor="habit_name">Habit name</UI.Label>
-		<UI.Input id="habit_name" type="search" placeholder="Search for habits..." {...props} />
-	</UI.Field>
-);
