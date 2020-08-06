@@ -1,9 +1,5 @@
 const DASHBOARD_URL = "/dashboard";
 const HABITS_URL = "/habits";
-const PROFILE_URL = "/profile";
-const JOURNALS_URL = "/journals";
-const LOGIN_URL = "/login";
-const REGISTER_URL = "/register";
 
 describe("a11y", () => {
 	// INFO: I'm using `cy.findByText("Skip to content").click({force: true});` here
@@ -26,7 +22,6 @@ describe("a11y", () => {
 
 		cy.wait(500);
 
-		// Not skipping navigation
 		cy.get("body").tab();
 
 		cy.findByText("Skip to content").should("have.focus");
@@ -40,110 +35,6 @@ describe("a11y", () => {
 		if (Cypress.env("device") === "mobile") {
 			cy.findByLabelText("Notifications dropdown").should("have.focus");
 		}
-
-		// Skipping navigation, and getting straight to the content
-		// of the dashboard window
-		cy.reload();
-		cy.wait(500);
-
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").click({force: true});
-
-		cy.get("main").tab();
-
-		cy.findByText("View today").should("have.focus");
-
-		// Skipping navigation, and getting straight to the content
-		// of the habits window
-		cy.visit(HABITS_URL);
-		cy.wait(500);
-
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").click({force: true});
-
-		cy.get("main").tab();
-
-		if (Cypress.env("device") === "desktop") {
-			cy.findByText("Show filters").should("have.focus");
-		}
-		if (Cypress.env("device") === "mobile") {
-			cy.findByText("New habit").should("have.focus");
-		}
-
-		// Not testing /calendar URL, because the first enabled button depends
-		// on the current date.
-
-		// Skipping navigation, and getting straight to the content
-		// of the profile window
-		cy.visit(PROFILE_URL);
-		cy.wait(500);
-
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").click({force: true});
-
-		cy.get("main").tab();
-
-		cy.findByLabelText("New email").should("have.focus");
-
-		// Skipping navigation, and getting straight to the content
-		// of the journals window
-		cy.visit(JOURNALS_URL);
-		cy.wait(500);
-
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").click({force: true});
-
-		cy.get("main").tab();
-
-		cy.findByLabelText("Sort by").should("have.focus");
-	});
-
-	it("skip nav for all main unauthenticated views", function() {
-		if (Cypress.env("device") === "mobile") {
-			this.skip();
-		}
-		cy.visit(LOGIN_URL);
-		cy.wait(500);
-
-		// Not skipping navigation
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").should("have.focus");
-		cy.findByText("Skip to content")
-			.tab()
-			.tab();
-
-		cy.findByText("Register").should("have.focus");
-
-		// Skipping navigation, and getting straight to the content
-		// of the login window
-		cy.reload();
-		cy.wait(500);
-
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").click({force: true});
-
-		cy.get("main").tab();
-
-		cy.findByLabelText("Email").should("have.focus");
-
-		// Skipping navigation, and getting straight to the content
-		// of the register window
-		cy.visit(REGISTER_URL);
-		cy.wait(500);
-
-		cy.get("body").tab();
-
-		cy.findByText("Skip to content").click({force: true});
-
-		cy.get("main").tab();
-
-		cy.findByLabelText("Email").should("have.focus");
 	});
 
 	it("changing habit name - keyboard", function() {
@@ -155,7 +46,16 @@ describe("a11y", () => {
 		cy.visit(HABITS_URL);
 		cy.wait(500);
 
-		cy.get("main")
+		cy.get("body")
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
 			.tab()
 			.tab()
 			.tab()
@@ -187,7 +87,16 @@ describe("a11y", () => {
 		cy.visit(HABITS_URL);
 		cy.wait(500);
 
-		cy.get("main")
+		cy.get("body")
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
+			.tab()
 			.tab()
 			.tab()
 			.tab()

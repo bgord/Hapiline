@@ -20,7 +20,7 @@ function UnauthenticatedApp() {
 			<UI.Text as={SkipNavLink} variant="link" />
 			<UnauthenticatedNavbar />
 			<SkipNavContent />
-			<UI.Column as="main" tabIndex={0}>
+			<UI.Column as="main">
 				<Switch>
 					<Route exact path="/login">
 						<LoginWindow />
