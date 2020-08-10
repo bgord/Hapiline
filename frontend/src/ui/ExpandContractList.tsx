@@ -2,26 +2,29 @@ import React from "react";
 
 import * as UI from "./";
 
-// TODO: Document the logic of this component
 export const ExpandContractList: React.FC<{max: number}> = ({children, max}) => {
 	const [state, setState] = React.useState<"contracted" | "expanded">();
 
-	const numberOfItems = React.Children.count(children);
-	const numberOfItemsToExpand = numberOfItems - max;
+	const numberOfChildren = React.Children.count(children);
 
-	const isExpandable = numberOfItems > max;
+	const numberOfChildrenThatCanBeRevealed = numberOfChildren - max;
+	const areThereAnyChildrenToBeRevealed = numberOfChildren > max;
 
 	React.useEffect(() => {
-		if (numberOfItems > max) setState("contracted");
+		// Establish a starting position for the first render
+		// and when either `numberOfChildren` or `max` changes,
+		// which is represented by `areThereAnyChildrenToBeRevealed`.
+
+		if (areThereAnyChildrenToBeRevealed) setState("contracted");
 		else setState("expanded");
-	}, [numberOfItems, max]);
+	}, [areThereAnyChildrenToBeRevealed]);
 
 	return (
 		<>
 			{state === "expanded" && (
 				<>
 					{children}
-					{isExpandable && (
+					{areThereAnyChildrenToBeRevealed && (
 						<UI.Button mt="12" variant="outlined" onClick={() => setState("contracted")}>
 							Show less
 						</UI.Button>
@@ -30,12 +33,18 @@ export const ExpandContractList: React.FC<{max: number}> = ({children, max}) => 
 			)}
 			{state === "contracted" && (
 				<>
-					{React.Children.toArray(children).filter((_, index) => index < max)}
+					{React.Children.toArray(children).filter(takeFirst(max))}
 					<UI.Button mt="12" variant="outlined" onClick={() => setState("expanded")}>
-						Show more ({numberOfItemsToExpand})
+						Show more ({numberOfChildrenThatCanBeRevealed})
 					</UI.Button>
 				</>
 			)}
 		</>
 	);
 };
+
+function takeFirst(max: number) {
+	return function(_item: any, index: number) {
+		return index < max;
+	};
+}
