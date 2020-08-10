@@ -1,8 +1,7 @@
 import React from "react";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
-// TODO: Refactor to the native `srcSet` and `sizes`
-export const Logo: React.FC<JSX.IntrinsicElements["img"]> = props => {
+export function Logo(props: JSX.IntrinsicElements["img"]) {
 	const mediaQuery = useMediaQuery();
 
 	const src = mediaQuery === MEDIA_QUERY.default ? "logo.png" : "logo-icon.png";
@@ -18,4 +17,4 @@ export const Logo: React.FC<JSX.IntrinsicElements["img"]> = props => {
 			{...props}
 		/>
 	);
-};
+}
