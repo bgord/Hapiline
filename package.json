@@ -132,7 +132,8 @@
     "extends": "bgord",
     "rules": {
       "no-sparse-arrays": 0,
-      "jest/valid-expect": 0
+      "jest/valid-expect": 0,
+      "no-unused-expressions": 1
     }
   }
 }
