@@ -11,6 +11,7 @@ import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 import {differenceInDays} from "date-fns";
 import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
 import {formatTime, formatShortDayName} from "./services/date-formatter";
+import {useKeyboardShortcurts} from "./hooks/useKeyboardShortcuts";
 
 export function NotificationDropdown() {
 	const triggerErrorToast = useErrorToast();
@@ -19,6 +20,15 @@ export function NotificationDropdown() {
 		setOff: hideNotifications,
 		toggle: toggleNotifications,
 	} = useToggle();
+
+	const toggleNotificationsRef = React.useRef<HTMLButtonElement>(null);
+
+	useKeyboardShortcurts({
+		"Shift+KeyN": () => {
+			toggleNotifications();
+			toggleNotificationsRef.current?.focus();
+		},
+	});
 
 	const mediaQuery = useMediaQuery();
 
@@ -42,6 +52,7 @@ export function NotificationDropdown() {
 	return (
 		<UI.Column>
 			<UI.Button
+				ref={toggleNotificationsRef}
 				aria-label="Notifications dropdown"
 				variant="bare"
 				onClick={toggleNotifications}
