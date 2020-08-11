@@ -5,6 +5,10 @@ export enum MEDIA_QUERY {
 	"lg" = "lg",
 }
 
+export const BREAKPOINTS: {[key in Exclude<MEDIA_QUERY, "default">]: number} = {
+	[MEDIA_QUERY.lg]: 768,
+};
+
 export function useWindowSize(): {
 	width: typeof window.innerWidth;
 	height: typeof window.innerHeight;
@@ -44,7 +48,7 @@ export function useWindowHeight(): typeof window.innerHeight {
 export function useMediaQuery(): MEDIA_QUERY {
 	const windowWidth = useWindowWidth();
 
-	if (windowWidth <= 768) {
+	if (windowWidth <= BREAKPOINTS.lg) {
 		return MEDIA_QUERY.lg;
 	}
 

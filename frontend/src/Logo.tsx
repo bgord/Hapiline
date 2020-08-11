@@ -1,19 +1,15 @@
 import React from "react";
-import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
 export function Logo(props: JSX.IntrinsicElements["img"]) {
-	const mediaQuery = useMediaQuery();
-
-	const src = mediaQuery === MEDIA_QUERY.default ? "logo.png" : "logo-icon.png";
+	const fullLogo = "logo.png";
+	const iconLogo = "logo-icon.png";
 
 	return (
 		<img
 			alt="Hapiline brand"
-			src={src}
-			style={{
-				height: mediaQuery === MEDIA_QUERY.default ? "50px" : "45px",
-				minWidth: mediaQuery === MEDIA_QUERY.default ? "180px" : "45px",
-			}}
+			src={fullLogo}
+			srcSet={`${fullLogo} 181w, ${iconLogo} 50w`}
+			sizes="(max-width: 768px) 50px, 181px"
 			{...props}
 		/>
 	);
