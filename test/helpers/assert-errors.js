@@ -77,6 +77,15 @@ function assertNotFoundError(response) {
 	});
 }
 
+function assertInactiveAccount(response) {
+	response.assertStatus(403);
+	response.assertJSON({
+		code: MAIN_ERROR_CODES.access_denied,
+		message: MAIN_ERROR_MESSAGES.inactive_account,
+		argErrors: [],
+	});
+}
+
 module.exports = {
 	assertInvalidSession,
 	assertAccessDenied,
@@ -86,4 +95,5 @@ module.exports = {
 	assertInvalidCredentials,
 	assertUnprocessableEntity,
 	assertNotFoundError,
+	assertInactiveAccount,
 };

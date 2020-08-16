@@ -10,6 +10,7 @@ const MAIN_ERROR_MESSAGES = {
 	not_all_habit_ids_supplied: "You have to supply all habit ids.",
 	indexes_out_of_order: "Invalid indexes order.",
 	cannot_reorder_habits: "Cannot reorder habits.",
+	inactive_account: "Inactive account.",
 };
 
 module.exports = MAIN_ERROR_MESSAGES;

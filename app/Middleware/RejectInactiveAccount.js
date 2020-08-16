@@ -12,13 +12,14 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 class RejectInactiveAccount {
 	async handle({request, response}, next) {
 		const {email} = request.only(["email"]);
+
 		const user = await User.findBy("email", email);
 
 		if (
 			user &&
 			[ACCOUNT_STATUSES.pending, ACCOUNT_STATUSES.deleted].includes(user.account_status)
 		) {
-			return response.accessDenied();
+			return response.inactiveAccount();
 		}
 
 		return next();
