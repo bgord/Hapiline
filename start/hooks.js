@@ -18,6 +18,14 @@ hooks.after.providersBooted(() => {
 		});
 	});
 
+	Response.macro("inactiveAccount", function() {
+		this.status(403).send({
+			code: MAIN_ERROR_CODES.access_denied,
+			message: MAIN_ERROR_MESSAGES.inactive_account,
+			argErrors: [],
+		});
+	});
+
 	Response.macro("invalidCredentials", function() {
 		this.status(401).send({
 			code: MAIN_ERROR_CODES.invalid_credentials,

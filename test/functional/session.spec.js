@@ -5,7 +5,7 @@ const {
 	assertInvalidSession,
 	assertValidationError,
 	assertInvalidCredentials,
-	assertAccessDenied,
+	assertInactiveAccount,
 } = require("../helpers/assert-errors");
 
 const {test, trait, beforeEach, afterEach} = use("Test/Suite")("Login");
@@ -92,26 +92,19 @@ test("/login --- auth restrictions (guest only)", async ({client}) => {
 test("/login --- auth restrictions (active account status)", async ({client}) => {
 	const user = await User.findBy("email", "jim@example.com");
 
-	user.merge({
-		account_status: ACCOUNT_STATUSES.deleted,
-	});
+	user.merge({account_status: ACCOUNT_STATUSES.deleted});
 	await user.save();
 
-	const payload = {
-		email: user.email,
-		password: "123456",
-	};
+	const payload = {email: user.email, password: "123456"};
 
 	const deletedAccountResponse = await client
 		.post(LOGIN_URL)
 		.send(payload)
 		.end();
 
-	assertAccessDenied(deletedAccountResponse);
+	assertInactiveAccount(deletedAccountResponse);
 
-	user.merge({
-		account_status: ACCOUNT_STATUSES.pending,
-	});
+	user.merge({account_status: ACCOUNT_STATUSES.pending});
 	await user.save();
 
 	const pendingAccountResponse = await client
@@ -119,7 +112,7 @@ test("/login --- auth restrictions (active account status)", async ({client}) =>
 		.send(payload)
 		.end();
 
-	assertAccessDenied(pendingAccountResponse);
+	assertInactiveAccount(pendingAccountResponse);
 });
 
 test("/login --- full flow", async ({client}) => {
