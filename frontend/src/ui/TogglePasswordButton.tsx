@@ -1,3 +1,5 @@
+import "./toggle-password-button.css";
+
 import React from "react";
 import {useToggle} from "../hooks/useToggle";
 import * as UI from "./";
@@ -40,8 +42,16 @@ export function TogglePasswordButton(
 	const {isPasswordVisible, ref, ...rest} = props;
 
 	return (
-		<UI.Button ml="3" variant="bare" data-bg="gray-1" style={{width: "70px"}} {...rest}>
-			{isPasswordVisible ? "Hide" : "Show"}
+		<UI.Button
+			variant="outlined"
+			data-state={isPasswordVisible ? "visible" : "hidden"}
+			ml="6"
+			data-bg="gray-1"
+			style={{width: "70px"}}
+			{...rest}
+		>
+			<UI.Wrapper data-for-state="hidden">Show</UI.Wrapper>
+			<UI.Wrapper data-for-state="visible">Hide</UI.Wrapper>
 		</UI.Button>
 	);
 }
