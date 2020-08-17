@@ -3,7 +3,6 @@
 	margin-top: -1px;
 
 	line-height: 24px;
-	font-family: "Noto Sans";
 	font-size: 12px;
 	color: var(--gray-10);
 	padding: calc(var(--spacing-s) - 2px); /* 2px come from borders */
@@ -16,6 +15,9 @@
 	width: 100%;
 
 	resize: none;
+
+	-webkit-appearance: none;
+	-moz-appearance: none;
 }
 
 .c-textarea:hover,
@@ -38,4 +40,11 @@
 .c-textarea:disabled.c-textarea:hover {
 	border-radius: inherit;
 	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* To avoid zooming on input focus on Chrome and Safari on iOS */
+@media not all and (min-resolution: 0.001dpcm) {
+	.c-textarea {
+		font-size: 16px;
+	}
 }
