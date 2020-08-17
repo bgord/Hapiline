@@ -12,7 +12,7 @@ type UserProfileContext = [
 
 const AuthContext = React.createContext<UserProfileContext>([null]);
 
-export const AuthProvider: React.FC = props => {
+export function AuthProvider() {
 	const [userProfile, setUserProfile] = React.useState<UserProfile | null>(null);
 	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
 
@@ -40,8 +40,8 @@ export const AuthProvider: React.FC = props => {
 		return <div>Something went wrong</div>;
 	}
 
-	return <AuthContext.Provider value={[userProfile, setUserProfile]} {...props} />;
-};
+	return <AuthContext.Provider value={[userProfile, setUserProfile]} />;
+}
 
 export function useUserProfile() {
 	const context = React.useContext(AuthContext);

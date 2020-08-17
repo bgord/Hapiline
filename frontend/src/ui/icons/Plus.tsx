@@ -4,7 +4,7 @@ import {Margins, getMarginTokens} from "../design-system";
 
 type PlusIconProps = JSX.IntrinsicElements["path"] & Margins;
 
-export const PlusIcon: React.FC<PlusIconProps> = ({m, mx, my, mt, mr, mb, ml, ...props}) => {
+export function PlusIcon({m, mx, my, mt, mr, mb, ml, ...props}: PlusIconProps) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 
 	return (
@@ -28,4 +28,4 @@ export const PlusIcon: React.FC<PlusIconProps> = ({m, mx, my, mt, mr, mb, ml, ..
 			/>
 		</svg>
 	);
-};
+}

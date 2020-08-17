@@ -16,7 +16,7 @@ type DayDialogProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabi
 	onResolve: VoidFunction;
 };
 
-export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) => {
+export function DayDialog({day, onResolve, ...stats}: DayDialogProps) {
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
 	const [queryParams, updateQueryParams] = useQueryParams();
@@ -71,4 +71,4 @@ export const DayDialog: React.FC<DayDialogProps> = ({day, onResolve, ...stats}) 
 			</Tabs>
 		</Dialog>
 	);
-};
+}

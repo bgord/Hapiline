@@ -14,13 +14,13 @@ type FieldProps = JSX.IntrinsicElements["div"] &
 	};
 
 // prettier-ignore
-export const Field: React.FC<FieldProps> = ({
+export function Field ({
 	children,
 	variant = "column",
 	m, mx, my, mt, mr, mb, ml, 
   width,
 	...props
-}) => {
+}: FieldProps) {
 	const passedChildren = [...React.Children.toArray(children)];
 	const reorderedChildren = passedChildren.reverse();
 
@@ -32,4 +32,4 @@ export const Field: React.FC<FieldProps> = ({
 			{reorderedChildren}
 		</div>
 	);
-};
+}

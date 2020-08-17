@@ -7,7 +7,7 @@ import {Paddings, getPaddingTokens} from "../design-system";
 
 type NavItemProps = NavLinkProps & {variant?: UI.TextVariant} & Paddings;
 
-export const NavItem: React.FC<NavItemProps> = ({
+export function NavItem({
 	variant = "semi-bold",
 	p = "24",
 	px,
@@ -17,7 +17,7 @@ export const NavItem: React.FC<NavItemProps> = ({
 	pb,
 	pl,
 	...props
-}) => {
+}: UI.WithChildren<NavItemProps>) {
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 
 	return (
@@ -30,4 +30,4 @@ export const NavItem: React.FC<NavItemProps> = ({
 			{...props}
 		/>
 	);
-};
+}

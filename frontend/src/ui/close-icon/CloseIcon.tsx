@@ -11,9 +11,11 @@ import {Backgrounds, Margins} from "../design-system";
 
 type CloseIconProps = React.ComponentPropsWithoutRef<"button"> & Margins & Backgrounds;
 
-export const CloseIcon: React.FC<CloseIconProps> = ({bg, ...props}) => (
-	<UI.Button data-bg={bg} variant="bare" {...props}>
-		<UI.VisuallyHidden>Close dialog</UI.VisuallyHidden>
-		<Close />
-	</UI.Button>
-);
+export function CloseIcon({bg, ...props}: CloseIconProps) {
+	return (
+		<UI.Button data-bg={bg} variant="bare" {...props}>
+			<UI.VisuallyHidden>Close dialog</UI.VisuallyHidden>
+			<Close />
+		</UI.Button>
+	);
+}

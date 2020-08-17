@@ -6,7 +6,7 @@ import {DetailedHabit, HabitScoreType, isHabitScore, DraftHabitPayload} from "./
 import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
-export const EditableHabitScoreSelect: React.FC<DetailedHabit> = ({id, score}) => {
+export function EditableHabitScoreSelect({id, score}: DetailedHabit) {
 	const [newHabitScore, setNewHabitScore] = React.useState<HabitScoreType>(score);
 
 	const triggerSuccessToast = useSuccessToast();
@@ -46,4 +46,4 @@ export const EditableHabitScoreSelect: React.FC<DetailedHabit> = ({id, score}) =
 			</UI.Select>
 		</UI.Field>
 	);
-};
+}

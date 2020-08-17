@@ -6,7 +6,7 @@ import {DetailedHabit, HabitStrengthType, isHabitStrength, DraftHabitPayload} fr
 import {api, AsyncReturnType} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 
-export const EditableHabitStrengthSelect: React.FC<DetailedHabit> = ({id, strength}) => {
+export function EditableHabitStrengthSelect({id, strength}: DetailedHabit) {
 	const [newHabitStrength, setNewHabitStrength] = React.useState<HabitStrengthType>(strength);
 
 	const triggerSuccessToast = useSuccessToast();
@@ -46,4 +46,4 @@ export const EditableHabitStrengthSelect: React.FC<DetailedHabit> = ({id, streng
 			</UI.Select>
 		</UI.Field>
 	);
-};
+}

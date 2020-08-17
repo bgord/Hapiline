@@ -12,9 +12,11 @@ import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
 
 import * as UI from "../../ui";
 
-export const DashboardProgressStreakList: React.FC<{
+export function DashboardProgressStreakList({
+	request,
+}: {
 	request: QueryResult<DashboardStreakStats>;
-}> = ({request}) => {
+}) {
 	const {on: isProgressStreakListVisible, toggle: toggleProgressStreakList} = usePersistentToggle(
 		true,
 		"show_progress_streak_list",
@@ -107,4 +109,4 @@ export const DashboardProgressStreakList: React.FC<{
 			)}
 		</>
 	);
-};
+}

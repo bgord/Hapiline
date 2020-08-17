@@ -14,7 +14,7 @@ import {useUserProfile} from "./contexts/auth-context";
 import {Habit, NewHabitPayload, isHabitStrength, isHabitScore} from "./models";
 import {usePersistentState} from "./hooks/usePersistentState";
 
-export const AddHabitForm: React.FC = () => {
+export function AddHabitForm() {
 	const [profile] = useUserProfile();
 	const getHabitsRequestState = useHabitsState();
 
@@ -218,4 +218,4 @@ export const AddHabitForm: React.FC = () => {
 			</UI.Column>
 		</Dialog>
 	);
-};
+}

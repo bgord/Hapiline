@@ -25,7 +25,7 @@ interface HabitItemDialogProps {
 	closeDialog: VoidFunction;
 }
 
-export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeDialog}) => {
+export function HabitItemDialog({habitId, closeDialog}: HabitItemDialogProps) {
 	useDocumentTitle("Hapiline - habit preview");
 	const getHabitsRequestState = useHabitsState();
 
@@ -149,13 +149,17 @@ export const HabitItemDialog: React.FC<HabitItemDialogProps> = ({habitId, closeD
 			</UI.Column>
 		</Dialog>
 	);
-};
+}
 
-const EditableDescription: React.FC<{
+function EditableDescription({
+	description,
+	habitId,
+	onResolve,
+}: {
 	description: Habit["description"];
 	habitId: Habit["id"];
 	onResolve: VoidFunction;
-}> = ({description, habitId, onResolve}) => {
+}) {
 	const triggerSuccessToast = useSuccessToast();
 	const triggerErrorToast = useErrorToast();
 
@@ -221,4 +225,4 @@ const EditableDescription: React.FC<{
 			</UI.Row>
 		</>
 	);
-};
+}

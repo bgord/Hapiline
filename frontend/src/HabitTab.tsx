@@ -26,7 +26,7 @@ type HabitTabProps = Omit<DayCellWithFullStats, "styles" | "numberOfCreatedHabit
 	onResolve: VoidFunction;
 };
 
-export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) => {
+export function HabitTab({day, onResolve, ...stats}: HabitTabProps) {
 	useDocumentTitle(`Hapiline - ${day}`);
 	const location = useLocation<{from: string | undefined}>();
 	const [queryParams, updateQueryParams] = useQueryParams();
@@ -285,7 +285,7 @@ export const HabitTab: React.FC<HabitTabProps> = ({day, onResolve, ...stats}) =>
 			)}
 		</UI.Column>
 	);
-};
+}
 
 function getDayVoteForHabit(
 	getDayVotesRequestState: QueryResult<HabitVote[]>,

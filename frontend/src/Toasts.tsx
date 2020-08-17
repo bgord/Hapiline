@@ -5,7 +5,7 @@ import React from "react";
 import * as UI from "./ui";
 import {Toast, ToastType, useToastDispatch, useToastsState} from "./contexts/toasts-context";
 
-const ToastItem: React.FC<Toast> = ({id, type, message}) => {
+function ToastItem({id, type, message}: Toast) {
 	const dispatch = useToastDispatch();
 
 	const typeToBgColor: {[key in ToastType]: string} = {
@@ -29,9 +29,9 @@ const ToastItem: React.FC<Toast> = ({id, type, message}) => {
 			<UI.CloseIcon bg="transparent" onClick={removeToast} />
 		</UI.Row>
 	);
-};
+}
 
-export const Toasts = () => {
+export function Toasts() {
 	const toasts = useToastsState();
 
 	const transitions = useTransition(toasts, toast => toast.id, {
@@ -56,4 +56,4 @@ export const Toasts = () => {
 			))}
 		</UI.Column>
 	);
-};
+}

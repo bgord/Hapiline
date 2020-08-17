@@ -11,9 +11,7 @@ import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
 
 import * as UI from "../../ui";
 
-export const DashboardNoStreakList: React.FC<{
-	request: QueryResult<DashboardStreakStats>;
-}> = ({request}) => {
+export function DashboardNoStreakList({request}: {request: QueryResult<DashboardStreakStats>}) {
 	const {on: isNoStreakListVisible, toggle: toggleNoStreakList} = usePersistentToggle(
 		true,
 		"show_no_streak_list",
@@ -100,4 +98,4 @@ export const DashboardNoStreakList: React.FC<{
 			)}
 		</>
 	);
-};
+}

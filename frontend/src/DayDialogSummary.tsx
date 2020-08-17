@@ -14,10 +14,10 @@ type DayDialogSummaryProps = Omit<DayCellWithFullStats, "styles" | "numberOfCrea
 	numberOfPossibleVotes: number;
 };
 
-export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElements["div"]> = ({
+export function DaySummaryChart({
 	numberOfPossibleVotes,
 	...stats
-}) => {
+}: DayDialogSummaryProps & JSX.IntrinsicElements["div"]) {
 	const missingVotesPercentage = Number(
 		((stats.numberOfMissingVotes ?? 0) / numberOfPossibleVotes) * 100,
 	).toFixed(2);
@@ -120,9 +120,9 @@ export const DaySummaryChart: React.FC<DayDialogSummaryProps & JSX.IntrinsicElem
 			</UI.Row>
 		</UI.Row>
 	);
-};
+}
 
-export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
+export function DayDialogSummaryTabs({day}: {day: string}) {
 	const habits = useHabits();
 	const habitsAddedAtThisDay = getHabitsAddedAtThisDay(habits, day);
 	const numberOfHabitsAddedAtThisDay = habitsAddedAtThisDay.length;
@@ -191,7 +191,7 @@ export const DayDialogSummaryTabs: React.FC<{day: string}> = ({day}) => {
 			</TabPanels>
 		</Tabs>
 	);
-};
+}
 
 function getHabitsAddedAtThisDay(habits: Habit[], day: string | Date): Habit[] {
 	return habits.filter(habit => {
@@ -202,24 +202,26 @@ function getHabitsAddedAtThisDay(habits: Habit[], day: string | Date): Habit[] {
 	});
 }
 
-const CompactHabitItem: React.FC<Habit> = ({name, id, score, strength, is_trackable}) => (
-	<UI.Row as="li" py="12" by="gray-1">
-		<UI.Text as={Link} to={UrlBuilder.habits.preview(id)} variant="semi-bold">
-			{name}
-		</UI.Text>
+function CompactHabitItem({name, id, score, strength, is_trackable}: Habit) {
+	return (
+		<UI.Row as="li" py="12" by="gray-1">
+			<UI.Text as={Link} to={UrlBuilder.habits.preview(id)} variant="semi-bold">
+				{name}
+			</UI.Text>
 
-		<UI.Badge ml="auto" variant={score}>
-			{score}
-		</UI.Badge>
-
-		<UI.Badge ml="12" variant={habitStrengthToBadgeVariant[strength]}>
-			{strength}
-		</UI.Badge>
-
-		{!is_trackable && (
-			<UI.Badge ml="12" variant="neutral">
-				Untracked
+			<UI.Badge ml="auto" variant={score}>
+				{score}
 			</UI.Badge>
-		)}
-	</UI.Row>
-);
+
+			<UI.Badge ml="12" variant={habitStrengthToBadgeVariant[strength]}>
+				{strength}
+			</UI.Badge>
+
+			{!is_trackable && (
+				<UI.Badge ml="12" variant="neutral">
+					Untracked
+				</UI.Badge>
+			)}
+		</UI.Row>
+	);
+}

@@ -13,7 +13,7 @@ interface HabitListItemProps {
 	isDragDisabled: boolean;
 }
 
-export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDragDisabled}) => {
+export function HabitListItem({habit, index, isDragDisabled}: HabitListItemProps) {
 	const history = useHistory();
 	const [previewHabitId, updateQueryParam] = useQueryParam("preview_habit_id");
 
@@ -80,4 +80,4 @@ export const HabitListItem: React.FC<HabitListItemProps> = ({habit, index, isDra
 			)}
 		</Draggable>
 	);
-};
+}

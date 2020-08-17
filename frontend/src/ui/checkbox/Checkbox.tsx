@@ -2,6 +2,6 @@ import "./checkbox.css";
 
 import React from "react";
 
-export const Checkbox: React.FC<JSX.IntrinsicElements["input"]> = props => (
-	<input type="checkbox" className="c-checkbox" {...props} />
-);
+export function Checkbox(props: JSX.IntrinsicElements["input"]) {
+	return <input type="checkbox" className="c-checkbox" {...props} />;
+}

@@ -10,7 +10,7 @@ import {getRequestErrors} from "./selectors/getRequestErrors";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 
-export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
+export function EditableHabitNameInput({name, id}: DetailedHabit) {
 	const getHabitsRequestState = useHabitsState();
 
 	const triggerSuccessToast = useSuccessToast();
@@ -74,4 +74,4 @@ export const EditableHabitNameInput: React.FC<DetailedHabit> = ({name, id}) => {
 			</UI.Button>
 		</UI.Row>
 	);
-};
+}

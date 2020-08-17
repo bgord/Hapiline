@@ -2,6 +2,6 @@ import "./textarea.css";
 
 import React from "react";
 
-export const Textarea: React.FC<JSX.IntrinsicElements["textarea"]> = props => (
-	<textarea className="c-textarea" {...props} />
-);
+export function Textarea(props: JSX.IntrinsicElements["textarea"]) {
+	return <textarea className="c-textarea" {...props} />;
+}
