@@ -16,6 +16,17 @@ export const ProfileChangePassword = () => {
 		UpdatePasswordPayload["password_confirmation"]
 	>("");
 
+	const [toggleOldPasswordButtonProps, toggleOldPasswordInputProps] = UI.useTogglePassword(
+		oldPassword,
+	);
+	const [toggleNewPasswordButtonProps, toggleNewPasswordInputProps] = UI.useTogglePassword(
+		newPassword,
+	);
+	const [
+		toggleNewPasswordConfirmationButtonProps,
+		toggleNewPasswordConfirmationInputProps,
+	] = UI.useTogglePassword(newPasswordConfirmation);
+
 	const [updatePassword, updatePasswordRequestState] = useMutation<unknown, UpdatePasswordPayload>(
 		api.auth.updatePassword,
 		{
@@ -58,17 +69,21 @@ export const ProfileChangePassword = () => {
 			<UI.ShowIf request={updatePasswordRequestState} is={["idle", "loading", "error"]}>
 				<UI.Field mb="12">
 					<UI.Label htmlFor="old_password">Old password</UI.Label>
-					<UI.Input
-						id="old_password"
-						placeholder="********"
-						title="Password should contain at least 6 characters."
-						value={oldPassword}
-						onChange={event => setOldPassword(event.target.value)}
-						type="password"
-						required
-						pattern=".{6,}"
-						disabled={updatePasswordRequestState.status === "loading"}
-					/>
+					<UI.Row width="100%">
+						<UI.Input
+							id="old_password"
+							placeholder="********"
+							title="Password should contain at least 6 characters."
+							value={oldPassword}
+							onChange={event => setOldPassword(event.target.value)}
+							required
+							pattern=".{6,}"
+							disabled={updatePasswordRequestState.status === "loading"}
+							data-width="100%"
+							{...toggleOldPasswordInputProps}
+						/>
+						<UI.TogglePasswordButton {...toggleOldPasswordButtonProps} />
+					</UI.Row>
 					<UI.ShowIf request={updatePasswordRequestState} is="error">
 						{oldPasswordInlineError && <UI.Error>{oldPasswordInlineError}</UI.Error>}
 					</UI.ShowIf>
@@ -76,32 +91,40 @@ export const ProfileChangePassword = () => {
 
 				<UI.Field mb="12">
 					<UI.Label htmlFor="new_password">New password</UI.Label>
-					<UI.Input
-						id="new_password"
-						placeholder="********"
-						title="Password should contain at least 6 characters."
-						value={newPassword}
-						onChange={event => setNewPassword(event.target.value)}
-						type="password"
-						required
-						pattern=".{6,}"
-						disabled={updatePasswordRequestState.status === "loading"}
-					/>
+					<UI.Row width="100%">
+						<UI.Input
+							id="new_password"
+							placeholder="********"
+							title="Password should contain at least 6 characters."
+							value={newPassword}
+							onChange={event => setNewPassword(event.target.value)}
+							required
+							pattern=".{6,}"
+							disabled={updatePasswordRequestState.status === "loading"}
+							data-width="100%"
+							{...toggleNewPasswordInputProps}
+						/>
+						<UI.TogglePasswordButton {...toggleNewPasswordButtonProps} />
+					</UI.Row>
 				</UI.Field>
 
 				<UI.Field mb="24">
 					<UI.Label htmlFor="password_confirmation">Repeat new password</UI.Label>
-					<UI.Input
-						id="password_confirmation"
-						type="password"
-						placeholder="********"
-						pattern={newPassword}
-						title="Passwords have to be equal"
-						value={newPasswordConfirmation}
-						onChange={event => setNewPasswordConfirmation(event.target.value)}
-						required
-						disabled={updatePasswordRequestState.status === "loading"}
-					/>
+					<UI.Row width="100%">
+						<UI.Input
+							id="password_confirmation"
+							placeholder="********"
+							pattern={newPassword}
+							title="Passwords have to be equal"
+							value={newPasswordConfirmation}
+							onChange={event => setNewPasswordConfirmation(event.target.value)}
+							required
+							disabled={updatePasswordRequestState.status === "loading"}
+							data-width="100%"
+							{...toggleNewPasswordConfirmationInputProps}
+						/>
+						<UI.TogglePasswordButton {...toggleNewPasswordConfirmationButtonProps} />
+					</UI.Row>
 				</UI.Field>
 
 				<UI.Row>
