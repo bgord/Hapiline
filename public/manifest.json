@@ -2,11 +2,11 @@
 	"manifest_version": 2,
 	"name": "Hapiline",
 	"short_name": "Hapiline - habit tracker",
-	"start_url": "http://hapiline.localhost/login",
+	"start_url": "https://bgord.tech/login",
 	"display": "standalone",
 	"theme_color": "#1654ff",
 	"background_color": "#ecedf1",
 	"orientation": "portrait-primary",
 	"icons": [{"src": "/app-icon.png", "sizes": "144x144"}],
-	"version": "0.11.4"
+	"version": "0.12.0"
 }
