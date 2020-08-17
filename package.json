@@ -97,7 +97,7 @@
     "@typescript-eslint/parser": "^2.13.0",
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^3.4.0",
-    "cypress": "^4.11.0",
+    "cypress": "^4.12.1",
     "cypress-axe": "^0.8.1",
     "cypress-plugin-tab": "^1.0.5",
     "dotenv": "^8.2.0",
