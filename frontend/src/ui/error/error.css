@@ -1,4 +1,5 @@
 .c-error {
+	display: inline-block;
 	color: var(--red-dark);
-	font-size: 12px;
+	font-size: 14px;
 }
