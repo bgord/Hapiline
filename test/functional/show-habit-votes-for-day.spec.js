@@ -1,6 +1,5 @@
 const ace = require("@adonisjs/ace");
 const datefns = require("date-fns");
-const qs = require("qs");
 
 const {
 	assertAccessDenied,
@@ -99,10 +98,9 @@ test("validation", async ({client}) => {
 	];
 
 	for (const [payload, argErrors] of cases) {
-		const queryString = qs.stringify(payload);
-
 		const response = await client
-			.get(`${GET_DAY_VOTES_URL}?${queryString}`)
+			.get(GET_DAY_VOTES_URL)
+			.query(payload)
 			.send(payload)
 			.loginVia(jim)
 			.end();
@@ -115,13 +113,9 @@ test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 	const today = new Date();
 
-	const payload = {day: today};
-
-	const queryString = qs.stringify(payload);
-
 	const response = await client
-		.get(`${GET_DAY_VOTES_URL}?${queryString}`)
-		.send(payload)
+		.get(GET_DAY_VOTES_URL)
+		.query({day: today})
 		.loginVia(jim)
 		.end();
 

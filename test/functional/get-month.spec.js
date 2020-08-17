@@ -8,7 +8,6 @@ const {
 } = require("../helpers/assert-errors");
 const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
-const qs = require("qs");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const datefns = require("date-fns");
 
@@ -98,10 +97,9 @@ test("validation", async ({client}) => {
 	];
 
 	for (const [payload, argErrors] of cases) {
-		const queryString = qs.stringify(payload);
-
 		const response = await client
-			.get(`${GET_MONTH_URL}?${queryString}`)
+			.get(GET_MONTH_URL)
+			.query(payload)
 			.loginVia(pam)
 			.end();
 
@@ -112,12 +110,9 @@ test("validation", async ({client}) => {
 test("full flow", async ({client, assert}) => {
 	const pam = await User.find(users.pam.id);
 
-	const payload = {monthOffset: 0};
-
-	const queryString = qs.stringify(payload);
-
 	const response = await client
-		.get(`${GET_MONTH_URL}?${queryString}`)
+		.get(GET_MONTH_URL)
+		.query({monthOffset: 0})
 		.loginVia(pam)
 		.end();
 
@@ -142,13 +137,10 @@ test("full flow", async ({client, assert}) => {
 test("month with no available habits", async ({client, assert}) => {
 	const pam = await User.find(users.pam.id);
 
-	// Check if "2" is converted to 2 under the hood
-	const payload = {monthOffset: "2"};
-
-	const queryString = qs.stringify(payload);
-
 	const response = await client
-		.get(`${GET_MONTH_URL}?${queryString}`)
+		.get(GET_MONTH_URL)
+		// Check if "2" is converted to 2 under the hood
+		.query({monthOffset: "2"})
 		.loginVia(pam)
 		.end();
 
