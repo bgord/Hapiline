@@ -1,6 +1,5 @@
 const ace = require("@adonisjs/ace");
 const datefns = require("date-fns");
-const qs = require("qs");
 const {
 	assertAccessDenied,
 	assertInvalidSession,
@@ -25,17 +24,17 @@ after(async () => {
 	await ace.call("migration:refresh", {}, {silent: true});
 });
 
-const GET_JORNAL_DAY_URL = "/api/v1/journal";
+const GET_JOURNAL_DAY_URL = "/api/v1/journal";
 
 test("auth", async ({client}) => {
-	const response = await client.get(GET_JORNAL_DAY_URL).end();
+	const response = await client.get(GET_JOURNAL_DAY_URL).end();
 	assertInvalidSession(response);
 });
 
 test("is:(regular)", async ({client}) => {
 	const admin = await User.find(users.admin.id);
 	const response = await client
-		.get(GET_JORNAL_DAY_URL)
+		.get(GET_JOURNAL_DAY_URL)
 		.loginVia(admin)
 		.end();
 	assertAccessDenied(response);
@@ -48,7 +47,7 @@ test("account-status:(active)", async ({client}) => {
 	});
 	await pam.save();
 	const response = await client
-		.get(GET_JORNAL_DAY_URL)
+		.get(GET_JOURNAL_DAY_URL)
 		.loginVia(pam)
 		.end();
 	assertAccessDenied(response);
@@ -96,9 +95,9 @@ test("validation", async ({client}) => {
 	];
 
 	for (const [payload, argErrors] of cases) {
-		const queryString = qs.stringify(payload);
 		const response = await client
-			.get(`${GET_JORNAL_DAY_URL}?${queryString}`)
+			.get(GET_JOURNAL_DAY_URL)
+			.query(payload)
 			.loginVia(jim)
 			.end();
 
@@ -110,13 +109,9 @@ test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 	const today = datefns.format(new Date(), "yyyy-MM-dd");
 
-	const payload = {day: today};
-
-	const queryString = qs.stringify(payload);
-
 	const response = await client
-		.get(`${GET_JORNAL_DAY_URL}?${queryString}`)
-		.send(payload)
+		.get(GET_JOURNAL_DAY_URL)
+		.query({day: today})
 		.loginVia(jim)
 		.end();
 

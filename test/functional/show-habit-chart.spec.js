@@ -1,5 +1,4 @@
 const ace = require("@adonisjs/ace");
-const qs = require("qs");
 
 const {
 	assertInvalidSession,
@@ -111,10 +110,9 @@ test("validation", async ({client}) => {
 	];
 
 	for (const [payload, argErrors] of cases) {
-		const queryString = qs.stringify(payload);
-
 		const response = await client
-			.get(`${SHOW_HABIT_CHART_URL}/5?${queryString}`)
+			.get(`${SHOW_HABIT_CHART_URL}/5`)
+			.query(payload)
 			.loginVia(jim)
 			.end();
 
@@ -125,12 +123,9 @@ test("validation", async ({client}) => {
 test("full flow", async ({client, assert}) => {
 	const jim = await User.find(users.jim.id);
 
-	const queryString = qs.stringify({
-		habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week,
-	});
-
 	const response = await client
-		.get(`${SHOW_HABIT_CHART_URL}/2?${queryString}`)
+		.get(`${SHOW_HABIT_CHART_URL}/2`)
+		.query({habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week})
 		.loginVia(jim)
 		.end();
 
@@ -180,12 +175,9 @@ test("check if habit is trackable", async ({client}) => {
 
 	const habitId = addHabitResponse.body.id;
 
-	const queryString = qs.stringify({
-		habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week,
-	});
-
 	const response = await client
-		.get(`${SHOW_HABIT_CHART_URL}/${habitId}?${queryString}`)
+		.get(`${SHOW_HABIT_CHART_URL}/${habitId}`)
+		.query({habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week})
 		.loginVia(jim)
 		.end();
 
