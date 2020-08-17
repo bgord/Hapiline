@@ -13,7 +13,13 @@ export function useTogglePassword(
 	},
 	{type: TogglePasswordInputType},
 ] {
-	const {on: isPasswordVisible, toggle: togglePasswordVisible} = useToggle();
+	const {on: isPasswordVisible, toggle: togglePasswordVisible, setOff: hidePassword} = useToggle();
+
+	React.useEffect(() => {
+		if (password.length === 0) {
+			hidePassword();
+		}
+	}, [password, hidePassword]);
 
 	const togglePasswordButtonProps = {
 		isPasswordVisible,
