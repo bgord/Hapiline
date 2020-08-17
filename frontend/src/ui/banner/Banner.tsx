@@ -28,7 +28,7 @@ type BannerProps = JSX.IntrinsicElements["div"] & {variant: BannerVariant} & {
 	Positions;
 
 // prettier-ignore
-export const Banner: React.FC<BannerProps> = ({
+export function Banner({
 	variant,
 	size = "normal",
 	m, mx, my, mt, mr, mb, ml,
@@ -36,7 +36,7 @@ export const Banner: React.FC<BannerProps> = ({
 	mainAxis, crossAxis, crossAxisSelf,
 	position = "static",
 	...props
-}) => {
+}: BannerProps) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	const paddingTokens = getPaddingTokens({p, px, py, pt, pr, pb, pl});
 	const alignmentTokens = getAlignmentTokens({mainAxis, crossAxis, crossAxisSelf});
@@ -54,7 +54,7 @@ export const Banner: React.FC<BannerProps> = ({
 			{...props}
 		/>
 	);
-};
+}
 
 type SpecificBannerProps = JSX.IntrinsicElements["div"] &
 	Margins &
@@ -63,29 +63,35 @@ type SpecificBannerProps = JSX.IntrinsicElements["div"] &
 	} & Alignments &
 	Positions;
 
-export const InfoBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
-	<Banner {...props} variant="info">
-		<InfoIcon />
-		<UI.Text style={{fontSize: "14px"}} ml="12">
-			{children}
-		</UI.Text>
-	</Banner>
-);
+export function InfoBanner({children, ...props}: UI.WithChildren<SpecificBannerProps>) {
+	return (
+		<Banner {...props} variant="info">
+			<InfoIcon />
+			<UI.Text style={{fontSize: "14px"}} ml="12">
+				{children}
+			</UI.Text>
+		</Banner>
+	);
+}
 
-export const ErrorBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
-	<Banner {...props} variant="error">
-		<ExclamationIcon stroke="#682d36" />
-		<UI.Text style={{fontSize: "14px", color: "#682d36"}} ml="12">
-			{children}
-		</UI.Text>
-	</Banner>
-);
+export function ErrorBanner({children, ...props}: UI.WithChildren<SpecificBannerProps>) {
+	return (
+		<Banner {...props} variant="error">
+			<ExclamationIcon stroke="#682d36" />
+			<UI.Text style={{fontSize: "14px", color: "#682d36"}} ml="12">
+				{children}
+			</UI.Text>
+		</Banner>
+	);
+}
 
-export const SuccessBanner: React.FC<SpecificBannerProps> = ({children, ...props}) => (
-	<Banner {...props} variant="success">
-		<CheckmarkIcon />
-		<UI.Text style={{fontSize: "14px", color: "#025D26"}} ml="12">
-			{children}
-		</UI.Text>
-	</Banner>
-);
+export function SuccessBanner({children, ...props}: UI.WithChildren<SpecificBannerProps>) {
+	return (
+		<Banner {...props} variant="success">
+			<CheckmarkIcon />
+			<UI.Text style={{fontSize: "14px", color: "#025D26"}} ml="12">
+				{children}
+			</UI.Text>
+		</Banner>
+	);
+}

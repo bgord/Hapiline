@@ -7,9 +7,11 @@ import * as UI from "../../ui";
 import {useUntrackedHabits} from "../../contexts/habits-context";
 import {UrlBuilder} from "../../services/url-builder";
 
-export const DashboardMotivationalText: React.FC<{
+export function DashboardMotivationalText({
+	request,
+}: {
 	request: QueryResult<DashboardHabitVoteStatsForDateRanges>;
-}> = ({request}) => {
+}) {
 	const {numberOfTrackedHabits, numberOfNonEmptyVotes} = extractFromRequest(request);
 
 	const untrackedHabits = useUntrackedHabits();
@@ -73,7 +75,7 @@ export const DashboardMotivationalText: React.FC<{
 	if (!strategy) return null;
 
 	return <UI.Row mb="48">{strategyToText[strategy]}</UI.Row>;
-};
+}
 
 type ExtractedType = {
 	numberOfTrackedHabits: number;

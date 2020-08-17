@@ -38,3 +38,5 @@ export * from "./ShowIf";
 export * from "./SmallCircle";
 
 export {default as VisuallyHidden} from "@reach/visually-hidden";
+
+export type WithChildren<T = {}> = T & {children?: React.ReactNode};

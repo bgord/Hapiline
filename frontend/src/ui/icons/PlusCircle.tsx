@@ -5,10 +5,10 @@ import {Margins, getMarginTokens} from "../design-system";
 type PlusCircleIconProps = JSX.IntrinsicElements["path"] & Margins;
 
 // prettier-ignore
-export const PlusCircleIcon: React.FC<PlusCircleIconProps> = ({
+export function PlusCircleIcon({
 	m, mx, my, mt, mr, mb, ml,
 	...props
-}) => {
+}: PlusCircleIconProps) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 
 	return (
@@ -32,4 +32,4 @@ export const PlusCircleIcon: React.FC<PlusCircleIconProps> = ({
 			/>
 		</svg>
 	);
-};
+}

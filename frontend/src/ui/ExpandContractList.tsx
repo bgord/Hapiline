@@ -2,7 +2,7 @@ import React from "react";
 
 import * as UI from "./";
 
-export const ExpandContractList: React.FC<{max: number}> = ({children, max}) => {
+export function ExpandContractList({children, max}: UI.WithChildren<{max: number}>) {
 	const [state, setState] = React.useState<"contracted" | "expanded">();
 
 	const numberOfChildren = React.Children.count(children);
@@ -41,7 +41,7 @@ export const ExpandContractList: React.FC<{max: number}> = ({children, max}) => 
 			)}
 		</>
 	);
-};
+}
 
 function takeFirst(max: number) {
 	return function(_item: any, index: number) {

@@ -1,6 +1,8 @@
 import React from "react";
 import {QueryResult, MutationResult} from "react-query";
 
+import * as UI from "../ui";
+
 type RequestState = "idle" | "loading" | "error" | "success";
 
 type ShowIfProps = {
@@ -9,7 +11,7 @@ type ShowIfProps = {
 	is: RequestState[] | RequestState;
 };
 
-export const ShowIf: React.FC<ShowIfProps> = ({request, is, children}) => {
+export function ShowIf({request, is, children}: UI.WithChildren<ShowIfProps>) {
 	if (Array.isArray(is)) {
 		const shouldShowChildren = is.includes(request.status);
 
@@ -19,4 +21,4 @@ export const ShowIf: React.FC<ShowIfProps> = ({request, is, children}) => {
 	const shouldShowChildren = is === request.status;
 
 	return <>{shouldShowChildren && children}</>;
-};
+}

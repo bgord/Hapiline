@@ -49,16 +49,18 @@ interface IInput {
 	value: HabitVoteFilterTypes;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const RadioButton: React.FC<IInput> = ({value, filter, ...props}) => (
-	<UI.Radio
-		name="habit-vote-filter"
-		id={filter}
-		type="radio"
-		value={filter}
-		checked={value === filter}
-		{...props}
-	/>
-);
+function RadioButton({value, filter, ...props}: IInput) {
+	return (
+		<UI.Radio
+			name="habit-vote-filter"
+			id={filter}
+			type="radio"
+			value={filter}
+			checked={value === filter}
+			{...props}
+		/>
+	);
+}
 
 export const HabitVoteFilters = {
 	Voted: {

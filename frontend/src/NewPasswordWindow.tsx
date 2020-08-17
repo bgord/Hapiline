@@ -7,7 +7,7 @@ import {User, NewPasswordPayload} from "./models";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 
-export const NewPasswordWindow: React.FC = () => {
+export function NewPasswordWindow() {
 	const {token} = useParams();
 	const [password, setPassword] = React.useState<User["email"]>("");
 	const [passwordConfirmation, setPasswordConfirmation] = React.useState<User["email"]>("");
@@ -87,4 +87,4 @@ export const NewPasswordWindow: React.FC = () => {
 			</UI.Column>
 		</UI.Card>
 	);
-};
+}

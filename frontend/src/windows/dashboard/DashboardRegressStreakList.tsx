@@ -12,9 +12,11 @@ import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
 
 import * as UI from "../../ui";
 
-export const DashboardRegressStreakList: React.FC<{
+export function DashboardRegressStreakList({
+	request,
+}: {
 	request: QueryResult<DashboardStreakStats>;
-}> = ({request}) => {
+}) {
 	const {on: isRegressStreakListVisible, toggle: toggleRegressStreakList} = usePersistentToggle(
 		true,
 		"show_regress_streak_list",
@@ -106,4 +108,4 @@ export const DashboardRegressStreakList: React.FC<{
 			)}
 		</>
 	);
-};
+}

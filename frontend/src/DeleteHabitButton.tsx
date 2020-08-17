@@ -10,7 +10,7 @@ import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
 import {useHabitsState} from "./contexts/habits-context";
 import {useToggle} from "./hooks/useToggle";
 
-export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
+export function DeleteHabitButton({id, name}: Habit) {
 	const {on: showDialog, setOn: openDialog, setOff: closeDialog} = useToggle();
 
 	const getHabitsRequestState = useHabitsState();
@@ -80,4 +80,4 @@ export const DeleteHabitButton: React.FC<Habit> = ({id, name}) => {
 			)}
 		</>
 	);
-};
+}

@@ -10,7 +10,7 @@ import {useUserProfile} from "../../contexts/auth-context";
 import * as UI from "../../ui";
 import {NewEmailPayload} from "../../models";
 
-export const ProfileChangeEmail: React.FC = () => {
+export function ProfileChangeEmail() {
 	useDocumentTitle("Hapiline - profile");
 
 	const history = useHistory();
@@ -110,4 +110,4 @@ export const ProfileChangeEmail: React.FC = () => {
 			</UI.ShowIf>
 		</UI.Column>
 	);
-};
+}

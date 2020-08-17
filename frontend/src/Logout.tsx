@@ -6,7 +6,7 @@ import * as UI from "./ui";
 import {api} from "./services/api";
 import {useUserProfile} from "./contexts/auth-context";
 
-export const Logout: React.FC = () => {
+export function Logout() {
 	const history = useHistory();
 	const [, setUserProfile] = useUserProfile();
 
@@ -24,4 +24,4 @@ export const Logout: React.FC = () => {
 	}, [logout]);
 
 	return <UI.Text>Logging out</UI.Text>;
-};
+}

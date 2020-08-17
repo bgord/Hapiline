@@ -5,7 +5,7 @@ import * as UI from "./ui";
 import {api} from "./services/api";
 import {User} from "./models";
 
-export const ForgotPasswordWindow: React.FC = () => {
+export function ForgotPasswordWindow() {
 	const [email, setEmail] = React.useState<User["email"]>("");
 
 	const [forgotPassword, forgotPasswordRequestState] = useMutation<unknown, User["email"]>(
@@ -70,4 +70,4 @@ export const ForgotPasswordWindow: React.FC = () => {
 			</UI.Column>
 		</UI.Card>
 	);
-};
+}

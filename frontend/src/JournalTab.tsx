@@ -10,7 +10,7 @@ import {getRequestStateErrors, getRequestErrors} from "./selectors/getRequestErr
 interface JournalProps {
 	day: Date;
 }
-export const JournalTab: React.FC<JournalProps> = ({day}) => {
+export function JournalTab({day}: JournalProps) {
 	const [journalContent, setJournalContent] = React.useState<Journal["content"]>("");
 
 	const triggerErrorToast = useErrorToast();
@@ -103,7 +103,7 @@ export const JournalTab: React.FC<JournalProps> = ({day}) => {
 			</UI.Field>
 		</UI.Column>
 	);
-};
+}
 
 type JournalSyncStatusProps = {
 	currentJournalContent: Journal["content"] | undefined;

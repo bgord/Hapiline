@@ -4,10 +4,10 @@ import React from "react";
 import {Margins, getMarginTokens} from "../design-system";
 
 // prettier-ignore
-export const Error: React.FC<JSX.IntrinsicElements["div"] & Margins> = ({
+export function Error({
 	m, mx, my, mt, mr, mb, ml,
 	...props
-}) => {
+}: JSX.IntrinsicElements["div"] & Margins) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 	return <div className="c-text c-error" {...marginTokens} {...props} />;
-};
+}

@@ -53,14 +53,14 @@ export function PasswordInput(props: JSX.IntrinsicElements["input"]) {
 				placeholder="*********"
 				data-width="100%"
 				{...togglePasswordInputProps}
-				{...omit(props, ["ref"])}
+				{...omit(props, "ref")}
 			/>
 			<UI.Button
 				variant="outlined"
 				data-state={togglePasswordButtonProps.isPasswordVisible ? "visible" : "hidden"}
 				ml="6"
 				style={{width: "70px"}}
-				{...omit(togglePasswordButtonProps, ["isPasswordVisible"])}
+				{...omit(togglePasswordButtonProps, "isPasswordVisible")}
 			>
 				<UI.Wrapper data-for-state="hidden">Show</UI.Wrapper>
 				<UI.Wrapper data-for-state="visible">Hide</UI.Wrapper>

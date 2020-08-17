@@ -1,5 +1,7 @@
 import React from "react";
 
+import * as UI from "../ui";
+
 export type ToastType = "success" | "error";
 
 export interface Toast {
@@ -40,14 +42,14 @@ function reducer(state: State, action: Action): State {
 const ToastsStateContext = React.createContext<State | undefined>(undefined);
 const ToastsDispatchContext = React.createContext<Dispatch | undefined>(undefined);
 
-export const ToastsProvider: React.FC = ({children}) => {
+export function ToastsProvider({children}: UI.WithChildren<{}>) {
 	const [state, dispatch] = React.useReducer(reducer, []);
 	return (
 		<ToastsStateContext.Provider value={state}>
 			<ToastsDispatchContext.Provider value={dispatch}>{children}</ToastsDispatchContext.Provider>
 		</ToastsStateContext.Provider>
 	);
-};
+}
 
 export function useToastsState() {
 	const state = React.useContext(ToastsStateContext);

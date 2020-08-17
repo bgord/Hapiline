@@ -8,7 +8,7 @@ import {useUserProfile} from "./contexts/auth-context";
 import {User, UserProfile, LoginPayload} from "./models";
 import * as UI from "./ui";
 
-export const LoginWindow: React.FC = () => {
+export function LoginWindow() {
 	const history = useHistory();
 
 	const [, setUserProfile] = useUserProfile();
@@ -97,4 +97,4 @@ export const LoginWindow: React.FC = () => {
 			</UI.Column>
 		</UI.Card>
 	);
-};
+}

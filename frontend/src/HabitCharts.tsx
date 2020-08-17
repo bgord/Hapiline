@@ -18,7 +18,7 @@ import {formatDay, formatShortDay} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
-export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
+export function HabitCharts({id, children}: UI.WithChildren<{id: Habit["id"]}>) {
 	const [dateRange, setChartRange] = React.useState<HabitVoteChartDateRangeType>("last_week");
 	const triggerErrorToast = useErrorToast();
 
@@ -130,13 +130,9 @@ export const HabitCharts: React.FC<{id: Habit["id"]}> = ({id, children}) => {
 			</UI.ShowIf>
 		</>
 	);
-};
+}
 
-const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}> = ({
-	day,
-	vote,
-	habitId,
-}) => {
+function ChartCell({day, vote, habitId}: DayVote & Partial<LinkProps> & {habitId: Habit["id"]}) {
 	const title = `${formatDay(day)} - ${vote ?? "no vote"}`;
 
 	return (
@@ -152,7 +148,7 @@ const ChartCell: React.FC<DayVote & Partial<LinkProps> & {habitId: Habit["id"]}>
 			}}
 		/>
 	);
-};
+}
 
 function isChartRange(value: string): value is HabitVoteChartDateRangeType {
 	return Object.keys(HabitVoteChartDateRanges).includes(value);

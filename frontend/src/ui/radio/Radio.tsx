@@ -2,6 +2,6 @@ import "./radio.css";
 
 import React from "react";
 
-export const Radio: React.FC<JSX.IntrinsicElements["input"]> = ({type, ...props}) => (
-	<input className="c-radio" type="radio" {...props} />
-);
+export function Radio({type, ...props}: JSX.IntrinsicElements["input"]) {
+	return <input className="c-radio" type="radio" {...props} />;
+}

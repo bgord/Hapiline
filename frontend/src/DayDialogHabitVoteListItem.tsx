@@ -24,10 +24,14 @@ import {useToggle} from "./hooks/useToggle";
 import {UrlBuilder} from "./services/url-builder";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
 
-export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
+export function DayDialogHabitVoteListItem({
+	onResolve,
+	day,
+	...habitWithPossibleVote
+}: HabitWithPossibleHabitVote & {
 	onResolve: VoidFunction;
 	day: string;
-}> = ({onResolve, day, ...habitWithPossibleVote}) => {
+}) {
 	const {on: isCommentVisible, toggle: toggleComment} = useToggle();
 
 	const mediaQuery = useMediaQuery();
@@ -235,4 +239,4 @@ export const DayDialogHabitVoteListItem: React.FC<HabitWithPossibleHabitVote & {
 			</UI.Row>
 		</>
 	);
-};
+}

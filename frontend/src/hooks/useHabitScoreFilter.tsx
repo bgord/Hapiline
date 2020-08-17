@@ -40,16 +40,18 @@ interface IInput {
 	value: HabitScoreFilter;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const InputButton: React.FC<IInput> = ({value, filter, ...props}) => (
-	<UI.Radio
-		name="habit-score-filter"
-		id={filter}
-		type="radio"
-		value={filter}
-		checked={value === filter}
-		{...props}
-	/>
-);
+function InputButton({value, filter, ...props}: IInput) {
+	return (
+		<UI.Radio
+			name="habit-score-filter"
+			id={filter}
+			type="radio"
+			value={filter}
+			checked={value === filter}
+			{...props}
+		/>
+	);
+}
 
 export const HabitScoreFilters = {
 	Positive: {

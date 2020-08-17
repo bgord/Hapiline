@@ -9,7 +9,7 @@ type HabitsContext = QueryResult<Habit[]> | undefined;
 
 const HabitsContext = React.createContext<HabitsContext>(undefined);
 
-export const HabitsProvider: React.FC = props => {
+export function HabitsProvider() {
 	const triggerErrorToast = useErrorToast();
 
 	const getHabitsRequestState = useQuery<Habit[], "all_habits">({
@@ -21,8 +21,8 @@ export const HabitsProvider: React.FC = props => {
 		},
 	});
 
-	return <HabitsContext.Provider value={getHabitsRequestState} {...props} />;
-};
+	return <HabitsContext.Provider value={getHabitsRequestState} />;
+}
 
 export function useHabitsState() {
 	const context = React.useContext(HabitsContext);

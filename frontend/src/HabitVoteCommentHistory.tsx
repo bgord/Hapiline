@@ -9,7 +9,7 @@ import {formatDay, formatShortDayName} from "./services/date-formatter";
 import {useErrorToast} from "./contexts/toasts-context";
 import {UrlBuilder} from "./services/url-builder";
 
-export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habitId}) => {
+export function HabitVoteCommentHistory({habitId}: {habitId: Habit["id"]}) {
 	const triggerErrorToast = useErrorToast();
 
 	const getHabitVoteCommentsRequestState = useQuery<HabitVote[], ["comments", Habit["id"]]>({
@@ -46,9 +46,9 @@ export const HabitVoteCommentHistory: React.FC<{habitId: Habit["id"]}> = ({habit
 			</UI.ShowIf>
 		</>
 	);
-};
+}
 
-const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) => {
+function HabitVoteComment({day, habit_id, vote, comment}: HabitVote) {
 	const formattedDay = formatDay(day);
 	const formattedDayName = formatShortDayName(day);
 
@@ -77,4 +77,4 @@ const HabitVoteComment: React.FC<HabitVote> = ({day, habit_id, vote, comment}) =
 			<UI.Textarea id={comment ?? undefined} value={comment ?? undefined} disabled />
 		</UI.Field>
 	);
-};
+}

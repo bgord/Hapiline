@@ -4,7 +4,7 @@ import {Margins, getMarginTokens} from "../design-system";
 
 type FilterIconProps = JSX.IntrinsicElements["path"] & Margins;
 
-export const FilterIcon: React.FC<FilterIconProps> = ({m, mx, my, mt, mr, mb, ml, ...props}) => {
+export function FilterIcon({m, mx, my, mt, mr, mb, ml, ...props}: FilterIconProps) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
 
 	return (
@@ -28,4 +28,4 @@ export const FilterIcon: React.FC<FilterIconProps> = ({m, mx, my, mt, mr, mb, ml
 			/>
 		</svg>
 	);
-};
+}
