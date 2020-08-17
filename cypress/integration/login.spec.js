@@ -155,4 +155,35 @@ describe("Login", () => {
 
 		cy.findByText(errorMessage);
 	});
+
+	it("show/hide password button", () => {
+		cy.findByText("Show")
+			.parent()
+			.should("be.disabled");
+
+		cy.findByLabelText("Password")
+			.should("have.attr", "type", "password")
+			.type("ok");
+
+		cy.findByText("Show")
+			.parent()
+			.should("not.be.disabled");
+
+		cy.findByText("Show").click();
+
+		cy.findByLabelText("Password").should("have.attr", "type", "text");
+
+		cy.findByText("Hide")
+			.parent()
+			.should("not.be.disabled")
+			.click();
+
+		cy.findByLabelText("Password")
+			.should("have.attr", "type", "password")
+			.clear();
+
+		cy.findByText("Show")
+			.parent()
+			.should("be.disabled");
+	});
 });
