@@ -35,5 +35,6 @@ export * from "./icons/Loader";
 export * from "./ShowIf";
 export * from "./ExpandContractList";
 export * from "./SmallCircle";
+export * from "./TogglePasswordButton";
 
 export {default as VisuallyHidden} from "@reach/visually-hidden";

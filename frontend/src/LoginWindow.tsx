@@ -15,6 +15,7 @@ export const LoginWindow: React.FC = () => {
 
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
+	const [togglePasswordButtonProps, togglePasswordInputProps] = UI.useTogglePassword(password);
 
 	const [login, loginRequestState] = useMutation<UserProfile, LoginPayload>(api.auth.login, {
 		onSuccess: userProfile => {
@@ -59,16 +60,20 @@ export const LoginWindow: React.FC = () => {
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password">Password</UI.Label>
-					<UI.Input
-						required
-						pattern=".{6,}"
-						title="Password should contain at least 6 characters."
-						value={password}
-						onChange={event => setPassword(event.target.value)}
-						type="password"
-						id="password"
-						placeholder="*********"
-					/>
+					<UI.Row width="100%">
+						<UI.Input
+							required
+							pattern=".{6,}"
+							title="Password should contain at least 6 characters."
+							value={password}
+							onChange={event => setPassword(event.target.value)}
+							id="password"
+							placeholder="*********"
+							data-width="100%"
+							{...togglePasswordInputProps}
+						/>
+						<UI.TogglePasswordButton {...togglePasswordButtonProps} />
+					</UI.Row>
 				</UI.Field>
 
 				<UI.Row mt="24" mainAxis="end">
