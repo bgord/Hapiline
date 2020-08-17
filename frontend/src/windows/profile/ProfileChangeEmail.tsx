@@ -75,15 +75,10 @@ export const ProfileChangeEmail: React.FC = () => {
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password">Password</UI.Label>
-					<UI.Input
+					<UI.PasswordInput
 						id="password"
-						pattern=".{6,}"
-						title="Password should contain at least 6 characters."
-						required
 						value={password}
 						onChange={event => setPassword(event.target.value)}
-						type="password"
-						placeholder="********"
 						disabled={changeEmailRequestState.status === "loading"}
 					/>
 				</UI.Field>

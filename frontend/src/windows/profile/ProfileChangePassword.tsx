@@ -58,17 +58,13 @@ export const ProfileChangePassword = () => {
 			<UI.ShowIf request={updatePasswordRequestState} is={["idle", "loading", "error"]}>
 				<UI.Field mb="12">
 					<UI.Label htmlFor="old_password">Old password</UI.Label>
-					<UI.Input
+					<UI.PasswordInput
 						id="old_password"
-						placeholder="********"
-						title="Password should contain at least 6 characters."
 						value={oldPassword}
 						onChange={event => setOldPassword(event.target.value)}
-						type="password"
-						required
-						pattern=".{6,}"
 						disabled={updatePasswordRequestState.status === "loading"}
 					/>
+
 					<UI.ShowIf request={updatePasswordRequestState} is="error">
 						{oldPasswordInlineError && <UI.Error>{oldPasswordInlineError}</UI.Error>}
 					</UI.ShowIf>
@@ -76,31 +72,23 @@ export const ProfileChangePassword = () => {
 
 				<UI.Field mb="12">
 					<UI.Label htmlFor="new_password">New password</UI.Label>
-					<UI.Input
+					<UI.PasswordInput
 						id="new_password"
-						placeholder="********"
-						title="Password should contain at least 6 characters."
 						value={newPassword}
 						onChange={event => setNewPassword(event.target.value)}
-						type="password"
-						required
-						pattern=".{6,}"
 						disabled={updatePasswordRequestState.status === "loading"}
 					/>
 				</UI.Field>
 
 				<UI.Field mb="24">
 					<UI.Label htmlFor="password_confirmation">Repeat new password</UI.Label>
-					<UI.Input
+					<UI.PasswordInput
 						id="password_confirmation"
-						type="password"
-						placeholder="********"
-						pattern={newPassword}
-						title="Passwords have to be equal"
 						value={newPasswordConfirmation}
 						onChange={event => setNewPasswordConfirmation(event.target.value)}
-						required
 						disabled={updatePasswordRequestState.status === "loading"}
+						pattern={newPassword}
+						title="Passwords have to be equal"
 					/>
 				</UI.Field>
 

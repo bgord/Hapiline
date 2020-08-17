@@ -5,7 +5,7 @@ import React from "react";
 import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {useUserProfile} from "./contexts/auth-context";
-import {UserProfile, LoginPayload} from "./models";
+import {User, UserProfile, LoginPayload} from "./models";
 import * as UI from "./ui";
 
 export const LoginWindow: React.FC = () => {
@@ -13,8 +13,8 @@ export const LoginWindow: React.FC = () => {
 
 	const [, setUserProfile] = useUserProfile();
 
-	const [email, setEmail] = React.useState("");
-	const [password, setPassword] = React.useState("");
+	const [email, setEmail] = React.useState<User["email"]>("");
+	const [password, setPassword] = React.useState<User["password"]>("");
 
 	const [login, loginRequestState] = useMutation<UserProfile, LoginPayload>(api.auth.login, {
 		onSuccess: userProfile => {
@@ -51,6 +51,7 @@ export const LoginWindow: React.FC = () => {
 						id="email"
 						value={email}
 						onChange={event => setEmail(event.target.value)}
+						disabled={loginRequestState.status === "loading"}
 						required
 						type="email"
 						placeholder="john.brown@gmail.com"
@@ -59,15 +60,11 @@ export const LoginWindow: React.FC = () => {
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password">Password</UI.Label>
-					<UI.Input
-						required
-						pattern=".{6,}"
-						title="Password should contain at least 6 characters."
+					<UI.PasswordInput
+						id="password"
 						value={password}
 						onChange={event => setPassword(event.target.value)}
-						type="password"
-						id="password"
-						placeholder="*********"
+						disabled={loginRequestState.status === "loading"}
 					/>
 				</UI.Field>
 

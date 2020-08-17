@@ -6,7 +6,7 @@ import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {User, NewUserPayload} from "./models";
 
-export const RegistrationWindow: React.FC = () => {
+export function RegistrationWindow() {
 	const [email, setEmail] = React.useState<User["email"]>("");
 	const [password, setPassword] = React.useState<User["password"]>("");
 	const [passwordConfirmation, setPasswordConfirmation] = React.useState<User["password"]>("");
@@ -56,31 +56,23 @@ export const RegistrationWindow: React.FC = () => {
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password">Password</UI.Label>
-					<UI.Input
+					<UI.PasswordInput
 						id="password"
-						placeholder="********"
-						title="Password should contain at least 6 characters."
 						value={password}
 						onChange={event => setPassword(event.target.value)}
-						type="password"
-						required
-						pattern=".{6,}"
-						disabled={registrationRequestState.status === "success"}
+						disabled={["success", "loading"].includes(registrationRequestState.status)}
 					/>
 				</UI.Field>
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password_confirmation">Repeat password</UI.Label>
-					<UI.Input
+					<UI.PasswordInput
 						id="password_confirmation"
-						type="password"
-						placeholder="********"
 						pattern={password}
-						required
 						title="Passwords have to be equal"
 						value={passwordConfirmation}
 						onChange={event => setPasswordConfirmation(event.target.value)}
-						disabled={registrationRequestState.status === "success"}
+						disabled={["success", "loading"].includes(registrationRequestState.status)}
 					/>
 				</UI.Field>
 
@@ -119,4 +111,4 @@ export const RegistrationWindow: React.FC = () => {
 			</UI.Column>
 		</UI.Card>
 	);
-};
+}
