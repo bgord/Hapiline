@@ -45,7 +45,7 @@ describe("Profile", () => {
 		cy.findByLabelText("Password").type("123456");
 		cy.findByTestId("login-submit").click();
 
-		cy.findByText("Access denied.");
+		cy.findByText("Inactive account.");
 
 		cy.checkA11y();
 	});

@@ -82,7 +82,7 @@ describe("day dialog", () => {
 				cy.findAllByText("fresh").should("have.length", 3);
 			});
 
-			cy.findByPlaceholderText("Search for habits...")
+			cy.findByPlaceholderText(`Press "Shift + S" to search for habits...`)
 				.should("be.empty")
 				.type("0");
 
@@ -105,10 +105,10 @@ describe("day dialog", () => {
 				.children()
 				.should("have.length", 6);
 
-			cy.findByPlaceholderText("Search for habits...").type("xxx");
+			cy.findByPlaceholderText(`Press "Shift + S" to search for habits...`).type("xxx");
 
 			cy.findByText("Reset filters").click();
-			cy.findByPlaceholderText("Search for habits...").should("be.empty");
+			cy.findByPlaceholderText(`Press "Shift + S" to search for habits...`).should("be.empty");
 			cy.findByLabelText("Show voted (4)").should("not.be.checked");
 			cy.findByLabelText("Show unvoted (6)").should("not.be.checked");
 			cy.findByLabelText("Show all (10)").should("be.checked");
