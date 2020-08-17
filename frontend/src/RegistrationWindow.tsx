@@ -11,12 +11,6 @@ export function RegistrationWindow() {
 	const [password, setPassword] = React.useState<User["password"]>("");
 	const [passwordConfirmation, setPasswordConfirmation] = React.useState<User["password"]>("");
 
-	const [togglePasswordButtonProps, togglePasswordInputProps] = UI.useTogglePassword(password);
-	const [
-		togglePasswordConfirmationButtonProps,
-		togglePasswordConfirmationInputProps,
-	] = UI.useTogglePassword(passwordConfirmation);
-
 	const [register, registrationRequestState] = useMutation<unknown, NewUserPayload>(
 		api.auth.register,
 	);
@@ -62,41 +56,24 @@ export function RegistrationWindow() {
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password">Password</UI.Label>
-					<UI.Row width="100%">
-						<UI.Input
-							id="password"
-							placeholder="********"
-							title="Password should contain at least 6 characters."
-							value={password}
-							onChange={event => setPassword(event.target.value)}
-							required
-							pattern=".{6,}"
-							data-width="100%"
-							disabled={registrationRequestState.status === "success"}
-							{...togglePasswordInputProps}
-						/>
-						<UI.TogglePasswordButton {...togglePasswordButtonProps} />
-					</UI.Row>
+					<UI.PasswordInput
+						id="password"
+						value={password}
+						onChange={event => setPassword(event.target.value)}
+						disabled={["success", "loading"].includes(registrationRequestState.status)}
+					/>
 				</UI.Field>
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password_confirmation">Repeat password</UI.Label>
-
-					<UI.Row width="100%">
-						<UI.Input
-							id="password_confirmation"
-							placeholder="********"
-							pattern={password}
-							required
-							title="Passwords have to be equal"
-							value={passwordConfirmation}
-							onChange={event => setPasswordConfirmation(event.target.value)}
-							disabled={registrationRequestState.status === "success"}
-							data-width="100%"
-							{...togglePasswordConfirmationInputProps}
-						/>
-						<UI.TogglePasswordButton {...togglePasswordConfirmationButtonProps} />
-					</UI.Row>
+					<UI.PasswordInput
+						id="password_confirmation"
+						pattern={password}
+						title="Passwords have to be equal"
+						value={passwordConfirmation}
+						onChange={event => setPasswordConfirmation(event.target.value)}
+						disabled={["success", "loading"].includes(registrationRequestState.status)}
+					/>
 				</UI.Field>
 
 				<UI.Row mt="24" mainAxis="end">

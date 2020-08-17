@@ -4,6 +4,7 @@ import React from "react";
 import {useToggle} from "../hooks/useToggle";
 import * as UI from "./";
 import {User} from "../models";
+import omit from "lodash.omit";
 
 export function useTogglePassword(
 	password: User["password"],
@@ -36,24 +37,35 @@ export function useTogglePassword(
 	return [togglePasswordButtonProps, togglePasswordInputProps];
 }
 
-export function TogglePasswordButton(
-	props: {isPasswordVisible: ReturnType<typeof useToggle>["on"]} & JSX.IntrinsicElements["button"],
-) {
-	const {isPasswordVisible, ref, ...rest} = props;
+type TogglePasswordInputType = "text" | "password";
+
+export function PasswordInput(props: JSX.IntrinsicElements["input"]) {
+	const [togglePasswordButtonProps, togglePasswordInputProps] = useTogglePassword(
+		props.value as string,
+	);
 
 	return (
-		<UI.Button
-			variant="outlined"
-			data-state={isPasswordVisible ? "visible" : "hidden"}
-			ml="6"
-			data-bg="gray-1"
-			style={{width: "70px"}}
-			{...rest}
-		>
-			<UI.Wrapper data-for-state="hidden">Show</UI.Wrapper>
-			<UI.Wrapper data-for-state="visible">Hide</UI.Wrapper>
-		</UI.Button>
+		<UI.Row width="100%">
+			<UI.Input
+				required
+				pattern=".{6,}"
+				title="Password should contain at least 6 characters."
+				placeholder="*********"
+				data-width="100%"
+				{...togglePasswordInputProps}
+				{...omit(props, ["ref"])}
+			/>
+			<UI.Button
+				variant="outlined"
+				data-state={togglePasswordButtonProps.isPasswordVisible ? "visible" : "hidden"}
+				ml="6"
+				data-bg="gray-1"
+				style={{width: "70px"}}
+				{...omit(togglePasswordButtonProps, ["isPasswordVisible"])}
+			>
+				<UI.Wrapper data-for-state="hidden">Show</UI.Wrapper>
+				<UI.Wrapper data-for-state="visible">Hide</UI.Wrapper>
+			</UI.Button>
+		</UI.Row>
 	);
 }
-
-type TogglePasswordInputType = "text" | "password";

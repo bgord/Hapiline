@@ -21,8 +21,6 @@ export const ProfileChangeEmail: React.FC = () => {
 	const [newEmail, setNewEmail] = React.useState<NewEmailPayload["newEmail"]>("");
 	const [password, setPassword] = React.useState<NewEmailPayload["password"]>("");
 
-	const [togglePasswordButtonProps, togglePasswordInputProps] = UI.useTogglePassword(password);
-
 	const [changeEmail, changeEmailRequestState] = useMutation<unknown, NewEmailPayload>(
 		api.auth.changeEmail,
 		{
@@ -77,21 +75,12 @@ export const ProfileChangeEmail: React.FC = () => {
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password">Password</UI.Label>
-					<UI.Row width="100%">
-						<UI.Input
-							id="password"
-							pattern=".{6,}"
-							title="Password should contain at least 6 characters."
-							required
-							value={password}
-							onChange={event => setPassword(event.target.value)}
-							placeholder="********"
-							disabled={changeEmailRequestState.status === "loading"}
-							data-width="100%"
-							{...togglePasswordInputProps}
-						/>
-						<UI.TogglePasswordButton {...togglePasswordButtonProps} />
-					</UI.Row>
+					<UI.PasswordInput
+						id="password"
+						value={password}
+						onChange={event => setPassword(event.target.value)}
+						disabled={changeEmailRequestState.status === "loading"}
+					/>
 				</UI.Field>
 			</UI.ShowIf>
 
