@@ -12,7 +12,7 @@ type UserProfileContext = [
 
 const AuthContext = React.createContext<UserProfileContext>([null]);
 
-export function AuthProvider() {
+export function AuthProvider(props: UI.WithChildren<{}>) {
 	const [userProfile, setUserProfile] = React.useState<UserProfile | null>(null);
 	const [firstAttemptFinished, setFirstAttemptFinished] = React.useState(false);
 
@@ -40,7 +40,7 @@ export function AuthProvider() {
 		return <div>Something went wrong</div>;
 	}
 
-	return <AuthContext.Provider value={[userProfile, setUserProfile]} />;
+	return <AuthContext.Provider value={[userProfile, setUserProfile]} {...props} />;
 }
 
 export function useUserProfile() {

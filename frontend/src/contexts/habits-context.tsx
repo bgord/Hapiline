@@ -1,15 +1,16 @@
 import {useQuery, QueryResult} from "react-query";
 import React from "react";
 
+import {Habit} from "../models";
 import {api} from "../services/api";
 import {useErrorToast} from "./toasts-context";
-import {Habit} from "../models";
+import * as UI from "../ui";
 
 type HabitsContext = QueryResult<Habit[]> | undefined;
 
 const HabitsContext = React.createContext<HabitsContext>(undefined);
 
-export function HabitsProvider() {
+export function HabitsProvider(props: UI.WithChildren<{}>) {
 	const triggerErrorToast = useErrorToast();
 
 	const getHabitsRequestState = useQuery<Habit[], "all_habits">({
@@ -21,7 +22,7 @@ export function HabitsProvider() {
 		},
 	});
 
-	return <HabitsContext.Provider value={getHabitsRequestState} />;
+	return <HabitsContext.Provider value={getHabitsRequestState} {...props} />;
 }
 
 export function useHabitsState() {

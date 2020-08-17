@@ -9,5 +9,5 @@ export function Error({
 	...props
 }: JSX.IntrinsicElements["div"] & Margins) {
 	const marginTokens = getMarginTokens({m, mx, my, mt, mr, mb, ml});
-	return <div className="c-text c-error" {...marginTokens} {...props} />;
+	return <div className="c-error" {...marginTokens} {...props} />;
 }

@@ -41,3 +41,10 @@
 .c-input:required.c-input:placeholder-shown {
 	border-color: var(--gray-1);
 }
+
+/* To avoid zooming on input focus on Chrome and Safari on iOS */
+@media not all and (min-resolution: 0.001dpcm) {
+	.c-input {
+		font-size: 16px;
+	}
+}
