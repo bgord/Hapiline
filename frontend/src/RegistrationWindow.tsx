@@ -6,10 +6,16 @@ import {api} from "./services/api";
 import {getRequestStateErrors} from "./selectors/getRequestErrors";
 import {User, NewUserPayload} from "./models";
 
-export const RegistrationWindow: React.FC = () => {
+export function RegistrationWindow() {
 	const [email, setEmail] = React.useState<User["email"]>("");
 	const [password, setPassword] = React.useState<User["password"]>("");
 	const [passwordConfirmation, setPasswordConfirmation] = React.useState<User["password"]>("");
+
+	const [togglePasswordButtonProps, togglePasswordInputProps] = UI.useTogglePassword(password);
+	const [
+		togglePasswordConfirmationButtonProps,
+		togglePasswordConfirmationInputProps,
+	] = UI.useTogglePassword(passwordConfirmation);
 
 	const [register, registrationRequestState] = useMutation<unknown, NewUserPayload>(
 		api.auth.register,
@@ -56,32 +62,41 @@ export const RegistrationWindow: React.FC = () => {
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password">Password</UI.Label>
-					<UI.Input
-						id="password"
-						placeholder="********"
-						title="Password should contain at least 6 characters."
-						value={password}
-						onChange={event => setPassword(event.target.value)}
-						type="password"
-						required
-						pattern=".{6,}"
-						disabled={registrationRequestState.status === "success"}
-					/>
+					<UI.Row width="100%">
+						<UI.Input
+							id="password"
+							placeholder="********"
+							title="Password should contain at least 6 characters."
+							value={password}
+							onChange={event => setPassword(event.target.value)}
+							required
+							pattern=".{6,}"
+							data-width="100%"
+							disabled={registrationRequestState.status === "success"}
+							{...togglePasswordInputProps}
+						/>
+						<UI.TogglePasswordButton {...togglePasswordButtonProps} />
+					</UI.Row>
 				</UI.Field>
 
 				<UI.Field mt="12">
 					<UI.Label htmlFor="password_confirmation">Repeat password</UI.Label>
-					<UI.Input
-						id="password_confirmation"
-						type="password"
-						placeholder="********"
-						pattern={password}
-						required
-						title="Passwords have to be equal"
-						value={passwordConfirmation}
-						onChange={event => setPasswordConfirmation(event.target.value)}
-						disabled={registrationRequestState.status === "success"}
-					/>
+
+					<UI.Row width="100%">
+						<UI.Input
+							id="password_confirmation"
+							placeholder="********"
+							pattern={password}
+							required
+							title="Passwords have to be equal"
+							value={passwordConfirmation}
+							onChange={event => setPasswordConfirmation(event.target.value)}
+							disabled={registrationRequestState.status === "success"}
+							data-width="100%"
+							{...togglePasswordConfirmationInputProps}
+						/>
+						<UI.TogglePasswordButton {...togglePasswordConfirmationButtonProps} />
+					</UI.Row>
 				</UI.Field>
 
 				<UI.Row mt="24" mainAxis="end">
@@ -119,4 +134,4 @@ export const RegistrationWindow: React.FC = () => {
 			</UI.Column>
 		</UI.Card>
 	);
-};
+}
