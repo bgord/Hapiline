@@ -134,4 +134,17 @@ describe("notifications", () => {
 			cy.findByText("2 days ago");
 		});
 	});
+
+	it("click outside", () => {
+		cy.login("dwight");
+		cy.visit(DASHBOARD_URL);
+
+		cy.findByText("Notifications dropdown").click({force: true});
+
+		cy.findByText("Notifications");
+
+		cy.findByText("Habits").click();
+
+		cy.findByText("Notifications").should("not.exist");
+	});
 });
