@@ -1,12 +1,22 @@
 import React from "react";
 
-export function useClickOutside(ref: React.RefObject<HTMLElement>, onClickOutside: VoidFunction) {
+export function useClickOutside(
+	ref: React.RefObject<HTMLElement>,
+	onClickOutside: VoidFunction,
+	exclude?: React.RefObject<HTMLElement>[],
+) {
 	React.useEffect(() => {
 		if (!ref.current) return;
 
 		function handleClickOutside(event: MouseEvent) {
 			if (!ref.current?.contains(event.target as Node)) {
-				onClickOutside();
+				const isExcludedNodeClicked = exclude?.some(node =>
+					node.current?.contains(event.target as Node),
+				);
+
+				if (!isExcludedNodeClicked) {
+					onClickOutside();
+				}
 			}
 		}
 
