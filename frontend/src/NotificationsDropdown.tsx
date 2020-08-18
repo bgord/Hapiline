@@ -24,7 +24,7 @@ export function NotificationDropdown() {
 	const toggleNotificationsRef = React.useRef<HTMLButtonElement>(null);
 	const notificationsRef = React.useRef<HTMLDivElement>(null);
 
-	useClickOutside(notificationsRef, () => {});
+	useClickOutside(notificationsRef, hideNotifications);
 
 	useKeyboardShortcurts({
 		"Shift+KeyN": () => {

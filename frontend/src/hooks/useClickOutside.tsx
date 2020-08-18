@@ -5,10 +5,8 @@ export function useClickOutside(ref: React.RefObject<HTMLElement>, onClickOutsid
 		if (!ref.current) return;
 
 		function handleClickOutside(event: MouseEvent) {
-			if (ref.current?.contains(event.target as Node)) {
-				console.log("contains");
-			} else {
-				console.log("doesnt contain");
+			if (!ref.current?.contains(event.target as Node)) {
+				onClickOutside();
 			}
 		}
 
