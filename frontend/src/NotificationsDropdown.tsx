@@ -12,9 +12,9 @@ import {differenceInDays} from "date-fns";
 import {useBodyScrollLock} from "./hooks/useBodyScrollLock";
 import {formatTime, formatShortDayName} from "./services/date-formatter";
 import {useKeyboardShortcurts} from "./hooks/useKeyboardShortcuts";
+import {useClickOutside} from "./hooks/useClickOutside";
 
 export function NotificationDropdown() {
-	const triggerErrorToast = useErrorToast();
 	const {
 		on: areNotificationsVisible,
 		setOff: hideNotifications,
@@ -22,6 +22,9 @@ export function NotificationDropdown() {
 	} = useToggle();
 
 	const toggleNotificationsRef = React.useRef<HTMLButtonElement>(null);
+	const notificationsRef = React.useRef<HTMLDivElement>(null);
+
+	useClickOutside(notificationsRef, () => {});
 
 	useKeyboardShortcurts({
 		"Shift+KeyN": () => {
@@ -31,9 +34,9 @@ export function NotificationDropdown() {
 	});
 
 	const mediaQuery = useMediaQuery();
-
 	useBodyScrollLock(areNotificationsVisible && mediaQuery === MEDIA_QUERY.lg);
 
+	const triggerErrorToast = useErrorToast();
 	const getNotificationsRequestState = useQuery<Notification[], "notifications">({
 		queryKey: "notifications",
 		queryFn: api.notifications.get,
@@ -70,9 +73,9 @@ export function NotificationDropdown() {
 
 			{areNotificationsVisible && (
 				<UI.Card
+					id="notification-list"
 					mt="72"
 					ml={[, "6"]}
-					id="notification-list"
 					onEntry="slide-down"
 					position="absolute"
 					width={["view-m", "auto"]}
@@ -84,6 +87,7 @@ export function NotificationDropdown() {
 						right: "12px",
 						maxHeight: mediaQuery === MEDIA_QUERY.default ? "550px" : "450px",
 					}}
+					ref={notificationsRef}
 				>
 					<UI.Column py="6" px="12">
 						<UI.Row mainAxis="between" mb={["24", "6"]}>
