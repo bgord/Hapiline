@@ -30,6 +30,7 @@
 		opacity: 0.8;
 		background: white;
 		border-color: #bebcbc;
+		/* TODO: remove transition all */
 		transition: all 300ms;
 	}
 	.c-radio:disabled:hover::after {
@@ -46,6 +47,7 @@
 		background: var(--gray-9);
 		border-radius: var(--radius-half);
 		opacity: 0;
+		/* TODO: remove transition all */
 		transition: all 300ms;
 	}
 	.c-radio::after:hover:not(:disabled) {
