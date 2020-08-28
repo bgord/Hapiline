@@ -143,7 +143,11 @@ describe("notifications", () => {
 
 		cy.findByText("Notifications");
 
-		cy.findByText("Habits").click();
+		if (Cypress.env("device") === "mobile") {
+			cy.findByText("Menu").click();
+		} else {
+			cy.findByText("Habits").click();
+		}
 
 		cy.findByText("Notifications").should("not.exist");
 	});

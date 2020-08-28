@@ -159,6 +159,7 @@ describe("Login", () => {
 	it("show/hide password button", () => {
 		cy.findByText("Show")
 			.parent()
+			.parent()
 			.should("be.disabled");
 
 		cy.findByLabelText("Password")
@@ -166,6 +167,7 @@ describe("Login", () => {
 			.type("ok");
 
 		cy.findByText("Show")
+			.parent()
 			.parent()
 			.should("not.be.disabled");
 
@@ -175,6 +177,7 @@ describe("Login", () => {
 
 		cy.findByText("Hide")
 			.parent()
+			.parent()
 			.should("not.be.disabled")
 			.click();
 
@@ -183,6 +186,7 @@ describe("Login", () => {
 			.clear();
 
 		cy.findByText("Show")
+			.parent()
 			.parent()
 			.should("be.disabled");
 	});
