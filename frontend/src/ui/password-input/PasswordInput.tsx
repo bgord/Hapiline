@@ -57,13 +57,16 @@ export function PasswordInput(props: JSX.IntrinsicElements["input"]) {
 			/>
 			<UI.Button
 				variant="outlined"
-				data-state={togglePasswordButtonProps.isPasswordVisible ? "visible" : "hidden"}
 				ml="6"
 				style={{width: "70px"}}
 				{...omit(togglePasswordButtonProps, "isPasswordVisible")}
 			>
-				<UI.Wrapper data-for-state="hidden">Show</UI.Wrapper>
-				<UI.Wrapper data-for-state="visible">Hide</UI.Wrapper>
+				{/* Applying data-state to UI.Wrapper instead of UI.Button */}
+				{/* because of a bug with buttons with "display: grid" on iOS */}
+				<UI.Wrapper data-state={togglePasswordButtonProps.isPasswordVisible ? "visible" : "hidden"}>
+					<UI.Wrapper data-for-state="hidden">Show</UI.Wrapper>
+					<UI.Wrapper data-for-state="visible">Hide</UI.Wrapper>
+				</UI.Wrapper>
 			</UI.Button>
 		</UI.Row>
 	);
