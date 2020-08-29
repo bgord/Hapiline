@@ -77,7 +77,7 @@ export function JournalTab({day}: JournalProps) {
 			<UI.Field width="100%">
 				<UI.Label htmlFor="journal">Journal</UI.Label>
 				<UI.Textarea
-					style={{minHeight: "400px"}} //TODO: Adjust to new solution
+					style={{minHeight: "400px"}}
 					id="journal"
 					onChange={e => setJournalContent(e.target.value)}
 					value={journalContent}
