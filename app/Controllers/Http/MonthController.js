@@ -14,6 +14,7 @@ class MonthsController {
 		// take stats about.
 		const dateInTheMonth = dateFns.subMonths(Date.now(), monthOffset);
 
+		// TODO: These two dates should be probably sent from the client
 		const startOfTheMonth = dateFns.startOfMonth(dateInTheMonth);
 		const endOfTheMonth = dateFns.endOfMonth(dateInTheMonth);
 
