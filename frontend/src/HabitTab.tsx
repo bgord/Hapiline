@@ -2,13 +2,9 @@ import {useLocation} from "react-router-dom";
 import {useQuery, QueryResult} from "react-query";
 import React from "react";
 
-import {ChevronUpIcon} from "./ui/icons/ChevronUp";
-import {ChevronDownIcon} from "./ui/icons/ChevronDown";
-
 import * as UI from "./ui";
 import {DayDialogHabitVoteListItem} from "./DayDialogHabitVoteListItem";
 import {DaySummaryChart, DayDialogSummaryTabs} from "./DayDialogSummary";
-import {QuestionMarkIcon} from "./ui/icons/QuestionMark";
 import {Habit, HabitVote, HabitWithPossibleHabitVote, DayCellWithFullStats} from "./models";
 import {HabitVoteFilters, useHabitVoteFilter} from "./hooks/useHabitVoteFilter";
 import {api} from "./services/api";
@@ -123,7 +119,7 @@ export function HabitTab({day, onResolve, ...stats}: HabitTabProps) {
 						mr="12"
 						variant="bare"
 					>
-						<QuestionMarkIcon />
+						<UI.QuestionMarkIcon />
 						<UI.VisuallyHidden>Toggle habit vote chart legend</UI.VisuallyHidden>
 					</UI.Button>
 				)}
@@ -248,7 +244,7 @@ export function HabitTab({day, onResolve, ...stats}: HabitTabProps) {
 								onClick={toggleAreTrackedHabitsVisible}
 							>
 								<UI.VisuallyHidden>Hide tracked habits</UI.VisuallyHidden>
-								<ChevronUpIcon />
+								<UI.ChevronUpIcon />
 							</UI.Button>
 						)}
 
@@ -259,7 +255,7 @@ export function HabitTab({day, onResolve, ...stats}: HabitTabProps) {
 								onClick={toggleAreTrackedHabitsVisible}
 							>
 								<UI.VisuallyHidden>Show tracked habits</UI.VisuallyHidden>
-								<ChevronDownIcon />
+								<UI.ChevronDownIcon />
 							</UI.Button>
 						)}
 					</UI.Row>

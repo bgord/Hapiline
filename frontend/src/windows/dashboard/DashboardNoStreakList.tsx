@@ -6,9 +6,6 @@ import {DashboardStreakStats} from "../../models";
 import {usePersistentToggle} from "../../hooks/useToggle";
 import {UrlBuilder} from "../../services/url-builder";
 
-import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
-import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
-
 import * as UI from "../../ui";
 
 export function DashboardNoStreakList({request}: {request: QueryResult<DashboardStreakStats>}) {
@@ -39,7 +36,7 @@ export function DashboardNoStreakList({request}: {request: QueryResult<Dashboard
 						onClick={toggleNoStreakList}
 					>
 						<UI.VisuallyHidden>Hide no streak list</UI.VisuallyHidden>
-						<ChevronUpIcon />
+						<UI.ChevronUpIcon />
 					</UI.Button>
 				)}
 
@@ -51,7 +48,7 @@ export function DashboardNoStreakList({request}: {request: QueryResult<Dashboard
 						onClick={toggleNoStreakList}
 					>
 						<UI.VisuallyHidden>Show no streak list</UI.VisuallyHidden>
-						<ChevronDownIcon />
+						<UI.ChevronDownIcon />
 					</UI.Button>
 				)}
 			</UI.Row>

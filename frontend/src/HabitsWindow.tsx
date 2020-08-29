@@ -14,8 +14,6 @@ import {useHabitSearch} from "./hooks/useHabitSearch";
 import {useHabits, useHabitsState} from "./contexts/habits-context";
 import {useQueryParam} from "./hooks/useQueryParam";
 import {useToggle} from "./hooks/useToggle";
-import {FilterIcon} from "./ui/icons/Filter";
-import {PlusIcon} from "./ui/icons/Plus";
 import {useDocumentTitle} from "./hooks/useDocumentTitle";
 import {Habit, ReorderHabitPayload} from "./models";
 import {useMediaQuery, MEDIA_QUERY} from "./ui/breakpoints";
@@ -127,7 +125,7 @@ export const HabitsWindow = () => {
 									toggleFilters();
 								}}
 							>
-								<FilterIcon mr="auto" />
+								<UI.FilterIcon mr="auto" />
 								{areFiltersVisible ? "Hide filters" : "Show filters"}
 							</UI.Button>
 						)}
@@ -234,7 +232,7 @@ export const HabitsWindow = () => {
 							onClick={openAddFormDialog}
 							title={`Press "Shift + A"`}
 						>
-							<PlusIcon mr="12" style={{stroke: "var(--gray-1)"}} />
+							<UI.PlusIcon mr="12" style={{stroke: "var(--gray-1)"}} />
 							New habit
 						</UI.Button>
 					</UI.Row>
