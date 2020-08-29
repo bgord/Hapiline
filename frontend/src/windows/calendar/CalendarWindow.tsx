@@ -2,7 +2,6 @@ import {isSameMonth, subMonths} from "date-fns";
 import {useQuery} from "react-query";
 import React from "react";
 
-import {CalendarIcon} from "../../ui/icons/Calendar";
 import {CalendarDay} from "./CalendarDay";
 import {Habit, DayCellWithFullStats, DayStatsFromServer, DayCell} from "../../models";
 import {MEDIA_QUERY, useMediaQuery} from "../../ui/breakpoints";
@@ -94,7 +93,7 @@ export function CalendarWindow() {
 					Previous
 				</UI.Button>
 
-				<CalendarIcon />
+				<UI.CalendarIcon />
 				<UI.Text as="h1" wrap="no" ml="6" variant="bold">
 					{monthString}
 				</UI.Text>

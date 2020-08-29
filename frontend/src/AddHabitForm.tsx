@@ -3,7 +3,6 @@ import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {PlusCircleIcon} from "./ui/icons/PlusCircle";
 import {HabitNameInput} from "./HabitNameInput";
 import {api} from "./services/api";
 import {getRequestErrors, getRequestStateErrors} from "./selectors/getRequestErrors";
@@ -205,7 +204,7 @@ export function AddHabitForm() {
 						layout="with-icon"
 						type="submit"
 					>
-						<PlusCircleIcon mr="auto" />
+						<UI.PlusCircleIcon mr="auto" />
 						Add habit
 					</UI.Button>
 				</UI.Row>

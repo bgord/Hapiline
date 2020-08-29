@@ -3,7 +3,6 @@ import * as React from "react";
 
 import {Notification, DraftNotificationPayload} from "./models";
 import * as UI from "./ui";
-import {BellIcon} from "./ui/icons/Bell";
 import {api} from "./services/api";
 import {useToggle} from "./hooks/useToggle";
 import {useErrorToast} from "./contexts/toasts-context";
@@ -62,7 +61,7 @@ export function NotificationDropdown() {
 				position="relative"
 			>
 				<UI.VisuallyHidden>Notifications dropdown</UI.VisuallyHidden>
-				<BellIcon />
+				<UI.BellIcon />
 
 				{numberOfUnreadNotifications > 0 && (
 					<UI.Text position="absolute" style={{top: "-3px", right: "3px"}}>

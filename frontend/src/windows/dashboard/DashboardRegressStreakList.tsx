@@ -7,9 +7,6 @@ import {usePersistentToggle} from "../../hooks/useToggle";
 import {pluralize} from "../../services/pluralize";
 import {UrlBuilder} from "../../services/url-builder";
 
-import {ChevronUpIcon} from "../../ui/icons/ChevronUp";
-import {ChevronDownIcon} from "../../ui/icons/ChevronDown";
-
 import * as UI from "../../ui";
 
 export function DashboardRegressStreakList({
@@ -44,7 +41,7 @@ export function DashboardRegressStreakList({
 						onClick={toggleRegressStreakList}
 					>
 						<UI.VisuallyHidden>Hide regress streak list</UI.VisuallyHidden>
-						<ChevronUpIcon />
+						<UI.ChevronUpIcon />
 					</UI.Button>
 				)}
 
@@ -56,7 +53,7 @@ export function DashboardRegressStreakList({
 						onClick={toggleRegressStreakList}
 					>
 						<UI.VisuallyHidden>Show regress streak list</UI.VisuallyHidden>
-						<ChevronDownIcon />
+						<UI.ChevronDownIcon />
 					</UI.Button>
 				)}
 			</UI.Row>

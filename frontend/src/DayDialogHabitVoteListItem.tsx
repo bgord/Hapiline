@@ -3,11 +3,6 @@ import {useMutation} from "react-query";
 import React from "react";
 
 import {subDays, isBefore} from "date-fns";
-import {ChevronUpIcon} from "./ui/icons/ChevronUp";
-import {ChevronDownIcon} from "./ui/icons/ChevronDown";
-import {SmallPlusIcon} from "./ui/icons/SmallPlus";
-import {SmallEqualsSign} from "./ui/icons/SmallEqualsSign";
-import {SmallMinusIcon} from "./ui/icons/SmallMinus";
 import {
 	HabitVoteType,
 	habitStrengthToBadgeVariant,
@@ -114,7 +109,7 @@ export function DayDialogHabitVoteListItem({
 							{isCommentVisible && (
 								<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>
 									<UI.VisuallyHidden>Hide vote comment</UI.VisuallyHidden>
-									<ChevronUpIcon />
+									<UI.ChevronUpIcon />
 								</UI.Button>
 							)}
 
@@ -125,7 +120,7 @@ export function DayDialogHabitVoteListItem({
 									onClick={toggleComment}
 								>
 									<UI.VisuallyHidden>Show and edit vote comment</UI.VisuallyHidden>
-									<ChevronDownIcon />
+									<UI.ChevronDownIcon />
 								</UI.Button>
 							)}
 
@@ -150,7 +145,7 @@ export function DayDialogHabitVoteListItem({
 								disabled={addHabitDayVoteRequestState.status === "loading" || isAddingVotesAllowed}
 							>
 								<UI.VisuallyHidden>Add progress vote</UI.VisuallyHidden>
-								<SmallPlusIcon />
+								<UI.SmallPlusIcon />
 							</UI.Button>
 							<UI.Button
 								bg={currentVoteType === "plateau" ? "gray-2" : "gray-0"}
@@ -164,7 +159,7 @@ export function DayDialogHabitVoteListItem({
 								disabled={addHabitDayVoteRequestState.status === "loading" || isAddingVotesAllowed}
 							>
 								<UI.VisuallyHidden>Add plateau vote</UI.VisuallyHidden>
-								<SmallEqualsSign />
+								<UI.SmallEqualsSign />
 							</UI.Button>
 							<UI.Button
 								bg={currentVoteType === "regress" ? "red" : "gray-0"}
@@ -178,7 +173,7 @@ export function DayDialogHabitVoteListItem({
 								disabled={addHabitDayVoteRequestState.status === "loading" || isAddingVotesAllowed}
 							>
 								<UI.VisuallyHidden>Add regress vote</UI.VisuallyHidden>
-								<SmallMinusIcon />
+								<UI.SmallMinusIcon />
 							</UI.Button>
 						</UI.Row>
 					</UI.Row>

@@ -3,7 +3,6 @@ import {useMutation} from "react-query";
 import React from "react";
 
 import * as UI from "./ui";
-import {TrashIcon} from "./ui/icons/Trash";
 import {Habit} from "./models";
 import {api} from "./services/api";
 import {useErrorToast, useSuccessToast} from "./contexts/toasts-context";
@@ -47,7 +46,7 @@ export function DeleteHabitButton({id, name}: Habit) {
 				onClick={openDialog}
 				mt="24"
 			>
-				<TrashIcon />
+				<UI.TrashIcon />
 				{deleteHabitRequestState.status === "loading" ? "Loading" : "Delete"}
 			</UI.Button>
 			{showDialog && (

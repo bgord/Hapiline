@@ -12,9 +12,6 @@ import {
 	getPositionToken,
 } from "../design-system";
 
-import {InfoIcon} from "../icons/Info";
-import {ExclamationIcon} from "../icons/Exclamation";
-import {CheckmarkIcon} from "../icons/Checkmark";
 import * as UI from "../";
 
 type BannerVariant = "info" | "error" | "success";
@@ -66,7 +63,7 @@ type SpecificBannerProps = JSX.IntrinsicElements["div"] &
 export function InfoBanner({children, ...props}: UI.WithChildren<SpecificBannerProps>) {
 	return (
 		<Banner {...props} variant="info">
-			<InfoIcon />
+			<UI.InfoIcon />
 			<UI.Text style={{fontSize: "14px"}} ml="12">
 				{children}
 			</UI.Text>
@@ -77,7 +74,7 @@ export function InfoBanner({children, ...props}: UI.WithChildren<SpecificBannerP
 export function ErrorBanner({children, ...props}: UI.WithChildren<SpecificBannerProps>) {
 	return (
 		<Banner {...props} variant="error">
-			<ExclamationIcon stroke="#682d36" />
+			<UI.ExclamationIcon stroke="#682d36" />
 			<UI.Text style={{fontSize: "14px", color: "#682d36"}} ml="12">
 				{children}
 			</UI.Text>
@@ -88,7 +85,7 @@ export function ErrorBanner({children, ...props}: UI.WithChildren<SpecificBanner
 export function SuccessBanner({children, ...props}: UI.WithChildren<SpecificBannerProps>) {
 	return (
 		<Banner {...props} variant="success">
-			<CheckmarkIcon />
+			<UI.CheckmarkIcon />
 			<UI.Text style={{fontSize: "14px", color: "#025D26"}} ml="12">
 				{children}
 			</UI.Text>

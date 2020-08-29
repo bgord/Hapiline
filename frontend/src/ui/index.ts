@@ -23,6 +23,9 @@ export * from "./wrapper/Wrapper";
 
 export * from "./icons/Bell";
 export * from "./icons/Calendar";
+export * from "./icons/Checkmark";
+export * from "./icons/ChevronDown";
+export * from "./icons/ChevronUp";
 export * from "./icons/Close";
 export * from "./icons/Exclamation";
 export * from "./icons/Filter";
@@ -31,6 +34,9 @@ export * from "./icons/Loader";
 export * from "./icons/Plus";
 export * from "./icons/PlusCircle";
 export * from "./icons/QuestionMark";
+export * from "./icons/SmallEqualsSign";
+export * from "./icons/SmallMinus";
+export * from "./icons/SmallPlus";
 export * from "./icons/Trash";
 
 export * from "./ExpandContractList";
