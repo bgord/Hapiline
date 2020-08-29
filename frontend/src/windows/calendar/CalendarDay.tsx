@@ -1,4 +1,4 @@
-import {isFuture, isSameDay, isToday} from "date-fns";
+import {isFuture, isSameDay, isToday, startOfDay} from "date-fns";
 import React from "react";
 
 import * as UI from "../../ui";
@@ -25,7 +25,7 @@ export function CalendarDay(props: CalendarDayProps) {
 
 	const thisDay = new Date(day);
 	const isThisDayToday = isToday(thisDay);
-	const isThisDayInTheFuture = isFuture(thisDay);
+	const isThisDayInTheFuture = isFuture(startOfDay(thisDay));
 
 	const numberOfHabitsAvailableAtThisDay = getHabitsAvailableAtThisDay(habits, thisDay).length;
 
