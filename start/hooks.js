@@ -1,6 +1,8 @@
 /* eslint-disable max-params */
 
 const {hooks} = require("@adonisjs/ignitor");
+const {parseFromTimeZone} = require("date-fns-timezone");
+const {isFuture} = require("date-fns");
 
 hooks.after.providersBooted(() => {
 	const Database = use("Database");
@@ -87,5 +89,17 @@ hooks.after.providersBooted(() => {
 		if (!row) {
 			throw message;
 		}
+	});
+
+	Validator.extend("not-in-the-future", async (data, field, message, args, get) => {
+		const value = get(data, field);
+		if (!value) {
+			// Skip validation if value is not defined, `required` rule should take care of it.
+			return;
+		}
+
+		const date = parseFromTimeZone(value, {timeZone: args[0]});
+
+		if (isFuture(date)) throw message;
 	});
 });
