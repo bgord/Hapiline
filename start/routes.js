@@ -98,7 +98,7 @@ Route.patch("/api/v1/reorder-habits", "HabitOrderController.update")
 	.middleware(["check-habit-ids", "validate-indexes-order"]);
 
 Route.get("/api/v1/month", "MonthController.show")
-	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("ShowMonth");
 
 Route.post("/api/v1/vote", "VoteController.update")

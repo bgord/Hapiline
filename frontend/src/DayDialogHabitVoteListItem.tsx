@@ -104,7 +104,6 @@ export function DayDialogHabitVoteListItem({
 			<UI.Row as="li" pb="12" width="100%" by="gray-1">
 				<UI.Column width="100%">
 					<UI.Row pt="6" width="100%" mr="6" wrap={[, "wrap"]}>
-						{/* TODO: Refactor the habit vote list so that -6px margin is not necessary */}
 						<UI.Row width="auto" style={{marginLeft: mediaQuery === MEDIA_QUERY.lg ? "-6px" : "0"}}>
 							{isCommentVisible && (
 								<UI.Button variant="bare" title="Hide vote comment" onClick={toggleComment}>

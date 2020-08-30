@@ -75,7 +75,7 @@ hooks.after.providersBooted(() => {
 		this.status(400).send({
 			code: MAIN_ERROR_CODES.invalid_request,
 			message: MAIN_ERROR_MESSAGES.invalid_timezone,
-			argErrors,
+			argErrors: [],
 		});
 	});
 

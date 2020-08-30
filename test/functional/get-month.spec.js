@@ -11,6 +11,8 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const datefns = require("date-fns");
 
+const timezone = "Europe/Warsaw";
+
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
@@ -99,6 +101,7 @@ test("validation", async ({client}) => {
 	for (const [payload, argErrors] of cases) {
 		const response = await client
 			.get(GET_MONTH_URL)
+			.header("timezone", timezone)
 			.query(payload)
 			.loginVia(pam)
 			.end();
@@ -112,6 +115,7 @@ test("full flow", async ({client, assert}) => {
 
 	const response = await client
 		.get(GET_MONTH_URL)
+		.header("timezone", timezone)
 		.query({monthOffset: 0})
 		.loginVia(pam)
 		.end();
@@ -139,6 +143,7 @@ test("month with no available habits", async ({client, assert}) => {
 
 	const response = await client
 		.get(GET_MONTH_URL)
+		.header("timezone", timezone)
 		// Check if "2" is converted to 2 under the hood
 		.query({monthOffset: "2"})
 		.loginVia(pam)
