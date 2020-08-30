@@ -71,6 +71,14 @@ hooks.after.providersBooted(() => {
 		});
 	});
 
+	Response.macro("invalidTimezone", function() {
+		this.status(400).send({
+			code: MAIN_ERROR_CODES.invalid_request,
+			message: MAIN_ERROR_MESSAGES.invalid_timezone,
+			argErrors,
+		});
+	});
+
 	Validator.extend("exists", async (data, field, message, args, get) => {
 		const value = get(data, field);
 		if (!value || !Number.isInteger(value) || value <= 0) {
