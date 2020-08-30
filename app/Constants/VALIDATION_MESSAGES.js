@@ -37,6 +37,7 @@ const VALIDATION_MESSAGES = {
 	same_or_after: (field, sameOrAfterDay) =>
 		`Field ${field} must be same as or after ${sameOrAfterDay}.`,
 	invalid_sort_by_option: "Invalid sort by option.",
+	not_in_the_future: field => `${field} field cannot be in the future.`,
 };
 
 module.exports = VALIDATION_MESSAGES;
