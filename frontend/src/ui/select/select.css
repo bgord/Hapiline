@@ -34,3 +34,9 @@
 		transform: rotate(45deg);
 	}
 }
+/* To avoid zooming on select focus on Chrome and Safari on iOS */
+@media not all and (min-resolution: 0.001dpcm) {
+	.c-select {
+		font-size: 16px;
+	}
+}
