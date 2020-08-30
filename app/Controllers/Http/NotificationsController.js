@@ -5,9 +5,7 @@ class NotificationsController {
 	async index({auth, response}) {
 		const userNotifications = await Database.select("*")
 			.from("notifications")
-			.where({
-				user_id: auth.user.id,
-			})
+			.where({user_id: auth.user.id})
 			.orderBy("created_at", "desc")
 			.orderBy("id", "asc");
 
