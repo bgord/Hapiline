@@ -38,25 +38,14 @@ class VoteController {
 		const habitVoteForGivenDate = await HabitVote.findBy({habit_id, day});
 
 		if (habitVoteForGivenDate === null) {
-			const habitVote = await HabitVote.create({
-				habit_id,
-				day,
-				vote,
-				comment,
-			});
+			const habitVote = await HabitVote.create({habit_id, day, vote, comment});
 
-			Event.fire("vote::updated", {
-				vote: habitVote.toJSON(),
-				habit,
-				timeZone,
-			});
+			Event.fire("vote::updated", {vote: habitVote.toJSON(), habit, timeZone});
 
 			return response.send(habitVote);
 		}
 
-		await habitVoteForGivenDate.merge({
-			vote,
-		});
+		await habitVoteForGivenDate.merge({vote});
 		await habitVoteForGivenDate.save();
 
 		return response.send(habitVoteForGivenDate);

@@ -102,11 +102,6 @@ test("validation", async ({client}) => {
 					validation: "date",
 				},
 				{
-					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
-					field: "day",
-					validation: "before",
-				},
-				{
 					message: VALIDATION_MESSAGES.after("day", "7 days ago"),
 					field: "day",
 					validation: "after",
@@ -127,9 +122,9 @@ test("validation", async ({client}) => {
 					validation: "in",
 				},
 				{
-					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
+					message: VALIDATION_MESSAGES.not_in_the_future("day"),
 					field: "day",
-					validation: "before",
+					validation: "not-in-the-future",
 				},
 			],
 		],
