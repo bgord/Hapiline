@@ -6,6 +6,7 @@ const Event = use("Event");
 
 class VoteController {
 	async update({request, response, auth}) {
+		const timeZone = request.header("timezone");
 		const payload = request.only(["habit_id", "vote", "day", "comment"]);
 
 		const {habit_id, day, comment} = payload;
@@ -47,6 +48,7 @@ class VoteController {
 			Event.fire("vote::updated", {
 				vote: habitVote.toJSON(),
 				habit,
+				timeZone,
 			});
 
 			return response.send(habitVote);

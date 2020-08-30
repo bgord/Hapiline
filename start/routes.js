@@ -90,6 +90,7 @@ Route.get("/api/v1/habit/:id", "HabitsController.show").middleware([
 	"auth",
 	"is:(regular)",
 	"account-status:active",
+	"require-timezone-header",
 ]);
 
 Route.patch("/api/v1/reorder-habits", "HabitOrderController.update")
@@ -102,7 +103,7 @@ Route.get("/api/v1/month", "MonthController.show")
 	.validator("ShowMonth");
 
 Route.post("/api/v1/vote", "VoteController.update")
-	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("UpdateVote");
 
 Route.get("/api/v1/day-votes", "HabitVotesForDayController.show")
@@ -157,6 +158,7 @@ Route.get("/api/v1/dashboard-streak-stats", "DashboardStreakStatsController.inde
 	"auth",
 	"is:(regular)",
 	"account-status:active",
+	"require-timezone-header",
 ]);
 
 Route.delete("/api/v1/account", "AccountController.delete").middleware([

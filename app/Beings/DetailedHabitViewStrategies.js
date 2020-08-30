@@ -10,12 +10,12 @@ const Database = use("Database");
 // To the basic habit model, we append 'progress_streak' and 'regress_streak'.
 const DetailedHabitViewStrategies = {
 	trackable_habit: {
-		async execute(habitId) {
+		async execute(habitId, timeZone) {
 			const habit = await Database.table("habits")
 				.where("id", habitId)
 				.first();
 
-			const habitVotesGetter = new HabitVotesGetter(habit);
+			const habitVotesGetter = new HabitVotesGetter(habit, timeZone);
 			const habitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
 
 			const votesStreakCalculator = new VotesStreakCalculator(habitVotes);

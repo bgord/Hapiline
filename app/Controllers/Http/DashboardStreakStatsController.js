@@ -5,7 +5,9 @@ const {VotesStreakCalculator} = require("../../Beings/VotesStreakCalculator");
 const {orderByDescendingStreak} = require("../../Beings/orderByDescendingStreak");
 
 class DashboardStreakStatsController {
-	async index({auth, response}) {
+	async index({request, auth, response}) {
+		const timeZone = request.header("timezone");
+
 		const habits = await Database.select("id", "name", "created_at")
 			.from("habits")
 			.where("user_id", auth.user.id);
@@ -17,7 +19,7 @@ class DashboardStreakStatsController {
 		};
 
 		for (const habit of habits) {
-			const habitVotesGetter = new HabitVotesGetter(habit);
+			const habitVotesGetter = new HabitVotesGetter(habit, timeZone);
 			const habitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
 
 			const votesStreakCalculator = new VotesStreakCalculator(habitVotes);

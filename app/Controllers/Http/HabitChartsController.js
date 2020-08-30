@@ -28,7 +28,7 @@ class HabitChartsController {
 			[HABIT_VOTE_CHART_DATE_RANGE.all_time]: new Date(habit.created_at),
 		};
 
-		const habitVotesGetter = new HabitVotesGetter(habit);
+		const habitVotesGetter = new HabitVotesGetter(habit, timeZone);
 
 		const habitVotes = await habitVotesGetter.get({
 			from: habitVoteChartDateRangeToStartDate[habitVoteChartDateRange],
