@@ -110,7 +110,13 @@ Route.get("/api/v1/day-votes", "HabitVotesForDayController.show")
 	.validator("ShowHabitVotesForDay");
 
 Route.get("/api/v1/habit-chart/:id", "HabitChartsController.show")
-	.middleware(["auth", "is:(regular)", "account-status:active", "params-resource-exists:habits,id"])
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:habits,id",
+		"require-timezone-header",
+	])
 	.validator("ShowHabitChart");
 
 Route.patch("/api/v1/vote/:id/comment", "VoteCommentController.update")

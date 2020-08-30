@@ -18,6 +18,8 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
+const timezone = "Europe/Warsaw";
+
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
@@ -77,6 +79,7 @@ test("user can only access their own habit's chart", async ({client}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_CHART_URL}/6?habitVoteChartDateRange=last_week`)
+		.header("timezone", timezone)
 		.loginVia(jim)
 		.end();
 
@@ -112,6 +115,7 @@ test("validation", async ({client}) => {
 	for (const [payload, argErrors] of cases) {
 		const response = await client
 			.get(`${SHOW_HABIT_CHART_URL}/5`)
+			.header("timezone", timezone)
 			.query(payload)
 			.loginVia(jim)
 			.end();
@@ -125,6 +129,7 @@ test("full flow", async ({client, assert}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_CHART_URL}/2`)
+		.header("timezone", timezone)
 		.query({habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week})
 		.loginVia(jim)
 		.end();
@@ -177,6 +182,7 @@ test("check if habit is trackable", async ({client}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_CHART_URL}/${habitId}`)
+		.header("timezone", timezone)
 		.query({habitVoteChartDateRange: HABIT_VOTE_CHART_DATE_RANGE.last_week})
 		.loginVia(jim)
 		.end();
