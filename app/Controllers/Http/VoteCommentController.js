@@ -21,7 +21,7 @@ class VoteCommentController {
 	}
 
 	async index({request, response, auth}) {
-		const habitId = Number(request.get().habitId);
+		const {habitId} = request.get();
 
 		const habit = await Habit.find(habitId);
 
