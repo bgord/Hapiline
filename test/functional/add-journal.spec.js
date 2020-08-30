@@ -11,6 +11,8 @@ const users = require("../fixtures/users.json");
 const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
+const timezone = "Europe/Warsaw";
+
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
@@ -78,11 +80,6 @@ test("validation", async ({client}) => {
 					validation: "date",
 				},
 				{
-					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
-					field: "day",
-					validation: "before",
-				},
-				{
 					message: VALIDATION_MESSAGES.string("content"),
 					field: "content",
 					validation: "string",
@@ -93,9 +90,9 @@ test("validation", async ({client}) => {
 			{day: datefns.format(datefns.addDays(new Date(), 1), "yyyy-MM-dd"), content: "123"},
 			[
 				{
-					message: VALIDATION_MESSAGES.before("day", "tomorrow"),
+					message: VALIDATION_MESSAGES.not_in_the_future("day"),
 					field: "day",
-					validation: "before",
+					validation: "not-in-the-future",
 				},
 			],
 		],
@@ -117,6 +114,7 @@ test("validation", async ({client}) => {
 	for (let [payload, argErrors] of cases) {
 		const response = await client
 			.post(ADD_JOURNAL_URL)
+			.header("timezone", timezone)
 			.send(payload)
 			.loginVia(pam)
 			.end();
@@ -134,6 +132,7 @@ test("full flow updating", async ({client, assert}) => {
 
 	const response = await client
 		.post(ADD_JOURNAL_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -153,6 +152,7 @@ test("full flow creating", async ({client, assert}) => {
 
 	const response = await client
 		.post(ADD_JOURNAL_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -172,6 +172,7 @@ test("full-flow-with-empty-content", async ({client, assert}) => {
 
 	const response = await client
 		.post(ADD_JOURNAL_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -190,6 +191,7 @@ test("full-flow-without-content", async ({client, assert}) => {
 
 	const response = await client
 		.post(ADD_JOURNAL_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();

@@ -8,6 +8,8 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const User = use("User");
 const Database = use("Database");
 
+const timezone = "Europe/Warsaw";
+
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
@@ -23,7 +25,10 @@ after(async () => {
 const DASHBOARD_STREAK_STATS_URL = "/api/v1/dashboard-streak-stats";
 
 test("auth", async ({client}) => {
-	const response = await client.get(DASHBOARD_STREAK_STATS_URL).end();
+	const response = await client
+		.get(DASHBOARD_STREAK_STATS_URL)
+		.header("timezone", timezone)
+		.end();
 	assertInvalidSession(response);
 });
 
@@ -31,6 +36,7 @@ test("is:(regular)", async ({client}) => {
 	const admin = await User.find(users.admin.id);
 	const response = await client
 		.get(DASHBOARD_STREAK_STATS_URL)
+		.header("timezone", timezone)
 		.loginVia(admin)
 		.end();
 	assertAccessDenied(response);
@@ -45,6 +51,7 @@ test("account-status:(active)", async ({client}) => {
 
 	const response = await client
 		.get(DASHBOARD_STREAK_STATS_URL)
+		.header("timezone", timezone)
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
@@ -55,6 +62,7 @@ test("full flow", async ({client, assert}) => {
 
 	const response = await client
 		.get(DASHBOARD_STREAK_STATS_URL)
+		.header("timezone", timezone)
 		.loginVia(pam)
 		.end();
 
@@ -112,6 +120,7 @@ test("streaks are returned in descending order", async ({client, assert}) => {
 
 	const response = await client
 		.get(DASHBOARD_STREAK_STATS_URL)
+		.header("timezone", timezone)
 		.loginVia(pam)
 		.end();
 

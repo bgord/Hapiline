@@ -1,16 +1,22 @@
 const datefns = require("date-fns");
+const {formatToTimeZone} = require("date-fns-timezone");
 
 const Database = use("Database");
 
 class HabitVotesGetter {
-	constructor(habit) {
+	constructor(habit, timeZone) {
 		this.habit = habit;
+		this.timeZone = timeZone;
 	}
 
 	async get({from}) {
+		const currentDateInTimeZone = formatToTimeZone(new Date(), "YYYY-MM-DD", {
+			timeZone: this.timeZone,
+		});
+
 		const days = datefns.eachDayOfInterval({
-			start: from,
-			end: new Date(),
+			start: datefns.startOfDay(from),
+			end: new Date(currentDateInTimeZone),
 		});
 
 		const habitVotes = await Database.select("vote", "day")

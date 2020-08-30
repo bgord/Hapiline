@@ -83,13 +83,20 @@ Route.delete("/api/v1/habit/:id", "HabitsController.delete").middleware([
 ]);
 
 Route.patch("/api/v1/habit/:id", "HabitsController.update")
-	.middleware(["auth", "is:(regular)", "account-status:active", "params-resource-exists:habits,id"])
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:habits,id",
+		"require-timezone-header",
+	])
 	.validator("UpdateHabit");
 
 Route.get("/api/v1/habit/:id", "HabitsController.show").middleware([
 	"auth",
 	"is:(regular)",
 	"account-status:active",
+	"require-timezone-header",
 ]);
 
 Route.patch("/api/v1/reorder-habits", "HabitOrderController.update")
@@ -98,19 +105,25 @@ Route.patch("/api/v1/reorder-habits", "HabitOrderController.update")
 	.middleware(["check-habit-ids", "validate-indexes-order"]);
 
 Route.get("/api/v1/month", "MonthController.show")
-	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("ShowMonth");
 
 Route.post("/api/v1/vote", "VoteController.update")
-	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("UpdateVote");
 
 Route.get("/api/v1/day-votes", "HabitVotesForDayController.show")
-	.middleware(["auth", "is:(regular)", "account-status:active"])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("ShowHabitVotesForDay");
 
 Route.get("/api/v1/habit-chart/:id", "HabitChartsController.show")
-	.middleware(["auth", "is:(regular)", "account-status:active", "params-resource-exists:habits,id"])
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:habits,id",
+		"require-timezone-header",
+	])
 	.validator("ShowHabitChart");
 
 Route.patch("/api/v1/vote/:id/comment", "VoteCommentController.update")
@@ -151,6 +164,7 @@ Route.get("/api/v1/dashboard-streak-stats", "DashboardStreakStatsController.inde
 	"auth",
 	"is:(regular)",
 	"account-status:active",
+	"require-timezone-header",
 ]);
 
 Route.delete("/api/v1/account", "AccountController.delete").middleware([
@@ -160,15 +174,15 @@ Route.delete("/api/v1/account", "AccountController.delete").middleware([
 ]);
 
 Route.get("/api/v1/journal", "JournalController.show")
-	.middleware(["auth", `is:(regular)`, `account-status:active`])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("ShowJournal");
 
 Route.get("/api/v1/journals", "JournalController.index")
 	.validator("IndexJournal")
-	.middleware(["auth", `is:(regular)`, `account-status:active`]);
+	.middleware(["auth", "is:(regular)", "account-status:active"]);
 
 Route.post("/api/v1/journal", "JournalController.store")
-	.middleware(["auth", `is:(regular)`, `account-status:active`])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("StoreJournal");
 
 Route.get("*", async ({request, response}) => {

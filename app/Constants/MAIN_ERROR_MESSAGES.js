@@ -11,6 +11,7 @@ const MAIN_ERROR_MESSAGES = {
 	indexes_out_of_order: "Invalid indexes order.",
 	cannot_reorder_habits: "Cannot reorder habits.",
 	inactive_account: "Inactive account.",
+	invalid_timezone: "Invalid timezone header.",
 };
 
 module.exports = MAIN_ERROR_MESSAGES;

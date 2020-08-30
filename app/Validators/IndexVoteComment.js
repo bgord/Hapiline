@@ -16,6 +16,12 @@ class IndexVoteComment extends BaseHttpValidator {
 			above: VALIDATION_MESSAGES.above("habitId", 0),
 		};
 	}
+
+	get sanitizationRules() {
+		return {
+			habitId: "toInt",
+		};
+	}
 }
 
 module.exports = IndexVoteComment;

@@ -11,6 +11,8 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 
+const timezone = "Europe/Warsaw";
+
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
@@ -61,6 +63,7 @@ test("full flow", async ({client, assert}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_URL}/${habitId}`)
+		.header("timezone", timezone)
 		.loginVia(pam)
 		.end();
 
@@ -78,6 +81,7 @@ test("full flow for a habit with no votes", async ({client, assert}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_URL}/${habitId}`)
+		.header("timezone", timezone)
 		.loginVia(pam)
 		.end();
 
@@ -93,6 +97,7 @@ test("user cannot access non-existent resource", async ({client}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_URL}/1111111`)
+		.header("timezone", timezone)
 		.loginVia(jim)
 		.end();
 
@@ -104,6 +109,7 @@ test("user cannot access other users' resources", async ({client}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_URL}/12`)
+		.header("timezone", timezone)
 		.loginVia(jim)
 		.end();
 
@@ -134,6 +140,7 @@ test("return 0 day streaks for untracked habits", async ({client, assert}) => {
 
 	const response = await client
 		.get(`${SHOW_HABIT_URL}/${habitId}`)
+		.header("timezone", timezone)
 		.loginVia(jim)
 		.end();
 

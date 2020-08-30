@@ -45,6 +45,7 @@ const namedMiddleware = {
 	"params-resource-exists": "App/Middleware/ParamsResourceExists",
 	"check-habit-ids": "App/Middleware/CheckHabitIds",
 	"validate-indexes-order": "App/Middleware/ValidateIndexesOrder",
+	"require-timezone-header": "App/Middleware/RequireTimezoneHeader",
 };
 
 /*

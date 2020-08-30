@@ -1,13 +1,12 @@
-const datefns = require("date-fns");
-
 const BaseHttpValidator = use("BaseHttpValidator");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 
 class ShowHabitVotesForDay extends BaseHttpValidator {
 	get rules() {
-		const tomorrow = datefns.addDays(new Date(), 1);
+		const timeZone = this.ctx.request.header("timezone");
+
 		return {
-			day: `required|date|before:${tomorrow}`,
+			day: `required|date|not-in-the-future:${timeZone}`,
 		};
 	}
 
@@ -15,7 +14,7 @@ class ShowHabitVotesForDay extends BaseHttpValidator {
 		return {
 			required: VALIDATION_MESSAGES.required,
 			date: VALIDATION_MESSAGES.date,
-			"day.before": VALIDATION_MESSAGES.before("day", "tomorrow"),
+			"not-in-the-future": VALIDATION_MESSAGES.not_in_the_future,
 		};
 	}
 }

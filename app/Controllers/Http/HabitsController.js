@@ -55,7 +55,9 @@ class HabitsController {
 		return response.send(result);
 	}
 
-	async show({params, response, auth}) {
+	async show({request, params, response, auth}) {
+		const timeZone = request.header("timezone");
+
 		// Just try to get the habit, doesn't really matter
 		// if it belongs to `auth.user` or if it exists.
 		const habit = await Database.table("habits")
@@ -69,7 +71,7 @@ class HabitsController {
 
 		// We use different strategies to display trackable/untrackable habits
 		const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
-		const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id);
+		const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id, timeZone);
 
 		return response.send(detailedHabit);
 	}
@@ -90,6 +92,8 @@ class HabitsController {
 	}
 
 	async update({request, response, params, auth}) {
+		const timeZone = request.header("timezone");
+
 		const updatedHabitPayload = request.only(["name", "score", "strength", "description"]);
 
 		const habit = await Habit.find(params.id);
@@ -103,7 +107,7 @@ class HabitsController {
 
 			// We use different strategies to display trackable/untrackable habits
 			const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
-			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id);
+			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id, timeZone);
 
 			return response.send(detailedHabit);
 		} catch (error) {

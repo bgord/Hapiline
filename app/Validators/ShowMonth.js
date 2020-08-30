@@ -16,6 +16,12 @@ class ShowMonth extends BaseHttpValidator {
 			above: VALIDATION_MESSAGES.above("monthOffset", -1),
 		};
 	}
+
+	get sanitizationRules() {
+		return {
+			monthOffset: "toInt",
+		};
+	}
 }
 
 module.exports = ShowMonth;

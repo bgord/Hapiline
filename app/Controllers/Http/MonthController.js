@@ -1,4 +1,5 @@
 const dateFns = require("date-fns");
+const {formatToTimeZone} = require("date-fns-timezone");
 const Database = use("Database");
 const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 
@@ -8,14 +9,17 @@ class MonthsController {
 	async show({request, response, auth}) {
 		// A number <= 0, which represents the offset in months
 		// starting from the month that's `today`.
-		const monthOffset = Number(request.get().monthOffset);
+		const monthOffset = request.get().monthOffset;
+		const timeZone = request.header("timezone");
 
-		// It represents the date that's in the month that we want to
-		// take stats about.
-		const dateInTheMonth = dateFns.subMonths(Date.now(), monthOffset);
+		const currentDateInTimeZone = formatToTimeZone(new Date(), "YYYY-MM-DD", {timeZone});
+		const startOfTheCurrentMonthInTimeZone = dateFns.startOfMonth(new Date(currentDateInTimeZone));
 
-		const startOfTheMonth = dateFns.startOfMonth(dateInTheMonth);
-		const endOfTheMonth = dateFns.endOfMonth(dateInTheMonth);
+		const startOfTheRequestedMonthInTimeZone = dateFns.subMonths(
+			startOfTheCurrentMonthInTimeZone,
+			monthOffset,
+		);
+		const endOfTheRequestedMonthInTimeZone = dateFns.endOfMonth(startOfTheRequestedMonthInTimeZone);
 
 		// An array of the following shape:
 		// [{ day: '2020-06-11', numberOfHabits: 6 }]
@@ -27,8 +31,12 @@ class MonthsController {
 				Database.raw('count(*)::integer as "numberOfHabits"'),
 			)
 			.where("user_id", auth.user.id)
-			.whereRaw(`created_at::date >= :startOfTheMonth`, {startOfTheMonth})
-			.whereRaw(`created_at::date <= :endOfTheMonth`, {endOfTheMonth})
+			.whereRaw(`created_at::date >= :startOfTheRequestedMonthInTimeZone`, {
+				startOfTheRequestedMonthInTimeZone,
+			})
+			.whereRaw(`created_at::date <= :endOfTheRequestedMonthInTimeZone`, {
+				endOfTheRequestedMonthInTimeZone,
+			})
 			.groupBy("day")
 			.orderBy("day");
 
@@ -47,8 +55,12 @@ class MonthsController {
 			"vote as voteType",
 		)
 			.from("habit_votes")
-			.whereRaw(`day::date >= :startOfTheMonth`, {startOfTheMonth})
-			.whereRaw(`day::date <= :endOfTheMonth`, {endOfTheMonth})
+			.whereRaw(`day::date >= :startOfTheRequestedMonthInTimeZone`, {
+				startOfTheRequestedMonthInTimeZone,
+			})
+			.whereRaw(`day::date <= :endOfTheRequestedMonthInTimeZone`, {
+				endOfTheRequestedMonthInTimeZone,
+			})
 			.whereIn(
 				"habit_id",
 				Database.select("id")

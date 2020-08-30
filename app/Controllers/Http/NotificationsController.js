@@ -5,9 +5,7 @@ class NotificationsController {
 	async index({auth, response}) {
 		const userNotifications = await Database.select("*")
 			.from("notifications")
-			.where({
-				user_id: auth.user.id,
-			})
+			.where({user_id: auth.user.id})
 			.orderBy("created_at", "desc")
 			.orderBy("id", "asc");
 
@@ -22,10 +20,7 @@ class NotificationsController {
 
 		if (notification.user_id !== auth.user.id) return response.accessDenied();
 
-		notification.merge({
-			status: newNotificationPayload.status,
-		});
-
+		notification.merge({status: newNotificationPayload.status});
 		await notification.save();
 
 		return response.send(notification);

@@ -12,6 +12,8 @@ const ACCOUNT_STATUSES = use("ACCOUNT_STATUSES");
 const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const Habit = use("Habit");
 
+const timezone = "Europe/Warsaw";
+
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
@@ -59,6 +61,7 @@ test("checks if entity can be processed", async ({client}) => {
 
 	const response = await client
 		.patch(`${EDIT_HABIT_URL}/111`)
+		.header("timezone", timezone)
 		.loginVia(jim)
 		.end();
 
@@ -70,6 +73,7 @@ test("user cannot update not their own habit", async ({client}) => {
 
 	const response = await client
 		.patch(`${EDIT_HABIT_URL}/10`)
+		.header("timezone", timezone)
 		.loginVia(jim)
 		.end();
 	assertAccessDenied(response);
@@ -99,6 +103,7 @@ test("validation", async ({client}) => {
 	for (let [payload, argErrors] of cases) {
 		const response = await client
 			.patch(`${EDIT_HABIT_URL}/1`)
+			.header("timezone", timezone)
 			.send(payload)
 			.loginVia(jim)
 			.end();
@@ -121,6 +126,7 @@ test("full flow", async ({client, assert}) => {
 
 	const response = await client
 		.patch(`${EDIT_HABIT_URL}/1`)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -152,6 +158,7 @@ test("identical habit name error", async ({client, assert}) => {
 
 	const response = await client
 		.patch(`${EDIT_HABIT_URL}/2`)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();

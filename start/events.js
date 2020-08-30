@@ -53,10 +53,10 @@ Event.on("email::changed", async ({user, token}) => {
 	);
 });
 
-Event.on("vote::updated", async ({vote, habit}) => {
+Event.on("vote::updated", async ({vote, habit, timeZone}) => {
 	if (vote.vote !== HABIT_VOTE_TYPES.progress) return;
 
-	const habitVotesGetter = new HabitVotesGetter(habit);
+	const habitVotesGetter = new HabitVotesGetter(habit, timeZone);
 	const allHabitVotes = await habitVotesGetter.get({from: new Date(habit.created_at)});
 
 	const streaksCalculator = new VotesStreakCalculator(allHabitVotes);

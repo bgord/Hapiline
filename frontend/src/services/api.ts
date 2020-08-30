@@ -37,6 +37,9 @@ declare const process: {
 
 export const _internal_api = axios.create({
 	baseURL: process.env.API_URL,
+	headers: {
+		timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+	},
 });
 
 export const api = {
