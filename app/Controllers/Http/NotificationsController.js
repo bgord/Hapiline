@@ -20,10 +20,7 @@ class NotificationsController {
 
 		if (notification.user_id !== auth.user.id) return response.accessDenied();
 
-		notification.merge({
-			status: newNotificationPayload.status,
-		});
-
+		notification.merge({status: newNotificationPayload.status});
 		await notification.save();
 
 		return response.send(notification);

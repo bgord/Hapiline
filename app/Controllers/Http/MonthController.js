@@ -8,7 +8,7 @@ class MonthsController {
 	async show({request, response, auth}) {
 		// A number <= 0, which represents the offset in months
 		// starting from the month that's `today`.
-		const monthOffset = Number(request.get().monthOffset);
+		const monthOffset = request.get().monthOffset;
 
 		// It represents the date that's in the month that we want to
 		// take stats about.
