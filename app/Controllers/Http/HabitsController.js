@@ -92,6 +92,8 @@ class HabitsController {
 	}
 
 	async update({request, response, params, auth}) {
+		const timeZone = request.header("timezone");
+
 		const updatedHabitPayload = request.only(["name", "score", "strength", "description"]);
 
 		const habit = await Habit.find(params.id);
@@ -105,7 +107,7 @@ class HabitsController {
 
 			// We use different strategies to display trackable/untrackable habits
 			const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
-			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id);
+			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id, timeZone);
 
 			return response.send(detailedHabit);
 		} catch (error) {

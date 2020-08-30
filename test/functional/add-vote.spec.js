@@ -19,6 +19,8 @@ const HABIT_SCORE_TYPES = use("HABIT_SCORE_TYPES");
 const HABIT_STRENGTH_TYPES = use("HABIT_STRENGTH_TYPES");
 const Database = use("Database");
 
+const timezone = "Europe/Warsaw";
+
 trait("Test/ApiClient");
 trait("Auth/Client");
 trait("Session/Client");
@@ -146,6 +148,7 @@ test("validation", async ({client}) => {
 	for (const [payload, argErrors] of cases) {
 		const response = await client
 			.post(ADD_VOTE_URL)
+			.header("timezone", timezone)
 			.send(payload)
 			.loginVia(jim)
 			.end();
@@ -165,6 +168,7 @@ test("user cannot add vote to non-existant habits", async ({client}) => {
 
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -192,6 +196,7 @@ test("users can add vote to their habits only", async ({client}) => {
 
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -209,6 +214,7 @@ test("user cannot add votes to day before habit creation", async ({client}) => {
 
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -235,6 +241,7 @@ test("full flow for non-existant habit vote", async ({client, assert}) => {
 
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -258,6 +265,7 @@ test("full flow for existing habit vote", async ({client, assert}) => {
 
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(jim)
 		.end();
@@ -278,6 +286,7 @@ test("full flow for habit created today", async ({client}) => {
 
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send(payload)
 		.loginVia(dwight)
 		.end();
@@ -299,6 +308,7 @@ test("checks if habit is trackable", async ({client}) => {
 
 	const addHabitResponse = await client
 		.post(ADD_HABIT_URL)
+		.header("timezone", timezone)
 		.send(habitPayload)
 		.loginVia(jim)
 		.end();
@@ -315,6 +325,7 @@ test("checks if habit is trackable", async ({client}) => {
 
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send(votePayload)
 		.loginVia(jim)
 		.end();
@@ -353,6 +364,7 @@ test("emits notification after 5 consecutive progress votes", async ({client, as
 	// is emitted.
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send({
 			habit_id: habit.id,
 			day: new Date(),
@@ -404,6 +416,7 @@ test("emits notification after 10 consecutive progress votes", async ({client, a
 	// is emitted.
 	const response = await client
 		.post(ADD_VOTE_URL)
+		.header("timezone", timezone)
 		.send({
 			habit_id: habit.id,
 			day: new Date(),

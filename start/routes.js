@@ -83,7 +83,13 @@ Route.delete("/api/v1/habit/:id", "HabitsController.delete").middleware([
 ]);
 
 Route.patch("/api/v1/habit/:id", "HabitsController.update")
-	.middleware(["auth", "is:(regular)", "account-status:active", "params-resource-exists:habits,id"])
+	.middleware([
+		"auth",
+		"is:(regular)",
+		"account-status:active",
+		"params-resource-exists:habits,id",
+		"require-timezone-header",
+	])
 	.validator("UpdateHabit");
 
 Route.get("/api/v1/habit/:id", "HabitsController.show").middleware([

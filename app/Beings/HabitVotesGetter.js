@@ -15,7 +15,7 @@ class HabitVotesGetter {
 		});
 
 		const days = datefns.eachDayOfInterval({
-			start: from,
+			start: datefns.startOfDay(from),
 			end: new Date(currentDateInTimeZone),
 		});
 
