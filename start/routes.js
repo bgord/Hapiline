@@ -160,15 +160,15 @@ Route.delete("/api/v1/account", "AccountController.delete").middleware([
 ]);
 
 Route.get("/api/v1/journal", "JournalController.show")
-	.middleware(["auth", `is:(regular)`, `account-status:active`])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("ShowJournal");
 
 Route.get("/api/v1/journals", "JournalController.index")
 	.validator("IndexJournal")
-	.middleware(["auth", `is:(regular)`, `account-status:active`]);
+	.middleware(["auth", "is:(regular)", "account-status:active"]);
 
 Route.post("/api/v1/journal", "JournalController.store")
-	.middleware(["auth", `is:(regular)`, `account-status:active`])
+	.middleware(["auth", "is:(regular)", "account-status:active", "require-timezone-header"])
 	.validator("StoreJournal");
 
 Route.get("*", async ({request, response}) => {
