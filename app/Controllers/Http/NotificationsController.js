@@ -2,14 +2,12 @@ const Database = use("Database");
 const Notification = use("Notification");
 
 class NotificationsController {
-	async index({auth, response}) {
-		const userNotifications = await Database.select("*")
+	async index({auth}) {
+		return Database.select("*")
 			.from("notifications")
 			.where({user_id: auth.user.id})
 			.orderBy("created_at", "desc")
 			.orderBy("id", "asc");
-
-		return response.send(userNotifications);
 	}
 
 	async update({auth, request, response, params}) {
@@ -23,7 +21,7 @@ class NotificationsController {
 		notification.merge({status: newNotificationPayload.status});
 		await notification.save();
 
-		return response.send(notification);
+		return notification;
 	}
 }
 

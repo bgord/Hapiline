@@ -6,7 +6,7 @@ const HABIT_VOTE_TYPES = use("HABIT_VOTE_TYPES");
 const get = require("lodash.get");
 
 class MonthsController {
-	async show({request, response, auth}) {
+	async show({request, auth}) {
 		// A number <= 0, which represents the offset in months
 		// starting from the month that's `today`.
 		const monthOffset = request.get().monthOffset;
@@ -78,7 +78,7 @@ class MonthsController {
 
 		// Calculate stats and massage them so that
 		// they either contain the number we're looking for or 0.
-		const statsForDaysWithAtLeastOneCreatedHabitOrVote = [...daysWithAtLeastOneStat].map(day => {
+		return [...daysWithAtLeastOneStat].map(day => {
 			const habitsCreatedByDay = numberOfCreatedHabitsByDay.find(
 				entry => entry && entry.day === day,
 			);
@@ -107,8 +107,6 @@ class MonthsController {
 				numberOfRegressVotes: get(regressVotesByDay, "numberOfVotes", 0),
 			};
 		});
-
-		return response.send(statsForDaysWithAtLeastOneCreatedHabitOrVote);
 	}
 }
 

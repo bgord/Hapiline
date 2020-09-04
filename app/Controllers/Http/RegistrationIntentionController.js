@@ -11,7 +11,7 @@ class RegistrationIntentionController {
 		const regularRole = await Role.findBy("name", ROLE_NAMES.regular);
 		await user.roles().attach([regularRole.id]);
 
-		return response.status(200).send();
+		return response.send();
 	}
 }
 

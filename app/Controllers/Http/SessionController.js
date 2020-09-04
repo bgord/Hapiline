@@ -9,7 +9,8 @@ class SessionController {
 				password: payload.password,
 			});
 			await auth.login(user);
-			return response.send(user);
+
+			return user;
 		} catch (error) {
 			return response.invalidCredentials();
 		}

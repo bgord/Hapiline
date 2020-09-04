@@ -17,7 +17,7 @@ class VoteCommentController {
 		await vote.merge({comment: comment || null});
 		await vote.save();
 
-		return response.send(vote);
+		return vote;
 	}
 
 	async index({request, response, auth}) {
@@ -31,13 +31,11 @@ class VoteCommentController {
 
 		if (!habit.is_trackable) return response.unprocessableEntity();
 
-		const result = await Database.select("*")
+		return Database.select("*")
 			.from("habit_votes")
 			.where("habit_id", habitId)
 			.whereRaw("comment IS NOT NULL")
 			.orderBy("day", "desc");
-
-		return response.send(result);
 	}
 }
 

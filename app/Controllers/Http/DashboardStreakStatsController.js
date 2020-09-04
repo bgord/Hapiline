@@ -5,7 +5,7 @@ const {VotesStreakCalculator} = require("../../Beings/VotesStreakCalculator");
 const {orderByDescendingStreak} = require("../../Beings/orderByDescendingStreak");
 
 class DashboardStreakStatsController {
-	async index({request, auth, response}) {
+	async index({request, auth}) {
 		const timeZone = request.header("timezone");
 
 		const habits = await Database.select("id", "name", "created_at")
@@ -50,7 +50,7 @@ class DashboardStreakStatsController {
 			});
 		}
 
-		return response.send({
+		return {
 			progress_streaks: Array.from(result.progress_streaks).sort(
 				orderByDescendingStreak("progress_streak"),
 			),
@@ -58,7 +58,7 @@ class DashboardStreakStatsController {
 				orderByDescendingStreak("regress_streak"),
 			),
 			no_streak: result.no_streak,
-		});
+		};
 	}
 }
 
