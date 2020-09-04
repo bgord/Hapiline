@@ -46,13 +46,11 @@ class HabitsController {
 		}
 	}
 
-	async index({response, auth}) {
-		const result = await auth.user
+	async index({auth}) {
+		return auth.user
 			.habits()
 			.orderBy("order")
 			.fetch();
-
-		return response.send(result);
 	}
 
 	async show({request, params, response, auth}) {
@@ -71,9 +69,8 @@ class HabitsController {
 
 		// We use different strategies to display trackable/untrackable habits
 		const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
-		const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id, timeZone);
 
-		return response.send(detailedHabit);
+		return DetailedHabitViewStrategies[strategy].execute(habit.id, timeZone);
 	}
 
 	async delete({params, response, auth}) {
@@ -107,9 +104,8 @@ class HabitsController {
 
 			// We use different strategies to display trackable/untrackable habits
 			const strategy = habit.is_trackable ? "trackable_habit" : "untrackable_habit";
-			const detailedHabit = await DetailedHabitViewStrategies[strategy].execute(habit.id, timeZone);
 
-			return response.send(detailedHabit);
+			return DetailedHabitViewStrategies[strategy].execute(habit.id, timeZone);
 		} catch (error) {
 			if (error.message.includes("duplicate key value violates unique constraint")) {
 				return response.validationError({

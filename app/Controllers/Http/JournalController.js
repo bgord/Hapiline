@@ -4,7 +4,7 @@ const VALIDATION_MESSAGES = use("VALIDATION_MESSAGES");
 const SORT_JOURNAL_BY_OPTIONS = use("SORT_JOURNAL_BY_OPTIONS");
 
 class JournalController {
-	async index({request, response, auth}) {
+	async index({request, auth}) {
 		const sort = request.get().sort;
 
 		const orderByClauseToSort = {
@@ -12,12 +12,10 @@ class JournalController {
 			[SORT_JOURNAL_BY_OPTIONS.days_asc]: ["day", "asc"],
 		};
 
-		const journals = await Database.table("journals")
+		return Database.table("journals")
 			.where("user_id", auth.user.id)
 			.where("content", "<>", "")
 			.orderBy(...orderByClauseToSort[sort]);
-
-		return response.send(journals);
 	}
 
 	async show({response, request, auth}) {
@@ -28,8 +26,7 @@ class JournalController {
 			.where("day", day);
 
 		if (!journal) return response.notFound();
-
-		return response.send(journal);
+		return journal;
 	}
 
 	async store({response, request, auth}) {

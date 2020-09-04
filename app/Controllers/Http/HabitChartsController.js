@@ -34,7 +34,7 @@ class HabitChartsController {
 			from: habitVoteChartDateRangeToStartDate[habitVoteChartDateRange],
 		});
 
-		return response.send(habitVotes.reverse());
+		return habitVotes.reverse();
 	}
 }
 

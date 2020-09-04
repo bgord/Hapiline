@@ -1,13 +1,13 @@
 const Persona = use("Persona");
 
 class UserEmailController {
-	async update({auth, request, response}) {
+	async update({auth, request}) {
 		const payload = request.only(["newEmail"]);
 		const user = auth.user;
 
 		await Persona.updateProfile(user, {email: payload.newEmail});
 
-		return response.send(user);
+		return user;
 	}
 }
 

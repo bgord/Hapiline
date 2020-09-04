@@ -2,7 +2,7 @@ const Database = use("Database");
 const get = require("lodash.get");
 
 class DashboardStatsController {
-	async index({auth, response}) {
+	async index({auth}) {
 		const numberOfPossibleVotesLastDay = await getNumberOfPossibleVotesForDateInterval({
 			user_id: auth.user.id,
 			strategy: "last_day",
@@ -30,7 +30,7 @@ class DashboardStatsController {
 			strategy: "last_month",
 		});
 
-		return response.send({
+		return {
 			today: {
 				...resultForToday,
 				numberOfMissingVotes: getNumberOfMissingVotes(numberOfPossibleVotesLastDay, resultForToday),
@@ -55,7 +55,7 @@ class DashboardStatsController {
 				numberOfNonEmptyVotes: getNumberOfNonEmptyVotes(resultForLastMonth),
 				numberOfPossibleVotes: numberOfPossibleVotesLastMonth,
 			},
-		});
+		};
 	}
 }
 

@@ -48,7 +48,7 @@ class VoteController {
 		await habitVoteForGivenDate.merge({vote});
 		await habitVoteForGivenDate.save();
 
-		return response.send(habitVoteForGivenDate);
+		return habitVoteForGivenDate;
 	}
 }
 
