@@ -8,5 +8,5 @@
 	"background_color": "#ecedf1",
 	"orientation": "portrait-primary",
 	"icons": [{"src": "/app-icon.png", "sizes": "144x144"}],
-	"version": "0.13.2"
+	"version": "0.13.3"
 }
