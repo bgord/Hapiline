@@ -14,6 +14,7 @@ const globalMiddleware = [
 	"App/Middleware/ConvertEmptyStringsToNull",
 	"Adonis/Acl/Init",
 	"Adonis/Middleware/Session",
+	"App/Middleware/SecurityHeaders",
 ];
 
 /*
