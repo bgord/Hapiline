@@ -93,7 +93,7 @@ export function JournalTab({day}: JournalProps) {
 				</UI.Button>
 
 				<UI.ShowIf request={saveJournalRequestState} is="error">
-					<UI.ErrorBanner m="24">Couldn't save daily journal, please try again.</UI.ErrorBanner>
+					<UI.ErrorBanner my="24">Couldn't save daily journal, please try again.</UI.ErrorBanner>
 				</UI.ShowIf>
 				{responseStatus !== 404 && (
 					<UI.ShowIf request={getJournalRequestState} is="error">
